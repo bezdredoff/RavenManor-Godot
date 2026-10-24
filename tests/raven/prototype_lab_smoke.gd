@@ -5,6 +5,7 @@ const SCENES := [
 	"res://scenes/raven/foundation_lab.tscn",
 	"res://scenes/raven/manor_greybox.tscn",
 	"res://scenes/raven/vertical_slice.tscn",
+	"res://scenes/raven/content_preview.tscn",
 ]
 
 
