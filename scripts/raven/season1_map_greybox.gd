@@ -18,6 +18,7 @@ var drag_distance := 0.0
 var drag_origin := Vector2.ZERO
 var actor_pos := Vector2(990, 640)
 var movement_points: Array[Vector2] = []
+var local_return: Array[Vector2] = []
 var selected_prop := {}
 var repaired_in_preview := {}
 var repair_button: Button
@@ -158,17 +159,24 @@ func _nearest_room(pos: Vector2) -> int:
 		if Rect2(float(r[0]), float(r[1]), float(r[2]), float(r[3])).has_point(pos): return i
 	return 1
 
-func _route_to(target: Vector2, room_index: int) -> void:
+func _route_to(target: Vector2, room_index: int, local_steps: Array = []) -> void:
 	var origin_room := _nearest_room(actor_pos)
 	var path_ids := nav.get_id_path(origin_room, room_index)
 	if path_ids.is_empty():
 		status_label.text = "Заблокировано: проход ещё закрыт"; return
 	movement_points.clear()
+	for i in range(local_return.size() - 1, -1, -1):
+		movement_points.append(local_return[i])
 	movement_points.append(_room_center(origin_room))
 	for idx in path_ids:
 		var p := points[int(idx)]
 		if movement_points.is_empty() or movement_points.back().distance_to(p) > 1:
 			movement_points.append(p)
+	local_return.clear()
+	for raw in local_steps:
+		var stop := Vector2(float(raw[0]), float(raw[1]))
+		movement_points.append(stop)
+		local_return.append(stop)
 	movement_points.append(target)
 	follow_actor = true
 	status_label.text = "Эвелин идёт по маршруту через %d узлов" % movement_points.size()
@@ -214,6 +222,9 @@ func _gui_input(event: InputEvent) -> void:
 		follow_actor = false; queue_redraw(); accept_event()
 
 func _select_at(p: Vector2) -> void:
+	if not movement_points.is_empty():
+		status_label.text = "Сначала заверши текущее перемещение Эвелин"
+		return
 	for item in props:
 		var r: Array = item.rect
 		var box := Rect2(float(r[0]), float(r[1]), float(r[2]), float(r[3]))
@@ -223,7 +234,9 @@ func _select_at(p: Vector2) -> void:
 			action_button.disabled = str(item.level).is_empty()
 			repair_button.disabled = str(item.restoration).is_empty()
 			var dest := Vector2(box.position.x + box.size.x * 0.5, box.position.y + box.size.y + 70)
-			_route_to(dest, int(item.room))
+			if item.has("approach"):
+				dest = Vector2(float(item.approach[0]), float(item.approach[1]))
+			_route_to(dest, int(item.room), item.get("localRoute", []))
 			queue_redraw(); return
 	for d in doors:
 		var dp := Vector2(float(d.point[0]), float(d.point[1]))
