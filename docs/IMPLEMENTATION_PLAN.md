@@ -1,6 +1,6 @@
 # RM-HUB-001 — integrated Godot greybox plan
 
-The **new repository currently contains specifications, not an implementation**. The 70-requirement audit (12 implemented, 30 partial, 6 placeholder, 21 missing, 1 unknown; 0/13 steps E2E) is from another project, `UPDS-godot`.
+The repository now contains the accepted PR 1 foundation, PR 2 navigation greybox and deployed Prototype Lab. The 70-requirement audit (12 implemented, 30 partial, 6 placeholder, 21 missing, 1 unknown; 0/13 steps E2E) is a historical baseline from `UPDS-godot`, not a current rescore. See `STATUS.md` and `NEXT_PLAN.md`.
 
 ## PR 1: Raven foundation — implemented, acceptance passed
 Create Raven ID catalogs, independent campaign snapshot and save namespace, resource wallet, first-clear reward tracking, restorations, door/hotspot/story flags, idempotent command/reducer layer, validation and recovery. Import only necessary proven UPDS components. Tests must cover duplicate callbacks, insufficient currency, wrong prerequisites and save/reload.

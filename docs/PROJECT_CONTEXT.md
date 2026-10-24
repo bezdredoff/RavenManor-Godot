@@ -1,6 +1,6 @@
 # Raven Manor — project context
 
-**Status (2026-10-24):** Stage 1 v0.5 approved, Stage 2 v0.2 architecture approved, Stage 3 v0.2 research prepared with practical validation outstanding. This repository was initialized as documentation-only. The existing prototype audit describes the **separate** UPDS-godot repository.
+**Status (2026-10-24):** Stage 1 v0.5 approved, Stage 2 v0.2 architecture approved, Stage 3 v0.2 research prepared. The standalone foundation, authored navigation greybox and GitHub Pages Prototype Lab are implemented; integrated Match-3/VN `RM-VS-01` PR 3 and art acceptance remain outstanding. The imported prototype audit describes the earlier **separate** UPDS-godot repository.
 
 Raven Manor: mobile portrait-first cozy gothic-anime narrative Match-3 restoration game. Evelyn Raven returns to a long-abandoned family manor and rediscovers a town of supernatural residents. Outside the town, memories of supernatural life fade naturally with time. Mystery and humor, not horror.
 
