@@ -37,11 +37,26 @@ func _run() -> void:
 	var scene = SCENE.instantiate()
 	root.add_child(scene)
 	await process_frame
-	assert(scene.nav.get_id_path(1, 7).size() > 0, "hall must connect to conservatory in layout test mode")
-	assert(scene.nav.get_id_path(2, 4).size() > 0, "archive must connect to bedroom in layout test mode")
+	var routes := [
+		[Vector2(1500, 1830), 7, "conservatory"],
+		[Vector2(1540, 690), 4, "bedroom"],
+		[Vector2(245, 650), 2, "archive"],
+		[Vector2(1610, 1450), 6, "kitchen"],
+	]
+	assert(scene.actor_sprite.sprite_frames.get_frame_count("down") == 4)
+	assert(scene.actor_sprite.sprite_frames.get_frame_count("side") == 8)
+	var screen_point: Vector2 = scene._screen_from_world(Vector2(920, 610))
+	assert(scene._from_screen(screen_point).distance_to(Vector2(920, 610)) < 0.001, "projection must preserve hit targeting")
+	for test in routes:
+		var route: PackedVector2Array = scene._path_between(scene.actor_pos, test[0], test[1])
+		assert(not route.is_empty(), "ungated route not found: " + test[2])
+		for i in range(1, route.size()):
+			var direction := route[i] - route[i - 1]
+			assert(absf(direction.x) < 0.01 or absf(direction.y) < 0.01, "no diagonal path segment")
+			assert(not scene.grid.is_point_solid(Vector2i(floori(route[i].x / scene.CELL), floori(route[i].y / scene.CELL))), "route cannot cross obstacles")
 	scene.explore_all = false
 	scene._rebuild_navigation()
-	assert(scene.nav.get_id_path(1, 7).is_empty(), "story gates must block non-unlocked conservatory")
-	assert(scene.nav.get_id_path(1, 4).is_empty(), "bedroom is gated until access flag unlocks door")
-	print("Raven Manor continuous season1 map smoke passed (geometry and gated connectivity).")
+	assert(scene._path_between(scene.actor_pos, Vector2(1500, 1830), 7).is_empty(), "conservatory should be blocked")
+	assert(scene._path_between(scene.actor_pos, Vector2(1540, 690), 4).is_empty(), "bedroom should be blocked")
+	print("Raven Manor continuous season1 map smoke passed (orthogonal collision-aware paths, sprite and projection).")
 	quit()
