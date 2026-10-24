@@ -503,29 +503,33 @@
       "title": "Растения и бирка",
       "room": 7,
       "rect": [
-        1520,
-        1770,
+        1610,
+        1870,
         245,
         92
       ],
       "level": "RM-LVL-003",
-      "restoration": "RM-REST-008"
+      "restoration": "RM-REST-008",
+      "approach": [
+        1590,
+        1845
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-BENCH",
       "title": "Скамья для встречи",
       "room": 7,
       "rect": [
-        1745,
-        1960,
+        1235,
+        2000,
         150,
         65
       ],
       "level": "",
       "restoration": "RM-REST-010",
       "approach": [
-        1815,
-        1905
+        1410,
+        2010
       ]
     }
   ]

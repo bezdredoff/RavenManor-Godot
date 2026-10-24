@@ -5,17 +5,18 @@
 ## Play it
 From Prototype Lab choose **5 · Whole Manor Map · S1 GREYBOX**. Or run `res://scenes/raven/season1_map_greybox.tscn`.
 
-- Drag/pan around a single approximately 2150×2250 logical-unit layout; use wheel to zoom on desktop, button to recenter on Evelyn. Tap/click a block representing an object to have the map avatar route to a designated approach point.
+- Drag/pan around a single approximately 2150×2250 logical-unit layout. Use mouse wheel or the visible **−/+** buttons to zoom; recenter on the placeholder actor. Tap/click a block to route the animated **Onoe technical placeholder** to an approachable location. Onoe is NOT canonical Evelyn art.
 - The UI shows eight area footprints: Entry, Hall, Archive, Corridor, Bedroom, Bathroom, Kitchen, Conservatory.
 - It shows **11 canonical door relations** including four blocked future destinations: East Wing, Upper Floor, Service Wing and Garden. Door icons are green if navigable and red if blocked.
+- Route planning uses a **25-unit AStarGrid2D grid, diagonal travel disabled**, with wall thickness, currently open door thresholds and padded major furniture obstacles. No unconstrained straight-line shortcuts through objects; target approach is snapped to the nearest valid point.
 - Press **ВСЕ ПРОХОДЫ: ТЕСТ** to try physically connected paths across all seven currently explorable door edges *without changing saved progress*. Toggle **ПО СЮЖЕТНЫМ GATE** to respect door flags in the existing Raven save. This is an engineering override, never a gameplay unlock.
 - Click a repair-related furniture block and **MATCH-3** to launch its referenced level directly in *isolated Content Preview*. Return to the map using **← Карта**. Match-3 preview does not alter Raven save.
 - **До / После** recolors the selected block as a **local visual-state diagnostic only**. It does not award work points or commit a restoration.
-- The map shows a schematic circle for Evelyn, not Onoe or approved canonical character art; all furnishings are bounding-box placeholders.
+- Map actor is **animated Onoe from UPDS owner-created test sheets**: down/up/left-right clips and idle first frame. Sprite stays upright while the floor is shown using a **shallow pseudo-orthographic depth compression (Y × 0.82)** and short shaded rear-wall facades. This is a technical view test, not an approved finished iso/3D pipeline.
 
 ## Source data and systems
 - `data/raven/season1_world_map.json` owns room rectangles, shared global logical coordinates, physical doors, major furniture bounds, near-object interaction anchors, and authored local route detours.
-- `scripts/raven/season1_map_greybox.gd` uses `AStar2D` through room centers, actual portal nodes and selected detours, while drawing all areas in the **same world transform**.
+- `scripts/raven/season1_map_greybox.gd` uses **AStarGrid2D** over one shared world to plan entirely orthogonal legal grid segments. Rooms, walls, door openings and furniture have simplified bounded occupancy. Camera projection is shared across all rooms.
 - Main plot and accepted `RM-VS-01` are unchanged; game/save logic is neither migrated nor replaced.
 - The Hall split staircase, locked doors under its landing, clock near Archive and seating group preserve approved architectural decisions.
 - Bath has a physical footprint even though the vertical slice only needs a compact specialist vignette.
@@ -23,11 +24,12 @@ From Prototype Lab choose **5 · Whole Manor Map · S1 GREYBOX**. Or run `res://
 
 ## Design restrictions / QA still required
 1. All footprints/door placements are **proposed**, not architectural measurements. In particular, global camera angle and projected wall heights still need validation with a map-scale mildly-chibi sprite.
-2. Boundaries and large objects are drawn as schematic blocks. Their outlines visualize collisions but **there is no full polygon collider-based dynamic avoidance engine** yet; authored guidepoints route around known obstacles. Do not assert production collision correctness until all furnishings and edges pass route-obstruction tests.
+2. Boundaries and 15 major object rectangles block **grid occupancy with padding**, but this is still only approximate bounding-box avoidance, NOT final polygon collider or full dressing collision certification. All additional furniture must join occupancy before style art starts. The first and last few pixels may interpolate from unsnapped standing points; no diagonal grid segments are allowed.
 3. No actual finalized room artwork, layered wall cutaway, Y-sort, physical door opening, fog-of-war, map stream chunks or full mobile-release touch QA.
-4. Touch drag/tap and portrait overlay must be checked on device. Mouse wheel zoom is available; pinch-to-zoom is not implemented.
+4. Touch drag/tap and portrait overlay must be checked on device. Mouse wheel and −/+ controls zoom; pinch-to-zoom is not implemented.
 5. Selected prop→isolated Match-3 is a UI integration smoke only, not a transactional repair reward loop. First-chapter actual progression remains in `RM-VS-01`.
-6. Need one complete 390×844 portrait capture + narrow/tall captures, walking from Hall to Conservatory, Bedroom and Archive in test mode, then repeat in gated mode. Validate map viewport, occluders and collision footprints before commissioning room assets.
+6. Need one complete 390×844 portrait capture + narrow/tall captures, walking from Hall to Conservatory, Bedroom and Archive in test mode, then repeat in gated mode. Check Onoe foot position, screen-space animated sprite scale (~50 logical screen pixels at initial zoom), clipping/occluders, and depth/perspective consistency.
+7. This pseudo-orthographic projection is deliberately reversible and data-driven. **Do not change approved room layout IDs or commit to a final angle** until device comparison against an actual layered background.
 
 ## S1 geometrical approval gate
 Approve ONLY after physically inspectable gameplay test establishes continuous camera travel and reliable reachability of each room's planned interaction anchors. Changes should update door route anchors and furniture bounds **before** generating painted rooms or VN/map sprite sheets. See `docs/assets/RM_MAP_S1_CONTIGUOUS_LAYOUT_GATE.md`.
