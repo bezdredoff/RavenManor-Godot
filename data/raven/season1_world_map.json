@@ -42,7 +42,11 @@
         420,
         420
       ],
-      "color": "#818a82"
+      "color": "#818a82",
+      "safeCenter": [
+        245,
+        650
+      ]
     },
     {
       "id": "RM-ROOM-CORRIDOR",
@@ -64,7 +68,11 @@
         490,
         340
       ],
-      "color": "#a58a93"
+      "color": "#a58a93",
+      "safeCenter": [
+        1540,
+        690
+      ]
     },
     {
       "id": "RM-ROOM-BATHROOM",
@@ -75,7 +83,11 @@
         490,
         260
       ],
-      "color": "#7996a2"
+      "color": "#7996a2",
+      "safeCenter": [
+        1575,
+        985
+      ]
     },
     {
       "id": "RM-ROOM-KITCHEN",
@@ -97,7 +109,11 @@
         740,
         390
       ],
-      "color": "#829b84"
+      "color": "#829b84",
+      "safeCenter": [
+        1510,
+        1920
+      ]
     }
   ],
   "doors": [
@@ -119,7 +135,17 @@
         500,
         550
       ],
-      "status": "gated"
+      "status": "gated",
+      "routeA": [
+        [
+          850,
+          720
+        ],
+        [
+          520,
+          720
+        ]
+      ]
     },
     {
       "id": "RM-DOOR-HALL-CORRIDOR",
@@ -169,7 +195,27 @@
         1580,
         1720
       ],
-      "status": "gated"
+      "status": "gated",
+      "routeA": [
+        [
+          1370,
+          1480
+        ],
+        [
+          1350,
+          1655
+        ]
+      ],
+      "routeB": [
+        [
+          1400,
+          1760
+        ],
+        [
+          1380,
+          1910
+        ]
+      ]
     },
     {
       "id": "RM-DOOR-HALL-EAST-WING",
