@@ -14,6 +14,13 @@ The project main scene is `res://scenes/raven/prototype_launcher.tscn`.
 
 The published build is <https://bezdredoff.github.io/RavenManor-Godot/>. The page updates only after the Content Preview commit is merged to `main` and the Pages workflow succeeds.
 
+## Test one continuous Season 1 map (new feasibility greybox)
+
+Choose **5 · Whole Manor Map · S1 GREYBOX** in Prototype Lab.
+The shared-coordinate schematic contains all six season-one story spaces, Entry and Corridor, 11 canonical doorway relations and major furniture footprints. Drag/touch to pan, mouse wheel to zoom, recenter with the button, and select room props to walk to their authored approach points. **ВСЕ ПРОХОДЫ: ТЕСТ** permits non-future rooms solely for spatial testing; **ПО СЮЖЕТНЫМ GATE** respects currently stored door flags. Select a repair-related prop to open its linked level with **MATCH-3**; preview is isolated and does not award real repairs. **До / После** changes only the block's local visualization.
+
+This new mode does **not** replace the existing Hall→Corridor→Bedroom vertical-slice graph. Full 2D layer art, collision certification, pinch zoom and real mobile touch QA remain pending. Implementation notes: `docs/RM_MAP_S1_GREYBOX.md`.
+
 ## Test one Match-3 level
 
 In Prototype Lab choose **4 · Content Preview**, then choose:

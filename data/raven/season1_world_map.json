@@ -1,0 +1,532 @@
+{
+  "schemaVersion": 1,
+  "provenance": {
+    "geometryStatus": "season1-connected-feasibility",
+    "productionReady": false,
+    "roomArtCalibration": "pending",
+    "notes": "metric proposal, not approved architecture; room rectangles physically touch at canonical door markers"
+  },
+  "worldSize": [
+    2150,
+    2250
+  ],
+  "rooms": [
+    {
+      "id": "RM-ROOM-ENTRY",
+      "title": "Вход",
+      "rect": [
+        760,
+        840,
+        180,
+        150
+      ],
+      "color": "#8d8271"
+    },
+    {
+      "id": "RM-ROOM-HALL",
+      "title": "Холл",
+      "rect": [
+        500,
+        150,
+        700,
+        690
+      ],
+      "color": "#b6a48b"
+    },
+    {
+      "id": "RM-ROOM-ARCHIVE",
+      "title": "Библиотека",
+      "rect": [
+        80,
+        340,
+        420,
+        420
+      ],
+      "color": "#818a82",
+      "safeCenter": [
+        245,
+        650
+      ]
+    },
+    {
+      "id": "RM-ROOM-CORRIDOR",
+      "title": "Коридор",
+      "rect": [
+        1200,
+        370,
+        250,
+        930
+      ],
+      "color": "#978e85"
+    },
+    {
+      "id": "RM-ROOM-BEDROOM",
+      "title": "Спальня",
+      "rect": [
+        1450,
+        420,
+        490,
+        340
+      ],
+      "color": "#a58a93",
+      "safeCenter": [
+        1540,
+        690
+      ]
+    },
+    {
+      "id": "RM-ROOM-BATHROOM",
+      "title": "Ванная",
+      "rect": [
+        1450,
+        790,
+        490,
+        260
+      ],
+      "color": "#7996a2",
+      "safeCenter": [
+        1575,
+        985
+      ]
+    },
+    {
+      "id": "RM-ROOM-KITCHEN",
+      "title": "Кухня",
+      "rect": [
+        1200,
+        1300,
+        740,
+        420
+      ],
+      "color": "#afa080"
+    },
+    {
+      "id": "RM-ROOM-CONSERVATORY",
+      "title": "Оранжерея",
+      "rect": [
+        1200,
+        1720,
+        740,
+        390
+      ],
+      "color": "#829b84",
+      "safeCenter": [
+        1510,
+        1920
+      ]
+    }
+  ],
+  "doors": [
+    {
+      "id": "RM-DOOR-ENTRY-HALL",
+      "a": 0,
+      "b": 1,
+      "point": [
+        850,
+        840
+      ],
+      "status": "open"
+    },
+    {
+      "id": "RM-DOOR-HALL-ARCHIVE",
+      "a": 1,
+      "b": 2,
+      "point": [
+        500,
+        550
+      ],
+      "status": "gated",
+      "routeA": [
+        [
+          850,
+          720
+        ],
+        [
+          520,
+          720
+        ]
+      ]
+    },
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "a": 1,
+      "b": 3,
+      "point": [
+        1200,
+        585
+      ],
+      "status": "open"
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BEDROOM",
+      "a": 3,
+      "b": 4,
+      "point": [
+        1450,
+        585
+      ],
+      "status": "gated"
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BATHROOM",
+      "a": 3,
+      "b": 5,
+      "point": [
+        1450,
+        920
+      ],
+      "status": "gated"
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-KITCHEN",
+      "a": 3,
+      "b": 6,
+      "point": [
+        1325,
+        1300
+      ],
+      "status": "gated"
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-CONSERVATORY",
+      "a": 6,
+      "b": 7,
+      "point": [
+        1580,
+        1720
+      ],
+      "status": "gated",
+      "routeA": [
+        [
+          1370,
+          1480
+        ],
+        [
+          1350,
+          1655
+        ]
+      ],
+      "routeB": [
+        [
+          1400,
+          1760
+        ],
+        [
+          1380,
+          1910
+        ]
+      ]
+    },
+    {
+      "id": "RM-DOOR-HALL-EAST-WING",
+      "a": 1,
+      "b": -1,
+      "point": [
+        850,
+        350
+      ],
+      "status": "future"
+    },
+    {
+      "id": "RM-DOOR-HALL-UPPER-FLOOR",
+      "a": 1,
+      "b": -1,
+      "point": [
+        850,
+        320
+      ],
+      "status": "future"
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-SERVICE",
+      "a": 6,
+      "b": -1,
+      "point": [
+        1940,
+        1460
+      ],
+      "status": "future"
+    },
+    {
+      "id": "RM-DOOR-CONSERVATORY-GARDEN",
+      "a": 7,
+      "b": -1,
+      "point": [
+        1600,
+        2110
+      ],
+      "status": "future"
+    }
+  ],
+  "props": [
+    {
+      "id": "RM-ASSET-HALL-CLOCK",
+      "title": "Напольные часы",
+      "room": 1,
+      "rect": [
+        575,
+        460,
+        60,
+        90
+      ],
+      "level": "RM-LVL-001",
+      "restoration": "RM-REST-009",
+      "approach": [
+        605,
+        630
+      ],
+      "localRoute": [
+        [
+          850,
+          735
+        ],
+        [
+          550,
+          735
+        ],
+        [
+          550,
+          630
+        ]
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-SEATS",
+      "title": "Кресла и стол",
+      "room": 1,
+      "rect": [
+        640,
+        560,
+        160,
+        125
+      ],
+      "level": "",
+      "restoration": "",
+      "approach": [
+        720,
+        755
+      ],
+      "localRoute": [
+        [
+          850,
+          745
+        ]
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-L",
+      "title": "Левый марш",
+      "room": 1,
+      "rect": [
+        640,
+        190,
+        115,
+        195
+      ],
+      "level": "",
+      "restoration": ""
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-R",
+      "title": "Правый марш",
+      "room": 1,
+      "rect": [
+        945,
+        190,
+        115,
+        195
+      ],
+      "level": "",
+      "restoration": ""
+    },
+    {
+      "id": "RM-ASSET-HALL-CONSOLE",
+      "title": "Консоль",
+      "room": 1,
+      "rect": [
+        1110,
+        720,
+        70,
+        65
+      ],
+      "level": "",
+      "restoration": "",
+      "approach": [
+        1040,
+        765
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-GALLERY",
+      "title": "Галерея предков",
+      "room": 1,
+      "rect": [
+        525,
+        220,
+        65,
+        165
+      ],
+      "level": "",
+      "restoration": "",
+      "approach": [
+        560,
+        425
+      ],
+      "localRoute": [
+        [
+          665,
+          425
+        ]
+      ]
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-DESK",
+      "title": "Архивный стол",
+      "room": 2,
+      "rect": [
+        240,
+        490,
+        150,
+        85
+      ],
+      "level": "RM-LVL-002",
+      "restoration": "RM-REST-006"
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-SHELF",
+      "title": "Стеллажи",
+      "room": 2,
+      "rect": [
+        100,
+        365,
+        290,
+        55
+      ],
+      "level": "",
+      "restoration": "RM-REST-005",
+      "approach": [
+        420,
+        445
+      ],
+      "localRoute": [
+        [
+          430,
+          650
+        ],
+        [
+          430,
+          445
+        ]
+      ]
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-BED",
+      "title": "Кровать",
+      "room": 4,
+      "rect": [
+        1615,
+        460,
+        205,
+        150
+      ],
+      "level": "RM-LVL-001",
+      "restoration": "RM-REST-001"
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-WARDROBE",
+      "title": "Шкаф",
+      "room": 4,
+      "rect": [
+        1480,
+        460,
+        75,
+        130
+      ],
+      "level": "",
+      "restoration": ""
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-PLUMBING",
+      "title": "Сантехника",
+      "room": 5,
+      "rect": [
+        1670,
+        830,
+        180,
+        100
+      ],
+      "level": "RM-LVL-003",
+      "restoration": "RM-REST-002"
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-COUNTER",
+      "title": "Кухонный гарнитур",
+      "room": 6,
+      "rect": [
+        1480,
+        1350,
+        375,
+        80
+      ],
+      "level": "RM-LVL-002",
+      "restoration": "RM-REST-004"
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-TABLE",
+      "title": "Кухонный стол",
+      "room": 6,
+      "rect": [
+        1520,
+        1535,
+        180,
+        85
+      ],
+      "level": "",
+      "restoration": "",
+      "approach": [
+        1460,
+        1630
+      ],
+      "localRoute": [
+        [
+          1420,
+          1500
+        ],
+        [
+          1420,
+          1630
+        ]
+      ]
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-PLANTS",
+      "title": "Растения и бирка",
+      "room": 7,
+      "rect": [
+        1520,
+        1770,
+        245,
+        92
+      ],
+      "level": "RM-LVL-003",
+      "restoration": "RM-REST-008"
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-BENCH",
+      "title": "Скамья для встречи",
+      "room": 7,
+      "rect": [
+        1745,
+        1960,
+        150,
+        65
+      ],
+      "level": "",
+      "restoration": "RM-REST-010",
+      "approach": [
+        1815,
+        1905
+      ]
+    }
+  ]
+}
