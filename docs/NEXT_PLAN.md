@@ -1,42 +1,16 @@
-# Raven Manor — next implementation plan
+# Next plan — after accepted Prototype Lab (2026-10-24)
 
-## Gate 0 — product answers: complete
+## Gate A — complete asset specifications (NOW)
+1. Use `docs/assets/CHARACTER_PRODUCTION_BIBLE.md` for two-scale cast: VN full-size normal anime and separate mildly-chibi map sprites; emotional/pose states and animated clips.
+2. Use `docs/assets/ROOM_FURNISHING_AND_PLACEMENT.md` and `docs/assets/ROOM_OBJECT_REGISTER.csv` for all room furniture, decor, interactive props, repairs and placement anchors; do not conflate 12–20 unique clue props with actual room population.
+3. Review layout density, occluders, pathways, state changes and source status. All locations are proposed topology-relative anchors, not pixel coordinates or approved floor plan.
+4. Confirm specialist cameo approach and approve production IDs and quantities before mass asset generation.
 
-The answers in `PRODUCT_QUESTIONS.md` are recorded as `RM-DEC-013..016`. PR 3 may proceed without another bedroom-hotspot, adapter, Evelyn-placeholder or Onoe-license question.
+## Gate B — style anchors
+Choose a single coherent anime style with consistent material and lighting palette. Establish one VN Evelyn sheet and *separately drawn* mildly-chibi map version; verify identity and proportions. Test one room with foreground masks, major furniture, small clutter group and changed restoration state against real portrait UI.
 
-## Gates 1–3 — implemented in PR 3
+## Gate C — pipeline proof
+Record generation model/workflow/seed/reference provenance and dimensions. Test stable pose/expression identity, map walk frames and occlusion; automate file naming/alpha/anchor checks. No bulk images until pass.
 
-1. Define stable records for `RM-LVL-001..003`, `RM-HS-001..005`, `RM-REST-001..002`, the childhood clue and `RM-BEAT-01-01..05`.
-2. Encode `RM-HS-005` as the early bedroom-access action: set `RM-FLAG-BEDROOM-ACCESS-CLEARED`, unlock `RM-DOOR-CORRIDOR-BEDROOM`, enter the room, and only then expose `RM-HS-002` / `RM-REST-001`.
-3. Add validators for missing IDs, invalid prerequisites and unreachable progression.
-4. Add an automated reducer test that executes the corrected 13-step sequence and repeats reward/reload callbacks.
-
-The Raven content contract, minimal adapters and integrated `RM-VS-01` are implemented. Automated coverage executes the complete corrected route, a legal deterministic Match-3 move and save/reload resume. The Prototype Lab exposes the combined slice plus its foundation and navigation components.
-
-Remaining PR 3 acceptance work before merge:
-
-1. Run browser visual QA at 390×844 plus narrow/tall portrait viewports.
-2. Exercise real touch separately from mouse input.
-3. Confirm CI Web export and Pages deployment after merge to `main`.
-
-## Gate 4 — art feasibility, not production
-
-Only after Gate 3:
-
-1. Create/select the canonical Evelyn identity reference from Raven Manor source materials; until then use Onoe only for technical movement tests.
-2. Capture a fresh ComfyUI/VNCCS/model/workflow/input manifest.
-3. Run one clean neutral/front reference-transfer control and stop on identity or clothing drift.
-4. If accepted, test two poses and three emotions.
-5. Build one small cross-asset board: Evelyn, one second canonical character, one room, five materials/props and an actual Godot UI composite.
-
-Acceptance: reproducible identity and one coherent style board. This still does not authorize mass generation.
-
-## Explicitly deferred
-
-- full-season content;
-- canonical production character batch;
-- bulk room and prop generation;
-- public reusable addon extraction;
-- free movement;
-- full walkable bathroom;
-- engine migration.
+## Ongoing product engineering
+Preserve approved integrated Prototype Lab and separate Raven state. Make corrections through small tested PRs with docs. Re-score old 70 requirement matrix as separate current-runtime review; real mobile touch certification remains separate.
