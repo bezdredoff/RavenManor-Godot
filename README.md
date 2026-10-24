@@ -6,11 +6,11 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status:** RM-HUB-001 PR 1 foundation and PR 2 navigation greybox are implemented and tested on dependent review branches. PR 3 integration has not started.
+**Repository status:** RM-HUB-001 foundation, navigation greybox, universal Prototype Lab/Pages delivery and the integrated RM-VS-01 are implemented. PR 3 adds Raven VN, deterministic Match-3, restorations, clue, night episode and reload-safe progression.
 
 Read `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, and `docs/IMPLEMENTATION_PLAN.md` before changes.
 
-Approved source packages: Stage 1 v0.5, Stage 2 v0.2; Stage 3 research v0.2 is a planning baseline. Product-owner decisions in `docs/DECISIONS.md` supersede older conflicting design contracts. Only the small atomic filesystem storage adapter was adapted from UPDS; Raven state, IDs and reducer remain isolated.
+Approved source packages: Stage 1 v0.5, Stage 2 v0.2; Stage 3 research v0.2 is a planning baseline. Product-owner decisions in `docs/DECISIONS.md` supersede older conflicting design contracts. The storage, Match-3 contract and VN line player are narrowly adapted from proven UPDS patterns; Raven data, state, IDs and reducer remain isolated.
 
 ## Verify
 

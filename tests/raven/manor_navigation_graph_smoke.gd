@@ -8,6 +8,12 @@ const MemoryStorage = preload("res://tests/support/memory_storage.gd")
 
 
 func _initialize() -> void:
+	var graph_data: Dictionary = load("res://data/raven/manor_greybox_graph.json").data
+	assert(graph_data.provenance.geometryStatus == "greybox")
+	assert(graph_data.provenance.productionReady == false, "Greybox anchors must not be presented as production-ready before room-art calibration")
+	assert(Graph.production_geometry_is_valid(graph_data))
+	var false_claim := graph_data.duplicate(true); false_claim.provenance = graph_data.provenance.duplicate(true); false_claim.provenance.productionReady = true
+	assert(not Graph.production_geometry_is_valid(false_claim), "Production-ready geometry requires approved room-art calibration metadata")
 	var state := Snapshot.fresh()
 	var graph := Graph.new()
 	graph.rebuild(state)

@@ -86,3 +86,11 @@ static func _edge_available(edge: Dictionary, snapshot: Dictionary) -> bool:
 	if not restoration_id.is_empty() and not snapshot.get("completedRestorations", []).has(restoration_id):
 		return false
 	return true
+
+
+static func production_geometry_is_valid(graph_data: Dictionary = GRAPH_DATA.data) -> bool:
+	var provenance: Dictionary = graph_data.get("provenance", {})
+	if not bool(provenance.get("productionReady", false)):
+		return true
+	var calibration: Variant = provenance.get("roomArtCalibration")
+	return calibration is Dictionary and calibration.get("status") == "approved" and not str(calibration.get("assetHash", "")).is_empty() and int(calibration.get("version", 0)) > 0

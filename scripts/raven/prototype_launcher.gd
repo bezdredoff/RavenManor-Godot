@@ -2,6 +2,7 @@ extends Control
 
 const FOUNDATION_SCENE := "res://scenes/raven/foundation_lab.tscn"
 const NAVIGATION_SCENE := "res://scenes/raven/manor_greybox.tscn"
+const VERTICAL_SLICE_SCENE := "res://scenes/raven/vertical_slice.tscn"
 
 
 func _ready() -> void:
@@ -28,12 +29,18 @@ func _ready() -> void:
 		_open.bind(NAVIGATION_SCENE)
 	))
 	column.add_child(_card(
-		"Совместная проверка",
-		"Сначала измените состояние в Foundation sandbox, затем нажмите «Продолжить на карте». Открытая дверь и остальные сохранённые значения будут прочитаны greybox.",
-		"НАЧАТЬ ОБЩИЙ FLOW",
-		_open.bind(FOUNDATION_SCENE)
+		"3 · RM-VS-01 vertical slice",
+		"Сквозной маршрут: дверь, VN-сцены, три настоящих Match-3 уровня, две реставрации, улика, ночной эпизод и resume из Raven-save.",
+		"ЗАПУСТИТЬ ВЕРТИКАЛЬНЫЙ СРЕЗ",
+		_open.bind(VERTICAL_SLICE_SCENE)
 	))
-	column.add_child(_paragraph("PR 3 Match-3/VN integration ещё не реализован. Prototype Lab не выдаёт его за готовый vertical slice."))
+	column.add_child(_card(
+		"Совместная проверка",
+		"Vertical slice, Foundation sandbox и карта читают одно сохранение. Начните сквозной flow, затем отдельно проверьте состояние и навигацию.",
+		"НАЧАТЬ ОБЩИЙ FLOW",
+		_open.bind(VERTICAL_SLICE_SCENE)
+	))
+	column.add_child(_paragraph("Все режимы запускаются отдельно или вместе из одной web/desktop сборки."))
 
 
 func _open(path: String) -> void:
