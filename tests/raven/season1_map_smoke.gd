@@ -58,7 +58,7 @@ func _run() -> void:
 		scene._cycle_camera()
 		assert(scene.camera_elevation == target_angle)
 		assert(absf(scene.floor_depth_ratio - sin(deg_to_rad(float(target_angle)))) < 0.0001)
-		var projected := scene._screen_from_world(before_cycle)
+		var projected: Vector2 = scene._screen_from_world(before_cycle)
 		assert(scene._from_screen(projected).distance_to(before_cycle) < 0.001, "hit target alignment must survive camera changes")
 	scene._toggle_art()
 	assert(not scene.art_enabled)
