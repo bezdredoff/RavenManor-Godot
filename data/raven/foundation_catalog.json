@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "rooms": [
+    "RM-ROOM-HALL",
+    "RM-ROOM-CORRIDOR",
+    "RM-ROOM-BEDROOM",
+    "RM-ROOM-BATHROOM"
+  ],
+  "levels": {
+    "RM-LVL-001": {"reward": 2},
+    "RM-LVL-002": {"reward": 2},
+    "RM-LVL-003": {"reward": 2}
+  },
+  "restorations": {
+    "RM-REST-001": {
+      "roomId": "RM-ROOM-BEDROOM",
+      "cost": 2,
+      "requiresLevels": ["RM-LVL-001"],
+      "requiresRestorations": [],
+      "requiresFlags": ["RM-FLAG-BEDROOM-ACCESS-CLEARED"]
+    },
+    "RM-REST-002": {
+      "roomId": "RM-ROOM-BATHROOM",
+      "cost": 4,
+      "requiresLevels": ["RM-LVL-002", "RM-LVL-003"],
+      "requiresRestorations": [],
+      "requiresFlags": ["service.plumber_available"]
+    }
+  },
+  "doors": [
+    "RM-DOOR-HALL-CORRIDOR",
+    "RM-DOOR-CORRIDOR-BEDROOM"
+  ],
+  "hotspots": [
+    "RM-HS-001",
+    "RM-HS-002",
+    "RM-HS-003",
+    "RM-HS-004",
+    "RM-HS-005"
+  ],
+  "clues": ["RM-CLUE-01-CHILDHOOD-OBJECT"],
+  "storyFlags": [
+    "RM-FLAG-BEDROOM-ACCESS-CLEARED",
+    "service.plumber_available"
+  ],
+  "storyBeats": [
+    "RM-BEAT-01-01",
+    "RM-BEAT-01-02",
+    "RM-BEAT-01-03",
+    "RM-BEAT-01-04",
+    "RM-BEAT-01-05"
+  ],
+  "doorAliases": {
+    "RM-DOOR-HALL-BEDROOM": "RM-DOOR-CORRIDOR-BEDROOM"
+  }
+}
