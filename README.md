@@ -4,6 +4,8 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 [Launch the interactive Prototype Lab](https://bezdredoff.github.io/RavenManor-Godot/)
 
+Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
+
 **Repository status:** RM-HUB-001 PR 1 foundation and PR 2 navigation greybox are implemented and tested on dependent review branches. PR 3 integration has not started.
 
 Read `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, and `docs/IMPLEMENTATION_PLAN.md` before changes.

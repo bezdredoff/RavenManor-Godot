@@ -1,8 +1,8 @@
-# Raven Manor — minimal unresolved product questions
+# Raven Manor — resolved product questions
 
-These questions cannot be answered safely from current repositories.
+Resolved by the product owner on 2026-10-24. There are currently no remaining questions blocking PR 3.
 
-1. Which existing task hotspot owns the early bedroom-access task after the bathroom dependency was removed: should `RM-HS-002` change from restoration-only to access/setup, should `RM-HS-005` become the early door action, or should a new stable task ID be introduced?
-2. For PR 3, should the standalone repository import the smallest proven UPDS Match-3 and VN runtime components now, or use temporary Raven-only adapters/stubs first and import the engines in a later PR?
-3. Which exact image is the canonical identity reference for Evelyn Raven? The rejected `evelyn_neutral_00001_.png` must not be reused as an accepted reference without an explicit reversal.
-4. Should the repository's eventual public license permit reuse of Onoe artwork, or should code and original artwork have separate license terms? Current authorization covers use in this repository only.
+1. **Bedroom access:** use existing door hotspot `RM-HS-005`. Its early interaction sets `RM-FLAG-BEDROOM-ACCESS-CLEARED` and unlocks `RM-DOOR-CORRIDOR-BEDROOM`. `RM-HS-002` remains the in-bedroom `RM-REST-001` interaction.
+2. **PR 3 integration:** adapt the minimum proven UPDS Match-3 and VN components during PR 3, with Raven data/save isolation and no unrelated story import.
+3. **Evelyn art:** there is no canonical Evelyn image yet. Use Onoe only as a technical placeholder. Canonical Evelyn will be created later as a joint production task using Raven Manor source materials from `https://github.com/bezdredoff/RavenManor`.
+4. **Onoe licensing:** no separate public art license is needed because Onoe is temporary prototype content and will be removed when canonical art replaces it.

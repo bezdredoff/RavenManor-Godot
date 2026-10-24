@@ -12,7 +12,8 @@ This file is the current status entry point for `RavenManor-Godot`. Historical a
 - Prototype Lab is the main scene. Foundation and navigation can be tested independently or together through one Raven save.
 - GitHub Pages is enabled with a pinned Godot 4.7.2 Web build and deploy workflow.
 - Onoe walk sheets are authorized owner-created technical placeholders. They are not canonical Evelyn art.
-- PR 3 integrated `RM-VS-01` is not implemented: Raven Match-3 content, VN beats, clue presentation and the complete 13-step automated flow are still absent.
+- PR 3 integrated `RM-VS-01` is not implemented: Raven Match-3 content, VN beats, clue presentation and the complete 13-step automated flow are still absent. Its adapter and bedroom-access decisions are now resolved.
+- `https://github.com/bezdredoff/RavenManor` is the source of game-bible, narrative, design and source materials; this repository is the canonical Godot runtime and deployment layer.
 
 ## Verification evidence
 
@@ -37,16 +38,16 @@ A fresh requirement-by-requirement rerun is required after PR 3. Until then, do 
 - Previous wrapper/full-flow results are diagnostic only. No output proves stable face, hair and clothing across poses/emotions.
 - No shared character/background/prop style anchor board has been accepted.
 
-Therefore mass character, room or prop generation remains blocked. The next art action is one clean Evelyn reference-transfer control after a canonical identity reference is selected, followed by a small cross-asset style board and Godot composite—not a batch.
+Therefore mass character, room or prop generation remains blocked. Until canonical Evelyn art is produced in a later joint production stage, Onoe remains the explicitly non-canonical technical runtime placeholder. The next art action is later selection/creation of canonical Evelyn, one clean reference-transfer control, then a small cross-asset style board and Godot composite—not a batch.
 
 ## Current blockers
 
 1. `RM-VS-01` PR 3 integration is missing.
-2. The exact early bedroom-access task/hotspot mapping is not yet canonicalized.
-3. Raven-specific Match-3 and VN adapters/data are missing.
-4. No accepted canonical Evelyn identity reference or reproducible VNCCS result exists.
+2. Minimal UPDS Match-3 and VN components have not yet been adapted into this standalone repository.
+3. Raven-specific level/beat data and adapters are missing.
+4. No accepted canonical Evelyn identity reference or reproducible VNCCS result exists; Onoe is temporary only.
 5. No accepted cross-asset style anchor board exists.
 
 ## Next milestone
 
-Proceed with `RM-HUB-001` PR 3 only after resolving the minimal product questions in `PRODUCT_QUESTIONS.md`. Keep the implementation narrow: three Raven levels, five task hotspots, two restorations, one childhood clue, Ada/Evelyn beats, first-night beat and save/reload. Do not expand to the full season or mass art.
+Proceed with `RM-HUB-001` PR 3 using the resolved decisions in `PRODUCT_QUESTIONS.md`: `RM-HS-005` opens the bedroom early, and the smallest proven UPDS Match-3/VN components are adapted now. Keep the implementation narrow: three Raven levels, five task hotspots, two restorations, one childhood clue, Ada/Evelyn beats, first-night beat and save/reload. Do not expand to the full season or mass art.

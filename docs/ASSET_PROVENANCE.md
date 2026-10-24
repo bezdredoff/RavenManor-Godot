@@ -9,4 +9,4 @@ The following files are original assets owned by the RavenManor-Godot repository
 
 They are used only as technical movement placeholders in `RM-HUB-001`. Onoe is not Evelyn Raven and does not establish the final Raven Manor character style, identity or production sprite specification.
 
-Redistribution or reuse outside this repository is not implied by this record. A public project license should state the treatment of original art separately from source code before external releases.
+No separate public license is planned for these temporary sheets. They may remain in this repository only as prototype support and must be removed when canonical Evelyn art replaces them; they must not be packaged as reusable/public art assets.

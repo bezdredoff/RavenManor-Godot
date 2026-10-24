@@ -16,5 +16,9 @@ Updated 2026-10-24. These decisions override conflicting clauses in preserved hi
 | RM-DEC-010 | Godot 4.7.2 target, deliberate reuse of suitable UPDS VN, Match-3 and save primitives within isolated Raven runtime, rather than engine migration. |
 | RM-DEC-011 | Integrate and test greybox before bulk Raven production art. |
 | RM-DEC-012 | Onoe artwork is owned by the repository owner and authorized as a technical placeholder in this repository; it remains non-canonical for Evelyn and does not approve a production style. |
+| RM-DEC-013 | `RM-HS-005` is the early bedroom-door access hotspot in PR 3. It sets `RM-FLAG-BEDROOM-ACCESS-CLEARED` and unlocks `RM-DOOR-CORRIDOR-BEDROOM`; it no longer waits for bathroom restoration or the childhood clue. `RM-HS-002` remains the bedroom restoration interaction after entry. |
+| RM-DEC-014 | PR 3 will deliberately import/adapt the smallest proven UPDS Match-3 and VN runtime components needed for the slice, without importing unrelated UPDS story content or numeric story progression. |
+| RM-DEC-015 | `https://github.com/bezdredoff/RavenManor` is the source repository for Raven Manor game bible, narrative, design and source materials. This Godot repository owns executable Godot runtime, integration tests and Web/Pages delivery. Conflicts still follow this repository's explicit product decisions and documented overrides. |
+| RM-DEC-016 | No separate public license is needed for the temporary Onoe placeholder. Onoe must be removed when canonical Evelyn art is produced and must not ship as a reusable/public art asset. |
 
 **Outdated known clauses:** older `04_vertical_slice_flow.md`, Stage 2 hotspot/economy CSV/MD and door FSM may require bathroom repair before bedroom access or repeated door animations. Implement latest product decisions without renaming `RM-*` IDs; record any dependency changes in a migration note. Do not claim the archived documents are synchronized to this override.
