@@ -13,12 +13,18 @@ var vn_player: RefCounted
 var selected := -1
 var current_kind := "menu"
 var current_id := ""
+var return_to_map := false
 
 
 func _ready() -> void:
 	content = Content.data
+	return_to_map = get_tree().has_meta("raven_map_preview_level")
+	var requested_level := str(get_tree().get_meta("raven_map_preview_level", ""))
+	if return_to_map: get_tree().remove_meta("raven_map_preview_level")
 	_build_shell()
 	_show_menu()
+	if not requested_level.is_empty() and not _level(requested_level).is_empty():
+		_open_level(requested_level)
 
 
 func _build_shell() -> void:
@@ -35,6 +41,8 @@ func _build_shell() -> void:
 	var footer := HBoxContainer.new(); footer.add_theme_constant_override("separation", 6); root.add_child(footer)
 	_add_button(footer, "← Меню preview", _show_menu)
 	_add_button(footer, "← Лаунчер", func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
+	if return_to_map:
+		_add_button(footer, "← Карта", func(): get_tree().change_scene_to_file("res://scenes/raven/season1_map_greybox.tscn"))
 
 
 func _clear() -> void:
