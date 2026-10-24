@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "anchors": [
+    {"id": "RM-NAV-HALL-SPAWN", "roomId": "RM-ROOM-HALL", "position": [400, 300], "kind": "safe"},
+    {"id": "RM-NAV-HS-001", "roomId": "RM-ROOM-HALL", "position": [220, 300], "kind": "interaction", "hotspotId": "RM-HS-001"},
+    {"id": "RM-NAV-HALL-CORRIDOR-NEAR", "roomId": "RM-ROOM-HALL", "position": [400, 440], "kind": "transition"},
+    {"id": "RM-NAV-HALL-CORRIDOR-FAR", "roomId": "RM-ROOM-CORRIDOR", "position": [400, 540], "kind": "transition"},
+    {"id": "RM-NAV-HS-003", "roomId": "RM-ROOM-CORRIDOR", "position": [190, 820], "kind": "interaction", "hotspotId": "RM-HS-003"},
+    {"id": "RM-NAV-CORRIDOR-CENTER", "roomId": "RM-ROOM-CORRIDOR", "position": [400, 820], "kind": "safe"},
+    {"id": "RM-NAV-HS-005", "roomId": "RM-ROOM-CORRIDOR", "position": [400, 1030], "kind": "interaction", "hotspotId": "RM-HS-005"},
+    {"id": "RM-NAV-BEDROOM-NEAR", "roomId": "RM-ROOM-CORRIDOR", "position": [400, 1070], "kind": "transition"},
+    {"id": "RM-NAV-BEDROOM-FAR", "roomId": "RM-ROOM-BEDROOM", "position": [400, 1170], "kind": "transition"},
+    {"id": "RM-NAV-BEDROOM-CENTER", "roomId": "RM-ROOM-BEDROOM", "position": [400, 1330], "kind": "safe"},
+    {"id": "RM-NAV-HS-002", "roomId": "RM-ROOM-BEDROOM", "position": [560, 1390], "kind": "interaction", "hotspotId": "RM-HS-002"},
+    {"id": "RM-NAV-HS-004", "roomId": "RM-ROOM-BEDROOM", "position": [620, 1260], "kind": "interaction", "hotspotId": "RM-HS-004"}
+  ],
+  "edges": [
+    {"from": "RM-NAV-HALL-SPAWN", "to": "RM-NAV-HS-001"},
+    {"from": "RM-NAV-HALL-SPAWN", "to": "RM-NAV-HALL-CORRIDOR-NEAR"},
+    {"from": "RM-NAV-HALL-CORRIDOR-NEAR", "to": "RM-NAV-HALL-CORRIDOR-FAR", "doorId": "RM-DOOR-HALL-CORRIDOR"},
+    {"from": "RM-NAV-HALL-CORRIDOR-FAR", "to": "RM-NAV-CORRIDOR-CENTER"},
+    {"from": "RM-NAV-CORRIDOR-CENTER", "to": "RM-NAV-HS-003"},
+    {"from": "RM-NAV-CORRIDOR-CENTER", "to": "RM-NAV-HS-005"},
+    {"from": "RM-NAV-HS-005", "to": "RM-NAV-BEDROOM-NEAR"},
+    {"from": "RM-NAV-BEDROOM-NEAR", "to": "RM-NAV-BEDROOM-FAR", "doorId": "RM-DOOR-CORRIDOR-BEDROOM"},
+    {"from": "RM-NAV-BEDROOM-FAR", "to": "RM-NAV-BEDROOM-CENTER"},
+    {"from": "RM-NAV-BEDROOM-CENTER", "to": "RM-NAV-HS-002"},
+    {"from": "RM-NAV-BEDROOM-CENTER", "to": "RM-NAV-HS-004"}
+  ]
+}
