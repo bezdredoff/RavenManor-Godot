@@ -15,5 +15,6 @@ Updated 2026-10-24. These decisions override conflicting clauses in preserved hi
 | RM-DEC-009 | Defer public toolkit, but require modular clean code, explicit APIs, tests and understandable human-readable setup/extension/debug documentation. |
 | RM-DEC-010 | Godot 4.7.2 target, deliberate reuse of suitable UPDS VN, Match-3 and save primitives within isolated Raven runtime, rather than engine migration. |
 | RM-DEC-011 | Integrate and test greybox before bulk Raven production art. |
+| RM-DEC-012 | Onoe artwork is owned by the repository owner and authorized as a technical placeholder in this repository; it remains non-canonical for Evelyn and does not approve a production style. |
 
 **Outdated known clauses:** older `04_vertical_slice_flow.md`, Stage 2 hotspot/economy CSV/MD and door FSM may require bathroom repair before bedroom access or repeated door animations. Implement latest product decisions without renaming `RM-*` IDs; record any dependency changes in a migration note. Do not claim the archived documents are synchronized to this override.

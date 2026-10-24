@@ -19,3 +19,4 @@ Approved source packages: Stage 1 v0.5, Stage 2 v0.2; Stage 3 research v0.2 is a
 See `docs/RM_HUB_001_FOUNDATION.md` for the save schema and event API.
 See `docs/RM_HUB_001_NAVIGATION.md` for authored graph and greybox extension instructions.
 See `docs/PROTOTYPE_LAB_AND_PAGES.md` for the shared prototype launcher, Web export and GitHub Pages deployment.
+See `docs/STATUS.md` for canonical current status and `docs/NEXT_PLAN.md` for the reconciled next gates.

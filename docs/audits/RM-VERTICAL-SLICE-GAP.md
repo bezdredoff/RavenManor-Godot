@@ -1,5 +1,7 @@
 # RM-VS-01 — gap analysis
 
+> Historical baseline: this table predates the standalone Raven foundation and navigation greybox. PR 1 and PR 2 close part of the component gap, but PR 3 and the end-to-end 13-step flow remain unimplemented. See `docs/STATUS.md` for current status.
+
 ## Проверенный текущий статус
 
 Ни один шаг `RM-VS-01` не подтверждён end-to-end в Raven runtime. Отдельные UPDS и spike-компоненты работают, но используют другие данные и не связаны общей Raven session.
