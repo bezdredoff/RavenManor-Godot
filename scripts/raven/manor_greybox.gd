@@ -84,6 +84,8 @@ func _build_ui() -> void:
 	feedback.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; add_child(feedback)
 	var unlock := Button.new(); unlock.text = "Открыть спальню (debug)"; unlock.position = Vector2(78, 778); unlock.size = Vector2(234, 42)
 	unlock.pressed.connect(_unlock_bedroom); add_child(unlock)
+	var back := Button.new(); back.text = "←"; back.position = Vector2(334, 8); back.size = Vector2(42, 34); back.tooltip_text = "К списку прототипов"
+	back.pressed.connect(func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn")); add_child(back)
 
 
 func _add_room(rect: Rect2, room_id: String, color: Color) -> void:

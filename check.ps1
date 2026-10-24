@@ -35,9 +35,12 @@ foreach ($script in @(
 	'res://scripts/raven/raven_reducer.gd',
 	'res://scripts/raven/raven_campaign_store.gd',
 	'res://scripts/raven/manor_navigation_graph.gd',
-	'res://scripts/raven/manor_greybox.gd'
+	'res://scripts/raven/manor_greybox.gd',
+	'res://scripts/raven/prototype_launcher.gd',
+	'res://scripts/raven/foundation_lab.gd'
 )) {
 	Invoke-GodotCheck "Parse $script" @('--headless', '--check-only', '--path', $projectPath, '--script', $script)
 }
 Invoke-GodotCheck 'Raven foundation smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/raven_foundation_smoke.gd', '--quit-after', '120') 'Raven Manor foundation smoke passed'
 Invoke-GodotCheck 'Raven navigation graph smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/manor_navigation_graph_smoke.gd', '--quit-after', '120') 'Raven Manor authored navigation graph smoke passed'
+Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/prototype_lab_smoke.gd', '--quit-after', '120') 'Raven Manor Prototype Lab smoke passed'
