@@ -278,4 +278,4 @@ func _draw() -> void:
 	draw_circle(actor_pos, 24, Color("e8b86c"))
 	draw_circle(actor_pos, 14, Color("634c69"))
 	draw_string(f, actor_pos + Vector2(-27, -34), "E", HORIZONTAL_ALIGNMENT_LEFT, -1, 22, Color.WHITE)
-	draw_set_transform()
+	draw_set_transform(Vector2.ZERO)
