@@ -1,0 +1,3 @@
+# Raven Manor Stage 3 v0.2 — research gap closure
+
+Includes unchanged v0.1 asset matrix (24 story beats + 7 restoration views), inventory/budget and engine comparison. Updated comparable game evidence, candidate audit notes, supplemental candidates CSV, and decision record. **Research gaps closed at documented feature level; local runtime/CI testing and measured camera observations are not claimed.** Sources embedded in relevant documents.

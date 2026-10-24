@@ -1,0 +1,6 @@
+candidate_id,name,documented_engine,license_claim,ci_tests_evidence,proposed_decision,source,unresolved
+RM-CAND-08,noidexe top-down ARPG,unspecified in examined README,MIT,not established,reference only,https://github.com/noidexe/top-down-action-rpg-template,"pin commit, inspect project.godot, test"
+RM-CAND-09,quiver-dev top-down shooter core,Godot 4.0 RC6+,MIT,not established,reject as base,https://github.com/quiver-dev/top-down-shooter-core,README not standalone
+RM-CAND-10,snddude interaction system,Godot version not pinned in examined README,MIT,not established,reference only,https://github.com/snddude/godot-interaction_system,"raycast vs taps, release/CI"
+RM-CAND-11,VOID-VVK InteractionSystem-CS,Godot 4.6+ Mono,MIT,not established,reject for slice,https://github.com/VOID-VVK/InteractionSystem-CS,requires .NET8
+RM-CAND-12,MASSHUU12 interaction system,Godot 4 .NET,MIT,old repo unmaintained,reject this repo,https://github.com/MASSHUU12/godot-interaction-system,moved to Codeberg
