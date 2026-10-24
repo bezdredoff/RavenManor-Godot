@@ -34,7 +34,7 @@ func _run() -> void:
 		var room: Array = data.rooms[int(prop.room)].rect
 		var room_bounds := Rect2(float(room[0]), float(room[1]), float(room[2]), float(room[3]))
 		assert(room_bounds.encloses(bounds), "furniture must remain within its room")
-	var scene := SCENE.instantiate()
+	var scene = SCENE.instantiate()
 	root.add_child(scene)
 	await process_frame
 	assert(scene.nav.get_id_path(1, 7).size() > 0, "hall must connect to conservatory in layout test mode")
