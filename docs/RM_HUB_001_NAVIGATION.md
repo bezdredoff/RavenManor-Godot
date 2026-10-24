@@ -10,7 +10,7 @@ An anchor has a stable ID, room, position and kind. An interaction anchor additi
 
 ## Run
 
-Open `scenes/raven/manor_greybox.tscn` in Godot 4.7.2 or run it as the project scene from the editor. The visual is an engineering greybox. The character is deliberately procedural: Onoe source art was not imported into this standalone repository pending an explicit provenance/license record.
+Open `scenes/raven/manor_greybox.tscn` in Godot 4.7.2 or run it as the project scene from the editor. The visual is an engineering greybox. Onoe is explicitly marked as a temporary technical placeholder and is not Evelyn canon. Ownership and authorization are recorded in `docs/ASSET_PROVENANCE.md`.
 
 Yellow squares show authored anchors. Blue lines show currently traversable edges. Clicking a hotspot requests a graph route. The debug button unlocks and persists the bedroom door. The foreground lintel has a higher draw order than the character so the crossing demonstrates doorway occlusion.
 

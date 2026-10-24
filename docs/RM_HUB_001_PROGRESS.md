@@ -32,7 +32,7 @@ Bedroom access no longer depends on bathroom restoration or the childhood clue. 
 
 - Added an authored anchor/edge data file and reusable `AStar2D` graph adapter.
 - Added Hall, Corridor and Bedroom engineering geometry, five interaction anchors, near/far bedroom doorway anchors, foreground lintel and following portrait camera.
-- Uses a neutral procedural technical actor. Onoe source art remains excluded from this standalone repository pending provenance/license confirmation.
+- Uses the repository owner's Onoe walk sheets strictly as labeled technical placeholders. Their authorization and non-canonical status are recorded in `docs/ASSET_PROVENANCE.md`.
 
 ### Verified behavior
 

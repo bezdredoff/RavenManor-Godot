@@ -5,6 +5,8 @@ const Graph = preload("res://scripts/raven/manor_navigation_graph.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
+const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
+const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
 const WORLD_SIZE := Vector2(800, 1600)
 const MAP_SIZE := Vector2(370, 664)
 const SCALE := 0.52
@@ -14,7 +16,7 @@ var store := Store.new()
 var snapshot := Snapshot.fresh()
 var world: Control
 var actor: Control
-var actor_visual: Node2D
+var actor_sprite: AnimatedSprite2D
 var feedback: Label
 var door_panel: ColorRect
 var route_lines: Node2D
@@ -97,12 +99,16 @@ func _add_hotspot(hotspot_id: String) -> void:
 
 func _make_actor() -> Control:
 	var holder := Control.new(); holder.size = Vector2(80, 118); holder.pivot_offset = Vector2(40, 100); holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	actor_visual = Node2D.new(); actor_visual.position = Vector2(0, -25); holder.add_child(actor_visual)
-	var shadow := Polygon2D.new(); shadow.polygon = PackedVector2Array([Vector2(-26, 34), Vector2(26, 34), Vector2(20, 44), Vector2(-20, 44)]); shadow.color = Color(0.02, 0.03, 0.04, 0.55); actor_visual.add_child(shadow)
-	var body := Polygon2D.new(); body.polygon = PackedVector2Array([Vector2(-17, -8), Vector2(17, -8), Vector2(24, 35), Vector2(-24, 35)]); body.color = Color("6f5b79"); actor_visual.add_child(body)
-	var head := Polygon2D.new(); head.polygon = PackedVector2Array([Vector2(-15, -35), Vector2(15, -35), Vector2(18, -8), Vector2(-18, -8)]); head.color = Color("d9c0af"); actor_visual.add_child(head)
-	var direction := Polygon2D.new(); direction.name = "Direction"; direction.polygon = PackedVector2Array([Vector2(-5, -24), Vector2(7, -20), Vector2(-5, -16)]); direction.color = Color("eadbbf"); actor_visual.add_child(direction)
-	var label := _label("TECHNICAL ACTOR", 11, Color("fff0c9")); label.position = Vector2(-72, 20); label.size = Vector2(144, 18); label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; holder.add_child(label)
+	var frames := SpriteFrames.new(); frames.remove_animation("default")
+	for data in [["down", 0], ["up", 3]]:
+		frames.add_animation(data[0]); frames.set_animation_speed(data[0], 7); frames.set_animation_loop(data[0], true)
+		for column in 4:
+			var atlas := AtlasTexture.new(); atlas.atlas = ONOE_WALK; atlas.region = Rect2(column * 256, data[1] * 384, 256, 384); frames.add_frame(data[0], atlas)
+	frames.add_animation("side"); frames.set_animation_speed("side", 10); frames.set_animation_loop("side", true)
+	for column in 8:
+		var atlas := AtlasTexture.new(); atlas.atlas = ONOE_SIDE; atlas.region = Rect2(column * 272, 0, 272, 724); frames.add_frame("side", atlas)
+	actor_sprite = AnimatedSprite2D.new(); actor_sprite.sprite_frames = frames; actor_sprite.animation = "down"; actor_sprite.position = Vector2(0, -44); actor_sprite.scale = Vector2.ONE * 0.27; holder.add_child(actor_sprite)
+	var label := _label("ОНОЭ · PLACEHOLDER", 11, Color("fff0c9")); label.position = Vector2(-72, 20); label.size = Vector2(144, 18); label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; holder.add_child(label)
 	return holder
 
 
@@ -131,16 +137,16 @@ func _anchor_reached(anchor_id: String) -> void:
 
 
 func _interaction_reached(hotspot_id: String) -> void:
-	actor_visual.rotation = 0.0; actor_visual.scale = Vector2.ONE
+	actor_sprite.stop(); actor_sprite.frame = 0
 	feedback.text = "Достигнут %s через %s." % [hotspot_id, current_anchor]
 
 
 func _start_animation(delta: Vector2) -> void:
 	if absf(delta.x) > absf(delta.y):
-		actor_visual.scale = Vector2(-1, 1) if delta.x < 0 else Vector2.ONE
+		actor_sprite.animation = "side"; actor_sprite.flip_h = delta.x < 0; actor_sprite.scale = Vector2.ONE * 0.135
 	else:
-		actor_visual.scale = Vector2.ONE
-	actor_visual.rotation = -0.05 if delta.x < 0 else 0.05
+		actor_sprite.animation = "down" if delta.y > 0 else "up"; actor_sprite.flip_h = false; actor_sprite.scale = Vector2.ONE * 0.27
+	actor_sprite.play()
 
 
 func _unlock_bedroom() -> void:
