@@ -3,6 +3,7 @@ extends Control
 const FOUNDATION_SCENE := "res://scenes/raven/foundation_lab.tscn"
 const NAVIGATION_SCENE := "res://scenes/raven/manor_greybox.tscn"
 const VERTICAL_SLICE_SCENE := "res://scenes/raven/vertical_slice.tscn"
+const CONTENT_PREVIEW_SCENE := "res://scenes/raven/content_preview.tscn"
 
 
 func _ready() -> void:
@@ -16,6 +17,12 @@ func _ready() -> void:
 	column.add_child(_title("RAVEN MANOR", 30, Color("eadbbf")))
 	column.add_child(_title("Prototype Lab · RM-HUB-001", 17, Color("a9c8be")))
 	column.add_child(_paragraph("Единая интерактивная сборка для изолированной и совместной проверки прототипов. Данные обоих режимов используют одно Raven-сохранение."))
+	column.add_child(_card(
+		"4 · Content Preview",
+		"Запустить отдельно любой RM-LVL-001..003 или VN beat RM-BEAT-01-01..05 без изменения общего сохранения.",
+		"ВЫБРАТЬ УРОВЕНЬ ИЛИ VN",
+		_open.bind(CONTENT_PREVIEW_SCENE)
+	))
 	column.add_child(_card(
 		"1 · Foundation sandbox",
 		"Награды 2/2/2, валюта, доступ в спальню, две реставрации, специалист, save/reload и защита от повторной выдачи.",

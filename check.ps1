@@ -41,7 +41,8 @@ foreach ($script in @(
 	'res://scripts/raven/raven_match3_game.gd',
 	'res://scripts/raven/raven_vn_player.gd',
 	'res://scripts/raven/raven_slice_director.gd',
-	'res://scripts/raven/vertical_slice.gd'
+	'res://scripts/raven/vertical_slice.gd',
+	'res://scripts/raven/content_preview.gd'
 )) {
 	Invoke-GodotCheck "Parse $script" @('--headless', '--check-only', '--path', $projectPath, '--script', $script)
 }

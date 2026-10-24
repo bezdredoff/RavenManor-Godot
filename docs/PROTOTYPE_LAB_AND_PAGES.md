@@ -10,6 +10,7 @@ Available modes:
 2. **Navigation greybox** — inspect Hall → Corridor → Bedroom graph traversal, locked/unlocked bedroom route, foreground and camera behavior.
 3. **Combined flow** — make state changes in the sandbox and continue to the map. Both scenes use the same Raven save namespace, so the navigation graph rebuilds from the saved door state.
 4. **RM-VS-01 vertical slice** — play VN dialogue and three deterministic Match-3 levels, perform the two restorations, record the clue, reach the night episode, then verify reload/resume.
+5. **Content Preview** — launch each Match-3 level and VN beat independently without mutating the shared campaign save.
 
 All four modes share the Raven save, so they can be verified independently or as one combined flow.
 
@@ -50,3 +51,5 @@ The repository Pages build type is `workflow`. A push to `main` publishes the la
 3. Add the scene path to `prototype_lab_smoke.gd`.
 4. If it shares progression, use `RavenCampaignStore`; otherwise document its isolation.
 5. Run checks and perform a local Web export before opening the PR.
+
+Exact preview IDs, direct-run commands and save/reset behavior are listed in `QUICKSTART_PREVIEWS.md`.
