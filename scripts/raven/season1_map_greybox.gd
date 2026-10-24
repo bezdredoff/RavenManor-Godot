@@ -102,6 +102,8 @@ func _open_preview() -> void:
 
 func _room_center(index: int) -> Vector2:
 	var r: Array = rooms[index].rect
+	if rooms[index].has("safeCenter"):
+		return Vector2(float(rooms[index].safeCenter[0]), float(rooms[index].safeCenter[1]))
 	return Vector2(float(r[0]) + float(r[2]) * 0.5, float(r[1]) + float(r[3]) * 0.5)
 
 func _door_enabled(d: Dictionary) -> bool:
@@ -117,9 +119,19 @@ func _rebuild_navigation() -> void:
 		if not _door_enabled(d): continue
 		var p := Vector2(float(d.point[0]), float(d.point[1]))
 		var index := _add_nav_point(p)
-		nav.connect_points(index, int(d.a))
-		if int(d.b) >= 0: nav.connect_points(index, int(d.b))
+		_link_chain(int(d.a), d.get("routeA", []), index)
+		if int(d.b) >= 0: _link_chain(index, d.get("routeB", []), int(d.b))
 	queue_redraw()
+
+func _link_chain(from_index: int, guide: Array, to_index: int) -> void:
+	var last_id := from_index
+	for raw in guide:
+		var v := Vector2(float(raw[0]), float(raw[1]))
+		var next_id := _add_nav_point(v)
+		nav.connect_points(last_id, next_id)
+		last_id = next_id
+	nav.connect_points(last_id, to_index)
+
 
 func _add_nav_point(p: Vector2) -> int:
 	var idx := points.size()
