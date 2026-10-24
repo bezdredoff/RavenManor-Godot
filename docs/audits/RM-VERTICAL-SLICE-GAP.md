@@ -9,14 +9,14 @@
 | 1. Evelyn arrives | PLACEHOLDER | Stage 1/2 narrative docs; нет Raven scene catalog/runtime. |
 | 2. Hall and corridor exploration | MISSING | Approved graph есть, runtime Hall/Corridor отсутствует. Это первый blocker. |
 | 3. Meet Ada before reveal | PLACEHOLDER | Narrative contract есть; нет Raven VN data/assets integration. |
-| 4. Inspect bedroom entrance | MISSING | `RM-HS-002` описан в CSV, runtime hotspot отсутствует. |
+| 4. Inspect bedroom entrance | MISSING | `RM-HS-002` описан в CSV, runtime hotspot отсутствует. Product correction: ранняя отдельная задача открывает физический доступ до реставрации ванной. |
 | 5. Level 1 and +2 points | PARTIAL | Match-3 работает; Raven reward/catalog/transaction не подключены. |
 | 6. Prepare bedroom | PLACEHOLDER | Economy/restoration описаны; state swap существует только в unrelated hub spike. |
 | 7. Levels 2–3 | PARTIAL | Engine поддерживает последовательные уровни; Raven IDs/data не реализованы. |
 | 8. Bathroom specialist repair | PLACEHOLDER | Contract есть, specialist availability/runtime нет. |
 | 9. Bathroom visual change | MISSING | Нет layered bathroom scene/state resources. |
 | 10. Childhood clue | PLACEHOLDER | `RM-HS-004` описан; journal integration не реализована. |
-| 11. Bedroom door traversable | MISSING | Нет door component/state/link/persistence. |
+| 11. Bedroom door traversable | MISSING | Нет door component/state/link/persistence. Этот шаг переносится до `RM-REST-001`: вход в спальню предшествует её подготовке и не зависит от ванной. |
 | 12. Enter bedroom and first-night beat | MISSING | Нет physical scene, crossing event или Raven beat registry. |
 | 13. Save/exit/resume | PARTIAL | UPDS save работает, Raven snapshot/schema и интеграция отсутствуют. |
 
@@ -35,6 +35,10 @@
 9. Two restoration visual states и расходы 2/4.
 10. Minimal Ada/Evelyn VN beats до и после restoration.
 11. Automated end-to-end smoke, который дважды прогоняет reward callback и reload boundary.
+
+## Product correction RM-HUB-001
+
+Старая зависимость bedroom door от `RM-REST-002` и `RM-HS-004` отменена. Доступ к спальне открывает отдельная ранняя задача, после чего Эвелин входит и только затем выполняет `RM-LVL-001 → RM-REST-001`. Ванная остаётся corridor-side vignette и не блокирует bedroom traversal. Стабильные существующие `RM-*` IDs сохранены; введён и документирован флаг `RM-FLAG-BEDROOM-ACCESS-CLEARED`.
 
 ## Не включать в минимальный slice
 

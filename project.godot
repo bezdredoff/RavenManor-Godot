@@ -1,0 +1,22 @@
+; Raven Manor standalone Godot project.
+config_version=5
+
+[application]
+
+config/name="Raven Manor"
+run/main_scene="res://scenes/raven/manor_greybox.tscn"
+config/features=PackedStringArray("4.7", "GL Compatibility")
+
+[display]
+
+window/size/viewport_width=390
+window/size/viewport_height=844
+window/size/window_width_override=390
+window/size/window_height_override=844
+window/stretch/mode="canvas_items"
+window/stretch/aspect="expand"
+
+[rendering]
+
+renderer/rendering_method="gl_compatibility"
+renderer/rendering_method.mobile="gl_compatibility"
