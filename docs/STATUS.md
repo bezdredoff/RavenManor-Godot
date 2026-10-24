@@ -11,13 +11,14 @@ This file is the current status entry point for `RavenManor-Godot`. Historical a
 - `RM-HUB-001` PR 2 navigation greybox is implemented: `RM-ROOM-HALL` → `RM-ROOM-CORRIDOR` → `RM-ROOM-BEDROOM`, authored `AStar2D` graph, five interaction anchors, gated `RM-DOOR-CORRIDOR-BEDROOM`, foreground lintel, camera follow and reload-safe access.
 - Prototype Lab is the main scene. Foundation and navigation can be tested independently or together through one Raven save.
 - GitHub Pages is enabled with a pinned Godot 4.7.2 Web build and deploy workflow.
+- `RM-VS-01` is implemented in Prototype Lab: early bedroom access, five VN beats, three deterministic Raven Match-3 levels, two restorations, one clue, first-night episode, shared save/reload and completed-state resume.
+- Navigation anchors are explicitly marked greybox-only. A guard rejects any production-ready claim without approved room-art calibration metadata.
 - Onoe walk sheets are authorized owner-created technical placeholders. They are not canonical Evelyn art.
-- PR 3 integrated `RM-VS-01` is not implemented: Raven Match-3 content, VN beats, clue presentation and the complete 13-step automated flow are still absent. Its adapter and bedroom-access decisions are now resolved.
 - `https://github.com/bezdredoff/RavenManor` is the source of game-bible, narrative, design and source materials; this repository is the canonical Godot runtime and deployment layer.
 
 ## Verification evidence
 
-- `check.ps1`: project import, all Raven script parses, foundation smoke, navigation graph smoke and Prototype Lab smoke pass.
+- `check.ps1`: project import, all Raven script parses, foundation smoke, navigation graph/provenance smoke, Prototype Lab smoke and complete `RM-VS-01` flow/resume smoke pass.
 - Local Web export produces `index.html`, JavaScript, WASM and PCK.
 - GitHub Actions run `40123820130`: build and Pages deploy passed from `main`.
 - Published Prototype Lab: <https://bezdredoff.github.io/RavenManor-Godot/>.
@@ -42,12 +43,10 @@ Therefore mass character, room or prop generation remains blocked. Until canonic
 
 ## Current blockers
 
-1. `RM-VS-01` PR 3 integration is missing.
-2. Minimal UPDS Match-3 and VN components have not yet been adapted into this standalone repository.
-3. Raven-specific level/beat data and adapters are missing.
-4. No accepted canonical Evelyn identity reference or reproducible VNCCS result exists; Onoe is temporary only.
-5. No accepted cross-asset style anchor board exists.
+1. Browser/touch visual QA and GitHub Pages deployment of the merged PR 3 build remain to be confirmed.
+2. No accepted canonical Evelyn identity reference or reproducible VNCCS result exists; Onoe is temporary only.
+3. No accepted cross-asset style anchor board exists.
 
 ## Next milestone
 
-Proceed with `RM-HUB-001` PR 3 using the resolved decisions in `PRODUCT_QUESTIONS.md`: `RM-HS-005` opens the bedroom early, and the smallest proven UPDS Match-3/VN components are adapted now. Keep the implementation narrow: three Raven levels, five task hotspots, two restorations, one childhood clue, Ada/Evelyn beats, first-night beat and save/reload. Do not expand to the full season or mass art.
+Review and merge `RM-HUB-001` PR 3, confirm the deployed browser build on mouse and touch, then proceed to the narrow art-feasibility gate. Do not expand to the full season or mass art.

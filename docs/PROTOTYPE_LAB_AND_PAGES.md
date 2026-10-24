@@ -9,8 +9,9 @@ Available modes:
 1. **Foundation sandbox** — manipulate the shared Raven snapshot: three first-clear rewards, early bedroom access, two restorations, specialist flag, save, reload and reset.
 2. **Navigation greybox** — inspect Hall → Corridor → Bedroom graph traversal, locked/unlocked bedroom route, foreground and camera behavior.
 3. **Combined flow** — make state changes in the sandbox and continue to the map. Both scenes use the same Raven save namespace, so the navigation graph rebuilds from the saved door state.
+4. **RM-VS-01 vertical slice** — play VN dialogue and three deterministic Match-3 levels, perform the two restorations, record the clue, reach the night episode, then verify reload/resume.
 
-This combined mode is not `RM-VS-01` PR 3: Match-3 and VN are not integrated yet, and the launcher says so explicitly.
+All four modes share the Raven save, so they can be verified independently or as one combined flow.
 
 ## Local run
 

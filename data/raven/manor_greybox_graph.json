@@ -1,5 +1,11 @@
 {
   "schemaVersion": 1,
+  "provenance": {
+    "geometryStatus": "greybox",
+    "source": "RM-HUB-001 engineering layout",
+    "roomArtCalibration": "pending",
+    "productionReady": false
+  },
   "anchors": [
     {"id": "RM-NAV-HALL-SPAWN", "roomId": "RM-ROOM-HALL", "position": [400, 300], "kind": "safe"},
     {"id": "RM-NAV-HS-001", "roomId": "RM-ROOM-HALL", "position": [220, 300], "kind": "interaction", "hotspotId": "RM-HS-001"},
