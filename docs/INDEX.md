@@ -7,7 +7,8 @@
 - `STATUS.md`: canonical current implementation, verification, blockers and art state.
 - `RECONCILIATION_MATRIX.md`: conflicts between historical audits, current runtime and R&D evidence.
 - `NEXT_PLAN.md`: gated path from current Prototype Lab to integrated `RM-VS-01`.
-- `PRODUCT_QUESTIONS.md`: only unresolved decisions requiring owner input.
+- `PRODUCT_QUESTIONS.md`: resolved answers that unblock PR 3; future unresolved decisions should be added explicitly.
+- Source materials and narrative authority: [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor); executable Godot runtime remains in this repository.
 - `preproduction/stage1/`: approved Stage 1 v0.5 story baseline.
 - `preproduction/stage2/`: approved Stage 2 v0.2 layout and progression baseline.
 - `preproduction/stage3/`: Stage 3 v0.2 research, candidates, scene/asset matrix and target budget (practical validation remains).

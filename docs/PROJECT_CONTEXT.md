@@ -2,6 +2,8 @@
 
 **Status (2026-10-24):** Stage 1 v0.5 approved, Stage 2 v0.2 architecture approved, Stage 3 v0.2 research prepared. The standalone foundation, authored navigation greybox and GitHub Pages Prototype Lab are implemented; integrated Match-3/VN `RM-VS-01` PR 3 and art acceptance remain outstanding. The imported prototype audit describes the earlier **separate** UPDS-godot repository.
 
+Source-repository boundary: [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor) provides the game bible, narrative/design documents and source materials. `RavenManor-Godot` provides the executable Godot implementation, runtime contracts, tests and deployed Prototype Lab. PR 3 adapts only the minimum proven UPDS Match-3/VN components required by the Raven slice.
+
 Raven Manor: mobile portrait-first cozy gothic-anime narrative Match-3 restoration game. Evelyn Raven returns to a long-abandoned family manor and rediscovers a town of supernatural residents. Outside the town, memories of supernatural life fade naturally with time. Mystery and humor, not horror.
 
 First season: six chapters in part of ground floor, including entrance, hall, west corridor, bedroom, bathroom, kitchen, library and conservatory. Other floors and wings are closed due to broken power, water or structural safety. Ada is the resident ghost housekeeper, Rowan the visiting werewolf gardener, Lucas a vampire notary. Their natures are revealed slowly.
