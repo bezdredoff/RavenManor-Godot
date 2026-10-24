@@ -270,7 +270,25 @@
         90
       ],
       "level": "RM-LVL-001",
-      "restoration": "RM-REST-009"
+      "restoration": "RM-REST-009",
+      "approach": [
+        605,
+        630
+      ],
+      "localRoute": [
+        [
+          850,
+          735
+        ],
+        [
+          550,
+          735
+        ],
+        [
+          550,
+          630
+        ]
+      ]
     },
     {
       "id": "RM-ASSET-HALL-SEATS",
@@ -283,7 +301,17 @@
         125
       ],
       "level": "",
-      "restoration": ""
+      "restoration": "",
+      "approach": [
+        720,
+        755
+      ],
+      "localRoute": [
+        [
+          850,
+          745
+        ]
+      ]
     },
     {
       "id": "RM-ASSET-HALL-STAIRS-L",
@@ -322,7 +350,11 @@
         65
       ],
       "level": "",
-      "restoration": ""
+      "restoration": "",
+      "approach": [
+        1040,
+        765
+      ]
     },
     {
       "id": "RM-ASSET-HALL-GALLERY",
@@ -335,7 +367,17 @@
         165
       ],
       "level": "",
-      "restoration": ""
+      "restoration": "",
+      "approach": [
+        560,
+        425
+      ],
+      "localRoute": [
+        [
+          665,
+          425
+        ]
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-DESK",
@@ -361,7 +403,21 @@
         55
       ],
       "level": "",
-      "restoration": "RM-REST-005"
+      "restoration": "RM-REST-005",
+      "approach": [
+        420,
+        445
+      ],
+      "localRoute": [
+        [
+          430,
+          650
+        ],
+        [
+          430,
+          445
+        ]
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-BED",
@@ -426,7 +482,21 @@
         85
       ],
       "level": "",
-      "restoration": ""
+      "restoration": "",
+      "approach": [
+        1460,
+        1630
+      ],
+      "localRoute": [
+        [
+          1420,
+          1500
+        ],
+        [
+          1420,
+          1630
+        ]
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-PLANTS",
@@ -452,7 +522,11 @@
         65
       ],
       "level": "",
-      "restoration": "RM-REST-010"
+      "restoration": "RM-REST-010",
+      "approach": [
+        1815,
+        1905
+      ]
     }
   ]
 }
