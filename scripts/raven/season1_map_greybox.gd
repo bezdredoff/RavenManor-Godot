@@ -19,6 +19,8 @@ var drag_origin := Vector2.ZERO
 var actor_pos := Vector2(990, 640)
 var movement_points: Array[Vector2] = []
 var selected_prop := {}
+var repaired_in_preview := {}
+var repair_button: Button
 var explore_all := true
 var follow_actor := false
 var nav := AStar2D.new()
@@ -68,10 +70,13 @@ func _make_ui() -> void:
 	status_label.anchor_top = 1.0; status_label.anchor_bottom = 1.0
 	status_label.position = Vector2(10, -72); status_label.size = Vector2(365, 27)
 	add_child(status_label)
-	action_button = _button("MATCH-3 PREVIEW", Vector2(10, 0), Vector2(184, 36), _open_preview)
+	action_button = _button("MATCH-3", Vector2(10, 0), Vector2(116, 36), _open_preview)
 	action_button.anchor_top = 1.0; action_button.anchor_bottom = 1.0; action_button.position.y = -43
 	action_button.disabled = true
-	var back := _button("← Лаунчер", Vector2(207, 0), Vector2(166, 36), func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
+	repair_button = _button("До / После", Vector2(135, 0), Vector2(112, 36), _toggle_repair)
+	repair_button.anchor_top = 1.0; repair_button.anchor_bottom = 1.0; repair_button.position.y = -43
+	repair_button.disabled = true
+	var back := _button("← Меню", Vector2(256, 0), Vector2(116, 36), func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
 	back.anchor_top = 1.0; back.anchor_bottom = 1.0; back.position.y = -43
 
 func _label(t: String, font_size: int) -> Label:
@@ -98,7 +103,16 @@ func _recenter() -> void:
 
 func _open_preview() -> void:
 	if not str(selected_prop.get("level", "")).is_empty():
+		get_tree().set_meta("raven_map_preview_level", str(selected_prop.level))
 		get_tree().change_scene_to_file("res://scenes/raven/content_preview.tscn")
+
+func _toggle_repair() -> void:
+	var id := str(selected_prop.get("id", ""))
+	if id.is_empty(): return
+	repaired_in_preview[id] = not bool(repaired_in_preview.get(id, false))
+	status_label.text = "Визуальный тест: " + ("после ремонта" if repaired_in_preview[id] else "до ремонта") + " (без изменения Raven-save)"
+	queue_redraw()
+
 
 func _room_center(index: int) -> Vector2:
 	var r: Array = rooms[index].rect
@@ -207,6 +221,7 @@ func _select_at(p: Vector2) -> void:
 			selected_prop = item
 			selected_label.text = str(item.title) + (" · " + str(item.restoration) if not str(item.restoration).is_empty() else "")
 			action_button.disabled = str(item.level).is_empty()
+			repair_button.disabled = str(item.restoration).is_empty()
 			var dest := Vector2(box.position.x + box.size.x * 0.5, box.position.y + box.size.y + 70)
 			_route_to(dest, int(item.room))
 			queue_redraw(); return
@@ -215,6 +230,7 @@ func _select_at(p: Vector2) -> void:
 		if dp.distance_to(p) < 90:
 			selected_label.text = str(d.id)
 			action_button.disabled = true
+			repair_button.disabled = true
 			if _door_enabled(d) and int(d.b) >= 0: _route_to(_room_center(int(d.b)), int(d.b))
 			else: status_label.text = "Заблокировано: закрытая зона или сюжетный gate"
 			queue_redraw(); return
@@ -237,7 +253,7 @@ func _draw() -> void:
 		var a: Array = item.rect
 		var r := Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
 		var chosen: bool = str(item.id) == str(selected_prop.get("id", ""))
-		draw_rect(r, Color("d7b16c") if chosen else Color("65524b"))
+		draw_rect(r, Color("79b894") if bool(repaired_in_preview.get(str(item.id), false)) else (Color("d7b16c") if chosen else Color("65524b")))
 		draw_rect(r, Color("f6d888") if chosen else Color("d0ae88"), false, 5)
 		draw_string(f, r.position + Vector2(7, maxf(25, r.size.y * 0.5)), str(item.title), HORIZONTAL_ALIGNMENT_LEFT, int(r.size.x) - 12, 15, Color.WHITE)
 	# Diagnostic path rendered beneath protagonist, not final art.
