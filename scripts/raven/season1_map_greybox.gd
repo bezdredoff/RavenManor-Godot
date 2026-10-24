@@ -62,7 +62,7 @@ func _make_ui() -> void:
 	var help := _label("Свайп — карта · предмет — маршрут · −/+ — масштаб", 11)
 	help.position = Vector2(12, 33); help.size = Vector2(365, 24); add_child(help)
 	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2(8, 64), Vector2(165, 32), _toggle_explore)
-	_button("К Эвелин", Vector2(181, 64), Vector2(92, 32), _recenter)
+	_button("К персонажу", Vector2(181, 64), Vector2(92, 32), _recenter)
 	_button("−", Vector2(283, 64), Vector2(41, 32), _zoom_out)
 	_button("+", Vector2(330, 64), Vector2(41, 32), _zoom_in)
 	var footer := ColorRect.new()
@@ -278,11 +278,11 @@ func _path_between(start: Vector2, destination: Vector2, dest_room: int) -> Pack
 		return PackedVector2Array()
 	return grid.get_point_path(a, b)
 
-func _route_to(destination: Vector2, room_index: int) -> void:
+func _route_to(destination: Vector2, room_index: int) -> bool:
 	var path := _path_between(actor_pos, destination, room_index)
 	if path.is_empty():
 		status_label.text = "Путь недоступен: стена, мебель или закрытая дверь"
-		return
+		return false
 	movement_points.clear()
 	for point in path:
 		# Grid is orthogonal; removing only points from a collinear run preserves obstacle clearance.
@@ -297,6 +297,7 @@ func _route_to(destination: Vector2, room_index: int) -> void:
 	follow_actor = true
 	status_label.text = "Ортогональный маршрут · %d поворотов" % maxi(0, movement_points.size() - 1)
 	queue_redraw()
+	return true
 
 func _process(delta: float) -> void:
 	if not movement_points.is_empty():
@@ -362,7 +363,9 @@ func _select_at(p: Vector2) -> void:
 			var dest := box.position + Vector2(box.size.x * 0.5, box.size.y + 70.0)
 			if item.has("approach"):
 				dest = Vector2(float(item.approach[0]), float(item.approach[1]))
-			_route_to(dest, int(item.room))
+			if not _route_to(dest, int(item.room)):
+				action_button.disabled = true
+				repair_button.disabled = true
 			return
 	for d in doors:
 		var dp := Vector2(float(d.point[0]), float(d.point[1]))
