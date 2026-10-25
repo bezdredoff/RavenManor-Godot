@@ -1,4 +1,4 @@
-# Raven Manor Room Builder — touch-first PWA v0.1
+# Raven Manor Room Builder — touch-first PWA v0.2
 
 A self-contained, dependency-free room composition prototype. Designed for Android phone/tablet, S Pen and desktop; built with HTML Canvas, native pointer events and IndexedDB rather than Sprite Fusion's mouse shortcuts. **This is an editor for draft room layout, not canonical game geometry or finished art.**
 
@@ -31,3 +31,13 @@ Run `npm test` (built-in Node test runner) or `npm run check` from this folder; 
 - Manual Android device QA remains required: Chrome/Samsung Internet installation, multi-touch, pointer capture, S Pen, large PNG quota, offline reopening, portrait viewport and exported JSON restoration.
 - No multi-project browser management, cloud sync, asset licensing verification, AI generation or exact 65° preview yet.
 - IndexedDB browser storage may be evicted; export JSON regularly. Imported sheets can make JSON large. This does not support arbitrary remote image URLs or SVG imports.
+
+## Season-one production catalog v0.2
+
+The canonical file is `docs/assets/ROOM_OBJECT_REGISTER.csv`. Run `python3 scripts/raven/tools/build_room_catalog.py` in the repo root to regenerate `tools/room-builder/catalog/room-items.json` (and copy it under `builder/catalog/` for the legacy Pages mirror). CI runs `--check` and compares all mirrored web assets.
+
+120 proposed inventory positions in eight room groups are shown in the **Комната** selector; select a room to edit a distinct locally-saved draft, and browse only its catalog plus reusable starter/imported assets. Switching saves the current draft to IndexedDB as `room:RM-ROOM-*` and restores the selected draft; the previous single `current` key remains compatible with v0.1. JSON export remains a manual portable backup per room. Existing user-imported PNG image data is never overwritten by the catalog.
+
+Each catalog item has stable `RM-ASSET-*`, planned state choices, production priority, planned anchor, layer family, and optional *experimental* pilot image path. Catalog cards show schematic symbols, not finished art; sizes in plan-space are placeholders. Each stamp creates an independent instance ID while retaining registry `assetRefId`. Both Hall chairs share one reusable `familyKey` but have separate registry IDs. The pilot PNGs are metadata only: not auto-downloaded, embedded, licensed for reuse, or approved as individual finished states. No bulk PNG production is implied.
+
+`ROOM_OBJECT_REGISTER.csv` remains a **proposed family/position list**, not a count of rendered sprites: bundled lamp pairs, table settings or plant clusters may contain multiple actual objects. Positions/anchors, explicit instances/occluders, geometry and hotspots await the `RM-PIPE-001` approval gates. Catalog changes are never allowed to override authored Raven navigation or campaign save.

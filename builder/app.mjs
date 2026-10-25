@@ -1,7 +1,9 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject} from './model.mjs';
+import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,assetsForRoom,newRoomProject} from './catalog.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
+let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
 const pointers=new Map(),imageCache=new Map();
 function notify(message){$('#notice').textContent=message;}
@@ -11,8 +13,35 @@ function historyButtons(){$('#undo').disabled=!past.length;$('#redo').disabled=!
 function undo(){if(!past.length)return;future.push(JSON.stringify(project));project=validateProject(JSON.parse(past.pop()));selected=null;refresh();changed();historyButtons();}
 function redo(){if(!future.length)return;past.push(JSON.stringify(project));project=validateProject(JSON.parse(future.pop()));selected=null;refresh();changed();historyButtons();}
 function db(){return new Promise((resolve,reject)=>{const request=indexedDB.open('raven-room-builder',1);request.onupgradeneeded=()=>request.result.createObjectStore('projects');request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
-async function save(){try{const database=await db();await new Promise((resolve,reject)=>{const t=database.transaction('projects','readwrite');t.objectStore('projects').put(project,'current');t.oncomplete=resolve;t.onerror=()=>reject(t.error);});database.close();dirty=false;notify('Сохранено локально на этом устройстве');}catch(err){notify('Не удалось сохранить: экспортируй JSON');console.error(err);}}
+async function save(){try{const database=await db();await new Promise((resolve,reject)=>{const t=database.transaction('projects','readwrite');t.objectStore('projects').put(project,'current');t.objectStore('projects').put(project,'room:'+project.roomId);t.oncomplete=resolve;t.onerror=()=>reject(t.error);});database.close();dirty=false;notify('Сохранено локально на этом устройстве');}catch(err){notify('Не удалось сохранить: экспортируй JSON');console.error(err);}}
 async function restore(){try{const database=await db();const data=await new Promise((resolve,reject)=>{const r=database.transaction('projects').objectStore('projects').get('current');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});database.close();if(data)project=validateProject(data);}catch(e){console.warn('Local project unavailable:',e);notify('Автосохранение недоступно — используй JSON');}}
+async function loadProjectByRoom(roomId){
+  const database=await db();
+  try {return await new Promise((resolve,reject)=>{const r=database.transaction('projects').objectStore('projects').get('room:'+roomId);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
+  finally {database.close();}
+}
+async function switchRoom(roomId){
+  if(roomId===project.roomId)return;
+  if(!ROOM_NAMES[roomId]){notify('Неизвестная комната');return;}
+  await save();
+  let loaded=null;
+  try{loaded=await loadProjectByRoom(roomId);}catch(e){console.warn('Room loading failed:',e);}
+  project=loaded?validateProject(loaded):newRoomProject(exampleProject,uid,roomId);
+  if(productionCatalog)mergeCatalogAssets(project,productionCatalog);
+  selected=null;selectedLayer='objects';selectedAsset='armchair';past=[];future=[];
+  refresh();fit();historyButtons();changed();
+  notify('Комната: '+ROOM_NAMES[roomId]+(loaded?' — сохранённый черновик':' — новый черновик'));
+}
+async function loadProductionCatalog(){
+  try{
+    const response=await fetch('./catalog/room-items.json',{cache:'no-cache'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    productionCatalog=validateCatalog(await response.json());
+    mergeCatalogAssets(project,productionCatalog);
+    changed();renderPalette();
+    notify('Загружен каталог: '+productionCatalog.items.length+' позиций (все предварительные)');
+  }catch(err){console.warn('Catalog unavailable:',err);notify('Каталог недоступен — базовые инструменты и локальный проект работают');}
+}
 function assetFor(o){return project.assets.find(a=>a.id===o.assetId);}
 function layerFor(o){return project.layers.find(l=>l.id===o.layerId);}
 function drawAsset(c,o){const a=assetFor(o);if(!a)return; c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180); c.globalAlpha=o.opacity??1;
@@ -42,7 +71,7 @@ function world(pos){return{x:(pos.x-view.x)/view.scale,y:(pos.y-view.y)/view.sca
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
 function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
 function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
- if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':selectedLayer;const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){selected=o.id;changed();}}
+ if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){selected=o.id;changed();}}
  else if(tool==='erase'){const o=topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
 }
 function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.preventDefault();canvas.setPointerCapture(ev.pointerId);const pos=toLocal(ev);pointers.set(ev.pointerId,pos);if(pointers.size>=2){gesture={mode:'pinch',start:[...pointers.values()]};return;}
@@ -52,11 +81,39 @@ function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.pr
 function pointerMove(ev){if(!pointers.has(ev.pointerId))return;ev.preventDefault();const pos=toLocal(ev),old=pointers.get(ev.pointerId);pointers.set(ev.pointerId,pos);if(pointers.size>=2){const vals=[...pointers.values()];const oldVals=vals.map(p=>p===pos?old:p);const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const before=dist(oldVals[0],oldVals[1]),after=dist(vals[0],vals[1]);const prevMid={x:(oldVals[0].x+oldVals[1].x)/2,y:(oldVals[0].y+oldVals[1].y)/2};const nextMid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2};if(before>0)zoomAt(prevMid.x,prevMid.y,after/before);view.x+=nextMid.x-prevMid.x;view.y+=nextMid.y-prevMid.y;draw();return;}
  if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const deltaX=(pos.x-gesture.pos.x)/view.scale,deltaY=(pos.y-gesture.pos.y)/view.scale;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
 function pointerUp(ev){if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};}
-function renderPalette(){const term=$('#search').value.toLocaleLowerCase();$('#categories').replaceChildren(...CATEGORIES.map(k=>{const b=document.createElement('button');b.textContent=CATEGORY_NAMES[k];b.className=category===k?'active':'';b.onclick=()=>{category=k;renderPalette();};return b;}));
- const holder=$('#assets');holder.replaceChildren();for(const a of project.assets.filter(a=>(category==='all'||a.kind===category)&&a.label.toLocaleLowerCase().includes(term))){const b=document.createElement('button');b.className=`asset-card ${selectedAsset===a.id?'active':''}`;b.title=`${a.label} · ${a.w}×${a.h}`;const preview=document.createElement('div');preview.className='asset-preview';if(a.image){const img=document.createElement('img');img.src=a.image;img.alt='';preview.append(img);}else{preview.textContent=a.symbol||'■';preview.style.color=a.color;}const label=document.createElement('small');label.textContent=a.label;b.append(preview,label);b.onclick=()=>{selectedAsset=a.id;changeTool('stamp');renderPalette();togglePanel(null);};holder.append(b);}}
+function renderPalette(){
+ const term=$('#search').value.toLocaleLowerCase().trim();
+ $('#categories').replaceChildren(...CATEGORIES.map(k=>{const b=document.createElement('button');b.textContent=CATEGORY_NAMES[k];b.className=category===k?'active':'';b.onclick=()=>{category=k;renderPalette();};return b;}));
+ const options=Object.entries(ROOM_NAMES);
+ const sel=$('#catalogRoom');sel.replaceChildren(...options.map(([id,name])=>{const o=document.createElement('option');o.value=id;o.textContent=name;return o;}));sel.value=project.roomId;
+ const actual=productionCatalog?.items.filter(i=>i.roomId===project.roomId)||[];
+ const withPilots=actual.filter(i=>i.pilotImages?.length).length;
+ $('#catalogInfo').textContent=productionCatalog?`${actual.length} позиций · ${withPilots} имеют экспериментальный PNG · 0 утверждены`:'Загрузка производственного каталога…';
+ const holder=$('#assets');holder.replaceChildren();
+ const matches=assetsForRoom(project,project.roomId).filter(a=>(category==='all'||a.kind===category)&&(`${a.label} ${a.assetRefId||''} ${a.familyKey||''}`).toLocaleLowerCase().includes(term));
+ for(const a of matches){
+  const b=document.createElement('button');b.className='asset-card'+(selectedAsset===a.id?' active':'');
+  b.title=`${a.label} · ${a.assetRefId||'черновой элемент'} · ${a.productionPriority||'без приоритета'} · ${a.artStatus||'ручной импорт'}`;
+  const preview=document.createElement('div');preview.className='asset-preview';
+  if(a.image){const img=document.createElement('img');img.src=a.image;img.alt='';preview.append(img);}
+  else{preview.textContent=a.symbol||'■';preview.style.color=a.color;}
+  const label=document.createElement('small');label.textContent=a.label;b.append(preview,label);
+  if(a.assetRefId){const meta=document.createElement('span');meta.className='asset-meta';meta.textContent=`${a.productionPriority||''} · ${(a.pilotImages||[]).length?'PNG пилот':'макет'}`;b.append(meta);}
+  b.onclick=()=>{selectedAsset=a.id;selectedLayer=a.layerId||selectedLayer;changeTool('stamp');renderPalette();togglePanel(null);};holder.append(b);
+ }
+ $('#paletteCount').textContent=`${matches.length} доступно в библиотеке`;
+}
 function renderLayers(){const box=$('#layers');box.replaceChildren();for(const layer of [...project.layers].reverse()){const row=document.createElement('div');row.className=`layer-row ${selectedLayer===layer.id?'active':''}`;const vis=document.createElement('input');vis.type='checkbox';vis.checked=layer.visible;vis.title='Показать слой';vis.onchange=()=>{checkpoint();layer.visible=vis.checked;changed();};const b=document.createElement('button');b.className='layer-label';b.textContent=layer.name;b.onclick=()=>{selectedLayer=layer.id;renderLayers();};const lock=document.createElement('button');lock.textContent=layer.locked?'🔒':'♧';lock.title='Блокировка слоя';lock.onclick=()=>{checkpoint();layer.locked=!layer.locked;changed();renderLayers();};const up=document.createElement('button');up.textContent='↑';up.title='Поднять слой';up.onclick=()=>{const i=project.layers.indexOf(layer);if(i<project.layers.length-1){checkpoint();[project.layers[i],project.layers[i+1]]=[project.layers[i+1],project.layers[i]];changed();renderLayers();}};row.append(vis,b,lock,up);box.append(row);}}
 function makeField(label,value,callback,type='text'){const field=document.createElement('label');field.className='field';field.textContent=label;const input=document.createElement('input');input.type=type;input.value=value??'';input.addEventListener('change',()=>{checkpoint();callback(type==='number'?Number(input.value):input.value);changed();renderProperties();});field.append(input);return field;}
-function renderProperties(){const el=$('#properties'),o=project.objects.find(o=>o.id===selected);el.replaceChildren();if(!o){el.textContent='Коснись предмета на холсте';el.classList.add('muted');return;}el.classList.remove('muted');const a=assetFor(o);const head=document.createElement('strong');head.textContent=a?.label||o.assetId;el.append(head,makeField('X',o.x,v=>o.x=v,'number'),makeField('Y',o.y,v=>o.y=v,'number'),makeField('Ширина',o.w,v=>o.w=Math.max(1,v),'number'),makeField('Высота',o.h,v=>o.h=Math.max(1,v),'number'),makeField('Поворот (°)',o.rotation,v=>o.rotation=v,'number'),makeField('Состояние',o.state,v=>o.state=v),makeField('RM-ASSET-ID',o.assetRefId||'',v=>o.assetRefId=v),makeField('Hotspot ID',o.hotspotId||'',v=>o.hotspotId=v));
+function makeStateField(o,a){
+ if(!a?.states?.length)return makeField('Состояние',o.state,v=>o.state=v);
+ const label=document.createElement('label');label.className='field';label.textContent='Состояние (плановое)';
+ const select=document.createElement('select');const states=[...new Set([...a.states,o.state])];
+ for(const state of states){const opt=document.createElement('option');opt.value=state;opt.textContent=state;select.append(opt);}
+ select.value=o.state;select.onchange=()=>{checkpoint();o.state=select.value;changed();renderProperties();};label.append(select);return label;
+}
+function renderProperties(){const el=$('#properties'),o=project.objects.find(o=>o.id===selected);el.replaceChildren();if(!o){el.textContent='Коснись предмета на холсте';el.classList.add('muted');return;}el.classList.remove('muted');const a=assetFor(o);const head=document.createElement('strong');head.textContent=a?.label||o.assetId;el.append(head);if(a?.assetRefId){const details=document.createElement('p');details.className='catalog-detail';details.textContent=`${a.assetRefId} · ${a.productionPriority} · ${a.artStatus}; примерный размер, положение ещё не утверждено.`;el.append(details);if(a.pilotImages?.length){const link=document.createElement('a');link.className='catalog-source-link';link.href='https://github.com/bezdredoff/RavenManor-Godot/blob/main/'+a.pilotImages[0].split('/').map(encodeURIComponent).join('/');link.target='_blank';link.rel='noopener noreferrer';link.textContent='Открыть исходный экспериментальный PNG';el.append(link);}}
+ el.append(makeField('X',o.x,v=>o.x=v,'number'),makeField('Y',o.y,v=>o.y=v,'number'),makeField('Ширина',o.w,v=>o.w=Math.max(1,v),'number'),makeField('Высота',o.h,v=>o.h=Math.max(1,v),'number'),makeField('Поворот (°)',o.rotation,v=>o.rotation=v,'number'),makeStateField(o,a),makeField('RM-ASSET-ID',o.assetRefId||'',v=>o.assetRefId=v),makeField('Hotspot ID',o.hotspotId||'',v=>o.hotspotId=v));
  const wrapper=document.createElement('div');wrapper.className='field';wrapper.textContent='Слой';const select=document.createElement('select');for(const l of project.layers){const opt=document.createElement('option');opt.value=l.id;opt.textContent=l.name;select.append(opt);}select.value=o.layerId;select.onchange=()=>{checkpoint();o.layerId=select.value;changed();renderLayers();};wrapper.append(select);el.append(wrapper);const row=document.createElement('div');row.className='action-row';for(const [name,action] of [['Дублировать',()=>{checkpoint();const copy=clone(o);copy.id=uid();copy.x+=20;copy.y+=20;project.objects.push(copy);selected=copy.id;changed();renderProperties();}],['Удалить',()=>{checkpoint();project.objects=project.objects.filter(p=>p.id!==o.id);selected=null;changed();renderProperties();}]]){const b=document.createElement('button');b.textContent=name;b.onclick=action;row.append(b);}el.append(row);}
 function renderSettings(){$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;}
 function refresh(){imageCache.clear();renderSettings();renderPalette();renderLayers();renderProperties();draw();}
@@ -64,17 +121,17 @@ function togglePanel(id){for(const p of [$('#palette'),$('#inspector')])p.classL
 function download(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);}
 function exportJSON(){download(new Blob([JSON.stringify(project,null,2)],{type:'application/json'}),`${project.roomId.toLowerCase()}-room.json`);notify('Экспортирован редактируемый проект');$('#exportDialog').close();}
 function exportPNG(){const off=document.createElement('canvas');off.width=project.width;off.height=project.height;drawScene(off.getContext('2d'),{x:0,y:0,scale:1},true);off.toBlob(blob=>{if(blob)download(blob,`${project.roomId.toLowerCase()}-preview.png`);else notify('Ошибка экспорта PNG');},'image/png');$('#exportDialog').close();}
-async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));checkpoint();project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';refresh();fit();changed();notify('Проект импортирован');}
+async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));if(productionCatalog)mergeCatalogAssets(p,productionCatalog);checkpoint();project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';refresh();fit();changed();notify('Проект импортирован');}
 async function handleSheet(file,columns,rows){if(!file||file.size>10*1024*1024)throw new Error('Файл слишком большой (макс. 10 MB)');if(!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error('Только PNG, JPEG и WebP');const img=await createImageBitmap(file),cols=Number(columns),rws=Number(rows);if(cols*rws>128||img.width%cols||img.height%rws)throw new Error('Необходимо равномерное деление, не более 128 спрайтов');checkpoint();const w=img.width/cols,h=img.height/rws;const stem=file.name.replace(/\.[^.]+$/,'').slice(0,40);const scratch=document.createElement('canvas');scratch.width=w;scratch.height=h;const c=scratch.getContext('2d');for(let y=0;y<rws;y++)for(let x=0;x<cols;x++){c.clearRect(0,0,w,h);c.drawImage(img,x*w,y*h,w,h,0,0,w,h);project.assets.push({id:uid('asset'),label:cols*rws===1?stem:`${stem} ${x+1}-${y+1}`,kind:'decor',w,h,color:'#80627a',symbol:'▧',image:scratch.toDataURL('image/png'),source:'local-import',license:'User must verify usage rights'});}img.close();renderPalette();changed();notify(`Добавлено ${cols*rws} ассетов`);}
-function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;
+function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;$('#catalogRoom').onchange=e=>switchRoom(e.target.value).catch(err=>notify('Ошибка открытия комнаты: '+err.message));
  $('#title').onchange=e=>{checkpoint();project.title=e.target.value.trim()||'Без названия';changed();};for(const [id,key] of [['roomId','roomId'],['roomWidth','width'],['roomHeight','height'],['gridSize','grid']])$("#"+id).onchange=e=>{const v=(key==='roomId'?e.target.value:Number(e.target.value));const p=clone(project);p[key]=v;try{validateProject(p);checkpoint();project[key]=v;changed();fit();}catch(err){notify(err.message);renderSettings();}};
  $('#addLayer').onclick=()=>{checkpoint();const id=uid('layer');project.layers.push({id,name:`Слой ${project.layers.length+1}`,visible:true,locked:false});selectedLayer=id;changed();renderLayers();};
  $('#exportMenu').onclick=()=>$('#exportDialog').showModal();$('#mobileExport').onclick=()=>$('#exportDialog').showModal();$('#exportJSON').onclick=exportJSON;$('#exportPNG').onclick=exportPNG;$('#importJSONBtn').onclick=()=>$('#projectFile').click();$('#projectFile').onchange=async e=>{try{await importJSON(e.target.files[0]);$('#exportDialog').close();}catch(err){notify(err.message);}e.target.value='';};
- $('#newRoom').onclick=()=>{if(!confirm('Создать новую комнату? Текущая сохраняется только через экспорт JSON.'))return;checkpoint();const p=exampleProject();p.title='Новая комната';p.roomId='RM-ROOM-HALL';p.objects=[];p.anchors=[];project=p;selected=null;refresh();fit();changed();$('#exportDialog').close();};
+ $('#newRoom').onclick=()=>{if(!confirm('Очистить текущую комнату? Существующий черновик будет перезаписан. Сначала экспортируй JSON для резервной копии.'))return;checkpoint();const p=newRoomProject(exampleProject,uid,project.roomId);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);project=p;selected=null;refresh();fit();changed();$('#exportDialog').close();};
  $('#assetFiles').onchange=e=>{const file=e.target.files[0];if(!file)return;importFile=file;$('#sheetName').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;$('#sheetDialog').showModal();e.target.value='';};$('#sheetConfirm').onclick=async()=>{try{await handleSheet(importFile,$('#sheetCols').value,$('#sheetRows').value);$('#sheetDialog').close();}catch(err){notify(err.message);}};
  for(const b of document.querySelectorAll('[data-panel]'))b.onclick=()=>togglePanel(b.dataset.panel);$('#closePalette').onclick=()=>togglePanel(null);$('#closeInspector').onclick=()=>togglePanel(null);$('#mobileStamp').onclick=()=>{changeTool('stamp');togglePanel('palette');};
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
-async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
+async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
 start();

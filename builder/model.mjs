@@ -36,9 +36,9 @@ export function exampleProject() {
     object(get('door'),448,84,{w:106,h:52,layerId:'architecture',assetRefId:'RM-ASSET-HALL-003'}),
     object(get('clock'),140,280,{assetRefId:'RM-ASSET-HALL-002',state:'stopped',hotspotId:'RM-HS-001'}),
     object(get('rug'),415,290,{w:170,h:350,layerId:'floor',assetRefId:'RM-ASSET-HALL-010'}),
-    object(get('armchair'),112,434,{assetRefId:'RM-ASSET-HALL-007'}),
-    object(get('armchair'),238,444),
-    object(get('table'),184,526),
+    object(get('armchair'),112,434,{assetRefId:'RM-ASSET-HALL-017'}),
+    object(get('armchair'),238,444,{assetRefId:'RM-ASSET-HALL-018'}),
+    object(get('table'),184,526,{assetRefId:'RM-ASSET-HALL-019'}),
     object(get('portrait'),757,255,{assetRefId:'RM-ASSET-HALL-006'}),
     object(get('lamp'),835,340),
     object(get('plant'),760,515),
@@ -68,5 +68,5 @@ export function pointInObject(x,y,o){const ang=-(o.rotation||0)*Math.PI/180,dx=x
 export function topObjectAt(p,x,y){const order=new Map(p.layers.map((l,i)=>[l.id,i]));return [...p.objects].filter(o=>p.layers.find(l=>l.id===o.layerId)?.visible && !p.layers.find(l=>l.id===o.layerId)?.locked).sort((a,b)=>(order.get(b.layerId)||0)-(order.get(a.layerId)||0)).find(o=>pointInObject(x,y,o))||null;}
 export function placeObject(p,assetId,x,y,layerId,gridSnap=true){const asset=p.assets.find(a=>a.id===assetId),layer=p.layers.find(l=>l.id===layerId);if(!asset||!layer||layer.locked) return null; const ox=gridSnap?snap(x-asset.w/2,p.grid):x-asset.w/2,oy=gridSnap?snap(y-asset.h/2,p.grid):y-asset.h/2;
   if(asset.kind==='tile'&&p.objects.some(o=>o.assetId===assetId&&o.layerId===layerId&&o.x===ox&&o.y===oy))return null;
-  const o=object(asset,ox,oy,{layerId});p.objects.push(o);return o;
+  const o=object(asset,ox,oy,{layerId,assetRefId:asset.assetRefId||'',state:asset.states?.[0]||'default',familyKey:asset.familyKey||''});p.objects.push(o);return o;
 }
