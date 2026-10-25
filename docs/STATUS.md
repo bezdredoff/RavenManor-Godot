@@ -50,3 +50,8 @@ Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed 
 ## RM-EDITOR-002: game-projected Room Builder pilot (2026-10-25)
 
 Room Builder v0.3 defaults to a **65° projected, directly editable game-floor view** (plan remains secondary), using Godot's exact reversible floor transform at arbitrary editor zoom. A 0.74× preset and optional copied Godot Hall AI1 background/door guides are available when the draft room matches the proposed 700×690 map geometry. Old 1000×800 rooms remain untouched and are visibly flagged as unaligned. No final height/occlusion/character/prop-art certification is inferred. See `docs/ROOM_BUILDER_GAME_PROJECTION.md`.
+
+
+## 2026-10-25 — RM-PIPE experimental Hall rendering parity v0.4
+
+The PWA and Godot Whole Manor Map now share a versioned preview-only 7-sprite Hall visual manifest, the original source PNGs, bottom-centre foot pivots, **upright screen-space visual height**, actor-floor foot projection and draw-order splitting around Onoe. A temporary front CanvasItem renders props in front of the game actor. Builder's new aligned Hall draft seeds the exact pilot layout; a manual exported JSON → \`sync_hall_preview.py\` conversion can override Godot **visual placement** while leaving world route/collider/save untouched. All seven artworks and unrendered state variants remain *unapproved*, and real device/per-pixel/mask/collider parity remains pending.

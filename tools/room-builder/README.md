@@ -64,3 +64,18 @@ The default editable workspace now uses the **same 65° projected floor transfor
 The current AI1 background and door guides are visible when Hall room dimensions exactly match the (provisional) Godot Hall footprint **700×690**. Original 1000×800 sample drafts display an explicit mismatch warning rather than being silently warped. Export the old JSON before selecting **Экспорт → Новая пустая комната**: that explicit action creates a new draft at the map's proposed dimensions (700×690 for Hall, grid 25) and replaces the active room draft. Existing saved coordinates are never silently rescaled. The 120 catalog entries are still predominantly placeholders, not final WYSIWYG sprites.
 
 See `docs/ROOM_BUILDER_GAME_PROJECTION.md` for coordinates, exported art limits and acceptance tests.
+
+
+## v0.4 — Hall visual-depth pilot (shared with Godot)
+
+For **a new 700×690 Hall draft** (back up your old layout first), the editor places seven separately movable pilot PNG sprites by default: floor runner, clock, two independently selectable armchairs (sharing one reusable cutout), side table, console and ancestral gallery. This preview is a source/geometry alignment test, not approved art. The preview character **Оноэ** comes from our previous game and is not Evelyn.
+
+On tablet: **Свойства → Показывать Оноэ** and **Поставить Оноэ на пол**, then tap a floor location to see the furniture behind or in front of her. Items use bottom-centre **floor-contact pivots** and are drawn upright above the compressed floor (not squashed vertically with it). Draw order follows the same per-foot-Y sorting contract now used in the Godot Whole Manor Map. Imported arbitrary PNGs and uncalibrated catalog placeholders are still handled by the older simple draft renderer until pivot/height/mask calibration.
+
+To preview your current edited Hall in Godot **after** exporting JSON from the tablet and transferring it to your local checkout:
+\`\`\`sh
+python3 scripts/raven/tools/sync_hall_preview.py path/to/rm-room-hall-room.json
+\`\`\`
+This writes \`data/raven/hall_builder_preview.json\`. Reopen/refresh **5 · Whole Manor Map** in the *local* Godot project to see the same supported PNG positions with the same sorting/actor occlusion. Delete the generated override to fall back to the repo's shared pilot manifest. This is a one-way **manual visual-only** bridge; it never updates pathfinding collider shapes, door geometry, story gates or campaign save. It rejects non-zero rotation and unrendered state variants rather than silently pretending the same clean PNG is an approved dirty/repair image. Only the seven supported pilot sprites are imported for now.
+
+The original 120 catalog positions remain production proposals; 113 entries still have no special upright PNG mapping, and exact state textures, intersection masks, touch tablet screenshot parity and canonical Evelyn art remain outstanding. Details: \`docs/ROOM_BUILDER_GAME_PROJECTION.md\`.
