@@ -1,6 +1,6 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
@@ -73,7 +73,11 @@ function ensureCharacterAsset(p){
 }
 function migrateLegacyCharacter(p){
  ensureCharacterAsset(p);
- if(p.visualContractVersion!==1||!contractFits(p,visualContract)||p.objects.some(o=>o.assetId===TEST_CHARACTER_ID))return false;
+ if(p.characterAssetMigration===1||p.visualContractVersion!==1||!contractFits(p,visualContract))return false;
+ // Mark the migration complete, including when the character was already
+ // present. Removing a character must not cause it to reappear on reload.
+ p.characterAssetMigration=1;
+ if(p.objects.some(o=>o.assetId===TEST_CHARACTER_ID))return false;
  const foot=previewActorFoot(p,visualContract),asset=p.assets.find(a=>a.id===TEST_CHARACTER_ID);
  p.objects.push(object(asset,foot.x-asset.w/2,foot.y-asset.h,{layerId:'objects',role:'preview-character',state:'test'}));
  delete p.previewActorFoot;
