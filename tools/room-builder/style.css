@@ -14,3 +14,5 @@
 #gameZoom{font-size:11px;white-space:nowrap}
 .render-warning{position:absolute;bottom:12px;left:12px;right:12px;max-width:550px;pointer-events:none;background:#241c27e8;border:1px solid #76576c;border-radius:8px;color:#f0d1b5;padding:8px 10px;font-size:11px;line-height:1.4}
 @media(max-width:760px){.view-mode-label{font-size:0}.view-mode-label select{min-width:103px;font-size:10px;padding:7px 4px}#gameZoom{display:none}.render-warning{bottom:34px;font-size:10px;padding:6px}.stage-tip{display:none}}
+
+#moveActor{width:100%;margin:9px 0 10px;border-color:#786557;background:#534045}#moveActor:focus-visible{outline:2px solid #f1d0a0}

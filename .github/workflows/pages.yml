@@ -48,6 +48,7 @@ jobs:
           node --check tools/room-builder/model.mjs
           node --check tools/room-builder/catalog.mjs
           node --check tools/room-builder/projection.mjs
+          node --check tools/room-builder/visual-contract.mjs
           node --check tools/room-builder/sw.js
           node --test tools/room-builder/tests/*.test.mjs
           python3 -m unittest scripts/raven/tools/test_room_builder_import.py
@@ -55,10 +56,11 @@ jobs:
 
       - name: Verify published Room Builder mirrors its canonical sources
         run: |
-          for file in index.html app.mjs model.mjs catalog.mjs projection.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/hall_twin_staircases.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
+          for file in index.html app.mjs model.mjs catalog.mjs projection.mjs visual-contract.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/hall_twin_staircases.png reference/hall_visual_contract.json reference/sprites/armchair_clean.png reference/sprites/burgundy_runner.png reference/sprites/grandfather_clock.png reference/sprites/round_side_table.png reference/sprites/entry_console.png reference/sprites/ancestor_gallery_composite.png reference/sprites/onoe_walk_sheet_v1.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
             cmp "tools/room-builder/$file" "builder/$file"
           done
           cmp data/raven/season1_world_map.json tools/room-builder/reference/season1_world_map.json
+          cmp data/raven/hall_visual_contract.json tools/room-builder/reference/hall_visual_contract.json
           cmp assets/raven/hall/generated_pilot/backgrounds/hall_twin_staircases.png tools/room-builder/reference/hall_twin_staircases.png
 
       - name: Export Web build
@@ -71,14 +73,17 @@ jobs:
 
       - name: Bundle standalone Room Builder PWA
         run: |
-          mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference
-          cp tools/room-builder/index.html tools/room-builder/style.css tools/room-builder/app.mjs tools/room-builder/model.mjs tools/room-builder/catalog.mjs tools/room-builder/projection.mjs tools/room-builder/sw.js tools/room-builder/manifest.webmanifest build/web/builder/
+          mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference/sprites
+          cp tools/room-builder/index.html tools/room-builder/style.css tools/room-builder/app.mjs tools/room-builder/model.mjs tools/room-builder/catalog.mjs tools/room-builder/projection.mjs tools/room-builder/visual-contract.mjs tools/room-builder/sw.js tools/room-builder/manifest.webmanifest build/web/builder/
           cp tools/room-builder/catalog/room-items.json build/web/builder/catalog/
-          cp tools/room-builder/reference/season1_world_map.json tools/room-builder/reference/hall_twin_staircases.png build/web/builder/reference/
+          cp tools/room-builder/reference/season1_world_map.json tools/room-builder/reference/hall_twin_staircases.png tools/room-builder/reference/hall_visual_contract.json build/web/builder/reference/
+          cp tools/room-builder/reference/sprites/*.png build/web/builder/reference/sprites/
           cp tools/room-builder/icons/icon.svg tools/room-builder/icons/icon-192.png tools/room-builder/icons/icon-512.png build/web/builder/icons/
           test -f build/web/builder/index.html
           test -f build/web/builder/catalog/room-items.json
           test -f build/web/builder/reference/hall_twin_staircases.png
+          test -f build/web/builder/reference/hall_visual_contract.json
+          test -f build/web/builder/reference/sprites/onoe_walk_sheet_v1.png
           test -f build/web/builder/icons/icon-512.png
 
       - name: Configure Pages

@@ -1,13 +1,14 @@
-import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject} from './model.mjs';
+import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals} from './visual-contract.mjs';
+import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
-let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null;
-const pointers=new Map(),imageCache=new Map();
+let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=null,actorImage=null,drawActorPreview=true;
+const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
 function notify(message){$('#notice').textContent=message;}
 function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
 function checkpoint(){past.push(JSON.stringify(project));if(past.length>60)past.shift();future=[];historyButtons();}
@@ -77,6 +78,83 @@ function drawAsset(c,o){const a=assetFor(o);if(!a)return; c.save();c.translate(o
  }c.restore();}
 function round(c,x,y,w,h,r){c.beginPath();c.roundRect(x,y,w,h,Math.max(0,Math.min(r,w/2,h/2)));}
 
+function pilotImage(file){
+ if(pilotImages.has(file))return pilotImages.get(file);
+ const img=new Image();img.onload=draw;
+ img.onerror=()=>notify('Не удалось загрузить пилотный спрайт: '+file);
+ img.src='./reference/sprites/'+file;
+ pilotImages.set(file,img);return img;
+}
+async function loadHallVisuals(){
+ try{
+  const res=await fetch('./reference/hall_visual_contract.json',{cache:'no-cache'});
+  if(!res.ok)throw Error('HTTP '+res.status);
+  visualContract=validateVisualContract(await res.json());
+  actorImage=pilotImage(visualContract.actor.source);
+  for(const entry of visualContract.sprites)pilotImage(entry.file);
+  draw();
+ }catch(err){console.warn('Hall sprite contract is unavailable:',err);notify('Спрайты холла недоступны — отображаются схемы');}
+}
+function activeContract(){return visualContract&&contractFits(project,visualContract)?visualContract:null;}
+function drawPilotItem(c,item,viewport,mode='upright'){
+ const o=item.object,src=pilotImage(item.sprite.file);
+ let box;
+ if(mode==='floor'){
+  const tl=toScreen({x:o.x,y:o.y},viewport,'game');
+  box={x:tl.x,y:tl.y,w:o.w*viewport.scale,h:o.h*viewport.scale*depthRatio('game')};
+ }else box=projectedUprightRect(o,viewport,toScreen);
+ c.save();c.globalAlpha=o.opacity??1;
+ if(src.complete&&src.naturalWidth)c.drawImage(src,box.x,box.y,box.w,box.h);
+ else {c.fillStyle='#66505c99';c.fillRect(box.x,box.y,box.w,box.h);}
+ c.restore();
+}
+function drawPreviewActor(c,viewport,contract){
+ if(!drawActorPreview)return;
+ const foot=previewActorFoot(project,contract),box=actorScreenRect(foot,contract.actor,viewport,toScreen);
+ c.save();
+ if(actorImage?.complete&&actorImage.naturalWidth){
+  const [sx,sy,sw,sh]=contract.actor.frameRect;
+  c.drawImage(actorImage,sx,sy,sw,sh,box.x,box.y,box.w,box.h);
+ }else{c.fillStyle='#d3aa9c';c.fillRect(box.x,box.y,box.w,box.h);}
+ c.fillStyle='#56dcca';c.beginPath();
+ const p=toScreen(foot,viewport,'game');c.arc(p.x,p.y,3*viewport.scale,0,Math.PI*2);c.fill();
+ c.restore();
+}
+function drawGameSprites(c,viewport,contract,exporting=false){
+ const foot=previewActorFoot(project,contract),parts=splitSpriteDrawOrder(visualInstances(project,contract),foot.y);
+ for(const item of parts.behind)drawPilotItem(c,item,viewport);
+ drawPreviewActor(c,viewport,contract);
+ for(const item of parts.front)drawPilotItem(c,item,viewport);
+ if(!exporting&&selected){
+  const o=project.objects.find(o=>o.id===selected);
+  if(o&&spriteForAsset(contract,o.assetRefId)){
+   const box=projectedUprightRect(o,viewport,toScreen);
+   const rect=spriteForAsset(contract,o.assetRefId)?.mode==='floor'
+      ?{x:toScreen({x:o.x,y:o.y},viewport,'game').x,
+        y:toScreen({x:o.x,y:o.y},viewport,'game').y,
+        w:o.w*viewport.scale,h:o.h*viewport.scale*depthRatio('game')} :box;
+   c.save();c.strokeStyle='#42b9f9';c.lineWidth=2;
+   c.setLineDash([7,4]);c.strokeRect(rect.x,rect.y,rect.w,rect.h);
+   c.restore();
+  }
+ }
+}
+function hitGamePilot(pos){
+ const contract=activeContract();if(!contract||viewMode!=='game')return null;
+ const items=visualInstances(project,contract);
+ // Reverse painter order: items with nearer feet are more readily tappable.
+ const order=items.sort((a,b)=>b.footY-a.footY);
+ for(const entry of order){
+  const o=entry.object;const r=entry.sprite.mode==='upright'
+    ?projectedUprightRect(o,view,toScreen)
+    :{x:toScreen({x:o.x,y:o.y},view,'game').x,y:toScreen({x:o.x,y:o.y},view,'game').y,w:o.w*view.scale,h:o.h*view.scale*depthRatio('game')};
+  if(pos.x>=r.x-5&&pos.x<=r.x+r.w+5&&pos.y>=r.y-5&&pos.y<=r.y+r.h+5
+     &&!layerFor(o)?.locked&&layerFor(o)?.visible)return o;
+ }
+ return null;
+}
+
+
 function referenceForCurrentRoom(){return gameRoomReference(project,worldReference);}
 function ensureHallReferenceImage(){
  if(referenceImage)return referenceImage;
@@ -120,7 +198,7 @@ function updateProjectionStatus(){
  if(viewMode==='plan')warning.textContent='Вид сверху — вспомогательный. Проверяй композицию в игровом режиме 65°.';
  else if(!r)warning.textContent='Игровая проекция активна, но данные карты Godot недоступны. Графика предметов пока схематическая.';
  else if(!r.aligned)warning.textContent='Черновик '+project.width+'×'+project.height+' не совпадает с размером Godot '+r.width+'×'+r.height+'. Фон и порталы скрыты. Координаты не менялись.';
- else warning.textContent='Геометрия Godot предварительная. AI1-фон экспериментальный; высоты мебели, маски и Y-sort ещё не утверждены.';
+ else warning.textContent=activeContract()?'Пилотные PNG, прямостоящие спрайты и сортировка относительно Оноэ. Двери/коллизии/маски и финальный арт ещё не утверждены.':'Проекция и двери Godot: PNG предметов пока не доступны.';
  $('#previewMode').value=viewMode;
 }
 function useGodotZoom(){
@@ -133,25 +211,40 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  const ref=referenceForCurrentRoom();if(viewMode==='game'&&ref?.aligned&&project.roomId==='RM-ROOM-HALL'){const bg=ensureHallReferenceImage();if(bg.complete&&bg.naturalWidth)c.drawImage(bg,0,0,project.width,project.height);}
  c.strokeStyle='#4d3f46';c.lineWidth=16;c.strokeRect(7,7,project.width-14,project.height-14);
  if(showGrid&&!exporting){c.strokeStyle='#69645c33';c.lineWidth=1/viewport.scale;c.beginPath();for(let x=0;x<=project.width;x+=project.grid){c.moveTo(x,0);c.lineTo(x,project.height);}for(let y=0;y<=project.height;y+=project.grid){c.moveTo(0,y);c.lineTo(project.width,y);}c.stroke();}
- const order=new Map(project.layers.map((l,i)=>[l.id,i]));for(const o of [...project.objects].sort((a,b)=>(order.get(a.layerId)||0)-(order.get(b.layerId)||0)))if(layerFor(o)?.visible)drawAsset(c,o);
+ const contract=viewMode==='game'?activeContract():null;
+ const records=contract?visualInstances(project,contract):[];
+ const renderIDs=new Set(records.map(x=>x.object.id));
+ const order=new Map(project.layers.map((l,i)=>[l.id,i]));
+ for(const o of [...project.objects].sort((a,b)=>(order.get(a.layerId)||0)-(order.get(b.layerId)||0)))
+  if(layerFor(o)?.visible&&!renderIDs.has(o.id))drawAsset(c,o);
+ if(contract){
+  // Floor sprites share the projected plane and match the Godot rug layer.
+  const floor=records.filter(x=>x.sprite.mode==='floor');
+  for(const item of floor){
+   const img=pilotImage(item.sprite.file);
+   if(img.complete&&img.naturalWidth)c.drawImage(img,item.object.x,item.object.y,item.object.w,item.object.h);
+   else drawAsset(c,item.object);
+  }
+ }
  if(!exporting&&viewMode==='game')drawDoorGuides(c,referenceForCurrentRoom());
- if(!exporting&&selected){const o=project.objects.find(o=>o.id===selected);if(o){c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180);c.strokeStyle='#2c9cf9';c.lineWidth=2/viewport.scale;c.setLineDash([8/viewport.scale,5/viewport.scale]);c.strokeRect(-o.w/2-3,-o.h/2-3,o.w+6,o.h+6);c.setLineDash([]);c.fillStyle='#2c9cf9';c.beginPath();c.arc(o.w/2+4,-o.h/2-4,7/viewport.scale,0,Math.PI*2);c.fill();c.restore();}}
- c.restore();}
+ if(!exporting&&selected){const o=project.objects.find(o=>o.id===selected);if(o&&!(contract&&renderIDs.has(o.id))){c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180);c.strokeStyle='#2c9cf9';c.lineWidth=2/viewport.scale;c.setLineDash([8/viewport.scale,5/viewport.scale]);c.strokeRect(-o.w/2-3,-o.h/2-3,o.w+6,o.h+6);c.setLineDash([]);c.fillStyle='#2c9cf9';c.beginPath();c.arc(o.w/2+4,-o.h/2-4,7/viewport.scale,0,Math.PI*2);c.fill();c.restore();}}
+ c.restore();if(contract)drawGameSprites(c,viewport,contract,exporting);}
 function draw(){if(!ready)return;const dpr=window.devicePixelRatio||1,w=Math.round(canvas.clientWidth*dpr),h=Math.round(canvas.clientHeight*dpr);if(w!==canvas.width||h!==canvas.height){canvas.width=w;canvas.height=h;}ctx.setTransform(dpr,0,0,dpr,0,0); // canvas coordinates are CSS pixels
  const fake={scale:view.scale*dpr,x:view.x*dpr,y:view.y*dpr};ctx.setTransform(1,0,0,1,0,0);drawScene(ctx,fake);$('#zoomLabel').textContent=`${Math.round(view.scale*100)}%`;updateProjectionStatus();}
 function fit(){view=fitProjectedRoom(project.width,project.height,canvas.clientWidth,canvas.clientHeight,viewMode);draw();}
 function toLocal(ev){const r=canvas.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};}
 function world(pos){return toWorld(pos,view,viewMode);}
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
-function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
+function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='actor'?'Коснись места на полу, куда должна встать Оноэ (тест перекрытий)':next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
 function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
+ if(tool==='actor'){project.previewActorFoot={x:w.x,y:w.y};changed();return;}
  if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){selected=o.id;changed();}}
- else if(tool==='erase'){const o=topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
+ else if(tool==='erase'){const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
 }
 function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.preventDefault();canvas.setPointerCapture(ev.pointerId);const pos=toLocal(ev);pointers.set(ev.pointerId,pos);if(pointers.size>=2){gesture={mode:'pinch',start:[...pointers.values()]};return;}
  if(tool==='pan'){gesture={mode:'pan',pos};return;}
- if(tool==='stamp'||tool==='erase'){checkpoint();paint(pos);gesture={mode:'paint',last:pos};return;}
- const w=world(pos),o=topObjectAt(project,w.x,w.y); selected=o?.id||null;renderProperties();draw();if(o){gesture={mode:'drag',pos,startX:o.x,startY:o.y,id:o.id,moved:false};}else gesture=null;}
+ if(tool==='stamp'||tool==='erase'||tool==='actor'){checkpoint();paint(pos);gesture={mode:'paint',last:pos};return;}
+ const w=world(pos),o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y); selected=o?.id||null;renderProperties();draw();if(o){gesture={mode:'drag',pos,startX:o.x,startY:o.y,id:o.id,moved:false};}else gesture=null;}
 function pointerMove(ev){if(!pointers.has(ev.pointerId))return;ev.preventDefault();const pos=toLocal(ev),old=pointers.get(ev.pointerId);pointers.set(ev.pointerId,pos);if(pointers.size>=2){const vals=[...pointers.values()];const oldVals=vals.map(p=>p===pos?old:p);const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const before=dist(oldVals[0],oldVals[1]),after=dist(vals[0],vals[1]);const prevMid={x:(oldVals[0].x+oldVals[1].x)/2,y:(oldVals[0].y+oldVals[1].y)/2};const nextMid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2};if(before>0)zoomAt(prevMid.x,prevMid.y,after/before);view.x+=nextMid.x-prevMid.x;view.y+=nextMid.y-prevMid.y;draw();return;}
  if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const offset=worldDragDelta(pos.x-gesture.pos.x,pos.y-gesture.pos.y,view.scale,viewMode),deltaX=offset.x,deltaY=offset.y;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
 function pointerUp(ev){if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};}
@@ -235,7 +328,7 @@ async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error
  if(!await save())throw new Error('Сначала экспортируй несохранённый черновик');
  project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';past=[];future=[];historyButtons();refresh();fit();changed();notify('Проект импортирован');}
 async function handleSheet(file,columns,rows){if(!file||file.size>10*1024*1024)throw new Error('Файл слишком большой (макс. 10 MB)');if(!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error('Только PNG, JPEG и WebP');const img=await createImageBitmap(file),cols=Number(columns),rws=Number(rows);if(cols*rws>128||img.width%cols||img.height%rws)throw new Error('Необходимо равномерное деление, не более 128 спрайтов');checkpoint();const w=img.width/cols,h=img.height/rws;const stem=file.name.replace(/\.[^.]+$/,'').slice(0,40);const scratch=document.createElement('canvas');scratch.width=w;scratch.height=h;const c=scratch.getContext('2d');for(let y=0;y<rws;y++)for(let x=0;x<cols;x++){c.clearRect(0,0,w,h);c.drawImage(img,x*w,y*h,w,h,0,0,w,h);project.assets.push({id:uid('asset'),label:cols*rws===1?stem:`${stem} ${x+1}-${y+1}`,kind:'decor',w,h,color:'#80627a',symbol:'▧',image:scratch.toDataURL('image/png'),source:'local-import',license:'User must verify usage rights'});}img.close();renderPalette();changed();notify(`Добавлено ${cols*rws} ассетов`);}
-function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#gameZoom').onclick=useGodotZoom;$('#previewMode').onchange=e=>{viewMode=e.target.value;fit();};$('#showDoorGuides').onchange=e=>{showDoorGuides=e.target.checked;draw();};$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;$('#catalogScope').onchange=e=>{catalogScope=e.target.value;renderPalette();};$('#onlyMissing').onchange=e=>{onlyMissing=e.target.checked;renderPalette();};$('#catalogRoom').onchange=e=>switchRoom(e.target.value).catch(err=>notify('Ошибка открытия комнаты: '+err.message));
+function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#moveActor').onclick=()=>{changeTool('actor');togglePanel(null);};$('#showActor').onchange=e=>{drawActorPreview=e.target.checked;draw();};$('#gameZoom').onclick=useGodotZoom;$('#previewMode').onchange=e=>{viewMode=e.target.value;fit();};$('#showDoorGuides').onchange=e=>{showDoorGuides=e.target.checked;draw();};$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;$('#catalogScope').onchange=e=>{catalogScope=e.target.value;renderPalette();};$('#onlyMissing').onchange=e=>{onlyMissing=e.target.checked;renderPalette();};$('#catalogRoom').onchange=e=>switchRoom(e.target.value).catch(err=>notify('Ошибка открытия комнаты: '+err.message));
  $('#title').onchange=e=>{checkpoint();project.title=e.target.value.trim()||'Без названия';changed();};for(const [id,key] of [['roomWidth','width'],['roomHeight','height'],['gridSize','grid']])$("#"+id).onchange=e=>{const v=Number(e.target.value);const p=clone(project);p[key]=v;try{validateProject(p);checkpoint();project[key]=v;changed();fit();}catch(err){notify(err.message);renderSettings();}};
  $('#addLayer').onclick=()=>{checkpoint();const id=uid('layer');project.layers.push({id,name:`Слой ${project.layers.length+1}`,visible:true,locked:false});selectedLayer=id;changed();renderLayers();};
  $('#exportMenu').onclick=()=>$('#exportDialog').showModal();$('#mobileExport').onclick=()=>$('#exportDialog').showModal();$('#exportJSON').onclick=exportJSON;$('#exportPNG').onclick=exportPNG;$('#importJSONBtn').onclick=()=>$('#projectFile').click();$('#projectFile').onchange=async e=>{try{await importJSON(e.target.files[0]);$('#exportDialog').close();}catch(err){notify(err.message);}e.target.value='';};
@@ -251,6 +344,10 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
   p.provenance='Proposed Godot world map room draft; matching floor dimensions, not approved furniture/doors/art.';
  }
  if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
+ if(visualContract&&contractFits(p,visualContract)){
+  seedPilotVisuals(p,visualContract,ref=>p.assets.find(a=>a.assetRefId===ref),
+    (asset,rect,sprite)=>object(asset,rect.x,rect.y,{w:rect.w,h:rect.h,layerId:asset.layerId,assetRefId:asset.assetRefId,state:sprite.state}));
+ }
  project=p;selected=null;past=[];future=[];historyButtons();refresh();fit();changed();
  $('#exportDialog').close();
  notify(room?'Новый игровой черновик по предварительной геометрии Godot — '+p.width+'×'+p.height:'Новый пустой черновик');
@@ -260,5 +357,5 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
-async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
+async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
 start();
