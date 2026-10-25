@@ -53,6 +53,18 @@ var toggle_button: Button
 var camera_button: Button
 var art_button: Button
 var bounds_button: Button
+var zoom_preset_button: Button
+var recenter_button: Button
+var zoom_minus_button: Button
+var zoom_plus_button: Button
+var debug_toggle_button: Button
+var safe_button: Button
+var overview_button: Button
+var back_button: Button
+var title_label: Label
+var angle_label: Label
+var debug_panel: Panel
+var show_safe_viewport := false
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -68,43 +80,168 @@ func _ready() -> void:
 	queue_redraw()
 
 func _make_ui() -> void:
+	# Full-screen world, compact translucent HUD. Technical controls are collapsed by default.
 	var header := ColorRect.new()
-	header.color = Color("151b22")
+	header.color = Color(0.065, 0.085, 0.12, 0.87)
 	header.set_anchors_and_offsets_preset(PRESET_TOP_WIDE)
 	header.offset_bottom = TOP_UI_HEIGHT
 	header.mouse_filter = MOUSE_FILTER_IGNORE
+	header.z_index = 10
 	add_child(header)
-	var title := _label("RAVEN MANOR · S1 MAP + ONOE", 17)
-	title.position = Vector2(12, 7); title.size = Vector2(365, 24); add_child(title)
-	var help := _label("Свайп — карта · предмет — маршрут · −/+ — масштаб", 11)
-	help.position = Vector2(12, 33); help.size = Vector2(365, 24); add_child(help)
-	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2(8, 64), Vector2(165, 32), _toggle_explore)
-	_button("К персонажу", Vector2(181, 64), Vector2(92, 32), _recenter)
-	_button("−", Vector2(283, 64), Vector2(41, 32), _zoom_out)
-	_button("+", Vector2(330, 64), Vector2(41, 32), _zoom_in)
-	camera_button = _button("Камера: 55°", Vector2(8, 101), Vector2(122, 31), _cycle_camera)
-	art_button = _button("Арт: ВКЛ", Vector2(135, 101), Vector2(111, 31), _toggle_art)
-	bounds_button = _button("Габариты: СКР", Vector2(250, 101), Vector2(121, 31), _toggle_bounds)
 	var footer := ColorRect.new()
-	footer.color = Color("151b22")
-	footer.anchor_top = 1.0; footer.anchor_bottom = 1.0
-	footer.offset_top = -BOTTOM_UI_HEIGHT; footer.offset_bottom = 0
-	footer.anchor_right = 1.0; footer.mouse_filter = MOUSE_FILTER_IGNORE; add_child(footer)
-	selected_label = _label("Выбери крупную мебель или ремонтный объект", 12)
-	selected_label.anchor_top = 1.0; selected_label.anchor_bottom = 1.0
-	selected_label.position = Vector2(10, -106); selected_label.size = Vector2(365, 28); add_child(selected_label)
-	status_label = _label("Оноэ — технический placeholder; путь только по свободному полу", 11)
-	status_label.anchor_top = 1.0; status_label.anchor_bottom = 1.0
-	status_label.position = Vector2(10, -75); status_label.size = Vector2(365, 29); add_child(status_label)
-	action_button = _button("MATCH-3", Vector2(10, 0), Vector2(116, 36), _open_preview)
-	action_button.anchor_top = 1.0; action_button.anchor_bottom = 1.0
-	action_button.position.y = -43; action_button.disabled = true
-	repair_button = _button("До / После", Vector2(135, 0), Vector2(112, 36), _toggle_repair)
-	repair_button.anchor_top = 1.0; repair_button.anchor_bottom = 1.0
-	repair_button.position.y = -43; repair_button.disabled = true
-	var back := _button("← Меню", Vector2(256, 0), Vector2(116, 36),
+	footer.color = Color(0.065, 0.085, 0.12, 0.89)
+	footer.anchor_top = 1.0
+	footer.anchor_bottom = 1.0
+	footer.offset_top = -BOTTOM_UI_HEIGHT
+	footer.offset_bottom = 0
+	footer.anchor_right = 1.0
+	footer.mouse_filter = MOUSE_FILTER_IGNORE
+	footer.z_index = 10
+	add_child(footer)
+	title_label = _label("RAVEN MANOR · HUB", 17)
+	title_label.z_index = 11
+	add_child(title_label)
+	angle_label = _label("65° · ART TEST", 12)
+	angle_label.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+	angle_label.z_index = 11
+	add_child(angle_label)
+	zoom_minus_button = _button("−", Vector2.ZERO, Vector2(42, 36), _zoom_out)
+	zoom_preset_button = _button("0.74×", Vector2.ZERO, Vector2(80, 36), _cycle_zoom_preset)
+	zoom_plus_button = _button("+", Vector2.ZERO, Vector2(42, 36), _zoom_in)
+	recenter_button = _button("К персонажу", Vector2.ZERO, Vector2(100, 36), _recenter)
+	debug_toggle_button = _button("Настр.", Vector2.ZERO, Vector2(76, 36), _toggle_debug)
+	selected_label = _label("Выбери предмет ремонта на карте", 12)
+	selected_label.z_index = 11
+	add_child(selected_label)
+	status_label = _label("Оноэ — технический персонаж · масштаб хаба 0.74×", 11)
+	status_label.z_index = 11
+	add_child(status_label)
+	action_button = _button("MATCH-3", Vector2.ZERO, Vector2(108, 35), _open_preview)
+	action_button.disabled = true
+	repair_button = _button("До / После", Vector2.ZERO, Vector2(108, 35), _toggle_repair)
+	repair_button.disabled = true
+	back_button = _button("← Меню", Vector2.ZERO, Vector2(108, 35),
 		func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
-	back.anchor_top = 1.0; back.anchor_bottom = 1.0; back.position.y = -43
+	debug_panel = Panel.new()
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.10, 0.13, 0.17, 0.96)
+	style.border_color = Color("776f60")
+	style.set_border_width_all(1)
+	style.set_corner_radius_all(9)
+	debug_panel.add_theme_stylebox_override("panel", style)
+	debug_panel.mouse_filter = MOUSE_FILTER_STOP
+	debug_panel.z_index = 14
+	add_child(debug_panel)
+	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2.ZERO, Vector2(150, 36), _toggle_explore, debug_panel)
+	camera_button = _button("Камера: 65°", Vector2.ZERO, Vector2(110, 36), _cycle_camera, debug_panel)
+	art_button = _button("Арт: ВКЛ", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
+	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
+	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
+	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
+	debug_panel.visible = false
+	resized.connect(_layout_hud)
+	_layout_hud()
+
+
+func _layout_hud() -> void:
+	if not is_instance_valid(zoom_minus_button):
+		return
+	var margin := 8.0
+	var usable_width := maxf(240.0, size.x - 2.0 * margin)
+	title_label.position = Vector2(margin + 3.0, 7.0)
+	title_label.size = Vector2(maxf(130.0, size.x - 158.0), 28.0)
+	angle_label.position = Vector2(size.x - 150.0, 12.0)
+	angle_label.size = Vector2(140.0, 24.0)
+	var gap := 6.0
+	var small_width := 42.0
+	var remaining := usable_width - 2.0 * small_width - 4.0 * gap
+	var recenter_width := clampf(remaining * 0.40, 78.0, 106.0)
+	var debug_width := clampf(remaining * 0.28, 66.0, 82.0)
+	var preset_width := remaining - recenter_width - debug_width
+	var x := margin
+	for button in [zoom_minus_button, zoom_preset_button, zoom_plus_button, recenter_button, debug_toggle_button]:
+		var button_width := small_width
+		if button == zoom_preset_button:
+			button_width = preset_width
+		elif button == recenter_button:
+			button_width = recenter_width
+		elif button == debug_toggle_button:
+			button_width = debug_width
+		button.position = Vector2(x, 43.0)
+		button.size = Vector2(button_width, 36.0)
+		x += button_width + gap
+	var foot := size.y - BOTTOM_UI_HEIGHT
+	selected_label.position = Vector2(margin + 2.0, foot + 4.0)
+	selected_label.size = Vector2(usable_width - 4.0, 22.0)
+	status_label.position = Vector2(margin + 2.0, foot + 27.0)
+	status_label.size = Vector2(usable_width - 4.0, 19.0)
+	var footer_space := usable_width - 2.0 * gap
+	var match_width := floorf(footer_space * 0.34)
+	var repair_width := floorf(footer_space * 0.33)
+	action_button.position = Vector2(margin, size.y - 39.0)
+	action_button.size = Vector2(match_width, 35.0)
+	repair_button.position = Vector2(margin + match_width + gap, size.y - 39.0)
+	repair_button.size = Vector2(repair_width, 35.0)
+	back_button.position = Vector2(margin + match_width + repair_width + 2.0 * gap, size.y - 39.0)
+	back_button.size = Vector2(footer_space - match_width - repair_width, 35.0)
+	debug_panel.position = Vector2(margin, TOP_UI_HEIGHT + 5.0)
+	debug_panel.size = Vector2(usable_width, 102.0)
+	var panel_row_width := debug_panel.size.x - 18.0 - 2.0 * gap
+	toggle_button.position = Vector2(9, 9)
+	toggle_button.size = Vector2(panel_row_width * 0.50, 36)
+	art_button.position = Vector2(9 + panel_row_width * 0.50 + gap, 9)
+	art_button.size = Vector2(panel_row_width * 0.24, 36)
+	bounds_button.position = Vector2(9 + panel_row_width * 0.74 + 2.0 * gap, 9)
+	bounds_button.size = Vector2(panel_row_width * 0.26, 36)
+	camera_button.position = Vector2(9, 53)
+	camera_button.size = Vector2(panel_row_width * 0.33, 36)
+	safe_button.position = Vector2(9 + panel_row_width * 0.33 + gap, 53)
+	safe_button.size = Vector2(panel_row_width * 0.37, 36)
+	overview_button.position = Vector2(9 + panel_row_width * 0.70 + 2.0 * gap, 53)
+	overview_button.size = Vector2(panel_row_width * 0.30, 36)
+	queue_redraw()
+
+
+func _safe_viewport_rect(for_size: Vector2) -> Rect2:
+	return Rect2(Vector2(8, TOP_UI_HEIGHT + 4.0),
+		Vector2(maxf(1, for_size.x - 16.0),
+			maxf(1, for_size.y - TOP_UI_HEIGHT - BOTTOM_UI_HEIGHT - 8.0)))
+
+
+func _viewport_midpoint(for_size: Vector2) -> Vector2:
+	return _safe_viewport_rect(for_size).get_center()
+
+
+func _toggle_debug() -> void:
+	debug_panel.visible = not debug_panel.visible
+	debug_toggle_button.text = "Скрыть" if debug_panel.visible else "Настр."
+
+
+func _toggle_safe_viewport() -> void:
+	show_safe_viewport = not show_safe_viewport
+	safe_button.text = "Safe area: ВКЛ" if show_safe_viewport else "Safe area: ВЫКЛ"
+	queue_redraw()
+
+
+func _overview() -> void:
+	center = Vector2(1080, 1120)
+	follow_actor = false
+	_set_zoom(0.17)
+	debug_panel.visible = false
+	debug_toggle_button.text = "Настр."
+
+
+func _cycle_zoom_preset() -> void:
+	var closest := 0
+	var closest_delta := INF
+	for i in range(ZOOM_PRESETS.size()):
+		var delta := absf(zoom - float(ZOOM_PRESETS[i]))
+		if delta < closest_delta:
+			closest = i
+			closest_delta = delta
+	_set_zoom(float(ZOOM_PRESETS[(closest + 1) % ZOOM_PRESETS.size()]))
+	status_label.text = "Масштаб %.2f× · 65° — основной ракурс" % zoom
+
 
 func _label(t: String, font_size: int) -> Label:
 	var l := Label.new(); l.text = t
@@ -113,11 +250,19 @@ func _label(t: String, font_size: int) -> Label:
 	l.mouse_filter = MOUSE_FILTER_IGNORE
 	return l
 
-func _button(t: String, pos: Vector2, dims: Vector2, callback: Callable) -> Button:
-	var b := Button.new()
-	b.text = t; b.position = pos; b.size = dims
-	b.pressed.connect(callback); add_child(b)
-	return b
+func _button(t: String, pos: Vector2, dims: Vector2, callback: Callable, target_parent: Control = null) -> Button:
+	var button := Button.new()
+	button.text = t
+	button.position = pos
+	button.size = dims
+	button.z_index = 15
+	button.pressed.connect(callback)
+	if target_parent == null:
+		add_child(button)
+	else:
+		target_parent.add_child(button)
+	return button
+
 
 func _make_onoe() -> void:
 	var frames := SpriteFrames.new()
