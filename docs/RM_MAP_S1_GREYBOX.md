@@ -33,3 +33,9 @@ From Prototype Lab choose **5 · Whole Manor Map · S1 GREYBOX**. Or run `res://
 
 ## S1 geometrical approval gate
 Approve ONLY after physically inspectable gameplay test establishes continuous camera travel and reliable reachability of each room's planned interaction anchors. Changes should update door route anchors and furniture bounds **before** generating painted rooms or VN/map sprite sheets. See `docs/assets/RM_MAP_S1_CONTIGUOUS_LAYOUT_GATE.md`.
+
+## Camera & Hall art calibration added in PR #15
+- First candidate: **55° down from horizontal**, matching the former depth ratio 0.82. Cycle **45° / 55° / 65°** directly in Prototype Lab; screen→world picking remains the mathematical inverse of the projected plane.
+- Turn **Арт: ВКЛ** on/off to compare a measured Hall SVG architecture base, burgundy rug and separate clock/seating/console/portrait visual proxy sprites against the original bounding boxes. **Габариты** reveals collision/interaction bounds.
+- Onoe remains a temporary authorization-only actor. These SVG graphics were handcrafted layout-calibration stand-ins, not accepted painterly art, and the generated mood-board images are not spatially authoritative.
+- Full generator prompts, isolation and export acceptance: `docs/assets/RM_CAMERA_ART_PILOT.md`.

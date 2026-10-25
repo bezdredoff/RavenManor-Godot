@@ -5,13 +5,20 @@ const DATA = preload("res://data/raven/season1_world_map.json")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
 const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
+const HALL_SHELL = preload("res://assets/prototypes/map_calibration/hall_shell.svg")
+const HALL_RUG = preload("res://assets/prototypes/map_calibration/hall_rug.svg")
+const HALL_CLOCK = preload("res://assets/prototypes/map_calibration/grandfather_clock.svg")
+const HALL_SEATS = preload("res://assets/prototypes/map_calibration/seating_cluster.svg")
+const HALL_CONSOLE = preload("res://assets/prototypes/map_calibration/console.svg")
+const HALL_GALLERY = preload("res://assets/prototypes/map_calibration/ancestor_gallery.svg")
+const CAMERA_ANGLES := [45, 55, 65]
 const CELL := 25
 const WALL_MARGIN := 28.0
 const DOOR_RADIUS := 70.0
 const FURNITURE_MARGIN := 21.0
-const FLOOR_DEPTH_RATIO := 0.82
+const DEFAULT_CAMERA_ELEVATION := 55
 const TRAVEL_SPEED := 375.0
-const TOP_UI_HEIGHT := 102.0
+const TOP_UI_HEIGHT := 137.0
 const BOTTOM_UI_HEIGHT := 110.0
 
 var rooms: Array
@@ -20,6 +27,10 @@ var props: Array
 var world_size := Vector2(2150, 2250)
 var center := Vector2(930, 620)
 var zoom := 0.47
+var camera_elevation := DEFAULT_CAMERA_ELEVATION
+var floor_depth_ratio := sin(deg_to_rad(float(DEFAULT_CAMERA_ELEVATION)))
+var art_enabled := true
+var debug_art_bounds := false
 var dragging := false
 var drag_distance := 0.0
 var actor_pos := Vector2(990, 640)
@@ -36,6 +47,9 @@ var selected_label: Label
 var action_button: Button
 var repair_button: Button
 var toggle_button: Button
+var camera_button: Button
+var art_button: Button
+var bounds_button: Button
 
 func _ready() -> void:
 	set_anchors_and_offsets_preset(PRESET_FULL_RECT)
@@ -65,6 +79,9 @@ func _make_ui() -> void:
 	_button("К персонажу", Vector2(181, 64), Vector2(92, 32), _recenter)
 	_button("−", Vector2(283, 64), Vector2(41, 32), _zoom_out)
 	_button("+", Vector2(330, 64), Vector2(41, 32), _zoom_in)
+	camera_button = _button("Камера: 55°", Vector2(8, 101), Vector2(122, 31), _cycle_camera)
+	art_button = _button("Арт: ВКЛ", Vector2(135, 101), Vector2(111, 31), _toggle_art)
+	bounds_button = _button("Габариты: СКР", Vector2(250, 101), Vector2(121, 31), _toggle_bounds)
 	var footer := ColorRect.new()
 	footer.color = Color("151b22")
 	footer.anchor_top = 1.0; footer.anchor_bottom = 1.0
@@ -168,6 +185,28 @@ func _toggle_explore() -> void:
 	_rebuild_navigation()
 	status_label.text = "Проверка геометрии: сюжетные двери открыты" if explore_all else "Двери ограничены сохранённым прогрессом"
 	queue_redraw()
+
+func _cycle_camera() -> void:
+	var current_index := CAMERA_ANGLES.find(camera_elevation)
+	camera_elevation = CAMERA_ANGLES[(current_index + 1) % CAMERA_ANGLES.size()]
+	floor_depth_ratio = sin(deg_to_rad(float(camera_elevation)))
+	camera_button.text = "Камера: %d°" % camera_elevation
+	status_label.text = "Угол: %d° вниз от горизонтали · глубина пола × %.3f" % [camera_elevation, floor_depth_ratio]
+	_update_actor_screen()
+	queue_redraw()
+
+
+func _toggle_art() -> void:
+	art_enabled = not art_enabled
+	art_button.text = "Арт: ВКЛ" if art_enabled else "Арт: ВЫКЛ"
+	queue_redraw()
+
+
+func _toggle_bounds() -> void:
+	debug_art_bounds = not debug_art_bounds
+	bounds_button.text = "Габариты: ВИД" if debug_art_bounds else "Габариты: СКР"
+	queue_redraw()
+
 
 func _recenter() -> void:
 	center = actor_pos
@@ -315,11 +354,11 @@ func _process(delta: float) -> void:
 
 func _screen_from_world(p: Vector2) -> Vector2:
 	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
-	return viewport_mid + Vector2((p.x - center.x) * zoom, (p.y - center.y) * zoom * FLOOR_DEPTH_RATIO)
+	return viewport_mid + Vector2((p.x - center.x) * zoom, (p.y - center.y) * zoom * floor_depth_ratio)
 
 func _from_screen(p: Vector2) -> Vector2:
 	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
-	return center + Vector2((p.x - viewport_mid.x) / zoom, (p.y - viewport_mid.y) / (zoom * FLOOR_DEPTH_RATIO))
+	return center + Vector2((p.x - viewport_mid.x) / zoom, (p.y - viewport_mid.y) / (zoom * floor_depth_ratio))
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -336,7 +375,7 @@ func _gui_input(event: InputEvent) -> void:
 				dragging = false
 			accept_event()
 	elif event is InputEventMouseMotion and dragging:
-		center -= Vector2(event.relative.x / zoom, event.relative.y / (zoom * FLOOR_DEPTH_RATIO))
+		center -= Vector2(event.relative.x / zoom, event.relative.y / (zoom * floor_depth_ratio))
 		drag_distance += event.relative.length()
 		follow_actor = false; queue_redraw(); accept_event()
 	elif event is InputEventScreenTouch:
@@ -348,7 +387,7 @@ func _gui_input(event: InputEvent) -> void:
 			dragging = false
 		accept_event()
 	elif event is InputEventScreenDrag:
-		center -= Vector2(event.relative.x / zoom, event.relative.y / (zoom * FLOOR_DEPTH_RATIO))
+		center -= Vector2(event.relative.x / zoom, event.relative.y / (zoom * floor_depth_ratio))
 		drag_distance += event.relative.length()
 		follow_actor = false; queue_redraw(); accept_event()
 
@@ -381,34 +420,64 @@ func _select_at(p: Vector2) -> void:
 			queue_redraw()
 			return
 
+func _pilot_texture(asset_id: String) -> Texture2D:
+	match asset_id:
+		"RM-ASSET-HALL-CLOCK": return HALL_CLOCK
+		"RM-ASSET-HALL-SEATS": return HALL_SEATS
+		"RM-ASSET-HALL-CONSOLE": return HALL_CONSOLE
+		"RM-ASSET-HALL-GALLERY": return HALL_GALLERY
+	return null
+
+
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), Color("111821"))
 	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
-	var offset := viewport_mid - Vector2(center.x * zoom, center.y * zoom * FLOOR_DEPTH_RATIO)
-	draw_set_transform(offset, 0.0, Vector2(zoom, zoom * FLOOR_DEPTH_RATIO))
+	var offset := viewport_mid - Vector2(center.x * zoom, center.y * zoom * floor_depth_ratio)
+	draw_set_transform(offset, 0.0, Vector2(zoom, zoom * floor_depth_ratio))
 	var f := ThemeDB.fallback_font
 	for room in rooms:
 		var r := _room_rect(room)
 		draw_rect(r, Color(str(room.color)))
+		if art_enabled and str(room.id) == "RM-ROOM-HALL":
+			draw_texture_rect(HALL_SHELL, r, false)
+			draw_texture_rect(HALL_RUG, Rect2(785, 435, 130, 396), false)
+		else:
+			var upper_wall := PackedVector2Array([
+				r.position + Vector2(0, 0),
+				r.position + Vector2(0, -54),
+				r.position + Vector2(r.size.x, -54),
+				r.position + Vector2(r.size.x, 0)])
+			draw_colored_polygon(upper_wall, Color("67584c"))
 		draw_rect(r, Color("493b34"), false, 12.0)
-		# Shallow wall height as a separate visible fascia, not an eye-level perspective.
-		var upper_wall := PackedVector2Array([
-			r.position + Vector2(0, 0),
-			r.position + Vector2(0, -54),
-			r.position + Vector2(r.size.x, -54),
-			r.position + Vector2(r.size.x, 0)])
-		draw_colored_polygon(upper_wall, Color("67584c"))
-		draw_string(f, r.position + Vector2(25, 38), str(room.title), HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color("262026"))
+		if not art_enabled or str(room.id) != "RM-ROOM-HALL":
+			draw_string(f, r.position + Vector2(25, 38), str(room.title),
+				HORIZONTAL_ALIGNMENT_LEFT, -1, 24, Color("262026"))
 	for d in doors:
 		var dp := Vector2(float(d.point[0]), float(d.point[1]))
-		draw_rect(Rect2(dp - Vector2(35, 35), Vector2(70, 70)), Color("63b8a0") if _door_enabled(d) else Color("a7545e"))
+		var hall_entrance := int(d.a) == 1 or int(d.b) == 1
+		if art_enabled and hall_entrance:
+			draw_circle(dp, 13, Color("63b8a0") if _door_enabled(d) else Color("a7545e"))
+		else:
+			draw_rect(Rect2(dp - Vector2(35, 35), Vector2(70, 70)),
+				Color("63b8a0") if _door_enabled(d) else Color("a7545e"))
 	for item in props:
 		var r := _prop_rect(item)
 		var chosen := str(item.id) == str(selected_prop.get("id", ""))
-		var fill := Color("79b894") if bool(repaired_in_preview.get(str(item.id), false)) else (Color("d7b16c") if chosen else Color("65524b"))
-		draw_rect(r, fill)
-		draw_rect(r, Color("f6d888") if chosen else Color("d0ae88"), false, 4.0)
-		draw_string(f, r.position + Vector2(6, maxf(25, r.size.y * 0.5)), str(item.title), HORIZONTAL_ALIGNMENT_LEFT, int(r.size.x) - 12, 15, Color.WHITE)
+		var restored := bool(repaired_in_preview.get(str(item.id), false))
+		var texture := _pilot_texture(str(item.id)) if art_enabled else null
+		var embedded_in_shell := art_enabled and str(item.id) in ["RM-ASSET-HALL-STAIRS-L", "RM-ASSET-HALL-STAIRS-R"]
+		if texture != null:
+			draw_texture_rect(texture, r, false)
+			if restored:
+				draw_rect(r, Color(0.22, 0.7, 0.49, 0.28))
+		elif not embedded_in_shell:
+			var fill := Color("79b894") if restored else (Color("d7b16c") if chosen else Color("65524b"))
+			draw_rect(r, fill)
+			if not art_enabled or int(item.room) != 1:
+				draw_string(f, r.position + Vector2(6, maxf(25, r.size.y * 0.5)), str(item.title),
+					HORIZONTAL_ALIGNMENT_LEFT, int(r.size.x) - 12, 15, Color.WHITE)
+		if debug_art_bounds or chosen:
+			draw_rect(r, Color("f6d888") if chosen else Color("cf9e86"), false, 3.0)
 	if not movement_points.is_empty():
 		var last := actor_pos
 		for waypoint in movement_points:
