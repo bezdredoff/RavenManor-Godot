@@ -99,6 +99,12 @@ async function loadGameReference(){
 function drawDoorGuides(c,reference){
  if(!showDoorGuides||!reference?.aligned)return;
  c.save();c.lineWidth=2;c.font='11px system-ui';
+ for(const prop of reference.props){
+  c.strokeStyle='#ffda91';c.lineWidth=2;c.setLineDash([5,3]);
+  c.strokeRect(prop.x,prop.y,prop.w,prop.h);
+  c.setLineDash([]);c.fillStyle='#ffda91';c.font='10px system-ui';
+  c.fillText(prop.id.replace('RM-ASSET-HALL-',''),prop.x+4,prop.y+12);
+ }
  for(const door of reference.doors){
   c.strokeStyle=door.status==='future'?'#efaaa7':'#76d8b4';
   c.fillStyle=c.strokeStyle;
