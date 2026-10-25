@@ -28,6 +28,12 @@ export function validateCatalog(data){
   const ids=new Set();
   for(const item of data.items){
     if(!/^RM-ASSET-[A-Z0-9-]+$/.test(item.id)||ids.has(item.id)||!ROOM_NAMES[item.roomId]||typeof item.name!=='string'||!Array.isArray(item.states)||!item.states.length||!MAP[item.layer]||item.approval!=='PROPOSED'||!['P1','P2'].includes(item.priority)||typeof item.familyKey!=='string'||!Number.isInteger(item.plannedInstances)||item.plannedInstances<1)throw new Error('Некорректная запись каталога: '+String(item.id));
+    if(!['pilot-reference-only','not-generated'].includes(item.artStatus)
+       ||!['requires-review','not-applicable'].includes(item.rightsStatus)
+       ||!item.spatial||Object.values(item.spatial).some(x=>x!==null)
+       ||!Array.isArray(item.stateAssets)||item.stateAssets.length!==item.states.length
+       ||item.stateAssets.some((a,i)=>a.state!==item.states[i]||a.renderMethod!=='undecided'||a.approved!==false))
+      throw new Error('Неутверждённые производственные поля должны оставаться явными: '+item.id);
     ids.add(item.id);
   }
   const totals=new Map(data.rooms.map(r=>[r.id,r.count]));
@@ -42,6 +48,7 @@ export function assetFromCatalog(item){
     familyKey:item.familyKey,plannedInstances:item.plannedInstances,
     productionPriority:item.priority,approval:item.approval,placementAnchor:item.anchor,
     pilotImages:item.pilotImages||[],source:'production-register',
+    spatial:item.spatial||null,stateAssets:item.stateAssets||[],rightsStatus:item.rightsStatus||'not-applicable',
     artStatus:(item.pilotImages||[]).length?'experimental PNG (not approved)':'not generated / placeholder'};
 }
 export function mergeCatalogAssets(project,catalog){
@@ -50,7 +57,7 @@ export function mergeCatalogAssets(project,catalog){
   for(const item of catalog.items){const asset=assetFromCatalog(item);if(!ids.has(asset.id)){project.assets.push(asset);ids.add(asset.id);added++;}
     else {const old=project.assets.find(a=>a.id===asset.id);
       // Refresh registry metadata, never replace user-imported image bytes.
-      for(const key of ['assetRefId','roomId','states','familyKey','plannedInstances','productionPriority','approval','placementAnchor','pilotImages','artStatus'])old[key]=asset[key];}
+      for(const key of ['label','kind','symbol','color','assetRefId','roomId','states','familyKey','plannedInstances','productionPriority','approval','placementAnchor','pilotImages','artStatus','spatial','stateAssets','rightsStatus'])old[key]=asset[key];}
   }
   return added;
 }
@@ -60,4 +67,28 @@ export function newRoomProject(exampleProject,uid,roomId){
   const p=exampleProject();p.id=uid('room');p.title=ROOM_NAMES[roomId]+' — черновик';p.roomId=roomId;p.objects=[];p.anchors=[];
   p.provenance='New authoring draft; room dimensions, object positions and navigation are NOT approved.';
   return p;
+}
+
+export function migrateLegacyHallReferences(p){
+ // Only exact v0.1 demo positions; never rewrite deliberate player placements.
+ if(p.roomId!=='RM-ROOM-HALL')return 0;
+ const legacy=[['armchair',112,434,'RM-ASSET-HALL-017'],['armchair',238,444,'RM-ASSET-HALL-018']];
+ let changes=0;
+ for(const [assetId,x,y,id] of legacy){const o=p.objects.find(o=>o.assetId===assetId&&o.x===x&&o.y===y&&(o.assetRefId==='RM-ASSET-HALL-007'||(id==='RM-ASSET-HALL-018'&&!o.assetRefId)));if(o){o.assetRefId=id;changes++;}}
+ const table=p.objects.find(o=>o.assetId==='table'&&!o.assetRefId&&o.x===184&&o.y===526);
+ if(table){table.assetRefId='RM-ASSET-HALL-019';changes++;}
+ return changes;
+}
+
+/** Keep personally imported sprites usable across room-specific local drafts. */
+export function mergeUserAssets(target,source){
+ const ids=new Set(target.assets.map(a=>a.id));let added=0;
+ for(const a of source.assets||[]){if(a.source==='local-import'&&!ids.has(a.id)){target.assets.push(structuredClone(a));ids.add(a.id);added++;}}
+ return added;
+}
+
+/** Serialize async IndexedDB writes: prevent a previous-room save racing a new-room save. */
+export function createSerialWriter(write){
+ let tail=Promise.resolve();
+ return snapshot=>{const pending=tail.catch(()=>{}).then(()=>write(snapshot));tail=pending.catch(()=>{});return pending;};
 }

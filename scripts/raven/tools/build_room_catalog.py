@@ -61,6 +61,14 @@ def build(rows):
             'approval': row['source_status'], 'familyKey': FAMILY.get(id_, id_),
             'plannedInstances': MULTI.get(id_, 1),
             'pilotImages': [f'assets/raven/hall/generated_pilot/{path}' for path in PILOT.get(id_, [])],
+            # Production metadata is deliberately honest: do not make up measurements,
+            # UI pivots, click anchors, image rights, or render methods from room names.
+            'artStatus': 'pilot-reference-only' if id_ in PILOT else 'not-generated',
+            'rightsStatus': 'requires-review' if id_ in PILOT else 'not-applicable',
+            'spatial': {'width': None, 'height': None, 'footPivot': None,
+                        'occlusionMask': None, 'interactionPoint': None},
+            'stateAssets': [{'state': state, 'renderMethod': 'undecided', 'approved': False}
+                            for state in row['state_variants'].split('/')],
         })
     counts = Counter(item['roomId'] for item in items)
     return {'schemaVersion': 1, 'title': 'Raven Manor · season 1 production proposal',

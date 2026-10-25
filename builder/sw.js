@@ -1,4 +1,4 @@
-const CACHE='raven-room-builder-v2';
+const CACHE='raven-room-builder-v3';
 const APP_FILES=['./','./index.html','./app.mjs','./catalog.mjs','./catalog/room-items.json','./model.mjs','./style.css','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('raven-room-builder-')&&k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()]));});

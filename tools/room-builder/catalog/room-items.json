@@ -59,7 +59,23 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "fixed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-002",
@@ -75,7 +91,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-003",
@@ -91,7 +128,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "lit",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-004",
@@ -107,7 +165,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-005",
@@ -123,7 +202,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-006",
@@ -139,7 +239,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "sealed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "read",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-007",
@@ -155,7 +276,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "overgrown",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "tended",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ENTRY-008",
@@ -171,7 +313,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ENTRY-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "aged",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "fixed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-001",
@@ -187,7 +350,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "future-access",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-002",
@@ -206,6 +390,32 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/grandfather_clock.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "stopped",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "repaired",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "chiming",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -222,7 +432,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "future",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-004",
@@ -237,7 +468,23 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-005",
@@ -253,7 +500,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-006",
@@ -272,6 +540,32 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/ancestor_gallery_composite.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "reveal",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -290,6 +584,27 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/entry_console.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "polished",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -306,7 +621,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "clouded",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-009",
@@ -322,7 +658,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "arranged",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-010",
@@ -340,6 +697,27 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/burgundy_runner.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "rolled",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "laid",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -356,7 +734,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-011",
       "plannedInstances": 2,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-012",
@@ -372,7 +771,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "disordered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "ordered",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-013",
@@ -388,7 +808,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-013",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "refreshed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-014",
@@ -404,7 +845,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-014",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "removed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-015",
@@ -420,7 +882,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-015",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "sealed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-016",
@@ -436,7 +919,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-HALL-016",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "discovered",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-HALL-017",
@@ -455,6 +959,32 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/armchair_clean.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -474,6 +1004,32 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/armchair_clean.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -492,6 +1048,27 @@
       "plannedInstances": 1,
       "pilotImages": [
         "assets/raven/hall/generated_pilot/props/round_side_table.png"
+      ],
+      "artStatus": "pilot-reference-only",
+      "rightsStatus": "requires-review",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "polished",
+          "renderMethod": "undecided",
+          "approved": false
+        }
       ]
     },
     {
@@ -508,7 +1085,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-002",
@@ -524,7 +1122,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "removed-after-unlock",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-003",
@@ -540,7 +1159,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "available",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-004",
@@ -556,7 +1196,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-005",
@@ -572,7 +1233,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-006",
@@ -588,7 +1270,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-007",
@@ -604,7 +1307,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clear",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-008",
@@ -620,7 +1344,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dirty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-009",
@@ -636,7 +1381,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "reveal",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-010",
@@ -652,7 +1418,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "inspected",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-011",
@@ -668,7 +1455,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "full",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "cleared",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CORRIDOR-012",
@@ -684,7 +1492,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CORRIDOR-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "planted",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-001",
@@ -700,7 +1529,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "made",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-002",
@@ -716,7 +1566,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "fresh",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-003",
@@ -732,7 +1603,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-003",
       "plannedInstances": 2,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-004",
@@ -748,7 +1640,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-005",
@@ -764,7 +1677,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-006",
@@ -780,7 +1714,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-007",
@@ -796,7 +1751,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "cluttered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clear",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-008",
@@ -812,7 +1788,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "misplaced",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "aligned",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-009",
@@ -828,7 +1825,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "clouded",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-010",
@@ -844,7 +1862,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "drawn",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-011",
@@ -860,7 +1899,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "rolled",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "laid",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-012",
@@ -876,7 +1936,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "removed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-013",
@@ -892,7 +1973,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-013",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "visible",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-014",
@@ -908,7 +2010,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-014",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "found",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-015",
@@ -924,7 +2047,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-015",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "packed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "unpacked",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BEDROOM-016",
@@ -940,7 +2084,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BEDROOM-016",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "checked",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-001",
@@ -956,7 +2121,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "working",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-002",
@@ -973,7 +2159,33 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "dripping",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "working",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-003",
@@ -989,7 +2201,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-004",
@@ -1005,7 +2238,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-005",
@@ -1021,7 +2275,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-006",
@@ -1037,7 +2312,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "clouded",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-007",
@@ -1053,7 +2349,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "empty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "stocked",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-008",
@@ -1069,7 +2386,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-009",
@@ -1086,7 +2424,33 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "repaired",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-010",
@@ -1102,7 +2466,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "leaking",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "repaired",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-011",
@@ -1118,7 +2503,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "arrived",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "removed",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-BATHROOM-012",
@@ -1134,7 +2540,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-BATHROOM-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-001",
@@ -1150,7 +2577,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-002",
@@ -1166,7 +2614,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "working",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-003",
@@ -1182,7 +2651,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "working",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-004",
@@ -1198,7 +2688,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "cluttered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clear",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-005",
@@ -1214,7 +2725,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "organized",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-006",
@@ -1230,7 +2762,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-007",
@@ -1246,7 +2799,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "empty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "stocked",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-008",
@@ -1262,7 +2836,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-009",
@@ -1278,7 +2873,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "cold",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "in-use",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-010",
@@ -1294,7 +2910,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "disordered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "arranged",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-011",
@@ -1310,7 +2947,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "stored",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "hung",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-012",
@@ -1326,7 +2984,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "present",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "cleared",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-013",
@@ -1342,7 +3021,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-013",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "sealed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-014",
@@ -1358,7 +3058,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-014",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "approved",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-015",
@@ -1374,7 +3095,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-015",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-016",
@@ -1390,7 +3132,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-016",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "future",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-017",
@@ -1406,7 +3169,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-017",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "empty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "filled",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-KITCHEN-018",
@@ -1422,7 +3206,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-KITCHEN-018",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-001",
@@ -1439,7 +3244,33 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unstable",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "braced",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "restored",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-002",
@@ -1455,7 +3286,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "buried",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "organized",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-003",
@@ -1471,7 +3323,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-003",
       "plannedInstances": 2,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "covered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "usable",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-004",
@@ -1487,7 +3360,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-005",
@@ -1503,7 +3397,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "jammed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "sorted",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-006",
@@ -1519,7 +3434,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "unsafe",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "secured",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-007",
@@ -1535,7 +3471,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "accessible",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-008",
@@ -1551,7 +3508,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "read",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-009",
@@ -1567,7 +3545,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-009",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "read",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-010",
@@ -1583,7 +3582,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "discovered",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-011",
@@ -1599,7 +3619,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "sealed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-012",
@@ -1615,7 +3656,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "arranged",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-013",
@@ -1631,7 +3693,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-013",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "scattered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "sorted",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-014",
@@ -1647,7 +3730,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-014",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "drawn",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-015",
@@ -1663,7 +3767,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-015",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "cluttered",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "stored",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-ARCHIVE-016",
@@ -1679,7 +3804,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-ARCHIVE-016",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "found",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-001",
@@ -1695,7 +3841,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-001",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "cracked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "replaced",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-002",
@@ -1711,7 +3878,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-002",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-003",
@@ -1727,7 +3915,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-003",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "locked",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "future",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-004",
@@ -1743,7 +3952,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-004",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "overgrown",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clear",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-005",
@@ -1759,7 +3989,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-005",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dirty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "organized",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-006",
@@ -1775,7 +4026,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-006",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "bare",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "inviting",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-007",
@@ -1791,7 +4063,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-007",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "tilted",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "secured",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-008",
@@ -1807,7 +4100,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-008",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "healthy",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-009",
@@ -1823,7 +4137,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-009",
       "plannedInstances": 3,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "wilted",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "revived",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-010",
@@ -1839,7 +4174,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-010",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "overgrown",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "tended",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-011",
@@ -1855,7 +4211,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-011",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "rusty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "clean",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-012",
@@ -1871,7 +4248,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-012",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "empty",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "filled",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-013",
@@ -1887,7 +4285,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-013",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "closed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "open",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-014",
@@ -1903,7 +4322,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-014",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "concealed",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "identified",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-015",
@@ -1919,7 +4359,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-015",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "hidden",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "obtained",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-016",
@@ -1935,7 +4396,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-016",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "dry",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "working",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-017",
@@ -1951,7 +4433,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-017",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "present",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "cleared",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-018",
@@ -1967,7 +4470,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-018",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "absent",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "arranged",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     },
     {
       "id": "RM-ASSET-CONSERVATORY-019",
@@ -1983,7 +4507,28 @@
       "approval": "PROPOSED",
       "familyKey": "RM-ASSET-CONSERVATORY-019",
       "plannedInstances": 1,
-      "pilotImages": []
+      "pilotImages": [],
+      "artStatus": "not-generated",
+      "rightsStatus": "not-applicable",
+      "spatial": {
+        "width": null,
+        "height": null,
+        "footPivot": null,
+        "occlusionMask": null,
+        "interactionPoint": null
+      },
+      "stateAssets": [
+        {
+          "state": "off",
+          "renderMethod": "undecided",
+          "approved": false
+        },
+        {
+          "state": "on",
+          "renderMethod": "undecided",
+          "approved": false
+        }
+      ]
     }
   ]
 }
