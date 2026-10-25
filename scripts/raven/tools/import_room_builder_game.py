@@ -126,7 +126,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
     room_id = project["roomId"]
     w, h = float(world_rect[2]), float(world_rect[3])
     scene_dir = output_root / "scenes/raven/generated"
-    image_dir = output_root / "assets/raven/generated" / safe(room_id)
+    image_dir = output_root / "assets/raven/generated" / safe(room_id.replace('-', '_'))
 
     # Prepare every output before touching any files. Every imported texture is
     # hashed by identity so assets with sanitization-colliding IDs stay distinct.
@@ -189,7 +189,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
     for path in textures:
         lines.append(f'[ext_resource type="Texture2D" path={q(path)} id={q(ids[path])}]')
     summary = f'{metrics["pilot"]} pilot, {metrics["embedded"]} embedded, {metrics["placeholders"]} placeholders'
-    lines.extend(["", f'[node name={q(safe(room_id) + "_GamePreview")} type="Node2D"]',
+    lines.extend(["", f'[node name={q(safe(room_id.replace('-', '_')) + "_GamePreview")} type="Node2D"]',
                   'metadata/geometry_approval = "DRAFT_ONLY"',
                   'metadata/import_kind = "ROOM_BUILDER_GAME_VISUAL_ONLY"',
                   'metadata/game_camera_degrees = 65',
@@ -271,7 +271,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
                       f'metadata/nav_id = {q(anchor["id"])}',
                       f'metadata/hotspot_id = {q(anchor.get("hotspotId", ""))}', ""])
 
-    scene_path = scene_dir / (safe(room_id) + "_GamePreview.tscn")
+    scene_path = scene_dir / (safe(room_id.replace('-', '_')) + "_GamePreview.tscn")
     scene_dir.mkdir(parents=True, exist_ok=True)
     for path, binary in local_bytes.items():
         path.parent.mkdir(parents=True, exist_ok=True)
