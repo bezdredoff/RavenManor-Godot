@@ -95,3 +95,7 @@ Both sidebars collapse independently on desktop/tablet using touch-friendly arro
 Characters are ordinary room objects. In the library, select the Персонажи category or search for Оноэ, stamp an instance on the floor, then select/drag/duplicate/delete like furniture. The temporary Onoe asset is additional to the 120 planned production positions. Custom PNGs may be imported as character type. Upright sprite footpoints participate in depth sorting across rooms.
 
 New Hall drafts seed seven pilot cutouts plus one movable Onoe (8 objects). Old Hall drafts with a virtual actor convert one time to a standard instance, preserving its location; deleting it will not recreate it on a later load. This editor-only character does not mutate canonical Godot navigation or campaign state. The visual-only Hall preview converter continues to transfer only the seven furniture cutouts, not character movement.
+
+## Room JSON → actual Godot game-projection scene
+
+For the newly supported Godot 65° visual importer, transfer the Room Builder JSON to your development computer and run `python3 scripts/raven/tools/import_room_builder_game.py /path/to/export.json`; it creates `scenes/raven/generated/RM_ROOM_*_GamePreview.tscn`, with real pilot and embedded textures and placeholders for unfinished items. Open the scene with F6 or entry 6 of Prototype Lab when generated. No character gameplay positions or canonical navigation are imported. Details: `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
