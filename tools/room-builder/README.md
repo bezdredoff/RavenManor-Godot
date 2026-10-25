@@ -49,3 +49,10 @@ Select a room, inspect its **placed positions / planned positions** count, and o
 Room-specific drafts save in serialized order; a failing write blocks switching rooms to prevent accidental loss. PNG files imported locally can be reused in subsequent room drafts. An exact original v0.1 Hall demonstration has its historical chair/table references corrected without modifying custom placements. PNG export waits for embedded images to decode. Export JSON backups regularly: a browser storage quota failure still requires manually freeing space or exporting the current draft.
 
 **Note:** counting planned positions on the canvas does not certify layout, quantities inside grouped rows, separate image files, story progression or geometric collision. Final asset/pivot/rights/state technique reviews are pending.
+## v0.2.2 — full 120-item catalog browse
+
+The default **Обзор предметов → Весь особняк · 120 позиций** shows all 120 proposed entries in eight named groups. This is intentionally separate from **Текущая комната + инструменты** (Hall: 19 registry entries + 16 generic starter tools = 35). Search can match item names, registry IDs or room names. Switching the visible library mode does not change the active room or erase a draft.
+
+Choosing an item assigned to another room while browsing the mansion first saves the current draft and switches to that item's room. Only after a successful switch does it arm that asset for stamping. A storage/save failure blocks switching. The **неразмещённые** filter is available only in room mode.
+
+Service worker cache is now v4 and fetches current assets online first, with offline cache fallback to avoid holding an obsolete catalog UI indefinitely. An already-open PWA may need to be closed and reopened once after the deploy. All 120 entries remain schematic planning data, not 120 generated PNGs.

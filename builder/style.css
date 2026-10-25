@@ -5,3 +5,5 @@
 .catalog-source-link{display:block;color:#dfb6e8;font-size:11px;margin:0 0 10px;text-decoration:underline;text-underline-offset:2px}
 
 .catalog-progress{font-size:12px;margin:0 0 8px;color:#e8cba7}.catalog-filter{display:flex;gap:8px;align-items:center;font-size:11px;color:#cebac9;margin:9px 0}.catalog-filter input{width:16px;height:16px;flex:none;accent-color:#a485be}input[readonly]{opacity:.75;cursor:default}
+/* Global inventory groups, including small portrait screens. */
+.asset-group-heading{grid-column:1/-1;font-size:12px;font-weight:700;color:#edcea8;border-bottom:1px solid #665566;padding:11px 2px 6px;margin-top:4px}.asset-group-heading:first-child{margin-top:0}.asset-room-hint{font-size:9px;line-height:1.2;color:#c8b6ce;text-align:center}

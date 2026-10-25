@@ -56,3 +56,8 @@ Next engineering work: `RM-PIPE-001` in `docs/ROOM_PIPELINE_NEXT_GATE.md`. None 
 - The service worker cache version is bumped so `/builder/` receives the updated catalog and editor together. Both deployment methods must include identical files.
 
 **Still deliberately unapproved:** actual world dimensions, geometric placement, state-specific artwork, interaction anchors/trigger IDs, source license acceptance, final per-room unique art counts. The 120 rows form a complete **planned inventory baseline**, not a claim that production assets exist. Do not infer or fabricate approved values solely to complete a table.
+## v0.2.2 — all-items visibility fix
+
+The user reported seeing only **35** elements: the previous room-filtered Hall palette consisted of **19 Hall proposals + 16 generic editor tools**, while the other room assets were hidden. This was a discoverability bug, not missing source data.
+
+Room Builder now defaults to **all 120 production-catalog items** across the eight spaces, visibly grouped by room. It also provides an explicit switch back to current-room items and reusable editor tools, full-catalog search (name/ID/room name), and safe auto-switch to an item's own room after a successful save. The underlying 120-row CSV/245 unapproved states, all canonically authored maps and runtime save data are unchanged.
