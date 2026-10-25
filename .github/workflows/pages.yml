@@ -39,6 +39,11 @@ jobs:
           unzip -q templates.tpz -d template-unpack
           mv template-unpack/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
 
+      - name: Create Hall fixture from exported Builder JSON
+        run: |
+          python3 scripts/raven/tools/import_room_builder_game.py tests/fixtures/hall_room_builder_export_sample.json
+          test -f scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
+
       - name: Run Raven checks
         run: bash scripts/check.sh
 
@@ -52,8 +57,12 @@ jobs:
           node --check tools/room-builder/hall-pilot.mjs
           node --check tools/room-builder/sw.js
           node --test tools/room-builder/tests/*.test.mjs
-          python3 -m unittest scripts/raven/tools/test_room_builder_import.py scripts/raven/tools/test_hall_visual_sync.py
+          python3 -m unittest scripts/raven/tools/test_room_builder_import.py scripts/raven/tools/test_hall_visual_sync.py scripts/raven/tools/test_room_builder_game_import.py
           python3 scripts/raven/tools/build_room_catalog.py --check
+
+      - name: Real Godot import test of generated 65-degree room
+        run: |
+          godot --headless --path . --script res://tests/raven/room_builder_game_import_smoke.gd --quit-after 80
 
       - name: Browser smoke — independent panels and normal character editing
         shell: bash

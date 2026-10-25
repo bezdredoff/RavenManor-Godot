@@ -63,3 +63,7 @@ Fixed user-reported empty new Hall (async manifest dependency), missing pilot th
 ## 2026-10-25: Room Builder v0.5 character/panel editing
 
 Independent desktop/tablet palette and properties collapse controls; characters are standard movable/deletable room objects, including editable Onoe and user-imported character PNGs. Hall new drafts seed seven proposed pilot sprites and one temporary character. Old preview actor positions migrate once. Navigation and campaign state remain unchanged; browser and Android UI validation required.
+
+## RM-PIPE-002: Room Builder game-scene importer (2026-10-25)
+
+Added 65° projected Builder JSON → separate Godot preview .tscn, resolving Hall pilot/source art, embedded user PNGs, preserving instance IDs/states and ignoring test characters. A sample import runs in Godot CI and appears as Prototype Lab option 6 when generated. This is **not** live game collision/navigation/story integration; layout/doors/occlusion remain approval gates. See `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
