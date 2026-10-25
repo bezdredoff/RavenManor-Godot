@@ -1,7 +1,7 @@
 import {test} from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
-import {ROOM_NAMES,validateCatalog,assetFromCatalog,mergeCatalogAssets,assetsForRoom,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from '../catalog.mjs';
+import {ROOM_NAMES,validateCatalog,assetFromCatalog,mergeCatalogAssets,assetsForRoom,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from '../catalog.mjs';
 import {exampleProject,placeObject,validateProject,uid} from '../model.mjs';
 
 const catalog = JSON.parse(fs.readFileSync(new URL('../catalog/room-items.json', import.meta.url),'utf8'));
@@ -89,4 +89,26 @@ test('serialized room snapshots remain ordered even with slow writes and earlier
  await assert.rejects(writer({fail:true}));
  await writer({room:'archive',delay:0});
  assert.deepEqual(order,['hall','bedroom','archive']);
+});
+test('all mansion inventory has 120 cards; previous Hall-only selection had 35',()=>{
+ const p=exampleProject();mergeCatalogAssets(p,catalog);
+ const mansion=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all'});
+ const hall=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'room'});
+ assert.equal(mansion.length,120);
+ assert.equal(hall.length,35);
+ assert.equal(mansion.filter(a=>a.roomId==='RM-ROOM-HALL').length,19);
+ assert.equal(mansion.filter(a=>a.roomId==='RM-ROOM-ARCHIVE').length,16);
+ assert.equal(filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',search:'Кухня'}).length,18);
+ assert.equal(filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',search:'RM-ASSET-HALL-017'}).length,1);
+ assert.ok(mansion.every(a=>a.source==='production-register'));
+});
+
+test('unplaced-only filter concerns active room, not other rooms during global search',()=>{
+ const p=exampleProject();mergeCatalogAssets(p,catalog);
+ const placedRefs=p.objects.map(o=>o.assetRefId).filter(Boolean);
+ const room=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'room',onlyMissing:true,placedRefs});
+ const mansion=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',onlyMissing:true,placedRefs});
+ assert.ok(room.length<19);
+ assert.ok(room.every(a=>a.roomId==='RM-ROOM-HALL'));
+ assert.equal(mansion.length,120);
 });
