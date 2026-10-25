@@ -1,13 +1,14 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals} from './visual-contract.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
+import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
-let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=null,actorImage=null,drawActorPreview=true;
+let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null,drawActorPreview=true;
 const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
 function notify(message){$('#notice').textContent=message;}
 function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
@@ -89,11 +90,25 @@ async function loadHallVisuals(){
  try{
   const res=await fetch('./reference/hall_visual_contract.json',{cache:'no-cache'});
   if(!res.ok)throw Error('HTTP '+res.status);
-  visualContract=validateVisualContract(await res.json());
-  actorImage=pilotImage(visualContract.actor.source);
-  for(const entry of visualContract.sprites)pilotImage(entry.file);
-  draw();
- }catch(err){console.warn('Hall sprite contract is unavailable:',err);notify('Спрайты холла недоступны — отображаются схемы');}
+  const remote=validateVisualContract(await res.json());
+  if(JSON.stringify(remote)!==JSON.stringify(BUILTIN_HALL_VISUALS))throw Error('Pilot contract version mismatch');
+  visualContract=remote;
+ }catch(err){console.warn('Using built-in Hall visual contract',err);notify('Встроенная схема холла активна; изображения требуют подключения');}
+ actorImage=pilotImage(visualContract.actor.source);
+ for(const sprite of visualContract.sprites)pilotImage(sprite.file);
+ renderPalette();draw();
+}
+function populateHallDraft(target){
+ if(!canPopulateHall(target,visualContract))return 0;
+ if(!productionCatalog)throw Error('Библиотека предметов ещё не загрузилась');
+ return seedPilotVisuals(target,visualContract,ref=>target.assets.find(a=>a.assetRefId===ref),
+  (asset,rect,sprite)=>object(asset,rect.x,rect.y,{w:rect.w,h:rect.h,layerId:asset.layerId,assetRefId:asset.assetRefId,state:sprite.state}));
+}
+function placeOnoeNow(){
+ if(!activeContract()){notify('Оноэ можно разместить только в холле Godot 700×690');return;}
+ checkpoint();movePreviewActor(project,visualContract);drawActorPreview=true;$('#showActor').checked=true;
+ changeTool('actor');changed();togglePanel(null);
+ notify('Оноэ размещена. Коснись пола, чтобы изменить её положение.');
 }
 function activeContract(){return visualContract&&contractFits(project,visualContract)?visualContract:null;}
 function drawPilotItem(c,item,viewport,mode='upright'){
