@@ -55,7 +55,7 @@ jobs:
           python3 -m unittest scripts/raven/tools/test_room_builder_import.py scripts/raven/tools/test_hall_visual_sync.py
           python3 scripts/raven/tools/build_room_catalog.py --check
 
-      - name: Browser smoke — new Hall, PNG cards and Onoe
+      - name: Browser smoke — independent panels and normal character editing
         shell: bash
         run: |
           set -euo pipefail
@@ -66,7 +66,7 @@ jobs:
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 2
           timeout 50 "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run --user-data-dir="/tmp/room-builder-smoke-$GITHUB_RUN_ID" --virtual-time-budget=20000 --dump-dom http://127.0.0.1:4173/tests/browser_smoke.html > /tmp/room-builder-smoke.html 2>/tmp/room-builder-chrome.log
-          grep -q 'PASS: 7 new Hall sprites, 7 PNG thumbnails, 700×690 and actor placement' /tmp/room-builder-smoke.html || { cat /tmp/room-builder-smoke.html; cat /tmp/room-builder-chrome.log; exit 1; }
+          grep -q 'PASS: 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag' /tmp/room-builder-smoke.html || { cat /tmp/room-builder-smoke.html; cat /tmp/room-builder-chrome.log; exit 1; }
 
       - name: Verify published Room Builder mirrors its canonical sources
         run: |
