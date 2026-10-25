@@ -188,6 +188,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
     lines = [f"[gd_scene load_steps={len(textures) + 1} format=3]", ""]
     for path in textures:
         lines.append(f'[ext_resource type="Texture2D" path={q(path)} id={q(ids[path])}]')
+    summary = f'{metrics["pilot"]} pilot, {metrics["embedded"]} embedded, {metrics["placeholders"]} placeholders'
     lines.extend(["", f'[node name={q(safe(room_id) + "_GamePreview")} type="Node2D"]',
                   'metadata/geometry_approval = "DRAFT_ONLY"',
                   'metadata/import_kind = "ROOM_BUILDER_GAME_VISUAL_ONLY"',
@@ -196,7 +197,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
                   f'metadata/room_id = {q(room_id)}',
                   f'metadata/world_origin = {vec(world_rect[0], world_rect[1])}',
                   f'metadata/source_size = {vec(w, h)}',
-                  f'metadata/summary = {q(f"{metrics["pilot"]} pilot, {metrics["embedded"]} embedded, {metrics["placeholders"]} placeholders")}', ""])
+                  f'metadata/summary = {q(summary)}', ""])
 
     # Explicit screen-space 65° projection in preview. No physics bodies or
     # navigational edge mutations. Camera is centered for review at native
