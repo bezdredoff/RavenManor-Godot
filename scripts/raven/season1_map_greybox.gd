@@ -11,6 +11,15 @@ const HALL_CLOCK = preload("res://assets/prototypes/map_calibration/grandfather_
 const HALL_SEATS = preload("res://assets/prototypes/map_calibration/seating_cluster.svg")
 const HALL_CONSOLE = preload("res://assets/prototypes/map_calibration/console.svg")
 const HALL_GALLERY = preload("res://assets/prototypes/map_calibration/ancestor_gallery.svg")
+# Unretouched generator PNGs: experimental, non-spatially-locked art.
+const AI_HALL_TWIN = preload("res://assets/raven/hall/generated_pilot/backgrounds/hall_twin_staircases.png")
+const AI_HALL_CRIMSON = preload("res://assets/raven/hall/generated_pilot/backgrounds/hall_crimson_stairways.png")
+const AI_CLOCK = preload("res://assets/raven/hall/generated_pilot/props/grandfather_clock.png")
+const AI_CHAIR = preload("res://assets/raven/hall/generated_pilot/props/armchair_clean.png")
+const AI_SIDE_TABLE = preload("res://assets/raven/hall/generated_pilot/props/round_side_table.png")
+const AI_RUG = preload("res://assets/raven/hall/generated_pilot/props/burgundy_runner.png")
+const AI_CONSOLE = preload("res://assets/raven/hall/generated_pilot/props/entry_console.png")
+const AI_GALLERY = preload("res://assets/raven/hall/generated_pilot/props/ancestor_gallery_composite.png")
 const CAMERA_ANGLES := [45, 55, 65]
 const CELL := 25
 const WALL_MARGIN := 28.0
@@ -33,6 +42,8 @@ var zoom := DEFAULT_HUB_ZOOM
 var camera_elevation := DEFAULT_CAMERA_ELEVATION
 var floor_depth_ratio := sin(deg_to_rad(float(DEFAULT_CAMERA_ELEVATION)))
 var art_enabled := true
+# 0: original SVG, 1: generated twin staircase, 2: generated crimson version, 3: bounds-only greybox
+var art_variant := 0
 var debug_art_bounds := false
 var dragging := false
 var drag_distance := 0.0
@@ -134,7 +145,7 @@ func _make_ui() -> void:
 	add_child(debug_panel)
 	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2.ZERO, Vector2(150, 36), _toggle_explore, debug_panel)
 	camera_button = _button("Камера: 65°", Vector2.ZERO, Vector2(110, 36), _cycle_camera, debug_panel)
-	art_button = _button("Арт: ВКЛ", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
+	art_button = _button("Вид: SVG", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
 	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
 	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
 	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
@@ -347,8 +358,21 @@ func _cycle_camera() -> void:
 
 
 func _toggle_art() -> void:
-	art_enabled = not art_enabled
-	art_button.text = "Арт: ВКЛ" if art_enabled else "Арт: ВЫКЛ"
+	art_variant = (art_variant + 1) % 4
+	art_enabled = art_variant != 3
+	match art_variant:
+		0:
+			art_button.text = "Вид: SVG"
+			status_label.text = "Проверочный SVG: геометрия и старые пропорции"
+		1:
+			art_button.text = "Вид: AI1"
+			status_label.text = "AI-пробник 1: неточное совпадение дверей и стен"
+		2:
+			art_button.text = "Вид: AI2"
+			status_label.text = "AI-пробник 2: ковёр уже встроен в картинку"
+		3:
+			art_button.text = "Вид: ПЛАН"
+			status_label.text = "Габаритный greybox без текстур"
 	queue_redraw()
 
 
@@ -571,12 +595,27 @@ func _select_at(p: Vector2) -> void:
 			return
 
 func _pilot_texture(asset_id: String) -> Texture2D:
+	if art_variant == 1 or art_variant == 2:
+		match asset_id:
+			"RM-ASSET-HALL-CLOCK": return AI_CLOCK
+			"RM-ASSET-HALL-CONSOLE": return AI_CONSOLE
+			"RM-ASSET-HALL-GALLERY": return AI_GALLERY
+		return null
 	match asset_id:
 		"RM-ASSET-HALL-CLOCK": return HALL_CLOCK
 		"RM-ASSET-HALL-SEATS": return HALL_SEATS
 		"RM-ASSET-HALL-CONSOLE": return HALL_CONSOLE
 		"RM-ASSET-HALL-GALLERY": return HALL_GALLERY
 	return null
+
+
+func _draw_ai_seating(seating_bounds: Rect2) -> void:
+	# The generated source contains ONE chair: instantiate twice around a separate table.
+	# This is compositional calibration only. Do not alter existing collision rectangles.
+	var p := seating_bounds.position
+	draw_texture_rect(AI_CHAIR, Rect2(p + Vector2(2, 12), Vector2(58, 96)), false)
+	draw_texture_rect(AI_CHAIR, Rect2(p + Vector2(101, 12), Vector2(58, 96)), false)
+	draw_texture_rect(AI_SIDE_TABLE, Rect2(p + Vector2(58, 53), Vector2(46, 46)), false)
 
 
 func _draw() -> void:
@@ -589,8 +628,15 @@ func _draw() -> void:
 		var r := _room_rect(room)
 		draw_rect(r, Color(str(room.color)))
 		if art_enabled and str(room.id) == "RM-ROOM-HALL":
-			draw_texture_rect(HALL_SHELL, r, false)
-			draw_texture_rect(HALL_RUG, Rect2(785, 435, 130, 396), false)
+			if art_variant == 0:
+				draw_texture_rect(HALL_SHELL, r, false)
+				draw_texture_rect(HALL_RUG, Rect2(785, 435, 130, 396), false)
+			elif art_variant == 1:
+				draw_texture_rect(AI_HALL_TWIN, r, false)
+				draw_texture_rect(AI_RUG, Rect2(785, 435, 130, 396), false)
+			else:
+				# The second illustration already contains a carpet; do not double-bake it.
+				draw_texture_rect(AI_HALL_CRIMSON, r, false)
 		else:
 			var upper_wall := PackedVector2Array([
 				r.position + Vector2(0, 0),
@@ -616,7 +662,11 @@ func _draw() -> void:
 		var restored := bool(repaired_in_preview.get(str(item.id), false))
 		var texture := _pilot_texture(str(item.id)) if art_enabled else null
 		var embedded_in_shell := art_enabled and str(item.id) in ["RM-ASSET-HALL-STAIRS-L", "RM-ASSET-HALL-STAIRS-R"]
-		if texture != null:
+		if art_enabled and (art_variant == 1 or art_variant == 2) and str(item.id) == "RM-ASSET-HALL-SEATS":
+			_draw_ai_seating(r)
+			if restored:
+				draw_rect(r, Color(0.22, 0.7, 0.49, 0.28))
+		elif texture != null:
 			draw_texture_rect(texture, r, false)
 			if restored:
 				draw_rect(r, Color(0.22, 0.7, 0.49, 0.28))
