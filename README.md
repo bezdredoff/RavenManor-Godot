@@ -6,7 +6,9 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status:** RM-HUB-001 foundation, navigation greybox, universal Prototype Lab/Pages delivery and the integrated RM-VS-01 are implemented. PR 3 adds Raven VN, deterministic Match-3, restorations, clue, night episode and reload-safe progression.
+**Repository status (2026-10-25):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.1, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
+
+Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It saves locally and exports JSON/PNG; output is not yet a calibrated gameplay scene.
 
 Read `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, and `docs/IMPLEMENTATION_PLAN.md` before changes.
 
@@ -22,4 +24,4 @@ See `docs/RM_HUB_001_FOUNDATION.md` for the save schema and event API.
 See `docs/RM_HUB_001_NAVIGATION.md` for authored graph and greybox extension instructions.
 See `docs/PROTOTYPE_LAB_AND_PAGES.md` for the shared prototype launcher, Web export and GitHub Pages deployment.
 See `docs/QUICKSTART_PREVIEWS.md` for exact Match-3/VN IDs, isolated preview controls, full-flow launch and save/reset instructions.
-See `docs/STATUS.md` for canonical current status and `docs/NEXT_PLAN.md` for the reconciled next gates.
+See `docs/STATUS.md` for canonical current status, `docs/NEXT_PLAN.md` for priority order, and `docs/ROOM_PIPELINE_NEXT_GATE.md` for the next room-production acceptance gate.
