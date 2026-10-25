@@ -1,13 +1,14 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals} from './visual-contract.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
+import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
-let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=null,actorImage=null,drawActorPreview=true;
+let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null,drawActorPreview=true;
 const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
 function notify(message){$('#notice').textContent=message;}
 function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
@@ -89,11 +90,25 @@ async function loadHallVisuals(){
  try{
   const res=await fetch('./reference/hall_visual_contract.json',{cache:'no-cache'});
   if(!res.ok)throw Error('HTTP '+res.status);
-  visualContract=validateVisualContract(await res.json());
-  actorImage=pilotImage(visualContract.actor.source);
-  for(const entry of visualContract.sprites)pilotImage(entry.file);
-  draw();
- }catch(err){console.warn('Hall sprite contract is unavailable:',err);notify('Спрайты холла недоступны — отображаются схемы');}
+  const remote=validateVisualContract(await res.json());
+  if(JSON.stringify(remote)!==JSON.stringify(BUILTIN_HALL_VISUALS))throw Error('Pilot contract version mismatch');
+  visualContract=remote;
+ }catch(err){console.warn('Using built-in Hall visual contract',err);notify('Встроенная схема холла активна; изображения требуют подключения');}
+ actorImage=pilotImage(visualContract.actor.source);
+ for(const sprite of visualContract.sprites)pilotImage(sprite.file);
+ renderPalette();draw();
+}
+function populateHallDraft(target){
+ if(!canPopulateHall(target,visualContract))return 0;
+ if(!productionCatalog)throw Error('Библиотека предметов ещё не загрузилась');
+ return seedPilotVisuals(target,visualContract,ref=>target.assets.find(a=>a.assetRefId===ref),
+  (asset,rect,sprite)=>object(asset,rect.x,rect.y,{w:rect.w,h:rect.h,layerId:asset.layerId,assetRefId:asset.assetRefId,state:sprite.state}));
+}
+function placeOnoeNow(){
+ if(!activeContract()){notify('Оноэ можно разместить только в холле Godot 700×690');return;}
+ checkpoint();movePreviewActor(project,visualContract);drawActorPreview=true;$('#showActor').checked=true;
+ changeTool('actor');changed();togglePanel(null);
+ notify('Оноэ размещена. Коснись пола, чтобы изменить её положение.');
 }
 function activeContract(){return visualContract&&contractFits(project,visualContract)?visualContract:null;}
 function drawPilotItem(c,item,viewport,mode='upright'){
@@ -237,7 +252,7 @@ function world(pos){return toWorld(pos,view,viewMode);}
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
 function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='actor'?'Коснись места на полу, куда должна встать Оноэ (тест перекрытий)':next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
 function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
- if(tool==='actor'){project.previewActorFoot={x:w.x,y:w.y};changed();return;}
+ if(tool==='actor'){if(!activeContract()){notify('Сначала создай игровой холл 700×690');return;}movePreviewActor(project,visualContract,w);drawActorPreview=true;$('#showActor').checked=true;changed();notify('Оноэ: '+Math.round(w.x)+' × '+Math.round(w.y));return;}
  if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){selected=o.id;changed();}}
  else if(tool==='erase'){const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
 }
@@ -275,10 +290,12 @@ function renderPalette(){
   const b=document.createElement('button');b.className='asset-card'+(selectedAsset===a.id?' active':'');
   b.title=`${a.label} · ${a.assetRefId||'черновой элемент'} · ${a.productionPriority||'без приоритета'} · ${a.artStatus||'ручной импорт'}`;
   const preview=document.createElement('div');preview.className='asset-preview';
-  if(a.image){const img=document.createElement('img');img.src=a.image;img.alt='';preview.append(img);}
+  const pilot=a.assetRefId?spriteForAsset(visualContract,a.assetRefId):null;
+  if(pilot){const img=document.createElement('img');img.src='./reference/sprites/'+pilot.file;img.alt='Пилотный PNG';img.loading='lazy';img.onerror=()=>{preview.replaceChildren();preview.textContent=a.symbol||'■';preview.style.color=a.color;};preview.append(img);}
+  else if(a.image){const img=document.createElement('img');img.src=a.image;img.alt='';preview.append(img);}
   else{preview.textContent=a.symbol||'■';preview.style.color=a.color;}
   const label=document.createElement('small');label.textContent=a.label;b.append(preview,label);
-  if(a.assetRefId){const meta=document.createElement('span');meta.className='asset-meta';meta.textContent=`${a.productionPriority||''} · ${(a.pilotImages||[]).length?'PNG пилот':'макет'}`;b.append(meta);
+  if(a.assetRefId){const meta=document.createElement('span');meta.className='asset-meta';meta.textContent=`${a.productionPriority||''} · ${pilot?'PNG пилот':(a.pilotImages||[]).length?'PNG экспериментальный':'макет'}`;b.append(meta);
    if(scopeMode==='all'&&a.roomId!==project.roomId){
      const hint=document.createElement('span');hint.className='asset-room-hint';
      hint.textContent='Выбрать → перейти в эту комнату';b.append(hint);
@@ -313,7 +330,7 @@ function makeAssetReferenceField(o,a){
 function renderProperties(){const el=$('#properties'),o=project.objects.find(o=>o.id===selected);el.replaceChildren();if(!o){el.textContent='Коснись предмета на холсте';el.classList.add('muted');return;}el.classList.remove('muted');const a=assetFor(o);const head=document.createElement('strong');head.textContent=a?.label||o.assetId;el.append(head);if(a?.assetRefId){const details=document.createElement('p');details.className='catalog-detail';details.textContent=`${a.assetRefId} · ${a.productionPriority} · ${a.artStatus}; размеры, точка опоры и кликабельная зона пока не измерены. ${a.rightsStatus==='requires-review'?'Права на исходник требуют проверки.':''}`;el.append(details);if(a.pilotImages?.length){const link=document.createElement('a');link.className='catalog-source-link';link.href='https://github.com/bezdredoff/RavenManor-Godot/blob/main/'+a.pilotImages[0].split('/').map(encodeURIComponent).join('/');link.target='_blank';link.rel='noopener noreferrer';link.textContent='Открыть исходный экспериментальный PNG';el.append(link);}}
  el.append(makeField('X',o.x,v=>o.x=v,'number'),makeField('Y',o.y,v=>o.y=v,'number'),makeField('Ширина',o.w,v=>o.w=Math.max(1,v),'number'),makeField('Высота',o.h,v=>o.h=Math.max(1,v),'number'),makeField('Поворот (°)',o.rotation,v=>o.rotation=v,'number'),makeStateField(o,a),makeAssetReferenceField(o,a),makeField('Hotspot ID',o.hotspotId||'',v=>o.hotspotId=v));
  const wrapper=document.createElement('div');wrapper.className='field';wrapper.textContent='Слой';const select=document.createElement('select');for(const l of project.layers){const opt=document.createElement('option');opt.value=l.id;opt.textContent=l.name;select.append(opt);}select.value=o.layerId;select.onchange=()=>{checkpoint();o.layerId=select.value;changed();renderLayers();};wrapper.append(select);el.append(wrapper);const row=document.createElement('div');row.className='action-row';for(const [name,action] of [['Дублировать',()=>{checkpoint();const copy=clone(o);copy.id=uid();copy.x+=20;copy.y+=20;project.objects.push(copy);selected=copy.id;changed();renderProperties();}],['Удалить',()=>{checkpoint();project.objects=project.objects.filter(p=>p.id!==o.id);selected=null;changed();renderProperties();}]]){const b=document.createElement('button');b.textContent=name;b.onclick=action;row.append(b);}el.append(row);}
-function renderSettings(){$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;}
+function renderSettings(){$('#populateHall').disabled=!canPopulateHall(project,visualContract);$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;}
 function refresh(){imageCache.clear();renderSettings();renderPalette();renderLayers();renderProperties();draw();}
 function togglePanel(id){for(const p of [$('#palette'),$('#inspector')])p.classList.toggle('open',p.id===id);}
 function download(blob,name){const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1500);}
@@ -334,7 +351,7 @@ async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error
  if(!await save())throw new Error('Сначала экспортируй несохранённый черновик');
  project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';past=[];future=[];historyButtons();refresh();fit();changed();notify('Проект импортирован');}
 async function handleSheet(file,columns,rows){if(!file||file.size>10*1024*1024)throw new Error('Файл слишком большой (макс. 10 MB)');if(!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error('Только PNG, JPEG и WebP');const img=await createImageBitmap(file),cols=Number(columns),rws=Number(rows);if(cols*rws>128||img.width%cols||img.height%rws)throw new Error('Необходимо равномерное деление, не более 128 спрайтов');checkpoint();const w=img.width/cols,h=img.height/rws;const stem=file.name.replace(/\.[^.]+$/,'').slice(0,40);const scratch=document.createElement('canvas');scratch.width=w;scratch.height=h;const c=scratch.getContext('2d');for(let y=0;y<rws;y++)for(let x=0;x<cols;x++){c.clearRect(0,0,w,h);c.drawImage(img,x*w,y*h,w,h,0,0,w,h);project.assets.push({id:uid('asset'),label:cols*rws===1?stem:`${stem} ${x+1}-${y+1}`,kind:'decor',w,h,color:'#80627a',symbol:'▧',image:scratch.toDataURL('image/png'),source:'local-import',license:'User must verify usage rights'});}img.close();renderPalette();changed();notify(`Добавлено ${cols*rws} ассетов`);}
-function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#moveActor').onclick=()=>{changeTool('actor');togglePanel(null);};$('#showActor').onchange=e=>{drawActorPreview=e.target.checked;draw();};$('#gameZoom').onclick=useGodotZoom;$('#previewMode').onchange=e=>{viewMode=e.target.value;fit();};$('#showDoorGuides').onchange=e=>{showDoorGuides=e.target.checked;draw();};$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;$('#catalogScope').onchange=e=>{catalogScope=e.target.value;renderPalette();};$('#onlyMissing').onchange=e=>{onlyMissing=e.target.checked;renderPalette();};$('#catalogRoom').onchange=e=>switchRoom(e.target.value).catch(err=>notify('Ошибка открытия комнаты: '+err.message));
+function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>changeTool(b.dataset.tool));$('#undo').onclick=undo;$('#redo').onclick=redo;$('#save').onclick=save;$('#fit').onclick=fit;$('#moveActor').onclick=placeOnoeNow;$('#populateHall').onclick=()=>{try{if(!canPopulateHall(project,visualContract)){notify('Заполнение доступно только в пустом холле 700×690');return;}checkpoint();const count=populateHallDraft(project);selected=null;refresh();changed();notify('Размещено '+count+' пилотных предметов.');}catch(err){notify('Не удалось заполнить холл: '+err.message);console.error(err);}};$('#showActor').onchange=e=>{drawActorPreview=e.target.checked;draw();};$('#gameZoom').onclick=useGodotZoom;$('#previewMode').onchange=e=>{viewMode=e.target.value;fit();};$('#showDoorGuides').onchange=e=>{showDoorGuides=e.target.checked;draw();};$('#zoomIn').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1.2);$('#zoomOut').onclick=()=>zoomAt(canvas.clientWidth/2,canvas.clientHeight/2,1/1.2);$('#grid').onchange=ev=>{showGrid=ev.target.checked;draw();};$('#search').oninput=renderPalette;$('#catalogScope').onchange=e=>{catalogScope=e.target.value;renderPalette();};$('#onlyMissing').onchange=e=>{onlyMissing=e.target.checked;renderPalette();};$('#catalogRoom').onchange=e=>switchRoom(e.target.value).catch(err=>notify('Ошибка открытия комнаты: '+err.message));
  $('#title').onchange=e=>{checkpoint();project.title=e.target.value.trim()||'Без названия';changed();};for(const [id,key] of [['roomWidth','width'],['roomHeight','height'],['gridSize','grid']])$("#"+id).onchange=e=>{const v=Number(e.target.value);const p=clone(project);p[key]=v;try{validateProject(p);checkpoint();project[key]=v;changed();fit();}catch(err){notify(err.message);renderSettings();}};
  $('#addLayer').onclick=()=>{checkpoint();const id=uid('layer');project.layers.push({id,name:`Слой ${project.layers.length+1}`,visible:true,locked:false});selectedLayer=id;changed();renderLayers();};
  $('#exportMenu').onclick=()=>$('#exportDialog').showModal();$('#mobileExport').onclick=()=>$('#exportDialog').showModal();$('#exportJSON').onclick=exportJSON;$('#exportPNG').onclick=exportPNG;$('#importJSONBtn').onclick=()=>$('#projectFile').click();$('#projectFile').onchange=async e=>{try{await importJSON(e.target.files[0]);$('#exportDialog').close();}catch(err){notify(err.message);}e.target.value='';};
@@ -350,13 +367,12 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
   p.provenance='Proposed Godot world map room draft; matching floor dimensions, not approved furniture/doors/art.';
  }
  if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
- if(visualContract&&contractFits(p,visualContract)){
-  seedPilotVisuals(p,visualContract,ref=>p.assets.find(a=>a.assetRefId===ref),
-    (asset,rect,sprite)=>object(asset,rect.x,rect.y,{w:rect.w,h:rect.h,layerId:asset.layerId,assetRefId:asset.assetRefId,state:sprite.state}));
- }
+ let count=0;
+ try{count=populateHallDraft(p);if(p.roomId==='RM-ROOM-HALL'&&p.width===700&&count!==7)throw Error('Ожидалось 7 предметов, получено '+count);}
+ catch(err){notify('Комната не создана: '+err.message);console.error(err);return;}
  project=p;selected=null;past=[];future=[];historyButtons();refresh();fit();changed();
  $('#exportDialog').close();
- notify(room?'Новый игровой черновик по предварительной геометрии Godot — '+p.width+'×'+p.height:'Новый пустой черновик');
+ notify(count?'Холл 700×690: размещено '+count+' PNG предметов':'Новая комната '+p.width+'×'+p.height);
 };
  $('#assetFiles').onchange=e=>{const file=e.target.files[0];if(!file)return;importFile=file;$('#sheetName').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;$('#sheetDialog').showModal();e.target.value='';};$('#sheetConfirm').onclick=async()=>{try{await handleSheet(importFile,$('#sheetCols').value,$('#sheetRows').value);$('#sheetDialog').close();}catch(err){notify(err.message);}};
  for(const b of document.querySelectorAll('[data-panel]'))b.onclick=()=>togglePanel(b.dataset.panel);$('#closePalette').onclick=()=>togglePanel(null);$('#closeInspector').onclick=()=>togglePanel(null);$('#mobileStamp').onclick=()=>{changeTool('stamp');togglePanel('palette');};

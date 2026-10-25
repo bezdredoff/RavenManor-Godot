@@ -52,14 +52,25 @@ export function actorScreenRect(foot,actor,view,projectionFn){
 /** Called only for an explicitly new, blank Hall draft; never rewrite existing data. */
 export function seedPilotVisuals(project,contract,assetByRef,createInstance){
  if(!contractFits(project,contract)||project.objects.length) return 0;
- for(const sprite of contract.sprites){
+ const instances=contract.sprites.map(sprite=>{
   const asset=assetByRef(sprite.assetRefId);
   if(!asset)throw Error('Missing Hall catalog entry '+sprite.assetRefId);
-  const rect=localVisualRect(sprite,contract);
-  project.objects.push(createInstance(asset,rect,sprite));
- }
+  const rect=localVisualRect(sprite,contract),instance=createInstance(asset,rect,sprite);
+  if(!instance||instance.assetRefId!==sprite.assetRefId)throw Error('Invalid pilot '+sprite.assetRefId);
+  return instance;
+ });
+ project.objects.push(...instances);
  project.previewActorFoot=actorLocalFoot(project,contract);
  project.visualContractVersion=1;
  project.provenance='Experimental shared Godot Hall sprite-layout preview; positions/PNG states NOT approved.';
  return contract.sprites.length;
+}
+
+export function canPopulateHall(project,contract){
+ return contractFits(project,contract)&&project.objects.length===0;
+}
+export function movePreviewActor(project,contract,point=actorLocalFoot(project,contract)){
+ if(!contractFits(project,contract))throw Error('Нужен холл 700×690 для Оноэ');
+ if(!point||!Number.isFinite(point.x)||!Number.isFinite(point.y)||point.x<0||point.y<0||point.x>project.width||point.y>project.height)throw Error('Поставь Оноэ внутри комнаты');
+ project.previewActorFoot={x:point.x,y:point.y};return project.previewActorFoot;
 }

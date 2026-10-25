@@ -1,0 +1,31 @@
+<!doctype html><html lang="ru"><head><meta charset="utf-8"><title>Room Builder browser smoke</title></head>
+<body><pre id="result">STARTED</pre><iframe id="app" src="../index.html" style="width:980px;height:800px"></iframe>
+<script>
+(async()=>{
+ const output=document.getElementById('result');
+ function assert(cond,msg){if(!cond)throw new Error(msg);}
+ function waitUntil(check,timeout=14000){return new Promise((resolve,reject)=>{const start=Date.now();function checkAgain(){try{if(check())return resolve();if(Date.now()-start>timeout)return reject(new Error('Timeout waiting for '+check.toString()));setTimeout(checkAgain,100);}catch(e){reject(e);}}checkAgain();});}
+ try{
+  const frame=document.getElementById('app');
+  await new Promise((resolve,reject)=>{if(frame.contentDocument?.readyState==='complete')return resolve();frame.addEventListener('load',resolve,{once:true});frame.addEventListener('error',reject,{once:true});});
+  const w=frame.contentWindow,d=frame.contentDocument;
+  w.confirm=()=>true;
+  await waitUntil(()=>d.querySelector('#catalogInfo')?.textContent?.includes('120'));
+  await waitUntil(()=>!!d.querySelector('#newRoom')?.onclick);
+  assert(d.querySelector('#previewMode')?.value==='game','default view must be game');
+  d.querySelector('#exportMenu').click();
+  d.querySelector('#newRoom').click();
+  await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('7 объектов'));
+  assert(d.querySelector('#roomWidth').value==='700','Room width must match Godot');
+  assert(d.querySelector('#roomHeight').value==='690','Room height must match Godot');
+  await waitUntil(()=>d.querySelectorAll('.asset-preview img[src*="reference/sprites/"]').length>=7);
+  assert(d.querySelector('#populateHall').disabled,'do not overwrite furnished Hall');
+  d.querySelector('#moveActor').click();
+  assert(d.querySelector('#notice').textContent.includes('Оноэ размещена'),'actor must be placed on button press');
+  assert(d.querySelector('#showActor').checked,'actor should be visible');
+  assert(d.querySelector('#exportDialog').open===false,'new-room dialog should be closed');
+  output.textContent='PASS: 7 new Hall sprites, 7 PNG thumbnails, 700×690 and actor placement';
+  document.documentElement.dataset.testResult='pass';
+ }catch(err){output.textContent='FAIL: '+(err.stack||err.message);document.documentElement.dataset.testResult='fail';}
+})();
+</script></body></html>

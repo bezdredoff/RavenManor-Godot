@@ -79,3 +79,11 @@ python3 scripts/raven/tools/sync_hall_preview.py path/to/rm-room-hall-room.json
 This writes \`data/raven/hall_builder_preview.json\`. Reopen/refresh **5 · Whole Manor Map** in the *local* Godot project to see the same supported PNG positions with the same sorting/actor occlusion. Delete the generated override to fall back to the repo's shared pilot manifest. This is a one-way **manual visual-only** bridge; it never updates pathfinding collider shapes, door geometry, story gates or campaign save. It rejects non-zero rotation and unrendered state variants rather than silently pretending the same clean PNG is an approved dirty/repair image. Only the seven supported pilot sprites are imported for now.
 
 The original 120 catalog positions remain production proposals; 113 entries still have no special upright PNG mapping, and exact state textures, intersection masks, touch tablet screenshot parity and canonical Evelyn art remain outstanding. Details: \`docs/ROOM_BUILDER_GAME_PROJECTION.md\`.
+
+## v0.4.1 — fix empty Hall and invisible actor
+
+Fixed: the Room Builder palette previously kept schematic glyphs even for seven pilot PNG assets, and the actor button only enabled a brush rather than placing the character. A validated built-in Hall manifest makes the seven-item seeding independent of a second asynchronous network fetch. The app now shows real pilot PNG thumbnails for these seven registered positions, while the other catalog entries remain placeholders.
+
+**Новая комната по Godot** seeds 7 pilot objects in Hall automatically (after JSON-backup confirmation). For an already-created **empty Hall 700×690**, use **Свойства → Заполнить пустой холл (7 PNG)**, which is disabled for furnished rooms and never overwrites existing placements. **Поставить Оноэ (сразу)** immediately shows her at the reference footpoint, and further taps relocate her. The editor does not imply these pilot PNGs are approved.
+
+Browser storage remains local, so use JSON export before replacing an existing room. The PWA shell cache has been bumped; close and reopen the installed app to load the new version.

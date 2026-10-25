@@ -55,3 +55,7 @@ Room Builder v0.3 defaults to a **65° projected, directly editable game-floor v
 ## 2026-10-25 — RM-PIPE experimental Hall rendering parity v0.4
 
 The PWA and Godot Whole Manor Map now share a versioned preview-only 7-sprite Hall visual manifest, the original source PNGs, bottom-centre foot pivots, **upright screen-space visual height**, actor-floor foot projection and draw-order splitting around Onoe. A temporary front CanvasItem renders props in front of the game actor. Builder's new aligned Hall draft seeds the exact pilot layout; a manual exported JSON → \`sync_hall_preview.py\` conversion can override Godot **visual placement** while leaving world route/collider/save untouched. All seven artworks and unrendered state variants remain *unapproved*, and real device/per-pixel/mask/collider parity remains pending.
+
+## 2026-10-25 · Room Builder v0.4.1 regression fix
+
+Fixed user-reported empty new Hall (async manifest dependency), missing pilot thumbnails despite available source PNGs, and actor button that only armed a tool without placing Onoe. Added atomic 7-object seeding, explicit empty-draft recovery, built-in Hall layout fallback, and Node unit regression checks. Android screenshot acceptance remains user-side; this change does not approve art or physics.

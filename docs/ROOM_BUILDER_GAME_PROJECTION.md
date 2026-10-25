@@ -56,3 +56,7 @@ The safe converter whitelists art via the versioned shared manifest; it rejects 
 - Art visual acceptance; original generated backgrounds still contain perspective/door seam discrepancies and current cutouts are experimental.
 
 The goal for the next slice is to address collisions, alpha masks, physical height/pivots and approved source art for the *one accepted Hall layout* before applying the method to all 120 planned entries.
+
+## v0.4.1 correction
+
+The reported blank Hall on a new-room action was a real workflow defect: seeding depended on an asynchronous visual-contract fetch and had no exposed retry. The seven-source contract is now bundled as a synchronous module and is regression-tested against the authoritative JSON, while Hall seeding is atomic. Seven catalog cards now display their pilot PNG thumbnails; the other 113 inventory positions remain concept placeholders. The actor button places the technical character immediately before enabling tap-to-reposition. The explicit empty-Hall recovery action is non-destructive and does not alter furnished rooms.

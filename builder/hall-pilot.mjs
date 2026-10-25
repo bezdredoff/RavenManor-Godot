@@ -1,0 +1,131 @@
+// Bundled Hall pilot layout: available before async fetch, even offline.
+// Generated from reference/hall_visual_contract.json; regression-tested for parity.
+export const BUILTIN_HALL_VISUALS = {
+  "schemaVersion": 1,
+  "roomId": "RM-ROOM-HALL",
+  "roomWorldRect": [
+    500,
+    150,
+    700,
+    690
+  ],
+  "cameraElevation": 65,
+  "zoomReference": 0.74,
+  "status": "PILOT_NOT_APPROVED",
+  "description": "Shared Godot/Builder exact pilot PNGs; worldRect is drawing bounds, upright sprites use bottom-center floor pivot and actor-foot Y sorting; no final mesh/occlusion certification.",
+  "actor": {
+    "foot": [
+      875,
+      635
+    ],
+    "height": 90,
+    "source": "onoe_walk_sheet_v1.png",
+    "frameRect": [
+      0,
+      0,
+      256,
+      384
+    ],
+    "status": "UPDS_TECHNICAL_PLACEHOLDER"
+  },
+  "sprites": [
+    {
+      "id": "rug",
+      "assetRefId": "RM-ASSET-HALL-010",
+      "mapPropId": "",
+      "file": "burgundy_runner.png",
+      "rect": [
+        785,
+        435,
+        130,
+        396
+      ],
+      "mode": "floor",
+      "state": "laid"
+    },
+    {
+      "id": "clock",
+      "assetRefId": "RM-ASSET-HALL-002",
+      "mapPropId": "RM-ASSET-HALL-CLOCK",
+      "file": "grandfather_clock.png",
+      "rect": [
+        575,
+        460,
+        60,
+        90
+      ],
+      "mode": "upright",
+      "state": "stopped"
+    },
+    {
+      "id": "chair-left",
+      "assetRefId": "RM-ASSET-HALL-017",
+      "mapPropId": "RM-ASSET-HALL-SEATS",
+      "file": "armchair_clean.png",
+      "rect": [
+        642,
+        572,
+        58,
+        96
+      ],
+      "mode": "upright",
+      "state": "clean"
+    },
+    {
+      "id": "chair-right",
+      "assetRefId": "RM-ASSET-HALL-018",
+      "mapPropId": "RM-ASSET-HALL-SEATS",
+      "file": "armchair_clean.png",
+      "rect": [
+        741,
+        572,
+        58,
+        96
+      ],
+      "mode": "upright",
+      "state": "clean"
+    },
+    {
+      "id": "round-table",
+      "assetRefId": "RM-ASSET-HALL-019",
+      "mapPropId": "RM-ASSET-HALL-SEATS",
+      "file": "round_side_table.png",
+      "rect": [
+        698,
+        613,
+        46,
+        46
+      ],
+      "mode": "upright",
+      "state": "polished"
+    },
+    {
+      "id": "console",
+      "assetRefId": "RM-ASSET-HALL-007",
+      "mapPropId": "RM-ASSET-HALL-CONSOLE",
+      "file": "entry_console.png",
+      "rect": [
+        1110,
+        720,
+        70,
+        65
+      ],
+      "mode": "upright",
+      "state": "polished"
+    },
+    {
+      "id": "gallery",
+      "assetRefId": "RM-ASSET-HALL-006",
+      "mapPropId": "RM-ASSET-HALL-GALLERY",
+      "file": "ancestor_gallery_composite.png",
+      "rect": [
+        525,
+        220,
+        65,
+        165
+      ],
+      "mode": "upright",
+      "state": "clean"
+    }
+  ]
+};
