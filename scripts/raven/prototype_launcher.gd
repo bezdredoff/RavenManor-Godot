@@ -5,6 +5,7 @@ const NAVIGATION_SCENE := "res://scenes/raven/manor_greybox.tscn"
 const WHOLE_MAP_SCENE := "res://scenes/raven/season1_map_greybox.tscn"
 const VERTICAL_SLICE_SCENE := "res://scenes/raven/vertical_slice.tscn"
 const CONTENT_PREVIEW_SCENE := "res://scenes/raven/content_preview.tscn"
+const BUILDER_GAME_PREVIEW_SCENE := "res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn"
 
 
 func _ready() -> void:
@@ -24,6 +25,16 @@ func _ready() -> void:
 		"ПРОВЕРИТЬ ОБЩУЮ КАРТУ",
 		_open.bind(WHOLE_MAP_SCENE)
 	))
+
+	if ResourceLoader.exists(BUILDER_GAME_PREVIEW_SCENE):
+		column.add_child(_card(
+			"6 · Room Builder → Godot · DRAFT",
+			"Отдельная импортированная сцена холла: PNG, игровые 65° и расстановка мебели. Это тестовая композиция без сюжетной навигации, коллизий и сохранений.",
+			"ПРОВЕРИТЬ ИМПОРТИРОВАННУЮ КОМНАТУ",
+			_open.bind(BUILDER_GAME_PREVIEW_SCENE)
+		))
+	else:
+		column.add_child(_paragraph("6 · Room Builder: импортируй экспортированный JSON через import_room_builder_game.py, чтобы создать отдельную проверяемую сцену в Godot."))
 	column.add_child(_card(
 		"4 · Content Preview",
 		"Запустить отдельно любой RM-LVL-001..003 или VN beat RM-BEAT-01-01..05 без изменения общего сохранения.",
