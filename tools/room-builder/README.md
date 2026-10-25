@@ -56,3 +56,11 @@ The default **Обзор предметов → Весь особняк · 120 �
 Choosing an item assigned to another room while browsing the mansion first saves the current draft and switches to that item's room. Only after a successful switch does it arm that asset for stamping. A storage/save failure blocks switching. The **неразмещённые** filter is available only in room mode.
 
 Service worker cache is now v4 and fetches current assets online first, with offline cache fallback to avoid holding an obsolete catalog UI indefinitely. An already-open PWA may need to be closed and reopened once after the deploy. All 120 entries remain schematic planning data, not 120 generated PNGs.
+
+## v0.3.0 — Godot-projected editing
+
+The default editable workspace now uses the **same 65° projected floor transform** as the Godot Whole Manor Map, including inverse pointer picking and world-space dragging. Switch to **План XY** for technical top-down checks; the original room JSON coordinates are never modified by changing the view. **0.74×** sets the prototype's camera zoom, but not the entire game HUD/framing.
+
+The current AI1 background and door guides are visible when Hall room dimensions exactly match the (provisional) Godot Hall footprint **700×690**. Original 1000×800 sample drafts display an explicit mismatch warning rather than being silently warped. Export the old JSON before replacing a furnished room with an empty 700×690 reference draft. The 120 catalog entries are still predominantly placeholders, not final WYSIWYG sprites.
+
+See `docs/ROOM_BUILDER_GAME_PROJECTION.md` for coordinates, exported art limits and acceptance tests.

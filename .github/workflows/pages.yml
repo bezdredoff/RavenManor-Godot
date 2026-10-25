@@ -58,6 +58,8 @@ jobs:
           for file in index.html app.mjs model.mjs catalog.mjs projection.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/hall_twin_staircases.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
             cmp "tools/room-builder/$file" "builder/$file"
           done
+          cmp data/raven/season1_world_map.json tools/room-builder/reference/season1_world_map.json
+          cmp assets/raven/hall/generated_pilot/backgrounds/hall_twin_staircases.png tools/room-builder/reference/hall_twin_staircases.png
 
       - name: Export Web build
         run: |
