@@ -1,6 +1,6 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
@@ -73,7 +73,11 @@ function ensureCharacterAsset(p){
 }
 function migrateLegacyCharacter(p){
  ensureCharacterAsset(p);
- if(p.visualContractVersion!==1||!contractFits(p,visualContract)||p.objects.some(o=>o.assetId===TEST_CHARACTER_ID))return false;
+ if(p.characterAssetMigration===1||p.visualContractVersion!==1||!contractFits(p,visualContract))return false;
+ // Mark the migration complete, including when the character was already
+ // present. Removing a character must not cause it to reappear on reload.
+ p.characterAssetMigration=1;
+ if(p.objects.some(o=>o.assetId===TEST_CHARACTER_ID))return false;
  const foot=previewActorFoot(p,visualContract),asset=p.assets.find(a=>a.id===TEST_CHARACTER_ID);
  p.objects.push(object(asset,foot.x-asset.w/2,foot.y-asset.h,{layerId:'objects',role:'preview-character',state:'test'}));
  delete p.previewActorFoot;
@@ -150,14 +154,14 @@ function drawCharacter(c,o,viewport,contract){
  c.restore();
 }
 function gameRenderOrder(contract){
- const pilot=visualInstances(project,contract).filter(e=>e.sprite.mode==='upright'&&layerFor(e.object)?.visible);
+ const pilot=contract?visualInstances(project,contract).filter(e=>e.sprite.mode==='upright'&&layerFor(e.object)?.visible):[];
  const characters=characterObjects().map(o=>({object:o,kind:'character',footY:o.y+o.h}));
  return [...pilot.map(e=>({...e,kind:'prop'})),...characters]
    .sort((a,b)=>a.footY-b.footY||a.object.id.localeCompare(b.object.id));
 }
 function drawGameSprites(c,viewport,contract,exporting=false){
  for(const entry of gameRenderOrder(contract)){
-  if(entry.kind==='character')drawCharacter(c,entry.object,viewport,contract);
+  if(entry.kind==='character')drawCharacter(c,entry.object,viewport,contract||visualContract);
   else drawPilotItem(c,entry,viewport);
  }
  if(!exporting&&selected){
@@ -173,10 +177,10 @@ function drawGameSprites(c,viewport,contract,exporting=false){
  }
 }
 function hitGamePilot(pos){
- const contract=activeContract();if(!contract||viewMode!=='game')return null;
+ const contract=activeContract();if(viewMode!=='game')return null;
  const entries=[
   ...gameRenderOrder(contract),
-  ...visualInstances(project,contract).filter(x=>x.sprite.mode==='floor'&&layerFor(x.object)?.visible).map(x=>({...x,kind:'floor'}))
+  ...(contract?visualInstances(project,contract):[]).filter(x=>x.sprite.mode==='floor'&&layerFor(x.object)?.visible).map(x=>({...x,kind:'floor'}))
  ].sort((a,b)=>(a.kind==='floor'?1:0)-(b.kind==='floor'?1:0)||b.footY-a.footY);
  for(const entry of entries){
   const o=entry.object;
@@ -246,7 +250,7 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  if(showGrid&&!exporting){c.strokeStyle='#69645c33';c.lineWidth=1/viewport.scale;c.beginPath();for(let x=0;x<=project.width;x+=project.grid){c.moveTo(x,0);c.lineTo(x,project.height);}for(let y=0;y<=project.height;y+=project.grid){c.moveTo(0,y);c.lineTo(project.width,y);}c.stroke();}
  const contract=viewMode==='game'?activeContract():null;
  const records=contract?visualInstances(project,contract):[];
- const renderIDs=new Set([...records.map(x=>x.object.id),...characterObjects().map(o=>o.id)]);
+ const renderIDs=new Set([...records.map(x=>x.object.id),...(viewMode==='game'?characterObjects().map(o=>o.id):[])]);
  const order=new Map(project.layers.map((l,i)=>[l.id,i]));
  if(contract){
   // Carpets sit on the projected floor, before any tall furniture.
@@ -260,7 +264,7 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
   if(layerFor(o)?.visible&&!renderIDs.has(o.id))drawAsset(c,o);
  if(!exporting&&viewMode==='game')drawDoorGuides(c,referenceForCurrentRoom());
  if(!exporting&&selected){const o=project.objects.find(o=>o.id===selected);if(o&&!(contract&&renderIDs.has(o.id))){c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180);c.strokeStyle='#2c9cf9';c.lineWidth=2/viewport.scale;c.setLineDash([8/viewport.scale,5/viewport.scale]);c.strokeRect(-o.w/2-3,-o.h/2-3,o.w+6,o.h+6);c.setLineDash([]);c.fillStyle='#2c9cf9';c.beginPath();c.arc(o.w/2+4,-o.h/2-4,7/viewport.scale,0,Math.PI*2);c.fill();c.restore();}}
- c.restore();if(contract)drawGameSprites(c,viewport,contract,exporting);}
+ c.restore();if(viewMode==='game'&&(contract||characterObjects().length))drawGameSprites(c,viewport,contract,exporting);}
 function draw(){if(!ready)return;const dpr=window.devicePixelRatio||1,w=Math.round(canvas.clientWidth*dpr),h=Math.round(canvas.clientHeight*dpr);if(w!==canvas.width||h!==canvas.height){canvas.width=w;canvas.height=h;}ctx.setTransform(dpr,0,0,dpr,0,0); // canvas coordinates are CSS pixels
  const fake={scale:view.scale*dpr,x:view.x*dpr,y:view.y*dpr};ctx.setTransform(1,0,0,1,0,0);drawScene(ctx,fake);$('#zoomLabel').textContent=`${Math.round(view.scale*100)}%`;updateProjectionStatus();}
 function fit(){view=fitProjectedRoom(project.width,project.height,canvas.clientWidth,canvas.clientHeight,viewMode);draw();}
@@ -374,9 +378,9 @@ async function exportPNG(){
  try{await Promise.all(sourceImages.map(async a=>{let image=imageCache.get(a.id);if(!image){image=new Image();image.src=a.image;imageCache.set(a.id,image);}if(!image.complete||!image.naturalWidth)await image.decode();}));}
  catch(error){notify('Не удалось подготовить одно из изображений для PNG');console.error(error);return;}
  if(viewMode==='game'&&referenceForCurrentRoom()?.aligned&&project.roomId==='RM-ROOM-HALL'){try{const bg=ensureHallReferenceImage();if(!bg.complete||!bg.naturalWidth)await bg.decode();}catch(err){notify('Фон Godot недоступен; экспорт без фона');}}
- if(viewMode==='game'&&activeContract()){
-   try{const contract=activeContract();
-    const files=[...new Set([...contract.sprites.map(x=>x.file),...(characterObjects().length?[contract.actor.source]:[])])];
+ if(viewMode==='game'&&(activeContract()||characterObjects().length)){
+   try{const contract=activeContract()||visualContract;
+    const files=[...new Set([...(activeContract()?contract.sprites.map(x=>x.file):[]),...(characterObjects().some(o=>o.assetId===TEST_CHARACTER_ID)?[contract.actor.source]:[])])];
     await Promise.all(files.map(async file=>{const img=pilotImage(file);if(!img.complete||!img.naturalWidth)await img.decode();}));
    }catch(err){notify('Ошибка загрузки игрового PNG — экспорт отменён');return;}
  }
