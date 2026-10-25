@@ -21,3 +21,9 @@ The existing `.github/workflows/pages.yml` exports Godot into `build/web/`. The 
 ## Acceptance evidence
 
 Automated tests validate schema, geometry, import sanitization, and standalone Godot conversion. Additional manual touch + PWA browser QA is still pending; don't mark device acceptance complete without tablet testing.
+## GitHub Pages source conflict and 404 prevention (2026-10-25)
+Two independent publication routes were observed on each main push: a legacy automatic Jekyll "pages build and deployment" from the repository root, and the custom `.github/workflows/pages.yml` packaging Godot and `/builder/`. The source-root Jekyll artifact did **not** contain `/builder/`, so the published address could 404 depending on the active deployment.
+
+The same static PWA files are now mirrored into repository-root `builder/` as a defensive fallback. Both the branch/Jekyll publication and custom Actions artifact include `/builder/index.html` and its relative dependencies. The CI checks every mirrored file against its canonical source under `tools/room-builder/`; update both paths together in future changes.
+
+**Preferred permanent configuration:** In repo **Settings → Pages → Build and deployment → Source**, switch to **GitHub Actions** to disable the redundant automatic branch/Jekyll deployment. This needs repository settings access and is not changed by this code PR. Verify the resulting address on an actual browser/device; successful Actions jobs alone do not prove an HTTP 200 response for the user.

@@ -50,6 +50,12 @@ jobs:
           node --test tools/room-builder/tests/*.test.mjs
           python3 -m unittest scripts/raven/tools/test_room_builder_import.py
 
+      - name: Verify published Room Builder mirrors its canonical sources
+        run: |
+          for file in index.html app.mjs model.mjs sw.js style.css manifest.webmanifest icons/icon.svg icons/icon-192.png icons/icon-512.png; do
+            cmp "tools/room-builder/$file" "builder/$file"
+          done
+
       - name: Export Web build
         run: |
           mkdir -p build/web
