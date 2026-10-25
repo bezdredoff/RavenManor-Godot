@@ -8,8 +8,16 @@ run_check() {
 	shift 2
 	local output
 	output="$($GODOT_BIN --headless --path "$ROOT" "$@" 2>&1)" || { printf '%s\n' "$output"; return 1; }
-	[[ -z "$expected" || "$output" == *"$expected"* ]]
-	[[ "$output" != *"SCRIPT ERROR:"* ]]
+	if [[ -n "$expected" && "$output" != *"$expected"* ]]; then
+		printf 'ERROR: %s did not produce expected output: %s\n' "$stage" "$expected" >&2
+		printf '%s\n' "$output" >&2
+		return 1
+	fi
+	if [[ "$output" == *"SCRIPT ERROR:"* ]]; then
+		printf 'ERROR: %s reported a Godot script error\n' "$stage" >&2
+		printf '%s\n' "$output" >&2
+		return 1
+	fi
 	printf '%s passed.\n' "$stage"
 }
 
