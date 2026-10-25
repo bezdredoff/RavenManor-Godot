@@ -1,0 +1,1989 @@
+{
+  "schemaVersion": 1,
+  "title": "Raven Manor · season 1 production proposal",
+  "source": "docs/assets/ROOM_OBJECT_REGISTER.csv",
+  "note": "All rows PROPOSED; pilot PNGs are experimental references, not approved per-state assets. Editor sizes are schematic.",
+  "rooms": [
+    {
+      "id": "RM-ROOM-ENTRY",
+      "name": "Вход и крыльцо",
+      "count": 8
+    },
+    {
+      "id": "RM-ROOM-HALL",
+      "name": "Парадный холл",
+      "count": 19
+    },
+    {
+      "id": "RM-ROOM-CORRIDOR",
+      "name": "Жилой коридор",
+      "count": 12
+    },
+    {
+      "id": "RM-ROOM-BEDROOM",
+      "name": "Спальня Эвелин",
+      "count": 16
+    },
+    {
+      "id": "RM-ROOM-BATHROOM",
+      "name": "Ванная (виньетка)",
+      "count": 12
+    },
+    {
+      "id": "RM-ROOM-KITCHEN",
+      "name": "Кухня",
+      "count": 18
+    },
+    {
+      "id": "RM-ROOM-ARCHIVE",
+      "name": "Библиотека / архив",
+      "count": 16
+    },
+    {
+      "id": "RM-ROOM-CONSERVATORY",
+      "name": "Оранжерея",
+      "count": 19
+    }
+  ],
+  "items": [
+    {
+      "id": "RM-ASSET-ENTRY-001",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "каменные ступени",
+      "anchor": "front:stone",
+      "states": [
+        "fixed"
+      ],
+      "layer": "base",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-002",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "створки входной двери",
+      "anchor": "threshold:center",
+      "states": [
+        "locked",
+        "open"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-003",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "настенный фонарь",
+      "anchor": "wall:left",
+      "states": [
+        "dusty",
+        "lit"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-004",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "мокрый коврик",
+      "anchor": "floor:entry-side",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-005",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "дорожный чемодан",
+      "anchor": "floor:wall-right",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-006",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "конверт наследства",
+      "anchor": "hand/insert",
+      "states": [
+        "sealed",
+        "read"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-007",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "кашпо",
+      "anchor": "side:porch",
+      "states": [
+        "overgrown",
+        "tended"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ENTRY-008",
+      "roomId": "RM-ROOM-ENTRY",
+      "name": "водосток",
+      "anchor": "exterior:corner",
+      "states": [
+        "aged",
+        "fixed"
+      ],
+      "layer": "architecture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ENTRY-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-001",
+      "roomId": "RM-ROOM-HALL",
+      "name": "главная лестница и балюстрада",
+      "anchor": "rear:left",
+      "states": [
+        "unsafe",
+        "future-access"
+      ],
+      "layer": "architecture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-002",
+      "roomId": "RM-ROOM-HALL",
+      "name": "напольные часы",
+      "anchor": "rear:focus",
+      "states": [
+        "stopped",
+        "repaired",
+        "chiming"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-002",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/grandfather_clock.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-003",
+      "roomId": "RM-ROOM-HALL",
+      "name": "двустворчатая дверь восточного крыла",
+      "anchor": "rear:right",
+      "states": [
+        "locked",
+        "future"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-004",
+      "roomId": "RM-ROOM-HALL",
+      "name": "арка западного коридора",
+      "anchor": "rear:central",
+      "states": [
+        "open"
+      ],
+      "layer": "portal",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-005",
+      "roomId": "RM-ROOM-HALL",
+      "name": "библиотечная дверь",
+      "anchor": "side:left",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-006",
+      "roomId": "RM-ROOM-HALL",
+      "name": "семейный портрет",
+      "anchor": "wall:hero",
+      "states": [
+        "dusty",
+        "clean",
+        "reveal"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-006",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/ancestor_gallery_composite.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-007",
+      "roomId": "RM-ROOM-HALL",
+      "name": "консольный стол",
+      "anchor": "wall:edge",
+      "states": [
+        "dusty",
+        "polished"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-007",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/entry_console.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-008",
+      "roomId": "RM-ROOM-HALL",
+      "name": "зеркало",
+      "anchor": "above:console",
+      "states": [
+        "clouded",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-009",
+      "roomId": "RM-ROOM-HALL",
+      "name": "вешалка/стойка зонтов",
+      "anchor": "near:entry",
+      "states": [
+        "dusty",
+        "arranged"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-010",
+      "roomId": "RM-ROOM-HALL",
+      "name": "парадный ковёр",
+      "anchor": "floor:axis",
+      "states": [
+        "rolled",
+        "laid"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-010",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/burgundy_runner.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-011",
+      "roomId": "RM-ROOM-HALL",
+      "name": "две настенные лампы",
+      "anchor": "wall:paired",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-011",
+      "plannedInstances": 2,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-012",
+      "roomId": "RM-ROOM-HALL",
+      "name": "ключница и записки",
+      "anchor": "wall:service-side",
+      "states": [
+        "disordered",
+        "ordered"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-013",
+      "roomId": "RM-ROOM-HALL",
+      "name": "ваза с сухими цветами",
+      "anchor": "on:console",
+      "states": [
+        "dry",
+        "refreshed"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-013",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-014",
+      "roomId": "RM-ROOM-HALL",
+      "name": "пыльные защитные чехлы",
+      "anchor": "floor:perimeter",
+      "states": [
+        "covered",
+        "removed"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-014",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-015",
+      "roomId": "RM-ROOM-HALL",
+      "name": "коробка запчастей часов",
+      "anchor": "near:clock",
+      "states": [
+        "sealed",
+        "open"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-015",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-016",
+      "roomId": "RM-ROOM-HALL",
+      "name": "запечатанный указатель",
+      "anchor": "clock:insert",
+      "states": [
+        "hidden",
+        "discovered"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-016",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-HALL-017",
+      "roomId": "RM-ROOM-HALL",
+      "name": "кресло у библиотеки — левое",
+      "anchor": "near:library-seating:left",
+      "states": [
+        "covered",
+        "dusty",
+        "clean"
+      ],
+      "layer": "furniture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-FAMILY-VICTORIAN-ARMCHAIR",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/armchair_clean.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-018",
+      "roomId": "RM-ROOM-HALL",
+      "name": "кресло у библиотеки — правое",
+      "anchor": "near:library-seating:right",
+      "states": [
+        "covered",
+        "dusty",
+        "clean"
+      ],
+      "layer": "furniture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-FAMILY-VICTORIAN-ARMCHAIR",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/armchair_clean.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-HALL-019",
+      "roomId": "RM-ROOM-HALL",
+      "name": "малый круглый столик между креслами",
+      "anchor": "near:library-seating:center",
+      "states": [
+        "dusty",
+        "polished"
+      ],
+      "layer": "furniture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-HALL-019",
+      "plannedInstances": 1,
+      "pilotImages": [
+        "assets/raven/hall/generated_pilot/props/round_side_table.png"
+      ]
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-001",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "длинная обшивка стен",
+      "anchor": "walls:continuous",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "architecture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-002",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "дверь спальни",
+      "anchor": "side:bedroom",
+      "states": [
+        "locked",
+        "removed-after-unlock"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "дверь санузла",
+      "anchor": "side:bath",
+      "states": [
+        "unsafe",
+        "available"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-004",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "дверь кухни",
+      "anchor": "end/service",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-005",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "окно с глубоким откосом",
+      "anchor": "wall:exterior",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "architecture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-006",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "парные бра",
+      "anchor": "wall:intervals",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-007",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "узкая скамья",
+      "anchor": "wall:recess",
+      "states": [
+        "covered",
+        "clear"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-008",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "узкий коврик-дорожка",
+      "anchor": "floor:side",
+      "states": [
+        "dirty",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-009",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "рамки семейных фотографий",
+      "anchor": "wall:group",
+      "states": [
+        "dusty",
+        "reveal"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-010",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "шкафчик коммуникаций",
+      "anchor": "wall:service",
+      "states": [
+        "unsafe",
+        "inspected"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-011",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "корзина белья",
+      "anchor": "side:bath",
+      "states": [
+        "full",
+        "cleared"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CORRIDOR-012",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "name": "цветочная подставка",
+      "anchor": "window:alcove",
+      "states": [
+        "dry",
+        "planted"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CORRIDOR-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-001",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "кровать с изголовьем",
+      "anchor": "wall:rear",
+      "states": [
+        "dusty",
+        "made"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "матрас и бельё",
+      "anchor": "on:bed",
+      "states": [
+        "covered",
+        "fresh"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-003",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "прикроватные тумбы",
+      "anchor": "bed:two-sides",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-003",
+      "plannedInstances": 2,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-004",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "прикроватный светильник",
+      "anchor": "on:nightstand",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-005",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "шкаф",
+      "anchor": "wall:side",
+      "states": [
+        "closed",
+        "usable"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-006",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "сундук детских вещей",
+      "anchor": "bed:foot-side",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-007",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "малый письменный стол",
+      "anchor": "window:side",
+      "states": [
+        "cluttered",
+        "clear"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-008",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "стул",
+      "anchor": "at:desk",
+      "states": [
+        "misplaced",
+        "aligned"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-009",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "зеркало в раме",
+      "anchor": "wall:wardrobe",
+      "states": [
+        "clouded",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-010",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "шторы",
+      "anchor": "window",
+      "states": [
+        "drawn",
+        "open"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-011",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "ковёр",
+      "anchor": "floor:bedside",
+      "states": [
+        "rolled",
+        "laid"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-012",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "чехлы и пыль",
+      "anchor": "furniture:overlays",
+      "states": [
+        "covered",
+        "removed"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-013",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "детская отметка роста",
+      "anchor": "wall:concealed",
+      "states": [
+        "hidden",
+        "visible"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-013",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-014",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "детская игрушка",
+      "anchor": "trunk:insert",
+      "states": [
+        "hidden",
+        "found"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-014",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-015",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "дорожная сумка",
+      "anchor": "floor:entry-side",
+      "states": [
+        "packed",
+        "unpacked"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-015",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-016",
+      "roomId": "RM-ROOM-BEDROOM",
+      "name": "камин или радиатор",
+      "anchor": "wall:exterior",
+      "states": [
+        "off",
+        "checked"
+      ],
+      "layer": "architecture",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BEDROOM-016",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-001",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "раковина",
+      "anchor": "wall:plumbing",
+      "states": [
+        "dry",
+        "working"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-002",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "смеситель",
+      "anchor": "on:basin",
+      "states": [
+        "dry",
+        "dripping",
+        "working"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-003",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "унитаз",
+      "anchor": "wall:wet",
+      "states": [
+        "unsafe",
+        "usable"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-004",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "душ/ванна",
+      "anchor": "rear:wet",
+      "states": [
+        "unsafe",
+        "usable"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-005",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "экран/шторка",
+      "anchor": "front:shower",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "occluder",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-006",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "зеркало",
+      "anchor": "above:basin",
+      "states": [
+        "clouded",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-007",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "полка для полотенец",
+      "anchor": "wall:dry",
+      "states": [
+        "empty",
+        "stocked"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-008",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "настенное освещение",
+      "anchor": "above:mirror",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-009",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "сервисный люк",
+      "anchor": "wall:plumbing",
+      "states": [
+        "closed",
+        "open",
+        "repaired"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-010",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "трещина/течь соединения",
+      "anchor": "under:basin",
+      "states": [
+        "leaking",
+        "repaired"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-011",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "инструменты сантехника",
+      "anchor": "floor:service-corner",
+      "states": [
+        "arrived",
+        "removed"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-012",
+      "roomId": "RM-ROOM-BATHROOM",
+      "name": "мыльница и флакон",
+      "anchor": "on:shelf",
+      "states": [
+        "dusty",
+        "usable"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-BATHROOM-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-001",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "кухонный гарнитур",
+      "anchor": "wall:service",
+      "states": [
+        "covered",
+        "usable"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-002",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "мойка и смеситель",
+      "anchor": "wet:wall",
+      "states": [
+        "dry",
+        "working"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-003",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "плита",
+      "anchor": "wall:service",
+      "states": [
+        "unsafe",
+        "working"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-004",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "разделочный стол",
+      "anchor": "center:off-axis",
+      "states": [
+        "cluttered",
+        "clear"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-005",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "буфет",
+      "anchor": "wall:back",
+      "states": [
+        "locked",
+        "organized"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-006",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "холодильник/кладовой шкаф",
+      "anchor": "wall:service",
+      "states": [
+        "off",
+        "usable"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-007",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "сушилка для посуды",
+      "anchor": "by:sink",
+      "states": [
+        "empty",
+        "stocked"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-008",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "тарелки/чашки (набор)",
+      "anchor": "inside:cupboard",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-009",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "чайник",
+      "anchor": "on:counter",
+      "states": [
+        "cold",
+        "in-use"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-010",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "банки для сухих продуктов",
+      "anchor": "on:shelf",
+      "states": [
+        "disordered",
+        "arranged"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-011",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "полотенца и прихватки",
+      "anchor": "on:rail",
+      "states": [
+        "stored",
+        "hung"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-012",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "коробки доставки",
+      "anchor": "near:entry",
+      "states": [
+        "present",
+        "cleared"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-013",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "коробка с фотоальбомом",
+      "anchor": "near:buffet",
+      "states": [
+        "sealed",
+        "open"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-013",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-014",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "распределительная панель",
+      "anchor": "wall:service",
+      "states": [
+        "unsafe",
+        "approved"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-014",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-015",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "дверь к оранжерее",
+      "anchor": "rear:garden-side",
+      "states": [
+        "locked",
+        "open"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-015",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-016",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "служебная дверь",
+      "anchor": "rear:service-wing",
+      "states": [
+        "locked",
+        "future"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-016",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-017",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "корзина овощей",
+      "anchor": "on:table",
+      "states": [
+        "empty",
+        "filled"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-017",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-018",
+      "roomId": "RM-ROOM-KITCHEN",
+      "name": "оконные занавески",
+      "anchor": "window",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-KITCHEN-018",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-001",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "высокие стеллажи",
+      "anchor": "walls:perimeter",
+      "states": [
+        "unstable",
+        "braced",
+        "restored"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-002",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "письменный стол",
+      "anchor": "center:off-axis",
+      "states": [
+        "buried",
+        "organized"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-003",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "два читальных кресла",
+      "anchor": "near:table",
+      "states": [
+        "covered",
+        "usable"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-003",
+      "plannedInstances": 2,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-004",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "настольная лампа",
+      "anchor": "on:desk",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-005",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "каталожные ящики",
+      "anchor": "shelf:lower",
+      "states": [
+        "jammed",
+        "sorted"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-006",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "лестница для книг",
+      "anchor": "shelf:edge",
+      "states": [
+        "unsafe",
+        "secured"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-007",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "шкаф семейных документов",
+      "anchor": "rear:wall",
+      "states": [
+        "locked",
+        "accessible"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-008",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "гостевая книга",
+      "anchor": "on:reading-desk",
+      "states": [
+        "hidden",
+        "read"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-009",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "семейный альбом/фотография",
+      "anchor": "on:table",
+      "states": [
+        "closed",
+        "read"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-009",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-010",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "карта растений",
+      "anchor": "drawer:insert",
+      "states": [
+        "hidden",
+        "discovered"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-011",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "архивный конверт",
+      "anchor": "niche:rear",
+      "states": [
+        "sealed",
+        "open"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-012",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "чернильный прибор",
+      "anchor": "on:desk",
+      "states": [
+        "dry",
+        "arranged"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-013",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "книжные стопки",
+      "anchor": "shelf:secondary",
+      "states": [
+        "scattered",
+        "sorted"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-013",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-014",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "шторы и занавес",
+      "anchor": "window",
+      "states": [
+        "drawn",
+        "open"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-014",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-015",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "бумажные коробки",
+      "anchor": "shelf:lower",
+      "states": [
+        "cluttered",
+        "stored"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-015",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-016",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "name": "закладка и ключ",
+      "anchor": "inside:book",
+      "states": [
+        "hidden",
+        "found"
+      ],
+      "layer": "story",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-ARCHIVE-016",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-001",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "стеклянные секции",
+      "anchor": "walls:rear",
+      "states": [
+        "cracked",
+        "replaced"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-001",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-002",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "дверь из кухни",
+      "anchor": "front:service",
+      "states": [
+        "locked",
+        "open"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-002",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-003",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "дверь в сад",
+      "anchor": "rear:exterior",
+      "states": [
+        "locked",
+        "future"
+      ],
+      "layer": "door",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-003",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-004",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "центральная дорожка",
+      "anchor": "floor:center",
+      "states": [
+        "overgrown",
+        "clear"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-004",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-005",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "верстак садовника",
+      "anchor": "wall:side",
+      "states": [
+        "dirty",
+        "organized"
+      ],
+      "layer": "furniture",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-005",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-006",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "скамья для собраний",
+      "anchor": "perimeter:window",
+      "states": [
+        "bare",
+        "inviting"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-006",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-007",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "стеллаж для горшков",
+      "anchor": "wall:back",
+      "states": [
+        "tilted",
+        "secured"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-007",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-008",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "большая кадка с деревцем",
+      "anchor": "perimeter:bright",
+      "states": [
+        "dry",
+        "healthy"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-008",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-009",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "три семейства горшечных растений",
+      "anchor": "shelves:grouped",
+      "states": [
+        "wilted",
+        "revived"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-009",
+      "plannedInstances": 3,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-010",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "подвесные кашпо",
+      "anchor": "ceiling:perimeter",
+      "states": [
+        "overgrown",
+        "tended"
+      ],
+      "layer": "occluder",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-010",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-011",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "садовые ножницы и совок",
+      "anchor": "on:workbench",
+      "states": [
+        "rusty",
+        "clean"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-011",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-012",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "лейка",
+      "anchor": "by:water-point",
+      "states": [
+        "empty",
+        "filled"
+      ],
+      "layer": "dressing",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-012",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-013",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "ящик с семенами",
+      "anchor": "under:bench",
+      "states": [
+        "closed",
+        "open"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-013",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-014",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "растение с детской биркой",
+      "anchor": "display:focus",
+      "states": [
+        "concealed",
+        "identified"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-014",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-015",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "капсула/деталь часов",
+      "anchor": "pot:insert",
+      "states": [
+        "hidden",
+        "obtained"
+      ],
+      "layer": "clue",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-015",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-016",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "шланг и водоразбор",
+      "anchor": "wall:service",
+      "states": [
+        "dry",
+        "working"
+      ],
+      "layer": "interactive",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-016",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-017",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "осколки стекла",
+      "anchor": "floor:hazard",
+      "states": [
+        "present",
+        "cleared"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-017",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-018",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "столик для встречи",
+      "anchor": "side:cleared",
+      "states": [
+        "absent",
+        "arranged"
+      ],
+      "layer": "restoration",
+      "priority": "P1",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-018",
+      "plannedInstances": 1,
+      "pilotImages": []
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-019",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "name": "садовые фонари",
+      "anchor": "along:path",
+      "states": [
+        "off",
+        "on"
+      ],
+      "layer": "light",
+      "priority": "P2",
+      "approval": "PROPOSED",
+      "familyKey": "RM-ASSET-CONSERVATORY-019",
+      "plannedInstances": 1,
+      "pilotImages": []
+    }
+  ]
+}
