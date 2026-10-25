@@ -1,6 +1,6 @@
 export const SCHEMA_VERSION = 1;
-export const CATEGORIES = ['all', 'tile', 'architecture', 'furniture', 'decor', 'interaction'];
-export const CATEGORY_NAMES = {all:'Всё',tile:'Тайлы',architecture:'Архитектура',furniture:'Мебель',decor:'Декор',interaction:'Объекты'};
+export const CATEGORIES = ['all', 'tile', 'architecture', 'furniture', 'decor', 'character', 'interaction'];
+export const CATEGORY_NAMES = {all:'Всё',tile:'Тайлы',architecture:'Архитектура',furniture:'Мебель',decor:'Декор',character:'Персонажи',interaction:'Объекты'};
 export const BASE_ASSETS = [
   ['stone','Плитка','tile',40,40,'#bcb7a8','▦'],
   ['wood','Паркет','tile',40,40,'#977660','▤'],
@@ -17,7 +17,8 @@ export const BASE_ASSETS = [
   ['portrait','Портрет','decor',70,50,'#a37b55','▧'],
   ['lamp','Лампа','decor',35,35,'#be9e61','✦'],
   ['plant','Кашпо','decor',46,46,'#4f7559','✿'],
-  ['hotspot','Hotspot','interaction',42,42,'#4c8dba','◎']
+  ['hotspot','Hotspot','interaction',42,42,'#4c8dba','◎'],
+  ['character:onoe','Оноэ · тестовый персонаж','character',60,90,'#c9aba3','♟']
 ].map(([id,label,kind,w,h,color,symbol]) => ({id,label,kind,w,h,color,symbol}));
 
 export function uid(prefix='o') { return `${prefix}-${globalThis.crypto?.randomUUID?.() || Math.random().toString(36).slice(2)}`; }

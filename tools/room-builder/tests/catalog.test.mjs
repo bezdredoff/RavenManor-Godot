@@ -90,17 +90,18 @@ test('serialized room snapshots remain ordered even with slow writes and earlier
  await writer({room:'archive',delay:0});
  assert.deepEqual(order,['hall','bedroom','archive']);
 });
-test('all mansion inventory has 120 cards; previous Hall-only selection had 35',()=>{
+test('all mansion inventory has 120 proposals plus test Onoe',()=>{
  const p=exampleProject();mergeCatalogAssets(p,catalog);
  const mansion=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all'});
  const hall=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'room'});
- assert.equal(mansion.length,120);
- assert.equal(hall.length,35);
+ assert.equal(mansion.length,121);
+ assert.equal(hall.length,36);
  assert.equal(mansion.filter(a=>a.roomId==='RM-ROOM-HALL').length,19);
  assert.equal(mansion.filter(a=>a.roomId==='RM-ROOM-ARCHIVE').length,16);
  assert.equal(filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',search:'Кухня'}).length,18);
  assert.equal(filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',search:'RM-ASSET-HALL-017'}).length,1);
- assert.ok(mansion.every(a=>a.source==='production-register'));
+ assert.equal(mansion.filter(a=>a.source==='production-register').length,120);
+ assert.equal(mansion.filter(a=>a.kind==='character').length,1);
 });
 
 test('unplaced-only filter concerns active room, not other rooms during global search',()=>{
@@ -110,5 +111,11 @@ test('unplaced-only filter concerns active room, not other rooms during global s
  const mansion=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',onlyMissing:true,placedRefs});
  assert.ok(room.length<19);
  assert.ok(room.every(a=>a.roomId==='RM-ROOM-HALL'));
- assert.equal(mansion.length,120);
+ assert.equal(mansion.length,121);
+});
+
+test('Onoe is a test editor character, not a 121st production proposal',()=>{
+ const p=exampleProject();mergeCatalogAssets(p,catalog);
+ const people=filterLibraryAssets(p,{roomId:'RM-ROOM-HALL',scope:'all',category:'character'});
+ assert.equal(people.length,1);assert.equal(people[0].id,'character:onoe');assert.equal(catalog.items.length,120);
 });

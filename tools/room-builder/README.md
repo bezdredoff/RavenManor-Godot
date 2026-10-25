@@ -87,3 +87,11 @@ Fixed: the Room Builder palette previously kept schematic glyphs even for seven 
 **Новая комната по Godot** seeds 7 pilot objects in Hall automatically (after JSON-backup confirmation). For an already-created **empty Hall 700×690**, use **Свойства → Заполнить пустой холл (7 PNG)**, which is disabled for furnished rooms and never overwrites existing placements. **Поставить Оноэ (сразу)** immediately shows her at the reference footpoint, and further taps relocate her. The editor does not imply these pilot PNGs are approved.
 
 Browser storage remains local, so use JSON export before replacing an existing room. The PWA shell cache has been bumped; close and reopen the installed app to load the new version.
+
+## v0.5 — Collapsible panels and characters as ordinary objects
+
+Both sidebars collapse independently on desktop/tablet using touch-friendly arrow buttons, leaving 42px rails to reopen. On phone widths, existing overlay navigation and close actions remain intact. Collapsing panels does not alter object positions or saves.
+
+Characters are ordinary room objects. In the library, select the Персонажи category or search for Оноэ, stamp an instance on the floor, then select/drag/duplicate/delete like furniture. The temporary Onoe asset is additional to the 120 planned production positions. Custom PNGs may be imported as character type. Upright sprite footpoints participate in depth sorting across rooms.
+
+New Hall drafts seed seven pilot cutouts plus one movable Onoe (8 objects). Old Hall drafts with a virtual actor convert one time to a standard instance, preserving its location; deleting it will not recreate it on a later load. This editor-only character does not mutate canonical Godot navigation or campaign state. The visual-only Hall preview converter continues to transfer only the seven furniture cutouts, not character movement.

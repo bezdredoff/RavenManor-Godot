@@ -60,3 +60,11 @@ The goal for the next slice is to address collisions, alpha masks, physical heig
 ## v0.4.1 correction
 
 The reported blank Hall on a new-room action was a real workflow defect: seeding depended on an asynchronous visual-contract fetch and had no exposed retry. The seven-source contract is now bundled as a synchronous module and is regression-tested against the authoritative JSON, while Hall seeding is atomic. Seven catalog cards now display their pilot PNG thumbnails; the other 113 inventory positions remain concept placeholders. The actor button places the technical character immediately before enabling tap-to-reposition. The explicit empty-Hall recovery action is non-destructive and does not alter furnished rooms.
+
+## v0.5 — consistent character and panel editing
+
+Left/right sidebars now have independent collapse controls and reopening rails. The stage is refitted to the available width without changing scene coordinates.
+
+Onoe is no longer a separate actor-placement mode. The test actor is now a normal character:onoe library asset and an independently editable scene instance. It can be placed, dragged, duplicated, resized, deleted and serialized like furniture. New aligned Hall drafts include seven pilot furniture items and one Onoe object. Old saved Hall drafts migrate their preview footpoint once; deletion remains permanent. Imported personal PNGs can be designated characters and rendered upright in every room.
+
+The 120 production inventory proposals are unchanged. The test Onoe asset is additional to the catalog. Full Godot character animation/export, hit masks and approved Evelyn art remain pending.

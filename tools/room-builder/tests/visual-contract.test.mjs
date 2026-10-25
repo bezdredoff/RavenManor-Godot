@@ -79,11 +79,11 @@ test('failed pilot asset lookup never leaves a half-filled room',()=>{
  assert.equal(p.objects.length,0);
  assert.throws(()=>movePreviewActor(p,BUILTIN_HALL_VISUALS,{x:900,y:400}));
 });
-test('published web entry wires recovery, Onoe and visible pilot PNG previews',()=>{
+test('published web entry wires unified character category and individual sidebars',()=>{
  const html=fs.readFileSync(new URL('../index.html',import.meta.url),'utf8');
  const js=fs.readFileSync(new URL('../app.mjs',import.meta.url),'utf8');
- assert.match(html,/id="populateHall"/);assert.match(html,/id="moveActor"/);
+ assert.match(html,/id="populateHall"/);assert.match(html,/id="togglePalette"/);assert.match(html,/id="toggleInspector"/);assert.doesNotMatch(html,/id="moveActor"/);
  assert.match(js,/populateHallDraft\(project\)/);
  assert.match(js,/pilot\.file/);
- assert.match(js,/placeOnoeNow/);
+ assert.match(js,/migrateLegacyCharacter/);assert.match(js,/gameRenderOrder/);assert.match(js,/toggleSidebar/);assert.match(html,/id="sheetKind"/);
 });

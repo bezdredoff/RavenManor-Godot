@@ -59,3 +59,7 @@ The PWA and Godot Whole Manor Map now share a versioned preview-only 7-sprite Ha
 ## 2026-10-25 · Room Builder v0.4.1 regression fix
 
 Fixed user-reported empty new Hall (async manifest dependency), missing pilot thumbnails despite available source PNGs, and actor button that only armed a tool without placing Onoe. Added atomic 7-object seeding, explicit empty-draft recovery, built-in Hall layout fallback, and Node unit regression checks. Android screenshot acceptance remains user-side; this change does not approve art or physics.
+
+## 2026-10-25: Room Builder v0.5 character/panel editing
+
+Independent desktop/tablet palette and properties collapse controls; characters are standard movable/deletable room objects, including editable Onoe and user-imported character PNGs. Hall new drafts seed seven proposed pilot sprites and one temporary character. Old preview actor positions migrate once. Navigation and campaign state remain unchanged; browser and Android UI validation required.

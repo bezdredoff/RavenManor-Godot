@@ -67,7 +67,7 @@ export function assetsForRoom(project,roomId){return project.assets.filter(a=>!a
 export function filterLibraryAssets(project,{roomId,scope='all',category='all',search='',onlyMissing=false,placedRefs=[]}={}){
   if(!ROOM_NAMES[roomId]||!['all','room'].includes(scope))throw new Error('Некорректный фильтр библиотеки');
   const available=scope==='all'?
-    project.assets.filter(a=>a.source==='production-register'):assetsForRoom(project,roomId);
+    project.assets.filter(a=>a.source==='production-register'||(a.kind==='character'&&!a.roomId)):assetsForRoom(project,roomId);
   const term=String(search).toLocaleLowerCase().trim(),placed=new Set(placedRefs);
   return available.filter(a=>{
     if(scope==='room'&&onlyMissing&&(!a.assetRefId||placed.has(a.assetRefId)))return false;
