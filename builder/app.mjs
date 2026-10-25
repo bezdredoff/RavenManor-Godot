@@ -233,7 +233,22 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  $('#title').onchange=e=>{checkpoint();project.title=e.target.value.trim()||'Без названия';changed();};for(const [id,key] of [['roomWidth','width'],['roomHeight','height'],['gridSize','grid']])$("#"+id).onchange=e=>{const v=Number(e.target.value);const p=clone(project);p[key]=v;try{validateProject(p);checkpoint();project[key]=v;changed();fit();}catch(err){notify(err.message);renderSettings();}};
  $('#addLayer').onclick=()=>{checkpoint();const id=uid('layer');project.layers.push({id,name:`Слой ${project.layers.length+1}`,visible:true,locked:false});selectedLayer=id;changed();renderLayers();};
  $('#exportMenu').onclick=()=>$('#exportDialog').showModal();$('#mobileExport').onclick=()=>$('#exportDialog').showModal();$('#exportJSON').onclick=exportJSON;$('#exportPNG').onclick=exportPNG;$('#importJSONBtn').onclick=()=>$('#projectFile').click();$('#projectFile').onchange=async e=>{try{await importJSON(e.target.files[0]);$('#exportDialog').close();}catch(err){notify(err.message);}e.target.value='';};
- $('#newRoom').onclick=()=>{if(!confirm('Очистить текущую комнату? Существующий черновик будет перезаписан. Сначала экспортируй JSON для резервной копии.'))return;checkpoint();const p=newRoomProject(exampleProject,uid,project.roomId);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);project=p;selected=null;refresh();fit();changed();$('#exportDialog').close();};
+ $('#newRoom').onclick=async()=>{
+ if(!confirm('Создать пустой черновик для этой комнаты? Прежний будет перезаписан. Сначала экспортируй текущий JSON в резервную копию.'))return;
+ if(!await save()){notify('Не удалось сохранить текущий черновик — экспортируй JSON');return;}
+ const p=newRoomProject(exampleProject,uid,project.roomId);
+ const room=gameRoomReference(p,worldReference);
+ if(room){
+  // The reference is a PROPOSED Godot feasibility floorplan; do not change old projects.
+  p.width=room.width;p.height=room.height;p.grid=25;
+  p.referenceWorldOrigin=[room.origin.x,room.origin.y];
+  p.provenance='Proposed Godot world map room draft; matching floor dimensions, not approved furniture/doors/art.';
+ }
+ if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
+ project=p;selected=null;past=[];future=[];historyButtons();refresh();fit();changed();
+ $('#exportDialog').close();
+ notify(room?'Новый игровой черновик по предварительной геометрии Godot — '+p.width+'×'+p.height:'Новый пустой черновик');
+};
  $('#assetFiles').onchange=e=>{const file=e.target.files[0];if(!file)return;importFile=file;$('#sheetName').textContent=`${file.name} (${Math.round(file.size/1024)} KB)`;$('#sheetDialog').showModal();e.target.value='';};$('#sheetConfirm').onclick=async()=>{try{await handleSheet(importFile,$('#sheetCols').value,$('#sheetRows').value);$('#sheetDialog').close();}catch(err){notify(err.message);}};
  for(const b of document.querySelectorAll('[data-panel]'))b.onclick=()=>togglePanel(b.dataset.panel);$('#closePalette').onclick=()=>togglePanel(null);$('#closeInspector').onclick=()=>togglePanel(null);$('#mobileStamp').onclick=()=>{changeTool('stamp');togglePanel('palette');};
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
