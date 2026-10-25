@@ -289,7 +289,7 @@ func _make_onoe() -> void:
 	actor_sprite.animation = "down"
 	actor_sprite.stop()
 	actor_sprite.frame = 0
-	actor_sprite.z_index = 20
+	actor_sprite.z_index = 5
 	add_child(actor_sprite)
 
 func _update_actor_screen() -> void:
@@ -340,6 +340,7 @@ func _cycle_camera() -> void:
 	camera_elevation = CAMERA_ANGLES[(current_index + 1) % CAMERA_ANGLES.size()]
 	floor_depth_ratio = sin(deg_to_rad(float(camera_elevation)))
 	camera_button.text = "Камера: %d°" % camera_elevation
+	angle_label.text = "%d° · ART TEST" % camera_elevation
 	status_label.text = "Угол: %d° вниз от горизонтали · глубина пола × %.3f" % [camera_elevation, floor_depth_ratio]
 	_update_actor_screen()
 	queue_redraw()
@@ -634,3 +635,8 @@ func _draw() -> void:
 			last = waypoint
 	draw_circle(actor_pos, 16, Color(0.2, 0.15, 0.22, 0.48))
 	draw_set_transform(Vector2.ZERO)
+	if show_safe_viewport:
+		var safe := _safe_viewport_rect(size)
+		draw_rect(safe, Color("8dd3af"), false, 2.0)
+		draw_line(safe.get_center() - Vector2(9, 0), safe.get_center() + Vector2(9, 0), Color("8dd3af"), 1.0)
+		draw_line(safe.get_center() - Vector2(0, 9), safe.get_center() + Vector2(0, 9), Color("8dd3af"), 1.0)
