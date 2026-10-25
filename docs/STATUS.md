@@ -1,27 +1,42 @@
 # Raven Manor — canonical project status
 
-Last reconciled: 2026-10-24. **Product owner accepted Prototype Lab** and its integrated engineering vertical slice on 2026-10-24.
+Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
 
-## Accepted implementation
-- Godot 4.7.2 standalone project, main scene `prototype_launcher.tscn`.
-- RM-HUB-001 PR1 foundation: stable Raven IDs, snapshot, wallet, first-clear/reducer, atomic save and recovery.
-- RM-HUB-001 PR2: authored AStar2D Hall → Corridor → Bedroom graph, permanent unlock bedroom portal, foreground occlusion, Onoe technical placeholder and save.
-- RM-HUB-001 PR3: Raven Match-3 levels 001–003, five hotspots, two restorations, childhood clue, five VN beats, first night and resumable `RM-VS-01`.
-- PR #9 integrated slice and PR #10 isolated content previews merged into `main` by 2026-10-24.
-- The owner accepts Prototype Lab **as the engineering milestone**, not as final production art or full mobile-release certification.
-- GitHub Actions Web export + Pages deployment reported success at commit `d1a72298`; published at https://bezdredoff.github.io/RavenManor-Godot/.
-- Historical 70-requirement audit is *pre-implementation UPDS baseline*, not the current score.
+## Implemented and merged
 
-## Art-production gate
-- All canonical cast artworks including Evelyn are **unapproved**, with Onoe serving as technical placeholder.
-- A **full first-season asset register** must precede style experiments. See `docs/assets/` for separate VN/map character requirements, furnishings, placements, room layers and state variants.
-- Source-derived requirements and new layout/animation proposals are explicitly distinguished. New art counts are planning rows, **not** an approved production-order authorization.
-- Approve character identity/style, map chibi ratio, room composition and asset states before generating in batches.
+- **RM-HUB-001 foundation / navigation / RM-VS-01:** Godot 4.7.2 standalone Raven runtime, atomic Raven save, authored Hall → Corridor → Bedroom graph, VN and three deterministic Match-3 levels, two restorations, clue, first night, resumable progression. PRs #9 and #10 and the associated original RM-HUB-001 work are merged.
+- **Continuous season-one map feasibility greybox:** proposed footprints of Entry, Hall, Archive, Corridor, Bedroom, Bathroom, Kitchen and Conservatory; 11 door relations, furniture obstacles, orthogonal AStarGrid2D routes; isolated Match-3 preview. This is **not** approved production geometry and is independent of the accepted vertical-slice authored graph.
+- **Mobile camera pilot:** owner-preferred 65° elevation, 0.74× zoom default, 0.68×/0.74×/0.80× comparison, full-screen portrait HUD and scale calibration. Real-device screenshot/occlusion certification still pending.
+- **Generated Hall artwork comparison:** PR #17 merged on 2026-10-25 after fixing the art-mode smoke test. Eight original source PNGs (two alternate backgrounds, six prop cutouts), checksums, reconstructed prompts; modes **AI1 / AI2 / ПЛАН / SVG** in Whole Manor Map. Art is **experimental and unaligned** to canonical game geometry.
+- **Mobile Room Builder PWA v0.1:** PR #18 merged. Touch-first Canvas editor, asset/tile placement, layers, imported PNG/sprite sheets, local IndexedDB, JSON/PNG export, offline-capable PWA shell and independent draft-only JSON → Godot scene converter.
+- **Pages /builder/ 404 fix:** PR #19 merged. Static PWA mirrored under root `builder/` and bundled with Godot Web export; both Pages publication methods now include its entrypoint and assets. User confirmed the editor subsequently opens.
+- **CI:** GitHub Actions for PR #17 and the subsequent `main` merge successfully ran project checks and Web export. This validates automated smoke tests, not full art acceptance or real-device interaction behavior.
+- **Temporary cast artwork:** Onoe from UPDS remains a noncanonical test placeholder; no final Raven cast identity, styles or production sprites accepted.
 
-## Remaining QA / engineering
-- Real-device touch, narrow/tall portrait QA and recalibration against production art still require individual evidence. Owner acceptance does not imply tests not actually run.
-- Refresh the original 70-requirement coverage against standalone Raven runtime when useful.
-- No full-season scene content or mass art is implemented.
+## Current next gate
 
-## Next
-Review/approve complete asset inventory and per-room placement clusters, then define coherent style anchors across VN character, mildly-chibi map character, room and prop. Validate first calibrated composite in Godot before mass production.
+**RM-PIPE-001 — Hall authoring-to-gameplay pipeline proof.** See `docs/NEXT_PLAN.md` and `docs/ROOM_PIPELINE_NEXT_GATE.md`.
+
+1. Validate editor flow on Android (S Pen/touch, save/restore, offline and export; no right-click/keyboard), preserving manual backups.
+2. Establish one **approved** Hall plan that respects current architectural constraints and door/world anchors; map Room Builder's flat coordinates explicitly onto the World Map Hall footprint before visual art.
+3. Build a reversible, validated JSON → **preview-only** Godot bridge with per-object pivot, layer, state, hotspot and occluder mapping. Never implicitly replace either existing gameplay navigation graph.
+4. Produce and evaluate ONE consistent architecture+props+states composite at current 65°/0.74× mobile framing. Preserve AI1/AI2/SVG/plan comparisons, real asset provenance and the previous graphic fallbacks.
+5. Review style anchors for Evelyn VN and separately drawn mildly-chibi map art. No bulk cast/room generation until individual calibration gates pass.
+
+## Important unapproved / outstanding
+
+- Generated Hall geometry and individual prop projection do not yet line up with the shared world map; art is for comparison only. Independent chair/table colliders, masks, occlusion, clean/dusty/repaired variants, lighting and door seam alignment are missing.
+- Room Builder `exampleProject()` is an illustrative 1000×800 flat plan, **not** the World Map Hall (500,150,700,690) nor an authoritative `RM-ASSET-*` placement register. Its draft converter does not wire runtime routes, story state or collision.
+- Full Android browser/stylus/offline/export-reload matrix and real 390×844 portrait recordings are still required; user success opening the tools is recorded without inventing detailed QA evidence.
+- The repository has two active GitHub Pages publication mechanisms (branch/Jekyll and custom Actions). The mirrored builder fixes the observed 404; the preferred long-term setting is **Settings → Pages → Source: GitHub Actions** if the owner wishes to remove the redundant branch workflow.
+- Original 70-requirement matrix is a pre-Raven implementation UPDS baseline, not current coverage.
+- Source of product/game-bible and narrative truth remains `bezdredoff/RavenManor`; executable Godot, preview art and mobile editor reside here.
+
+## References
+
+- `docs/NEXT_PLAN.md`
+- `docs/ROOM_PIPELINE_NEXT_GATE.md`
+- `docs/DECISIONS.md`
+- `docs/assets/RM_HALL_GENERATED_ART_INTEGRATION.md`
+- `docs/ROOM_BUILDER_PWA.md`
+- `docs/assets/ROOM_OBJECT_REGISTER.csv`

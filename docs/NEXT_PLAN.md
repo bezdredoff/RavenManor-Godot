@@ -1,16 +1,33 @@
-# Next plan — after accepted Prototype Lab (2026-10-24)
+# Next plan — Hall production pipeline (reconciled 2026-10-25)
 
-## Gate A — complete asset specifications (NOW)
-1. Use `docs/assets/CHARACTER_PRODUCTION_BIBLE.md` for two-scale cast: VN full-size normal anime and separate mildly-chibi map sprites; emotional/pose states and animated clips.
-2. Use `docs/assets/ROOM_FURNISHING_AND_PLACEMENT.md` and `docs/assets/ROOM_OBJECT_REGISTER.csv` for all room furniture, decor, interactive props, repairs and placement anchors; do not conflate 12–20 unique clue props with actual room population.
-3. Review layout density, occluders, pathways, state changes and source status. All locations are proposed topology-relative anchors, not pixel coordinates or approved floor plan.
-4. Confirm specialist cameo approach and approve production IDs and quantities before mass asset generation.
+## Current decision
 
-## Gate B — style anchors
-Choose a single coherent anime style with consistent material and lighting palette. Establish one VN Evelyn sheet and *separately drawn* mildly-chibi map version; verify identity and proportions. Test one room with foreground masks, major furniture, small clutter group and changed restoration state against real portrait UI.
+Prototype Lab (including `RM-VS-01`), Room Builder PWA v0.1, and Hall AI1/AI2 art comparison are **implemented and merged**. The owner reports the published tools working. The next productive phase is **not** bulk art creation: prove that a room laid out on a tablet can become a spatially correct, separately editable, restorable game scene while preserving gameplay routing.
 
-## Gate C — pipeline proof
-Record generation model/workflow/seed/reference provenance and dimensions. Test stable pose/expression identity, map walk frames and occlusion; automate file naming/alpha/anchor checks. No bulk images until pass.
+Primary workstream: **RM-PIPE-001 — Room Builder → Hall → Godot → ComfyUI proof**, defined with acceptance criteria in `docs/ROOM_PIPELINE_NEXT_GATE.md`.
 
-## Ongoing product engineering
-Preserve approved integrated Prototype Lab and separate Raven state. Make corrections through small tested PRs with docs. Re-score old 70 requirement matrix as separate current-runtime review; real mobile touch certification remains separate.
+## Ordered, independently reviewable PR candidates
+
+| Priority | Candidate | Scope | Exit / evidence |
+|---|---|---|---|
+| P0 | **RM-PIPE-001A: touch and export validation** | Android tablet/phone use (stylus drag, multitouch pan/zoom, file import, local persistence and JSON round-trip), browser fallback and data-loss safeguards. Correct example catalog ID mismatches before using any plan as data source. | Repro steps + real-device capture and JSON round-trip; no right click/keyboard dependency. User opening app alone is not a full pass. |
+| P0 | **RM-PIPE-001B: coordinate/ID bridge** | Define explicit local plan → global world transform for `RM-ROOM-HALL` and pinned door/route anchors; validate `RM-ASSET-*`, hotspot references, layer order, per-instance pivots and occluders. Import to **isolated comparison scene**, not production routes. | Tests for bounds, IDs, pivots/footpoint, round-trip and no mutations to current Raven save, `season1_world_map.json` or `manor_greybox_graph.json`. |
+| P0 | **RM-PIPE-001C: Hall layout calibration** | Validate staircase landing, doors to Entry/Archive/Corridor, clock, two independent chairs and small table, blocking furniture and feasible routes under 65°/0.74× portrait view. | Owner-reviewed flat plan and Godot overlay plus 390×844/412×915/430×932 screenshots and route/click/occlusion QA. No invented approved pixel coordinates. |
+| P1 | **RM-PIPE-001D: art/state pilot** | Produce one geometry-conditioned base shell, separated props and 2–3 state changes, document alpha/pivots, light/shadow and mask/depth rules and locally reproducible ComfyUI model/reference/seed provenance. | Layered visual composite in Godot that preserves 65° scale and interaction points; AI1/AI2/SVG preserved for comparison. |
+| P1 | **RM-PIPE-001E: style anchor / Evelyn** | Select a cohesive cozy gothic-anime direction; one Evelyn VN identity reference plus an independently drawn mildly-chibi map sprite and minimal walk/idle QA. | Review on real portrait UI; identity/proportion, alpha/feet, silhouette and frame consistency. |
+| P2 | **RM-PIPE-002: replicate** | Only after Hall proof, compose Bedroom, Archive, Corridor etc. from asset catalog and the same workflow; maintain unique story hotspots and restoration state variants. | Second room reproduces the Hall method without one-off hardcoded paint/composition. |
+
+## Guardrails and boundaries
+
+- **Do not mark the Hall art, map topology or Evelyn canonically approved** merely because AI images render in game. Existing generated sources are pilot references with unaligned doors/perspective.
+- Keep current `RM-*` IDs, `RM-VS-01` mechanics, saved state, authored AStar2D route graph and independent continuous-world AStarGrid2D feasibility map unchanged until an explicit, tested migration is approved.
+- Room Builder saves locally on the tablet and exports JSON/PNG; no automatic GitHub synchronization, production ComfyUI integration or final 65° scene exporter exists today.
+- Do not commit purchased/licensed source graphics to the public repository without provenance and rights verification.
+- `docs/assets/CHARACTER_PRODUCTION_BIBLE.md`, `ROOM_FURNISHING_AND_PLACEMENT.md`, and `ROOM_OBJECT_REGISTER.csv` remain **proposed source inputs**, not automatically approved pixel layouts or production orders.
+- Bathrooms remain a corridor-side vignette in the original vertical slice; access to Bedroom does not depend on repairing Bathroom.
+- Existing two Pages deployments share the same `/builder/` fallback. Operational cleanup (switch Pages Source to GitHub Actions) is worthwhile but lower priority than the pipeline and may require repository Settings access.
+- Update `docs/STATUS.md` on every accepted gate; record actual device tests, failures and affected IDs. Keep historical specs rather than silently rewriting them.
+
+## Immediate next PR
+
+**RM-PIPE-001A/B** if small enough for one reviewable change; otherwise split. Deliver verified Android input/export workflow and a strict Hall coordinate/anchor/asset-ID mapping with dry-run importer tests **before** refitting PNG background pixels. See `docs/ROOM_PIPELINE_NEXT_GATE.md` for exact checks.
