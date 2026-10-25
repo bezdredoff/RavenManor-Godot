@@ -1,0 +1,98 @@
+[
+  {
+    "path": "backgrounds/hall_twin_staircases.png",
+    "original": "gothic_mansion_foyer_with_twin_staircases.png",
+    "role": "alternate-background",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "sha256": "4dad43eaf909b8d89e74951ff6abce07a53c212fdf1c0807e7d8a72435ccf980",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "backgrounds/hall_crimson_stairways.png",
+    "original": "gothic_mansion_foyer_with_crimson_stairways.png",
+    "role": "alternate-background",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGB",
+    "sha256": "79446877746b06843139ec430af913fcde16af83c6c7e8f21f660bf101afb0f8",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/grandfather_clock.png",
+    "original": "ornate_victorian_grandfather_clock.png",
+    "role": "clock",
+    "dimensions": [
+      1024,
+      1536
+    ],
+    "mode": "RGBA",
+    "sha256": "2f15a891ba75d3e97abe7f86d3e44a48c68011b53605ed29fd3eeca96a777a2e",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/armchair_clean.png",
+    "original": "gothic_burgundy_velvet_throne_chair.png",
+    "role": "armchair",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "sha256": "0cbde839a91cef3cd039437287782308e6990edb738df9ddd360ecc8e6701772",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/round_side_table.png",
+    "original": "ornate_gilded_mahogany_side_table.png",
+    "role": "table",
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "mode": "RGBA",
+    "sha256": "ffcb82820d9b575660a257ab055407d72878bf059f7856fec16216db6f01baca",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/burgundy_runner.png",
+    "original": "ornate_burgundy_royal_carpet_runner.png",
+    "role": "carpet",
+    "dimensions": [
+      724,
+      2172
+    ],
+    "mode": "RGBA",
+    "sha256": "827b52c07600d967b2f96fc9e29b3174d655e3b4fb7492e102f6c5567e69de97",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/entry_console.png",
+    "original": "ornate_victorian_console_with_candelabra.png",
+    "role": "console",
+    "dimensions": [
+      1448,
+      1086
+    ],
+    "mode": "RGBA",
+    "sha256": "c716ff497fd0ea47df883a95c676382ef364b4579ef7f9f0d5ca20f423c76f39",
+    "status": "concept-only; unaligned to Godot world geometry"
+  },
+  {
+    "path": "props/ancestor_gallery_composite.png",
+    "original": "gothic_aristocratic_portrait_gallery_cluster.png",
+    "role": "gallery",
+    "dimensions": [
+      1024,
+      1536
+    ],
+    "mode": "RGBA",
+    "sha256": "d5a16c98983fd0ad47f58c4863acb749a8c9d9dd761b46dd23dc0902183f8ddf",
+    "status": "concept-only; unaligned to Godot world geometry"
+  }
+]
