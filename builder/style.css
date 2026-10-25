@@ -7,3 +7,10 @@
 .catalog-progress{font-size:12px;margin:0 0 8px;color:#e8cba7}.catalog-filter{display:flex;gap:8px;align-items:center;font-size:11px;color:#cebac9;margin:9px 0}.catalog-filter input{width:16px;height:16px;flex:none;accent-color:#a485be}input[readonly]{opacity:.75;cursor:default}
 /* Global inventory groups, including small portrait screens. */
 .asset-group-heading{grid-column:1/-1;font-size:12px;font-weight:700;color:#edcea8;border-bottom:1px solid #665566;padding:11px 2px 6px;margin-top:4px}.asset-group-heading:first-child{margin-top:0}.asset-room-hint{font-size:9px;line-height:1.2;color:#c8b6ce;text-align:center}
+
+/* Godot-accurate projected view controls and spatial warning. */
+.view-mode-label{display:flex;align-items:center;gap:6px;font-size:11px;white-space:nowrap;color:#ead7ee}
+.view-mode-label select{width:auto;min-width:118px;padding:7px 4px;font-size:11px}
+#gameZoom{font-size:11px;white-space:nowrap}
+.render-warning{position:absolute;bottom:12px;left:12px;right:12px;max-width:550px;pointer-events:none;background:#241c27e8;border:1px solid #76576c;border-radius:8px;color:#f0d1b5;padding:8px 10px;font-size:11px;line-height:1.4}
+@media(max-width:760px){.view-mode-label{font-size:0}.view-mode-label select{min-width:103px;font-size:10px;padding:7px 4px}#gameZoom{display:none}.render-warning{bottom:34px;font-size:10px;padding:6px}.stage-tip{display:none}}
