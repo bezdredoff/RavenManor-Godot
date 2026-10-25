@@ -46,3 +46,7 @@ Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed 
 - Added three Hall seating positions (two separately addressable armchairs, shared art family; one round table), expanding the human-owned CSV registry to **120 PROPOSED positions across eight rooms**. 245 textual state labels are recorded, not approved PNG exports.
 - Room Builder v0.2 loads generated room-filtered catalog JSON, supplies proposed states/priority/concept-PNG status, and stores distinct local drafts by room ID. Previous v0.1 projects are preserved and migrated on load; experimental art remains references, not baked into production sprite slots.
 - See `docs/ROOM_CATALOG_PRODUCTION.md` and `docs/assets/ROOM_OBJECT_REGISTER.csv`. This is an editor/catalog engineering addition, **not** an approval of room coordinates, media variants, camera, licensed source art or Android end-to-end QA.
+
+## RM-EDITOR-002: game-projected Room Builder pilot (2026-10-25)
+
+Room Builder v0.3 defaults to a **65° projected, directly editable game-floor view** (plan remains secondary), using Godot's exact reversible floor transform at arbitrary editor zoom. A 0.74× preset and optional copied Godot Hall AI1 background/door guides are available when the draft room matches the proposed 700×690 map geometry. Old 1000×800 rooms remain untouched and are visibly flagged as unaligned. No final height/occlusion/character/prop-art certification is inferred. See `docs/ROOM_BUILDER_GAME_PROJECTION.md`.
