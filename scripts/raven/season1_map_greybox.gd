@@ -43,7 +43,7 @@ var camera_elevation := DEFAULT_CAMERA_ELEVATION
 var floor_depth_ratio := sin(deg_to_rad(float(DEFAULT_CAMERA_ELEVATION)))
 var art_enabled := true
 # 0: original SVG, 1: generated twin staircase, 2: generated crimson version, 3: bounds-only greybox
-var art_variant := 0
+var art_variant := 1
 var debug_art_bounds := false
 var dragging := false
 var drag_distance := 0.0
@@ -145,7 +145,7 @@ func _make_ui() -> void:
 	add_child(debug_panel)
 	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2.ZERO, Vector2(150, 36), _toggle_explore, debug_panel)
 	camera_button = _button("Камера: 65°", Vector2.ZERO, Vector2(110, 36), _cycle_camera, debug_panel)
-	art_button = _button("Вид: SVG", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
+	art_button = _button("Вид: AI1", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
 	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
 	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
 	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
