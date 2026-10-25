@@ -100,10 +100,35 @@ func _run() -> void:
 	scene._cycle_zoom_preset()
 	assert(absf(scene.zoom - 0.74) < 0.0001)
 	assert(scene.zoom_preset_button.text == "0.74×")
-	scene._toggle_art()
-	assert(not scene.art_enabled)
-	scene._toggle_art()
+	# The generated PNGs are tracked as original sources, not re-encoded exports.
+	assert(scene.art_variant == 1)
+	assert(scene.AI_HALL_TWIN.get_width() == 1254)
+	assert(scene.AI_HALL_TWIN.get_height() == 1254)
+	assert(scene.AI_HALL_CRIMSON.get_width() == 1254)
+	assert(scene.AI_CLOCK.get_width() == 1024)
+	assert(scene.AI_CLOCK.get_height() == 1536)
+	assert(scene.AI_CHAIR.get_width() == 1254)
+	assert(scene.AI_SIDE_TABLE.get_width() == 1254)
+	assert(scene.AI_RUG.get_width() == 724)
+	assert(scene.AI_RUG.get_height() == 2172)
+	assert(scene.AI_CONSOLE.get_width() == 1448)
+	assert(scene.AI_GALLERY.get_height() == 1536)
+	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.AI_CLOCK)
+	scene._toggle_art() # AI2
+	assert(scene.art_variant == 2)
 	assert(scene.art_enabled)
+	assert(scene.art_button.text == "Вид: AI2")
+	scene._toggle_art() # Greybox
+	assert(scene.art_variant == 3)
+	assert(not scene.art_enabled)
+	scene._toggle_art() # SVG
+	assert(scene.art_variant == 0)
+	assert(scene.art_enabled)
+	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.HALL_CLOCK)
+	scene._toggle_art() # AI1
+	assert(scene.art_variant == 1)
+	assert(scene.art_enabled)
+	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.AI_CLOCK)
 	var screen_point: Vector2 = scene._screen_from_world(Vector2(920, 610))
 	assert(scene._from_screen(screen_point).distance_to(Vector2(920, 610)) < 0.001, "projection must preserve hit targeting")
 	for test in routes:
