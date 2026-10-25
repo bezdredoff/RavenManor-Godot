@@ -1,6 +1,6 @@
 import {BASE_ASSETS,CATEGORIES,CATEGORY_NAMES,exampleProject,validateProject,clone,uid,snap,bounds,topObjectAt,placeObject,object} from './model.mjs';
 import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoomProject,migrateLegacyHallReferences,mergeUserAssets,createSerialWriter} from './catalog.mjs';
-import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,splitSpriteDrawOrder,projectedUprightRect,actorScreenRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
+import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall,movePreviewActor} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 const $=s=>document.querySelector(s);
@@ -8,7 +8,7 @@ const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
-let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null,drawActorPreview=true;
+let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null;
 const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
 function notify(message){$('#notice').textContent=message;}
 function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
@@ -32,7 +32,7 @@ async function save(){
  try{await operation;if(project.roomId===snapshot.roomId&&editRevision===revision)dirty=false;notify('Сохранено локально на этом устройстве');return true;}
  catch(err){notify('Ошибка сохранения — экспортируй JSON, не переключай комнату');console.error(err);return false;}
 }
-async function restore(){try{const database=await db();const data=await new Promise((resolve,reject)=>{const r=database.transaction('projects').objectStore('projects').get('current');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});database.close();if(data){project=validateProject(data);migrateLegacyHallReferences(project);}}catch(e){console.warn('Local project unavailable:',e);notify('Автосохранение недоступно — используй JSON');}}
+async function restore(){try{const database=await db();const data=await new Promise((resolve,reject)=>{const r=database.transaction('projects').objectStore('projects').get('current');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});database.close();if(data){project=validateProject(data);migrateLegacyHallReferences(project);migrateLegacyCharacter(project);}}catch(e){console.warn('Local project unavailable:',e);notify('Автосохранение недоступно — используй JSON');}}
 async function loadProjectByRoom(roomId){
   const database=await db();
   try {return await new Promise((resolve,reject)=>{const r=database.transaction('projects').objectStore('projects').get('room:'+roomId);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});}
@@ -49,6 +49,7 @@ async function switchRoom(roomId){
   mergeUserAssets(project,previous);
   migrateLegacyHallReferences(project);
   if(productionCatalog)mergeCatalogAssets(project,productionCatalog);
+  migrateLegacyCharacter(project);
   selected=null;selectedLayer='objects';selectedAsset='armchair';past=[];future=[];
   refresh();fit();historyButtons();changed();
   notify('Комната: '+ROOM_NAMES[roomId]+(loaded?' — сохранённый черновик':' — новый черновик'));
@@ -59,10 +60,26 @@ async function loadProductionCatalog(){
     if(!response.ok)throw new Error('HTTP '+response.status);
     productionCatalog=validateCatalog(await response.json());
     mergeCatalogAssets(project,productionCatalog);
+    migrateLegacyCharacter(project);
     changed();renderPalette();
     notify('Загружен каталог: '+productionCatalog.items.length+' позиций (все предварительные)');
   }catch(err){console.warn('Catalog unavailable:',err);notify('Каталог недоступен — базовые инструменты и локальный проект работают');}
 }
+
+const TEST_CHARACTER_ID='character:onoe';
+function ensureCharacterAsset(p){
+ const base=BASE_ASSETS.find(a=>a.id===TEST_CHARACTER_ID);
+ if(base&&!p.assets.some(a=>a.id===TEST_CHARACTER_ID))p.assets.push(clone(base));
+}
+function migrateLegacyCharacter(p){
+ ensureCharacterAsset(p);
+ if(p.visualContractVersion!==1||!contractFits(p,visualContract)||p.objects.some(o=>o.assetId===TEST_CHARACTER_ID))return false;
+ const foot=previewActorFoot(p,visualContract),asset=p.assets.find(a=>a.id===TEST_CHARACTER_ID);
+ p.objects.push(object(asset,foot.x-asset.w/2,foot.y-asset.h,{layerId:'objects',role:'preview-character',state:'test'}));
+ delete p.previewActorFoot;
+ return true;
+}
+
 function assetFor(o){return project.assets.find(a=>a.id===o.assetId);}
 function layerFor(o){return project.layers.find(l=>l.id===o.layerId);}
 function drawAsset(c,o){const a=assetFor(o);if(!a)return; c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180); c.globalAlpha=o.opacity??1;
@@ -123,53 +140,59 @@ function drawPilotItem(c,item,viewport,mode='upright'){
  else {c.fillStyle='#66505c99';c.fillRect(box.x,box.y,box.w,box.h);}
  c.restore();
 }
-function drawPreviewActor(c,viewport,contract){
- if(!drawActorPreview)return;
- const foot=previewActorFoot(project,contract),box=actorScreenRect(foot,contract.actor,viewport,toScreen);
- c.save();
- if(actorImage?.complete&&actorImage.naturalWidth){
+
+function characterObjects(){return project.objects.filter(o=>assetFor(o)?.kind==='character'&&layerFor(o)?.visible);}
+function drawCharacter(c,o,viewport,contract){
+ const rect=projectedUprightRect(o,viewport,toScreen),asset=assetFor(o);
+ c.save();c.globalAlpha=o.opacity??1;
+ if(o.assetId===TEST_CHARACTER_ID&&actorImage?.complete&&actorImage.naturalWidth){
   const [sx,sy,sw,sh]=contract.actor.frameRect;
-  c.drawImage(actorImage,sx,sy,sw,sh,box.x,box.y,box.w,box.h);
- }else{c.fillStyle='#d3aa9c';c.fillRect(box.x,box.y,box.w,box.h);}
- c.fillStyle='#56dcca';c.beginPath();
- const p=toScreen(foot,viewport,'game');c.arc(p.x,p.y,3*viewport.scale,0,Math.PI*2);c.fill();
+  c.drawImage(actorImage,sx,sy,sw,sh,rect.x,rect.y,rect.w,rect.h);
+ }else if(asset?.image){
+  let image=imageCache.get(asset.id);
+  if(!image){image=new Image();image.src=asset.image;image.onload=draw;imageCache.set(asset.id,image);}
+  if(image.complete&&image.naturalWidth)c.drawImage(image,rect.x,rect.y,rect.w,rect.h);
+ }else{c.fillStyle=asset?.color||'#bc9dac';c.fillRect(rect.x,rect.y,rect.w,rect.h);}
  c.restore();
 }
+function gameRenderOrder(contract){
+ const pilot=visualInstances(project,contract).filter(e=>e.sprite.mode==='upright'&&layerFor(e.object)?.visible);
+ const characters=characterObjects().map(o=>({object:o,kind:'character',footY:o.y+o.h}));
+ return [...pilot.map(e=>({...e,kind:'prop'})),...characters]
+   .sort((a,b)=>a.footY-b.footY||a.object.id.localeCompare(b.object.id));
+}
 function drawGameSprites(c,viewport,contract,exporting=false){
- const foot=previewActorFoot(project,contract),parts=splitSpriteDrawOrder(visualInstances(project,contract).filter(x=>layerFor(x.object)?.visible),foot.y);
- for(const item of parts.behind)drawPilotItem(c,item,viewport);
- drawPreviewActor(c,viewport,contract);
- for(const item of parts.front)drawPilotItem(c,item,viewport);
+ for(const entry of gameRenderOrder(contract)){
+  if(entry.kind==='character')drawCharacter(c,entry.object,viewport,contract);
+  else drawPilotItem(c,entry,viewport);
+ }
  if(!exporting&&selected){
   const o=project.objects.find(o=>o.id===selected);
-  if(o&&spriteForAsset(contract,o.assetRefId)){
-   const box=projectedUprightRect(o,viewport,toScreen);
-   const rect=spriteForAsset(contract,o.assetRefId)?.mode==='floor'
-      ?{x:toScreen({x:o.x,y:o.y},viewport,'game').x,
-        y:toScreen({x:o.x,y:o.y},viewport,'game').y,
-        w:o.w*viewport.scale,h:o.h*viewport.scale*depthRatio('game')} :box;
-   c.save();c.strokeStyle='#42b9f9';c.lineWidth=2;
-   c.setLineDash([7,4]);c.strokeRect(rect.x,rect.y,rect.w,rect.h);
-   c.restore();
+  if(o&&(assetFor(o)?.kind==='character'||spriteForAsset(contract,o.assetRefId))){
+   const source=spriteForAsset(contract,o.assetRefId);
+   const r=source?.mode==='floor'
+    ?{x:toScreen({x:o.x,y:o.y},viewport,'game').x,
+      y:toScreen({x:o.x,y:o.y},viewport,'game').y,w:o.w*viewport.scale,h:o.h*viewport.scale*depthRatio('game')}
+    :projectedUprightRect(o,viewport,toScreen);
+   c.save();c.strokeStyle='#42b9f9';c.lineWidth=2;c.setLineDash([7,4]);c.strokeRect(r.x,r.y,r.w,r.h);c.restore();
   }
  }
 }
 function hitGamePilot(pos){
  const contract=activeContract();if(!contract||viewMode!=='game')return null;
- const items=visualInstances(project,contract);
- // Upright cutouts must take priority over the large underlying carpet.
- const order=items.sort((a,b)=>
-  (a.sprite.mode==='upright'?0:1)-(b.sprite.mode==='upright'?0:1) || b.footY-a.footY);
- for(const entry of order){
-  const o=entry.object;const r=entry.sprite.mode==='upright'
-    ?projectedUprightRect(o,view,toScreen)
-    :{x:toScreen({x:o.x,y:o.y},view,'game').x,y:toScreen({x:o.x,y:o.y},view,'game').y,w:o.w*view.scale,h:o.h*view.scale*depthRatio('game')};
-  if(pos.x>=r.x-5&&pos.x<=r.x+r.w+5&&pos.y>=r.y-5&&pos.y<=r.y+r.h+5
-     &&!layerFor(o)?.locked&&layerFor(o)?.visible)return o;
+ const entries=[
+  ...gameRenderOrder(contract),
+  ...visualInstances(project,contract).filter(x=>x.sprite.mode==='floor'&&layerFor(x.object)?.visible).map(x=>({...x,kind:'floor'}))
+ ].sort((a,b)=>(a.kind==='floor'?1:0)-(b.kind==='floor'?1:0)||b.footY-a.footY);
+ for(const entry of entries){
+  const o=entry.object;
+  const r=entry.kind!=='floor'?projectedUprightRect(o,view,toScreen):
+   {x:toScreen({x:o.x,y:o.y},view,'game').x,y:toScreen({x:o.x,y:o.y},view,'game').y,
+    w:o.w*view.scale,h:o.h*view.scale*depthRatio('game')};
+  if(pos.x>=r.x-5&&pos.x<=r.x+r.w+5&&pos.y>=r.y-5&&pos.y<=r.y+r.h+5&&!layerFor(o)?.locked&&layerFor(o)?.visible)return o;
  }
  return null;
 }
-
 
 function referenceForCurrentRoom(){return gameRoomReference(project,worldReference);}
 function ensureHallReferenceImage(){
@@ -229,7 +252,7 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  if(showGrid&&!exporting){c.strokeStyle='#69645c33';c.lineWidth=1/viewport.scale;c.beginPath();for(let x=0;x<=project.width;x+=project.grid){c.moveTo(x,0);c.lineTo(x,project.height);}for(let y=0;y<=project.height;y+=project.grid){c.moveTo(0,y);c.lineTo(project.width,y);}c.stroke();}
  const contract=viewMode==='game'?activeContract():null;
  const records=contract?visualInstances(project,contract):[];
- const renderIDs=new Set(records.map(x=>x.object.id));
+ const renderIDs=new Set([...records.map(x=>x.object.id),...characterObjects().map(o=>o.id)]);
  const order=new Map(project.layers.map((l,i)=>[l.id,i]));
  if(contract){
   // Carpets sit on the projected floor, before any tall furniture.
@@ -250,15 +273,14 @@ function fit(){view=fitProjectedRoom(project.width,project.height,canvas.clientW
 function toLocal(ev){const r=canvas.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};}
 function world(pos){return toWorld(pos,view,viewMode);}
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
-function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='actor'?'Коснись места на полу, куда должна встать Оноэ (тест перекрытий)':next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
+function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
 function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
- if(tool==='actor'){if(!activeContract()){notify('Сначала создай игровой холл 700×690');return;}movePreviewActor(project,visualContract,w);drawActorPreview=true;$('#showActor').checked=true;changed();notify('Оноэ: '+Math.round(w.x)+' × '+Math.round(w.y));return;}
- if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){selected=o.id;changed();}}
+ if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){if(asset?.kind==='character'){o.x=w.x-o.w/2;o.y=w.y-o.h;}selected=o.id;changed();}}
  else if(tool==='erase'){const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
 }
 function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.preventDefault();canvas.setPointerCapture(ev.pointerId);const pos=toLocal(ev);pointers.set(ev.pointerId,pos);if(pointers.size>=2){gesture={mode:'pinch',start:[...pointers.values()]};return;}
  if(tool==='pan'){gesture={mode:'pan',pos};return;}
- if(tool==='stamp'||tool==='erase'||tool==='actor'){checkpoint();paint(pos);gesture={mode:'paint',last:pos};return;}
+ if(tool==='stamp'||tool==='erase'){checkpoint();paint(pos);gesture={mode:'paint',last:pos};return;}
  const w=world(pos),o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y); selected=o?.id||null;renderProperties();draw();if(o){gesture={mode:'drag',pos,startX:o.x,startY:o.y,id:o.id,moved:false};}else gesture=null;}
 function pointerMove(ev){if(!pointers.has(ev.pointerId))return;ev.preventDefault();const pos=toLocal(ev),old=pointers.get(ev.pointerId);pointers.set(ev.pointerId,pos);if(pointers.size>=2){const vals=[...pointers.values()];const oldVals=vals.map(p=>p===pos?old:p);const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const before=dist(oldVals[0],oldVals[1]),after=dist(vals[0],vals[1]);const prevMid={x:(oldVals[0].x+oldVals[1].x)/2,y:(oldVals[0].y+oldVals[1].y)/2};const nextMid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2};if(before>0)zoomAt(prevMid.x,prevMid.y,after/before);view.x+=nextMid.x-prevMid.x;view.y+=nextMid.y-prevMid.y;draw();return;}
  if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const offset=worldDragDelta(pos.x-gesture.pos.x,pos.y-gesture.pos.y,view.scale,viewMode),deltaX=offset.x,deltaY=offset.y;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
@@ -342,12 +364,12 @@ async function exportPNG(){
  if(viewMode==='game'&&referenceForCurrentRoom()?.aligned&&project.roomId==='RM-ROOM-HALL'){try{const bg=ensureHallReferenceImage();if(!bg.complete||!bg.naturalWidth)await bg.decode();}catch(err){notify('Фон Godot недоступен; экспорт без фона');}}
  if(viewMode==='game'&&activeContract()){
    try{const contract=activeContract();
-    const files=[...new Set([...contract.sprites.map(x=>x.file),...(drawActorPreview?[contract.actor.source]:[])])];
+    const files=[...new Set([...contract.sprites.map(x=>x.file),...(characterObjects().length?[contract.actor.source]:[])])];
     await Promise.all(files.map(async file=>{const img=pilotImage(file);if(!img.complete||!img.naturalWidth)await img.decode();}));
    }catch(err){notify('Ошибка загрузки игрового PNG — экспорт отменён');return;}
  }
  const off=document.createElement('canvas');off.width=project.width;off.height=projectedPixelHeight(project.height,viewMode);drawScene(off.getContext('2d'),{x:0,y:0,scale:1},true);off.toBlob(blob=>{if(blob)download(blob,`${project.roomId.toLowerCase()}-preview.png`);else notify('Ошибка экспорта PNG');},'image/png');$('#exportDialog').close();}
-async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));migrateLegacyHallReferences(p);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
+async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));migrateLegacyHallReferences(p);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);migrateLegacyCharacter(p);
  if(!await save())throw new Error('Сначала экспортируй несохранённый черновик');
  project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';past=[];future=[];historyButtons();refresh();fit();changed();notify('Проект импортирован');}
 async function handleSheet(file,columns,rows){if(!file||file.size>10*1024*1024)throw new Error('Файл слишком большой (макс. 10 MB)');if(!/^image\/(png|jpeg|webp)$/.test(file.type))throw new Error('Только PNG, JPEG и WebP');const img=await createImageBitmap(file),cols=Number(columns),rws=Number(rows);if(cols*rws>128||img.width%cols||img.height%rws)throw new Error('Необходимо равномерное деление, не более 128 спрайтов');checkpoint();const w=img.width/cols,h=img.height/rws;const stem=file.name.replace(/\.[^.]+$/,'').slice(0,40);const scratch=document.createElement('canvas');scratch.width=w;scratch.height=h;const c=scratch.getContext('2d');for(let y=0;y<rws;y++)for(let x=0;x<cols;x++){c.clearRect(0,0,w,h);c.drawImage(img,x*w,y*h,w,h,0,0,w,h);project.assets.push({id:uid('asset'),label:cols*rws===1?stem:`${stem} ${x+1}-${y+1}`,kind:'decor',w,h,color:'#80627a',symbol:'▧',image:scratch.toDataURL('image/png'),source:'local-import',license:'User must verify usage rights'});}img.close();renderPalette();changed();notify(`Добавлено ${cols*rws} ассетов`);}
@@ -367,10 +389,11 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
   p.provenance='Proposed Godot world map room draft; matching floor dimensions, not approved furniture/doors/art.';
  }
  if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
+ ensureCharacterAsset(p);
  let count=0;
  try{count=populateHallDraft(p);if(p.roomId==='RM-ROOM-HALL'&&p.width===700&&count!==7)throw Error('Ожидалось 7 предметов, получено '+count);}
  catch(err){notify('Комната не создана: '+err.message);console.error(err);return;}
- project=p;selected=null;past=[];future=[];historyButtons();refresh();fit();changed();
+ migrateLegacyCharacter(p);project=p;selected=null;past=[];future=[];historyButtons();refresh();fit();changed();
  $('#exportDialog').close();
  notify(count?'Холл 700×690: размещено '+count+' PNG предметов':'Новая комната '+p.width+'×'+p.height);
 };
