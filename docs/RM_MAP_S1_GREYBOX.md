@@ -39,3 +39,12 @@ Approve ONLY after physically inspectable gameplay test establishes continuous c
 - Turn **Арт: ВКЛ** on/off to compare a measured Hall SVG architecture base, burgundy rug and separate clock/seating/console/portrait visual proxy sprites against the original bounding boxes. **Габариты** reveals collision/interaction bounds.
 - Onoe remains a temporary authorization-only actor. These SVG graphics were handcrafted layout-calibration stand-ins, not accepted painterly art, and the generated mood-board images are not spatially authoritative.
 - Full generator prompts, isolation and export acceptance: `docs/assets/RM_CAMERA_ART_PILOT.md`.
+
+## Portrait hub framing (owner preference, PR #16)
+- **65° downward from horizontal** now starts by default, with floor vertical ratio `sin(65°) ≈ 0.906`. 45° and 55° are diagnostic comparisons only; camera and artwork lock still requires visual phone approval.
+- Default hub zoom **0.74×** (candidate comparison presets **0.68× / 0.74× / 0.80×**). Map camera opens on the left-middle of Hall so the clock, seating area, Onoe and under-stair door are legible; the entire Hall and adjacent rooms cannot *all* fit at this zoom and are intentionally explored by scrolling.
+- Actor sprite has shared world-height calibration (`ACTOR_WORLD_HEIGHT = 90`), keeping down and side animations consistent and displaying at ~67 logical screen pixels at 0.74×; Onoe remains noncanonical.
+- Main HUD is overlaid on a **full-screen map**. Compact translucent top 86px, bottom 90px; technical test toggles are collapsed in **Настр.**, not constantly visible.
+- Top controls: minus, numeric zoom preset button, plus, recenter to character, debug settings. Inside settings: story gate test, art toggle, bounds toggle, camera angle, safe viewport overlay, whole-map overview. Match-3 and before/after actions remain in the bottom overlay.
+- Debug safe viewport is calculated from current control size, independent of room scale; automatic layout and tests cover **390×844, 412×915, 430×932**. This is logical viewport layout, **not a substitute** for actual iOS/Android browser safe-inset/device testing.
+- Match-3 isolation and persistent Raven-save semantics are unchanged. Original world coordinates and collision paths remain unchanged.
