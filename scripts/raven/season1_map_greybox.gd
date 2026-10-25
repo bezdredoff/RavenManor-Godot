@@ -16,24 +16,27 @@ const CELL := 25
 const WALL_MARGIN := 28.0
 const DOOR_RADIUS := 70.0
 const FURNITURE_MARGIN := 21.0
-const DEFAULT_CAMERA_ELEVATION := 55
+const DEFAULT_CAMERA_ELEVATION := 65
+const DEFAULT_HUB_ZOOM := 0.74
+const ZOOM_PRESETS := [0.68, 0.74, 0.80]
+const ACTOR_WORLD_HEIGHT := 90.0
 const TRAVEL_SPEED := 375.0
-const TOP_UI_HEIGHT := 137.0
-const BOTTOM_UI_HEIGHT := 110.0
+const TOP_UI_HEIGHT := 86.0
+const BOTTOM_UI_HEIGHT := 90.0
 
 var rooms: Array
 var doors: Array
 var props: Array
 var world_size := Vector2(2150, 2250)
-var center := Vector2(930, 620)
-var zoom := 0.47
+var center := Vector2(750, 510)
+var zoom := DEFAULT_HUB_ZOOM
 var camera_elevation := DEFAULT_CAMERA_ELEVATION
 var floor_depth_ratio := sin(deg_to_rad(float(DEFAULT_CAMERA_ELEVATION)))
 var art_enabled := true
 var debug_art_bounds := false
 var dragging := false
 var drag_distance := 0.0
-var actor_pos := Vector2(990, 640)
+var actor_pos := Vector2(875, 635)
 var movement_points: Array[Vector2] = []
 var selected_prop: Dictionary = {}
 var repaired_in_preview := {}
@@ -149,7 +152,7 @@ func _update_actor_screen() -> void:
 		return
 	var side := actor_sprite.animation == "side"
 	var native_height := 724.0 if side else 384.0
-	var scale_factor := (0.15 if side else 0.28) * zoom
+	var scale_factor := ACTOR_WORLD_HEIGHT * zoom / native_height
 	actor_sprite.scale = Vector2.ONE * scale_factor
 	actor_sprite.position = _screen_from_world(actor_pos) - Vector2(0, native_height * scale_factor * 0.5)
 	var screen_y := actor_sprite.position.y
@@ -172,7 +175,8 @@ func _zoom_out() -> void:
 	_set_zoom(zoom / 1.17)
 
 func _set_zoom(value: float) -> void:
-	zoom = clampf(value, 0.20, 0.90)
+	zoom = clampf(value, 0.15, 1.20)
+	if is_instance_valid(zoom_preset_button): zoom_preset_button.text = "%.2f×" % zoom
 	queue_redraw()
 	_update_actor_screen()
 
@@ -353,11 +357,11 @@ func _process(delta: float) -> void:
 	_update_actor_screen()
 
 func _screen_from_world(p: Vector2) -> Vector2:
-	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
+	var viewport_mid := _viewport_midpoint(size)
 	return viewport_mid + Vector2((p.x - center.x) * zoom, (p.y - center.y) * zoom * floor_depth_ratio)
 
 func _from_screen(p: Vector2) -> Vector2:
-	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
+	var viewport_mid := _viewport_midpoint(size)
 	return center + Vector2((p.x - viewport_mid.x) / zoom, (p.y - viewport_mid.y) / (zoom * floor_depth_ratio))
 
 func _gui_input(event: InputEvent) -> void:
@@ -431,7 +435,7 @@ func _pilot_texture(asset_id: String) -> Texture2D:
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), Color("111821"))
-	var viewport_mid := Vector2(size.x * 0.5, (TOP_UI_HEIGHT + size.y - BOTTOM_UI_HEIGHT) * 0.5)
+	var viewport_mid := _viewport_midpoint(size)
 	var offset := viewport_mid - Vector2(center.x * zoom, center.y * zoom * floor_depth_ratio)
 	draw_set_transform(offset, 0.0, Vector2(zoom, zoom * floor_depth_ratio))
 	var f := ThemeDB.fallback_font
