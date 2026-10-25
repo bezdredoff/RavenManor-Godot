@@ -45,3 +45,14 @@ A record with `pilotImages` has source concept PNG(s) available in `assets/raven
 6. Track asset license, prompt/model/seed/reference hash, state images, production progress and provenance in a future asset-manifest stage after the one-room proof. Do not assume absent images exist.
 
 Next engineering work: `RM-PIPE-001` in `docs/ROOM_PIPELINE_NEXT_GATE.md`. None of these catalog additions alters canonical `manor_greybox_graph.json` or `season1_world_map.json`.
+
+## v0.2.1 hardening and completeness pass (2026-10-25)
+
+- Every one of the 120 positions now has explicit machine-readable `artStatus`, `rightsStatus`, `spatial` (`width`, `height`, `footPivot`, `occlusionMask`, `interactionPoint` all `null` until measured) and one `stateAssets[]` entry per planned state (`renderMethod=undecided`, `approved=false`). This makes missing production decisions visible without inventing a final sprite/pivot/art method.
+- Room Builder reports the count of **distinct planned catalog positions present on the draft canvas**, not the total physical quantity or number of PNGs. Optional **only unplaced** filter makes it practical to review an individual room's checklist, leaving reusable local tiles available when the filter is off.
+- Old v0.1 Hall sample positions are safely migrated **only when they match the exact illustrative coordinates**; custom user placements are not reinterpreted. Hall left/right chairs retain separate IDs but one shared concept art family.
+- Personal imported images are now available when switching to another room, and saving is serialized by immutable room snapshot. A failed save blocks room switching instead of silently discarding changes.
+- JSON import explicitly preserves prior draft first, then resets undo history across rooms; PNG export awaits embedded image decode before rasterizing. Catalog-linked RM-ASSET-ID is read-only in the inspector to avoid breaking registry references; decorative/manual shapes may still have free-form IDs.
+- The service worker cache version is bumped so `/builder/` receives the updated catalog and editor together. Both deployment methods must include identical files.
+
+**Still deliberately unapproved:** actual world dimensions, geometric placement, state-specific artwork, interaction anchors/trigger IDs, source license acceptance, final per-room unique art counts. The 120 rows form a complete **planned inventory baseline**, not a claim that production assets exist. Do not infer or fabricate approved values solely to complete a table.

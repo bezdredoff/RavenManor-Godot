@@ -26,3 +26,9 @@ Automated tests validate schema, geometry, import sanitization, and standalone G
 ## v0.2: linked 120-position production catalog
 
 The source inventory is now `docs/assets/ROOM_OBJECT_REGISTER.csv` (117 original proposals plus three Hall chair/table records). The PWA loads a derived `./catalog/room-items.json` file, chooses a room via touch-friendly `Комната`, shows P1/P2 and concept-PNG metadata, and maintains local per-room draft saves while preserving previous single-project data. An asset stamp retains the registry `RM-ASSET-*` reference, planned state and independent instance identity. Both public `tools/room-builder/` and mirrored root `builder/` versions include this file; service-worker cache version bumped. No art/projection/collider/gameplay approval is implied. See `docs/ROOM_CATALOG_PRODUCTION.md`; generator `scripts/raven/tools/build_room_catalog.py --check` is included in CI.
+
+## RM-CAT-001 final catalog maintenance (2026-10-25)
+
+PWA v0.2.1 preserves the complete 120-position first-season planning register, state/approval/provenance metadata and local per-room drafts. Room progress and missing-position filter help verify placement without pretending noncanonical geometry is final. Browser storage writes are ordered and switching rooms stops if current save fails; user PNG imports can follow the user's drafts between rooms. Historical exact Hall sample placements are migrated conservatively. PNG export waits for image decode. The published static package and the root Jekyll fallback contain identical generated JSON and JavaScript, checked by CI.
+
+The production fields have explicit unknowns (`null` pivots/dimensions/hotspots and undecided per-state art strategies); approved art creation and actual Android/S Pen manual acceptance remain separate gates, not completed by successful code tests.

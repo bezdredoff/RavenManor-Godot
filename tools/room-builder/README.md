@@ -41,3 +41,11 @@ The canonical file is `docs/assets/ROOM_OBJECT_REGISTER.csv`. Run `python3 scrip
 Each catalog item has stable `RM-ASSET-*`, planned state choices, production priority, planned anchor, layer family, and optional *experimental* pilot image path. Catalog cards show schematic symbols, not finished art; sizes in plan-space are placeholders. Each stamp creates an independent instance ID while retaining registry `assetRefId`. Both Hall chairs share one reusable `familyKey` but have separate registry IDs. The pilot PNGs are metadata only: not auto-downloaded, embedded, licensed for reuse, or approved as individual finished states. No bulk PNG production is implied.
 
 `ROOM_OBJECT_REGISTER.csv` remains a **proposed family/position list**, not a count of rendered sprites: bundled lamp pairs, table settings or plant clusters may contain multiple actual objects. Positions/anchors, explicit instances/occluders, geometry and hotspots await the `RM-PIPE-001` approval gates. Catalog changes are never allowed to override authored Raven navigation or campaign save.
+
+## v0.2.1 catalog and data-integrity update
+
+Select a room, inspect its **placed positions / planned positions** count, and optionally activate **Только неразмещённые** to work through all registered entries. Place with a tap, then change its planned state in the properties panel. A catalog reference ID cannot be edited in place; manual imported decoration remains freely configurable. Planning metadata explicitly records unknown dimensions/pivots/occlusion/interaction points and marks every per-state image as **not yet approved**.
+
+Room-specific drafts save in serialized order; a failing write blocks switching rooms to prevent accidental loss. PNG files imported locally can be reused in subsequent room drafts. An exact original v0.1 Hall demonstration has its historical chair/table references corrected without modifying custom placements. PNG export waits for embedded images to decode. Export JSON backups regularly: a browser storage quota failure still requires manually freeing space or exporting the current draft.
+
+**Note:** counting planned positions on the canvas does not certify layout, quantities inside grouped rows, separate image files, story progression or geometric collision. Final asset/pivot/rights/state technique reviews are pending.
