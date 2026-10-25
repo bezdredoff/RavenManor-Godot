@@ -42,6 +42,14 @@ jobs:
       - name: Run Raven checks
         run: bash scripts/check.sh
 
+      - name: Validate Room Builder PWA and Godot draft importer
+        run: |
+          node --check tools/room-builder/app.mjs
+          node --check tools/room-builder/model.mjs
+          node --check tools/room-builder/sw.js
+          node --test tools/room-builder/tests/*.test.mjs
+          python3 -m unittest scripts/raven/tools/test_room_builder_import.py
+
       - name: Export Web build
         run: |
           mkdir -p build/web
@@ -49,6 +57,14 @@ jobs:
           test -f build/web/index.html
           test -f build/web/index.wasm
           test -f build/web/index.pck
+
+      - name: Bundle standalone Room Builder PWA
+        run: |
+          mkdir -p build/web/builder/icons
+          cp tools/room-builder/index.html tools/room-builder/style.css tools/room-builder/app.mjs tools/room-builder/model.mjs tools/room-builder/sw.js tools/room-builder/manifest.webmanifest build/web/builder/
+          cp tools/room-builder/icons/icon.svg tools/room-builder/icons/icon-192.png tools/room-builder/icons/icon-512.png build/web/builder/icons/
+          test -f build/web/builder/index.html
+          test -f build/web/builder/icons/icon-512.png
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
