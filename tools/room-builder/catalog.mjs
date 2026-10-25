@@ -62,6 +62,20 @@ export function mergeCatalogAssets(project,catalog){
   return added;
 }
 export function assetsForRoom(project,roomId){return project.assets.filter(a=>!a.roomId||a.roomId===roomId);}
+
+/** View full season inventory (120) or selected room plus local/reusable editor tools. */
+export function filterLibraryAssets(project,{roomId,scope='all',category='all',search='',onlyMissing=false,placedRefs=[]}={}){
+  if(!ROOM_NAMES[roomId]||!['all','room'].includes(scope))throw new Error('Некорректный фильтр библиотеки');
+  const available=scope==='all'?
+    project.assets.filter(a=>a.source==='production-register'):assetsForRoom(project,roomId);
+  const term=String(search).toLocaleLowerCase().trim(),placed=new Set(placedRefs);
+  return available.filter(a=>{
+    if(scope==='room'&&onlyMissing&&(!a.assetRefId||placed.has(a.assetRefId)))return false;
+    if(category!=='all'&&a.kind!==category)return false;
+    const haystack=[a.label,a.assetRefId,a.familyKey,a.roomId?ROOM_NAMES[a.roomId]:''].join(' ').toLocaleLowerCase();
+    return !term||haystack.includes(term);
+  });
+}
 export function newRoomProject(exampleProject,uid,roomId){
   if(!ROOM_NAMES[roomId])throw new Error('Неизвестная комната');
   const p=exampleProject();p.id=uid('room');p.title=ROOM_NAMES[roomId]+' — черновик';p.roomId=roomId;p.objects=[];p.anchors=[];
