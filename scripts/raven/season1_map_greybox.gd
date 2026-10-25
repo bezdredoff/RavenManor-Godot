@@ -2,6 +2,7 @@ extends Control
 ## RM-MAP-S1 continuous-map feasibility. Uniform shallow projected floor, NOT canonical room art.
 ## Onoe assets are owner-created test placeholders, not Evelyn.
 const DATA = preload("res://data/raven/season1_world_map.json")
+const HALL_VISUALS = preload("res://data/raven/hall_visual_contract.json")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
 const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
@@ -54,6 +55,7 @@ var repaired_in_preview := {}
 var explore_all := true
 var follow_actor := false
 var grid := AStarGrid2D.new()
+var foreground_overlay: Control
 var actor_sprite: AnimatedSprite2D
 var snapshot: Dictionary
 var status_label: Label
@@ -86,6 +88,13 @@ func _ready() -> void:
 	snapshot = Store.new().load_campaign()
 	_make_ui()
 	_make_onoe()
+	foreground_overlay = Control.new()
+	foreground_overlay.name = "PilotFrontOcclusion"
+	foreground_overlay.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
+	foreground_overlay.mouse_filter = MOUSE_FILTER_IGNORE
+	foreground_overlay.z_index = 6
+	add_child(foreground_overlay)
+	foreground_overlay.draw.connect(_draw_foreground_overlay)
 	_rebuild_navigation()
 	_update_actor_screen()
 	queue_redraw()
@@ -313,6 +322,7 @@ func _update_actor_screen() -> void:
 	actor_sprite.position = _screen_from_world(actor_pos) - Vector2(0, native_height * scale_factor * 0.5)
 	var screen_y := actor_sprite.position.y
 	actor_sprite.visible = screen_y > TOP_UI_HEIGHT - 48.0 and screen_y < size.y - BOTTOM_UI_HEIGHT + 25.0
+	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
 
 func _set_actor_motion(delta: Vector2) -> void:
 	if delta.length_squared() < 0.01:
@@ -594,6 +604,53 @@ func _select_at(p: Vector2) -> void:
 			queue_redraw()
 			return
 
+
+func _visual_texture(file_name: String) -> Texture2D:
+	match file_name:
+		"grandfather_clock.png": return AI_CLOCK
+		"armchair_clean.png": return AI_CHAIR
+		"round_side_table.png": return AI_SIDE_TABLE
+		"entry_console.png": return AI_CONSOLE
+		"ancestor_gallery_composite.png": return AI_GALLERY
+		"burgundy_runner.png": return AI_RUG
+	return null
+
+func _visual_rect(item: Dictionary) -> Rect2:
+	var rect: Array = item.rect
+	return Rect2(float(rect[0]), float(rect[1]), float(rect[2]), float(rect[3]))
+
+func _visual_managed(map_prop_id: String) -> bool:
+	for item in HALL_VISUALS.data.sprites:
+		if str(item.mode) == "upright" and str(item.mapPropId) == map_prop_id:
+			return true
+	return false
+
+func _draw_hall_floor_visuals() -> void:
+	for item in HALL_VISUALS.data.sprites:
+		if str(item.mode) != "floor": continue
+		var tex := _visual_texture(str(item.file))
+		if tex != null:
+			draw_texture_rect(tex, _visual_rect(item), false)
+
+func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
+	# Images are upright, with a bottom-centre foot pivot projected by the exact
+	# 65-degree Godot map camera. Do NOT multiply sprite height by floor-depth ratio.
+	if not art_enabled or art_variant not in [1, 2]: return
+	for item in HALL_VISUALS.data.sprites:
+		if str(item.mode) != "upright": continue
+		var rect := _visual_rect(item)
+		var foot := Vector2(rect.position.x + rect.size.x * 0.5, rect.end.y)
+		if (foot.y > actor_pos.y) != front: continue
+		var texture := _visual_texture(str(item.file))
+		if texture == null: continue
+		var projected := _screen_from_world(foot)
+		var dest := Rect2(projected - Vector2(rect.size.x * zoom * 0.5, rect.size.y * zoom),
+			rect.size * zoom)
+		target.draw_texture_rect(texture, dest, false)
+
+func _draw_foreground_overlay() -> void:
+	_draw_hall_upright_visuals(true, foreground_overlay)
+
 func _pilot_texture(asset_id: String) -> Texture2D:
 	if art_variant == 1 or art_variant == 2:
 		match asset_id:
@@ -633,7 +690,7 @@ func _draw() -> void:
 				draw_texture_rect(HALL_RUG, Rect2(785, 435, 130, 396), false)
 			elif art_variant == 1:
 				draw_texture_rect(AI_HALL_TWIN, r, false)
-				draw_texture_rect(AI_RUG, Rect2(785, 435, 130, 396), false)
+				_draw_hall_floor_visuals()
 			else:
 				# The second illustration already contains a carpet; do not double-bake it.
 				draw_texture_rect(AI_HALL_CRIMSON, r, false)
@@ -662,10 +719,12 @@ func _draw() -> void:
 		var restored := bool(repaired_in_preview.get(str(item.id), false))
 		var texture := _pilot_texture(str(item.id)) if art_enabled else null
 		var embedded_in_shell := art_enabled and str(item.id) in ["RM-ASSET-HALL-STAIRS-L", "RM-ASSET-HALL-STAIRS-R"]
-		if art_enabled and (art_variant == 1 or art_variant == 2) and str(item.id) == "RM-ASSET-HALL-SEATS":
-			_draw_ai_seating(r)
+		# All individual pilot sprites are rendered by _draw_hall_upright_visuals()
+		# around the upright character, using bottom-centre foot sorting.
+		# Keep existing collision rectangles and interaction selection unchanged.
+		if art_enabled and (art_variant == 1 or art_variant == 2) and _visual_managed(str(item.id)):
 			if restored:
-				draw_rect(r, Color(0.22, 0.7, 0.49, 0.28))
+				draw_rect(r, Color(0.22, 0.7, 0.49, 0.17))
 		elif texture != null:
 			draw_texture_rect(texture, r, false)
 			if restored:
@@ -685,6 +744,7 @@ func _draw() -> void:
 			last = waypoint
 	draw_circle(actor_pos, 16, Color(0.2, 0.15, 0.22, 0.48))
 	draw_set_transform(Vector2.ZERO)
+	_draw_hall_upright_visuals(false, self)
 	if show_safe_viewport:
 		var safe := _safe_viewport_rect(size)
 		draw_rect(safe, Color("8dd3af"), false, 2.0)
