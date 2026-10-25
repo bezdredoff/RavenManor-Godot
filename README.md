@@ -6,9 +6,9 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status (2026-10-25):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.1, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
+**Repository status (2026-10-25):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.2, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
 
-Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It saves locally and exports JSON/PNG; output is not yet a calibrated gameplay scene.
+Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It links 120 proposed catalog positions across eight rooms, saves room-specific local drafts and exports JSON/PNG. Output is not yet a calibrated gameplay scene.
 
 Read `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, and `docs/IMPLEMENTATION_PLAN.md` before changes.
 

@@ -40,3 +40,9 @@ Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed 
 - `docs/assets/RM_HALL_GENERATED_ART_INTEGRATION.md`
 - `docs/ROOM_BUILDER_PWA.md`
 - `docs/assets/ROOM_OBJECT_REGISTER.csv`
+
+## RM-CAT-001 — linked production inventory (2026-10-25)
+
+- Added three Hall seating positions (two separately addressable armchairs, shared art family; one round table), expanding the human-owned CSV registry to **120 PROPOSED positions across eight rooms**. 245 textual state labels are recorded, not approved PNG exports.
+- Room Builder v0.2 loads generated room-filtered catalog JSON, supplies proposed states/priority/concept-PNG status, and stores distinct local drafts by room ID. Previous v0.1 projects are preserved and migrated on load; experimental art remains references, not baked into production sprite slots.
+- See `docs/ROOM_CATALOG_PRODUCTION.md` and `docs/assets/ROOM_OBJECT_REGISTER.csv`. This is an editor/catalog engineering addition, **not** an approval of room coordinates, media variants, camera, licensed source art or Android end-to-end QA.
