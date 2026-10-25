@@ -3,6 +3,7 @@ extends Control
 ## Onoe assets are owner-created test placeholders, not Evelyn.
 const DATA = preload("res://data/raven/season1_world_map.json")
 const HALL_VISUALS = preload("res://data/raven/hall_visual_contract.json")
+const HALL_PREVIEW_FILE := "res://data/raven/hall_builder_preview.json"
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
 const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
@@ -55,6 +56,7 @@ var repaired_in_preview := {}
 var explore_all := true
 var follow_actor := false
 var grid := AStarGrid2D.new()
+var hall_visual_sprites: Array = []
 var foreground_overlay: Control
 var actor_sprite: AnimatedSprite2D
 var snapshot: Dictionary
@@ -85,6 +87,7 @@ func _ready() -> void:
 	rooms = DATA.data.rooms
 	doors = DATA.data.doors
 	props = DATA.data.props
+	_load_hall_visuals()
 	snapshot = Store.new().load_campaign()
 	_make_ui()
 	_make_onoe()
@@ -605,6 +608,23 @@ func _select_at(p: Vector2) -> void:
 			return
 
 
+
+func _load_hall_visuals() -> void:
+	# An explicitly imported Builder JSON may override preview artwork only.
+	# The existing pathfinding collider map and campaign saves never read it.
+	hall_visual_sprites = HALL_VISUALS.data.sprites.duplicate(true)
+	if not FileAccess.file_exists(HALL_PREVIEW_FILE): return
+	var parsed: Variant = JSON.parse_string(FileAccess.get_file_as_string(HALL_PREVIEW_FILE))
+	if not (parsed is Dictionary): return
+	var candidate: Dictionary = parsed
+	if candidate.get("schemaVersion", 0) != 1 or str(candidate.get("status", "")) != "DRAFT_ONLY": return
+	if str(candidate.get("roomId", "")) != "RM-ROOM-HALL" or not (candidate.get("sprites", null) is Array): return
+	for item in candidate.sprites:
+		if not (item is Dictionary) or not item.has("file") or _visual_texture(str(item.file)) == null: return
+		if not item.has("rect") or not (item.rect is Array) or item.rect.size() != 4: return
+		if str(item.get("mode", "")) not in ["upright", "floor"]: return
+	hall_visual_sprites = candidate.sprites
+
 func _visual_texture(file_name: String) -> Texture2D:
 	match file_name:
 		"grandfather_clock.png": return AI_CLOCK
@@ -620,13 +640,13 @@ func _visual_rect(item: Dictionary) -> Rect2:
 	return Rect2(float(rect[0]), float(rect[1]), float(rect[2]), float(rect[3]))
 
 func _visual_managed(map_prop_id: String) -> bool:
-	for item in HALL_VISUALS.data.sprites:
+	for item in hall_visual_sprites:
 		if str(item.mode) == "upright" and str(item.mapPropId) == map_prop_id:
 			return true
 	return false
 
 func _draw_hall_floor_visuals() -> void:
-	for item in HALL_VISUALS.data.sprites:
+	for item in hall_visual_sprites:
 		if str(item.mode) != "floor": continue
 		var tex := _visual_texture(str(item.file))
 		if tex != null:
@@ -636,7 +656,7 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 	# Images are upright, with a bottom-centre foot pivot projected by the exact
 	# 65-degree Godot map camera. Do NOT multiply sprite height by floor-depth ratio.
 	if not art_enabled or art_variant not in [1, 2]: return
-	for item in HALL_VISUALS.data.sprites:
+	for item in hall_visual_sprites:
 		if str(item.mode) != "upright": continue
 		var rect := _visual_rect(item)
 		var foot := Vector2(rect.position.x + rect.size.x * 0.5, rect.end.y)
