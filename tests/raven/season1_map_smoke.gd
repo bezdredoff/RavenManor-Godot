@@ -53,7 +53,7 @@ func _run() -> void:
 	assert(scene.HALL_SHELL.get_width() == 700)
 	assert(scene.HALL_SHELL.get_height() == 690)
 	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") != null)
-	assert(scene._pilot_texture("RM-ASSET-HALL-SEATS") != null)
+	assert(scene._pilot_texture("RM-ASSET-HALL-SEATS") == null, "AI seating uses two separate chair PNGs and a round-table PNG")
 	assert(scene._pilot_texture("RM-ASSET-HALL-CONSOLE") != null)
 	assert(scene._pilot_texture("RM-ASSET-HALL-GALLERY") != null)
 	var before_cycle := Vector2(920, 610)
@@ -125,6 +125,7 @@ func _run() -> void:
 	assert(scene.art_variant == 0)
 	assert(scene.art_enabled)
 	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.HALL_CLOCK)
+	assert(scene._pilot_texture("RM-ASSET-HALL-SEATS") == scene.HALL_SEATS, "SVG comparison must keep its original seating cluster")
 	scene._toggle_art() # AI1
 	assert(scene.art_variant == 1)
 	assert(scene.art_enabled)
