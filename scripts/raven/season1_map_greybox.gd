@@ -656,7 +656,13 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 	# Images are upright, with a bottom-centre foot pivot projected by the exact
 	# 65-degree Godot map camera. Do NOT multiply sprite height by floor-depth ratio.
 	if not art_enabled or art_variant not in [1, 2]: return
-	for item in hall_visual_sprites:
+	var ordered: Array = hall_visual_sprites.duplicate()
+	ordered.sort_custom(func(a, b):
+		var ra: Rect2 = _visual_rect(a)
+		var rb: Rect2 = _visual_rect(b)
+		return ra.end.y < rb.end.y
+	)
+	for item in ordered:
 		if str(item.mode) != "upright": continue
 		var rect := _visual_rect(item)
 		var foot := Vector2(rect.position.x + rect.size.x * 0.5, rect.end.y)
