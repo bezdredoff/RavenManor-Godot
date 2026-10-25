@@ -121,7 +121,7 @@ function drawPreviewActor(c,viewport,contract){
  c.restore();
 }
 function drawGameSprites(c,viewport,contract,exporting=false){
- const foot=previewActorFoot(project,contract),parts=splitSpriteDrawOrder(visualInstances(project,contract),foot.y);
+ const foot=previewActorFoot(project,contract),parts=splitSpriteDrawOrder(visualInstances(project,contract).filter(x=>layerFor(x.object)?.visible),foot.y);
  for(const item of parts.behind)drawPilotItem(c,item,viewport);
  drawPreviewActor(c,viewport,contract);
  for(const item of parts.front)drawPilotItem(c,item,viewport);
@@ -142,8 +142,9 @@ function drawGameSprites(c,viewport,contract,exporting=false){
 function hitGamePilot(pos){
  const contract=activeContract();if(!contract||viewMode!=='game')return null;
  const items=visualInstances(project,contract);
- // Reverse painter order: items with nearer feet are more readily tappable.
- const order=items.sort((a,b)=>b.footY-a.footY);
+ // Upright cutouts must take priority over the large underlying carpet.
+ const order=items.sort((a,b)=>
+  (a.sprite.mode==='upright'?0:1)-(b.sprite.mode==='upright'?0:1) || b.footY-a.footY);
  for(const entry of order){
   const o=entry.object;const r=entry.sprite.mode==='upright'
     ?projectedUprightRect(o,view,toScreen)
@@ -215,17 +216,16 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  const records=contract?visualInstances(project,contract):[];
  const renderIDs=new Set(records.map(x=>x.object.id));
  const order=new Map(project.layers.map((l,i)=>[l.id,i]));
- for(const o of [...project.objects].sort((a,b)=>(order.get(a.layerId)||0)-(order.get(b.layerId)||0)))
-  if(layerFor(o)?.visible&&!renderIDs.has(o.id))drawAsset(c,o);
  if(contract){
-  // Floor sprites share the projected plane and match the Godot rug layer.
-  const floor=records.filter(x=>x.sprite.mode==='floor');
-  for(const item of floor){
+  // Carpets sit on the projected floor, before any tall furniture.
+  for(const item of records.filter(x=>x.sprite.mode==='floor'&&layerFor(x.object)?.visible)){
    const img=pilotImage(item.sprite.file);
    if(img.complete&&img.naturalWidth)c.drawImage(img,item.object.x,item.object.y,item.object.w,item.object.h);
    else drawAsset(c,item.object);
   }
  }
+ for(const o of [...project.objects].sort((a,b)=>(order.get(a.layerId)||0)-(order.get(b.layerId)||0)))
+  if(layerFor(o)?.visible&&!renderIDs.has(o.id))drawAsset(c,o);
  if(!exporting&&viewMode==='game')drawDoorGuides(c,referenceForCurrentRoom());
  if(!exporting&&selected){const o=project.objects.find(o=>o.id===selected);if(o&&!(contract&&renderIDs.has(o.id))){c.save();c.translate(o.x+o.w/2,o.y+o.h/2);c.rotate((o.rotation||0)*Math.PI/180);c.strokeStyle='#2c9cf9';c.lineWidth=2/viewport.scale;c.setLineDash([8/viewport.scale,5/viewport.scale]);c.strokeRect(-o.w/2-3,-o.h/2-3,o.w+6,o.h+6);c.setLineDash([]);c.fillStyle='#2c9cf9';c.beginPath();c.arc(o.w/2+4,-o.h/2-4,7/viewport.scale,0,Math.PI*2);c.fill();c.restore();}}
  c.restore();if(contract)drawGameSprites(c,viewport,contract,exporting);}
@@ -323,6 +323,12 @@ async function exportPNG(){
  try{await Promise.all(sourceImages.map(async a=>{let image=imageCache.get(a.id);if(!image){image=new Image();image.src=a.image;imageCache.set(a.id,image);}if(!image.complete||!image.naturalWidth)await image.decode();}));}
  catch(error){notify('Не удалось подготовить одно из изображений для PNG');console.error(error);return;}
  if(viewMode==='game'&&referenceForCurrentRoom()?.aligned&&project.roomId==='RM-ROOM-HALL'){try{const bg=ensureHallReferenceImage();if(!bg.complete||!bg.naturalWidth)await bg.decode();}catch(err){notify('Фон Godot недоступен; экспорт без фона');}}
+ if(viewMode==='game'&&activeContract()){
+   try{const contract=activeContract();
+    const files=[...new Set([...contract.sprites.map(x=>x.file),...(drawActorPreview?[contract.actor.source]:[])])];
+    await Promise.all(files.map(async file=>{const img=pilotImage(file);if(!img.complete||!img.naturalWidth)await img.decode();}));
+   }catch(err){notify('Ошибка загрузки игрового PNG — экспорт отменён');return;}
+ }
  const off=document.createElement('canvas');off.width=project.width;off.height=projectedPixelHeight(project.height,viewMode);drawScene(off.getContext('2d'),{x:0,y:0,scale:1},true);off.toBlob(blob=>{if(blob)download(blob,`${project.roomId.toLowerCase()}-preview.png`);else notify('Ошибка экспорта PNG');},'image/png');$('#exportDialog').close();}
 async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));migrateLegacyHallReferences(p);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);
  if(!await save())throw new Error('Сначала экспортируй несохранённый черновик');

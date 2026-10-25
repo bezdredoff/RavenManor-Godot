@@ -56,6 +56,19 @@ func _run() -> void:
 	assert(scene._pilot_texture("RM-ASSET-HALL-SEATS") == null, "AI seating uses two separate chair PNGs and a round-table PNG")
 	assert(scene._pilot_texture("RM-ASSET-HALL-CONSOLE") != null)
 	assert(scene._pilot_texture("RM-ASSET-HALL-GALLERY") != null)
+	# Shared PWA/Godot manifest and actual two-pass sprite occlusion smoke.
+	assert(scene.HALL_VISUALS.data.status == "PILOT_NOT_APPROVED")
+	assert(scene.hall_visual_sprites.size() == 7)
+	assert(scene.foreground_overlay.z_index > scene.actor_sprite.z_index)
+	assert(scene._visual_managed("RM-ASSET-HALL-SEATS"))
+	assert(scene._visual_managed("RM-ASSET-HALL-CLOCK"))
+	assert(scene._visual_texture("armchair_clean.png") == scene.AI_CHAIR)
+	assert(scene._visual_texture("grandfather_clock.png") == scene.AI_CLOCK)
+	var chair_rect: Rect2 = scene._visual_rect(scene.hall_visual_sprites[2])
+	assert(chair_rect.end.y > scene.actor_pos.y, "chair must cover actor standing behind its foot")
+	var clock_rect: Rect2 = scene._visual_rect(scene.hall_visual_sprites[1])
+	assert(clock_rect.end.y < scene.actor_pos.y, "clock must stay behind actor who stands in front")
+
 	var before_cycle := Vector2(920, 610)
 	for target_angle in [45, 55, 65]:
 		scene._cycle_camera()
