@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "canonRevision": "2026-10-26-chat-sync",
+  "canonRevision": "2026-10-26-chat-sync-prologue",
   "status": "approved-runtime-narrative-direction",
   "premise": {
     "protagonist": "RM-CHAR-EVELYN",
@@ -16,7 +16,7 @@
     {
       "id": "RM-CHAR-EVELYN",
       "name": "Эвелин Рейвен",
-      "earlyPresentation": "последняя наследница, вернувшаяся по письму о наследстве",
+      "earlyPresentation": "последняя наследница, вернувшаяся по письму о наследстве; помнит комнаты, но почти не помнит людей",
       "earlyReveal": true
     },
     {
@@ -50,8 +50,44 @@
     "specialistRepairs": ["plumbing", "electrical", "stairs_or_structure", "clock_mechanism", "conservatory_glazing"],
     "navigation": "authored_target_routes",
     "freeTapToMove": false,
-    "roomArtMayMutateStoryState": false
+    "roomArtMayMutateStoryState": false,
+    "tilePoolFile": "data/raven/tile_pool.json"
   },
+  "nonBindingChoices": [
+    {
+      "id": "RM-CHOICE-00-01",
+      "scene": "letter",
+      "prompt": "Прочитать письмо сейчас или отложить до утра?",
+      "options": ["read_now", "read_morning"],
+      "effect": "none; both options converge on the same next beat"
+    }
+  ],
+  "prologue": [
+    {
+      "id": "RM-NARR-S0-01",
+      "title": "Письмо",
+      "location": "apartment",
+      "beats": ["RM-BEAT-00-01"],
+      "characters": ["RM-CHAR-EVELYN"],
+      "implementation": "RM-VS-01"
+    },
+    {
+      "id": "RM-NARR-S0-02",
+      "title": "Дорога",
+      "location": "road",
+      "beats": ["RM-BEAT-00-02"],
+      "characters": ["RM-CHAR-EVELYN"],
+      "implementation": "RM-VS-01"
+    },
+    {
+      "id": "RM-NARR-S0-03",
+      "title": "Ворота",
+      "location": "gates",
+      "beats": ["RM-BEAT-00-03"],
+      "characters": ["RM-CHAR-EVELYN", "RM-CHAR-ADA"],
+      "implementation": "RM-VS-01"
+    }
+  ],
   "earlyProgression": [
     {
       "id": "RM-NARR-S1-01",
