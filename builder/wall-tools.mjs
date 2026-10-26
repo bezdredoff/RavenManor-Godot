@@ -17,6 +17,26 @@ export const OPENING_KINDS = Object.freeze({
 const finite = value => Number.isFinite(value);
 export const wallLength = wall => Math.hypot(wall.bx-wall.ax,wall.by-wall.ay);
 
+// Height of the textured wall band in world pixels. One module is 80x80 game pixels, so the
+// band shows exactly one framed row — the same proportion the game would use.
+export const WALL_BAND_HEIGHT = 80;
+
+/**
+ * Oriented band for a solid wall run, used by the textured-wall preview.
+ * The run is re-ordered so the band always sits on the same side of the stroke, which keeps
+ * horizontal walls above the line and vertical walls to its right.
+ */
+export function wallBand(wall,start,end,height=WALL_BAND_HEIGHT){
+  const total=wallLength(wall);
+  if(!(total>0)||!(end>start))return null;
+  const dx=(wall.bx-wall.ax)/total,dy=(wall.by-wall.ay)/total;
+  const p0={x:wall.ax+dx*start,y:wall.ay+dy*start};
+  const p1={x:wall.ax+dx*end,y:wall.ay+dy*end};
+  const reverse=dx<0||(Math.abs(dx)<1e-9&&dy<0);
+  const a=reverse?p1:p0,b=reverse?p0:p1;
+  return {x:a.x,y:a.y,length:Math.hypot(b.x-a.x,b.y-a.y),angle:Math.atan2(b.y-a.y,b.x-a.x),height};
+}
+
 export function normalizeWall(a,b,grid=25){
   const ax=Math.round(a.x/grid)*grid,ay=Math.round(a.y/grid)*grid;
   let bx=Math.round(b.x/grid)*grid,by=Math.round(b.y/grid)*grid;

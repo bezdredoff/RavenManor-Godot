@@ -1,5 +1,5 @@
-const CACHE='raven-room-builder-v9';
-const APP_FILES=['./','./index.html','./app.mjs','./catalog.mjs','./projection.mjs','./visual-contract.mjs','./hall-pilot.mjs','./reference/hall_visual_contract.json','./reference/season1_world_map.json','./reference/season1_wall_kit.json','./catalog/room-items.json','./model.mjs','./wall-tools.mjs','./style.css','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
+const CACHE='raven-room-builder-v10';
+const APP_FILES=['./','./index.html','./app.mjs','./catalog.mjs','./projection.mjs','./visual-contract.mjs','./hall-pilot.mjs','./reference/hall_visual_contract.json','./reference/season1_world_map.json','./reference/season1_wall_kit.json','./reference/wall_tileset/grand_module.png','./catalog/room-items.json','./model.mjs','./wall-tools.mjs','./style.css','./manifest.webmanifest','./icons/icon.svg','./icons/icon-192.png','./icons/icon-512.png'];
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_FILES)).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(Promise.all([caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith('raven-room-builder-')&&k!==CACHE).map(k=>caches.delete(k)))),self.clients.claim()]));});
 // Prefer published editor assets online; use the cached shell when offline.

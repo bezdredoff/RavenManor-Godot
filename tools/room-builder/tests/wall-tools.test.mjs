@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {exampleProject,validateProject} from '../model.mjs';
-import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls} from '../wall-tools.mjs';
+import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls,wallBand,WALL_BAND_HEIGHT} from '../wall-tools.mjs';
 
 test('wall strokes snap orthogonally and derive connected corners',()=>{
  const first={id:'w1',...normalizeWall({x:2,y:3},{x:103,y:22},25),style:'grand',thickness:18};
@@ -31,4 +31,19 @@ test('project schema rejects overlapping openings on the same wall',()=>{
   {id:'b',wallId:'w',kind:'window',width:100,offset:.5}
  ];
  assert.throws(()=>validateProject(p),/пересекаются/);
+});
+
+test('textured wall bands keep one orientation and one module height',()=>{
+ const right={id:'r',ax:0,ay:100,bx:200,by:100,style:'grand',thickness:18};
+ const left={id:'l',ax:200,ay:100,bx:0,by:100,style:'grand',thickness:18};
+ const down={id:'d',ax:50,ay:0,bx:50,by:200,style:'grand',thickness:18};
+
+ const forward=wallBand(right,0,200),backward=wallBand(left,0,200),vertical=wallBand(down,0,200);
+ assert.equal(forward.angle,0);assert.equal(backward.angle,0);
+ assert.equal(forward.length,200);assert.equal(backward.length,200);
+ assert.equal(forward.height,WALL_BAND_HEIGHT);
+ // Both directions start the band at the same world point so the texture does not flip.
+ assert.deepEqual([forward.x,forward.y],[backward.x,backward.y]);
+ assert.ok(Math.abs(vertical.angle-Math.PI/2)<1e-9);
+ assert.equal(wallBand(right,120,80),null);
 });
