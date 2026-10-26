@@ -45,3 +45,5 @@ One background and one floor runner are drawn from the imported file; six uprigh
 CI regenerates the exact scene from `examples/room_builder_hall_original.json`, performs a byte-for-byte diff with the committed scene, loads it in Godot, validates five door anchors and six physical rectangles against the live map, verifies imported draw counts and old-art exclusion, and runs the existing cross-room/locked-gate route tests at mobile viewport sizes.
 
 Next production approval gate: compare actual images with doorstep markers and stairs on a mobile screenshot, correct background perspective/occlusion, then explicitly sign off collision/interactive footprint edits. This is a visual integration milestone, not the final art pass.
+
+The measured follow-up, real Godot viewport captures, opt-in three-piece seating footprints and remaining acceptance criteria are recorded in [HALL_VISUAL_ACCURACY_GATE.md](HALL_VISUAL_ACCURACY_GATE.md). The legacy seating obstacle remains the default.

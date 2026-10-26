@@ -21,3 +21,6 @@ exports/
 *.aab
 *.translation
 *.csv.import
+*.import
+*.gd.uid
+__pycache__/

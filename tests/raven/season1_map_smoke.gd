@@ -68,6 +68,31 @@ func _run() -> void:
 	assert(scene.imported_hall.items.size() == 7)
 	assert(scene.imported_hall.pilot_count == 7)
 	assert(scene.imported_hall.placeholder_count == 0)
+	var calibration: Dictionary = scene.HALL_CALIBRATION.data
+	assert(calibration.status == "MEASURED_DRAFT_NOT_APPROVED")
+	assert(calibration.openings.size() == 5)
+	assert(calibration.staircases.size() == 2)
+	var hall_door_ids := {}
+	for door in data.doors:
+		if int(door.a) == 1 or int(door.b) == 1:
+			hall_door_ids[str(door.id)] = Vector2(float(door.point[0]), float(door.point[1]))
+	for opening in calibration.openings:
+		assert(hall_door_ids.has(str(opening.id)))
+		var map_point: Array = opening.mapPoint
+		assert(Vector2(float(map_point[0]), float(map_point[1])) == hall_door_ids[str(opening.id)])
+	var legacy_seat_point := Vector2(718, 585)
+	assert(not scene._is_walkable(legacy_seat_point))
+	scene.precise_seating_collision = true
+	assert(scene._is_walkable(legacy_seat_point), "opt-in seat bases free the space behind their sprites")
+	assert(not scene._is_walkable(Vector2(665, 650)))
+	assert(not scene._is_walkable(Vector2(765, 650)))
+	assert(not scene._is_walkable(Vector2(721, 651)))
+	scene._rebuild_navigation()
+	for target in [[Vector2(245, 650), 2], [Vector2(1540, 690), 4], [Vector2(605, 630), 1]]:
+		assert(not scene._path_between(scene.actor_pos, target[0], target[1]).is_empty(),
+			"Opt-in seat bases must preserve hall routes")
+	scene.precise_seating_collision = false
+	scene._rebuild_navigation()
 	var import_pass: Dictionary = scene._hall_draw_source_counts()
 	assert(import_pass.imported_floor == 1)
 	assert(import_pass.imported_upright == 6)
@@ -84,6 +109,9 @@ func _run() -> void:
 		assert(local_rect.position.x >= 0 and local_rect.position.y >= 0)
 		assert(Rect2(Vector2.ZERO, Vector2(700, 690)).encloses(local_rect))
 		assert(imported.mode in ["floor", "upright"])
+		if imported.mode == "upright":
+			assert(scene._imported_in_front(imported, float(imported.foot_y) - 1.0))
+			assert(not scene._imported_in_front(imported, float(imported.foot_y) + 1.0))
 	assert(scene.hall_visual_sprites.size() == 7)
 	assert(scene.foreground_overlay.z_index > scene.actor_sprite.z_index)
 	assert(scene._visual_managed("RM-ASSET-HALL-SEATS"))
