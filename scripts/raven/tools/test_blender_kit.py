@@ -199,5 +199,35 @@ class WallKitGeometryTests(unittest.TestCase):
             self.kit.balustrade(300.0, 200.0, 0.0, 6.0)
 
 
+    def test_stair_rail_posts_rise_with_the_flight(self):
+        rail = self.kit.stair_rail(180.0, steps=8, rise=15.0, run=24.0, side=1)
+        posts = rail[:8]
+        self.assertEqual(len(posts), 8)
+        for index, (x0, _y0, z0, x1, _y1, z1) in enumerate(posts):
+            self.assertGreaterEqual(x0, 84.0)      # on the +X edge of a 180-wide flight
+            self.assertLessEqual(x1, 90.0)
+            self.assertAlmostEqual(z0, (index + 1) * 15.0, places=6)
+            self.assertAlmostEqual(z1, (index + 1) * 15.0 + 58.0, places=6)
+
+    def test_stair_rail_handrail_climbs_continuously(self):
+        rail = self.kit.stair_rail(180.0, steps=8, rise=15.0, run=24.0, side=1,
+                                   slices_per_step=8)
+        slices = rail[8:]
+        self.assertGreaterEqual(len(slices), 8 * 4)
+        tops = [box[5] for box in slices]
+        for a, b in zip(tops, tops[1:]):
+            self.assertGreaterEqual(b, a - 1e-9)
+        self.assertAlmostEqual(tops[-1], 8 * 15.0 + 58.0, places=6)
+
+    def test_stair_rail_mirrors_to_the_other_side(self):
+        left = self.kit.stair_rail(180.0, steps=4, rise=15.0, run=24.0, side=-1)
+        for x0, _y0, _z0, x1, _y1, _z1 in left[:4]:
+            self.assertGreaterEqual(x0, -90.0)
+            self.assertLessEqual(x1, -84.0 + 1e-9)
+
+    def test_stair_rail_rejects_bad_side(self):
+        with self.assertRaises(ValueError):
+            self.kit.stair_rail(180.0, steps=4, rise=15.0, run=24.0, side=0)
+
 if __name__ == "__main__":
     unittest.main()

@@ -351,3 +351,35 @@ def balustrade(x0: float, x1: float, y: float, depth: float, base_z: float = 0.0
 def stair_opening(length: float, open_x0: float, open_x1: float, z_top: float) -> list[Box]:
     """Tall opening for a staircase: a portal that reaches from the floor to `z_top`."""
     return wall_with_openings(length, [(open_x0, open_x1, 0.0, z_top)])
+
+def stair_rail(width: float, steps: int, rise: float, run: float, height: float = 58.0,
+               post: float = 6.0, side: int = 1, depth: float = 0.0,
+               slices_per_step: int = 4) -> list[Box]:
+    """Balustrade that follows the flight: posts on the steps plus a sloped handrail.
+
+    The handrail is built from thin slices instead of one rotated box, so it reads as a smooth
+    slope after beveling while the kit stays axis-aligned and testable.
+    """
+    if steps < 1 or width <= 0 or rise <= 0 or run <= 0 or side not in (-1, 1):
+        raise ValueError("stair rail needs a positive flight and side +1 or -1")
+    outer = side * width / 2
+    inner = outer - side * post
+    x0, x1 = sorted((inner, outer))
+
+    boxes: list[Box] = []
+    for index in range(steps):
+        y1 = -depth - index * run
+        y0 = y1 - run
+        z = (index + 1) * rise
+        boxes.append((x0, y0, z, x1, y1, z + height))
+
+    slices = max(1, steps * slices_per_step)
+    for k in range(slices):
+        t0 = k / slices
+        t1 = (k + 1) / slices
+        y0 = -depth - run * steps * t0
+        y1 = -depth - run * steps * t1
+        z0 = rise * steps * t0 + height
+        z1 = rise * steps * t1 + height
+        boxes.append((x0, min(y0, y1), z0, x1, max(y0, y1), z1))
+    return boxes

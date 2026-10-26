@@ -134,14 +134,29 @@ Two rendering notes that matter for quality:
 Evidence: `docs/evidence/blender_kit/arch.png`.
 ### Stairs
 
-A staircase is a traversable opening plus a flight, and the rail is a separate layer:
+There are two different arrangements, and mixing them produces nonsense (the first version of
+this demo put the flight behind the wall while putting a fence across the opening):
 
-- `stair_opening(length, x0, x1, z_top)` — a tall portal with a header above it, no leaf;
-- `stairs(width, steps, rise, run, depth)` — solid treads climbing away from the camera. Place
-  the flight centred in the opening and shifted behind the wall by `depth = THICKNESS`, so it is
-  only visible through the hole;
-- `balustrade(x0, x1, y, depth, height, max_gap)` — evenly spaced posts plus a handrail, drawn
-  in the foreground pass with its own pivot. Two runs leave a central entry.
+1. **Grand staircase in the room, in front of the wall.** The usual case, and the one the Hall
+   uses. The flight stands on the floor, climbs towards the wall, and the balustrade follows the
+   slope on one or both sides. No wall opening is involved.
+2. **Service stair through the wall.** Only when the flight continues into the neighbouring
+   room or down a level: then the wall gets a tall opening (`stair_opening`) and the flight is
+   placed behind it, so it is visible through the doorway.
+
+Pieces:
+
+- `stairs(width, steps, rise, run, depth)` — solid treads. `depth` shifts the flight; for case 1
+  translate it so the top step touches the wall face, for case 2 keep it behind the wall;
+- `stair_rail(width, steps, rise, run, side, height, slices_per_step)` — posts standing on every
+  step plus a handrail that follows the slope. The handrail is thin slices rather than one
+  rotated box, so it stays axis-aligned and testable;
+- `stair_opening(length, x0, x1, z_top)` — tall portal with a header, for case 2 only;
+- `balustrade(x0, x1, y, depth, height, max_gap)` — a straight run for landings and room edges;
+  two runs leave a central entry.
+
+The rail is a separate sprite with its own pivot: it is the layer that has to fade or occlude
+when the player walks in front of it, and it can swap state without re-rendering the flight.
 
 The rail being a separate sprite matters: it is the layer that has to fade or occlude when the
 player walks in front of it, which is the same mechanism as Diablo's wall fading. It also means
