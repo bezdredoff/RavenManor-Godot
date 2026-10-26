@@ -1,0 +1,946 @@
+{
+  "schemaVersion": 1,
+  "status": "PROPOSED_REUSABLE_PLATES",
+  "masterCount": 11,
+  "shotCompositionRule": "VN backdrop plates are framed independent of authored top-down map textures; share room design, architectural landmarks and state overlays, not blindly stretched map artwork",
+  "masters": [
+    {
+      "id": "BG-APARTMENT",
+      "mapRoomId": null,
+      "description": "Evelyn rented apartment; prologue insert",
+      "landmarks": [
+        "room",
+        "table",
+        "inheritance envelope"
+      ],
+      "lightingVariants": [
+        "day"
+      ],
+      "stateLayers": [
+        "packed_boxes"
+      ],
+      "scope": "prologue_only"
+    },
+    {
+      "id": "BG-ROAD",
+      "mapRoomId": null,
+      "description": "train window → car view; compose as still insert/pan instead of multiple unique plates",
+      "landmarks": [
+        "mist",
+        "road",
+        "manor silhouette"
+      ],
+      "lightingVariants": [
+        "dusk"
+      ],
+      "stateLayers": [
+        "mist"
+      ],
+      "scope": "prologue_only"
+    },
+    {
+      "id": "BG-ENTRY",
+      "mapRoomId": "RM-ROOM-ENTRY",
+      "description": "entry doors and manor gates reframe same exterior family",
+      "landmarks": [
+        "gate",
+        "path",
+        "lantern"
+      ],
+      "lightingVariants": [
+        "day",
+        "dusk"
+      ],
+      "stateLayers": [
+        "overgrown",
+        "approachable"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-HALL",
+      "mapRoomId": "RM-ROOM-HALL",
+      "description": "split stairs, clock by library, pair chairs and round table; corridor on right",
+      "landmarks": [
+        "stairs",
+        "hall clock",
+        "runner",
+        "portraits"
+      ],
+      "lightingVariants": [
+        "day",
+        "evening",
+        "night"
+      ],
+      "stateLayers": [
+        "dusty",
+        "habitable",
+        "storm"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-CORRIDOR",
+      "mapRoomId": "RM-ROOM-CORRIDOR",
+      "description": "residential passage with bedroom/kitchen doors",
+      "landmarks": [
+        "bench",
+        "bedroom door",
+        "sconces"
+      ],
+      "lightingVariants": [
+        "day",
+        "night"
+      ],
+      "stateLayers": [
+        "blocked",
+        "clear"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-BEDROOM",
+      "mapRoomId": "RM-ROOM-BEDROOM",
+      "description": "bed and childhood storage; playable bookend for season",
+      "landmarks": [
+        "bed",
+        "chest",
+        "lamp",
+        "diary"
+      ],
+      "lightingVariants": [
+        "day",
+        "night"
+      ],
+      "stateLayers": [
+        "covered",
+        "livable"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-BATH-VIGNETTE",
+      "mapRoomId": "RM-ROOM-BATHROOM",
+      "description": "corridor-side bathroom focus insert, NOT full walkable room",
+      "landmarks": [
+        "pipes",
+        "leak",
+        "tools"
+      ],
+      "lightingVariants": [
+        "day"
+      ],
+      "stateLayers": [
+        "wet_unsafe",
+        "specialist_fixed"
+      ],
+      "scope": "vignette_only"
+    },
+    {
+      "id": "BG-KITCHEN",
+      "mapRoomId": "RM-ROOM-KITCHEN",
+      "description": "old kitchen; not magically modernized",
+      "landmarks": [
+        "fridge",
+        "kettle",
+        "table",
+        "old stove"
+      ],
+      "lightingVariants": [
+        "day",
+        "evening"
+      ],
+      "stateLayers": [
+        "power_off",
+        "partial_lighting"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-LIBRARY",
+      "mapRoomId": "RM-ROOM-ARCHIVE",
+      "description": "shelves, desk, shutter and leaking window; archive / library same ID",
+      "landmarks": [
+        "desk",
+        "shelf",
+        "paper",
+        "portraits"
+      ],
+      "lightingVariants": [
+        "day",
+        "evening",
+        "night"
+      ],
+      "stateLayers": [
+        "shut_dusty",
+        "usable",
+        "storm_leak"
+      ],
+      "scope": "map_and_vn"
+    },
+    {
+      "id": "BG-GARDEN",
+      "mapRoomId": null,
+      "description": "safe garden walkway and fence, Røwan area; exterior beyond full-map room preview",
+      "landmarks": [
+        "fence",
+        "tool chest",
+        "garden path"
+      ],
+      "lightingVariants": [
+        "day",
+        "dusk"
+      ],
+      "stateLayers": [
+        "unsafe_path",
+        "partly_repaired",
+        "after_storm"
+      ],
+      "scope": "vn_plate_new_map_zone_planned"
+    },
+    {
+      "id": "BG-CONSERVATORY",
+      "mapRoomId": "RM-ROOM-CONSERVATORY",
+      "description": "greenhouse interior with old plants and stone bench",
+      "landmarks": [
+        "glazing",
+        "plant pots",
+        "bench"
+      ],
+      "lightingVariants": [
+        "day",
+        "dusk",
+        "storm"
+      ],
+      "stateLayers": [
+        "broken",
+        "partially_safe",
+        "storm_damage"
+      ],
+      "scope": "map_and_vn"
+    }
+  ],
+  "sceneShots": [
+    {
+      "sceneId": "RM-BEAT-00-01",
+      "backgroundId": "BG-APARTMENT",
+      "lighting": "day",
+      "roomState": "packed_boxes",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 1,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-00-02",
+      "backgroundId": "BG-ROAD",
+      "lighting": "dusk",
+      "roomState": "mist",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 1,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-00-03",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "dusk",
+      "roomState": "overgrown",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-01",
+      "backgroundId": "BG-HALL",
+      "lighting": "evening",
+      "roomState": "dusty",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "left",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-02",
+      "backgroundId": "BG-BEDROOM",
+      "lighting": "day",
+      "roomState": "livable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-03",
+      "backgroundId": "BG-BATH-VIGNETTE",
+      "lighting": "day",
+      "roomState": "wet_unsafe",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": "Bathroom vignette; Evelyn and Ada as bust inserts"
+    },
+    {
+      "sceneId": "RM-BEAT-01-04",
+      "backgroundId": "BG-HALL",
+      "lighting": "night",
+      "roomState": "habitable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-05",
+      "backgroundId": "BG-HALL",
+      "lighting": "day",
+      "roomState": "habitable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "left",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "right",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-01",
+      "backgroundId": "BG-HALL",
+      "lighting": "day",
+      "roomState": "habitable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-02",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "day",
+      "roomState": "approachable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "left",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-03",
+      "backgroundId": "BG-KITCHEN",
+      "lighting": "day",
+      "roomState": "power_off",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-04",
+      "backgroundId": "BG-KITCHEN",
+      "lighting": "evening",
+      "roomState": "partial_lighting",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-01",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "shut_dusty",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "left",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-02",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "center",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "right",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-03",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "right",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-04",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "day",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-01",
+      "backgroundId": "BG-GARDEN",
+      "lighting": "day",
+      "roomState": "unsafe_path",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "right",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-02",
+      "backgroundId": "BG-CONSERVATORY",
+      "lighting": "day",
+      "roomState": "partially_safe",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "right",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-03",
+      "backgroundId": "BG-CONSERVATORY",
+      "lighting": "day",
+      "roomState": "partially_safe",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "right",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-04",
+      "backgroundId": "BG-CONSERVATORY",
+      "lighting": "dusk",
+      "roomState": "partially_safe",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "right",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-01",
+      "backgroundId": "BG-HALL",
+      "lighting": "night",
+      "roomState": "storm",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-02",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "night",
+      "roomState": "storm_leak",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-03",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "night",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-04",
+      "backgroundId": "BG-HALL",
+      "lighting": "day",
+      "roomState": "habitable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "center",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-01",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "left",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "right",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-02",
+      "backgroundId": "BG-HALL",
+      "lighting": "day",
+      "roomState": "habitable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "center",
+          "pose": "work_ready",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 3,
+      "layout": "portrait_first",
+      "note": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-03",
+      "backgroundId": "BG-BEDROOM",
+      "lighting": "night",
+      "roomState": "livable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 1,
+      "layout": "portrait_first",
+      "note": "Ada/unknown voice offscreen; no portrait"
+    },
+    {
+      "sceneId": "RM-BEAT-06-POST",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "usable",
+      "cast": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "left",
+          "pose": "formal",
+          "emotion": "neutral",
+          "micro": "blink"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "neutral",
+          "micro": "blink"
+        }
+      ],
+      "visibleCount": 2,
+      "layout": "portrait_first",
+      "note": ""
+    }
+  ]
+}
