@@ -5,7 +5,7 @@ extends RefCounted
 
 const ROOM_ID := "RM-ROOM-HALL"
 const CAMERA_ELEVATION := 65.0
-const PROJECTION_RATIO := sin(deg_to_rad(CAMERA_ELEVATION))
+const PROJECTION_RATIO := 0.9063077870366499
 
 static func _rect_value(origin: Vector2, size: Vector2) -> Rect2:
 	return Rect2(origin, size)

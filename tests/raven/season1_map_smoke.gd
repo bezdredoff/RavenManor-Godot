@@ -58,6 +58,32 @@ func _run() -> void:
 	assert(scene._pilot_texture("RM-ASSET-HALL-GALLERY") != null)
 	# Shared PWA/Godot manifest and actual two-pass sprite occlusion smoke.
 	assert(scene.HALL_VISUALS.data.status == "PILOT_NOT_APPROVED")
+	# Source is the committed, tested Builder import PackedScene. Door markers and
+	# physical footprints must match the still-canonical world graph exactly.
+	assert(scene.art_variant == 4)
+	assert(scene.imported_hall.ready, str(scene.imported_hall.get("reason", "Unknown import rejection")))
+	assert(scene.imported_hall.world_rect == Rect2(500, 150, 700, 690))
+	assert(scene.imported_hall.door_count == 5)
+	assert(scene.imported_hall.footprint_count == 6)
+	assert(scene.imported_hall.items.size() == 7)
+	assert(scene.imported_hall.pilot_count == 7)
+	assert(scene.imported_hall.placeholder_count == 0)
+	var import_pass: Dictionary = scene._hall_draw_source_counts()
+	assert(import_pass.imported_floor == 1)
+	assert(import_pass.imported_upright == 6)
+	assert(import_pass.legacy_upright == 0, "Imported mode must never double draw the old AI sprites")
+	assert(import_pass.map_prop_duplicates >= 6)
+	assert(scene._imported_managed("RM-ASSET-HALL-SEATS"))
+	assert(scene._imported_managed("RM-ASSET-HALL-CLOCK"))
+	assert(scene._imported_managed("RM-ASSET-HALL-CONSOLE"))
+	assert(scene._imported_managed("RM-ASSET-HALL-GALLERY"))
+	for imported in scene.imported_hall.items:
+		assert(imported.texture != null, "Pilot imported PNG must exist")
+		var source_bound: Rect2 = imported.rect
+		var local_rect: Rect2 = Rect2(source_bound.position - Vector2(500, 150), source_bound.size)
+		assert(local_rect.position.x >= 0 and local_rect.position.y >= 0)
+		assert(Rect2(Vector2.ZERO, Vector2(700, 690)).encloses(local_rect))
+		assert(imported.mode in ["floor", "upright"])
 	assert(scene.hall_visual_sprites.size() == 7)
 	assert(scene.foreground_overlay.z_index > scene.actor_sprite.z_index)
 	assert(scene._visual_managed("RM-ASSET-HALL-SEATS"))
@@ -114,7 +140,7 @@ func _run() -> void:
 	assert(absf(scene.zoom - 0.74) < 0.0001)
 	assert(scene.zoom_preset_button.text == "0.74×")
 	# The generated PNGs are tracked as original sources, not re-encoded exports.
-	assert(scene.art_variant == 1)
+	assert(scene.art_variant == 4)
 	assert(scene.AI_HALL_TWIN.get_width() == 1254)
 	assert(scene.AI_HALL_TWIN.get_height() == 1254)
 	assert(scene.AI_HALL_CRIMSON.get_width() == 1254)
@@ -127,6 +153,10 @@ func _run() -> void:
 	assert(scene.AI_CONSOLE.get_width() == 1448)
 	assert(scene.AI_GALLERY.get_height() == 1536)
 	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.AI_CLOCK)
+	scene._toggle_art() # AI1
+	assert(scene.art_variant == 1)
+	assert(scene.art_button.text == "Вид: AI1")
+	assert(not scene._import_mode())
 	scene._toggle_art() # AI2
 	assert(scene.art_variant == 2)
 	assert(scene.art_enabled)
@@ -139,9 +169,11 @@ func _run() -> void:
 	assert(scene.art_enabled)
 	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.HALL_CLOCK)
 	assert(scene._pilot_texture("RM-ASSET-HALL-SEATS") == scene.HALL_SEATS, "SVG comparison must keep its original seating cluster")
-	scene._toggle_art() # AI1
-	assert(scene.art_variant == 1)
+	scene._toggle_art() # Import
+	assert(scene.art_variant == 4)
 	assert(scene.art_enabled)
+	assert(scene._import_mode())
+	assert(scene.art_button.text == "Вид: Импорт")
 	assert(scene._pilot_texture("RM-ASSET-HALL-CLOCK") == scene.AI_CLOCK)
 	var screen_point: Vector2 = scene._screen_from_world(Vector2(920, 610))
 	assert(scene._from_screen(screen_point).distance_to(Vector2(920, 610)) < 0.001, "projection must preserve hit targeting")
