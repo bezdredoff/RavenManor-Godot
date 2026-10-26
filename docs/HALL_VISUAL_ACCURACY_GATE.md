@@ -26,3 +26,23 @@ The front entry aligns within roughly 7 world units. The library arch is painted
 The real Godot 4.7.2 OpenGL renderer produced [390×844](evidence/hall_import_390x844.png), [412×915](evidence/hall_import_412x915.png) and [430×932](evidence/hall_import_430x932.png) captures from the committed imported scene. The 390×844 capture visibly confirms the single central painted door, the approximate left arch, two stair flights and the actor among separately drawn furniture. It also shows why the image cannot yet certify door placement: the right corridor arch is outside the opening viewport and both future markers overlay that central door. The other captures keep the same issue. The command is `RAVEN_HALL_CAPTURE_DIR=<output directory> godot --path . --rendering-method gl_compatibility --script res://tests/raven/hall_render_capture.gd`; rendering requires a display driver, since Godot's headless dummy driver has no screenshot texture.
 
 Godot smoke tests check the five map coordinates, imported scene counts, front/back sorting and both collision policies. Python importer tests and browser smoke remain CI gates. These checks establish data and runtime behavior; they cannot certify painted openings or alpha quality. The next art pass needs a geometry-conditioned background, separate foreground cutouts, measured screenshot evidence and explicit owner approval before default collision changes or art approval.
+
+
+## October 26 follow-up: usable in-game QA controls
+
+The previous instrumented parity report measured the image but did not provide in-game toggles for the proposed seating model. **Whole Manor Map → Настр.** now exposes a third row with:
+
+- **Стыки: СКР / ВИД:** shows orange/coral estimated painted stair rects against cyan map bounds, six provisional tread guides per flight, the old seat group and green proposed furniture contact outlines. Door discrepancy arrows (green = fixed world marker, coral = measured painting) are visible when this is enabled, without turning on every unrelated debug bounding box.
+- **Кресла: ОРИГ. / 3 ТЕСТ:** swaps the large original seating collision for three smaller *unapproved* contact rectangles in temporary AStar memory, and clears any queued actor movement. The toggle rebuilds navigation and can immediately restore the original geometry; it never changes JSON source or campaign saves. It is off each time the room is loaded.
+
+Before either tool activates, a runtime validity gate verifies the calibration file's exact five canonical door IDs and positions, two staircase bounds, and that all three candidate footprints lie inside the existing combined seating obstacle. If the world map changes without recalibration, the buttons are disabled and default collision remains intact.
+
+### Current decision record
+
+**Delivered and checked:** numerical source parity, real Godot render evidence for three portrait sizes, quantified discrepancy of painted side arches, reversible test navigation, interactive visualization of stair and door mismatches, actor foot-depth front/back tests.
+
+**Intentionally deferred:** repainting the 1254×1254 source background, generating true transparent balustrade/doorframe foreground mattes, approving individual physics footprints, creating clean/damaged sprites or modifying story/interaction state. The side arches' vertical painted displacement exceeds 200 world units; hiding it with a 2D offset or moving canonical door markers would be inaccurate. New geometry-conditioned art and explicit sign-off are prerequisites for these corrections.
+
+### Final acceptance gate
+
+For each of five doors and two stair flights, require an updated *source image* plus a recorded painted opening/edge location that aligns with the fixed corresponding map anchor, with an explicitly agreed pixel tolerance at 0.74×/65°; compare at 390×844, 412×915 and 430×932. Check front/back alpha masks and character routes in default collision and candidate contact modes. Only after signoff promote three separate collision footprints and the architecture occluders into production. No such approval has been given yet.
