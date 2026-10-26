@@ -232,7 +232,7 @@
           "slot": "center",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         }
       ],
       "visibleCount": 1,
@@ -249,8 +249,8 @@
           "characterId": "RM-CHAR-EVELYN",
           "slot": "center",
           "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "curious",
+          "micro": "evelyn_hair_tuck"
         }
       ],
       "visibleCount": 1,
@@ -268,14 +268,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
-          "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "offer_tray",
+          "emotion": "dry_amused",
+          "micro": "ada_precise_straighten"
         }
       ],
       "visibleCount": 2,
@@ -291,23 +291,23 @@
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "folder_present",
+          "emotion": "professional",
+          "micro": "lucas_page_align"
         },
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "center",
           "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "skeptical",
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 3,
@@ -325,14 +325,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -350,14 +350,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -375,14 +375,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -399,15 +399,15 @@
           "characterId": "RM-CHAR-ADA",
           "slot": "left",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         },
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "right",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         }
       ],
       "visibleCount": 2,
@@ -425,14 +425,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
-          "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "offer_tray",
+          "emotion": "dry_amused",
+          "micro": "ada_precise_straighten"
         }
       ],
       "visibleCount": 2,
@@ -448,23 +448,23 @@
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "left",
-          "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "point_route",
+          "emotion": "wry",
+          "micro": "rowan_weight_shift"
         },
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "center",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 3,
@@ -480,16 +480,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "investigate",
+          "emotion": "curious",
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -507,14 +507,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -530,23 +530,23 @@
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "folder_present",
+          "emotion": "professional",
+          "micro": "lucas_page_align"
         },
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "center",
-          "pose": "relaxed",
+          "pose": "investigate",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 3,
@@ -562,23 +562,23 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
+          "pose": "investigate",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "center",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         },
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "explain",
+          "emotion": "professional",
+          "micro": "lucas_glasses_adjust"
         }
       ],
       "visibleCount": 3,
@@ -594,16 +594,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "investigate",
+          "emotion": "worried",
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "explain",
+          "emotion": "serious",
+          "micro": "lucas_glasses_adjust"
         }
       ],
       "visibleCount": 2,
@@ -619,16 +619,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "investigate",
+          "emotion": "worried",
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "stern",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -645,15 +645,15 @@
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
           "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "amused",
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "right",
-          "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "rest_tool",
+          "emotion": "focused",
+          "micro": "rowan_tool_lower"
         }
       ],
       "visibleCount": 2,
@@ -669,16 +669,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
+          "pose": "investigate",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "right",
           "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "focused",
+          "micro": "rowan_weight_shift"
         }
       ],
       "visibleCount": 2,
@@ -694,16 +694,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
+          "pose": "investigate",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "right",
-          "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "point_route",
+          "emotion": "focused",
+          "micro": "rowan_weight_shift"
         }
       ],
       "visibleCount": 2,
@@ -721,14 +721,14 @@
           "slot": "left",
           "pose": "relaxed",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "right",
           "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "nostalgic",
+          "micro": "rowan_weight_shift"
         }
       ],
       "visibleCount": 2,
@@ -745,15 +745,15 @@
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
           "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "worried",
+          "micro": "evelyn_hair_tuck"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -769,16 +769,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
+          "pose": "investigate",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
-          "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "apron_reach",
+          "emotion": "regretful",
+          "micro": "ada_apron_reach"
         }
       ],
       "visibleCount": 2,
@@ -794,16 +794,16 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "investigate",
+          "emotion": "worried",
+          "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "concerned",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
@@ -819,23 +819,23 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
+          "pose": "decide",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_firm_exhale"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "center",
-          "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "rest_tool",
+          "emotion": "friendly",
+          "micro": "rowan_tool_lower"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
-          "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "offer_tray",
+          "emotion": "dry_amused",
+          "micro": "ada_precise_straighten"
         }
       ],
       "visibleCount": 3,
@@ -851,16 +851,16 @@
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "folder_present",
+          "emotion": "reserved_worry",
+          "micro": "lucas_page_align"
         },
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "right",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "decide",
+          "emotion": "determined",
+          "micro": "evelyn_firm_exhale"
         }
       ],
       "visibleCount": 2,
@@ -876,23 +876,23 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "relaxed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "decide",
+          "emotion": "determined",
+          "micro": "evelyn_firm_exhale"
         },
         {
           "characterId": "RM-CHAR-ROWAN",
           "slot": "center",
-          "pose": "work_ready",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "point_route",
+          "emotion": "focused",
+          "micro": "rowan_weight_shift"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 3,
@@ -908,9 +908,9 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "center",
-          "pose": "relaxed",
+          "pose": "decide",
           "emotion": "neutral",
-          "micro": "blink"
+          "micro": "evelyn_firm_exhale"
         }
       ],
       "visibleCount": 1,
@@ -926,16 +926,16 @@
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
-          "pose": "formal",
-          "emotion": "neutral",
-          "micro": "blink"
+          "pose": "folder_present",
+          "emotion": "professional",
+          "micro": "lucas_page_align"
         },
         {
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "composed",
-          "emotion": "neutral",
-          "micro": "blink"
+          "emotion": "warm",
+          "micro": "ada_long_paused_blink"
         }
       ],
       "visibleCount": 2,
