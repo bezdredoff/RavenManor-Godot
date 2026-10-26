@@ -59,10 +59,8 @@ func _initialize() -> void:
 	assert(vn.current_speaker() == "Эвелин")
 	assert(not vn.current_line().is_empty())
 	vn.open(content.vnScenes.arrival)
-	assert(vn.current_speaker() == "Эвелин")
-	assert(not vn.current_line().is_empty())
-	vn.open(content.vnScenes.arrival)
 	assert(vn.current_speaker() == "Лукас")
+	assert(not vn.current_line().is_empty())
 	vn.advance()
 	assert(vn.current_speaker() == "Эвелин", "RM-BEAT-01-01 must support per-line speakers")
 
