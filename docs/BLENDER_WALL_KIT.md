@@ -60,7 +60,7 @@ procedural: no external assets, no purchases.
 
 ## Next steps
 
-1. Grow the kit to the seven approved shapes and four styles (materials only, same geometry).
+1. Grow the kit to the seven approved shapes and four styles (materials only, same geometry); doors, windows and arches are in place, stairs are next.
 2. Export masks: alpha from the film and object-index/Cryptomatte passes for wall occlusion.
 3. Write the orientation/pivot manifest and feed the same `wallBand()` rendering path in the
    Room Builder, so the preview shows real sprites instead of a pattern.
@@ -110,3 +110,25 @@ behaviour). Export the mask from the same camera.
 
 Evidence: `docs/evidence/blender_kit/openings.png` — a wall with a door opening (leaf recessed
 in the reveal) and a window opening (frame, mullions and transparent glass).
+### Arches
+
+An arch is a traversable opening, so it cuts through like a door — but with a pointed head.
+`wall_with_arch(length, x0, x1, z0, z_spring, z_apex, steps)` cuts the wall into thin z slices;
+below the springline the hole is a rectangle, above it each slice cuts the width of the curve.
+
+The curve is the real **two-centred (equilateral) pointed arch**, not a stretched circle: with
+two arcs centred on the opposite spring points, the clear half-width at height `dz` above the
+spring is `sqrt(W² - dz²) - W/2`, which reaches zero at `0.866 · W`. The caller's apex is
+rescaled onto that curve, so the same construction works for a wide arch and a tall narrow one.
+
+`arch_surround()` adds the archivolt: a moulded band that follows the curve and stands proud of
+the wall face by ~2.5 units, plus straight jambs down to the floor.
+
+Two rendering notes that matter for quality:
+
+- build the whole wall and the whole archivolt as **one mesh per material** before beveling.
+  Per-box bevels put a groove at every slice boundary, which showed up as horizontal banding;
+- `steps` sets how smooth the head reads. 48–64 steps over the rise keeps the stair-stepping
+  under a pixel at sprite scale.
+
+Evidence: `docs/evidence/blender_kit/arch.png`.

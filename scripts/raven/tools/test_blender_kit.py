@@ -103,6 +103,45 @@ class WallKitGeometryTests(unittest.TestCase):
         self.assertLessEqual(max(zs), door[3])
         self.assertGreaterEqual(min(ys), -self.kit.THICKNESS)
         self.assertLessEqual(max(ys), 0.0)
+
+    def test_arch_is_open_below_the_apex_and_solid_above_it(self):
+        arch = dict(open_x0=220.0, open_x1=380.0, z0=0.0, z_spring=85.0, z_apex=185.0)
+        wall = self.kit.wall_with_arch(600.0, **arch)
+        centre = (arch["open_x0"] + arch["open_x1"]) / 2
+        y = -11.0
+        self.assertFalse(self.kit.covers(wall, centre, y, 40))    # doorway below the spring
+        self.assertFalse(self.kit.covers(wall, centre, y, 150))   # inside the vault
+        self.assertTrue(self.kit.covers(wall, centre, y, 190))    # header above the apex
+        self.assertTrue(self.kit.covers(wall, arch["open_x0"] - 4, y, 50))   # jamb
+        self.assertFalse(self.kit.covers(wall, arch["open_x0"] + 4, y, 50))  # clear opening
+
+    def test_arch_curve_narrows_monotonically(self):
+        widths = [self.kit.arch_half_width(60.0, dz, 100.0) for dz in (0, 20, 40, 60, 80, 99)]
+        self.assertAlmostEqual(widths[0], 60.0, places=6)
+        self.assertGreater(widths[-1], 0.0)
+        self.assertLess(widths[-1], 5.0)
+        for a, b in zip(widths, widths[1:]):
+            self.assertGreater(a, b)
+
+    def test_arch_surround_stays_outside_the_opening_and_proud(self):
+        arch = dict(open_x0=220.0, open_x1=380.0, z0=0.0, z_spring=85.0, z_apex=185.0)
+        parts = self.kit.arch_surround(**arch)
+        self.assertTrue(parts)
+        centre = (arch["open_x0"] + arch["open_x1"]) / 2
+        for box in parts:
+            self.assertGreater(box[4], 0.0)          # proud of the wall face
+            self.assertLess(box[2], arch["z_apex"] + 1.0)
+            # Each band segment must sit outside the clear opening at its own height.
+            if box[3] <= centre:
+                self.assertLessEqual(box[3], centre)
+            else:
+                self.assertGreaterEqual(box[0], centre)
+
+    def test_arch_rejects_degenerate_shape(self):
+        with self.assertRaises(ValueError):
+            self.kit.wall_with_arch(600.0, 220.0, 380.0, 0.0, 120.0, 120.0)
+        with self.assertRaises(ValueError):
+            self.kit.wall_with_arch(600.0, 380.0, 220.0, 0.0, 80.0, 160.0)
     def test_wall_without_openings_matches_a_straight_run(self):
         self.assertEqual(self.kit.wall_with_openings(200.0, []), self.kit.straight())
     def test_mirror_keeps_geometry_valid(self):

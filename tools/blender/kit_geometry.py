@@ -9,6 +9,8 @@ Coordinates: Z is up, the room is at positive X/Y, walls grow outwards (negative
 """
 from __future__ import annotations
 
+import math
+
 THICKNESS = 22.0
 HEIGHT = 200.0
 LENGTH = 200.0
@@ -221,3 +223,93 @@ def window_parts(open_x0: float, open_x1: float, open_z0: float, open_z1: float,
 def covers(boxes: list[Box], x: float, y: float, z: float) -> bool:
     """Public point-in-kit query used by the opening tests."""
     return _inside(boxes, x, y, z)
+
+def arch_half_width(w: float, dz: float, rise: float) -> float:
+    """Half-width of a two-centred (equilateral) pointed arch.
+
+    The real construction uses two arcs centred on the opposite spring points: at height dz
+    above the springline the clear half-width is `sqrt(W^2 - dz^2) - W/2`, which is zero at
+    `0.866 * W`. The caller's apex may be lower or higher, so the height is rescaled first.
+    """
+    if rise <= 0 or dz >= rise or w <= 0:
+        return 0.0
+    if dz <= 0:
+        return w
+    equilateral_rise = math.sqrt(3.0) * w
+    scaled = dz * equilateral_rise / rise
+    width = 2.0 * w
+    return max(0.0, math.sqrt(max(0.0, width * width - scaled * scaled)) - w)
+
+def wall_with_arch(length: float, open_x0: float, open_x1: float, z0: float,
+                   z_spring: float, z_apex: float, steps: int = 40) -> list[Box]:
+    """Straight wall with a pointed-arch hole, cut into z slices.
+
+    Below the springline the hole is a plain rectangle; above it each slice cuts the width of
+    the curve. The slice height sets how smooth the head reads: 40 steps over the rise keeps
+    the stair-stepping under one pixel at sprite scale.
+    """
+    if open_x1 <= open_x0 or z_apex <= z_spring:
+        raise ValueError("arch needs a positive span and rise")
+    half = (open_x1 - open_x0) / 2
+    centre = (open_x0 + open_x1) / 2
+    rise = z_apex - z_spring
+
+    cuts = {z for band in PROFILE for z in (band[0], band[1])}
+    cuts.update((z0, z_spring, z_apex))
+    for index in range(1, steps):
+        cuts.add(z_spring + rise * index / steps)
+    slices = sorted(cuts)
+
+    boxes: list[Box] = []
+    for za, zb in zip(slices, slices[1:]):
+        if zb <= za:
+            continue
+        band = next((b for b in PROFILE if b[0] <= za < b[1]), None)
+        if band is None:
+            continue
+        protrusion = band[2]
+        middle = (za + zb) / 2
+        hole: tuple[float, float] | None = None
+        if middle < z0:
+            hole = None
+        elif middle <= z_spring:
+            hole = (open_x0, open_x1)
+        else:
+            width = arch_half_width(half, middle - z_spring, rise)
+            hole = (centre - width, centre + width) if width > 0.4 else None
+        solids: list[tuple[float, float]] = []
+        if hole is None:
+            solids.append((0.0, length))
+        else:
+            if hole[0] > 0:
+                solids.append((0.0, hole[0]))
+            if hole[1] < length:
+                solids.append((hole[1], length))
+        for a, b in solids:
+            boxes.append(north_arm(a, b, za, zb, protrusion))
+    return boxes
+
+
+def arch_surround(open_x0: float, open_x1: float, z0: float, z_spring: float,
+                  z_apex: float, steps: int = 18, band: float = 7.0,
+                  proud: float = 2.5) -> list[Box]:
+    """Archivolt: a moulded band that follows the curve and stands proud of the wall."""
+    half = (open_x1 - open_x0) / 2
+    centre = (open_x0 + open_x1) / 2
+    rise = z_apex - z_spring
+    boxes: list[Box] = [
+        (open_x0 - band, 0.0, z0, open_x0, proud, z_spring),
+        (open_x1, 0.0, z0, open_x1 + band, proud, z_spring),
+    ]
+    for index in range(steps):
+        za = z_spring + rise * index / steps
+        zb = z_spring + rise * (index + 1) / steps
+        width_a = arch_half_width(half, za - z_spring, rise)
+        width_b = arch_half_width(half, zb - z_spring, rise)
+        if width_a <= 0.4 and width_b <= 0.4:
+            continue
+        outer = max(width_a, width_b) + band
+        inner = min(width_a, width_b)
+        boxes.append((centre - outer, 0.0, za, centre - inner, proud, zb))
+        boxes.append((centre + inner, 0.0, za, centre + outer, proud, zb))
+    return boxes
