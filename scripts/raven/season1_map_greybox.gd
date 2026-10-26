@@ -4,6 +4,8 @@ extends Control
 const DATA = preload("res://data/raven/season1_world_map.json")
 const HALL_VISUALS = preload("res://data/raven/hall_visual_contract.json")
 const HALL_IMPORT_BRIDGE = preload("res://scripts/raven/hall_import_bridge.gd")
+const HALL_CALIBRATION = preload("res://data/raven/hall_calibration.json")
+const HALL_CALIBRATION_VALIDATOR = preload("res://scripts/raven/hall_calibration.gd")
 const IMPORTED_HALL = preload("res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn")
 const HALL_PREVIEW_FILE := "res://data/raven/hall_builder_preview.json"
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -61,6 +63,9 @@ var grid := AStarGrid2D.new()
 var hall_visual_sprites: Array = []
 var imported_hall: Dictionary = {}
 var imported_map_refs: Dictionary = {}
+var hall_calibration: Dictionary = {}
+var show_hall_calibration := false
+var test_split_seating := false
 var foreground_overlay: Control
 var actor_sprite: AnimatedSprite2D
 var snapshot: Dictionary
@@ -72,6 +77,8 @@ var toggle_button: Button
 var camera_button: Button
 var art_button: Button
 var bounds_button: Button
+var calibration_button: Button
+var seat_test_button: Button
 var zoom_preset_button: Button
 var recenter_button: Button
 var zoom_minus_button: Button
@@ -93,6 +100,9 @@ func _ready() -> void:
 	props = DATA.data.props
 	_load_hall_visuals()
 	_load_imported_hall()
+	hall_calibration = HALL_CALIBRATION_VALIDATOR.inspect(HALL_CALIBRATION.data, DATA.data, HALL_VISUALS.data)
+	if not bool(hall_calibration.get("ready", false)):
+		push_warning("Hall calibration unavailable: " + str(hall_calibration.get("reason", "")))
 	snapshot = Store.new().load_campaign()
 	_make_ui()
 	_make_onoe()
@@ -168,6 +178,10 @@ func _make_ui() -> void:
 	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
 	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
 	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
+	calibration_button = _button("Калибр.: СКР", Vector2.ZERO, Vector2(116, 36), _toggle_calibration, debug_panel)
+	seat_test_button = _button("Кресла: ЦЕЛЬНО", Vector2.ZERO, Vector2(140, 36), _toggle_seat_preview, debug_panel)
+	calibration_button.disabled = not bool(hall_calibration.get("ready", false))
+	seat_test_button.disabled = calibration_button.disabled
 	debug_panel.visible = false
 	resized.connect(_layout_hud)
 	_layout_hud()
@@ -215,7 +229,7 @@ func _layout_hud() -> void:
 	back_button.position = Vector2(margin + match_width + repair_width + 2.0 * gap, size.y - 39.0)
 	back_button.size = Vector2(footer_space - match_width - repair_width, 35.0)
 	debug_panel.position = Vector2(margin, TOP_UI_HEIGHT + 5.0)
-	debug_panel.size = Vector2(usable_width, 102.0)
+	debug_panel.size = Vector2(usable_width, 149.0)
 	var panel_row_width := debug_panel.size.x - 18.0 - 2.0 * gap
 	toggle_button.position = Vector2(9, 9)
 	toggle_button.size = Vector2(panel_row_width * 0.50, 36)
@@ -229,6 +243,10 @@ func _layout_hud() -> void:
 	safe_button.size = Vector2(panel_row_width * 0.37, 36)
 	overview_button.position = Vector2(9 + panel_row_width * 0.70 + 2.0 * gap, 53)
 	overview_button.size = Vector2(panel_row_width * 0.30, 36)
+	calibration_button.position = Vector2(9, 99)
+	calibration_button.size = Vector2(panel_row_width * 0.50, 36)
+	seat_test_button.position = Vector2(9 + panel_row_width * 0.50 + gap, 99)
+	seat_test_button.size = Vector2(panel_row_width * 0.50, 36)
 	queue_redraw()
 
 
@@ -403,6 +421,35 @@ func _toggle_art() -> void:
 	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
 
 
+func _toggle_calibration() -> void:
+	if not bool(hall_calibration.get("ready", false)): return
+	show_hall_calibration = not show_hall_calibration
+	calibration_button.text = "Калибр.: ВИД" if show_hall_calibration else "Калибр.: СКР"
+	status_label.text = "Тестовые линии: дверные оси, лестницы, места опоры мебели (НЕ утверждено)"
+	queue_redraw()
+	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
+
+func _toggle_seat_preview() -> void:
+	if not bool(hall_calibration.get("ready", false)): return
+	test_split_seating = not test_split_seating
+	seat_test_button.text = "Кресла: 3 ТЕСТ" if test_split_seating else "Кресла: ЦЕЛЬНО"
+	_rebuild_navigation()
+	movement_points.clear()
+	status_label.text = "Только этот запуск: три контактных прямоугольника" if test_split_seating else "Восстановлена исходная общая зона кресел"
+	queue_redraw()
+
+func _hall_collision_bounds(prop: Dictionary) -> Array[Rect2]:
+	var bounds: Array[Rect2] = []
+	if test_split_seating and bool(hall_calibration.get("ready", false)) and 			str(prop.id) == "RM-ASSET-HALL-SEATS":
+		for seat in hall_calibration.candidate_seats:
+			bounds.append(seat.rect)
+	else:
+		bounds.append(_prop_rect(prop))
+	return bounds
+
+func _occludes_actor(foot_y: float, actor_foot_y: float) -> bool:
+	return foot_y > actor_foot_y
+
 func _toggle_bounds() -> void:
 	debug_art_bounds = not debug_art_bounds
 	bounds_button.text = "Габариты: ВИД" if debug_art_bounds else "Габариты: СКР"
@@ -466,8 +513,9 @@ func _is_walkable(p: Vector2) -> bool:
 	if on_wall and not _near_valid_door(p, index):
 		return false
 	for prop in props:
-		if int(prop.room) == index and _prop_rect(prop).grow(FURNITURE_MARGIN).has_point(p):
-			return false
+		if int(prop.room) != index: continue
+		for footprint in _hall_collision_bounds(prop):
+			if footprint.grow(FURNITURE_MARGIN).has_point(p): return false
 	return true
 
 func _rebuild_navigation() -> void:
@@ -665,7 +713,7 @@ func _draw_imported_upright(front: bool, target: CanvasItem) -> void:
 		if str(record.mode) != "upright": continue
 		var box: Rect2 = record.rect
 		var foot_y: float = float(record.foot_y)
-		if (foot_y > actor_pos.y) != front: continue
+		if _occludes_actor(foot_y, actor_pos.y) != front: continue
 		var pivot := _screen_from_world(Vector2(box.position.x + box.size.x * 0.5, foot_y))
 		var destination := Rect2(
 			pivot - Vector2(box.size.x * zoom * 0.5, box.size.y * zoom),
@@ -748,7 +796,7 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 		if str(item.mode) != "upright": continue
 		var rect := _visual_rect(item)
 		var foot := Vector2(rect.position.x + rect.size.x * 0.5, rect.end.y)
-		if (foot.y > actor_pos.y) != front: continue
+		if _occludes_actor(foot.y, actor_pos.y) != front: continue
 		var texture := _visual_texture(str(item.file))
 		if texture == null: continue
 		var projected := _screen_from_world(foot)
@@ -783,6 +831,44 @@ func _draw_ai_seating(seating_bounds: Rect2) -> void:
 	draw_texture_rect(AI_CHAIR, Rect2(p + Vector2(101, 12), Vector2(58, 96)), false)
 	draw_texture_rect(AI_SIDE_TABLE, Rect2(p + Vector2(58, 53), Vector2(46, 46)), false)
 
+
+
+func _draw_hall_calibration_guides() -> void:
+	if not show_hall_calibration or not bool(hall_calibration.get("ready", false)): return
+	# In the active room-world floor transform: visible topological truth,
+	# NOT assertions about painted openings or final art perspective.
+	for portal in hall_calibration.doors:
+		var pt: Vector2 = portal.point
+		var future: bool = str(portal.kind) == "future-only"
+		var tint := Color(0.98, 0.48, 0.50, 0.9) if future else Color(0.25, 0.95, 0.76, 0.96)
+		var left_edge: bool = absf(pt.x - 500.0) < 1.0
+		var right_edge: bool = absf(pt.x - 1200.0) < 1.0
+		var vertical: bool = left_edge or right_edge
+		var span := Vector2(0, 40) if vertical else Vector2(40, 0)
+		if future:
+			draw_line(pt - Vector2(14, 14), pt + Vector2(14, 14), tint, 3.0)
+			draw_line(pt + Vector2(-14, 14), pt + Vector2(14, -14), tint, 3.0)
+		else:
+			draw_line(pt - span, pt + span, tint, 6.0)
+			draw_circle(pt, 7.0, tint)
+		draw_string(ThemeDB.fallback_font, pt + Vector2(10, -12),
+			str(portal.id).trim_prefix("RM-DOOR-"), HORIZONTAL_ALIGNMENT_LEFT,
+			225, 15, tint)
+	for stair in hall_calibration.stairs:
+		var r: Rect2 = stair.rect
+		draw_rect(r, Color(0.34, 0.77, 0.99, 0.95), false, 3.0)
+		for index in range(1, int(stair.treads)):
+			var y: float = r.position.y + r.size.y * float(index) / float(stair.treads)
+			draw_line(Vector2(r.position.x + 6, y), Vector2(r.end.x - 6, y),
+				Color(0.34, 0.77, 0.99, 0.70), 2.0)
+	# Orange perimeter is existing fixed collider, lime outlines are smaller,
+	# unapproved candidate feet for the two chairs and round table.
+	draw_rect(hall_calibration.original_seats, Color(0.98, 0.63, 0.35, 0.95), false, 3.0)
+	for candidate in hall_calibration.candidate_seats:
+		draw_rect(candidate.rect, Color(0.52, 1.0, 0.48, 0.94), false, 3.0)
+		draw_circle(candidate.rect.get_center(), 3.0, Color(0.52, 1.0, 0.48, 0.94))
+	draw_line(Vector2(actor_pos.x - 44, actor_pos.y), Vector2(actor_pos.x + 44, actor_pos.y),
+		Color(0.91, 0.67, 1.0), 2.0)
 
 func _draw() -> void:
 	draw_rect(Rect2(Vector2.ZERO, size), Color("111821"))
@@ -852,6 +938,7 @@ func _draw() -> void:
 					HORIZONTAL_ALIGNMENT_LEFT, int(r.size.x) - 12, 15, Color.WHITE)
 		if debug_art_bounds or chosen:
 			draw_rect(r, Color("f6d888") if chosen else Color("cf9e86"), false, 3.0)
+	_draw_hall_calibration_guides()
 	if not movement_points.is_empty():
 		var last := actor_pos
 		for waypoint in movement_points:
