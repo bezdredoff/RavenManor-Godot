@@ -26,3 +26,7 @@ See `docs/RM_HUB_001_NAVIGATION.md` for authored graph and greybox extension ins
 See `docs/PROTOTYPE_LAB_AND_PAGES.md` for the shared prototype launcher, Web export and GitHub Pages deployment.
 See `docs/QUICKSTART_PREVIEWS.md` for exact Match-3/VN IDs, isolated preview controls, full-flow launch and save/reset instructions.
 See `docs/STATUS.md` for canonical current status, `docs/NEXT_PLAN.md` for priority order, and `docs/ROOM_PIPELINE_NEXT_GATE.md` for the next room-production acceptance gate.
+
+## Season 1 production preparation (PR #44)
+
+Full scene/asset/map production shotlist: `docs/production/SEASON1_VISUAL_MAP_AND_PROP_PRODUCTION.md`. RU/BE/EN source review and translation plan: `docs/production/LOCALIZATION_UPDS_ADAPTATION.md`. Machine-readable **planning** registries live under `data/raven/production/`: character performance, 28 scene shots and 280 line cues, 37 prop families, 28 popup translations, 28 narrative routes and full Russian source dialogues. New chapters' event IDs and world-map/NPC anchors are **not yet runtime-authored or art-calibrated**; this PR does not implement the full season. Use `python3 scripts/raven/tools/validate_production_narrative.py` to check contracts, and `--release` to require complete BE/EN translations (not yet supplied). `python3 scripts/raven/tools/export_translation_worklist.py` creates a translator-friendly CSV.
