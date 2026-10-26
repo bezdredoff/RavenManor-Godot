@@ -1,0 +1,5327 @@
+{
+  "schemaVersion": 1,
+  "status": "DRAFT_DIRECTING_NOT_RUNTIME",
+  "rule": "Compositor retains actor stage pose/emotion until another cue. Talk and natural blink are procedural; discrete signature gestures only on explicitly marked lines. Props attach to hand overlay independent of body and are not literal Match-3 pieces.",
+  "cues": [
+    {
+      "lineId": "RM-BEAT-00-01-L001",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LETTER",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-01-L002",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LETTER",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-01-L003",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-01-L004",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-02-L001",
+      "sceneId": "RM-BEAT-00-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "curious",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-02-L002",
+      "sceneId": "RM-BEAT-00-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-03-L001",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-03-L002",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_precise_straighten",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-03-L003",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-00-03-L004",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L001",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L002",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "skeptical",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L003",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L004",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L005",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "skeptical",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-01-L006",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-NOTARY-FOLDER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-02-L001",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-02-L002",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-02-L003",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-02-L004",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-03-L001",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-03-L002",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-03-L003",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-03-L004",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L001",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-OBJECT",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L002",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-OBJECT",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L003",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-OBJECT",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L004",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-OBJECT",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L005",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-04-L006",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-05-L001",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-05-L002",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-05-L003",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-01-05-L004",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L001",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L002",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_precise_straighten",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L003",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L004",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L005",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L006",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L007",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L008",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L009",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L010",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_precise_straighten",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L011",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-01-L012",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L001",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L002",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L003",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L004",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L005",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L006",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L007",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L008",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L009",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L010",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L011",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L012",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-02-L013",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "wry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L001",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-HOUSEHOLD-LEDGER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L002",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-HOUSEHOLD-LEDGER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L003",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-HOUSEHOLD-LEDGER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L004",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-HOUSEHOLD-LEDGER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L005",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L006",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L007",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L008",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L009",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L010",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L011",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L012",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L013",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L014",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L015",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L016",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L017",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L018",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "curious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-03-L019",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L001",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L002",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L003",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L004",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L005",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L006",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L007",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L008",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L009",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L010",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L011",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L012",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-02-04-L013",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L001",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L002",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L003",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L004",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L005",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L006",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-01-L007",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L001",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L002",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L003",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L004",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L005",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L006",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L007",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "professional",
+      "microOnEnter": "lucas_glasses_adjust",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L008",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L009",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-FADED-PHOTO",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L010",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L011",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L012",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-02-L013",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L001",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L002",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "serious",
+      "microOnEnter": "lucas_glasses_adjust",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L003",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L004",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "serious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L005",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L006",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "serious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L007",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L008",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "serious",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L009",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-03-L010",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "explain",
+      "emotionId": "serious",
+      "microOnEnter": "lucas_glasses_adjust",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L001",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L002",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "stern",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L003",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L004",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "stern",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L005",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L006",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "stern",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L007",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L008",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "stern",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-03-04-L009",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L001",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-THERMOS",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L002",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": "rowan_tool_lower",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-THERMOS",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L003",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-THERMOS",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L004",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-THERMOS",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L005",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L006",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L007",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L008",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L009",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L010",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": "rowan_tool_lower",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L011",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L012",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L013",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-01-L014",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L001",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L002",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "focused",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L003",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L004",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L005",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L006",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L007",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-02-L008",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L001",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-BOX",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L002",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-BOX",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L003",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-BOX",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L004",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-BOX",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L005",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L006",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-03-L007",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L001",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L002",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L003",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L004",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L005",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L006",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L007",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L008",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L009",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L010",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L011",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-04-04-L012",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "work_ready",
+      "emotionId": "nostalgic",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L001",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_hair_tuck",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LANTERN",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L002",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LANTERN",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L003",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LANTERN",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L004",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-LANTERN",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L005",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L006",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-01-L007",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "relaxed",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L001",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-APRON-SUPPLIES",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L002",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": "ada_apron_reach",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-APRON-SUPPLIES",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L003",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-APRON-SUPPLIES",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L004",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-APRON-SUPPLIES",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L005",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L006",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L007",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L008",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L009",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L010",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": "ada_apron_reach",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L011",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L012",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-02-L013",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "apron_reach",
+      "emotionId": "regretful",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L001",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L002",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L003",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L004",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-UNSIGNED-LETTER",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L005",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L006",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L007",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L008",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L009",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": "evelyn_note_glance",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L010",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L011",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L012",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L013",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L014",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L015",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "investigate",
+      "emotionId": "worried",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-03-L016",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "concerned",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L001",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L002",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": "rowan_tool_lower",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L003",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_precise_straighten",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L004",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L005",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L006",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L007",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L008",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L009",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L010",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": "rowan_tool_lower",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L011",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L012",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L013",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L014",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L015",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "rest_tool",
+      "emotionId": "friendly",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L016",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-05-04-L017",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "offer_tray",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_precise_straighten",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L001",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-RESTORATION-COSTS",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L002",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-RESTORATION-COSTS",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L003",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-RESTORATION-COSTS",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L004",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-RESTORATION-COSTS",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L005",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L006",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L007",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L008",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L009",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L010",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L011",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L012",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L013",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L014",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L015",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L016",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L017",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L018",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L019",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L020",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L021",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L022",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L023",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L024",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "reserved_worry",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-01-L025",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": true
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L001",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L002",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": "rowan_weight_shift",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L003",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L004",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L005",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L006",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L007",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L008",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-CHILDHOOD-MAP",
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L009",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L010",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "portraitVisible": true,
+      "poseId": "point_route",
+      "emotionId": "focused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L011",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L012",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "dry_amused",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-02-L013",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "determined",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L001",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-DIARY",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L002",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-DIARY",
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L003",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L004",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": false,
+      "poseId": null,
+      "emotionId": null,
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-DIARY",
+      "cameraFocus": "background_or_offscreen",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L005",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L006",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": false,
+      "poseId": null,
+      "emotionId": null,
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-DIARY",
+      "cameraFocus": "background_or_offscreen",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L007",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": "evelyn_firm_exhale",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L008",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": false,
+      "poseId": null,
+      "emotionId": null,
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "background_or_offscreen",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L009",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
+      "portraitVisible": false,
+      "poseId": null,
+      "emotionId": null,
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": "PROP-DIARY",
+      "cameraFocus": "background_or_offscreen",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-03-L010",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "portraitVisible": true,
+      "poseId": "decide",
+      "emotionId": "neutral",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "center",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L001",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": "lucas_page_align",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L002",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "warm",
+      "microOnEnter": "ada_long_paused_blink",
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L003",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L004",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "warm",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L005",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L006",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "warm",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L007",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "portraitVisible": true,
+      "poseId": "folder_present",
+      "emotionId": "professional",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "left",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    },
+    {
+      "lineId": "RM-BEAT-06-POST-L008",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "portraitVisible": true,
+      "poseId": "composed",
+      "emotionId": "warm",
+      "microOnEnter": null,
+      "lipSync": "procedural",
+      "eyeBlink": "procedural",
+      "propOverlayId": null,
+      "cameraFocus": "right",
+      "transitions": {
+        "enter": "fade_or_cut",
+        "expression": "face_layer_fade",
+        "reducedMotion": "instant"
+      },
+      "manualReview": false
+    }
+  ]
+}
