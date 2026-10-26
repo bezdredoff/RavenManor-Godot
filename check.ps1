@@ -40,6 +40,7 @@ foreach ($script in @(
 	'res://scripts/raven/foundation_lab.gd',
 	'res://scripts/raven/raven_match3_game.gd',
 	'res://scripts/raven/raven_vn_player.gd',
+	'res://scripts/raven/raven_production_localization.gd',
 	'res://scripts/raven/raven_slice_director.gd',
 	'res://scripts/raven/vertical_slice.gd',
 	'res://scripts/raven/content_preview.gd',
@@ -51,5 +52,7 @@ Invoke-GodotCheck 'Raven foundation smoke' @('--headless', '--path', $projectPat
 Invoke-GodotCheck 'Raven navigation graph smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/manor_navigation_graph_smoke.gd', '--quit-after', '120') 'Raven Manor authored navigation graph smoke passed'
 Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/prototype_lab_smoke.gd', '--quit-after', '120') 'Raven Manor Prototype Lab smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
+
+Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
 
 Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/season1_map_smoke.gd', '--quit-after', '120') 'Raven Manor continuous season1 map smoke passed'
