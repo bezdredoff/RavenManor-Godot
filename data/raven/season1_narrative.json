@@ -1,0 +1,118 @@
+{
+  "schemaVersion": 1,
+  "canonRevision": "2026-10-26-chat-sync",
+  "status": "approved-runtime-narrative-direction",
+  "premise": {
+    "protagonist": "RM-CHAR-EVELYN",
+    "inheritanceReturn": true,
+    "lastHeir": true,
+    "memoryRule": {
+      "awayFromTown": "supernatural memories fade progressively with time away",
+      "returnToTown": "memories return gradually in fragments",
+      "cause": "long-term mystery; not revealed in the opening slice"
+    }
+  },
+  "characters": [
+    {
+      "id": "RM-CHAR-EVELYN",
+      "name": "Эвелин Рейвен",
+      "earlyPresentation": "последняя наследница, вернувшаяся по письму о наследстве",
+      "earlyReveal": true
+    },
+    {
+      "id": "RM-CHAR-ADA",
+      "name": "Ада",
+      "earlyPresentation": "живущая в доме домработница/смотрительница",
+      "trueNature": "ghost",
+      "residence": "manor",
+      "eats": false,
+      "earlyReveal": false
+    },
+    {
+      "id": "RM-CHAR-LUCAS",
+      "name": "Лукас",
+      "earlyPresentation": "нотариус, ведущий наследственные формальности",
+      "trueNature": "vampire",
+      "earlyReveal": false
+    },
+    {
+      "id": "RM-CHAR-ROWAN",
+      "name": "Роуэн",
+      "earlyPresentation": "садовник, приходящий работать извне",
+      "trueNature": "werewolf",
+      "residence": "offsite",
+      "earlyReveal": false
+    }
+  ],
+  "gameplaySemantics": {
+    "match3": "preparation_work",
+    "preparationExamples": ["sorting", "cleaning", "clearing_access", "finding_parts", "finding_documents", "finding_clues"],
+    "specialistRepairs": ["plumbing", "electrical", "stairs_or_structure", "clock_mechanism", "conservatory_glazing"],
+    "navigation": "authored_target_routes",
+    "freeTapToMove": false,
+    "roomArtMayMutateStoryState": false
+  },
+  "earlyProgression": [
+    {
+      "id": "RM-NARR-S1-01",
+      "title": "Возвращение и наследство",
+      "rooms": ["RM-ROOM-ENTRY", "RM-ROOM-HALL"],
+      "beats": ["RM-BEAT-01-01"],
+      "characters": ["RM-CHAR-EVELYN", "RM-CHAR-LUCAS", "RM-CHAR-ADA"],
+      "implementation": "RM-VS-01"
+    },
+    {
+      "id": "RM-NARR-S1-02",
+      "title": "Сделать спальню пригодной для жизни",
+      "rooms": ["RM-ROOM-CORRIDOR", "RM-ROOM-BEDROOM"],
+      "hotspots": ["RM-HS-005", "RM-HS-002"],
+      "levels": ["RM-LVL-001"],
+      "restorations": ["RM-REST-001"],
+      "beats": ["RM-BEAT-01-02"],
+      "implementation": "RM-VS-01"
+    },
+    {
+      "id": "RM-NARR-S1-03",
+      "title": "Сделать ванную пригодной для жизни",
+      "rooms": ["RM-ROOM-CORRIDOR", "RM-ROOM-BATHROOM"],
+      "levels": ["RM-LVL-002", "RM-LVL-003"],
+      "restorations": ["RM-REST-002"],
+      "beats": ["RM-BEAT-01-03"],
+      "specialist": "plumber",
+      "implementation": "RM-VS-01"
+    },
+    {
+      "id": "RM-NARR-S1-04",
+      "title": "Первая ночь и доставка",
+      "rooms": ["RM-ROOM-BEDROOM", "RM-ROOM-HALL"],
+      "clues": ["RM-CLUE-01-CHILDHOOD-OBJECT"],
+      "beats": ["RM-BEAT-01-04", "RM-BEAT-01-05"],
+      "implementation": "RM-VS-01",
+      "nextHook": ["RM-ROOM-KITCHEN", "RM-CHAR-ROWAN", "RM-ROOM-CONSERVATORY"]
+    },
+    {
+      "id": "RM-NARR-S1-05",
+      "title": "Кухня",
+      "rooms": ["RM-ROOM-KITCHEN"],
+      "implementation": "planned"
+    },
+    {
+      "id": "RM-NARR-S1-06",
+      "title": "Сад и оранжерея",
+      "rooms": ["RM-ROOM-CONSERVATORY"],
+      "characters": ["RM-CHAR-ROWAN"],
+      "implementation": "planned"
+    },
+    {
+      "id": "RM-NARR-S1-07",
+      "title": "Библиотека/архив и углубление расследования",
+      "rooms": ["RM-ROOM-ARCHIVE"],
+      "implementation": "planned",
+      "ordering": "season-one placement TBD"
+    }
+  ],
+  "physicalGateRules": {
+    "futureAreas": ["unsafe_structure", "damaged_roof_or_floors", "incomplete_utilities", "electrical_problems"],
+    "arbitraryMagicLocksAtStart": false
+  }
+}
