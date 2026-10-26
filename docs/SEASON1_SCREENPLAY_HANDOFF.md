@@ -1,6 +1,6 @@
 # Season 1 — screenplay handoff and approval checklist
 
-**Status: DRAFT / awaiting narrative approval.** The appended chapters II–VI in [NARRATIVE_SCRIPT_READABLE.md](./NARRATIVE_SCRIPT_READABLE.md) are a full season proposal, **not** shipped VN data. Existing prologue and chapter I, their stable `RM-*` IDs, gameplay balances, and save structures are untouched.
+**Status: merged story direction approved by owner (2026-10-26); production-trigger details remain proposed.** The appended chapters II–VI in [NARRATIVE_SCRIPT_READABLE.md](./NARRATIVE_SCRIPT_READABLE.md) are a full season proposal, **not** fully shipped VN data. Existing prologue and chapter I, their stable `RM-*` IDs, gameplay balances, and save structures are untouched.
 
 ## Story flow and player comprehension
 
