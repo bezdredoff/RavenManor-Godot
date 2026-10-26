@@ -21,6 +21,7 @@ Primary workstream: **RM-PIPE-001 — Room Builder → Hall → Godot → ComfyU
 
 - **Do not mark the Hall art, map topology or Evelyn canonically approved** merely because AI images render in game. Existing generated sources are pilot references with unaligned doors/perspective.
 - Keep current `RM-*` IDs, `RM-VS-01` mechanics, saved state, authored AStar2D route graph and independent continuous-world AStarGrid2D feasibility map unchanged until an explicit, tested migration is approved.
+- Treat `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` and `data/raven/season1_narrative.json` as the runtime narrative contract: room layout/art may expose a hotspot or state visually, but must not reorder beats, reveal supernatural identities early, or mutate campaign state implicitly.
 - Room Builder saves locally on the tablet and exports JSON/PNG; no automatic GitHub synchronization, production ComfyUI integration or final 65° scene exporter exists today.
 - Do not commit purchased/licensed source graphics to the public repository without provenance and rights verification.
 - `docs/assets/CHARACTER_PRODUCTION_BIBLE.md`, `ROOM_FURNISHING_AND_PLACEMENT.md`, and `ROOM_OBJECT_REGISTER.csv` remain **proposed source inputs**, not automatically approved pixel layouts or production orders.

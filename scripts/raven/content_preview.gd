@@ -69,6 +69,7 @@ func _render_level() -> void:
 	_clear()
 	var level: Dictionary = match_game.level_data
 	body.add_child(_label("%s · %s" % [level.id, level.title], 18, Color("f0dfbd")))
+	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
 	body.add_child(_paragraph("Ходы: %d · %s: %d/%d · %s" % [match_game.moves_left, level.objective.label, match_game.collected, level.objective.target, match_game.state]))
 	var grid := GridContainer.new(); grid.columns = int(level.columns); grid.add_theme_constant_override("h_separation", 3); grid.add_theme_constant_override("v_separation", 3); body.add_child(grid)
 	for index in match_game.tiles.size():
@@ -102,7 +103,7 @@ func _render_vn() -> void:
 	_clear()
 	var scene: Dictionary = vn_player.scene
 	body.add_child(_label("%s · %s" % [scene.beatId, current_id], 18, Color("f0dfbd")))
-	body.add_child(_paragraph("Говорит: " + str(scene.speaker)))
+	body.add_child(_paragraph("Говорит: " + vn_player.current_speaker()))
 	var dialogue := _paragraph(vn_player.current_line()); dialogue.custom_minimum_size.y = 170; dialogue.add_theme_color_override("font_color", Color("eee4d2")); body.add_child(dialogue)
 	body.add_child(_paragraph("Реплика " + vn_player.progress_text()))
 	_add_button(body, "ДАЛЕЕ", _advance_vn)

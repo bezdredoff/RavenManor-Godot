@@ -1,6 +1,6 @@
 # Agent instructions — Raven Manor Godot
 
-Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/IMPLEMENTATION_PLAN.md`, then relevant Stage 1–3 specifications and audits before making changes.
+Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md`, `docs/IMPLEMENTATION_PLAN.md`, then relevant Stage 1–3 specifications and audits before making changes.
 
 ## Authority
 1. Explicit product-owner decisions in `docs/DECISIONS.md`.
@@ -23,6 +23,8 @@ Do not silently reconcile contradictory source files. Preserve historical source
 - Keep code clean and human-readable, with documented APIs, naming, state transitions, setup, extension and debugging instructions.
 - Each PR: tests actually run, affected IDs, save migration, documentation updates, risks and acceptance evidence. Do not claim unexecuted tests pass.
 - Work in small PRs, do not overwrite the main baseline; PR 2 depends on PR 1 acceptance and PR 3 depends on PR 2 acceptance.
+
+- Match-3 is preparation work in fiction; specialist repairs remain specialist work. Do not use room art, navigation importers or Match-3 completion to invent story-state mutations outside the documented reducer events.
 
 ## Hygiene
 Never commit credentials, local saves, Godot import caches, unlicensed assets, unrelated UPDS story content or generated build outputs.

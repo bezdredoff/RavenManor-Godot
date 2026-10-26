@@ -6,7 +6,7 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status (2026-10-25):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.2, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
+**Repository status (2026-10-26):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.2, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
 
 Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It links 120 proposed catalog positions across eight rooms, saves room-specific local drafts and exports JSON/PNG. Output is not yet a calibrated gameplay scene.
 
@@ -20,6 +20,7 @@ Approved source packages: Stage 1 v0.5, Stage 2 v0.2; Stage 3 research v0.2 is a
 .\check.ps1 -GodotPath "C:\path\to\Godot_v4.7.2-stable_win64.exe"
 ```
 
+See `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` for the current story canon mirrored into gameplay, reveal rules and the exact RM-VS-01 narrative mapping.
 See `docs/RM_HUB_001_FOUNDATION.md` for the save schema and event API.
 See `docs/RM_HUB_001_NAVIGATION.md` for authored graph and greybox extension instructions.
 See `docs/PROTOTYPE_LAB_AND_PAGES.md` for the shared prototype launcher, Web export and GitHub Pages deployment.

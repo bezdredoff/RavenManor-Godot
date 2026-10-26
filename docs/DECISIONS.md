@@ -1,6 +1,6 @@
 # Approved product decisions / overrides
 
-Updated 2026-10-24. These decisions override conflicting clauses in preserved historical Stage 1/2 files. Do not silently modify old source documents.
+Updated 2026-10-26. These decisions override conflicting clauses in preserved historical Stage 1/2 files. Do not silently modify old source documents.
 
 | ID | Current decision |
 |---|---|
@@ -20,5 +20,12 @@ Updated 2026-10-24. These decisions override conflicting clauses in preserved hi
 | RM-DEC-014 | PR 3 will deliberately import/adapt the smallest proven UPDS Match-3 and VN runtime components needed for the slice, without importing unrelated UPDS story content or numeric story progression. |
 | RM-DEC-015 | `https://github.com/bezdredoff/RavenManor` is the source repository for Raven Manor game bible, narrative, design and source materials. This Godot repository owns executable Godot runtime, integration tests and Web/Pages delivery. Conflicts still follow this repository's explicit product decisions and documented overrides. |
 | RM-DEC-016 | No separate public license is needed for the temporary Onoe placeholder. Onoe must be removed when canonical Evelyn art is produced and must not ship as a reusable/public art asset. |
+| RM-DEC-017 | Evelyn Raven is the last heir. She left the manor/town years ago and returns because of an unexpected inheritance letter. |
+| RM-DEC-018 | Supernatural memories fade progressively while a person remains away from the town; returning restores fragments gradually. The cause is a long-term mystery and is not explained in the opening slice. |
+| RM-DEC-019 | Ada, Lucas and Rowan initially present as ordinary people: Ada as the resident housekeeper/caretaker, Lucas as the notary, Rowan as the gardener who comes from outside and lives elsewhere. Their ghost/vampire/werewolf natures are revealed gradually, not explicitly in RM-VS-01. |
+| RM-DEC-020 | Early domestic progression is bedroom + bathroom → first night with food delivery while the kitchen is unready → kitchen → Rowan's garden/conservatory work. Library/archive remains a season-one investigation space; its exact placement relative to that sequence is still open. |
+| RM-DEC-021 | Match-3 represents preparation work (sorting, cleaning, clearing access, finding parts/documents/clues), not magical repair. Specialist work such as plumbing/electrical/structural/clock/glazing is performed by appropriate specialists after player preparation. |
+| RM-DEC-022 | Future room/floor gates use believable physical causes such as partial electricity, damaged roof/floors/structure or unavailable utilities; do not introduce arbitrary magical locks as the default explanation. |
+| RM-DEC-023 | RM-VS-01 ends on the first-night/next-morning hook toward kitchen and Rowan/conservatory. It establishes memory gaps/returning fragments but does not explain the memory effect or explicitly reveal Ada/Lucas/Rowan's supernatural nature. |
 
 **Outdated known clauses:** older `04_vertical_slice_flow.md`, Stage 2 hotspot/economy CSV/MD and door FSM may require bathroom repair before bedroom access or repeated door animations. Implement latest product decisions without renaming `RM-*` IDs; record any dependency changes in a migration note. Do not claim the archived documents are synchronized to this override.
