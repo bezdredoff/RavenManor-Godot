@@ -1,0 +1,137 @@
+{
+  "schemaVersion": 1,
+  "roomId": "RM-ROOM-HALL",
+  "roomWorldRect": [
+    500,
+    150,
+    700,
+    690
+  ],
+  "status": "CALIBRATION_ONLY_UNAPPROVED",
+  "reason": "Sourced portal centers and staircase geometry from the canonical feasibility map. Seats contact-box test candidates are art-derived guesses, not approved physical colliders.",
+  "sourceMap": "data/raven/season1_world_map.json",
+  "sourceSprites": "data/raven/hall_visual_contract.json",
+  "originalSeatCollider": [
+    640,
+    560,
+    160,
+    125
+  ],
+  "doors": [
+    {
+      "id": "RM-DOOR-ENTRY-HALL",
+      "point": [
+        850,
+        840
+      ],
+      "status": "open",
+      "kind": "portal-candidate"
+    },
+    {
+      "id": "RM-DOOR-HALL-ARCHIVE",
+      "point": [
+        500,
+        550
+      ],
+      "status": "gated",
+      "kind": "portal-candidate"
+    },
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "point": [
+        1200,
+        585
+      ],
+      "status": "open",
+      "kind": "portal-candidate"
+    },
+    {
+      "id": "RM-DOOR-HALL-EAST-WING",
+      "point": [
+        850,
+        350
+      ],
+      "status": "future",
+      "kind": "future-only"
+    },
+    {
+      "id": "RM-DOOR-HALL-UPPER-FLOOR",
+      "point": [
+        850,
+        320
+      ],
+      "status": "future",
+      "kind": "future-only"
+    }
+  ],
+  "stairs": [
+    {
+      "id": "RM-ASSET-HALL-STAIRS-L",
+      "rect": [
+        640,
+        190,
+        115,
+        195
+      ],
+      "style": "tread-guides-only",
+      "treads": 6,
+      "status": "UNAPPROVED"
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-R",
+      "rect": [
+        945,
+        190,
+        115,
+        195
+      ],
+      "style": "tread-guides-only",
+      "treads": 6,
+      "status": "UNAPPROVED"
+    }
+  ],
+  "candidateSeatFootprints": [
+    {
+      "assetRefId": "RM-ASSET-HALL-017",
+      "kind": "chair-left",
+      "rect": [
+        648,
+        637,
+        46,
+        31
+      ],
+      "origin": "pilot-cutout-derived-proposal",
+      "status": "UNAPPROVED"
+    },
+    {
+      "assetRefId": "RM-ASSET-HALL-018",
+      "kind": "chair-right",
+      "rect": [
+        747,
+        637,
+        46,
+        31
+      ],
+      "origin": "pilot-cutout-derived-proposal",
+      "status": "UNAPPROVED"
+    },
+    {
+      "assetRefId": "RM-ASSET-HALL-019",
+      "kind": "round-table",
+      "rect": [
+        704,
+        637,
+        34,
+        19
+      ],
+      "origin": "pilot-cutout-derived-proposal",
+      "status": "UNAPPROVED"
+    }
+  ],
+  "gates": {
+    "replaceCanonicalCollider": false,
+    "applyToCampaign": false,
+    "approvedBackground": false,
+    "acceptedPixelMargins": false
+  }
+}
