@@ -1,7 +1,7 @@
 extends SceneTree
 
 const Copy = preload("res://scripts/raven/raven_production_localization.gd")
-const Performance = preload("res://data/raven/production/character_performance.json")
+const CastSpec = preload("res://data/raven/production/character_performance.json")
 const Stage = preload("res://data/raven/production/vn_staging.json")
 const Routes = preload("res://data/raven/production/map_narrative_routes.json")
 const Props = preload("res://data/raven/production/story_props.json")
@@ -11,7 +11,7 @@ const Dialogue = preload("res://data/raven/production/season1_dialogue_catalog.j
 
 func _initialize() -> void:
 	var actors: Dictionary = {}
-	for actor: Dictionary in Performance.data.characters:
+	for actor: Dictionary in CastSpec.data.characters:
 		actors[actor.id] = actor
 	assert(actors.size() == 4)
 	assert(Stage.data.masters.size() <= 11)
