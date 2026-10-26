@@ -48,6 +48,15 @@
   d.querySelector('[data-tool="opening"]').click();
   pointer('pointerdown',cx,cy-90);pointer('pointerup',cx,cy-90);
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('1 проём'));
+  const textureToggle=d.querySelector('#showWallTexture');
+  assert(textureToggle,'textured wall preview toggle exists');
+  textureToggle.checked=true;textureToggle.dispatchEvent(new w.Event('change',{bubbles:true}));
+  await new Promise(resolve=>setTimeout(resolve,500));
+  const gridToggle=d.querySelector('#grid');
+  gridToggle.click();gridToggle.click();
+  await new Promise(resolve=>setTimeout(resolve,120));
+  assert(d.querySelector('#objectCount').textContent.includes('1 стен'),'wall survives textured preview');
+  textureToggle.checked=false;textureToggle.dispatchEvent(new w.Event('change',{bubbles:true}));
   d.querySelector('[data-tool="stamp"]').click();
   pointer('pointerdown',cx,cy);pointer('pointerup',cx,cy);
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('9 объектов'));
@@ -58,7 +67,7 @@
   pointer('pointermove',cx+34,cy-13);pointer('pointerup',cx+34,cy-13);
   await waitUntil(()=>Number(d.querySelector('#properties input[type="number"]')?.value)!==initialX);
   assert(d.querySelector('#exportDialog').open===false,'new-room dialog should be closed');
-  output.textContent='PASS: wall draw/opening socket, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
+  output.textContent='PASS: wall draw/opening socket, textured wall preview, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
   document.documentElement.dataset.testResult='pass';
  }catch(err){output.textContent='FAIL: '+(err.stack||err.message);document.documentElement.dataset.testResult='fail';}
 })();

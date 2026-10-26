@@ -63,7 +63,7 @@ jobs:
           node --check tools/room-builder/hall-pilot.mjs
           node --check tools/room-builder/sw.js
           node --test tools/room-builder/tests/*.test.mjs
-          python3 -m unittest scripts/raven/tools/test_room_builder_import.py scripts/raven/tools/test_hall_visual_sync.py scripts/raven/tools/test_room_builder_game_import.py scripts/raven/tools/test_wall_kit.py scripts/raven/tools/test_comfyui_wall_workflow.py
+          python3 -m unittest scripts/raven/tools/test_room_builder_import.py scripts/raven/tools/test_hall_visual_sync.py scripts/raven/tools/test_room_builder_game_import.py scripts/raven/tools/test_wall_kit.py scripts/raven/tools/test_comfyui_wall_workflow.py scripts/raven/tools/test_wall_tileset.py
           python3 scripts/raven/comfyui/build_wall_asset_manifest.py
           git diff --exit-code -- data/raven/comfyui_wall_asset_manifest.json
           python3 scripts/raven/tools/build_room_catalog.py --check
@@ -83,11 +83,11 @@ jobs:
           trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
           sleep 2
           timeout 50 "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run --user-data-dir="/tmp/room-builder-smoke-$GITHUB_RUN_ID" --virtual-time-budget=20000 --dump-dom http://127.0.0.1:4173/tests/browser_smoke.html > /tmp/room-builder-smoke.html 2>/tmp/room-builder-chrome.log
-          grep -q 'PASS: wall draw/opening socket, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag' /tmp/room-builder-smoke.html || { cat /tmp/room-builder-smoke.html; cat /tmp/room-builder-chrome.log; exit 1; }
+          grep -q 'PASS: wall draw/opening socket, textured wall preview, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag' /tmp/room-builder-smoke.html || { cat /tmp/room-builder-smoke.html; cat /tmp/room-builder-chrome.log; exit 1; }
 
       - name: Verify published Room Builder mirrors its canonical sources
         run: |
-          for file in index.html app.mjs model.mjs wall-tools.mjs catalog.mjs projection.mjs visual-contract.mjs hall-pilot.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/season1_wall_kit.json reference/hall_twin_staircases.png reference/hall_visual_contract.json reference/sprites/armchair_clean.png reference/sprites/burgundy_runner.png reference/sprites/grandfather_clock.png reference/sprites/round_side_table.png reference/sprites/entry_console.png reference/sprites/ancestor_gallery_composite.png reference/sprites/onoe_walk_sheet_v1.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
+          for file in index.html app.mjs model.mjs wall-tools.mjs catalog.mjs projection.mjs visual-contract.mjs hall-pilot.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/season1_wall_kit.json reference/hall_twin_staircases.png reference/hall_visual_contract.json reference/wall_tileset/grand_module.png reference/sprites/armchair_clean.png reference/sprites/burgundy_runner.png reference/sprites/grandfather_clock.png reference/sprites/round_side_table.png reference/sprites/entry_console.png reference/sprites/ancestor_gallery_composite.png reference/sprites/onoe_walk_sheet_v1.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
             cmp "tools/room-builder/$file" "builder/$file"
           done
           cmp data/raven/season1_world_map.json tools/room-builder/reference/season1_world_map.json
@@ -105,10 +105,11 @@ jobs:
 
       - name: Bundle standalone Room Builder PWA
         run: |
-          mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference/sprites
+          mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference/sprites build/web/builder/reference/wall_tileset
           cp tools/room-builder/index.html tools/room-builder/style.css tools/room-builder/app.mjs tools/room-builder/model.mjs tools/room-builder/wall-tools.mjs tools/room-builder/catalog.mjs tools/room-builder/projection.mjs tools/room-builder/visual-contract.mjs tools/room-builder/hall-pilot.mjs tools/room-builder/sw.js tools/room-builder/manifest.webmanifest build/web/builder/
           cp tools/room-builder/catalog/room-items.json build/web/builder/catalog/
           cp tools/room-builder/reference/season1_world_map.json tools/room-builder/reference/season1_wall_kit.json tools/room-builder/reference/hall_twin_staircases.png tools/room-builder/reference/hall_visual_contract.json build/web/builder/reference/
+          cp tools/room-builder/reference/wall_tileset/grand_module.png build/web/builder/reference/wall_tileset/
           cp tools/room-builder/reference/sprites/*.png build/web/builder/reference/sprites/
           cp tools/room-builder/icons/icon.svg tools/room-builder/icons/icon-192.png tools/room-builder/icons/icon-512.png build/web/builder/icons/
           test -f build/web/builder/index.html
@@ -116,6 +117,7 @@ jobs:
           test -f build/web/builder/reference/hall_twin_staircases.png
           test -f build/web/builder/reference/hall_visual_contract.json
           test -f build/web/builder/reference/season1_wall_kit.json
+          test -f build/web/builder/reference/wall_tileset/grand_module.png
           test -f build/web/builder/reference/sprites/onoe_walk_sheet_v1.png
           test -f build/web/builder/icons/icon-512.png
 

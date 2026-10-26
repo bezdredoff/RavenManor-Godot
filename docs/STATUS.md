@@ -101,3 +101,7 @@ The runner validates the complete API graph (classes, inputs, enum values, links
 
 Result of the completed pass: 52/52 candidates, 0 missing, 0 mechanically flagged, all `pending`. The contact sheet at `docs/evidence/comfyui_wall_kit/` shows the honest art-direction split — straight walls, doors, windows, arches and balustrades are usable candidates; **all 16 corner pieces and four end pillars render as room corners or black plates and need a guide redesign, not another prompt tweak**. `door_glazed_double_*` and `window_conservatory_section` also miss their object type. No candidate is art-approved, and Godot art, routes, saves, collision and story data are unchanged.
 
+## 2026-10-26 — constructed wall tileset prototype
+
+`scripts/raven/tools/build_wall_tileset.py` inverts the structural half of the wall pipeline: one AI render supplies the material patches (mahogany, carved trim, damask), and all seven shapes are composed from a single 160×160 framed module whose four edges are pixel-identical. Result: seven `grand` shapes in 0.03 s, seam edge delta 0.0, exact rectangle/L alpha, identical trim height, no room scenes or black plates. This is a **prototype for review**, not an integrated tileset: corners are butt-jointed rather than mitred, there is no wall-top/cap convention yet, and nothing is wired into the Room Builder or Godot. Comparison and limits: `docs/WALL_TILESET_PIPELINE.md`; evidence `docs/evidence/wall_tileset/`.
+
