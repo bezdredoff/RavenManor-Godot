@@ -1,6 +1,6 @@
 # Raven Manor — canonical project status
 
-Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
+Last reconciled: **2026-10-26** after merged PRs #17–#19. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
 
 ## Implemented and merged
 
@@ -12,6 +12,14 @@ Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed 
 - **Pages /builder/ 404 fix:** PR #19 merged. Static PWA mirrored under root `builder/` and bundled with Godot Web export; both Pages publication methods now include its entrypoint and assets. User confirmed the editor subsequently opens.
 - **CI:** GitHub Actions for PR #17 and the subsequent `main` merge successfully ran project checks and Web export. This validates automated smoke tests, not full art acceptance or real-device interaction behavior.
 - **Temporary cast artwork:** Onoe from UPDS remains a noncanonical test placeholder; no final Raven cast identity, styles or production sprites accepted.
+
+## Narrative/gameplay sync (2026-10-26)
+
+- Latest story decisions from the October design chats are now represented in `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` and machine-readable `data/raven/season1_narrative.json`.
+- `RM-VS-01` keeps the existing save schema, rewards, restoration costs and stable `RM-*` IDs, but its playable meaning is corrected: inheritance arrival first; ordinary Ada/Lucas presentation; bedroom sorting/cleanup; bathroom diagnosis and specialist preparation; childhood-object memory fragment; first night with food delivery; next hook to kitchen and Rowan/conservatory.
+- VN content now supports per-line speakers so one beat can represent an actual conversation rather than one speaker owning every line.
+- The slice intentionally does not explain the town memory effect or explicitly reveal Ada/Lucas/Rowan as ghost/vampire/werewolf. Those remain later narrative gates.
+- Room Builder, imported Hall art and map geometry remain unable to mutate narrative/save state implicitly.
 
 ## Current next gate
 
