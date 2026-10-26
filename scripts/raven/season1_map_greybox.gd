@@ -3,6 +3,7 @@ extends Control
 ## Onoe assets are owner-created test placeholders, not Evelyn.
 const DATA = preload("res://data/raven/season1_world_map.json")
 const HALL_VISUALS = preload("res://data/raven/hall_visual_contract.json")
+const HALL_CALIBRATION = preload("res://data/raven/hall_render_calibration.json")
 const HALL_IMPORT_BRIDGE = preload("res://scripts/raven/hall_import_bridge.gd")
 const IMPORTED_HALL = preload("res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn")
 const HALL_PREVIEW_FILE := "res://data/raven/hall_builder_preview.json"
@@ -49,6 +50,8 @@ var art_enabled := true
 # 0: original SVG, 1: generated twin staircase, 2: generated crimson version, 3: bounds-only greybox, 4: actual imported Builder .tscn
 var art_variant := 4
 var debug_art_bounds := false
+# Preview-only opt-in. The accepted map and saved campaign never persist this.
+var precise_seating_collision := false
 var dragging := false
 var drag_distance := 0.0
 var actor_pos := Vector2(875, 635)
@@ -466,7 +469,16 @@ func _is_walkable(p: Vector2) -> bool:
 	if on_wall and not _near_valid_door(p, index):
 		return false
 	for prop in props:
-		if int(prop.room) == index and _prop_rect(prop).grow(FURNITURE_MARGIN).has_point(p):
+		if int(prop.room) != index:
+			continue
+		if precise_seating_collision and str(prop.id) == "RM-ASSET-HALL-SEATS":
+			for footprint in HALL_CALIBRATION.data.seatingFootprints:
+				var a: Array = footprint.rect
+				var base := Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
+				if base.grow(FURNITURE_MARGIN).has_point(p):
+					return false
+			continue
+		if _prop_rect(prop).grow(FURNITURE_MARGIN).has_point(p):
 			return false
 	return true
 
@@ -665,7 +677,7 @@ func _draw_imported_upright(front: bool, target: CanvasItem) -> void:
 		if str(record.mode) != "upright": continue
 		var box: Rect2 = record.rect
 		var foot_y: float = float(record.foot_y)
-		if (foot_y > actor_pos.y) != front: continue
+		if _imported_in_front(record, actor_pos.y) != front: continue
 		var pivot := _screen_from_world(Vector2(box.position.x + box.size.x * 0.5, foot_y))
 		var destination := Rect2(
 			pivot - Vector2(box.size.x * zoom * 0.5, box.size.y * zoom),
@@ -674,6 +686,9 @@ func _draw_imported_upright(front: bool, target: CanvasItem) -> void:
 			target.draw_texture_rect(record.texture, destination, false)
 		else:
 			target.draw_rect(destination, Color(0.62, 0.34, 0.43, 0.88))
+
+func _imported_in_front(record: Dictionary, actor_foot_y: float) -> bool:
+	return float(record.foot_y) > actor_foot_y
 
 func _hall_draw_source_counts() -> Dictionary:
 	# Regression diagnostic: each imported sprite belongs to a single render
@@ -759,6 +774,17 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 func _draw_foreground_overlay() -> void:
 	if _import_mode(): _draw_imported_upright(true, foreground_overlay)
 	else: _draw_hall_upright_visuals(true, foreground_overlay)
+	# The legacy background has no approved alpha mask for door jambs or
+	# balustrades. Show map/art disagreements only in the bounds review view.
+	if debug_art_bounds and _import_mode():
+		for opening in HALL_CALIBRATION.data.openings:
+			var expected: Array = opening.mapPoint
+			var painted: Array = opening.paintedPoint
+			var a := _screen_from_world(Vector2(float(expected[0]), float(expected[1])))
+			var b := _screen_from_world(Vector2(float(painted[0]), float(painted[1])))
+			foreground_overlay.draw_line(a, b, Color("ff8d72"), 2.0)
+			foreground_overlay.draw_circle(a, 5.0, Color("66db9d"))
+			foreground_overlay.draw_circle(b, 4.0, Color("ff8d72"))
 
 func _pilot_texture(asset_id: String) -> Texture2D:
 	if art_variant in [1, 2, 4]:
