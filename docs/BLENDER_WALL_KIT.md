@@ -60,7 +60,7 @@ procedural: no external assets, no purchases.
 
 ## Next steps
 
-1. Grow the kit to the seven approved shapes and four styles (materials only, same geometry); doors, windows and arches are in place, stairs are next.
+1. Grow the kit to the seven approved shapes and four styles (materials only, same geometry); doors, windows, arches and stair openings are in place.
 2. Export masks: alpha from the film and object-index/Cryptomatte passes for wall occlusion.
 3. Write the orientation/pivot manifest and feed the same `wallBand()` rendering path in the
    Room Builder, so the preview shows real sprites instead of a pattern.
@@ -132,3 +132,20 @@ Two rendering notes that matter for quality:
   under a pixel at sprite scale.
 
 Evidence: `docs/evidence/blender_kit/arch.png`.
+### Stairs
+
+A staircase is a traversable opening plus a flight, and the rail is a separate layer:
+
+- `stair_opening(length, x0, x1, z_top)` — a tall portal with a header above it, no leaf;
+- `stairs(width, steps, rise, run, depth)` — solid treads climbing away from the camera. Place
+  the flight centred in the opening and shifted behind the wall by `depth = THICKNESS`, so it is
+  only visible through the hole;
+- `balustrade(x0, x1, y, depth, height, max_gap)` — evenly spaced posts plus a handrail, drawn
+  in the foreground pass with its own pivot. Two runs leave a central entry.
+
+The rail being a separate sprite matters: it is the layer that has to fade or occlude when the
+player walks in front of it, which is the same mechanism as Diablo's wall fading. It also means
+the rail can be swapped per state (intact / damaged) without re-rendering the flight.
+
+Evidence: `docs/evidence/blender_kit/stairs.png` — a stair opening, an ascending flight behind
+it and two foreground rails with a central gap.

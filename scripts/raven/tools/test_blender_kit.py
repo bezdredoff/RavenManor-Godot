@@ -156,5 +156,48 @@ class WallKitGeometryTests(unittest.TestCase):
         self.assertAlmostEqual(mx1, -ox0, places=6)
 
 
+
+    def test_stairs_are_contiguous_and_rising(self):
+        flight = self.kit.stairs(width=180.0, steps=8, rise=15.0, run=24.0)
+        self.assertEqual(len(flight), 8)
+        for index, (x0, y0, z0, x1, y1, z1) in enumerate(flight):
+            self.assertEqual(x0, -90.0)
+            self.assertEqual(x1, 90.0)
+            self.assertEqual(z0, 0.0)
+            self.assertAlmostEqual(z1, (index + 1) * 15.0, places=6)
+            if index:
+                self.assertAlmostEqual(y1, flight[index - 1][1], places=6)  # shared riser line
+        self.assertAlmostEqual(flight[-1][5], 120.0, places=6)
+
+    def test_balustrade_posts_stay_inside_the_span_and_carry_a_rail(self):
+        x0, x1 = 250.0, 330.0
+        parts = self.kit.balustrade(x0, x1, 4.0, 7.0, height=64.0, max_gap=34.0)
+        posts = parts[:-1]
+        rail = parts[-1]
+        self.assertGreaterEqual(len(posts), 3)
+        for x_a, y0, z0, x_b, _y1, z1 in posts:
+            self.assertGreaterEqual(x_a, x0)
+            self.assertLessEqual(x_b, x1)
+            self.assertAlmostEqual(z1, 64.0, places=6)
+        self.assertEqual(rail[0], x0)
+        self.assertEqual(rail[3], x1)
+        self.assertAlmostEqual(rail[2], 64.0, places=6)
+
+    def test_stair_opening_is_clear_and_headed(self):
+        wall = self.kit.stair_opening(700.0, 250.0, 450.0, 190.0)
+        self.assertFalse(self.kit.covers(wall, 350, -11.0, 80))    # clear below the head
+        self.assertTrue(self.kit.covers(wall, 350, -11.0, 195))    # header above
+        self.assertTrue(self.kit.covers(wall, 240, -11.0, 80))     # pier beside
+        self.assertTrue(self.kit.covers(wall, 460, -11.0, 80))
+
+    def test_stairs_reject_degenerate_input(self):
+        with self.assertRaises(ValueError):
+            self.kit.stairs(180.0, steps=0)
+        with self.assertRaises(ValueError):
+            self.kit.stairs(180.0, rise=0)
+        with self.assertRaises(ValueError):
+            self.kit.balustrade(300.0, 200.0, 0.0, 6.0)
+
+
 if __name__ == "__main__":
     unittest.main()

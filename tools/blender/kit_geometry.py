@@ -313,3 +313,41 @@ def arch_surround(open_x0: float, open_x1: float, z0: float, z_spring: float,
         boxes.append((centre - outer, 0.0, za, centre - inner, proud, zb))
         boxes.append((centre + inner, 0.0, za, centre + outer, proud, zb))
     return boxes
+
+def stairs(width: float, steps: int = 8, rise: float = 14.0, run: float = 22.0,
+           depth: float = 0.0) -> list[Box]:
+    """Solid ascending flight: each step is a full-height block from the floor.
+
+    `width` is measured along X, the flight climbs towards -Y (away from the camera) so the
+    treads stay visible at a raised camera. `depth` shifts the whole flight away from the wall.
+    """
+    if steps < 1 or width <= 0 or rise <= 0 or run <= 0:
+        raise ValueError("stairs need a positive width, rise, run and at least one step")
+    half = width / 2
+    boxes: list[Box] = []
+    for index in range(steps):
+        y0 = -depth - (index + 1) * run
+        y1 = -depth - index * run
+        boxes.append((-half, y0, 0.0, half, y1, (index + 1) * rise))
+    return boxes
+
+
+def balustrade(x0: float, x1: float, y: float, depth: float, base_z: float = 0.0,
+               height: float = 64.0, post: float = 6.0, max_gap: float = 34.0) -> list[Box]:
+    """Straight balustrade run: evenly spaced posts plus a handrail on top."""
+    if x1 <= x0 or depth <= 0 or height <= 0:
+        raise ValueError("balustrade needs a positive span, depth and height")
+    span = x1 - x0
+    count = max(2, int(span // max_gap) + 1)
+    stride = (span - post) / (count - 1)
+    boxes: list[Box] = []
+    for index in range(count):
+        px = x0 + post / 2 + index * stride
+        boxes.append((px - post / 2, y, base_z, px + post / 2, y + depth, base_z + height))
+    boxes.append((x0, y, base_z + height, x1, y + depth, base_z + height + 9.0))
+    return boxes
+
+
+def stair_opening(length: float, open_x0: float, open_x1: float, z_top: float) -> list[Box]:
+    """Tall opening for a staircase: a portal that reaches from the floor to `z_top`."""
+    return wall_with_openings(length, [(open_x0, open_x1, 0.0, z_top)])
