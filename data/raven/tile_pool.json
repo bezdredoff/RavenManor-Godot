@@ -1,0 +1,38 @@
+{
+  "version": 1,
+  "style": "cozy-gothic-anime",
+  "palette": {
+    "emerald": "#2E4A3E",
+    "bordeaux": "#5A2A2E",
+    "gold": "#C9A227",
+    "plum": "#4A2E4A",
+    "parchment": "#E8DCC8",
+    "ink": "#1A1A1A"
+  },
+  "lighting": "warm key light, soft rim light, gentle contact shadow",
+  "texture": "wax, aged metal, fabric, parchment — soft, tactile",
+  "idleAnimation": "very slow breathing (2–3% scale), soft flicker on candle/raven only",
+  "types": [
+    {"id": "candle",  "label": "Свеча",   "shape": "teardrop flame",        "matchFx": "sparks, warm glow, tiny smoke wisp", "sound": "soft crackle"},
+    {"id": "key",     "label": "Ключ",    "shape": "old bow key",           "matchFx": "gold glints, quiet metal ring",       "sound": "soft click"},
+    {"id": "rose",    "label": "Роза",    "shape": "bud with thorns",       "matchFx": "petals drift, faint perfume shimmer", "sound": "petal rustle"},
+    {"id": "book",    "label": "Книга",   "shape": "open tome",             "matchFx": "dust motes, page flutter",            "sound": "page turn"},
+    {"id": "raven",   "label": "Ворон",   "shape": "bird silhouette",       "matchFx": "feather fall, single caw (soft)",     "sound": "wing whisper"},
+    {"id": "cup",     "label": "Чашка",   "shape": "tea cup",               "matchFx": "steam curl, porcelain chime",         "sound": "soft clink"},
+    {"id": "brooch",  "label": "Брошь",   "shape": "small pin",             "matchFx": "tiny glint, thread pull",             "sound": "pin drop (muted)"},
+    {"id": "quill",   "label": "Перо",    "shape": "writing quill",         "matchFx": "ink trail, feather sway",             "sound": "quill scratch (soft)"}
+  ],
+  "matchAnimation": {
+    "easing": "ease-in-out",
+    "durationMs": 320,
+    "dissolve": "particles + gentle scale-down, no hard pop",
+    "comboFx": "warm light bloom, layered soft chime, no screen shake",
+    "fallPhysics": "slight spring bounce on landing",
+    "swipeFeel": "soft spring snap, 80ms settle"
+  },
+  "levelSets": [
+    {"id": "RM-LVL-001", "tileSet": ["candle", "key", "book", "cup", "brooch"], "fiction": "вещи из разорённой спальни; сбор по типам = сортировка"},
+    {"id": "RM-LVL-002", "tileSet": ["candle", "key", "rose", "quill", "raven"], "fiction": "следы и инструменты в ванной; сбор = осмотр"},
+    {"id": "RM-LVL-003", "tileSet": ["candle", "key", "cup", "quill", "brooch"], "fiction": "детали и материалы для мастера; сбор = подготовка"}
+  ]
+}
