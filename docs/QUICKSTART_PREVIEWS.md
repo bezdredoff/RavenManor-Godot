@@ -29,11 +29,11 @@ This new mode does **not** replace the existing Hall→Corridor→Bedroom vertic
 
 In Prototype Lab choose **4 · Content Preview**, then choose:
 
-- `RM-LVL-001` — «Пыльные коробки»;
-- `RM-LVL-002` — «Следы под обоями»;
-- `RM-LVL-003` — «Запертый водопровод».
+- `RM-LVL-001` — «Разобрать спальню» (сортировка/уборка);
+- `RM-LVL-002` — «Найти источник протечки» (осмотр/расчистка);
+- `RM-LVL-003` — «Подготовить сантехнику» (подготовка доступа и деталей для специалиста).
 
-The preview uses real adjacent swaps, match validation, cascades, objectives and move limits. **Сделать подсказанный ход** executes a legal deterministic move. Restarting a level recreates its seeded initial board. Isolated preview does not award work points or modify Raven-save.
+The preview uses real adjacent swaps, match validation, cascades, objectives and move limits. The prototype text now states the in-world work meaning: Match-3 prepares a job and does not magically perform specialist repair. **Сделать подсказанный ход** executes a legal deterministic move. Restarting a level recreates its seeded initial board. Isolated preview does not award work points or modify Raven-save.
 
 ## Test one VN scene
 
@@ -51,18 +51,18 @@ In **4 · Content Preview** choose any stable beat:
 
 Choose **3 · RM-VS-01 vertical slice** or **Начать общий flow**. This route uses the canonical Raven snapshot and runs:
 
-1. `RM-HS-005` and bedroom door unlock;
-2. arrival VN;
-3. `RM-LVL-001`;
+1. arrival/inheritance VN (`RM-BEAT-01-01`) with Evelyn, Lucas and Ada in ordinary roles;
+2. `RM-HS-005` and bedroom door unlock;
+3. `RM-LVL-001` — sort/clean bedroom;
 4. bedroom restoration `RM-HS-002` / `RM-REST-001`;
-5. bedroom VN;
-6. `RM-LVL-002`;
-7. clue setup VN;
-8. `RM-LVL-003`;
-9. `RM-REST-002`;
-10. childhood clue;
-11. night VN;
-12. completion VN and persisted completed state.
+5. bedroom/memory-gap VN;
+6. `RM-LVL-002` — diagnose bathroom damage;
+7. specialist-needed VN;
+8. `RM-LVL-003` — prepare plumbing access/parts;
+9. `RM-REST-002` — plumber repair after preparation;
+10. childhood clue / returning memory fragment;
+11. first-night VN with food delivery while kitchen remains unready;
+12. next-morning hook to kitchen and Rowan/conservatory, then persisted completed state.
 
 The footer controls are:
 
@@ -89,7 +89,7 @@ Run the complete automated verification:
 & "C:\git\RavenManor-Godot\check.ps1" -GodotPath "C:\Program Files\Godot\Godot_v4.7.2-stable_win64.exe"
 ```
 
-Content definitions live in `data/raven/rm_vs_01_content.json`. The preview is intentionally an engineering/debug surface: current letters/colors are placeholders, not approved production art.
+Narrative/gameplay mapping lives in `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` and `data/raven/season1_narrative.json`. Content definitions live in `data/raven/rm_vs_01_content.json`. The preview is intentionally an engineering/debug surface: current letters/colors are placeholders, not approved production art.
 
 ## Tablet Room Builder (independent editor)
 
