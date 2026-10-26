@@ -3,6 +3,12 @@ set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 GODOT_BIN="${GODOT_BIN:-godot}"
 
+# Production catalogs are checked independently of the playable runtime.
+python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py"
+worklist_check="$(mktemp)"
+python3 "$ROOT/scripts/raven/tools/export_translation_worklist.py" --output "$worklist_check"
+rm -f "$worklist_check"
+
 run_check() {
 	local stage="$1" expected="$2"
 	shift 2
