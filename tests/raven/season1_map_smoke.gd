@@ -72,7 +72,7 @@ func _run() -> void:
 	assert(import_pass.imported_floor == 1)
 	assert(import_pass.imported_upright == 6)
 	assert(import_pass.legacy_upright == 0, "Imported mode must never double draw the old AI sprites")
-	assert(import_pass.map_prop_duplicates >= 6)
+	assert(import_pass.legacy_props_suppressed == 6, "Six original Hall prop shapes must not be rendered twice")
 	assert(scene._imported_managed("RM-ASSET-HALL-SEATS"))
 	assert(scene._imported_managed("RM-ASSET-HALL-CLOCK"))
 	assert(scene._imported_managed("RM-ASSET-HALL-CONSOLE"))

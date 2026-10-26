@@ -642,7 +642,7 @@ func _import_mode() -> bool:
 	return art_enabled and art_variant == 4 and bool(imported_hall.get("ready", false))
 
 func _imported_managed(map_prop_id: String) -> bool:
-	if not _import_mode(): return false
+	if not _import_mode() or map_prop_id.is_empty(): return false
 	for record in imported_hall.get("items", []):
 		if str(imported_map_refs.get(str(record.asset_ref_id), "")) == map_prop_id:
 			return true
@@ -679,12 +679,14 @@ func _hall_draw_source_counts() -> Dictionary:
 	# Regression diagnostic: each imported sprite belongs to a single render
 	# layer, and none can appear in the legacy AI1 pass.
 	var counts := {"imported_floor": 0, "imported_upright": 0,
-		"legacy_upright": 0, "map_prop_duplicates": 0}
+		"legacy_upright": 0, "legacy_props_suppressed": 0}
 	for record in imported_hall.get("items", []):
 		if str(record.mode) == "floor": counts.imported_floor += 1
 		else: counts.imported_upright += 1
-		if _imported_managed(str(imported_map_refs.get(str(record.asset_ref_id), ""))):
-			counts.map_prop_duplicates += 1
+	if _import_mode():
+		for item in props:
+			if int(item.room) == 1:
+				counts.legacy_props_suppressed += 1
 	if _import_mode(): counts.legacy_upright = 0
 	else: counts.legacy_upright = hall_visual_sprites.size() - 1
 	return counts
