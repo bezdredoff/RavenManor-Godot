@@ -55,4 +55,4 @@ Use the now instrumented import map to compare fixed five door markers and the t
 
 The wall/portal/stair geometry portion is now implemented and captured; see `docs/HALL_WALL_PARITY.md`. The remaining work is asset production: repaint or tile the pilot background to those fixed guides, replace schematic rail strokes with transparent art cutouts, review both collision modes, and only then promote the three individual seating footprints.
 
-The complete 52-candidate prompt matrix and locally matched ComfyUI batch are now specified in `docs/RAVEN_WALL_COMFYUI_WORKFLOW.md`. Generated outputs remain outside production until the documented alpha, seam, scale and render review passes.
+The complete 52-candidate prompt matrix and locally matched ComfyUI batch are now specified in `docs/RAVEN_WALL_COMFYUI_WORKFLOW.md`. Generated outputs remain outside production until the documented alpha, seam, scale and render review passes. The batch has since been rendered locally (2026-10-26, ComfyUI Desktop 0.42.5) and waits for the human overlay/state review recorded in `data/raven/comfyui_wall_asset_review.json`; the next gate is that review, not another generator change.

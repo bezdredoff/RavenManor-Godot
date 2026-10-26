@@ -87,3 +87,17 @@ The generated Builder/Godot Hall now contains ten measured wall/balustrade segme
 ## ComfyUI wall-art production package (2026-10-26)
 
 A deterministic 52-job Flux2 Klein batch now covers the full approved first-act wall budget: 28 structural pieces, 12 door states, five windows, three arch states and four staircase balustrades. Each job has an exact prompt, seed, guide silhouette and stable filename; the runner validates live ComfyUI nodes/models and saves raw plus alpha candidates. It does not auto-promote generated images. See `docs/RAVEN_WALL_COMFYUI_WORKFLOW.md`.
+
+## 2026-10-26 — wall batch executed locally, mechanically reviewed
+
+The 52-candidate wall batch was rendered on this workstation (ComfyUI Desktop 0.42.5 on `127.0.0.1:8000`, Flux2 Klein 9B, `flux2-vae`, `BiRefNet_toonout`). Every job produced a raw PNG and an RGBA alpha PNG at 1024×1024.
+
+The first real run — not the earlier dry run — exposed two defects that would have wasted the whole batch:
+
+- the graph referenced `VNCCS_RMBG2`, a node installed in no local pack, so preflight aborted the run; the alpha node is now `BiRefNetRMBG` with the installed `BiRefNet_toonout` option;
+- negated prompt nouns ("no characters") are rendered as content by this CFG-free sampler, and ring-shaped opening guides became black backdrop plaques. The prompt contract is now positive-only and every guide is a solid silhouette.
+
+The runner validates the complete API graph (classes, inputs, enum values, links, required inputs) against live `/object_info` before queueing. A new `review_wall_asset_batch.py` records filename, SHA-256, seed, guide box and alpha metrics in `data/raven/comfyui_wall_asset_review.json`, keeps human decisions when a file is unchanged and resets them when a candidate is regenerated.
+
+Result of the completed pass: 52/52 candidates, 0 missing, 0 mechanically flagged, all `pending`. The contact sheet at `docs/evidence/comfyui_wall_kit/` shows the honest art-direction split — straight walls, doors, windows, arches and balustrades are usable candidates; **all 16 corner pieces and four end pillars render as room corners or black plates and need a guide redesign, not another prompt tweak**. `door_glazed_double_*` and `window_conservatory_section` also miss their object type. No candidate is art-approved, and Godot art, routes, saves, collision and story data are unchanged.
+
