@@ -88,11 +88,22 @@ Needs Pillow and the alpha+raw renders of `wall_grand_straight_h` from the Comfy
 
 ## Seeing it in the Room Builder
 
-The builder has a **«Текстурные стены (превью)»** toggle in the «Стены и проёмы» panel. When
-it is on, every solid wall run is drawn as an 80 px band filled with the committed module
-(`tools/room-builder/reference/wall_tileset/grand_module.png`), one module per 80 world pixels,
-with the style trim line on top and a contact shadow at the floor line. Openings still cut the
-runs, so a doorway stays a gap.
+Start the builder locally (the helper serves `.mjs` with the right MIME type; plain
+`python -m http.server` on Windows can leave the editor stuck on "Загрузка каталога…"):
+
+```powershell
+cd tools/room-builder
+python serve.py
+# open http://127.0.0.1:4173/
+```
+
+Then create a room, draw a wall with the «Стена» tool and switch on **«Текстурные стены
+(превью)»** in the «Стены и проёмы» panel.
+
+When the toggle is on, every solid wall run is drawn as an 80 px band filled with the committed
+module (`tools/room-builder/reference/wall_tileset/grand_module.png`), one module per 80 world
+pixels, with the style trim line on top and a contact shadow at the floor line. Openings still
+cut the runs, so a doorway stays a gap.
 
 It is a preview, not a project property: the toggle is session-only, nothing is written into
 the saved JSON, and switching it off restores the schematic strokes. The same file is mirrored
