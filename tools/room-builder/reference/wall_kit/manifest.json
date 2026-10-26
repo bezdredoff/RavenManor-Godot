@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "camera": {
-    "elevation": 50.0,
+    "elevation": 65.0,
     "azimuth": 0.0
   },
   "pixels": [
@@ -30,16 +30,16 @@
           "pixelsPerUnit": 1.28,
           "anchor": [
             576.0,
-            411.6
+            385.1
           ],
           "bbox": [
             63,
-            225,
+            251,
             577,
-            412
+            386
           ],
           "worldWidth": 401.56,
-          "worldHeight": 146.09
+          "worldHeight": 105.47
         },
         "corner": {
           "file": "grand/corner.png",
@@ -59,16 +59,16 @@
           "pixelsPerUnit": 1.5657,
           "anchor": [
             533.7,
-            256.9
+            192.5
           ],
           "bbox": [
             63,
             29,
             577,
-            617
+            618
           ],
-          "worldWidth": 328.29,
-          "worldHeight": 375.55
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
         },
         "end_pillar": {
           "file": "grand/end_pillar.png",
@@ -88,16 +88,16 @@
           "pixelsPerUnit": 1.5901,
           "anchor": [
             576.0,
-            442.8
+            407.8
           ],
           "bbox": [
             63,
-            190,
+            223,
             577,
-            448
+            414
           ],
-          "worldWidth": 323.25,
-          "worldHeight": 162.25
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
         },
         "door": {
           "file": "grand/door.png",
@@ -117,16 +117,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "arch": {
           "file": "grand/arch.png",
@@ -146,16 +146,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            446
+            411
           ],
           "worldWidth": 301.17,
-          "worldHeight": 147.65
+          "worldHeight": 107.23
         },
         "window": {
           "file": "grand/window.png",
@@ -175,16 +175,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "stair": {
           "file": "grand/stair.png",
@@ -204,16 +204,16 @@
           "pixelsPerUnit": 1.4222,
           "anchor": [
             576.0,
-            421.8
+            392.4
           ],
           "bbox": [
             63,
-            215,
+            243,
             577,
-            422
+            393
           ],
           "worldWidth": 361.41,
-          "worldHeight": 145.55
+          "worldHeight": 105.47
         }
       }
     },
@@ -238,16 +238,16 @@
           "pixelsPerUnit": 1.28,
           "anchor": [
             576.0,
-            411.6
+            385.1
           ],
           "bbox": [
             63,
-            225,
+            251,
             577,
-            412
+            386
           ],
           "worldWidth": 401.56,
-          "worldHeight": 146.09
+          "worldHeight": 105.47
         },
         "corner": {
           "file": "residential/corner.png",
@@ -267,16 +267,16 @@
           "pixelsPerUnit": 1.5657,
           "anchor": [
             533.7,
-            256.9
+            192.5
           ],
           "bbox": [
             63,
             29,
             577,
-            617
+            618
           ],
-          "worldWidth": 328.29,
-          "worldHeight": 375.55
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
         },
         "end_pillar": {
           "file": "residential/end_pillar.png",
@@ -296,16 +296,16 @@
           "pixelsPerUnit": 1.5901,
           "anchor": [
             576.0,
-            442.8
+            407.8
           ],
           "bbox": [
             63,
-            190,
+            223,
             577,
-            448
+            414
           ],
-          "worldWidth": 323.25,
-          "worldHeight": 162.25
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
         },
         "door": {
           "file": "residential/door.png",
@@ -325,16 +325,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "arch": {
           "file": "residential/arch.png",
@@ -354,16 +354,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            446
+            411
           ],
           "worldWidth": 301.17,
-          "worldHeight": 147.65
+          "worldHeight": 107.23
         },
         "window": {
           "file": "residential/window.png",
@@ -383,16 +383,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "stair": {
           "file": "residential/stair.png",
@@ -412,16 +412,16 @@
           "pixelsPerUnit": 1.4222,
           "anchor": [
             576.0,
-            421.8
+            392.4
           ],
           "bbox": [
             63,
-            215,
+            243,
             577,
-            422
+            393
           ],
           "worldWidth": 361.41,
-          "worldHeight": 145.55
+          "worldHeight": 105.47
         }
       }
     },
@@ -446,16 +446,16 @@
           "pixelsPerUnit": 1.28,
           "anchor": [
             576.0,
-            411.6
+            385.1
           ],
           "bbox": [
             63,
-            225,
+            251,
             577,
-            412
+            386
           ],
           "worldWidth": 401.56,
-          "worldHeight": 146.09
+          "worldHeight": 105.47
         },
         "corner": {
           "file": "service/corner.png",
@@ -475,16 +475,16 @@
           "pixelsPerUnit": 1.5657,
           "anchor": [
             533.7,
-            256.9
+            192.5
           ],
           "bbox": [
             63,
             29,
             577,
-            617
+            618
           ],
-          "worldWidth": 328.29,
-          "worldHeight": 375.55
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
         },
         "end_pillar": {
           "file": "service/end_pillar.png",
@@ -504,16 +504,16 @@
           "pixelsPerUnit": 1.5901,
           "anchor": [
             576.0,
-            442.8
+            407.8
           ],
           "bbox": [
             63,
-            190,
+            223,
             577,
-            448
+            414
           ],
-          "worldWidth": 323.25,
-          "worldHeight": 162.25
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
         },
         "door": {
           "file": "service/door.png",
@@ -533,16 +533,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "arch": {
           "file": "service/arch.png",
@@ -562,16 +562,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            446
+            411
           ],
           "worldWidth": 301.17,
-          "worldHeight": 147.65
+          "worldHeight": 107.23
         },
         "window": {
           "file": "service/window.png",
@@ -591,16 +591,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "stair": {
           "file": "service/stair.png",
@@ -620,16 +620,16 @@
           "pixelsPerUnit": 1.4222,
           "anchor": [
             576.0,
-            421.8
+            392.4
           ],
           "bbox": [
             63,
-            215,
+            243,
             577,
-            422
+            393
           ],
           "worldWidth": 361.41,
-          "worldHeight": 145.55
+          "worldHeight": 105.47
         }
       }
     },
@@ -654,16 +654,16 @@
           "pixelsPerUnit": 1.28,
           "anchor": [
             576.0,
-            411.6
+            385.1
           ],
           "bbox": [
             63,
-            225,
+            251,
             577,
-            412
+            386
           ],
           "worldWidth": 401.56,
-          "worldHeight": 146.09
+          "worldHeight": 105.47
         },
         "corner": {
           "file": "glass/corner.png",
@@ -683,16 +683,16 @@
           "pixelsPerUnit": 1.5657,
           "anchor": [
             533.7,
-            256.9
+            192.5
           ],
           "bbox": [
             63,
             29,
             577,
-            617
+            618
           ],
-          "worldWidth": 328.29,
-          "worldHeight": 375.55
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
         },
         "end_pillar": {
           "file": "glass/end_pillar.png",
@@ -712,16 +712,16 @@
           "pixelsPerUnit": 1.5901,
           "anchor": [
             576.0,
-            442.8
+            407.8
           ],
           "bbox": [
             63,
-            190,
+            223,
             577,
-            448
+            414
           ],
-          "worldWidth": 323.25,
-          "worldHeight": 162.25
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
         },
         "door": {
           "file": "glass/door.png",
@@ -741,16 +741,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "arch": {
           "file": "glass/arch.png",
@@ -770,16 +770,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            446
+            411
           ],
           "worldWidth": 301.17,
-          "worldHeight": 147.65
+          "worldHeight": 107.23
         },
         "window": {
           "file": "glass/window.png",
@@ -799,16 +799,16 @@
           "pixelsPerUnit": 1.7067,
           "anchor": [
             576.0,
-            442.1
+            406.8
           ],
           "bbox": [
             63,
-            194,
+            228,
             577,
-            442
+            407
           ],
           "worldWidth": 301.17,
-          "worldHeight": 145.31
+          "worldHeight": 104.88
         },
         "stair": {
           "file": "glass/stair.png",
@@ -828,16 +828,16 @@
           "pixelsPerUnit": 1.4222,
           "anchor": [
             576.0,
-            421.8
+            392.4
           ],
           "bbox": [
             63,
-            215,
+            243,
             577,
-            422
+            393
           ],
           "worldWidth": 361.41,
-          "worldHeight": 145.55
+          "worldHeight": 105.47
         }
       }
     }

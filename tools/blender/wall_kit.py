@@ -23,7 +23,7 @@ import kit_geometry as kit  # noqa: E402
 
 ROOT = HERE.parents[1]
 OUT = ROOT / "build/blender_kit/grand"
-ELEVATION = 50.0
+ELEVATION = 65.0
 AZIMUTH = 45.0
 SIZE = (640, 640)
 
@@ -175,6 +175,15 @@ def main():
         configure(transparent=True)
         render(OUT / f"{name}.png")
         report[name] = kit.piece_report(name, boxes)
+
+    # Spatial proof for portals on both axes. This is evidence, not approved game art:
+    # the 45-degree azimuth deliberately exposes the side-wall geometry.
+    front_arch = kit.wall_with_arch(360.0, 115.0, 245.0, 0.0, 90.0, 175.0)
+    side_door = kit.rotate_z_90(
+        kit.wall_with_openings(360.0, [(125.0, 235.0, 0.0, 140.0)]))
+    scene_with(front_arch + side_door, (115.0, 115.0, 100.0), 590.0, azimuth=45.0)
+    configure(transparent=False)
+    render(OUT / "side_portals.png")
 
     # Leak probes: tight frame on the corner, magenta world behind the walls.
     for name, boxes in (("corner", kit.corner()), ("corner_legacy", kit.legacy_corner())):

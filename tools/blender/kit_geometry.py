@@ -91,6 +91,11 @@ def translate(boxes: list[Box], dx: float, dy: float, dz: float = 0.0) -> list[B
             for x0, y0, z0, x1, y1, z1 in boxes]
 
 
+def rotate_z_90(boxes: list[Box]) -> list[Box]:
+    """Rotate axis-aligned boxes 90 degrees counter-clockwise around the kit pivot."""
+    return [(-y1, x0, z0, -y0, x1, z1) for x0, y0, z0, x1, y1, z1 in boxes]
+
+
 def _inside(boxes: list[Box], x: float, y: float, z: float, eps: float = 1e-6) -> bool:
     for x0, y0, z0, x1, y1, z1 in boxes:
         if x0 - eps <= x <= x1 + eps and y0 - eps <= y <= y1 + eps and z0 - eps <= z <= z1 + eps:

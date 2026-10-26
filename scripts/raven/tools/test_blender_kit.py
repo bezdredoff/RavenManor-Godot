@@ -155,6 +155,14 @@ class WallKitGeometryTests(unittest.TestCase):
         self.assertAlmostEqual(mx0, -ox1, places=6)
         self.assertAlmostEqual(mx1, -ox0, places=6)
 
+    def test_quarter_turn_keeps_boxes_valid_and_moves_run_to_y(self):
+        rotated = self.kit.rotate_z_90(self.kit.straight())
+        self.assertEqual(len(rotated), len(self.kit.straight()))
+        self.assertAlmostEqual(min(box[0] for box in rotated), -3.0, places=6)
+        self.assertAlmostEqual(max(box[3] for box in rotated), self.kit.THICKNESS, places=6)
+        self.assertAlmostEqual(min(box[1] for box in rotated), 0.0, places=6)
+        self.assertAlmostEqual(max(box[4] for box in rotated), self.kit.LENGTH, places=6)
+
 
 
     def test_stairs_are_contiguous_and_rising(self):

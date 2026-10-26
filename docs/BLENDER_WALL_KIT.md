@@ -1,7 +1,8 @@
 # Blender wall kit: geometry first, AI second
 
-Status: **prototype with a verified corner joint** (26 October 2026). One style, three pieces.
-Not integrated into the builder or Godot yet.
+Status: **Builder-integrated geometry prototype** (26 October 2026). Four material styles,
+seven structural pieces, a verified corner joint and a shared 65° elevation contract. These
+renders are still not art-approved and are not wired into production Godot collision.
 
 ## Why Blender is in the pipeline
 
@@ -46,7 +47,9 @@ CI runs it with the other Python checks.
 Evidence in `docs/evidence/blender_kit/`:
 
 - `corner_join.png` — the same corner before and after the fix;
-- `corner_piece.png`, `straight.png`, `end_pillar.png` — the three pieces at 50°/45°.
+- `corner_piece.png`, `straight.png`, `end_pillar.png` — the original geometry probes;
+- `side_portals_65deg.png` — an explicit 65°/45° spatial proof: an arch in one wall and a
+  through-doorway in the perpendicular side wall. It proves topology, not final art direction.
 
 ## Run it
 
@@ -60,13 +63,12 @@ procedural: no external assets, no purchases.
 
 ## Next steps
 
-1. Grow the kit to the seven approved shapes and four styles (materials only, same geometry); doors, windows, arches and stair openings are in place.
-2. Export masks: alpha from the film and object-index/Cryptomatte passes for wall occlusion.
-3. Write the orientation/pivot manifest and feed the same `wallBand()` rendering path in the
-   Room Builder, so the preview shows real sprites instead of a pattern.
-4. Test the AI pass: ComfyUI img2img over these renders (denoise ~0.35–0.5) with the existing
+1. Export object-index/Cryptomatte masks for production wall/character occlusion.
+2. Test the AI pass: ComfyUI img2img over these renders (denoise ~0.35–0.5) with the existing
    wall batch as the style anchor, then compare against the constructed and AI-only sets.
-5. Decide the camera: 50°/45° as here, the current 65°, or 2:1 isometric — it is one line.
+3. Add oriented production sprites for walls running into screen depth. Until that pass exists,
+   the Builder keeps their safe schematic band and shows the spatial proof beside the tools.
+4. Validate one room in Godot before enabling any collision, navigation or save migration.
 
 ## Openings: doors, windows, arches, stairs
 
@@ -181,14 +183,15 @@ The rendered set is copied into `tools/room-builder/reference/wall_kit/` (and mi
 
 In the Room Builder the «Текстурные стены (превью)» toggle now prefers real sprites:
 
-- walls that run across the view are drawn from the kit; `straight` tiles along the run at its
-  natural size, while a run that carries a door, arch or window is drawn with that piece centred
-  on the opening;
+- walls that run across the view are drawn from the kit; `straight` tiles only the remaining
+  solid runs, then door, arch and window modules are drawn independently at their opening
+  centres. This matters because traversable intervals have already been removed from the solid
+  runs and therefore cannot be discovered from a run midpoint;
 - walls that run away from the camera keep the pattern band, because a billboard would be wrong
-  there;
-- `chooseWallPiece()` in `wall-tools.mjs` decides which sprite a run uses, and is unit tested.
+  there. The adjacent `side_portals_65deg.png` card makes the perpendicular door/arch topology
+  visible without pretending that a front-facing billboard is a correct side-wall render.
 
-Known gap: the kit is rendered at **50°** elevation for readability, while the builder's game
-view is **65°**. Sprite heights therefore do not agree with the plan projection yet. Deciding
-the projection contract (50° 3/4, 65°, or 2:1 isometric) is the next step before this can be
-called final art.
+The generated manifest and the Builder now share **65° elevation**. The full-kit camera keeps
+azimuth 0° to match the Builder's reversible floor projection; the side-wall evidence uses
+45° only to expose both wall planes. Remaining limitations are explicit: oriented depth-wall
+sprites, production occlusion masks, Godot collision and art approval are separate gates.

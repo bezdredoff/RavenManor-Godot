@@ -28,6 +28,11 @@ async function loadWallKit(){
   const response=await fetch('./reference/wall_kit/manifest.json',{cache:'no-cache'});
   if(!response.ok)return;
   wallKit=await response.json();
+  if(!document.querySelector('.side-portal-proof')){
+   const figure=document.createElement('figure');figure.className='side-portal-proof';
+   figure.innerHTML='<img src="./reference/wall_kit/grand/side_portals.png" alt="Угловая проверка: арка во фронтальной стене и дверь в боковой стене"><figcaption>Боковая стена: дверь и арка остаются настоящими сквозными проёмами. Геометрическая проверка 65°, не финальный арт.</figcaption>';
+   document.querySelector('.wall-settings')?.append(figure);
+  }
   draw();
  }catch(error){wallKit=null;}
 }
@@ -279,26 +284,30 @@ function drawWalls(c,exporting=false){
   const style=WALL_STYLES[wall.style]||WALL_STYLES.grand,length=wallLength(wall),dx=(wall.bx-wall.ax)/length,dy=(wall.by-wall.ay)/length;
   const runs=solidWallRuns(wall,openings);
   if(kit&&Math.abs(wall.bx-wall.ax)>=Math.abs(wall.by-wall.ay)){
-   // Rendered kit sprites: straight runs tile, opening pieces are centred on the opening.
+   // Solid runs and opening modules are separate. A portal has already cut `runs`, so trying
+   // to choose an opening sprite from a solid-run midpoint can never find that portal.
    const depth=depthRatio(viewMode)||1,baseY=wall.ay;
    for(const [start,end] of runs){
-    const piece=chooseWallPiece(wall,openings,[start,end]);
-    const sprite=kitSprite(wall.style,piece);
+    const sprite=kitSprite(wall.style,'straight');
     if(!sprite)continue;
     const it=sprite.piece,box=it.bbox,srcH=box[3]-box[1];
     const hWorld=it.worldHeight/depth,wWorld=it.worldWidth;
     const sx0=wall.ax+dx*start,sx1=wall.ax+dx*end;
     const left=Math.min(sx0,sx1),right=Math.max(sx0,sx1);
-    if(piece==='straight'){
-     for(let x=left;x<right-0.01;x+=wWorld){
-      const w=Math.min(wWorld,right-x);
-      c.drawImage(sprite.image,box[0],box[1],w*it.pixelsPerUnit,srcH,x,baseY-hWorld,w,hWorld);
-     }
-    }else{
-     const mid=(left+right)/2;
-     c.drawImage(sprite.image,box[0],box[1],box[2]-box[0],srcH,
-                 mid-wWorld/2,baseY-hWorld,wWorld,hWorld);
+    for(let x=left;x<right-0.01;x+=wWorld){
+     const w=Math.min(wWorld,right-x);
+     c.drawImage(sprite.image,box[0],box[1],w*it.pixelsPerUnit,srcH,x,baseY-hWorld,w,hWorld);
     }
+   }
+   for(const opening of openings.filter(item=>item.wallId===wall.id)){
+    const piece=opening.kind==='double_door'?'door':opening.kind;
+    if(!['door','arch','window'].includes(piece))continue;
+    const sprite=kitSprite(wall.style,piece);if(!sprite)continue;
+    const it=sprite.piece,box=it.bbox,srcH=box[3]-box[1];
+    const hWorld=it.worldHeight/depth,wWorld=it.worldWidth;
+    const center=wall.ax+(wall.bx-wall.ax)*opening.offset;
+    c.drawImage(sprite.image,box[0],box[1],box[2]-box[0],srcH,
+                center-wWorld/2,baseY-hWorld,wWorld,hWorld);
    }
    continue;
   }

@@ -23,7 +23,7 @@ import kit_geometry as kit  # noqa: E402
 
 ROOT = HERE.parents[1]
 OUT = ROOT / "build/blender_kit"
-ELEVATION = 50.0
+ELEVATION = 65.0
 AZIMUTH = 0.0          # front-facing billboards for the builder
 SIZE = (640, 640)
 
@@ -125,6 +125,26 @@ def bounds(groups: dict[str, list[kit.Box]]):
     return min(xs), min(ys), min(zs), max(xs), max(ys), max(zs)
 
 
+def alpha_bbox(path: Path) -> list[int]:
+    """Return the non-transparent pixel bounds as [left, top, right, bottom]."""
+    image = bpy.data.images.load(str(path), check_existing=False)
+    try:
+        width, height = image.size
+        pixels = list(image.pixels)
+        xs, ys = [], []
+        for y in range(height):
+            row = y * width * 4
+            for x in range(width):
+                if pixels[row + x * 4 + 3] > 0.03:
+                    xs.append(x)
+                    ys.append(height - 1 - y)
+        if not xs:
+            raise RuntimeError(f"empty alpha in {path}")
+        return [min(xs), min(ys), max(xs) + 1, max(ys) + 1]
+    finally:
+        bpy.data.images.remove(image)
+
+
 def build_scene(style: str, groups: dict[str, list[kit.Box]]):
     bpy.ops.wm.read_factory_settings(use_empty=True)
     palette = STYLES[style]
@@ -203,16 +223,22 @@ def main():
         for name in PIECES:
             groups = piece(name)
             cam = build_scene(style, groups)
-            bpy.context.scene.render.filepath = str(folder / f"{name}.png")
+            path = folder / f"{name}.png"
+            bpy.context.scene.render.filepath = str(path)
             bpy.ops.render.render(write_still=True)
             anchor = world_to_camera_view(bpy.context.scene, cam, Vector((0, 0, 0)))
             x0, y0, z0, x1, y1, z1 = bounds(groups)
+            box = alpha_bbox(path)
+            pixels_per_unit = SIZE[0] / cam.data.ortho_scale
             materials_manifest[name] = {
                 "file": f"{style}/{name}.png",
                 "worldSize": [round(x1 - x0, 2), round(y1 - y0, 2), round(z1 - z0, 2)],
                 "worldBounds": [round(v, 2) for v in (x0, y0, z0, x1, y1, z1)],
-                "pixelsPerUnit": round(SIZE[0] / cam.data.ortho_scale, 4),
+                "pixelsPerUnit": round(pixels_per_unit, 4),
                 "anchor": [round(anchor.x * SIZE[0], 1), round((1 - anchor.y) * SIZE[1], 1)],
+                "bbox": box,
+                "worldWidth": round((box[2] - box[0]) / pixels_per_unit, 2),
+                "worldHeight": round((box[3] - box[1]) / pixels_per_unit, 2),
             }
             print(f"rendered {style}/{name} anchor={materials_manifest[name]['anchor']}")
         manifest["pieces"].append({"style": style, "items": materials_manifest})
