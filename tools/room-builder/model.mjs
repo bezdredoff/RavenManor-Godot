@@ -1,3 +1,5 @@
+import {validateWalls} from './wall-tools.mjs';
+
 export const SCHEMA_VERSION = 1;
 export const CATEGORIES = ['all', 'tile', 'architecture', 'furniture', 'decor', 'character', 'interaction'];
 export const CATEGORY_NAMES = {all:'Всё',tile:'Тайлы',architecture:'Архитектура',furniture:'Мебель',decor:'Декор',character:'Персонажи',interaction:'Объекты'};
@@ -50,7 +52,7 @@ export function exampleProject() {
     {id:'architecture',name:'Архитектура',visible:true,locked:false},
     {id:'objects',name:'Мебель и декор',visible:true,locked:false},
     {id:'foreground',name:'Передний план',visible:true,locked:false}
-  ],objects,anchors:[{id:'RM-NAV-HALL-SPAWN',x:500,y:660,kind:'safe'},{id:'RM-NAV-HS-001',x:160,y:360,kind:'interaction',hotspotId:'RM-HS-001'}],provenance:'Illustrative layout only. Not approved geometry.'};
+  ],objects,anchors:[{id:'RM-NAV-HALL-SPAWN',x:500,y:660,kind:'safe'},{id:'RM-NAV-HS-001',x:160,y:360,kind:'interaction',hotspotId:'RM-HS-001'}],walls:[],openings:[],provenance:'Illustrative layout only. Not approved geometry.'};
 }
 export function validateProject(input) {
   if(!input || typeof input!=='object' || input.schemaVersion!==SCHEMA_VERSION || !Array.isArray(input.assets) || !Array.isArray(input.layers) || !Array.isArray(input.objects)) throw new Error('Неподдерживаемый формат проекта');
@@ -63,6 +65,9 @@ export function validateProject(input) {
   for(const a of p.assets){if(typeof a.id!=='string'||typeof a.label!=='string'||typeof a.kind!=='string'|| !Number.isFinite(a.w)||!Number.isFinite(a.h)||a.w<=0||a.h<=0||a.w>8000||a.h>8000)throw new Error('Некорректный ассет'); if(a.image && (typeof a.image!=='string'|| !/^data:image\/(png|jpeg|webp);base64,[a-zA-Z0-9+/=]+$/.test(a.image)))throw new Error('Поддерживаются только встроенные PNG/JPEG/WebP'); }
   for(const o of p.objects){if(!assets.has(o.assetId)||!layerIds.has(o.layerId)||!['x','y','w','h','rotation'].every(k=>Number.isFinite(o[k]))||o.w<=0||o.h<=0||o.w>8000||o.h>8000||typeof o.id!=='string')throw new Error('Некорректный объект');}
   p.anchors=Array.isArray(p.anchors)?p.anchors:[];
+  p.walls=Array.isArray(p.walls)?p.walls:[];
+  p.openings=Array.isArray(p.openings)?p.openings:[];
+  validateWalls(p);
   return p;
 }
 export function pointInObject(x,y,o){const ang=-(o.rotation||0)*Math.PI/180,dx=x-(o.x+o.w/2),dy=y-(o.y+o.h/2); const rx=dx*Math.cos(ang)-dy*Math.sin(ang),ry=dx*Math.sin(ang)+dy*Math.cos(ang);return Math.abs(rx)<=o.w/2 && Math.abs(ry)<=o.h/2;}

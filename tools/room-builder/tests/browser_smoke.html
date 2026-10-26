@@ -7,7 +7,7 @@
  function waitUntil(check,timeout=14000){return new Promise((resolve,reject)=>{const start=Date.now();function checkAgain(){try{if(check())return resolve();if(Date.now()-start>timeout)return reject(new Error('Timeout waiting for '+check.toString()));setTimeout(checkAgain,100);}catch(e){reject(e);}}checkAgain();});}
  try{
   const frame=document.getElementById('app');
-  await new Promise((resolve,reject)=>{if(frame.contentDocument?.readyState==='complete')return resolve();frame.addEventListener('load',resolve,{once:true});frame.addEventListener('error',reject,{once:true});});
+  await waitUntil(()=>frame.contentDocument?.URL.endsWith('/index.html')&&frame.contentDocument?.readyState==='complete');
   const w=frame.contentWindow,d=frame.contentDocument;
   w.confirm=()=>true;
   await waitUntil(()=>d.querySelector('#catalogInfo')?.textContent?.includes('120'));
@@ -42,6 +42,13 @@
   canvas.setPointerCapture=()=>{};
   const pointer=(type,x,y)=>{const r=canvas.getBoundingClientRect();canvas.dispatchEvent(new w.PointerEvent(type,{bubbles:true,cancelable:true,pointerId:5,pointerType:'mouse',button:0,clientX:r.left+x,clientY:r.top+y}));};
   const cx=canvas.clientWidth/2,cy=canvas.clientHeight/2;
+  d.querySelector('[data-tool="wall"]').click();
+  pointer('pointerdown',cx-100,cy-90);pointer('pointermove',cx+100,cy-90);pointer('pointerup',cx+100,cy-90);
+  await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('1 стен'));
+  d.querySelector('[data-tool="opening"]').click();
+  pointer('pointerdown',cx,cy-90);pointer('pointerup',cx,cy-90);
+  await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('1 проём'));
+  d.querySelector('[data-tool="stamp"]').click();
   pointer('pointerdown',cx,cy);pointer('pointerup',cx,cy);
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('9 объектов'));
   d.querySelector('[data-tool="select"]').click();
@@ -51,7 +58,7 @@
   pointer('pointermove',cx+34,cy-13);pointer('pointerup',cx+34,cy-13);
   await waitUntil(()=>Number(d.querySelector('#properties input[type="number"]')?.value)!==initialX);
   assert(d.querySelector('#exportDialog').open===false,'new-room dialog should be closed');
-  output.textContent='PASS: 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
+  output.textContent='PASS: wall draw/opening socket, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
   document.documentElement.dataset.testResult='pass';
  }catch(err){output.textContent='FAIL: '+(err.stack||err.message);document.documentElement.dataset.testResult='fail';}
 })();

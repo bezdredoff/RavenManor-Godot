@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "status": "APPROVED_SCOPE_DRAFT_GEOMETRY",
+  "approvedOn": "2026-10-26",
+  "grid": 25,
+  "wallStyles": ["grand", "residential", "service", "glass"],
+  "sourceVariantBudget": {"structuralPerStyle": 7, "structuralTotal": 28, "doorFamilies": 4, "windowFamilies": 5, "archFamilies": 1, "stairOpeningFamilies": 1, "estimatedImagesWithStates": [48, 52]},
+  "totals": {"roomSides": 32, "wallGridUnits": 609, "physicalDoorOrArchOpenings": 10, "stairOpenings": 1, "ordinaryWindows": 7, "glassWallSections": 8},
+  "rooms": [
+    {"roomId":"RM-ROOM-ENTRY","style":"grand","windows":[]},
+    {"roomId":"RM-ROOM-HALL","style":"grand","openings":[
+      {"kind":"double_door","doorId":"RM-DOOR-ENTRY-HALL","point":[350,690],"state":"open"},
+      {"kind":"double_door","doorId":"RM-DOOR-HALL-ARCHIVE","point":[0,400],"state":"gated"},
+      {"kind":"arch","doorId":"RM-DOOR-HALL-CORRIDOR","point":[700,435],"state":"open"},
+      {"kind":"double_door","doorId":"RM-DOOR-HALL-EAST-WING","point":[350,200],"state":"future"},
+      {"kind":"stair","doorId":"RM-DOOR-HALL-UPPER-FLOOR","point":[350,170],"state":"future"}
+    ],"windows":[]},
+    {"roomId":"RM-ROOM-CORRIDOR","style":"residential","openings":[
+      {"kind":"arch","doorId":"RM-DOOR-HALL-CORRIDOR","point":[0,215],"state":"open"},
+      {"kind":"door","doorId":"RM-DOOR-CORRIDOR-BEDROOM","point":[250,215],"state":"gated"},
+      {"kind":"door","doorId":"RM-DOOR-CORRIDOR-BATHROOM","point":[250,550],"state":"gated"},
+      {"kind":"door","doorId":"RM-DOOR-CORRIDOR-KITCHEN","point":[125,930],"state":"gated"}
+    ],"windows":[[0,455],[0,720]]},
+    {"roomId":"RM-ROOM-BEDROOM","style":"residential","openings":[{"kind":"door","doorId":"RM-DOOR-CORRIDOR-BEDROOM","point":[0,165],"state":"gated"}],"windows":[[490,150]]},
+    {"roomId":"RM-ROOM-BATHROOM","style":"service","openings":[{"kind":"door","doorId":"RM-DOOR-CORRIDOR-BATHROOM","point":[0,130],"state":"gated"}],"windows":[]},
+    {"roomId":"RM-ROOM-KITCHEN","style":"service","openings":[
+      {"kind":"door","doorId":"RM-DOOR-CORRIDOR-KITCHEN","point":[125,0],"state":"gated"},
+      {"kind":"glass","doorId":"RM-DOOR-KITCHEN-CONSERVATORY","point":[380,420],"state":"gated"},
+      {"kind":"door","doorId":"RM-DOOR-KITCHEN-SERVICE","point":[740,160],"state":"future"}
+    ],"windows":[[740,310]]},
+    {"roomId":"RM-ROOM-ARCHIVE","style":"grand","openings":[{"kind":"double_door","doorId":"RM-DOOR-HALL-ARCHIVE","point":[420,210],"state":"gated"}],"windows":[[0,110],[160,0],[300,0]]},
+    {"roomId":"RM-ROOM-CONSERVATORY","style":"glass","openings":[
+      {"kind":"glass","doorId":"RM-DOOR-KITCHEN-CONSERVATORY","point":[380,0],"state":"gated"},
+      {"kind":"glass","doorId":"RM-DOOR-CONSERVATORY-GARDEN","point":[400,390],"state":"future"}
+    ],"windows":[],"glassSections":[[80,0],[180,0],[280,0],[480,0],[580,0],[680,0],[0,150],[740,150]]}
+  ],
+  "notes": "Door points are exact local projections of season1_world_map.json. Window and glass points are the approved production allocation, still subject to per-room screenshot review before collision or final art approval. Duplicate two-sided doors describe each room face and count as one physical threshold in totals."
+}

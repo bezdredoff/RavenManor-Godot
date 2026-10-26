@@ -1,5 +1,7 @@
 # RM-EDITOR-001 — Mobile Room Builder PWA (prototype)
 
+Grid-snapped walls and attached door/window/arch sockets are described in [ROOM_BUILDER_WALL_TOOL.md](ROOM_BUILDER_WALL_TOOL.md). Their Godot export remains visual draft metadata until a separate geometry review.
+
 **Owner intent (2026-10-25):** Sprite Fusion-style editor that works from Android phone/tablet, without mandatory right-click or keyboard. Deliver as a standalone PWA in `tools/room-builder/`, not as game runtime. Users place tilemap primitives or free-positioned props, attach metadata, export room layout, and optionally generate a draft Godot scene.
 
 ## Architecture

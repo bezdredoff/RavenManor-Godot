@@ -96,6 +96,10 @@ Characters are ordinary room objects. In the library, select the Персона�
 
 New Hall drafts seed seven pilot cutouts plus one movable Onoe (8 objects). Old Hall drafts with a virtual actor convert one time to a standard instance, preserving its location; deleting it will not recreate it on a later load. This editor-only character does not mutate canonical Godot navigation or campaign state. The visual-only Hall preview converter continues to transfer only the seven furniture cutouts, not character movement.
 
+## v0.6 — Walls and attached openings
+
+Use **Стена** to drag grid-snapped orthogonal runs in four shared first-act styles. Use **Проём** to attach ordinary/double doors, arches, windows, glass sections or a stair opening. Optional `RM-DOOR-*` values are validated and exported as draft metadata. Openings split the drawn wall; no gameplay collision or navigation is changed automatically. See `docs/ROOM_BUILDER_WALL_TOOL.md`.
+
 ## Room JSON → actual Godot game-projection scene
 
 For the newly supported Godot 65° visual importer, transfer the Room Builder JSON to your development computer and run `python3 scripts/raven/tools/import_room_builder_game.py /path/to/export.json`; it creates `scenes/raven/generated/RM_ROOM_*_GamePreview.tscn`, with real pilot and embedded textures and placeholders for unfinished items. Open the scene with F6 or entry 6 of Prototype Lab when generated. No character gameplay positions or canonical navigation are imported. Details: `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
