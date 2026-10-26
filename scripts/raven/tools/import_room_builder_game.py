@@ -96,7 +96,50 @@ def validate_room(project, reference):
             num(obj.get(key, 0 if key == "rotation" else None), f"object #{i} {key}")
         if not (0 < obj["w"] <= 8000 and 0 < obj["h"] <= 8000):
             raise ValueError("Invalid object width/height")
-    return world_rect, assets, layers, objects
+    walls, openings = project.get("walls", []), project.get("openings", [])
+    if not isinstance(walls, list) or not isinstance(openings, list) or len(walls) > 4000 or len(openings) > 2000:
+        raise ValueError("Invalid walls/openings arrays")
+    wall_ids = set()
+    for i, wall in enumerate(walls):
+        if not isinstance(wall, dict) or not isinstance(wall.get("id"), str) or wall["id"] in wall_ids:
+            raise ValueError(f"Invalid/duplicate wall #{i}")
+        coords = [num(wall.get(k), f"wall #{i} {k}") for k in ("ax", "ay", "bx", "by")]
+        thickness = num(wall.get("thickness"), f"wall #{i} thickness")
+        if wall.get("style") not in {"grand", "residential", "service", "glass"} or not 4 <= thickness <= 100:
+            raise ValueError(f"Invalid wall style/thickness #{i}")
+        if coords[0] == coords[2] and coords[1] == coords[3]:
+            raise ValueError("Wall must have a positive length")
+        if coords[0] != coords[2] and coords[1] != coords[3]:
+            raise ValueError("Walls must be orthogonal")
+        if not all(0 <= value <= (width if index % 2 == 0 else height) for index, value in enumerate(coords)):
+            raise ValueError("Wall lies outside room")
+        wall_ids.add(wall["id"])
+    opening_ids = set()
+    for i, opening in enumerate(openings):
+        if not isinstance(opening, dict) or not isinstance(opening.get("id"), str) or opening["id"] in opening_ids or opening.get("wallId") not in wall_ids:
+            raise ValueError(f"Invalid/duplicate opening #{i}")
+        if opening.get("kind") not in {"door", "double_door", "arch", "window", "glass", "stair"}:
+            raise ValueError("Invalid opening kind")
+        width_value, offset = num(opening.get("width"), "opening width"), num(opening.get("offset"), "opening offset")
+        wall = next(w for w in walls if w["id"] == opening["wallId"])
+        wall_length = math.hypot(wall["bx"]-wall["ax"], wall["by"]-wall["ay"])
+        if width_value < 16 or width_value > wall_length or not 0 <= offset <= 1:
+            raise ValueError("Invalid opening dimensions")
+        door_id = opening.get("doorId", "")
+        if door_id and not re.fullmatch(r"RM-DOOR-[A-Z0-9-]+", door_id):
+            raise ValueError("Invalid RM-DOOR ID")
+        opening_ids.add(opening["id"])
+    for wall in walls:
+        wall_length = math.hypot(wall["bx"]-wall["ax"], wall["by"]-wall["ay"])
+        intervals = []
+        for opening in (item for item in openings if item["wallId"] == wall["id"]):
+            half = min(float(opening["width"])/2, wall_length/2)
+            center = max(half, min(wall_length-half, float(opening["offset"])*wall_length))
+            intervals.append((center-half, center+half))
+        intervals.sort()
+        if any(current[0] < previous[1] for previous, current in zip(intervals, intervals[1:])):
+            raise ValueError("Openings on one wall overlap")
+    return world_rect, assets, layers, objects, walls, openings
 
 
 def piloted_hall_texture(obj, asset, contract):
@@ -122,7 +165,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
     """Write an isolated game-projected scene. Return (scene path, metrics)."""
     reference = reference or json.loads(WORLD_MAP.read_text(encoding="utf-8"))
     contract = contract or json.loads(HALL_CONTRACT.read_text(encoding="utf-8"))
-    world_rect, assets, layers, objects = validate_room(project, reference)
+    world_rect, assets, layers, objects, walls, openings = validate_room(project, reference)
     room_id = project["roomId"]
     w, h = float(world_rect[2]), float(world_rect[3])
     scene_dir = output_root / "scenes/raven/generated"
@@ -133,7 +176,8 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
     local_images = {}
     local_bytes = {}
     prepared = []
-    metrics = {"objects": len(objects), "rendered": 0, "pilot": 0, "embedded": 0,
+    metrics = {"objects": len(objects), "walls": len(walls), "openings": len(openings),
+               "rendered": 0, "pilot": 0, "embedded": 0,
                "placeholders": 0, "ignoredCharacters": 0}
     for obj in objects:
         asset = assets[obj["assetId"]]
@@ -209,6 +253,51 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
                   'color = Color(0.36, 0.32, 0.34, 1)',
                   f'polygon = PackedVector2Array(0, 0, {numeric_str(w)}, 0, {numeric_str(w)}, {numeric_str(h * FLOOR_RATIO)}, 0, {numeric_str(h * FLOOR_RATIO)})',
                   'z_index = -3000', ""])
+
+    if walls:
+        lines.extend(['[node name="DraftWalls" type="Node2D" parent="."]',
+                      'metadata/status = "DRAFT_VISUAL_ONLY_NO_PHYSICS"', ""])
+        style_colors = {"grand": "0.37, 0.27, 0.25", "residential": "0.42, 0.35, 0.33",
+                        "service": "0.35, 0.38, 0.39", "glass": "0.32, 0.44, 0.42"}
+        for i, wall in enumerate(walls):
+            ax, ay, bx, by = (float(wall[k]) for k in ("ax", "ay", "bx", "by"))
+            length = math.hypot(bx-ax, by-ay)
+            intervals = []
+            for opening in (o for o in openings if o["wallId"] == wall["id"]):
+                half = min(float(opening["width"])/2, length/2)
+                center = max(half, min(length-half, float(opening["offset"])*length))
+                intervals.append((center-half, center+half))
+            intervals.sort()
+            runs, cursor = [], 0.0
+            for start, end in intervals:
+                if start > cursor:
+                    runs.append((cursor, start))
+                cursor = max(cursor, end)
+            if cursor < length:
+                runs.append((cursor, length))
+            dx, dy = (bx-ax)/length, (by-ay)/length
+            for run_index, (start, end) in enumerate(runs):
+                sx, sy, ex, ey = ax+dx*start, ay+dy*start, ax+dx*end, ay+dy*end
+                lines.extend([f'[node name={q("Wall_" + safe(wall["id"]) + "_" + str(i) + "_" + str(run_index))} type="Line2D" parent="DraftWalls"]',
+                              f'points = PackedVector2Array({numeric_str(sx)}, {numeric_str(sy * FLOOR_RATIO)}, {numeric_str(ex)}, {numeric_str(ey * FLOOR_RATIO)})',
+                              f'width = {numeric_str(wall["thickness"])}',
+                              f'default_color = Color({style_colors[wall["style"]]}, 1)',
+                              f'metadata/builder_wall_id = {q(wall["id"])}',
+                              f'metadata/wall_style = {q(wall["style"])}',
+                              'metadata/physics_authority = "NONE_DRAFT_ONLY"', ""])
+        for i, opening in enumerate(openings):
+            wall = next(w for w in walls if w["id"] == opening["wallId"])
+            ox = float(wall["ax"]) + (float(wall["bx"])-float(wall["ax"])) * float(opening["offset"])
+            oy = float(wall["ay"]) + (float(wall["by"])-float(wall["ay"])) * float(opening["offset"])
+            lines.extend([f'[node name={q("Opening_" + safe(opening["id"]) + "_" + str(i))} type="Marker2D" parent="DraftWalls"]',
+                          f'position = {vec(ox, oy * FLOOR_RATIO)}',
+                          f'metadata/builder_opening_id = {q(opening["id"])}',
+                          f'metadata/wall_id = {q(opening["wallId"])}',
+                          f'metadata/opening_kind = {q(opening["kind"])}',
+                          f'metadata/opening_width = {numeric_str(opening["width"])}',
+                          f'metadata/door_id = {q(opening.get("doorId", ""))}',
+                          f'metadata/foreground_occluder_requested = {str(bool(opening.get("foreground", True))).lower()}',
+                          'metadata/approval = "DRAFT_ONLY"', ""])
 
     if room_id == "RM-ROOM-HALL" and hall_bg.is_file():
         bg = resource_path(hall_bg)

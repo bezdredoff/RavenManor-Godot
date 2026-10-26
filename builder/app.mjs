@@ -3,15 +3,17 @@ import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoo
 import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
+import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,wallLength} from './wall-tools.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
+let wallDraft=null;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
 let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null;
 const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
 function notify(message){$('#notice').textContent=message;}
-function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
+function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.walls?.length||0} стен • ${project.openings?.length||0} проёмов`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
 function checkpoint(){past.push(JSON.stringify(project));if(past.length>60)past.shift();future=[];historyButtons();}
 function historyButtons(){$('#undo').disabled=!past.length;$('#redo').disabled=!future.length;}
 function undo(){if(!past.length)return;future.push(JSON.stringify(project));project=validateProject(JSON.parse(past.pop()));selected=null;refresh();changed();historyButtons();}
@@ -228,6 +230,26 @@ function drawDoorGuides(c,reference){
  }
  c.restore();
 }
+function drawWalls(c,exporting=false){
+ const walls=project.walls||[],openings=project.openings||[];
+ c.save();c.lineCap='square';c.lineJoin='miter';
+ for(const wall of walls){
+  const style=WALL_STYLES[wall.style]||WALL_STYLES.grand,length=wallLength(wall),dx=(wall.bx-wall.ax)/length,dy=(wall.by-wall.ay)/length;
+  const runs=solidWallRuns(wall,openings);
+  for(const [color,width] of [[style.color,wall.thickness],[style.trim,Math.max(2,wall.thickness*.14)]]){
+   c.strokeStyle=color;c.lineWidth=width;
+   for(const [start,end] of runs){c.beginPath();c.moveTo(wall.ax+dx*start,wall.ay+dy*start);c.lineTo(wall.ax+dx*end,wall.ay+dy*end);c.stroke();}
+  }
+ }
+ for(const opening of openings){
+  const wall=walls.find(w=>w.id===opening.wallId);if(!wall)continue;
+  const kind=OPENING_KINDS[opening.kind],x=wall.ax+(wall.bx-wall.ax)*opening.offset,y=wall.ay+(wall.by-wall.ay)*opening.offset;
+  c.fillStyle=kind.color;c.strokeStyle='#201a21';c.lineWidth=2;c.beginPath();c.arc(x,y,Math.max(5,Math.min(12,opening.width*.12)),0,Math.PI*2);c.fill();c.stroke();
+  if(!exporting&&opening.doorId){c.fillStyle='#f2e5d1';c.font='10px sans-serif';c.fillText(opening.doorId,x+8,y-8);}
+ }
+ if(wallDraft){const wall=normalizeWall(wallDraft.start,wallDraft.end,project.grid);if(wall){c.strokeStyle='#79d9bd';c.lineWidth=6;c.setLineDash([10,6]);c.beginPath();c.moveTo(wall.ax,wall.ay);c.lineTo(wall.bx,wall.by);c.stroke();c.setLineDash([]);}}
+ c.restore();
+}
 function updateProjectionStatus(){
  const r=referenceForCurrentRoom();
  $('#canvasStatus').textContent=viewMode==='game'?'Игровой вид Godot · 65° · пол ×'+FLOOR_DEPTH_RATIO.toFixed(3):'Технический план · XY';
@@ -248,6 +270,7 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  const ref=referenceForCurrentRoom();if(viewMode==='game'&&ref?.aligned&&project.roomId==='RM-ROOM-HALL'){const bg=ensureHallReferenceImage();if(bg.complete&&bg.naturalWidth)c.drawImage(bg,0,0,project.width,project.height);}
  c.strokeStyle='#4d3f46';c.lineWidth=16;c.strokeRect(7,7,project.width-14,project.height-14);
  if(showGrid&&!exporting){c.strokeStyle='#69645c33';c.lineWidth=1/viewport.scale;c.beginPath();for(let x=0;x<=project.width;x+=project.grid){c.moveTo(x,0);c.lineTo(x,project.height);}for(let y=0;y<=project.height;y+=project.grid){c.moveTo(0,y);c.lineTo(project.width,y);}c.stroke();}
+ drawWalls(c,exporting);
  const contract=viewMode==='game'?activeContract():null;
  const records=contract?visualInstances(project,contract):[];
  const renderIDs=new Set([...records.map(x=>x.object.id),...(viewMode==='game'?characterObjects().map(o=>o.id):[])]);
@@ -271,18 +294,32 @@ function fit(){view=fitProjectedRoom(project.width,project.height,canvas.clientW
 function toLocal(ev){const r=canvas.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};}
 function world(pos){return toWorld(pos,view,viewMode);}
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
-function changeTool(next){tool=next;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));notify(next==='stamp'?'Коснись комнаты, чтобы поставить выбранный предмет':next==='pan'?'Перетаскивай холст':'Готово');}
+function changeTool(next){tool=next;wallDraft=null;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));const messages={stamp:'Коснись комнаты, чтобы поставить выбранный предмет',wall:'Проведи стену от точки до точки',opening:'Коснись стены, чтобы поставить выбранный проём',pan:'Перетаскивай холст'};notify(messages[next]||'Готово');draw();}
 function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
  if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){if(asset?.kind==='character'){o.x=w.x-o.w/2;o.y=w.y-o.h;}selected=o.id;changed();}}
- else if(tool==='erase'){const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}}
+ else if(tool==='opening'){
+  const nearest=nearestWall(project.walls||[],w,Math.max(30,project.grid));if(!nearest){notify('Рядом нет стены');return;}
+  const kind=$('#openingKind').value,definition=OPENING_KINDS[kind],doorId=$('#openingDoorId').value.trim();
+  if(doorId&&!/^RM-DOOR-[A-Z0-9-]+$/.test(doorId)){notify('RM-DOOR ID имеет неверный формат');return;}
+  const length=wallLength(nearest.wall),width=Math.min(definition.defaultWidth,length),offset=length?Math.max(width/2/length,Math.min(1-width/2/length,nearest.t)):0.5;
+  if((project.openings||[]).some(o=>o.wallId===nearest.wall.id&&Math.abs(o.offset-offset)*length<(o.width+width)/2)){notify('Проёмы на этой стене пересекаются');return;}
+  project.openings.push({id:uid('opening'),wallId:nearest.wall.id,kind,width,offset,doorId,state:kind.includes('door')?'closed':'open',foreground:true});changed();
+ }else if(tool==='erase'){
+  const nearest=nearestWall(project.walls||[],w,Math.max(24,project.grid*.7));
+  if(nearest){const opening=(project.openings||[]).find(o=>o.wallId===nearest.wall.id&&Math.abs(o.offset-nearest.t)*wallLength(nearest.wall)<=Math.max(18,o.width/2));if(opening){project.openings=project.openings.filter(o=>o.id!==opening.id);changed();return;}}
+  const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}
+  else if(nearest){project.walls=project.walls.filter(wall=>wall.id!==nearest.wall.id);project.openings=project.openings.filter(opening=>opening.wallId!==nearest.wall.id);changed();}
+ }
 }
 function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.preventDefault();canvas.setPointerCapture(ev.pointerId);const pos=toLocal(ev);pointers.set(ev.pointerId,pos);if(pointers.size>=2){gesture={mode:'pinch',start:[...pointers.values()]};return;}
  if(tool==='pan'){gesture={mode:'pan',pos};return;}
+ if(tool==='wall'){checkpoint();const start=world(pos);wallDraft={start,end:start};gesture={mode:'wall'};draw();return;}
  if(tool==='stamp'||tool==='erase'){checkpoint();paint(pos);gesture={mode:'paint',last:pos};return;}
+ if(tool==='opening'){checkpoint();paint(pos);gesture=null;return;}
  const w=world(pos),o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y); selected=o?.id||null;renderProperties();draw();if(o){gesture={mode:'drag',pos,startX:o.x,startY:o.y,id:o.id,moved:false};}else gesture=null;}
 function pointerMove(ev){if(!pointers.has(ev.pointerId))return;ev.preventDefault();const pos=toLocal(ev),old=pointers.get(ev.pointerId);pointers.set(ev.pointerId,pos);if(pointers.size>=2){const vals=[...pointers.values()];const oldVals=vals.map(p=>p===pos?old:p);const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const before=dist(oldVals[0],oldVals[1]),after=dist(vals[0],vals[1]);const prevMid={x:(oldVals[0].x+oldVals[1].x)/2,y:(oldVals[0].y+oldVals[1].y)/2};const nextMid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2};if(before>0)zoomAt(prevMid.x,prevMid.y,after/before);view.x+=nextMid.x-prevMid.x;view.y+=nextMid.y-prevMid.y;draw();return;}
- if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const offset=worldDragDelta(pos.x-gesture.pos.x,pos.y-gesture.pos.y,view.scale,viewMode),deltaX=offset.x,deltaY=offset.y;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
-function pointerUp(ev){if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};}
+ if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='wall'){wallDraft.end=world(pos);draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const offset=worldDragDelta(pos.x-gesture.pos.x,pos.y-gesture.pos.y,view.scale,viewMode),deltaX=offset.x,deltaY=offset.y;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
+function pointerUp(ev){if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);if(gesture?.mode==='wall'&&wallDraft){const geometry=normalizeWall(wallDraft.start,wallDraft.end,project.grid);if(geometry){project.walls.push({id:uid('wall'),...geometry,style:$('#wallStyle').value,thickness:18,layerId:'architecture'});changed();}wallDraft=null;}if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};draw();}
 function updateCatalogProgress(){const items=productionCatalog?.items.filter(i=>i.roomId===project.roomId)||[];const present=new Set(project.objects.map(o=>o.assetRefId).filter(Boolean));const count=items.filter(i=>present.has(i.id)).length;$('#roomProgress').textContent=productionCatalog?`На плане: ${count} из ${items.length} позиций · осталось ${items.length-count}`:'Загрузка списка предметов…';}
 function renderPalette(){
  const term=$('#search').value.toLocaleLowerCase().trim();
@@ -357,7 +394,7 @@ function makeAssetReferenceField(o,a){
 function renderProperties(){const el=$('#properties'),o=project.objects.find(o=>o.id===selected);el.replaceChildren();if(!o){el.textContent='Коснись предмета на холсте';el.classList.add('muted');return;}el.classList.remove('muted');const a=assetFor(o);const head=document.createElement('strong');head.textContent=a?.label||o.assetId;el.append(head);if(a?.assetRefId){const details=document.createElement('p');details.className='catalog-detail';details.textContent=`${a.assetRefId} · ${a.productionPriority} · ${a.artStatus}; размеры, точка опоры и кликабельная зона пока не измерены. ${a.rightsStatus==='requires-review'?'Права на исходник требуют проверки.':''}`;el.append(details);if(a.pilotImages?.length){const link=document.createElement('a');link.className='catalog-source-link';link.href='https://github.com/bezdredoff/RavenManor-Godot/blob/main/'+a.pilotImages[0].split('/').map(encodeURIComponent).join('/');link.target='_blank';link.rel='noopener noreferrer';link.textContent='Открыть исходный экспериментальный PNG';el.append(link);}}
  el.append(makeField('X',o.x,v=>o.x=v,'number'),makeField('Y',o.y,v=>o.y=v,'number'),makeField('Ширина',o.w,v=>o.w=Math.max(1,v),'number'),makeField('Высота',o.h,v=>o.h=Math.max(1,v),'number'),makeField('Поворот (°)',o.rotation,v=>o.rotation=v,'number'),makeStateField(o,a),makeAssetReferenceField(o,a),makeField('Hotspot ID',o.hotspotId||'',v=>o.hotspotId=v));
  const wrapper=document.createElement('div');wrapper.className='field';wrapper.textContent='Слой';const select=document.createElement('select');for(const l of project.layers){const opt=document.createElement('option');opt.value=l.id;opt.textContent=l.name;select.append(opt);}select.value=o.layerId;select.onchange=()=>{checkpoint();o.layerId=select.value;changed();renderLayers();};wrapper.append(select);el.append(wrapper);const row=document.createElement('div');row.className='action-row';for(const [name,action] of [['Дублировать',()=>{checkpoint();const copy=clone(o);copy.id=uid();copy.x+=20;copy.y+=20;project.objects.push(copy);selected=copy.id;changed();renderProperties();}],['Удалить',()=>{checkpoint();project.objects=project.objects.filter(p=>p.id!==o.id);selected=null;changed();renderProperties();}]]){const b=document.createElement('button');b.textContent=name;b.onclick=action;row.append(b);}el.append(row);}
-function renderSettings(){$('#populateHall').disabled=!canPopulateHall(project,visualContract);$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.layers.length} слоёв`;}
+function renderSettings(){$('#populateHall').disabled=!canPopulateHall(project,visualContract);$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.walls?.length||0} стен • ${project.openings?.length||0} проёмов`;}
 function refresh(){imageCache.clear();renderSettings();renderPalette();renderLayers();renderProperties();draw();}
 function togglePanel(id){for(const p of [$('#palette'),$('#inspector')])p.classList.toggle('open',p.id===id);}
 function toggleSidebar(side){
@@ -419,4 +456,6 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
 async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
-start();
+window.addEventListener('error',event=>{console.error(event.error||event.message);notify('Ошибка интерфейса: '+(event.error?.message||event.message));});
+window.addEventListener('unhandledrejection',event=>{console.error(event.reason);notify('Ошибка загрузки: '+(event.reason?.message||event.reason));});
+start().catch(error=>{console.error(error);notify('Ошибка запуска: '+error.message);});

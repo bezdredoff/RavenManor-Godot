@@ -110,5 +110,32 @@ class GamePreviewImportTests(unittest.TestCase):
             self.assertIn('RM-DOOR-HALL-CORRIDOR',text)
             self.assertIn('RM-DOOR-ENTRY-HALL',text)
 
+    def test_wall_and_opening_export_is_visual_only_and_keeps_door_identity(self):
+        altered=deepcopy(FIXTURE)
+        altered["walls"]=[{"id":"wall-north","ax":0,"ay":0,"bx":700,"by":0,"style":"grand","thickness":18}]
+        altered["openings"]=[{"id":"entry-slot","wallId":"wall-north","kind":"double_door","width":100,"offset":0.5,
+                              "doorId":"RM-DOOR-ENTRY-HALL","foreground":True}]
+        with tempfile.TemporaryDirectory() as temp:
+            path,counts=scene_from_project(altered,Path(temp))
+            text=path.read_text(encoding="utf-8")
+            self.assertEqual((counts["walls"],counts["openings"]),(1,1))
+            self.assertIn('name="DraftWalls" type="Node2D"',text)
+            self.assertIn('metadata/door_id = "RM-DOOR-ENTRY-HALL"',text)
+            self.assertIn('metadata/foreground_occluder_requested = true',text)
+            self.assertIn('metadata/physics_authority = "NONE_DRAFT_ONLY"',text)
+            self.assertNotIn('StaticBody2D',text)
+            # One opening splits a straight wall into two visible runs.
+            self.assertEqual(text.count('metadata/builder_wall_id = "wall-north"'),2)
+
+    def test_overlapping_openings_are_rejected(self):
+        altered=deepcopy(FIXTURE)
+        altered["walls"]=[{"id":"wall","ax":0,"ay":0,"bx":300,"by":0,"style":"grand","thickness":18}]
+        altered["openings"]=[
+            {"id":"a","wallId":"wall","kind":"door","width":100,"offset":0.4},
+            {"id":"b","wallId":"wall","kind":"window","width":100,"offset":0.5},
+        ]
+        with self.assertRaisesRegex(ValueError,"overlap"):
+            validate_room(altered,WORLD)
+
 if __name__=="__main__":
     unittest.main()

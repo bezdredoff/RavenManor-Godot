@@ -19,6 +19,8 @@
 
 #populateHall{width:100%;margin:8px 0 4px;background:#394b4a;border-color:#6a9b8e}#populateHall:disabled{opacity:.5;cursor:not-allowed}.asset-preview img{object-fit:contain;max-width:100%;max-height:100%}
 
+.wall-settings{background:#242830;border:1px solid #52615f;border-radius:10px;padding:12px;margin-bottom:10px}.wall-settings .section-heading{color:#9ed4c4}.wall-settings input::placeholder{color:#817883}.tools{overflow-x:auto;scrollbar-width:thin}.tools button{flex:none}
+
 /* Independent collapsible panel rails preserve the center editing surface. */
 .workspace.palette-collapsed{--left-side:42px}
 .workspace.inspector-collapsed{--right-side:42px}
@@ -37,4 +39,5 @@
  .side.collapsed .panel-header{justify-content:space-between}
  .side.collapsed .panel-collapse{width:auto}
  .panel-collapse{min-width:42px;min-height:42px}
+ .stagebar{overflow:hidden}.tools{max-width:58vw}.tools button{min-width:41px}.tools button span{display:none}
 }
