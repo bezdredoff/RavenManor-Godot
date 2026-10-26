@@ -1,5 +1,14 @@
 # Room Builder → Godot: real game-view scene importer
 
+## Готовая сцена из исходной расстановки
+
+**Не нужно скачивать JSON или запускать конвертер для первого просмотра.** В репозитории уже сохранена настоящая сгенерированная сцена `scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn`, собранная из `examples/room_builder_hall_original.json`. После `git pull` открой эту `.tscn` напрямую в Godot или запусти **Prototype Lab → 6 · Room Builder → Godot**. В веб-сборке Prototype Lab этот же пример доступен в пункте 6.
+
+Сцена проверена автоматическим импортом движка; GitHub Actions заново генерирует `.tscn` из исходного JSON и сравнивает содержимое байт-в-байт с зафиксированным файлом. Это гарантирует, что готовый пример не оторвался от расположения в редакторе.
+
+Внутри узла сцены `ReferenceGeometry` есть шесть исходных прямоугольников игровых препятствий (включая оба марша лестницы). По умолчанию они скрыты; включи видимость этого узла в инспекторе Godot для сравнения. Это **ориентиры**, не коллизии. Дверные точки импортированы как `Marker2D`.
+
+
 Status: **working isolated visual importer**, not approved live-game scene. The old importer made flat top-down schematic scenes; the new one correctly preserves the 65° perspective and source artwork as a standalone `.tscn`.
 
 ## From tablet to Godot
