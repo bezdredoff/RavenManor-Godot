@@ -49,3 +49,7 @@ The original provisional composition was recreated from the actual current Godot
 Godot renders the original pilot background and all seven existing cutouts in a dedicated review scene. The six physics/architecture rectangles are available as **ReferenceGeometry** in the scene tree, hidden by default; toggle visibility to inspect where the old gameplay map would treat furniture or stairs as obstacles. They are *not* live collision shapes. Opening this example does not alter `Whole Manor Map` or campaign state.
 
 To load the same original arrangement **back into Builder**, use **Импорт JSON** and choose `examples/room_builder_hall_original.json` from the repo. Do not import without saving your current tablet draft first. To regenerate both source JSON outputs after a map change, run `python3 scripts/raven/tools/build_original_hall_layout.py` and then `python3 scripts/raven/tools/import_room_builder_game.py examples/room_builder_hall_original.json`. CI asserts JSON/source parity and successfully loads the scene in Godot.
+
+## Integration into active Whole Manor Map
+
+The active map now has a **Вид: Импорт** mode that reads the generated Hall .tscn as a visual source, validates five doors and six physical reference rectangles, and renders it without double furniture. The old AI1 mode remains independently available; imported characters and game navigation are never attached. See `docs/HALL_LIVE_IMPORT_PARITY.md`.

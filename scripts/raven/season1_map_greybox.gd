@@ -3,6 +3,8 @@ extends Control
 ## Onoe assets are owner-created test placeholders, not Evelyn.
 const DATA = preload("res://data/raven/season1_world_map.json")
 const HALL_VISUALS = preload("res://data/raven/hall_visual_contract.json")
+const HALL_IMPORT_BRIDGE = preload("res://scripts/raven/hall_import_bridge.gd")
+const IMPORTED_HALL = preload("res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn")
 const HALL_PREVIEW_FILE := "res://data/raven/hall_builder_preview.json"
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
@@ -44,8 +46,8 @@ var zoom := DEFAULT_HUB_ZOOM
 var camera_elevation := DEFAULT_CAMERA_ELEVATION
 var floor_depth_ratio := sin(deg_to_rad(float(DEFAULT_CAMERA_ELEVATION)))
 var art_enabled := true
-# 0: original SVG, 1: generated twin staircase, 2: generated crimson version, 3: bounds-only greybox
-var art_variant := 1
+# 0: original SVG, 1: generated twin staircase, 2: generated crimson version, 3: bounds-only greybox, 4: actual imported Builder .tscn
+var art_variant := 4
 var debug_art_bounds := false
 var dragging := false
 var drag_distance := 0.0
@@ -57,6 +59,8 @@ var explore_all := true
 var follow_actor := false
 var grid := AStarGrid2D.new()
 var hall_visual_sprites: Array = []
+var imported_hall: Dictionary = {}
+var imported_map_refs: Dictionary = {}
 var foreground_overlay: Control
 var actor_sprite: AnimatedSprite2D
 var snapshot: Dictionary
@@ -88,6 +92,7 @@ func _ready() -> void:
 	doors = DATA.data.doors
 	props = DATA.data.props
 	_load_hall_visuals()
+	_load_imported_hall()
 	snapshot = Store.new().load_campaign()
 	_make_ui()
 	_make_onoe()
@@ -100,6 +105,8 @@ func _ready() -> void:
 	foreground_overlay.draw.connect(_draw_foreground_overlay)
 	_rebuild_navigation()
 	_update_actor_screen()
+	if art_variant == 1 and not bool(imported_hall.get("ready", false)):
+		status_label.text = "Импорт отключён: " + str(imported_hall.get("reason", ""))
 	queue_redraw()
 
 func _make_ui() -> void:
@@ -157,7 +164,7 @@ func _make_ui() -> void:
 	add_child(debug_panel)
 	toggle_button = _button("ТЕСТ: ВСЕ ПРОХОДЫ", Vector2.ZERO, Vector2(150, 36), _toggle_explore, debug_panel)
 	camera_button = _button("Камера: 65°", Vector2.ZERO, Vector2(110, 36), _cycle_camera, debug_panel)
-	art_button = _button("Вид: AI1", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
+	art_button = _button("Вид: Импорт", Vector2.ZERO, Vector2(88, 36), _toggle_art, debug_panel)
 	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
 	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
 	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
@@ -371,7 +378,10 @@ func _cycle_camera() -> void:
 
 
 func _toggle_art() -> void:
-	art_variant = (art_variant + 1) % 4
+	# Start on the actual imported Hall scene. AI1 is retained for A/B checks,
+	# never drawn in the same pass as the imported furniture.
+	var cycle := [4, 1, 2, 3, 0]
+	art_variant = cycle[(cycle.find(art_variant) + 1) % cycle.size()]
 	art_enabled = art_variant != 3
 	match art_variant:
 		0:
@@ -379,14 +389,18 @@ func _toggle_art() -> void:
 			status_label.text = "Проверочный SVG: геометрия и старые пропорции"
 		1:
 			art_button.text = "Вид: AI1"
-			status_label.text = "AI-пробник 1: неточное совпадение дверей и стен"
+			status_label.text = "AI-пробник 1: сравнение с импортом"
 		2:
 			art_button.text = "Вид: AI2"
 			status_label.text = "AI-пробник 2: ковёр уже встроен в картинку"
 		3:
 			art_button.text = "Вид: ПЛАН"
 			status_label.text = "Габаритный greybox без текстур"
+		4:
+			art_button.text = "Вид: Импорт"
+			status_label.text = "Подключён визуальный слой Room Builder · навигация и коллизии прежние"
 	queue_redraw()
+	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
 
 
 func _toggle_bounds() -> void:
@@ -609,6 +623,74 @@ func _select_at(p: Vector2) -> void:
 
 
 
+
+func _load_imported_hall() -> void:
+	# Integrate *the generated .tscn*, not a parallel JSON or a second redraw
+	# of the old pilot items. Reject stale door/collider geometry.
+	imported_hall = HALL_IMPORT_BRIDGE.load_render_data(IMPORTED_HALL, DATA.data)
+	imported_map_refs.clear()
+	for source in HALL_VISUALS.data.sprites:
+		imported_map_refs[str(source.assetRefId)] = str(source.mapPropId)
+	if not bool(imported_hall.get("ready", false)):
+		art_variant = 1
+		push_warning("Imported Hall disabled: " + str(imported_hall.get("reason", "unknown")))
+		return
+	assert(imported_hall.door_count == 5)
+	assert(imported_hall.footprint_count == 6)
+
+func _import_mode() -> bool:
+	return art_enabled and art_variant == 4 and bool(imported_hall.get("ready", false))
+
+func _imported_managed(map_prop_id: String) -> bool:
+	if not _import_mode() or map_prop_id.is_empty(): return false
+	for record in imported_hall.get("items", []):
+		if str(imported_map_refs.get(str(record.asset_ref_id), "")) == map_prop_id:
+			return true
+	return false
+
+func _draw_imported_floor() -> void:
+	if not _import_mode(): return
+	var stage: Rect2 = imported_hall.world_rect
+	draw_texture_rect(imported_hall.background, stage, false)
+	for record in imported_hall.items:
+		if str(record.mode) != "floor": continue
+		if record.texture != null:
+			draw_texture_rect(record.texture, record.rect, false)
+		else:
+			draw_rect(record.rect, Color(0.55, 0.25, 0.4, 0.55))
+
+func _draw_imported_upright(front: bool, target: CanvasItem) -> void:
+	if not _import_mode(): return
+	for record in imported_hall.items:
+		if str(record.mode) != "upright": continue
+		var box: Rect2 = record.rect
+		var foot_y: float = float(record.foot_y)
+		if (foot_y > actor_pos.y) != front: continue
+		var pivot := _screen_from_world(Vector2(box.position.x + box.size.x * 0.5, foot_y))
+		var destination := Rect2(
+			pivot - Vector2(box.size.x * zoom * 0.5, box.size.y * zoom),
+			box.size * zoom)
+		if record.texture != null:
+			target.draw_texture_rect(record.texture, destination, false)
+		else:
+			target.draw_rect(destination, Color(0.62, 0.34, 0.43, 0.88))
+
+func _hall_draw_source_counts() -> Dictionary:
+	# Regression diagnostic: each imported sprite belongs to a single render
+	# layer, and none can appear in the legacy AI1 pass.
+	var counts := {"imported_floor": 0, "imported_upright": 0,
+		"legacy_upright": 0, "legacy_props_suppressed": 0}
+	for record in imported_hall.get("items", []):
+		if str(record.mode) == "floor": counts.imported_floor += 1
+		else: counts.imported_upright += 1
+	if _import_mode():
+		for item in props:
+			if int(item.room) == 1:
+				counts.legacy_props_suppressed += 1
+	if _import_mode(): counts.legacy_upright = 0
+	else: counts.legacy_upright = hall_visual_sprites.size() - 1
+	return counts
+
 func _load_hall_visuals() -> void:
 	# An explicitly imported Builder JSON may override preview artwork only.
 	# The existing pathfinding collider map and campaign saves never read it.
@@ -675,10 +757,11 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 		target.draw_texture_rect(texture, dest, false)
 
 func _draw_foreground_overlay() -> void:
-	_draw_hall_upright_visuals(true, foreground_overlay)
+	if _import_mode(): _draw_imported_upright(true, foreground_overlay)
+	else: _draw_hall_upright_visuals(true, foreground_overlay)
 
 func _pilot_texture(asset_id: String) -> Texture2D:
-	if art_variant == 1 or art_variant == 2:
+	if art_variant in [1, 2, 4]:
 		match asset_id:
 			"RM-ASSET-HALL-CLOCK": return AI_CLOCK
 			"RM-ASSET-HALL-CONSOLE": return AI_CONSOLE
@@ -711,7 +794,9 @@ func _draw() -> void:
 		var r := _room_rect(room)
 		draw_rect(r, Color(str(room.color)))
 		if art_enabled and str(room.id) == "RM-ROOM-HALL":
-			if art_variant == 0:
+			if art_variant == 4 and _import_mode():
+				_draw_imported_floor()
+			elif art_variant == 0:
 				draw_texture_rect(HALL_SHELL, r, false)
 				draw_texture_rect(HALL_RUG, Rect2(785, 435, 130, 396), false)
 			elif art_variant == 1:
@@ -748,7 +833,11 @@ func _draw() -> void:
 		# All individual pilot sprites are rendered by _draw_hall_upright_visuals()
 		# around the upright character, using bottom-centre foot sorting.
 		# Keep existing collision rectangles and interaction selection unchanged.
-		if art_enabled and (art_variant == 1 or art_variant == 2) and _visual_managed(str(item.id)):
+		if _import_mode() and int(item.room) == 1:
+			# All Hall props in the imported mode are authored in the generated
+			# scene/background: do not render their old prototype rectangles.
+			if restored: draw_rect(r, Color(0.22, 0.7, 0.49, 0.17))
+		elif art_enabled and (art_variant == 1 or art_variant == 2) and _visual_managed(str(item.id)):
 			if restored:
 				draw_rect(r, Color(0.22, 0.7, 0.49, 0.17))
 		elif texture != null:
@@ -770,7 +859,8 @@ func _draw() -> void:
 			last = waypoint
 	draw_circle(actor_pos, 16, Color(0.2, 0.15, 0.22, 0.48))
 	draw_set_transform(Vector2.ZERO)
-	_draw_hall_upright_visuals(false, self)
+	if _import_mode(): _draw_imported_upright(false, self)
+	else: _draw_hall_upright_visuals(false, self)
 	if show_safe_viewport:
 		var safe := _safe_viewport_rect(size)
 		draw_rect(safe, Color("8dd3af"), false, 2.0)

@@ -65,3 +65,7 @@ The current 65° Godot floor transform now powers Room Builder's default editabl
 ## RM-PIPE-002: actual Builder-to-Godot scene importer
 
 The new `import_room_builder_game.py` generates a separately runnable Godot scene that matches the Builder's 65° floor projection and supported PNG sprites; imported user art is extracted and genuine but unapproved states remain visibly marked. It validates the proposed world room bounds; no test actor placement, navigation graph or physical collision is transferred. The sample export is now exercised in Godot CI and reviewable in Prototype Lab entry 6. Next milestone is approving a real tablet-exported Hall and bringing its accepted render layer into the live map. See `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
+
+## Next gate after live import (RM-PIPE-003)
+
+Generated Builder Hall .tscn is displayed directly in the live Whole Manor Map, with fail-closed geometry validation, preserved AI1 comparison and unchanged gameplay obstacles. Before changing physical geometry, calibrate five real door pixel openings, both stair marches, occlusion masks and prop pivots against game screenshots. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
