@@ -229,5 +229,11 @@ class WallKitGeometryTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             self.kit.stair_rail(180.0, steps=4, rise=15.0, run=24.0, side=0)
 
+    def test_stairs_to_height_reach_the_wall_top(self):
+        flight = self.kit.stairs_to_height(180.0, self.kit.HEIGHT, rise=15.0, run=24.0)
+        self.assertGreaterEqual(flight[-1][5], self.kit.HEIGHT)
+        self.assertEqual(len(flight), 14)
+        with self.assertRaises(ValueError):
+            self.kit.stairs_to_height(180.0, 0.0)
 if __name__ == "__main__":
     unittest.main()
