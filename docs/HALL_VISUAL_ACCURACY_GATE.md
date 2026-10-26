@@ -41,6 +41,8 @@ Before either tool activates, a runtime validity gate verifies the calibration f
 
 **Delivered and checked:** numerical source parity, real Godot render evidence for three portrait sizes, quantified discrepancy of painted side arches, reversible test navigation, interactive visualization of stair and door mismatches, actor foot-depth front/back tests.
 
+The follow-up wall authoring pass is documented in [HALL_WALL_PARITY.md](HALL_WALL_PARITY.md). It supplies five distinct Builder opening records, exact twin-stair bounds and schematic foreground rail ordering while deliberately leaving final art and collision approval open.
+
 **Intentionally deferred:** repainting the 1254×1254 source background, generating true transparent balustrade/doorframe foreground mattes, approving individual physics footprints, creating clean/damaged sprites or modifying story/interaction state. The side arches' vertical painted displacement exceeds 200 world units; hiding it with a 2D offset or moving canonical door markers would be inaccurate. New geometry-conditioned art and explicit sign-off are prerequisites for these corrections.
 
 ### Final acceptance gate

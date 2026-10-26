@@ -252,6 +252,192 @@
       "kind": "safe"
     }
   ],
+  "walls": [
+    {
+      "id": "hall-north",
+      "ax": 0,
+      "ay": 0,
+      "bx": 700,
+      "by": 0,
+      "style": "grand",
+      "thickness": 18,
+      "role": "perimeter"
+    },
+    {
+      "id": "hall-west",
+      "ax": 0,
+      "ay": 0,
+      "bx": 0,
+      "by": 690,
+      "style": "grand",
+      "thickness": 18,
+      "role": "perimeter"
+    },
+    {
+      "id": "hall-east",
+      "ax": 700,
+      "ay": 0,
+      "bx": 700,
+      "by": 690,
+      "style": "grand",
+      "thickness": 18,
+      "role": "perimeter"
+    },
+    {
+      "id": "hall-south",
+      "ax": 0,
+      "ay": 690,
+      "bx": 700,
+      "by": 690,
+      "style": "grand",
+      "thickness": 18,
+      "role": "perimeter"
+    },
+    {
+      "id": "hall-east-wing-intent",
+      "ax": 280,
+      "ay": 200,
+      "bx": 420,
+      "by": 200,
+      "style": "grand",
+      "thickness": 14,
+      "role": "interior-portal-intent"
+    },
+    {
+      "id": "hall-upper-landing-intent",
+      "ax": 260,
+      "ay": 170,
+      "bx": 440,
+      "by": 170,
+      "style": "grand",
+      "thickness": 12,
+      "role": "stair-landing-intent"
+    },
+    {
+      "id": "hall-stair-left-outer",
+      "ax": 140,
+      "ay": 40,
+      "bx": 140,
+      "by": 235,
+      "style": "grand",
+      "thickness": 10,
+      "role": "balustrade-review"
+    },
+    {
+      "id": "hall-stair-left-inner",
+      "ax": 255,
+      "ay": 40,
+      "bx": 255,
+      "by": 235,
+      "style": "grand",
+      "thickness": 10,
+      "role": "balustrade-review"
+    },
+    {
+      "id": "hall-stair-right-inner",
+      "ax": 445,
+      "ay": 40,
+      "bx": 445,
+      "by": 235,
+      "style": "grand",
+      "thickness": 10,
+      "role": "balustrade-review"
+    },
+    {
+      "id": "hall-stair-right-outer",
+      "ax": 560,
+      "ay": 40,
+      "bx": 560,
+      "by": 235,
+      "style": "grand",
+      "thickness": 10,
+      "role": "balustrade-review"
+    }
+  ],
+  "openings": [
+    {
+      "id": "hall-entry",
+      "wallId": "hall-south",
+      "kind": "double_door",
+      "width": 110,
+      "offset": 0.5,
+      "doorId": "RM-DOOR-ENTRY-HALL",
+      "foreground": false
+    },
+    {
+      "id": "hall-archive",
+      "wallId": "hall-west",
+      "kind": "arch",
+      "width": 110,
+      "offset": 0.5797101449,
+      "doorId": "RM-DOOR-HALL-ARCHIVE",
+      "foreground": true
+    },
+    {
+      "id": "hall-corridor",
+      "wallId": "hall-east",
+      "kind": "arch",
+      "width": 110,
+      "offset": 0.6304347826,
+      "doorId": "RM-DOOR-HALL-CORRIDOR",
+      "foreground": true
+    },
+    {
+      "id": "hall-east-wing",
+      "wallId": "hall-east-wing-intent",
+      "kind": "double_door",
+      "width": 110,
+      "offset": 0.5,
+      "doorId": "RM-DOOR-HALL-EAST-WING",
+      "foreground": true
+    },
+    {
+      "id": "hall-upper-floor",
+      "wallId": "hall-upper-landing-intent",
+      "kind": "stair",
+      "width": 140,
+      "offset": 0.5,
+      "doorId": "RM-DOOR-HALL-UPPER-FLOOR",
+      "foreground": true
+    }
+  ],
+  "wallPlan": {
+    "source": "data/raven/hall_wall_plan.json",
+    "status": "MEASURED_DRAFT_NOT_ART_APPROVED",
+    "staircases": [
+      {
+        "id": "RM-ASSET-HALL-STAIRS-L",
+        "rect": [
+          140,
+          40,
+          115,
+          195
+        ],
+        "foregroundRails": [
+          "hall-stair-left-outer",
+          "hall-stair-left-inner"
+        ]
+      },
+      {
+        "id": "RM-ASSET-HALL-STAIRS-R",
+        "rect": [
+          445,
+          40,
+          115,
+          195
+        ],
+        "foregroundRails": [
+          "hall-stair-right-inner",
+          "hall-stair-right-outer"
+        ]
+      }
+    ],
+    "collisionPolicy": {
+      "default": "existing-combined-seat-obstacle",
+      "candidate": "three-measured-footprints-runtime-only",
+      "promotion": "requires explicit visual and route signoff"
+    }
+  },
   "referenceFootprints": [
     {
       "id": "RM-ASSET-HALL-CLOCK",

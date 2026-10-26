@@ -284,6 +284,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
                               f'default_color = Color({style_colors[wall["style"]]}, 1)',
                               f'metadata/builder_wall_id = {q(wall["id"])}',
                               f'metadata/wall_style = {q(wall["style"])}',
+                              f'metadata/wall_role = {q(wall.get("role", "wall"))}',
                               'metadata/physics_authority = "NONE_DRAFT_ONLY"', ""])
         for i, opening in enumerate(openings):
             wall = next(w for w in walls if w["id"] == opening["wallId"])

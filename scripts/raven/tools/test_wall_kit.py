@@ -37,6 +37,29 @@ class FirstActWallKitTests(unittest.TestCase):
                 self.assertIn(index, [door["a"], door["b"]])
                 self.assertEqual(opening["point"], [door["point"][0]-origin[0], door["point"][1]-origin[1]])
 
+    def test_hall_wall_plan_has_five_distinct_portals_and_two_exact_stairs(self):
+        plan = json.loads((ROOT / "data/raven/hall_wall_plan.json").read_text(encoding="utf-8"))
+        world = json.loads((ROOT / "data/raven/season1_world_map.json").read_text(encoding="utf-8"))
+        hall_index = next(i for i, room in enumerate(world["rooms"]) if room["id"] == "RM-ROOM-HALL")
+        hall = world["rooms"][hall_index]
+        walls = {wall["id"]: wall for wall in plan["walls"]}
+        self.assertEqual(len(plan["openings"]), 5)
+        self.assertEqual(len({opening["doorId"] for opening in plan["openings"]}), 5)
+        expected = {door["id"]: [door["point"][0]-hall["rect"][0], door["point"][1]-hall["rect"][1]]
+                    for door in world["doors"] if hall_index in [door["a"], door["b"]]}
+        for opening in plan["openings"]:
+            wall = walls[opening["wallId"]]
+            actual = [wall["ax"]+(wall["bx"]-wall["ax"])*opening["offset"],
+                      wall["ay"]+(wall["by"]-wall["ay"])*opening["offset"]]
+            self.assertAlmostEqual(actual[0], expected[opening["doorId"]][0], places=5)
+            self.assertAlmostEqual(actual[1], expected[opening["doorId"]][1], places=5)
+        stair_props = {prop["id"]: [prop["rect"][0]-hall["rect"][0], prop["rect"][1]-hall["rect"][1],
+                                         prop["rect"][2], prop["rect"][3]]
+                       for prop in world["props"] if prop["id"].startswith("RM-ASSET-HALL-STAIRS-")}
+        self.assertEqual({stair["id"]: stair["rect"] for stair in plan["staircases"]}, stair_props)
+        self.assertEqual(sum(wall.get("role") == "balustrade-review" for wall in plan["walls"]), 4)
+        self.assertEqual(plan["collisionPolicy"]["default"], "existing-combined-seat-obstacle")
+
 
 if __name__ == "__main__":
     unittest.main()

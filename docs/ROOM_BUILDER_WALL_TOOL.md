@@ -30,4 +30,6 @@ Promoting a room requires a separate review of door seam parity, wall foreground
 - A socket with `RM-DOOR-*` retains the exact existing ID; arbitrary or legacy-repurposed IDs are rejected.
 - Browser and model tests cover wall drawing, opening placement, snapping, topology, gap generation and corruption rejection.
 - Godot importer tests prove that openings split visual wall runs and that no physics body is generated.
-- The first Hall correction will be a subsequent room-data/art PR using this tool, after its five portal intents and stair foreground masks are authored and reviewed.
+- The Hall follow-up authors five separate portal intents and schematic stair foreground rails; final transparent art masks remain a separate approval gate.
+
+The measured Hall implementation and real renderer evidence are recorded in [HALL_WALL_PARITY.md](HALL_WALL_PARITY.md).

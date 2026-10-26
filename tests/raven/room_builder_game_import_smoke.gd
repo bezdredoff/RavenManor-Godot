@@ -15,6 +15,16 @@ func _check() -> void:
 	assert(root.has_node("ReviewCamera"))
 	assert(root.has_node("HallPilotBackground"))
 	assert(root.has_node("ReferenceGeometry"))
+	assert(root.has_node("DraftWalls"))
+	assert(root.get_node("DraftWalls").get_meta("status") == "DRAFT_VISUAL_ONLY_NO_PHYSICS")
+	var opening_count := 0
+	var balustrade_runs := 0
+	for child in root.get_node("DraftWalls").get_children():
+		assert(not child is CollisionObject2D)
+		if child.has_meta("builder_opening_id"): opening_count += 1
+		if child.get_meta("wall_role", "") == "balustrade-review": balustrade_runs += 1
+	assert(opening_count == 5)
+	assert(balustrade_runs == 4)
 	assert(not root.get_node("ReferenceGeometry").visible)
 	assert(root.get_node("ReferenceGeometry").get_child_count() == 6)
 	assert(root.get_node("ReferenceGeometry").get_meta("status") == "MAP_GEOMETRY_GUIDES_ONLY")

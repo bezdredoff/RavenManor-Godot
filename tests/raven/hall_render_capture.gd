@@ -26,4 +26,17 @@ func _capture() -> void:
 		var result := root.get_texture().get_image().save_png(target)
 		assert(result == OK, "Cannot write render capture: " + target)
 		print("Captured " + target)
+	# One explicit depth sample puts Onoe across the left outer rail. The rail
+	# must be redrawn by the foreground overlay, above the actor sprite.
+	root.content_scale_size = Vector2i(390, 844)
+	node.actor_pos = Vector2(645, 330)
+	node._layout_hud()
+	node._update_actor_screen()
+	node.queue_redraw()
+	await process_frame
+	await process_frame
+	var depth_target := output_dir.path_join("hall_balustrade_depth_390x844.png")
+	var depth_result := root.get_texture().get_image().save_png(depth_target)
+	assert(depth_result == OK, "Cannot write depth capture: " + depth_target)
+	print("Captured " + depth_target)
 	quit()
