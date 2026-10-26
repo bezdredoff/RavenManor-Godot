@@ -54,7 +54,7 @@ def main():
     ids = set(scene_ids)
     missing = Counter()
     for ln in story["entries"]:
-        if ln["sceneId"] not in ids or not re.match(r"^RM-BEAT-\\d\\d-(?:\\d\\d|POST)-L\\d{3}$", ln["id"]):
+        if ln["sceneId"] not in ids or not re.match(r"^RM-BEAT-\d\d-(?:\d\d|POST)-L\d{3}$", ln["id"]):
             errors.append("invalid line ID: " + ln["id"])
         if ln["speakerId"] not in speakers:
             errors.append("unknown speaker: " + ln["speakerId"])
