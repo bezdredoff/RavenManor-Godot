@@ -1,0 +1,2630 @@
+{
+  "schemaVersion": 1,
+  "status": "AWAITING_HUMAN_REVIEW",
+  "generated": "2026-10-26",
+  "model": {
+    "unet": "Flux2-Klein-9B-True-V3-fp8mixed.safetensors",
+    "clip": "qwen_3_8b_fp8mixed.safetensors",
+    "vae": "flux2-vae.safetensors",
+    "rembg": "BiRefNet_toonout"
+  },
+  "candidate_count": 52,
+  "summary": {
+    "pending": 52,
+    "approved": 0,
+    "rejected": 0,
+    "missing": 0,
+    "flagged": 0
+  },
+  "flagged": [],
+  "declared_checks": [
+    "alpha has non-empty transparency and no clipped opaque pixels",
+    "raw render stays isolated on a plain white background",
+    "straight joins align across same-style pieces",
+    "door/window/arch states preserve the guide silhouette",
+    "65-degree scale matches the Hall capture",
+    "human review required before repository integration"
+  ],
+  "jobs": [
+    {
+      "id": "wall_grand_straight_h",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "straight_h",
+      "seed": 26010001,
+      "guide_bbox": [
+        90,
+        390,
+        935,
+        636
+      ],
+      "raw": {
+        "filename": "wall_grand_straight_h_00002_.png",
+        "bytes": 661434,
+        "sha256": "edf6fe5a002dbb18b21c31335c8a5c7cc8a607ea334ca5355ab11839e6d1bd5f",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.9,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_straight_h_00002_.png",
+        "bytes": 444206,
+        "sha256": "78644544b4f87c7b45aa75ef4f4c5b5cd9904f5ff2fa3f15cdadfc887cde28e1",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2377,
+        "opaque_fraction": 0.2347,
+        "bbox": [
+          61,
+          331,
+          963,
+          631
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_straight_v",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "straight_v",
+      "seed": 26010002,
+      "guide_bbox": [
+        390,
+        90,
+        636,
+        935
+      ],
+      "raw": {
+        "filename": "wall_grand_straight_v_00001_.png",
+        "bytes": 625337,
+        "sha256": "a14622ab7006dd10d56033f565b7c98affea3672cd7d5db3f542b6ddb88c5754",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_straight_v_00001_.png",
+        "bytes": 394027,
+        "sha256": "429770e58632aaea4598822482fd1af0c2f6762e7a909a04a49fd1a84ec50e48",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1993,
+        "opaque_fraction": 0.1968,
+        "bbox": [
+          383,
+          60,
+          642,
+          933
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_inner_corner_l",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010003,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_grand_inner_corner_l_00002_.png",
+        "bytes": 611473,
+        "sha256": "26375b82bb869ed6f683c79dc519d005b393b2374512701639f3950cde5c4c3e",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_inner_corner_l_00002_.png",
+        "bytes": 423788,
+        "sha256": "4ebfcc5957c45407ae98e12f96d5aa3cfc72f83db2e46fdf08196b702a605113",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2611,
+        "opaque_fraction": 0.2583,
+        "bbox": [
+          179,
+          179,
+          847,
+          781
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_inner_corner_r",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010004,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_grand_inner_corner_r_00002_.png",
+        "bytes": 725920,
+        "sha256": "0b6ca8e5f3ba802417871c80d0496b7807d7d2c7644ba4e4fd2780fe8d5c005f",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_inner_corner_r_00002_.png",
+        "bytes": 473925,
+        "sha256": "ae91fd347cabb360ce45937dfd0cc3c3942c853868d4d97118823aac909d9ccb",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2614,
+        "opaque_fraction": 0.2588,
+        "bbox": [
+          179,
+          179,
+          846,
+          782
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_outer_corner_l",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010005,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_grand_outer_corner_l_00002_.png",
+        "bytes": 747091,
+        "sha256": "5f4db59120e09627b746e55556c0dc69fcef82f36df52fdb20c4e1eba5ea665b",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.9,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_outer_corner_l_00002_.png",
+        "bytes": 440100,
+        "sha256": "2e8351bb2d79a590920dca14941803412ae246d6d78ec3381a374f36431a57d8",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.264,
+        "opaque_fraction": 0.2612,
+        "bbox": [
+          164,
+          179,
+          857,
+          796
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_outer_corner_r",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010006,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_grand_outer_corner_r_00002_.png",
+        "bytes": 526758,
+        "sha256": "b3ac7eeaf1c43256beaf8c8a7ce14898995899ea9e9e0ba757cd957277937929",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_outer_corner_r_00002_.png",
+        "bytes": 328540,
+        "sha256": "170db5481ade72bc6cc63349cd57edf169fded500e3b80ecbe72e4f607788bcd",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2261,
+        "opaque_fraction": 0.2147,
+        "bbox": [
+          174,
+          180,
+          846,
+          787
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_grand_end_pillar",
+      "category": "structure",
+      "style": "grand",
+      "state": "default",
+      "guide": "pillar",
+      "seed": 26010007,
+      "guide_bbox": [
+        360,
+        135,
+        665,
+        890
+      ],
+      "raw": {
+        "filename": "wall_grand_end_pillar_00002_.png",
+        "bytes": 665434,
+        "sha256": "88832769f88c39df31739477d0719e3134d41943e69ca53591615aeab18df340",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_grand_end_pillar_00002_.png",
+        "bytes": 385670,
+        "sha256": "8c1be97e27982a683126cc86b3dc75f32c2a89367e2a8d60712b68a0f7102bcd",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2346,
+        "opaque_fraction": 0.2325,
+        "bbox": [
+          317,
+          134,
+          699,
+          890
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_straight_h",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "straight_h",
+      "seed": 26010008,
+      "guide_bbox": [
+        90,
+        390,
+        935,
+        636
+      ],
+      "raw": {
+        "filename": "wall_residential_straight_h_00001_.png",
+        "bytes": 498446,
+        "sha256": "8e0cf824bbe4adfe8aea1a1343bb1a139b9fa261534df147c5dc31dee56dd359",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_straight_h_00001_.png",
+        "bytes": 307204,
+        "sha256": "5e08757a9271ecac247db52f6f3f4b48ef3e76ea623810198214cf1b661c939d",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.185,
+        "opaque_fraction": 0.1825,
+        "bbox": [
+          70,
+          389,
+          953,
+          636
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_straight_v",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "straight_v",
+      "seed": 26010009,
+      "guide_bbox": [
+        390,
+        90,
+        636,
+        935
+      ],
+      "raw": {
+        "filename": "wall_residential_straight_v_00001_.png",
+        "bytes": 564028,
+        "sha256": "edbb5aa890de0d80ac596b3d05a0a666fcea56741441e9ca2118eede9db1c50b",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.5,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_straight_v_00001_.png",
+        "bytes": 321375,
+        "sha256": "3b2ef08fa4cae1692b26c39a118a5ad4c55f7aed7e207b3c2d9420ce02990e97",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1693,
+        "opaque_fraction": 0.1666,
+        "bbox": [
+          379,
+          133,
+          646,
+          898
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_inner_corner_l",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010010,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_residential_inner_corner_l_00002_.png",
+        "bytes": 573784,
+        "sha256": "5c6e4ded31e8b4ff30644ad2875934d1a450668cc2824a10559940110798bc3a",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_inner_corner_l_00002_.png",
+        "bytes": 444275,
+        "sha256": "3faee4d416835564e7499fcc0473ebab68fb8ac4c9717429c06e50e8f5ae9137",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2621,
+        "opaque_fraction": 0.2599,
+        "bbox": [
+          180,
+          179,
+          846,
+          782
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_inner_corner_r",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010011,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_residential_inner_corner_r_00002_.png",
+        "bytes": 724224,
+        "sha256": "08246cfdabe276f7901ddc0bcf28e3f88aa56f4abe122fa223df1aef74cf778e",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_inner_corner_r_00002_.png",
+        "bytes": 490360,
+        "sha256": "4031b57a1bec85b6ea16e6648ad25624afa773db11b747c0be15618c4af3cd3b",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3587,
+        "opaque_fraction": 0.349,
+        "bbox": [
+          179,
+          157,
+          846,
+          782
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_outer_corner_l",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010012,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_residential_outer_corner_l_00002_.png",
+        "bytes": 570209,
+        "sha256": "cb21f0096443813741ddd15cd5a5017f89d700663b76d40eb00553ead451c379",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.4,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_outer_corner_l_00002_.png",
+        "bytes": 363459,
+        "sha256": "231f1c2618a3c176e7324e4fe4b27c997107f373f93f37ac54869a1372c749f7",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2704,
+        "opaque_fraction": 0.2681,
+        "bbox": [
+          180,
+          180,
+          864,
+          782
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_outer_corner_r",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010013,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_residential_outer_corner_r_00002_.png",
+        "bytes": 523135,
+        "sha256": "e797863965fa22190dca21dc81cfed83160fcefe374757c2c4699cecb30d05f0",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.1,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_outer_corner_r_00002_.png",
+        "bytes": 398851,
+        "sha256": "e11af5df0738a3852381424118348fb286d4fff8eeca92559284ca2ba15b263d",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2603,
+        "opaque_fraction": 0.2574,
+        "bbox": [
+          179,
+          180,
+          845,
+          783
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_residential_end_pillar",
+      "category": "structure",
+      "style": "residential",
+      "state": "default",
+      "guide": "pillar",
+      "seed": 26010014,
+      "guide_bbox": [
+        360,
+        135,
+        665,
+        890
+      ],
+      "raw": {
+        "filename": "wall_residential_end_pillar_00002_.png",
+        "bytes": 483201,
+        "sha256": "7b803641e7a3e12545cd603c72fd9e32819c5976f1aacc7f9cbba35b3ad75db9",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_residential_end_pillar_00002_.png",
+        "bytes": 275528,
+        "sha256": "225d3ed36c5cf4d303b287609916f3a57d2e001ddd06f3cb7f317d640c7791b4",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2339,
+        "opaque_fraction": 0.2313,
+        "bbox": [
+          325,
+          129,
+          698,
+          891
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_straight_h",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "straight_h",
+      "seed": 26010015,
+      "guide_bbox": [
+        90,
+        390,
+        935,
+        636
+      ],
+      "raw": {
+        "filename": "wall_service_straight_h_00001_.png",
+        "bytes": 670308,
+        "sha256": "3f6944484f017a50d6e78236d5daea079b05c37b02dca246f17e890adf8892ee",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_straight_h_00001_.png",
+        "bytes": 314928,
+        "sha256": "adb552ab9fec16364366c4a43d9afa311f39f383ac6fb5240994eac6a4df860c",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2003,
+        "opaque_fraction": 0.1953,
+        "bbox": [
+          73,
+          387,
+          941,
+          640
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_straight_v",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "straight_v",
+      "seed": 26010016,
+      "guide_bbox": [
+        390,
+        90,
+        636,
+        935
+      ],
+      "raw": {
+        "filename": "wall_service_straight_v_00001_.png",
+        "bytes": 544519,
+        "sha256": "74cc7abbda4aad27207d2ad624634b79559f9f8ed2c234f10b0ad879d26d772e",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_straight_v_00001_.png",
+        "bytes": 341639,
+        "sha256": "47beebe4886ac88cb5818394c48d15513a0a3099904b60953530438db09e3780",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2228,
+        "opaque_fraction": 0.2194,
+        "bbox": [
+          352,
+          89,
+          638,
+          950
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_inner_corner_l",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010017,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_service_inner_corner_l_00002_.png",
+        "bytes": 1048329,
+        "sha256": "28e25c7bc6e63500dfe2d9ee3edb6084f703b87f25e09d921a3fea6f80713151",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_inner_corner_l_00002_.png",
+        "bytes": 739800,
+        "sha256": "d0c21d33f95aa500f7af57a99b797158837ddff695cf9942a28d19653f92203f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3678,
+        "opaque_fraction": 0.365,
+        "bbox": [
+          162,
+          121,
+          871,
+          921
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_inner_corner_r",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010018,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_service_inner_corner_r_00002_.png",
+        "bytes": 581801,
+        "sha256": "5a6f33e89d5722e7ea152f1457b14b93a6f0c0d38ccef68a39cc856763cd1dd0",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.5,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_inner_corner_r_00002_.png",
+        "bytes": 381228,
+        "sha256": "5adc97887244c1d773651a45df4a561dd3be4dd89f96d8ea458e6fa253fec1bc",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2631,
+        "opaque_fraction": 0.2601,
+        "bbox": [
+          179,
+          178,
+          847,
+          785
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_outer_corner_l",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010019,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_service_outer_corner_l_00002_.png",
+        "bytes": 800423,
+        "sha256": "b3c2ffbe31b5ef20a91b40236f153c59c82f4c3614a17c4be6fd77aa60065ab9",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_outer_corner_l_00002_.png",
+        "bytes": 501593,
+        "sha256": "7d47af081f9206cb0f0dc2d2762dc72e9c1cb69a28117c6c3f69a87788422723",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.302,
+        "opaque_fraction": 0.299,
+        "bbox": [
+          173,
+          155,
+          854,
+          836
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_outer_corner_r",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010020,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_service_outer_corner_r_00002_.png",
+        "bytes": 788543,
+        "sha256": "ebf04c74e2cb1afcb9300711364b85f294c7f5327a90a7dcd386f5d7f026e566",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_outer_corner_r_00002_.png",
+        "bytes": 516143,
+        "sha256": "1c569b64c4bb509c21b8b39193ef4255db023365d1f1a093172170a3b4eab1d6",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2902,
+        "opaque_fraction": 0.2874,
+        "bbox": [
+          170,
+          179,
+          860,
+          847
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_service_end_pillar",
+      "category": "structure",
+      "style": "service",
+      "state": "default",
+      "guide": "pillar",
+      "seed": 26010021,
+      "guide_bbox": [
+        360,
+        135,
+        665,
+        890
+      ],
+      "raw": {
+        "filename": "wall_service_end_pillar_00002_.png",
+        "bytes": 545419,
+        "sha256": "be338caff070d1ea97ae6b2bf0c3daf68f38ae7aa9358f62ae2eee3b5262fa67",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.0,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_service_end_pillar_00002_.png",
+        "bytes": 350606,
+        "sha256": "549fafe5458e2e8676ed06f72429dc612d566c896b837262afc92190b3a1984f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2249,
+        "opaque_fraction": 0.2225,
+        "bbox": [
+          333,
+          113,
+          673,
+          892
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_straight_h",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "straight_h",
+      "seed": 26010022,
+      "guide_bbox": [
+        90,
+        390,
+        935,
+        636
+      ],
+      "raw": {
+        "filename": "wall_glass_straight_h_00001_.png",
+        "bytes": 699983,
+        "sha256": "1c12f78a9c8bf752e7079879610c2efca499fd643d6dfbc8599dff02f04d5b38",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.4,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_straight_h_00001_.png",
+        "bytes": 366990,
+        "sha256": "b0ebfd42352c8077e406a2713cffc2297935945ffed68ee29491f0e8b8a3804f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1981,
+        "opaque_fraction": 0.1954,
+        "bbox": [
+          89,
+          387,
+          943,
+          639
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_straight_v",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "straight_v",
+      "seed": 26010023,
+      "guide_bbox": [
+        390,
+        90,
+        636,
+        935
+      ],
+      "raw": {
+        "filename": "wall_glass_straight_v_00001_.png",
+        "bytes": 549721,
+        "sha256": "df97a09e6e62deebae657132ba89293d7a03d459312934da530d1625d4f20f7c",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.2,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_straight_v_00001_.png",
+        "bytes": 326833,
+        "sha256": "54fb33ee1e00ad0334f7e4d56489834bc73ec55232afaafa8f7d1f04a1fcf14f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2051,
+        "opaque_fraction": 0.2031,
+        "bbox": [
+          367,
+          89,
+          659,
+          940
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_inner_corner_l",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010024,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_glass_inner_corner_l_00002_.png",
+        "bytes": 691940,
+        "sha256": "a66e834ee2c66eddb37af64a42161f0176420122c134968a77b9e0b4039a3eee",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_inner_corner_l_00002_.png",
+        "bytes": 475917,
+        "sha256": "431b1179b0ff66308ee4859118644b80e12d7efb086819d7a30deafcba79a9ba",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3256,
+        "opaque_fraction": 0.3128,
+        "bbox": [
+          179,
+          179,
+          897,
+          877
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_inner_corner_r",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010025,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_glass_inner_corner_r_00002_.png",
+        "bytes": 518976,
+        "sha256": "faaea1566c0271e6ab101741a4e08c0ff7b850e0ffca6bc97cc76ac1eb67c8eb",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_inner_corner_r_00002_.png",
+        "bytes": 388115,
+        "sha256": "32fe7863d19f105e6a10a1defcf658a5af32435c1a4bd7671b1f88e3fc9d4309",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3323,
+        "opaque_fraction": 0.3249,
+        "bbox": [
+          170,
+          179,
+          850,
+          833
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_outer_corner_l",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "corner_l",
+      "seed": 26010026,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_glass_outer_corner_l_00002_.png",
+        "bytes": 638963,
+        "sha256": "730344c26bac5185fe0c8cc812ab06296ba5f89dad725fc319054032f39771b1",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.5,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_outer_corner_l_00002_.png",
+        "bytes": 427208,
+        "sha256": "69e1986f14dd2acc09b4ac4dd51944158cf6b025ed51dbe97b73083439aae22f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2534,
+        "opaque_fraction": 0.2504,
+        "bbox": [
+          177,
+          179,
+          855,
+          786
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_outer_corner_r",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "corner_r",
+      "seed": 26010027,
+      "guide_bbox": [
+        180,
+        180,
+        845,
+        781
+      ],
+      "raw": {
+        "filename": "wall_glass_outer_corner_r_00002_.png",
+        "bytes": 863432,
+        "sha256": "9da89fc62a80de4f298a9dcc715cc07ae034833301d046b4297e9a7ea75f1cc6",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_outer_corner_r_00002_.png",
+        "bytes": 664610,
+        "sha256": "205c2dfd4caedf5332c6174d189f72ae4b8a03db80a037842de121a9ce192e0c",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3915,
+        "opaque_fraction": 0.3883,
+        "bbox": [
+          168,
+          88,
+          853,
+          916
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "wall_glass_end_pillar",
+      "category": "structure",
+      "style": "glass",
+      "state": "default",
+      "guide": "pillar",
+      "seed": 26010028,
+      "guide_bbox": [
+        360,
+        135,
+        665,
+        890
+      ],
+      "raw": {
+        "filename": "wall_glass_end_pillar_00002_.png",
+        "bytes": 492872,
+        "sha256": "17b708e885e86c0778a33e50b8e72c90733cd024670fa765c3dcf232de38e7f1",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 251.9,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "wall_glass_end_pillar_00002_.png",
+        "bytes": 280682,
+        "sha256": "040a4043c8b6c28d08084d3f8ce2d58c84637998fb00c64da454823a1691404e",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.22,
+        "opaque_fraction": 0.2173,
+        "bbox": [
+          348,
+          131,
+          682,
+          900
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_single_closed",
+      "category": "door",
+      "style": "grand",
+      "state": "closed",
+      "guide": "door_single",
+      "seed": 26010029,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_single_closed_00003_.png",
+        "bytes": 661337,
+        "sha256": "71736d7f6f0982247c56dd2edaea6d3fd4a964d2480bb352df82ab0bd7d5f36e",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_single_closed_00003_.png",
+        "bytes": 484280,
+        "sha256": "984693150bc2e950cf18903eb46eb9136a1aebc40b4683636f9a29cc261c7b40",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.288,
+        "opaque_fraction": 0.2856,
+        "bbox": [
+          291,
+          145,
+          738,
+          898
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_single_open",
+      "category": "door",
+      "style": "grand",
+      "state": "open",
+      "guide": "door_single",
+      "seed": 26010030,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_single_open_00003_.png",
+        "bytes": 559503,
+        "sha256": "8fd78679a5edcee4ace0bf489b3e7d4df523c63f17375f8bbe835451998654ad",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_single_open_00003_.png",
+        "bytes": 350462,
+        "sha256": "3cd5c095651e7d5eb9c52b2538b904c5e0320979b67366dc4803ea3f47245bbc",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1964,
+        "opaque_fraction": 0.1908,
+        "bbox": [
+          314,
+          107,
+          718,
+          916
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_single_damaged",
+      "category": "door",
+      "style": "grand",
+      "state": "damaged",
+      "guide": "door_single",
+      "seed": 26010031,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_single_damaged_00001_.png",
+        "bytes": 586498,
+        "sha256": "94846e86578866b01dbddb1c349d01b878a043b952df922291139a15cd07d7cc",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 250.0,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_single_damaged_00001_.png",
+        "bytes": 445440,
+        "sha256": "1349b415dc5abff41130609efcba25bd66ffc1ac57e2eccc58fcd1a6fdc6482c",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2694,
+        "opaque_fraction": 0.2665,
+        "bbox": [
+          306,
+          129,
+          726,
+          904
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_double_closed",
+      "category": "door",
+      "style": "grand",
+      "state": "closed",
+      "guide": "door_double",
+      "seed": 26010032,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_double_closed_00001_.png",
+        "bytes": 785245,
+        "sha256": "a9d2b4628ff429502ea3959bdb4051fd7644190089d22377cb27df8606aa1995",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_double_closed_00001_.png",
+        "bytes": 645285,
+        "sha256": "bd6ee3fba179a8e998720d1d3d09a02b149aa37e68e3ddb8f2d869f6e6c4f038",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3923,
+        "opaque_fraction": 0.3903,
+        "bbox": [
+          214,
+          96,
+          807,
+          907
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_double_open",
+      "category": "door",
+      "style": "grand",
+      "state": "open",
+      "guide": "door_double",
+      "seed": 26010033,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_double_open_00001_.png",
+        "bytes": 941414,
+        "sha256": "e6c94d8f97590679aa6439540f2b53ef36dea1902e8e3ff2e24250b0e6fa6103",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.2,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_double_open_00001_.png",
+        "bytes": 540592,
+        "sha256": "b1f4405be3a43d2f4b0473d88fd9aadb2c51ff77d1053246649d0205e916a4c3",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2722,
+        "opaque_fraction": 0.2684,
+        "bbox": [
+          193,
+          98,
+          831,
+          902
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_grand_double_damaged",
+      "category": "door",
+      "style": "grand",
+      "state": "damaged",
+      "guide": "door_double",
+      "seed": 26010034,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_grand_double_damaged_00001_.png",
+        "bytes": 787330,
+        "sha256": "98d90b6710be855bf077a2f2a33e5b58b4e608d11f67fc45ea4c67b436cc183c",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_grand_double_damaged_00001_.png",
+        "bytes": 675292,
+        "sha256": "26c27c0c0c2e994478f22d37785eff6fda808584133456a4a45deb85b01fb82b",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3805,
+        "opaque_fraction": 0.3775,
+        "bbox": [
+          220,
+          130,
+          806,
+          905
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_service_single_closed",
+      "category": "door",
+      "style": "service",
+      "state": "closed",
+      "guide": "door_single",
+      "seed": 26010035,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_service_single_closed_00001_.png",
+        "bytes": 677013,
+        "sha256": "030ad02a103bf62f2ea2250ded1155db35df97afc480cff993f8c3690dba29cd",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_service_single_closed_00001_.png",
+        "bytes": 459408,
+        "sha256": "a63a1b0b9e862698159621f9be5209cb4e5925e3e193a9bc8a7a2a7f85432656",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2939,
+        "opaque_fraction": 0.2913,
+        "bbox": [
+          284,
+          129,
+          750,
+          884
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_service_single_open",
+      "category": "door",
+      "style": "service",
+      "state": "open",
+      "guide": "door_single",
+      "seed": 26010036,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_service_single_open_00001_.png",
+        "bytes": 484292,
+        "sha256": "d3eec787d922d0fb074fb6a7884adc5f6f8e6cb04c7335a01f7c7891d1a0dffc",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.5,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_service_single_open_00001_.png",
+        "bytes": 257056,
+        "sha256": "05f7d8747d2154445b2116d9d03fd2687c8d72aaa309b2d84bbc38f1cc91724b",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1541,
+        "opaque_fraction": 0.1446,
+        "bbox": [
+          325,
+          112,
+          698,
+          914
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_service_single_damaged",
+      "category": "door",
+      "style": "service",
+      "state": "damaged",
+      "guide": "door_single",
+      "seed": 26010037,
+      "guide_bbox": [
+        330,
+        135,
+        695,
+        906
+      ],
+      "raw": {
+        "filename": "door_service_single_damaged_00001_.png",
+        "bytes": 600280,
+        "sha256": "f6436cf5d8a81c65b7ff6348f036a1f1b6678751c2018b7145373e988509b267",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.4,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_service_single_damaged_00001_.png",
+        "bytes": 410933,
+        "sha256": "2a940cd071a62f6512bb7e74ffb31a67d5372ef156cd4af88780099b2251f1df",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2641,
+        "opaque_fraction": 0.2615,
+        "bbox": [
+          312,
+          134,
+          712,
+          890
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_glazed_double_closed",
+      "category": "door",
+      "style": "glass",
+      "state": "closed",
+      "guide": "door_double",
+      "seed": 26010038,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_glazed_double_closed_00001_.png",
+        "bytes": 788348,
+        "sha256": "6d56f9f1173f2df3f714416ae2385fc915577e3121a1878466ea684d435ff46a",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.3,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_glazed_double_closed_00001_.png",
+        "bytes": 712686,
+        "sha256": "6a57aa67520fec20af0eefc05faab2932b363369b46e1a42d155033af947bfe0",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.4065,
+        "opaque_fraction": 0.4039,
+        "bbox": [
+          190,
+          83,
+          830,
+          924
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_glazed_double_open",
+      "category": "door",
+      "style": "glass",
+      "state": "open",
+      "guide": "door_double",
+      "seed": 26010039,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_glazed_double_open_00001_.png",
+        "bytes": 736529,
+        "sha256": "9f74e6b4a4677d2fb6ada1107ad4b6eb1e2635732b191bd44e5282fab9ab7438",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 250.3,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_glazed_double_open_00001_.png",
+        "bytes": 437224,
+        "sha256": "1fd545de176571428cd025bec7a745bd76f782c4d41a36a01fb8d30931de918e",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2156,
+        "opaque_fraction": 0.211,
+        "bbox": [
+          211,
+          94,
+          812,
+          846
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "door_glazed_double_damaged",
+      "category": "door",
+      "style": "glass",
+      "state": "damaged",
+      "guide": "door_double",
+      "seed": 26010040,
+      "guide_bbox": [
+        250,
+        135,
+        775,
+        906
+      ],
+      "raw": {
+        "filename": "door_glazed_double_damaged_00001_.png",
+        "bytes": 887089,
+        "sha256": "588c7b0bfabf9cb0d98fbe3b87f3b148cdee27bac33f1fba9c4cf9516bca283f",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.4,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "door_glazed_double_damaged_00001_.png",
+        "bytes": 630545,
+        "sha256": "09208ad1287795f2ac8e63b434aa919e354e6a2c1de14deb6f1971a734a4223e",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3229,
+        "opaque_fraction": 0.3197,
+        "bbox": [
+          210,
+          68,
+          823,
+          899
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "window_grand_tall",
+      "category": "window",
+      "style": "grand",
+      "state": "default",
+      "guide": "window",
+      "seed": 26010041,
+      "guide_bbox": [
+        205,
+        165,
+        820,
+        851
+      ],
+      "raw": {
+        "filename": "window_grand_tall_00003_.png",
+        "bytes": 643676,
+        "sha256": "ec515bb3a1ced9f15ed4fdc9f2c13794ac703f0abc6b6fd1c34fdc01682d5039",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.3,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "window_grand_tall_00003_.png",
+        "bytes": 419928,
+        "sha256": "81093b1f6c7393217f1aa315e650ede620d8dc097c5ebd5fa7f6827aaba19386",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2697,
+        "opaque_fraction": 0.2668,
+        "bbox": [
+          276,
+          213,
+          748,
+          867
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "window_residential_sash",
+      "category": "window",
+      "style": "residential",
+      "state": "default",
+      "guide": "window",
+      "seed": 26010042,
+      "guide_bbox": [
+        205,
+        165,
+        820,
+        851
+      ],
+      "raw": {
+        "filename": "window_residential_sash_00001_.png",
+        "bytes": 625458,
+        "sha256": "366773bf21d2e34a97edf59a447763da1080966421c492bb8cde6e5e7d4e72d0",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.3,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "window_residential_sash_00001_.png",
+        "bytes": 507340,
+        "sha256": "11a2db6c02289e496b0c080f78663c261b1b39606fc4bc2200d92aa25e5e6604",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3898,
+        "opaque_fraction": 0.3872,
+        "bbox": [
+          203,
+          164,
+          825,
+          875
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "window_bathroom_frosted",
+      "category": "window",
+      "style": "service",
+      "state": "default",
+      "guide": "window",
+      "seed": 26010043,
+      "guide_bbox": [
+        205,
+        165,
+        820,
+        851
+      ],
+      "raw": {
+        "filename": "window_bathroom_frosted_00001_.png",
+        "bytes": 763751,
+        "sha256": "f6119f8f533e0e8b0a10fce3102af628968bc2db79cf9354a495a12ba599b6e1",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "window_bathroom_frosted_00001_.png",
+        "bytes": 590093,
+        "sha256": "1073783e0fa45998c289b713a541928a79149e617fdc22ba39b825709be3f184",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3861,
+        "opaque_fraction": 0.3831,
+        "bbox": [
+          180,
+          211,
+          862,
+          867
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "window_kitchen_casement",
+      "category": "window",
+      "style": "service",
+      "state": "default",
+      "guide": "window",
+      "seed": 26010044,
+      "guide_bbox": [
+        205,
+        165,
+        820,
+        851
+      ],
+      "raw": {
+        "filename": "window_kitchen_casement_00001_.png",
+        "bytes": 549568,
+        "sha256": "2292aed4c4af3e338e9d19f17bee3222f4be869b604774394eb8360890352d24",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "window_kitchen_casement_00001_.png",
+        "bytes": 492535,
+        "sha256": "ba4b042dba3f87577a6145f8b24208748398549317e777d7a68a4f56945d1d3c",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.393,
+        "opaque_fraction": 0.3903,
+        "bbox": [
+          204,
+          163,
+          829,
+          846
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "window_conservatory_section",
+      "category": "window",
+      "style": "glass",
+      "state": "default",
+      "guide": "window",
+      "seed": 26010045,
+      "guide_bbox": [
+        205,
+        165,
+        820,
+        851
+      ],
+      "raw": {
+        "filename": "window_conservatory_section_00001_.png",
+        "bytes": 675287,
+        "sha256": "036bfca1cfd47134f16522fa0f4107abb9f6b86575d85a7cbc9a2e0eb93c8827",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "window_conservatory_section_00001_.png",
+        "bytes": 496731,
+        "sha256": "10384b9f6bec85650119d4f09954c3dbe8e73d8de4cddee06f2614347d6aa13a",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2556,
+        "opaque_fraction": 0.2489,
+        "bbox": [
+          248,
+          133,
+          771,
+          816
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "arch_grand_open",
+      "category": "arch",
+      "style": "grand",
+      "state": "open",
+      "guide": "arch",
+      "seed": 26010046,
+      "guide_bbox": [
+        230,
+        150,
+        801,
+        906
+      ],
+      "raw": {
+        "filename": "arch_grand_open_00002_.png",
+        "bytes": 784217,
+        "sha256": "e3a649aa13f9c0027081d1144e431f584a08956c543894ffe04d7f70b1be6d98",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "arch_grand_open_00002_.png",
+        "bytes": 475672,
+        "sha256": "43051a873bb88f0a8a2664152e3a144daf95ce7be865d1e8ab6e12be55d5fc70",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.2176,
+        "opaque_fraction": 0.2132,
+        "bbox": [
+          222,
+          88,
+          811,
+          909
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "arch_grand_gated",
+      "category": "arch",
+      "style": "grand",
+      "state": "gated",
+      "guide": "arch",
+      "seed": 26010047,
+      "guide_bbox": [
+        230,
+        150,
+        801,
+        906
+      ],
+      "raw": {
+        "filename": "arch_grand_gated_00003_.png",
+        "bytes": 791976,
+        "sha256": "c48ff0c8b5a24dfa0ba20a07e5aee6827309684b76689079b8639b61100bc221",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.5,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "arch_grand_gated_00003_.png",
+        "bytes": 623061,
+        "sha256": "2e7e740224f705feeaaa7a10aa726f612ac175b06ae9f598ba2f61591e01b2e1",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.3268,
+        "opaque_fraction": 0.308,
+        "bbox": [
+          202,
+          122,
+          828,
+          912
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "arch_grand_damaged",
+      "category": "arch",
+      "style": "grand",
+      "state": "damaged",
+      "guide": "arch",
+      "seed": 26010048,
+      "guide_bbox": [
+        230,
+        150,
+        801,
+        906
+      ],
+      "raw": {
+        "filename": "arch_grand_damaged_00001_.png",
+        "bytes": 691390,
+        "sha256": "d301b4bb1aa3a47bfe5f320d54e7593dcb109d62254bfff0dd59321b0ff86a97",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.9,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "arch_grand_damaged_00001_.png",
+        "bytes": 383629,
+        "sha256": "a86d85e7a7dfe193ab970179192c69fd3ff2b18b48abe9894f8b5a45f022a32f",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1766,
+        "opaque_fraction": 0.1712,
+        "bbox": [
+          220,
+          107,
+          813,
+          918
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "balustrade_left_intact",
+      "category": "foreground",
+      "style": "grand",
+      "state": "intact",
+      "guide": "balustrade_left",
+      "seed": 26010049,
+      "guide_bbox": [
+        205,
+        147,
+        849,
+        906
+      ],
+      "raw": {
+        "filename": "balustrade_left_intact_00002_.png",
+        "bytes": 537644,
+        "sha256": "84ed13323dbf90de36a58ca2c70c24d71b7399b34014a7ceaa5dd6cc94bbbafc",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.8,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "balustrade_left_intact_00002_.png",
+        "bytes": 339778,
+        "sha256": "0724d04a9b48480d5893abb7f275494ddf4b7e85ffb2cade408d163f8dc8c528",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1254,
+        "opaque_fraction": 0.1202,
+        "bbox": [
+          225,
+          146,
+          854,
+          909
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "balustrade_left_damaged",
+      "category": "foreground",
+      "style": "grand",
+      "state": "damaged",
+      "guide": "balustrade_left",
+      "seed": 26010050,
+      "guide_bbox": [
+        205,
+        147,
+        849,
+        906
+      ],
+      "raw": {
+        "filename": "balustrade_left_damaged_00001_.png",
+        "bytes": 575343,
+        "sha256": "f5104c837c8cfbd6ea1c3ba33934b750b966e2137d417d3c5a69a13575cdc8c0",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 252.6,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "balustrade_left_damaged_00001_.png",
+        "bytes": 354663,
+        "sha256": "3b2722de6fb7cf6925d046b0d4b63d15b5fafa3db156f2d243a27a36a5707e9d",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1315,
+        "opaque_fraction": 0.1255,
+        "bbox": [
+          195,
+          80,
+          883,
+          944
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "balustrade_right_intact",
+      "category": "foreground",
+      "style": "grand",
+      "state": "intact",
+      "guide": "balustrade_right",
+      "seed": 26010051,
+      "guide_bbox": [
+        176,
+        147,
+        820,
+        906
+      ],
+      "raw": {
+        "filename": "balustrade_right_intact_00001_.png",
+        "bytes": 762132,
+        "sha256": "b6a6bce99623b62c17db265cebdbae1fdb32e0c993671177ad3efc60e2e61dee",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.9,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "balustrade_right_intact_00001_.png",
+        "bytes": 313954,
+        "sha256": "ab87b27721eb476cc8b84cba65e4a8ead8cc0333ecf91e8c57dfc587b602c814",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1061,
+        "opaque_fraction": 0.1012,
+        "bbox": [
+          175,
+          137,
+          820,
+          918
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    },
+    {
+      "id": "balustrade_right_damaged",
+      "category": "foreground",
+      "style": "grand",
+      "state": "damaged",
+      "guide": "balustrade_right",
+      "seed": 26010052,
+      "guide_bbox": [
+        176,
+        147,
+        820,
+        906
+      ],
+      "raw": {
+        "filename": "balustrade_right_damaged_00001_.png",
+        "bytes": 562007,
+        "sha256": "d74222b00d16b8c2d4caa15282fc2253da60c995b4403669f4d15e08f2018a1e",
+        "mode": "RGB",
+        "size": [
+          1024,
+          1024
+        ],
+        "border_mean_luminance": 253.7,
+        "flags": []
+      },
+      "alpha": {
+        "filename": "balustrade_right_damaged_00001_.png",
+        "bytes": 341756,
+        "sha256": "3502251172dc4513d99456475f809c1986a7f8c4146d110ebf033afdccbba927",
+        "mode": "RGBA",
+        "size": [
+          1024,
+          1024
+        ],
+        "coverage": 0.1355,
+        "opaque_fraction": 0.1313,
+        "bbox": [
+          176,
+          146,
+          821,
+          907
+        ],
+        "border_max_alpha": 0,
+        "flags": []
+      },
+      "flags": [],
+      "decision": "pending",
+      "reviewer": null,
+      "notes": null
+    }
+  ]
+}
