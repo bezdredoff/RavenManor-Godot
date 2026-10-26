@@ -48,3 +48,7 @@ Godot's provisional Hall world map and seven-item visual contract are now mirror
 ## RM-PIPE-003 visual integration complete, pending art approval
 
 Imported Hall art from the .tscn is now drawn in the actual Whole Manor Map without double rendering. Existing A* paths, unlocked gates and collision shapes still come from world-map data. Next: approve image/door/stair seams, repair state visuals and individually calibrated chair/table footprints. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
+
+## RM-PIPE-004: before the next art approval
+
+First compare painted background vs calibration markers at all five door points and two stair bounds, using `docs/HALL_VISUAL_CALIBRATION_PLAN.md`. Candidate three-piece chair/table contacts are available in debug but MUST NOT be treated as accepted or copied into campaign physics until actual art-floor evidence and routing tests are reviewed. Then author foreground occlusion masks and clean/dirty/broken art states.

@@ -69,3 +69,7 @@ The new `import_room_builder_game.py` generates a separately runnable Godot scen
 ## Next gate after live import (RM-PIPE-003)
 
 Generated Builder Hall .tscn is displayed directly in the live Whole Manor Map, with fail-closed geometry validation, preserved AI1 comparison and unchanged gameplay obstacles. Before changing physical geometry, calibrate five real door pixel openings, both stair marches, occlusion masks and prop pivots against game screenshots. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
+
+## RM-PIPE-004 · calibration diagnostics and test-only seats
+
+The Hall now supports a world-source-validated portal/stair overlay and a strictly opt-in 3-object footbox navigation experiment that keeps the canonical combined seats blocker by default. Godot tests check footprint containment, route safety and toggling back; image-door/stair visual alignment and architecture masks remain unapproved. Acceptance detail: `docs/HALL_VISUAL_CALIBRATION_PLAN.md`.

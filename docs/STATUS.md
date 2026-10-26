@@ -75,3 +75,7 @@ Recreated initial seven art placements directly from existing Godot pilot manife
 ## 2026-10-26 — RM-PIPE-003: imported Hall becomes Whole Manor Map's default art
 
 The active map reads the actual committed Builder-generated scene in **Импорт** mode. Runtime rejects stale door/physics coordinates, excludes legacy duplicated Hall furniture/runner, and retains current character, navigation and Raven saves. The AI1 art comparison remains; final doorway/staircase pixel calibration and collider upgrades remain unapproved. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
+
+## RM-PIPE-004 — Hall calibration and candidate collider QA (2026-10-26)
+
+Added deterministic map-derived 5-door/2-stair register, source-parity safety gate, in-map architectural overlay, precise actor foot-depth boundary tests and optional reversible **3-piece** chair/table contact navigation preview. Default physical geometry and saves unchanged. Pixel-aligned background, foreground wall masks and art-state variants are **still unapproved**. Full staged acceptance: `docs/HALL_VISUAL_CALIBRATION_PLAN.md`.

@@ -16,10 +16,11 @@ Open `res://scenes/raven/season1_map_greybox.tscn` or use Prototype Lab → **5 
 
 With `Настр.` open, repeatedly tap the **Вид** selector:
 
-1. **AI1 (default):** primary twin staircase painting + isolated burgundy runner and furniture props.
-2. **AI2:** alternate crimson-staircase background, which already has a carpet baked in, so a separate runner is omitted to avoid duplication.
-3. **ПЛАН:** traditional furniture/rooms greybox.
-4. **SVG:** previous dimension-matched SVG architecture and prop prototypes.
+1. **Импорт (default):** verified generated Room Builder Hall scene used in the live map.
+2. **AI1 (comparison):** primary twin staircase painting + isolated burgundy runner and furniture props.
+3. **AI2:** alternate crimson-staircase background, which already has a carpet baked in, so a separate runner is omitted to avoid duplication.
+4. **ПЛАН:** traditional furniture/rooms greybox.
+5. **SVG:** previous dimension-matched SVG architecture and prop prototypes.
 
 The selector updates only the displayed layers. It does **not** mutate Raven-save, the player collision footprint, world coordinates, route graph, level or repair state.
 
@@ -48,3 +49,7 @@ New real PNGs draw over approved world bounds:
 - [ ] Produce final shadow/foreground depth layers, validate route visibility, device safe insets, and only then approve full-size art.
 
 **Do not delete or replace the original SVG prototypes** until the rendered PNGs pass visual and route QA.
+
+### Calibration instrument added 2026-10-26
+
+The in-game **Калибр.** debug overlay shows authoritative map door/stair coordinates; **Кресла: 3 ТЕСТ** previews three provisional contact rects without changing the map's default collider, door statuses or saves. This DOES NOT modify or claim approval of the original generated PNG pixel alignment, rail/door masks or visual states. See `docs/HALL_VISUAL_CALIBRATION_PLAN.md`.

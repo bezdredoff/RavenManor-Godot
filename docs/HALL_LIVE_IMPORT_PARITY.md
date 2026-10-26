@@ -45,3 +45,7 @@ One background and one floor runner are drawn from the imported file; six uprigh
 CI regenerates the exact scene from `examples/room_builder_hall_original.json`, performs a byte-for-byte diff with the committed scene, loads it in Godot, validates five door anchors and six physical rectangles against the live map, verifies imported draw counts and old-art exclusion, and runs the existing cross-room/locked-gate route tests at mobile viewport sizes.
 
 Next production approval gate: compare actual images with doorstep markers and stairs on a mobile screenshot, correct background perspective/occlusion, then explicitly sign off collision/interactive footprint edits. This is a visual integration milestone, not the final art pass.
+
+## Calibration overlay / safe collision test (RM-PIPE-004)
+
+Use **Настр. → Калибр.: ВИД** to reveal original portal markers, six tentative stair treads per original staircase, combined seats obstacle and three separate noncanonical PNG-derived contact boxes. The separate **Кресла: 3 ТЕСТ** control rebuilds AStar against only these smaller proposed seat contacts for the current debug session, then restores the original parent collider on toggle off/reload. This is **not** acceptance of corrected painted openings or 2D foreground railing masks. See `docs/HALL_VISUAL_CALIBRATION_PLAN.md` for exact coordinates, test protocol and signoff criteria.
