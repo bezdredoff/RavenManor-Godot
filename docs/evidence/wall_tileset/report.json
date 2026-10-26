@@ -1,0 +1,74 @@
+{
+  "style": "grand",
+  "source": "D:\\AI\\ComfyUI-Desktop\\output\\RavenManor\\walls\\raw\\wall_grand_straight_h_00002_.png",
+  "build_seconds": 0.03,
+  "module_px": [
+    160,
+    160
+  ],
+  "game_px": [
+    80,
+    80
+  ],
+  "shapes": {
+    "straight_h": [
+      480,
+      160
+    ],
+    "straight_v": [
+      160,
+      480
+    ],
+    "inner_corner_l": [
+      480,
+      480
+    ],
+    "inner_corner_r": [
+      480,
+      480
+    ],
+    "outer_corner_l": [
+      480,
+      480
+    ],
+    "outer_corner_r": [
+      480,
+      480
+    ],
+    "end_pillar": [
+      640,
+      160
+    ]
+  },
+  "seams": {
+    "straight_h": {
+      "edge_delta": 0.0,
+      "internal_delta": 3.53,
+      "verdict": "seamless"
+    },
+    "straight_v": {
+      "edge_delta": 0.0,
+      "internal_delta": 3.46,
+      "verdict": "seamless"
+    }
+  },
+  "material_sources": {
+    "wood": [
+      811,
+      15
+    ],
+    "trim": [
+      72,
+      180
+    ],
+    "damask": [
+      163,
+      120
+    ],
+    "brass": [
+      71,
+      45,
+      39
+    ]
+  }
+}

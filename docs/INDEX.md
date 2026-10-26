@@ -8,6 +8,7 @@
 - `RECONCILIATION_MATRIX.md`: conflicts between historical audits, current runtime and R&D evidence.
 - `NEXT_PLAN.md`: gated path from current Prototype Lab to integrated `RM-VS-01`.
 - `RAVEN_WALL_COMFYUI_WORKFLOW.md`: first-act wall-art ComfyUI batch, prompt contract and art review gate.
+- `WALL_TILESET_PIPELINE.md`: constructed wall tileset prototype compared with the generated batch.
 - `PRODUCT_QUESTIONS.md`: resolved answers that unblock PR 3; future unresolved decisions should be added explicitly.
 - Source materials and narrative authority: [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor); executable Godot runtime remains in this repository.
 - `preproduction/stage1/`: approved Stage 1 v0.5 story baseline.
