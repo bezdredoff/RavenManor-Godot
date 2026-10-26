@@ -271,6 +271,43 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
                       f'metadata/nav_id = {q(anchor["id"])}',
                       f'metadata/hotspot_id = {q(anchor.get("hotspotId", ""))}', ""])
 
+    # Exact map collision/architectural reference outlines from the original
+    # Godot feasibility map. They are OFF by default, review only: never
+    # instantiate StaticBody2D, collision shapes or navigation modifications.
+    footprints = project.get("referenceFootprints", [])
+    if not isinstance(footprints, list) or len(footprints) > 1000:
+        raise ValueError("Invalid reference footprints")
+    if footprints:
+        lines.extend(['[node name="ReferenceGeometry" type="Node2D" parent="."]',
+                      "visible = false", 'metadata/status = "MAP_GEOMETRY_GUIDES_ONLY"', ""])
+        seen_refs = set()
+        for i, footprint in enumerate(footprints):
+            if not isinstance(footprint, dict) or not isinstance(footprint.get("id"), str):
+                raise ValueError("Missing footprint reference ID")
+            if footprint["id"] in seen_refs:
+                raise ValueError("Duplicate footprint reference")
+            seen_refs.add(footprint["id"])
+            gx, gy, gw, gh = (num(footprint.get(key), "reference "+key)
+                              for key in ("x", "y", "w", "h"))
+            if not (0 < gw <= 8000 and 0 < gh <= 8000):
+                raise ValueError("Invalid reference footprint size")
+            points = [
+                vec(gx, gy * FLOOR_RATIO),
+                vec(gx + gw, gy * FLOOR_RATIO),
+                vec(gx + gw, (gy + gh) * FLOOR_RATIO),
+                vec(gx, (gy + gh) * FLOOR_RATIO),
+                vec(gx, gy * FLOOR_RATIO)
+            ]
+            lines.extend([
+                f'[node name={q("MapFootprint_" + safe(footprint["id"]) + "_" + str(i))} type="Line2D" parent="ReferenceGeometry"]',
+                "points = PackedVector2Array(" + ", ".join(x[len("Vector2("):-1] for x in points) + ")",
+                'default_color = Color(0.98, 0.76, 0.37, 0.78)',
+                "width = 2.0000",
+                f'metadata/source_prop_id = {q(footprint["id"])}',
+                f'metadata/world_local_top_left = {vec(gx, gy)}',
+                f'metadata/world_local_size = {vec(gw, gh)}', ""
+            ])
+
     scene_path = scene_dir / (safe(room_id.replace('-', '_')) + "_GamePreview.tscn")
     scene_dir.mkdir(parents=True, exist_ok=True)
     for path, binary in local_bytes.items():

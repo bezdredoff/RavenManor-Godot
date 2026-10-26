@@ -67,3 +67,7 @@ Independent desktop/tablet palette and properties collapse controls; characters 
 ## RM-PIPE-002: Room Builder game-scene importer (2026-10-25)
 
 Added 65° projected Builder JSON → separate Godot preview .tscn, resolving Hall pilot/source art, embedded user PNGs, preserving instance IDs/states and ignoring test characters. A sample import runs in Godot CI and appears as Prototype Lab option 6 when generated. This is **not** live game collision/navigation/story integration; layout/doors/occlusion remain approval gates. See `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
+
+## Original Hall mirrored back into Builder + Godot (2026-10-26)
+
+Recreated initial seven art placements directly from existing Godot pilot manifest and six world-map collision/stair rectangles, including five door markers. Reproducible Builder JSON at `examples/room_builder_hall_original.json` and generated 65° Godot review scene; `ReferenceGeometry` is toggleable/hidden/non-physical. Does **not** horizontally flip or replace authored gameplay Hall. Godot and regression checks assert original scene geometry.

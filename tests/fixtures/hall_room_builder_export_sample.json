@@ -1,24 +1,40 @@
 {
   "schemaVersion": 1,
   "roomId": "RM-ROOM-HALL",
-  "title": "Hall · EXAMPLE export only, not approved",
+  "title": "Холл · исходная расстановка карты Godot (черновик)",
   "width": 700,
   "height": 690,
   "grid": 25,
   "visualContractVersion": 1,
+  "sourceLayout": {
+    "kind": "mirror-existing-godot-placement",
+    "worldRect": [
+      500,
+      150,
+      700,
+      690
+    ],
+    "worldMap": "data/raven/season1_world_map.json",
+    "visualManifest": "data/raven/hall_visual_contract.json",
+    "horizontalFlip": false,
+    "status": "PROPOSED"
+  },
   "layers": [
     {
       "id": "floor",
+      "name": "Пол и ковры",
       "visible": true,
       "locked": false
     },
     {
       "id": "objects",
+      "name": "Мебель и декор",
       "visible": true,
       "locked": false
     },
     {
       "id": "foreground",
+      "name": "Передний план",
       "visible": true,
       "locked": false
     }
@@ -91,7 +107,7 @@
   ],
   "objects": [
     {
-      "id": "example-rug",
+      "id": "original-rug",
       "assetId": "catalog:RM-ASSET-HALL-010",
       "assetRefId": "RM-ASSET-HALL-010",
       "layerId": "floor",
@@ -104,7 +120,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-clock",
+      "id": "original-clock",
       "assetId": "catalog:RM-ASSET-HALL-002",
       "assetRefId": "RM-ASSET-HALL-002",
       "layerId": "objects",
@@ -117,7 +133,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-chair-left",
+      "id": "original-chair-left",
       "assetId": "catalog:RM-ASSET-HALL-017",
       "assetRefId": "RM-ASSET-HALL-017",
       "layerId": "objects",
@@ -130,7 +146,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-chair-right",
+      "id": "original-chair-right",
       "assetId": "catalog:RM-ASSET-HALL-018",
       "assetRefId": "RM-ASSET-HALL-018",
       "layerId": "objects",
@@ -143,7 +159,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-round-table",
+      "id": "original-round-table",
       "assetId": "catalog:RM-ASSET-HALL-019",
       "assetRefId": "RM-ASSET-HALL-019",
       "layerId": "objects",
@@ -156,7 +172,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-console",
+      "id": "original-console",
       "assetId": "catalog:RM-ASSET-HALL-007",
       "assetRefId": "RM-ASSET-HALL-007",
       "layerId": "objects",
@@ -169,7 +185,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-gallery",
+      "id": "original-gallery",
       "assetId": "catalog:RM-ASSET-HALL-006",
       "assetRefId": "RM-ASSET-HALL-006",
       "layerId": "objects",
@@ -182,7 +198,7 @@
       "hotspotId": ""
     },
     {
-      "id": "example-onoe",
+      "id": "original-onoe",
       "assetId": "character:onoe",
       "layerId": "objects",
       "x": 345,
@@ -195,9 +211,96 @@
   ],
   "anchors": [
     {
+      "id": "RM-DOOR-ENTRY-HALL",
+      "x": 350,
+      "y": 690,
+      "kind": "door",
+      "status": "open"
+    },
+    {
+      "id": "RM-DOOR-HALL-ARCHIVE",
+      "x": 0,
+      "y": 400,
+      "kind": "door",
+      "status": "gated"
+    },
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "x": 700,
+      "y": 435,
+      "kind": "door",
+      "status": "open"
+    },
+    {
+      "id": "RM-DOOR-HALL-EAST-WING",
+      "x": 350,
+      "y": 200,
+      "kind": "door",
+      "status": "future"
+    },
+    {
+      "id": "RM-DOOR-HALL-UPPER-FLOOR",
+      "x": 350,
+      "y": 170,
+      "kind": "door",
+      "status": "future"
+    },
+    {
       "id": "RM-NAV-HALL-SPAWN",
       "x": 350,
-      "y": 620
+      "y": 620,
+      "kind": "safe"
     }
-  ]
+  ],
+  "referenceFootprints": [
+    {
+      "id": "RM-ASSET-HALL-CLOCK",
+      "title": "Напольные часы",
+      "x": 75,
+      "y": 310,
+      "w": 60,
+      "h": 90
+    },
+    {
+      "id": "RM-ASSET-HALL-SEATS",
+      "title": "Кресла и стол",
+      "x": 140,
+      "y": 410,
+      "w": 160,
+      "h": 125
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-L",
+      "title": "Левый марш",
+      "x": 140,
+      "y": 40,
+      "w": 115,
+      "h": 195
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-R",
+      "title": "Правый марш",
+      "x": 445,
+      "y": 40,
+      "w": 115,
+      "h": 195
+    },
+    {
+      "id": "RM-ASSET-HALL-CONSOLE",
+      "title": "Консоль",
+      "x": 610,
+      "y": 570,
+      "w": 70,
+      "h": 65
+    },
+    {
+      "id": "RM-ASSET-HALL-GALLERY",
+      "title": "Галерея предков",
+      "x": 25,
+      "y": 70,
+      "w": 65,
+      "h": 165
+    }
+  ],
+  "provenance": "Exact copy of current Godot provisional world-map Hall geometry + existing pilot seven-sprite composition. No left/right flip. Not approved for production."
 }

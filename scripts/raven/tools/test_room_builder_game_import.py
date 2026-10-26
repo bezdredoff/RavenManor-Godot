@@ -87,5 +87,28 @@ class GamePreviewImportTests(unittest.TestCase):
             self.assertEqual(counts["ignoredCharacters"],1)
             self.assertNotIn("Onoe",path.read_text())
 
+    def test_source_geometry_mirrored_without_horizontal_flip(self):
+        original=json.loads((ROOT/"examples/room_builder_hall_original.json").read_text(encoding="utf-8"))
+        self.assertEqual(original["sourceLayout"]["worldRect"],[500,150,700,690])
+        self.assertFalse(original["sourceLayout"]["horizontalFlip"])
+        self.assertEqual(len(original["referenceFootprints"]),6)
+        self.assertEqual(len([a for a in original["anchors"] if a["kind"]=="door"]),5)
+        map_source=json.loads((ROOT/"data/raven/season1_world_map.json").read_text(encoding="utf-8"))
+        for marker in original["anchors"]:
+            if marker["kind"]!="door":continue
+            source=next(x for x in map_source["doors"] if x["id"]==marker["id"])
+            self.assertEqual([marker["x"]+500,marker["y"]+150],source["point"])
+        with tempfile.TemporaryDirectory() as temp:
+            scene, counts=scene_from_project(original,Path(temp))
+            text=scene.read_text(encoding="utf-8")
+            self.assertEqual(counts["rendered"],7)
+            self.assertIn('name="ReferenceGeometry" type="Node2D"',text)
+            self.assertIn('visible = false',text)
+            self.assertIn('RM-ASSET-HALL-STAIRS-L',text)
+            self.assertIn('RM-ASSET-HALL-STAIRS-R',text)
+            self.assertIn('RM-DOOR-HALL-ARCHIVE',text)
+            self.assertIn('RM-DOOR-HALL-CORRIDOR',text)
+            self.assertIn('RM-DOOR-ENTRY-HALL',text)
+
 if __name__=="__main__":
     unittest.main()

@@ -14,6 +14,10 @@ func _check() -> void:
 	assert(root.get_meta("ignore_test_characters", false))
 	assert(root.has_node("ReviewCamera"))
 	assert(root.has_node("HallPilotBackground"))
+	assert(root.has_node("ReferenceGeometry"))
+	assert(not root.get_node("ReferenceGeometry").visible)
+	assert(root.get_node("ReferenceGeometry").get_child_count() == 6)
+	assert(root.get_node("ReferenceGeometry").get_meta("status") == "MAP_GEOMETRY_GUIDES_ONLY")
 	assert(root.get_node("ReviewCamera").zoom == Vector2(0.74, 0.74))
 	var found_clock := false
 	var pilot_count := 0
