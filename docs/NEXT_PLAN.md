@@ -44,3 +44,7 @@ Hall now has a shared experimental 7-cutout visual contract for Room Builder v0.
 ## RM-PIPE-002B — original placement import parity
 
 Godot's provisional Hall world map and seven-item visual contract are now mirrored into a stable, Builder-compatible authored JSON and a dedicated, directly launchable Godot scene. Original door and physical footprint guides included for visual review. The next gate is actual art alignment/collider approval; no live-game scene swap is implied.
+
+## RM-PIPE-003 visual integration complete, pending art approval
+
+Imported Hall art from the .tscn is now drawn in the actual Whole Manor Map without double rendering. Existing A* paths, unlocked gates and collision shapes still come from world-map data. Next: approve image/door/stair seams, repair state visuals and individually calibrated chair/table footprints. See `docs/HALL_LIVE_IMPORT_PARITY.md`.

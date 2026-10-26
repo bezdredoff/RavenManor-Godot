@@ -71,3 +71,7 @@ Added 65° projected Builder JSON → separate Godot preview .tscn, resolving Ha
 ## Original Hall mirrored back into Builder + Godot (2026-10-26)
 
 Recreated initial seven art placements directly from existing Godot pilot manifest and six world-map collision/stair rectangles, including five door markers. Reproducible Builder JSON at `examples/room_builder_hall_original.json` and generated 65° Godot review scene; `ReferenceGeometry` is toggleable/hidden/non-physical. Does **not** horizontally flip or replace authored gameplay Hall. Godot and regression checks assert original scene geometry.
+
+## 2026-10-26 — RM-PIPE-003: imported Hall becomes Whole Manor Map's default art
+
+The active map reads the actual committed Builder-generated scene in **Импорт** mode. Runtime rejects stale door/physics coordinates, excludes legacy duplicated Hall furniture/runner, and retains current character, navigation and Raven saves. The AI1 art comparison remains; final doorway/staircase pixel calibration and collider upgrades remain unapproved. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
