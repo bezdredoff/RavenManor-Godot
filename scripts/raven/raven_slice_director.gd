@@ -2,7 +2,11 @@ extends RefCounted
 
 ## Story order uses stable RM-* progression IDs. Narrative wording/meaning is
 ## mirrored in data/raven/season1_narrative.json and docs/NARRATIVE_GAMEPLAY_INTEGRATION.md.
+## Prologue beats RM-BEAT-00-01..03 run before the manor arrival beat.
 const STEPS := [
+	{"id":"letter","kind":"vn","scene":"letter","title":"Пролог: письмо"},
+	{"id":"road","kind":"vn","scene":"road","title":"Пролог: дорога"},
+	{"id":"gates","kind":"vn","scene":"gates","title":"Пролог: ворота"},
 	{"id":"arrival","kind":"vn","scene":"arrival","title":"Сцена: возвращение и наследство"},
 	{"id":"access","kind":"map","title":"Освободить дверь спальни","body":"Пройдите в жилой коридор и расчистите физически заклинившую/заваленную дверь спальни (RM-HS-005). Ванная не является условием доступа."},
 	{"id":"level1","kind":"match3","level":"RM-LVL-001","title":"Match-3: Разобрать спальню"},
@@ -20,19 +24,22 @@ const STEPS := [
 
 
 static func next_step(state: Dictionary) -> Dictionary:
-	if not state.storyBeatsSeen.has("RM-BEAT-01-01"): return STEPS[0]
-	if not state.storyFlags.has("RM-FLAG-BEDROOM-ACCESS-CLEARED"): return STEPS[1]
-	if not state.firstClearLevels.has("RM-LVL-001"): return STEPS[2]
-	if not state.completedRestorations.has("RM-REST-001"): return STEPS[3]
-	if not state.storyBeatsSeen.has("RM-BEAT-01-02"): return STEPS[4]
-	if not state.firstClearLevels.has("RM-LVL-002"): return STEPS[5]
-	if not state.storyBeatsSeen.has("RM-BEAT-01-03"): return STEPS[6]
-	if not state.firstClearLevels.has("RM-LVL-003"): return STEPS[7]
-	if not state.completedRestorations.has("RM-REST-002"): return STEPS[8]
-	if not state.recordedClues.has("RM-CLUE-01-CHILDHOOD-OBJECT"): return STEPS[9]
-	if not state.storyBeatsSeen.has("RM-BEAT-01-04"): return STEPS[10]
-	if not state.storyBeatsSeen.has("RM-BEAT-01-05"): return STEPS[11]
-	return STEPS[12]
+	if not state.storyBeatsSeen.has("RM-BEAT-00-01"): return STEPS[0]
+	if not state.storyBeatsSeen.has("RM-BEAT-00-02"): return STEPS[1]
+	if not state.storyBeatsSeen.has("RM-BEAT-00-03"): return STEPS[2]
+	if not state.storyBeatsSeen.has("RM-BEAT-01-01"): return STEPS[3]
+	if not state.storyFlags.has("RM-FLAG-BEDROOM-ACCESS-CLEARED"): return STEPS[4]
+	if not state.firstClearLevels.has("RM-LVL-001"): return STEPS[5]
+	if not state.completedRestorations.has("RM-REST-001"): return STEPS[6]
+	if not state.storyBeatsSeen.has("RM-BEAT-01-02"): return STEPS[7]
+	if not state.firstClearLevels.has("RM-LVL-002"): return STEPS[8]
+	if not state.storyBeatsSeen.has("RM-BEAT-01-03"): return STEPS[9]
+	if not state.firstClearLevels.has("RM-LVL-003"): return STEPS[10]
+	if not state.completedRestorations.has("RM-REST-002"): return STEPS[11]
+	if not state.recordedClues.has("RM-CLUE-01-CHILDHOOD-OBJECT"): return STEPS[12]
+	if not state.storyBeatsSeen.has("RM-BEAT-01-04"): return STEPS[13]
+	if not state.storyBeatsSeen.has("RM-BEAT-01-05"): return STEPS[14]
+	return STEPS[15]
 
 
 static func events_for(step_id: String) -> Array[Dictionary]:
