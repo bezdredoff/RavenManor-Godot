@@ -145,3 +145,71 @@ def piece_report(name: str, boxes: list[Box]) -> dict:
                        round(max(xs), 2), round(max(ys), 2), round(max(zs), 2)],
             # Pivot sits on the floor at the inner corner, matching the room's wall line.
             "pivot": [0.0, 0.0, 0.0]}
+
+
+def wall_with_openings(length: float,
+                       openings: list[tuple[float, float, float, float]]) -> list[Box]:
+    """Straight wall with rectangular holes, built from boxes instead of booleans.
+
+    The wall is cut into horizontal slices at every profile and opening boundary; inside each
+    slice the openings remove their x-interval. That keeps the wall solid under a window and
+    above a door, and the hole's inner faces are the sides of the remaining boxes, so the
+    reveal depth equals the wall thickness for free.
+    """
+    if not openings:
+        return straight(length)
+
+    cuts = {z for z0, z1, _p in PROFILE for z in (z0, z1)}
+    for _x0, _x1, z0, z1 in openings:
+        cuts.update((z0, z1))
+    slices = sorted(cuts)
+
+    boxes: list[Box] = []
+    for z0, z1 in zip(slices, slices[1:]):
+        if z1 <= z0:
+            continue
+        band = next((b for b in PROFILE if b[0] <= z0 < b[1]), None)
+        if band is None:
+            continue
+        protrusion = band[2]
+        holes = sorted((x0, x1) for x0, x1, oz0, oz1 in openings if oz0 <= z0 and z1 <= oz1)
+        cursor = 0.0
+        solids: list[tuple[float, float]] = []
+        for x0, x1 in holes:
+            if x0 > cursor:
+                solids.append((cursor, x0))
+            cursor = max(cursor, x1)
+        if cursor < length:
+            solids.append((cursor, length))
+        for a, b in solids:
+            boxes.append(north_arm(a, b, z0, z1, protrusion))
+    return boxes
+
+def door_leaf(open_x0: float, open_x1: float, open_z0: float, open_z1: float,
+              gap: float = 1.5) -> list[Box]:
+    """Closed leaf plus casing, sitting inside the reveal so states are separate sprites."""
+    y0, y1 = -THICKNESS + 8.0, -8.0
+    return [
+        (open_x0 + gap, y0, open_z0 + gap, open_x1 - gap, y1, open_z1 - gap),
+        (open_x0 + gap + 6, y1 - 1.0, open_z0 + gap + 6, open_x1 - gap - 6, y1 + 2.0,
+         open_z1 - gap - 6),
+    ]
+
+
+def window_parts(open_x0: float, open_x1: float, open_z0: float,
+                 open_z1: float) -> tuple[list[Box], tuple[float, float, float, float]]:
+    """Mullioned frame plus the glass rectangle, which the game draws as its own layer."""
+    frame = 7.0
+    y0, y1 = -THICKNESS + 9.0, -9.0
+    mid_x = (open_x0 + open_x1) / 2
+    mid_z = (open_z0 + open_z1) / 2
+    boxes: list[Box] = [
+        (open_x0 + frame, y0, open_z0 + frame, open_x1 - frame, y1, open_z1 - frame),
+        (mid_x - 2.5, y0, open_z0 + frame, mid_x + 2.5, y1, open_z1 - frame),
+        (open_x0 + frame, y0, mid_z - 2.5, open_x1 - frame, y1, mid_z + 2.5),
+    ]
+    return boxes, (open_x0 + frame, open_z0 + frame, open_x1 - frame, open_z1 - frame)
+
+def covers(boxes: list[Box], x: float, y: float, z: float) -> bool:
+    """Public point-in-kit query used by the opening tests."""
+    return _inside(boxes, x, y, z)

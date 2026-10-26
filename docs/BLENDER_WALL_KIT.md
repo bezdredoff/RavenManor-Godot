@@ -67,3 +67,38 @@ procedural: no external assets, no purchases.
 4. Test the AI pass: ComfyUI img2img over these renders (denoise ~0.35–0.5) with the existing
    wall batch as the style anchor, then compare against the constructed and AI-only sets.
 5. Decide the camera: 50°/45° as here, the current 65°, or 2:1 isometric — it is one line.
+
+## Openings: doors, windows, arches, stairs
+
+An opening is a **hole in the wall geometry**, not a sprite pasted on top.
+`wall_with_openings()` cuts the wall into horizontal slices at every profile and opening
+boundary, so the wall stays solid above a door, below a window and between two openings;
+the hole's inner faces are the sides of the remaining boxes, so the reveal depth equals the
+wall thickness for free.
+
+Each opening then owns independent layers:
+
+| Layer | What it is | Swapped per state |
+|---|---|---|
+| Wall with hole | the structural piece; never changes | no |
+| Casing / frame | trim around the reveal, part of the wall finish | damaged variant only |
+| Leaf / sash | door leaf, window sash, gate | yes: closed / open / damaged |
+| Glass | separate transparent layer, so the game can show a room behind it | no |
+| Threshold | floor line; for open doors and arches it is just floor | no |
+| Stair opening | big hole plus a separate stair mesh; the balustrade in front is a foreground cutout with alpha | intact / damaged |
+
+Because the hole never changes, state variants are cheap: only the leaf, casing and glass are
+re-rendered. The door's pivot is the threshold centre, which is the same point the game already
+uses for `RM-DOOR-*`.
+
+Dimensions come from data the project already has: `OPENING_KINDS` in the builder
+(door 75, double 110, arch 110, window 70, glass 80, stair 140) and the opening intervals from
+`solidWallRuns()`. The generator takes `(x0, x1, z0, z1)` per opening so any width works; keep a
+minimum pier of ~30 units so the corner post and its trim stay readable.
+
+Occlusion is a render output, not an afterthought: the wall above an open door is a foreground
+mask, so a character walking behind it can fade the way Diablo fades a wall (the D2 "wall box"
+behaviour). Export the mask from the same camera.
+
+Evidence: `docs/evidence/blender_kit/openings.png` — a wall with a door opening (leaf recessed
+in the reveal) and a window opening (frame, mullions and transparent glass).
