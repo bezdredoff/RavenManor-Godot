@@ -3,8 +3,8 @@ extends Control
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
-const TILE_COLORS := {"raven":Color("40506b"),"key":Color("b8954d"),"rose":Color("884f62"),"candle":Color("d5c38b"),"book":Color("5d704d")}
-const TILE_MARKS := {"raven":"R","key":"K","rose":"✦","candle":"C","book":"B"}
+const TILE_COLORS := {"raven":Color("40506b"),"key":Color("b8954d"),"rose":Color("884f62"),"candle":Color("d5c38b"),"book":Color("5d704d"),"cup":Color("e8dcc8"),"brooch":Color("a883bc"),"quill":Color("bc9b73")}
+const TILE_MARKS := {"raven":"R","key":"K","rose":"✦","candle":"C","book":"B","cup":"☕","brooch":"◆","quill":"Q"}
 
 var content: Dictionary
 var body: VBoxContainer
@@ -55,6 +55,9 @@ func _show_menu() -> void:
 	for level: Dictionary in content.levels:
 		_add_button(body, "%s · %s" % [level.id, level.title], _open_level.bind(str(level.id)))
 	body.add_child(_label("VN СЦЕНЫ / BEATS", 18, Color("f0dfbd")))
+	for scene_id in content.get("prologueScenes", {}):
+		var prologue: Dictionary = content.prologueScenes[scene_id]
+		_add_button(body, "%s · %s" % [prologue.beatId, scene_id], _open_vn.bind(str(scene_id)))
 	for scene_id in content.vnScenes:
 		var scene: Dictionary = content.vnScenes[scene_id]
 		_add_button(body, "%s · %s" % [scene.beatId, scene_id], _open_vn.bind(str(scene_id)))
@@ -96,7 +99,7 @@ func _play_hint() -> void:
 
 
 func _open_vn(scene_id: String) -> void:
-	current_kind = "vn"; current_id = scene_id; vn_player = VN.new(); vn_player.open(content.vnScenes[scene_id]); _render_vn()
+	current_kind = "vn"; current_id = scene_id; vn_player = VN.new(); vn_player.open(_scene(scene_id)); _render_vn()
 
 
 func _render_vn() -> void:
@@ -111,8 +114,12 @@ func _render_vn() -> void:
 
 
 func _advance_vn() -> void:
-	if vn_player.advance(): vn_player.open(content.vnScenes[current_id])
+	if vn_player.advance(): vn_player.open(_scene(current_id))
 	_render_vn()
+
+
+func _scene(scene_id: String) -> Dictionary:
+	return content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
 
 
 func _level(id: String) -> Dictionary:
