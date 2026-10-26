@@ -1,0 +1,279 @@
+{
+  "schemaVersion": 1,
+  "status": "PROPOSED_COST_CAPPED",
+  "source": "docs/assets/CHARACTER_PRODUCTION_BIBLE.md (pre-existing) + approved season-one screenplay",
+  "renderScale": {
+    "vn": "normal elegant anime proportions; layered full/3/4 portraits",
+    "map": "independent mildly-chibi 3.5–4.5 heads with ground-contact pivot"
+  },
+  "layering": [
+    "base_pose",
+    "face_eyes",
+    "face_brows",
+    "face_mouth",
+    "prop_overlay",
+    "micro_fx"
+  ],
+  "commonMicro": [
+    "blink",
+    "talk_subtle",
+    "breathing",
+    "look_at_other",
+    "settle_to_idle"
+  ],
+  "commonMotionPolicy": "procedural/rig tween common animations, character-specific tempo; reduced-motion alternative required",
+  "characters": [
+    {
+      "id": "RM-CHAR-EVELYN",
+      "priority": "P0",
+      "poses": [
+        "relaxed",
+        "investigate",
+        "decide"
+      ],
+      "emotions": [
+        "neutral",
+        "skeptical",
+        "curious",
+        "amused",
+        "worried",
+        "determined"
+      ],
+      "signatureMicros": [
+        {
+          "id": "evelyn_hair_tuck",
+          "method": "overlay_or_rig",
+          "freq": "medium"
+        },
+        {
+          "id": "evelyn_note_glance",
+          "method": "rig",
+          "freq": "high"
+        },
+        {
+          "id": "evelyn_firm_exhale",
+          "method": "rig",
+          "freq": "low"
+        }
+      ],
+      "props": [
+        "letter",
+        "photo",
+        "household_ledger",
+        "diary",
+        "childhood_map",
+        "tea_mug",
+        "folder"
+      ],
+      "map": {
+        "tier": "full_traversal",
+        "clips": [
+          "idle",
+          "walk_down",
+          "walk_up",
+          "walk_side",
+          "turn",
+          "inspect",
+          "pick_up_small",
+          "interact"
+        ],
+        "directions": "side flip allowed only if outfit/parting reads correctly"
+      },
+      "directing": "lead actor; often looks between object and partner, reserved smile, intentional shift to confident posture in 6.1"
+    },
+    {
+      "id": "RM-CHAR-ADA",
+      "priority": "P0",
+      "poses": [
+        "composed",
+        "offer_tray",
+        "apron_reach"
+      ],
+      "emotions": [
+        "neutral",
+        "dry_amused",
+        "stern",
+        "warm",
+        "concerned",
+        "regretful"
+      ],
+      "signatureMicros": [
+        {
+          "id": "ada_apron_reach",
+          "method": "hand_plus_apron_prop",
+          "freq": "signature"
+        },
+        {
+          "id": "ada_precise_straighten",
+          "method": "rig",
+          "freq": "high"
+        },
+        {
+          "id": "ada_long_paused_blink",
+          "method": "eyes",
+          "freq": "medium"
+        }
+      ],
+      "props": [
+        "tea_tray",
+        "teacup",
+        "keys",
+        "clothespins",
+        "twine",
+        "letters_bundle",
+        "lantern"
+      ],
+      "map": {
+        "tier": "short_traversal",
+        "clips": [
+          "idle",
+          "walk_down",
+          "walk_up",
+          "walk_side",
+          "turn",
+          "tray_offer",
+          "apron_reach"
+        ],
+        "directions": "shared walk base; alternate prop overlays; do not show floating"
+      },
+      "directing": "controlled movements, tea ritual, matter-of-fact impossible apron inventory never explained in player-facing first-season scenes"
+    },
+    {
+      "id": "RM-CHAR-LUCAS",
+      "priority": "P0",
+      "poses": [
+        "formal",
+        "folder_present",
+        "explain"
+      ],
+      "emotions": [
+        "neutral",
+        "professional",
+        "polite_smile",
+        "reserved_worry",
+        "dry_amused",
+        "serious"
+      ],
+      "signatureMicros": [
+        {
+          "id": "lucas_glasses_adjust",
+          "method": "rig",
+          "freq": "signature"
+        },
+        {
+          "id": "lucas_page_align",
+          "method": "prop",
+          "freq": "high"
+        },
+        {
+          "id": "lucas_deliberate_pause",
+          "method": "eyes_rig",
+          "freq": "medium"
+        }
+      ],
+      "props": [
+        "notary_folder",
+        "estate_cost_sheet",
+        "pen",
+        "photograph",
+        "legal_forms"
+      ],
+      "map": {
+        "tier": "stationary_with_entry_exit",
+        "clips": [
+          "idle",
+          "turn",
+          "folder_offer",
+          "short_walk_if_required"
+        ],
+        "directions": "production first stage uses authored spawn/despawn, not full traversals"
+      },
+      "directing": "always shown only after sunset; no early fangs or vampire fx"
+    },
+    {
+      "id": "RM-CHAR-ROWAN",
+      "priority": "P0",
+      "poses": [
+        "work_ready",
+        "rest_tool",
+        "point_route"
+      ],
+      "emotions": [
+        "neutral",
+        "wry",
+        "friendly",
+        "concerned",
+        "focused",
+        "nostalgic"
+      ],
+      "signatureMicros": [
+        {
+          "id": "rowan_sleeve_wipe",
+          "method": "rig",
+          "freq": "signature"
+        },
+        {
+          "id": "rowan_tool_lower",
+          "method": "prop",
+          "freq": "high"
+        },
+        {
+          "id": "rowan_weight_shift",
+          "method": "rig",
+          "freq": "medium"
+        }
+      ],
+      "props": [
+        "hammer",
+        "garden_gloves",
+        "thermos_mug",
+        "toolbox",
+        "childhood_box",
+        "garden_plan"
+      ],
+      "map": {
+        "tier": "limited_traversal",
+        "clips": [
+          "idle",
+          "walk_down",
+          "walk_up",
+          "walk_side",
+          "turn",
+          "hammer_tap",
+          "inspect_plant"
+        ],
+        "directions": "daytime garden/fence/conservatory; no wolf traits pre-reveal"
+      },
+      "directing": "grounded practical gestures; no unrealistically repeated tools while holding a tea mug"
+    }
+  ],
+  "episodic": {
+    "artPolicy": "service vignettes, tool close-ups, phone/messages; no full VN/map sheet before approved need",
+    "characters": [
+      "electrician",
+      "plumber",
+      "glazier",
+      "builder",
+      "clockmaker",
+      "delivery_courier"
+    ],
+    "anonymousVoice": {
+      "id": "RM-CHAR-UNKNOWN-VOICE",
+      "treatment": "offscreen or memory sound only; no portrait/face until story approval"
+    }
+  },
+  "limits": {
+    "maxProductionPortraitPosesPerLead": 3,
+    "maxExpressionOverlaysPerLead": 6,
+    "sharedAnimationCycles": 5,
+    "uniqueSignatureMicrosPerLead": 3,
+    "mapFullWalkerCount": 1,
+    "mapShortWalkerCount": 2,
+    "defaultSimultaneousVisibleVNCharacters": 3
+  },
+  "notes": [
+    "Existing historical Adrian/Lucian/Silhouette variants are not valid current Season 1 cast; never generate them from previous registry without explicit canon approval.",
+    "Use facial layers to vary combinations; avoid generating each pose × emotion × micro as unique full-body raster.",
+    "Micro animations should not play simultaneously with physically contradictory prop holding or speaking."
+  ]
+}
