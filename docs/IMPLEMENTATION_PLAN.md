@@ -17,3 +17,9 @@ Implementation decisions stay in `docs/DECISIONS.md`: no free tap-to-move, autho
 - PR #17 (Hall generated art comparison) is merged after correcting the smoke test for separate chair/table PNGs. AI1/AI2/PLAN/SVG visible in Whole Manor Map; 8 PNGs preserved at original dimensions, checksum manifest and reconstructed prompts in repository. This is exploratory compositing, not final alignment.
 - PR #18 (Room Builder PWA v0.1) and #19 (Pages `/builder/` fallback fix) are merged and published; Android user confirms working access. Editor model/importer tests and Godot/Web CI passed, while exhaustive real-device QA, approved perspective transform and gameplay integration remain future work.
 - The current actionable plan is `RM-PIPE-001`, documented in `docs/NEXT_PLAN.md` and `docs/ROOM_PIPELINE_NEXT_GATE.md`. It targets tablet composition → validated coordinate/ID mapping → independent layered Godot Hall test → constrained one-room art/state pipeline. **Do not silently replace canonical world data or runtime saves.**
+
+## Narrative/gameplay sync (2026-10-26)
+
+The latest story decisions are now mirrored into the Godot runtime without changing the save schema or stable progression IDs. `RM-VS-01` begins with inheritance/arrival, treats Match-3 as preparation work, keeps bedroom access independent from bathroom repair, makes the bathroom a specialist repair, reaches a first night with delivery while the kitchen is unready, and hooks next into kitchen plus Rowan/conservatory. Multi-speaker VN lines are supported. See `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` and `data/raven/season1_narrative.json`.
+
+This narrative sync is a guardrail for RM-PIPE work: Hall/room imports, generated art and navigation previews must not create or reorder story state outside the existing reducer/event contract.
