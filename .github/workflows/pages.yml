@@ -44,9 +44,9 @@ jobs:
           python3 scripts/raven/tools/build_original_hall_layout.py --check
           python3 scripts/raven/tools/import_room_builder_game.py examples/room_builder_hall_original.json
           test -f scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
-          echo '=== ORIGINAL_HALL_SCENE_BEGIN ==='
-          cat scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
-          echo '=== ORIGINAL_HALL_SCENE_END ==='
+          # Prove the committed scene is byte-for-byte generated from current
+          # original world-map geometry + pilot visual contract.
+          git diff --exit-code -- scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
 
       - name: Run Raven checks
         run: bash scripts/check.sh
