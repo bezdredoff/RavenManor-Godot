@@ -5,14 +5,17 @@ export const WALL_STYLES = Object.freeze({
   glass: {label:'Оранжерея', color:'#52706c', trim:'#a9d0c5'}
 });
 
+// `portal` means the opening is traversable, so it cuts a hole in the wall. Windows and
+// glazed sections are not traversable: they stay on a solid wall and are never cut out.
 export const OPENING_KINDS = Object.freeze({
-  door: {label:'Обычная дверь', color:'#d39b73', defaultWidth:75},
-  double_door: {label:'Двойная дверь', color:'#e0ae72', defaultWidth:110},
-  arch: {label:'Арка', color:'#cba5d9', defaultWidth:110},
-  window: {label:'Окно', color:'#82cce0', defaultWidth:70},
-  glass: {label:'Стеклянная секция', color:'#75d4c7', defaultWidth:80},
-  stair: {label:'Лестничный проём', color:'#d9c27d', defaultWidth:140}
+  door: {label:'Обычная дверь', color:'#d39b73', defaultWidth:75, portal:true},
+  double_door: {label:'Двойная дверь', color:'#e0ae72', defaultWidth:110, portal:true},
+  arch: {label:'Арка', color:'#cba5d9', defaultWidth:110, portal:true},
+  window: {label:'Окно', color:'#82cce0', defaultWidth:70, portal:false},
+  glass: {label:'Стеклянная секция', color:'#75d4c7', defaultWidth:80, portal:false},
+  stair: {label:'Лестничный проём', color:'#d9c27d', defaultWidth:140, portal:true}
 });
+export const isPortal = kind => Boolean(OPENING_KINDS[kind]?.portal);
 
 const finite = value => Number.isFinite(value);
 export const wallLength = wall => Math.hypot(wall.bx-wall.ax,wall.by-wall.ay);
@@ -64,8 +67,9 @@ export function openingInterval(opening,wall){
 }
 
 export function solidWallRuns(wall,openings){
-  const intervals=openings.filter(o=>o.wallId===wall.id).map(o=>openingInterval(o,wall))
-    .sort((a,b)=>a.start-b.start);
+  // Only traversable openings remove wall material; a window sits on a solid wall.
+  const intervals=openings.filter(o=>o.wallId===wall.id&&isPortal(o.kind))
+    .map(o=>openingInterval(o,wall)).sort((a,b)=>a.start-b.start);
   const runs=[];let cursor=0;
   for(const interval of intervals){if(interval.start>cursor)runs.push([cursor,interval.start]);cursor=Math.max(cursor,interval.end);}
   const length=wallLength(wall);if(cursor<length)runs.push([cursor,length]);return runs;

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {exampleProject,validateProject} from '../model.mjs';
-import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls,wallBand,WALL_BAND_HEIGHT} from '../wall-tools.mjs';
+import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls,wallBand,WALL_BAND_HEIGHT,isPortal} from '../wall-tools.mjs';
 
 test('wall strokes snap orthogonally and derive connected corners',()=>{
  const first={id:'w1',...normalizeWall({x:2,y:3},{x:103,y:22},25),style:'grand',thickness:18};
@@ -46,4 +46,16 @@ test('textured wall bands keep one orientation and one module height',()=>{
  assert.deepEqual([forward.x,forward.y],[backward.x,backward.y]);
  assert.ok(Math.abs(vertical.angle-Math.PI/2)<1e-9);
  assert.equal(wallBand(right,120,80),null);
+});
+test('only traversable openings cut the wall; windows stay on a solid wall',()=>{
+ const wall={id:'w',ax:0,ay:0,bx:200,by:0,style:'residential',thickness:18};
+ const door={id:'d',wallId:'w',kind:'door',width:60,offset:.5};
+ const window_={id:'n',wallId:'w',kind:'window',width:60,offset:.5};
+ const glass={id:'g',wallId:'w',kind:'glass',width:80,offset:.5};
+ assert.deepEqual(solidWallRuns(wall,[door]),[[0,70],[130,200]]);
+ assert.deepEqual(solidWallRuns(wall,[window_]),[[0,200]]);
+ assert.deepEqual(solidWallRuns(wall,[glass]),[[0,200]]);
+ assert.deepEqual(solidWallRuns(wall,[door,window_]),[[0,70],[130,200]]);
+ assert.equal(isPortal('door'),true);assert.equal(isPortal('arch'),true);assert.equal(isPortal('stair'),true);
+ assert.equal(isPortal('window'),false);assert.equal(isPortal('glass'),false);assert.equal(isPortal('nope'),false);
 });

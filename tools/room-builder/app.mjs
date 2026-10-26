@@ -3,7 +3,7 @@ import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoo
 import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
-import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,wallLength,wallBand} from './wall-tools.mjs';
+import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,openingInterval,isPortal,wallLength,wallBand} from './wall-tools.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
@@ -279,6 +279,13 @@ function drawWalls(c,exporting=false){
  for(const opening of openings){
   const wall=walls.find(w=>w.id===opening.wallId);if(!wall)continue;
   const kind=OPENING_KINDS[opening.kind],x=wall.ax+(wall.bx-wall.ax)*opening.offset,y=wall.ay+(wall.by-wall.ay)*opening.offset;
+  if(!isPortal(opening.kind)){
+   // A window is not traversable: draw it as a band inside the solid wall, not as a gap.
+   const iv=openingInterval(opening,wall),len=wallLength(wall),ux=(wall.bx-wall.ax)/len,uy=(wall.by-wall.ay)/len;
+   c.strokeStyle=kind.color;c.lineWidth=Math.max(4,wall.thickness*.55);c.lineCap='butt';
+   c.beginPath();c.moveTo(wall.ax+ux*iv.start,wall.ay+uy*iv.start);c.lineTo(wall.ax+ux*iv.end,wall.ay+uy*iv.end);c.stroke();
+   c.lineCap='square';
+  }
   c.fillStyle=kind.color;c.strokeStyle='#201a21';c.lineWidth=2;c.beginPath();c.arc(x,y,Math.max(5,Math.min(12,opening.width*.12)),0,Math.PI*2);c.fill();c.stroke();
   if(!exporting&&opening.doorId){c.fillStyle='#f2e5d1';c.font='10px sans-serif';c.fillText(opening.doorId,x+8,y-8);}
  }
