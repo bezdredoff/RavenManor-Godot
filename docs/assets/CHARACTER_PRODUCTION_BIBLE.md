@@ -1,3 +1,5 @@
+> **Production update (2026-10-26, proposal for asset approval):** The actionable capped set for *current* Season 1 cast is now `data/raven/production/character_performance.json` (four leads, max three body poses and six expression overlays each, shared procedural micro cycles + three character-specific signatures). The expanded pose/emotion suggestions below are historical option lists; do not produce their full Cartesian product. VN/Map remain separate scales. For scene and line-level realization see `data/raven/production/vn_staging.json` and `line_performance_cues.json`. The prior underlying silhouettes, pre-reveal restrictions and episodic specialist rules remain applicable.
+
 # Character production bible v0.1 — two independent visual scales
 
 **Status:** working production specification, **not** approved character design. Existing approved source supports four primary cast roles and a small number of possible specialist cameos. Specific sprite frame counts and supplementary emotions below are production proposals. Maintain identity across VN and map representations; do not resize VN portraits to create chibi sprites.

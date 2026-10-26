@@ -1,0 +1,544 @@
+{
+  "schemaVersion": 1,
+  "status": "FIRST_PASS_EDITED_LOCALES_POPUPS_ONLY",
+  "languages": [
+    "ru",
+    "be",
+    "en"
+  ],
+  "type": "hotspot_popup",
+  "items": [
+    {
+      "id": "RM-POP-CLOCK",
+      "objectId": "PROP-HALL-CLOCK",
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Эти часы давно остановились. Нужен часовщик."
+        },
+        "be": {
+          "text": "Гэты гадзіннік даўно спыніўся. Патрэбны гадзіншчык."
+        },
+        "en": {
+          "text": "The clock stopped long ago. It needs a clockmaker."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-HALL-GALLERY",
+      "objectId": null,
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Знакомые лица. Жаль, я не помню, чьи они."
+        },
+        "be": {
+          "text": "Знаёмыя твары. Шкада, што не памятаю, чые яны."
+        },
+        "en": {
+          "text": "Familiar faces. I wish I remembered whose."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-HALL-SEATING",
+      "objectId": null,
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Здесь можно перевести дух."
+        },
+        "be": {
+          "text": "Тут можна крыху адпачыць."
+        },
+        "en": {
+          "text": "A good place to catch my breath."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-BEDROOM-DOOR",
+      "objectId": "PROP-BEDROOM-DOOR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Дверь заклинило. Сначала расчистим проход."
+        },
+        "be": {
+          "text": "Дзверы заклінавала. Спачатку расчышчу праход."
+        },
+        "en": {
+          "text": "The door is jammed. I'll clear the way first."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-BED",
+      "objectId": "PROP-BED",
+      "roomId": "RM-ROOM-BEDROOM",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Если привести спальню в порядок, здесь можно будет ночевать."
+        },
+        "be": {
+          "text": "Калі прывесці спальню ў парадак, тут можна будзе начаваць."
+        },
+        "en": {
+          "text": "Once the bedroom is cleaned up, I can sleep here."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-CHILDHOOD-CHEST",
+      "objectId": "PROP-CHILD-TRUNK",
+      "roomId": "RM-ROOM-BEDROOM",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Кажется, я знаю этот сундук. Надо заглянуть внутрь."
+        },
+        "be": {
+          "text": "Здаецца, я памятаю гэты куфар. Трэба зазірнуць унутр."
+        },
+        "en": {
+          "text": "I think I know this chest. I should look inside."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-BATHROOM",
+      "objectId": "PROP-BATH-PIPES",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Сырость за шкафом. Здесь понадобится сантехник."
+        },
+        "be": {
+          "text": "Вільгаць за шафай. Тут спатрэбіцца сантэхнік."
+        },
+        "en": {
+          "text": "Damp behind the cabinet. We'll need a plumber."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-KITCHEN-POWER",
+      "objectId": "PROP-KITCHEN-CIRCUIT",
+      "roomId": "RM-ROOM-KITCHEN",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Не трогаем проводку до проверки электриком."
+        },
+        "be": {
+          "text": "Не чапаем праводку, пакуль яе не праверыць электрык."
+        },
+        "en": {
+          "text": "No touching the wiring until an electrician checks it."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-KITCHEN-TABLE",
+      "objectId": "PROP-KITCHEN-TABLE",
+      "roomId": "RM-ROOM-KITCHEN",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Сначала освободим стол. Потом разберёмся с остальным."
+        },
+        "be": {
+          "text": "Спачатку вызвалім стол. Потым возьмемся за астатняе."
+        },
+        "en": {
+          "text": "Clear the table first. Then we'll tackle the rest."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LEDGER",
+      "objectId": "PROP-HOUSEHOLD-LEDGER",
+      "roomId": "RM-ROOM-KITCHEN",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "По этим датам можно понять, как дом постепенно пустел."
+        },
+        "be": {
+          "text": "Па гэтых датах можна зразумець, як дом паступова пусцеў."
+        },
+        "en": {
+          "text": "These dates may show how the house slowly emptied."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LIBRARY-DOOR",
+      "objectId": "PROP-LIBRARY-DOOR",
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "В библиотеку лучше войти, когда проход будет безопасен."
+        },
+        "be": {
+          "text": "Лепш зайсці ў бібліятэку, калі ўваход будзе бяспечны."
+        },
+        "en": {
+          "text": "I should wait until the library entrance is safe."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LIBRARY-SHELF",
+      "objectId": "PROP-LIBRARY-SHELVES",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Полка опасно накренилась. Сначала её закрепит мастер."
+        },
+        "be": {
+          "text": "Паліца небяспечна нахілілася. Спачатку майстар павінен яе замацаваць."
+        },
+        "en": {
+          "text": "That shelf is dangerously tilted. A professional must secure it."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LIBRARY-DESK",
+      "objectId": "PROP-LIBRARY-DESK",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Стол завален бумагами. Среди них могут быть нужные письма."
+        },
+        "be": {
+          "text": "Стол завалены паперамі. Сярод іх могуць быць патрэбныя лісты."
+        },
+        "en": {
+          "text": "The desk is buried in papers. There may be letters worth finding."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-PHOTO",
+      "objectId": "PROP-FADED-PHOTO",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Подпись выцвела. Я пока могу разобрать только дату."
+        },
+        "be": {
+          "text": "Подпіс выцвіў. Пакуль магу разабраць толькі дату."
+        },
+        "en": {
+          "text": "The caption has faded. I can only make out the date."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-POSTCARDS",
+      "objectId": "PROP-UNSENT-POSTCARDS",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Открытки для меня. Но их так и не отправили."
+        },
+        "be": {
+          "text": "Паштоўкі для мяне. Але іх так і не адправілі."
+        },
+        "en": {
+          "text": "Postcards addressed to me. But never sent."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-GARDEN-PATH",
+      "objectId": null,
+      "roomId": "RM-ROOM-ENTRY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Дорожка просела. Роуэн просил пока её обходить."
+        },
+        "be": {
+          "text": "Сцежка прасела. Роўэн прасіў пакуль абыходзіць яе."
+        },
+        "en": {
+          "text": "The path has sunk. Rowan told me to avoid it."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-GARDEN-FENCE",
+      "objectId": "PROP-GARDEN-FENCE",
+      "roomId": "RM-ROOM-ENTRY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Роуэн чинит ограждение. Лучше не мешать."
+        },
+        "be": {
+          "text": "Роўэн рамантуе агароджу. Лепш не замінаць."
+        },
+        "en": {
+          "text": "Rowan is fixing the fence. Best not get in his way."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-CONSERVATORY-GLASS",
+      "objectId": "PROP-CONSERVATORY-GLASS",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Здесь битое стекло и старые рамы. Без мастера нельзя."
+        },
+        "be": {
+          "text": "Тут бітае шкло і старыя рамы. Без майстра не абысціся."
+        },
+        "en": {
+          "text": "Broken glass and rotten frames. We need a professional."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-CONSERVATORY-BENCH",
+      "objectId": "PROP-CONSERVATORY-BENCH",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Под этой скамьёй могла остаться моя старая коробка."
+        },
+        "be": {
+          "text": "Пад гэтай лаўкай магла застацца мая старая скрыначка."
+        },
+        "en": {
+          "text": "My old keepsake box might still be under this bench."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-CHILDHOOD-MAP",
+      "objectId": "PROP-CHILDHOOD-MAP",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "«Чтобы не забыть дорогу». Почему я тогда это написала?"
+        },
+        "be": {
+          "text": "«Каб не забыць дарогу». Чаму я тады гэта напісала?"
+        },
+        "en": {
+          "text": "'So I won't forget the way.' Why did I write that?"
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-WET-LETTERS",
+      "objectId": "PROP-WET-DOCUMENTS",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Нужно спасти письма, пока вода не испортила чернила."
+        },
+        "be": {
+          "text": "Трэба ўратаваць лісты, пакуль вада не размыла чарніла."
+        },
+        "en": {
+          "text": "I need to save these letters before the ink runs."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-STAIRS",
+      "objectId": "PROP-STAIRCASE",
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Лестница ненадёжная. Без обследования наверх не пойду."
+        },
+        "be": {
+          "text": "Лесвіца ненадзейная. Не пайду наверх, пакуль яе не правераць."
+        },
+        "en": {
+          "text": "The stairs aren't safe. No going up until they're inspected."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-WEST-WING",
+      "objectId": "PROP-WEST-WING",
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Западное крыло закрыто из-за повреждённых перекрытий."
+        },
+        "be": {
+          "text": "Заходняе крыло закрыта праз пашкоджаныя перакрыцці."
+        },
+        "en": {
+          "text": "The west wing is closed because the structure is unsafe."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LEGAL-COSTS",
+      "objectId": "PROP-RESTORATION-COSTS",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Эта смета выглядит пугающе. И она только предварительная."
+        },
+        "be": {
+          "text": "Гэты каштарыс палохае. І ён толькі папярэдні."
+        },
+        "en": {
+          "text": "That estimate is frightening. And it's only preliminary."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-DIARY",
+      "objectId": "PROP-DIARY",
+      "roomId": "RM-ROOM-BEDROOM",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Нужно записать это сейчас, пока не забыла снова."
+        },
+        "be": {
+          "text": "Трэба запісаць гэта цяпер, пакуль зноў не забыла."
+        },
+        "en": {
+          "text": "I should write this down before I forget again."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-ROWAN-NPC",
+      "objectId": null,
+      "roomId": "RM-ROOM-ENTRY",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Роуэн занят садом. Может, он помнит что-то о моём детстве."
+        },
+        "be": {
+          "text": "Роўэн працуе ў садзе. Можа, ён нешта памятае пра маё дзяцінства."
+        },
+        "en": {
+          "text": "Rowan is working in the garden. Maybe he remembers my childhood."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-ADA-NPC",
+      "objectId": null,
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Ада всегда знает, что здесь не так. Или делает вид."
+        },
+        "be": {
+          "text": "Ада заўсёды ведае, што тут не так. Ці робіць выгляд."
+        },
+        "en": {
+          "text": "Ada always knows what's wrong here. Or acts like she does."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-LUCAS-NPC",
+      "objectId": null,
+      "roomId": "RM-ROOM-ARCHIVE",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Лукас приезжает вечером. Может, он поможет с документами."
+        },
+        "be": {
+          "text": "Лукас прыязджае ўвечары. Можа, дапаможа з дакументамі."
+        },
+        "en": {
+          "text": "Lucas visits in the evening. Maybe he can help with the papers."
+        }
+      },
+      "repeatPolicy": "repeatable_with_state_aware_overrides",
+      "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    }
+  ]
+}

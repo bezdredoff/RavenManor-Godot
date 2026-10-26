@@ -1,0 +1,4463 @@
+{
+  "schemaVersion": 1,
+  "status": "PRODUCTION_DRAFT_NOT_RUNTIME",
+  "locales": [
+    "ru",
+    "be",
+    "en"
+  ],
+  "fallbackLocale": "ru",
+  "sourceRevision": "PR43-season1-screenplay",
+  "scenes": [
+    {
+      "sceneId": "RM-BEAT-00-01",
+      "legacyRuntimeScene": "letter",
+      "title": {
+        "ru": "Письмо",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-00-02",
+      "legacyRuntimeScene": "road",
+      "title": {
+        "ru": "Дорога",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-00-03",
+      "legacyRuntimeScene": "gates",
+      "title": {
+        "ru": "Ворота",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-01-01",
+      "legacyRuntimeScene": "arrival",
+      "title": {
+        "ru": "Прибытие",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-01-02",
+      "legacyRuntimeScene": "bedroom",
+      "title": {
+        "ru": "Знакомая спальня",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-01-03",
+      "legacyRuntimeScene": "trace",
+      "title": {
+        "ru": "Нужен специалист",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-01-04",
+      "legacyRuntimeScene": "night",
+      "title": {
+        "ru": "Первая ночь",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-01-05",
+      "legacyRuntimeScene": "complete",
+      "title": {
+        "ru": "Утро: кухня, Роуэн и оранжерея",
+        "be": null,
+        "en": null
+      },
+      "source": "data/raven/rm_vs_01_content.json",
+      "status": "already_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-02-01",
+      "title": {
+        "ru": "2.1. Завтрак без кухни",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-02-02",
+      "title": {
+        "ru": "2.2. Человек с грязными ботинками",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-02-03",
+      "title": {
+        "ru": "2.3. Список, который становится длиннее",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-02-04",
+      "title": {
+        "ru": "2.4. Обед, который всё-таки состоялся",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-03-01",
+      "title": {
+        "ru": "3.1. Библиотека",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-03-02",
+      "title": {
+        "ru": "3.2. Следы чужого почерка",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-03-03",
+      "title": {
+        "ru": "3.3. Разговор о памяти",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-03-04",
+      "title": {
+        "ru": "3.4. Второе письмо",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-04-01",
+      "title": {
+        "ru": "4.1. Не ходите по этой дорожке",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-04-02",
+      "title": {
+        "ru": "4.2. Под стеклянной крышей",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-04-03",
+      "title": {
+        "ru": "4.3. Коллекция невозможных сокровищ",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-04-04",
+      "title": {
+        "ru": "4.4. После дождя",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-05-01",
+      "title": {
+        "ru": "5.1. Буря",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-05-02",
+      "title": {
+        "ru": "5.2. Мокрые письма",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-05-03",
+      "title": {
+        "ru": "5.3. Не та история, которую она помнила",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-05-04",
+      "title": {
+        "ru": "5.4. Дом, который не просил героев",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-06-01",
+      "title": {
+        "ru": "6.1. Бумаги на столе",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-06-02",
+      "title": {
+        "ru": "6.2. Ключи, которые подходят не ко всем дверям",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-06-03",
+      "title": {
+        "ru": "6.3. Чтобы не забыть дорогу",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "proposed_future_runtime"
+    },
+    {
+      "sceneId": "RM-BEAT-06-POST",
+      "title": {
+        "ru": "После титров",
+        "be": null,
+        "en": null
+      },
+      "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
+      "status": "optional"
+    }
+  ],
+  "entries": [
+    {
+      "id": "RM-BEAT-00-01-L001",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Квартира съёмная. Мебель чужая. Даже чашка — не моя, я её просто не вернула. Так проще уезжать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-01-L002",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Письмо из нотариальной конторы. Герб — ворон на ветке. Я такого не видела лет двадцать. Или видела, но забыла, что видела."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-01-L003",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "«Наследство». Поместье, которое я почти не помню. Дом я любила. Просто не могла там остаться."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-01-L004",
+      "sceneId": "RM-BEAT-00-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я помню комнаты. Людей — почти нет. Даже лиц."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-02-L001",
+      "sceneId": "RM-BEAT-00-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Городок есть на картах, но автобусы туда не ходят — только с пересадкой в райцентре, и то не каждый день. Как будто кто-то очень давно решил, что сюда не стоит ездить просто так."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-02-L002",
+      "sceneId": "RM-BEAT-00-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Чем ближе я подъезжаю, тем сильнее чувство, что я что-то забыла. Не дом. Не людей. Что-то большее. И это «большее» смотрит на меня из тумана, как старый портрет из тёмной комнаты."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-03-L001",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здравствуйте. Я… по письму."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-03-L002",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Знаю. Я заварила чай. Вы не пьёте чай?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-03-L003",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пью. Просто… вы меня не ждали?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-00-03-L004",
+      "sceneId": "RM-BEAT-00-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ждала. Просто не думала, что вы приедете сегодня. Чай всё равно заварила — привычка. Калитку не закрывайте — она обижается."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L001",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Эвелин Рейвен? Лукас, нотариальная контора."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L002",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да. Я помню этот дом хуже, чем должна. И хуже, чем хотелось бы."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L003",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Формальности закрыты. Ключи от первого этажа — ваши. Подписи здесь и здесь. Я загляну завтра — обсудим остальное. Дом не любит спешки. И юристов."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L004",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Жилые комнаты стояли пустыми с тех пор, как вы уехали. Если вы остаётесь — начнём со спальни. Дверь там заклинило, я не смогла открыть. Ванную тоже лучше не трогать до утра: там кто-то живёт."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L005",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кто-то?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-01-L006",
+      "sceneId": "RM-BEAT-01-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сырость. Она тоже имеет привычки."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-02-L001",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я узнаю комнату, хотя почти не помню, как жила здесь. Как будто помнит не голова, а руки."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-02-L002",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "За столько лет всё кажется чужим. Разберите вещи — а я посмотрю, что ещё можно спасти. И что спасать уже поздно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-02-L003",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы всегда так говорите?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-02-L004",
+      "sceneId": "RM-BEAT-01-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Только о мебели. О людях — реже."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-03-L001",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "За шкафом сырость. Это уже не уборка — здесь нужен сантехник."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-03-L002",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я знаю мастера. Он работает со старыми домами. И с их обитателями."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-03-L003",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "С обитателями?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-03-L004",
+      "sceneId": "RM-BEAT-01-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "С теми, кто не платит. Сначала освободим трубы — потом позовём."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L001",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Спальня и ванная наконец пригодны. Для первой ночи этого достаточно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L002",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кухню не трогайте до утра — проводка не работает уже несколько месяцев, а газ отключили за неуплату. Я побоялась включать. Поэтому еду я заказала. Её оставили у входа."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L003",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "У входа?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L004",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Курьер не стал заходить. Сказал, что дом «не приглашает». Я его не виню."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L005",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Странно: держу эту вещь, и запах старого дерева кажется знакомым сильнее, чем сам дом. Будто память возвращается кусками."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-04-L006",
+      "sceneId": "RM-BEAT-01-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Возвращается. Всегда возвращается. Вопрос — в каком виде."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-05-L001",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Утром начнём с кухни — вызовем электрика, проверим проводку. И Роуэн должен зайти: посмотреть сад и оранжерею. Он не любит, когда его ждут."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-05-L002",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Роуэн?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-05-L003",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Садовник. Приходит из города, здесь не живёт. Пока."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-01-05-L004",
+      "sceneId": "RM-BEAT-01-05",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Хорошо. А потом я хочу понять, почему некоторые комнаты я помню, а людей — почти нет."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "runtime"
+    },
+    {
+      "id": "RM-BEAT-02-01-L001",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вчера мне казалось, что после ночи здесь я проснусь и всё вспомню."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L002",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "И как?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L003",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вспомнила, что матрас скрипит. Считается?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L004",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Для матраса — большое достижение."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L005",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А часы в холле? Мне казалось, в детстве я засыпала под их бой."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L006",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Они давно не ходят. Потребуется часовщик."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L007",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь всё требует специалиста."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L008",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Зато некоторые специалисты ещё отвечают на телефон."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L009",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Электрик?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L010",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я оставила заявку. До проверки ничего на кухне не включаем."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L011",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А это, должно быть, садовник."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-01-L012",
+      "sceneId": "RM-BEAT-02-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ещё одна профессия, без которой здесь не выжить."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L001",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Потолок всё ещё на месте. Уже неплохо."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L002",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Доброе утро?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L003",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Эвелин Рейвен. Роуэн ухаживает за садом."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L004",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сочувствую наследству. И поздравляю с возвращением."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L005",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь все сначала соболезнуют?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L006",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Только те, кто видел смету на ремонт."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L007",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Мы знакомы?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L008",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Когда вы были маленькой, вы таскали в карманах камни, листья и мои инструменты. Я был старше; не удивлюсь, если не помните."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L009",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сейчас я почти никого не помню."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L010",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Бывает, когда уезжаешь надолго."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L011",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Восточную тропинку обойдите. После дождя грунт осел. А оранжерею пока не открывайте: там битое стекло и гнилые рамы."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L012",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Значит, сначала найдём, где безопасно ходить."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-02-L013",
+      "sceneId": "RM-BEAT-02-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Наконец-то разумный план."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L001",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я думала, наследство — это когда тебе оставляют что-то ценное."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L002",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вам оставили большой дом."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L003",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "С неработающей кухней, сломанными часами и подозрительной ванной."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L004",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ванная уже не подозрительная."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L005",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А я начала радоваться исправному крану. Тревожный признак."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L006",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь записи за двадцать лет. Уголь, дрова, ремонт крыши… А вот уборка жилых комнат, хотя здесь никто не жил."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L007",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пустые комнаты тоже собирают пыль."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L008",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я хочу понять, что было с домом после моего отъезда."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L009",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда посмотрите на даты. По ним иногда узнаёшь больше, чем из разговоров."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L010",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сначала ремонтировали всё. Потом — только первый этаж. Оранжерею перестали отапливать. А здесь… деньги на западное крыло, но самого ремонта нет."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L011",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Строители обнаружили повреждённые перекрытия. Дальше решили хотя бы закрыть опасную часть."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L012",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "То есть комнаты постепенно переставали использовать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L013",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Мы сохраняли то, что могли."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L014",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А здесь только небольшие заказы еды. Судя по записям, вы сами почти не едите."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L015",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Скромные привычки."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L016",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Зато чай расходуется с впечатляющей скоростью."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L017",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Хорошие привычки требуют постоянства."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L018",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Мне нужны старые документы о западном крыле. Возможно, они в библиотеке."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-03-L019",
+      "sceneId": "RM-BEAT-02-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Разумно. Но сначала доведём до ума кухню."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L001",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Итак, у нас свет, холодильник и электрический чайник."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L002",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Лучше, чем вчера."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L003",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А газ?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L004",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Плиту проверит специалист. До этого не включать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L005",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Значит, можем хранить продукты, кипятить воду и рассматривать холодный ужин при хорошем освещении."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L006",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы забыли про чай."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L007",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Этого вы бы мне не простили."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L008",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Лукас нашёл упоминание семейных документов. Приедет завтра вечером."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L009",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда стоит подготовить библиотеку."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L010",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы знаете, что он ищет?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L011",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Знаю, что ему понадобится чистый стол."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L012",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Это не ответ."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-02-04-L013",
+      "sceneId": "RM-BEAT-02-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Зато полезный совет."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L001",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Прекрасная дверь. Жаль, петли не согласны."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L002",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "В этом доме есть дверь, которая откроется без комментария о ремонте?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L003",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Входная. Иногда."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L004",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кажется, я помню эту комнату."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L005",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Нам нужны семейная переписка и бумаги о ремонтах. Завещание ссылается на документы, которых нет в конторе."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L006",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "И, разумеется, всё спрятано в самой пыльной комнате."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-01-L007",
+      "sceneId": "RM-BEAT-03-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сначала освободим стол и закрепим полку. Потом будем искать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L001",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вот фотография. Это я?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L002",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L003",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А кто рядом?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L004",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ваша семья."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L005",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я понимаю, что не случайные люди забрались в альбом. Кто именно?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L006",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Подпись расплылась. Видна только дата."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L007",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Дайте взглянуть. Некоторые буквы сохранились. Возможно, получится разобрать их на увеличенном снимке."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L008",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы узнаёте человека?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L009",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Лицо закрыто, фотография выцвела. Я не хочу гадать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L010",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда пока запишем дату. Может, найдётся другая фотография."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L011",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Они адресованы мне. Почему их не отправили?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L012",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь нет ни марок, ни почтовых отметок. Похоже, их только собирались отправить."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-02-L013",
+      "sceneId": "RM-BEAT-03-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Почему же мне казалось, что меня здесь никто не ждал?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L001",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пока я жила далеко, от детства оставались только какие-то обрывки воспоминаний. В основном о комнатах и вещах. А людей я почти не помнила."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L002",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Детские воспоминания редко бывают полными."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L003",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Но когда я приехала сюда, начала вспоминать больше. Вчера узнала запах спальни. Сегодня вспомнила, где стоял стол, хотя комнату переставили."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L004",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Знакомые места иногда помогают вспомнить забытое."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L005",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А если дело не только в местах? Что, если я забывала что-то важное?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L006",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Что заставляет вас так думать?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L007",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я не могла вспомнить лица людей, с которыми жила. А теперь иногда кажется, что вот-вот вспомню."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L008",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Записывайте всё, что приходит на память. Особенно то, что можно проверить по письмам и фотографиям."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L009",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Чтобы отличить воспоминания от догадок?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-03-L010",
+      "sceneId": "RM-BEAT-03-03",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Именно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L001",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "«Не пытайся удержать её силой. Если она уедет, пусть уедет. Главное, чтобы у неё однажды осталась возможность выбрать самой»."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L002",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Не все письма писали для чужих глаз."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L003",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Это обо мне?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L004",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Возможно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L005",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я всегда думала, что уехала потому, что меня не хотели видеть."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L006",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Люди иногда отпускают тех, кого любят."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L007",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Но зачем было оставлять всё недосказанным?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L008",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Боюсь, на этот вопрос у меня пока нет честного ответа."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-03-04-L009",
+      "sceneId": "RM-BEAT-03-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда мне нужен тот, кто помнит меня ребёнком. Роуэн."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L001",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Принесла чай. Ада сказала, вы с утра работаете."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L002",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Спасибо. Если привыкну, стану требовательным."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L003",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "В следующий раз приносите свой термос."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L004",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Справедливо."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L005",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я нашла письма. Похоже, после моего отъезда обо мне помнили."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L006",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Конечно. Вы постоянно что-нибудь находили или теряли. Обычно одновременно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L007",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Правда?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L008",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы однажды спрятали мою лопатку. Сказали, что она устала работать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L009",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "И где она?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L010",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "В оранжерее. Возможно, до сих пор там."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L011",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Может, поищем?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L012",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пока туда лучше не заходить: битое стекло и прогнившие рамы. Сначала расчистим всё безопасным способом и заменим повреждённое."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L013",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Значит, сперва подготовка."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-01-L014",
+      "sceneId": "RM-BEAT-04-01",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вот потом можно искать лопатку-пенсионерку."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L001",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь стало меньше зелени."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L002",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Несколько зим без отопления. Часть растений перенёс сюда, под целые стёкла."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L003",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тут стояла деревянная коробка с защёлкой."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L004",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы складывали туда камни, листья и перья. Показывали мне каждый, как драгоценность."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L005",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вспоминаю руку. Маленькую — мою. И ещё чью-то рядом."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L006",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Не заставляйте себя вспомнить всё сразу."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L007",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Почему все здесь так говорят?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-02-L008",
+      "sceneId": "RM-BEAT-04-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Потому что вы выглядите так, будто хотите прожить двадцать лет за один день."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L001",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Камень, лента, пуговица. Великое наследство."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L002",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пуговицу вы считали королевской."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L003",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А она от старого пальто?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L004",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Почти наверняка."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L005",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вот это я рисовала? Здесь библиотека, здесь сад… Что за проход?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L006",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Старая служебная часть. Сейчас закрыта: перекрытия опасны."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-03-L007",
+      "sceneId": "RM-BEAT-04-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Зачем ребёнку такая надпись у себя дома?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L001",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Когда я уезжала, думала, что никогда не вернусь."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L002",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Дети часто так говорят."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L003",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я уже не была совсем маленькой."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L004",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Это не всегда помогает."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L005",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вы никогда не хотели уехать?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L006",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Хотел."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L007",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Что остановило?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L008",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Работа. Люди. Сад. Порядок зависит от дня."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L009",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Когда жила далеко, мне иногда снился дом. Но после пробуждения я не могла даже вспомнить, где он."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L010",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А теперь?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L011",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Теперь помню сон целиком."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-04-04-L012",
+      "sceneId": "RM-BEAT-04-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пойдёмте. Ночью обещают бурю."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L001",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Только не говорите, что опять что-нибудь сломалось."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L002",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Возможно, окно в оранжерее."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L003",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Роуэн ещё там?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L004",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Он должен был закончить раньше. Я попробую позвонить."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L005",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Может, выйдем через старый служебный проход?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L006",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Перекрытия опасны. Не станем рисковать ещё одной жизнью ради сокращения пути."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-01-L007",
+      "sceneId": "RM-BEAT-05-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда проверим, что можем сделать здесь."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L001",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Нет, только не письма! Я половины даже ещё не прочитала!"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L002",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Не трите мокрые страницы, чернила могут расплыться."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L003",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы носите с собой бельевую верёвку?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L004",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Сегодня — да."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L005",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вчера?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L006",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кажется, ложку."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L007",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ада, вы ведь были здесь всё это время. Почему вы раньше ничего мне не рассказывали?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L008",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы уехали и начали новую жизнь. Я не хотела возвращать вас сюда одними только неприятными воспоминаниями."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L009",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Но теперь я вернулась."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L010",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да. И, кажется, мне больше не стоит решать за вас, что вам лучше знать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L011",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вот. Я сохранила кое-какую переписку. Может, она поможет вам разобраться."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L012",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "У вас в фартуке ещё и архив?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-02-L013",
+      "sceneId": "RM-BEAT-05-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Небольшой. Большой остался в шкафу."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L001",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Здесь сказано, что я сама хотела уехать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L002",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L003",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я помню, что никто не пытался меня остановить. И почему-то решила, что все только и ждали, когда я уеду."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L004",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Иногда позволить человеку уйти — тоже забота."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L005",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Но я была ребёнком."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L006",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "И очень упрямым ребёнком."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L007",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Спасибо."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L008",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пожалуйста."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L009",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вот здесь: «Она должна увидеть другой мир, прежде чем решит, нужен ли ей этот дом». Кто написал?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L010",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Подпись не сохранилась. Я помню, что об этом спорили, но не уверена в подробностях."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L011",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я почему-то злилась на людей, которых теперь даже не могу вспомнить."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L012",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Возможно, у вас были причины."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L013",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А может, я сама захотела уехать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L014",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда стоит выяснить почему. И не обвинять заранее ни себя, ни остальных."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L015",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Впервые у меня появился вопрос, на который можно попытаться найти ответ."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-03-L016",
+      "sceneId": "RM-BEAT-05-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда завтра начнём с него."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L001",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы живы!"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L002",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Планировал остаться в мире живых."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L003",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Что с оранжереей?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L004",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Две рамы придётся менять. Дерево упало рядом, крышу не задело."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L005",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А я уже представляла развалины."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L006",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Всё лучше, чем выглядело ночью."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L007",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Роуэн, хотите чаю?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L008",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "С удовольствием. После такого утра горячий чай не помешает."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L009",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда сперва снимите грязные ботинки. Я только вчера вымыла пол."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L010",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Справедливо. Хотя после бури пол — не самое страшное, что пострадало в этом доме."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L011",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А вот этого мы пока не знаем."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L012",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я вчера чуть не пошла к оранжерее через закрытый проход."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L013",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Хорошо, что не пошли. Обычно такие решения заканчиваются выломанными дверями и новыми ремонтами."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L014",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вчера я впервые испугалась не того, что дом развалится."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L015",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А чего?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L016",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Что мне снова придётся уезжать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-05-04-L017",
+      "sceneId": "RM-BEAT-05-04",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда пора подумать, что нужно сделать, чтобы остаться."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L001",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Прежде чем продолжим, мне нужно знать, что вы решили делать с поместьем."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L002",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Продать, сдать или всю жизнь чинить?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L003",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Третий вариант может оказаться дороже первых двух."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L004",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А если я останусь?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L005",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда вам придётся оплачивать содержание дома: налоги, страховку, отопление, ремонт. И это только известные расходы."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L006",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Это стоимость всего ремонта?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L007",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Только срочного."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L008",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Прекрасно. Можно сразу добавить ноль."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L009",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я бы предпочёл не добавлять."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L010",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "У меня в другом месте квартира, работа и жизнь, в которой не надо проверять потолок перед завтраком."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L011",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы не обязаны от всего отказываться. Я могу заняться продажей после необходимых проверок. Но не обещаю, что покупатель сохранит дом таким, каким вы его знаете."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L012",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А что станет с Адой?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L013",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Думаю, об этом стоит поговорить с ней."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L014",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пока я была далеко, мне казалось, что меня здесь больше ничего не ждёт. Теперь я нашла письма, которые не получила, и людей, которых почему-то забыла."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L015",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Любопытство — плохая основа для финансового решения."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L016",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда добавим упрямство."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L017",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Если вы останетесь, придётся изменить планы и потратить накопления. Возможно, комнаты будут закрыты годами. Если позже решите продать, потраченное время никто не вернёт."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L018",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Всю жизнь мне казалось, что я что-то здесь оставила. И даже не могла вспомнить что."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L019",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я остаюсь."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L020",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Уверены?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L021",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Нет. Но хочу остаться. И впервые этого достаточно, чтобы попробовать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L022",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда начнём с плана обязательных расходов. Крыша, лестница, западное крыло. Порядок ещё уточним."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L023",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А нельзя с чего-нибудь приятного?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L024",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Боюсь, самая приятная часть только что закончилась."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-01-L025",
+      "sceneId": "RM-BEAT-06-01",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Тогда мне понадобится ещё одна чашка чая."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L001",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Спальня — готова. Ванная — готова. Кухня — почти. Библиотека снова похожа на библиотеку."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L002",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Оранжерее нужен ещё один визит стекольщика."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L003",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А западное крыло?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L004",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Пусть инженер-строитель проверит перекрытия. Тогда узнаем, что укреплять, а что менять."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L005",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Второй этаж?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L006",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "В нескольких местах течёт крыша. И лестница такая, что страшно наступать — ступенька может провалиться."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L007",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "И никаких секретных ключей, которые всё исправят?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L008",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ключи есть. Секретного плотника к ним, к сожалению, не прилагается."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L009",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Значит, будем искать обычного."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L010",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ROWAN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Хорошего. Иначе всё переделывать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L011",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А эти места я ещё проверю. Когда станет безопасно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L012",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Когда станет безопасно."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-02-L013",
+      "sceneId": "RM-BEAT-06-02",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да, Ада. Именно тогда."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L001",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "writing",
+      "localized": {
+        "ru": {
+          "text": "Я приехала сюда разобрать бумаги и вернуться к прежней жизни. Вместо этого научилась разбираться в протечках, перестала доверять старым лестницам и обнаружила, что здесь никто не умеет отвечать на простой вопрос. Особенно Ада."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L002",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Я всё ещё не помню, почему уехала. Не знаю, почему лица стираются из памяти, а комнаты — нет. Но больше не хочу делать вид, что прошлого не было."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L003",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Ну вот. Теперь всё всерьёз."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L004",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Эвелин? Я принесла чай."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L005",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Поставьте у двери. И… Ада?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L006",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L007",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Спасибо, что не бросили этот дом."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L008",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кто-то ведь должен был за ним присматривать."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L009",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
+      "delivery": "memory_voice",
+      "localized": {
+        "ru": {
+          "text": "Если однажды забудешь, не пугайся. Начни с того, что помнишь."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-03-L010",
+      "sceneId": "RM-BEAT-06-03",
+      "speakerId": "RM-CHAR-EVELYN",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Кто это сказал?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L001",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Она решила остаться?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L002",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Да."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L003",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Вы довольны?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L004",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Осторожно надеюсь."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L005",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "А если она начнёт вспоминать?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L006",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Придётся говорить правду."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L007",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-LUCAS",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Всю?"
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    },
+    {
+      "id": "RM-BEAT-06-POST-L008",
+      "sceneId": "RM-BEAT-06-POST",
+      "speakerId": "RM-CHAR-ADA",
+      "delivery": "speech",
+      "localized": {
+        "ru": {
+          "text": "Для начала ту, которую мы сами знаем."
+        },
+        "be": null,
+        "en": null
+      },
+      "source": "screenplay"
+    }
+  ],
+  "notices": [
+    {
+      "id": "RM-BEAT-02-01-STG01",
+      "sceneId": "RM-BEAT-02-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Раздаётся стук во входную дверь.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-02-02-STG01",
+      "sceneId": "RM-BEAT-02-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Роуэн показывает просевшую дорожку.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-02-03-STG01",
+      "sceneId": "RM-BEAT-02-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин открывает книгу.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-02-03-STG02",
+      "sceneId": "RM-BEAT-02-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин перелистывает поздние страницы.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-02-04-STG01",
+      "sceneId": "RM-BEAT-02-04",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Приходит сообщение от Лукаса.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-03-01-STG01",
+      "sceneId": "RM-BEAT-03-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин чувствует знакомый запах древесины и старой бумаги.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-03-02-STG01",
+      "sceneId": "RM-BEAT-03-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин переворачивает фотографию.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-03-02-STG02",
+      "sceneId": "RM-BEAT-03-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин убирает фотографию в конверт.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-03-02-STG03",
+      "sceneId": "RM-BEAT-03-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Между страницами обнаруживаются открытки без марок.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-03-02-STG04",
+      "sceneId": "RM-BEAT-03-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "На одной открытке: «Если захочешь вернуться, тебе всегда откроют».",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-04-01-STG01",
+      "sceneId": "RM-BEAT-04-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Роуэн забивает последний гвоздь и убирает молоток в ящик.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-04-02-STG01",
+      "sceneId": "RM-BEAT-04-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин останавливается у скамьи.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-04-03-STG01",
+      "sceneId": "RM-BEAT-04-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "На дне лежит нарисанная ребёнком карта дома.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-04-03-STG02",
+      "sceneId": "RM-BEAT-04-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "На обороте надпись: «Чтобы не забыть дорогу».",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-04-04-STG01",
+      "sceneId": "RM-BEAT-04-04",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Роуэн замечает усилившийся ветер.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-01-STG01",
+      "sceneId": "RM-BEAT-05-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Снаружи звенит стекло.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-01-STG02",
+      "sceneId": "RM-BEAT-05-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Связь пропадает.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-02-STG01",
+      "sceneId": "RM-BEAT-05-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Из кармана фартуха Ада извлекает бечёвку и деревянные прищепки.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-02-STG02",
+      "sceneId": "RM-BEAT-05-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Ада осторожно подвешивает плотные, менее ценные листы за свободные поля. Хрупкие и особо важные документы раскладывают на сухой поверхности и откладывают для реставратора.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-02-STG03",
+      "sceneId": "RM-BEAT-05-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Ада откладывает лист.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-05-02-STG04",
+      "sceneId": "RM-BEAT-05-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Ада достаёт связку старых писем.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-01-STG01",
+      "sceneId": "RM-BEAT-06-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Лукас показывает предварительную смету.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-01-STG02",
+      "sceneId": "RM-BEAT-06-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Лукас ненадолго замолкает.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-01-STG03",
+      "sceneId": "RM-BEAT-06-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин отодвигает документы о продаже.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-01-STG04",
+      "sceneId": "RM-BEAT-06-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Лукас достаёт бумаги для дальнейшего управления поместьем.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-01-STG05",
+      "sceneId": "RM-BEAT-06-01",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин подписывает бумаги по управлению наследством, не договор купли-продажи.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-02-STG01",
+      "sceneId": "RM-BEAT-06-02",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин замечает неясные отметки на детской карте.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG01",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Она улыбается.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG02",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Эвелин вписывает в дневник: «Я остаюсь». Она открывает телефон и отправляет сообщение о продлении своего отсутствия и переносе планов возвращения в прежний город.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG03",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Стук в дверь.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG04",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Небольшая пауза.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG05",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Когда шаги стихнут, Эвелин вновь смотрит на детскую карту. В памяти вспыхивает образ: маленькая рука рисует коридор, чья-то другая придерживает лист.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-03-STG06",
+      "sceneId": "RM-BEAT-06-03",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Она сразу записывает услышанное, чтобы снова не потерять.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    },
+    {
+      "id": "RM-BEAT-06-POST-STG01",
+      "sceneId": "RM-BEAT-06-POST",
+      "kind": "non_spoken_stage_direction",
+      "textRu": "Ада уносит поднос. Одна чашка остаётся нетронутой.",
+      "requiresTranslationOnlyIfPlayerFacing": true
+    }
+  ]
+}
