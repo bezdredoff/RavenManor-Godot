@@ -49,7 +49,7 @@ Last reconciled: **2026-10-25** after merged PRs #17–#19. The owner confirmed 
 
 ## RM-EDITOR-002: game-projected Room Builder pilot (2026-10-25)
 
-Room Builder v0.3 defaults to a **65° projected, directly editable game-floor view** (plan remains secondary), using Godot's exact reversible floor transform at arbitrary editor zoom. A 0.74× preset and optional copied Godot Hall AI1 background/door guides are available when the draft room matches the proposed 700×690 map geometry. Old 1000×800 rooms remain untouched and are visibly flagged as unaligned. No final height/occlusion/character/prop-art certification is inferred. See `docs/ROOM_BUILDER_GAME_PROJECTION.md`.
+Room Builder defaults to a **65° projected, directly editable game-floor view** and now also has a deterministic **65°/45° volumetric room cutaway**. Four closed wall sides become a room; adjacent rectangles share their existing wall, and doors/arches remain attached to that wall. Plan and Godot views retain the same reversible stored coordinates. A 0.74× preset and optional copied Godot Hall AI1 background/door guides remain available when the draft room matches the proposed 700×690 map geometry. Old projects remain untouched. No final height/occlusion/character/prop-art or collision certification is inferred. See `docs/ROOM_BUILDER_GAME_PROJECTION.md` and `docs/ROOM_BUILDER_VOLUMETRIC_ROOMS.md`.
 
 
 ## 2026-10-25 — RM-PIPE experimental Hall rendering parity v0.4

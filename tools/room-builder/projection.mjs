@@ -6,22 +6,37 @@
 export const GODOT_CAMERA_DEGREES = 65;
 export const GODOT_DEFAULT_ZOOM = 0.74;
 export const FLOOR_DEPTH_RATIO = Math.sin(GODOT_CAMERA_DEGREES * Math.PI / 180);
-export const VIEW_MODES = Object.freeze(['game','plan']);
+export const ROOM_AZIMUTH_DEGREES = 45;
+export const ROOM_AXIS = Math.SQRT1_2;
+export const VIEW_MODES = Object.freeze(['game','room','plan']);
 export const depthRatio = mode => mode === 'game' ? FLOOR_DEPTH_RATIO : 1;
 export function toScreen(point,view,mode='game') {
+ if(mode==='room')return {x:view.x+(point.x-point.y)*ROOM_AXIS*view.scale,
+  y:view.y+(point.x+point.y)*ROOM_AXIS*FLOOR_DEPTH_RATIO*view.scale};
  const depth=depthRatio(mode);
  return {x:view.x+point.x*view.scale,y:view.y+point.y*view.scale*depth};
 }
 export function toWorld(point,view,mode='game') {
- const depth=depthRatio(mode);
  if(!(view.scale>0))throw new Error('Invalid camera zoom');
+ if(mode==='room'){
+  const u=(point.x-view.x)/(ROOM_AXIS*view.scale),v=(point.y-view.y)/(ROOM_AXIS*FLOOR_DEPTH_RATIO*view.scale);
+  return {x:(u+v)/2,y:(v-u)/2};
+ }
+ const depth=depthRatio(mode);
  return {x:(point.x-view.x)/view.scale,y:(point.y-view.y)/(view.scale*depth)};
 }
 export function worldDragDelta(dx,dy,zoom,mode='game') {
  if(!(zoom>0))throw new Error('Invalid camera zoom');
+ if(mode==='room')return {x:(dx/ROOM_AXIS+dy/(ROOM_AXIS*FLOOR_DEPTH_RATIO))/(2*zoom),
+  y:(dy/(ROOM_AXIS*FLOOR_DEPTH_RATIO)-dx/ROOM_AXIS)/(2*zoom)};
  return {x:dx/zoom,y:dy/(zoom*depthRatio(mode))};
 }
 export function fitProjectedRoom(width,height,canvasWidth,canvasHeight,mode='game',padding=42) {
+ if(mode==='room'){
+  const projectedWidth=(width+height)*ROOM_AXIS,projectedHeight=(width+height)*ROOM_AXIS*FLOOR_DEPTH_RATIO;
+  const scale=Math.max(0.01,Math.min((canvasWidth-padding)/projectedWidth,(canvasHeight-padding-170)/projectedHeight,3));
+  return {scale,x:canvasWidth/2+(height-width)*ROOM_AXIS*scale/2,y:padding/2+170};
+ }
  const d=depthRatio(mode);
  const scale=Math.max(0.01,Math.min((canvasWidth-padding)/width,(canvasHeight-padding)/(height*d),3));
  return {scale,x:(canvasWidth-width*scale)/2,y:(canvasHeight-height*d*scale)/2};

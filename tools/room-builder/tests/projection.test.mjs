@@ -7,7 +7,7 @@ test('matches Godot current exact 65 degree transform and default game zoom',()=
  assert.equal(GODOT_CAMERA_DEGREES,65);
  assert.equal(GODOT_DEFAULT_ZOOM,0.74);
  assert.ok(Math.abs(FLOOR_DEPTH_RATIO-Math.sin(65*Math.PI/180))<1e-12);
- for(const mode of ['game','plan']){
+ for(const mode of ['game','room','plan']){
   for(const p of [{x:0,y:0},{x:350,y:345},{x:700,y:690},{x:-40,y:35}]){
    const viewport={x:71,y:-34,scale:0.74};
    const mapped=toScreen(p,viewport,mode),back=toWorld(mapped,viewport,mode);
@@ -22,6 +22,8 @@ test('dragging/picking are exact inverses even at small fractional zoom',()=>{
    assert.ok(Math.abs(d.x*zoom-24)<1e-9);
    assert.ok(Math.abs(d.y*zoom*(mode==='game'?FLOOR_DEPTH_RATIO:1)+36)<1e-9);
   }
+  const d=worldDragDelta(24,-36,zoom,'room'),screen=toScreen(d,{x:0,y:0,scale:zoom},'room');
+  assert.ok(Math.abs(screen.x-24)<1e-9&&Math.abs(screen.y+36)<1e-9);
  }
 });
 test('projected fit and PNG dimensions respect floor compression',()=>{

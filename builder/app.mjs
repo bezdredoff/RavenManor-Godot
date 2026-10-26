@@ -4,6 +4,7 @@ import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previe
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
 import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,openingInterval,isPortal,chooseWallPiece,wallLength,wallBand} from './wall-tools.mjs';
+import {detectRooms,shellSegments,segmentOpenings} from './room-shell.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
@@ -345,11 +346,27 @@ function drawWalls(c,exporting=false){
  if(wallDraft){const wall=normalizeWall(wallDraft.start,wallDraft.end,project.grid);if(wall){c.strokeStyle='#79d9bd';c.lineWidth=6;c.setLineDash([10,6]);c.beginPath();c.moveTo(wall.ax,wall.ay);c.lineTo(wall.bx,wall.by);c.stroke();c.setLineDash([]);}}
  c.restore();
 }
+function installRoomViewOption(){
+ const select=$('#previewMode');if(!select||select.querySelector('option[value="room"]'))return;
+ const option=document.createElement('option');option.value='room';option.textContent='Объёмная комната 65°/45°';
+ select.insertBefore(option,select.querySelector('option[value="plan"]'));
+ const example=document.createElement('button');example.type='button';example.id='seedRoomShell';example.textContent='Пример: две соседние комнаты';example.title='Добавить обратимый пример стен, общей двери и арки';
+ example.onclick=()=>{
+  if((project.walls||[]).length){notify('Пример добавляется только когда стен ещё нет');return;}
+  checkpoint();const g=project.grid,x0=g*3,y0=g*3,x1=x0+g*8,x2=x1+g*7,y1=y0+g*7;
+  const make=(id,ax,ay,bx,by,style='grand')=>({id,ax,ay,bx,by,style,thickness:18,layerId:'architecture'});
+  project.walls=[make(uid('wall'),x0,y0,x1,y0),make(uid('wall'),x1,y0,x1,y1),make(uid('wall'),x1,y1,x0,y1),make(uid('wall'),x0,y1,x0,y0),make(uid('wall'),x1,y0,x2,y0,'residential'),make(uid('wall'),x2,y0,x2,y1,'residential'),make(uid('wall'),x2,y1,x1,y1,'residential')];
+  project.openings=[{id:uid('opening'),wallId:project.walls[1].id,kind:'door',width:Math.min(75,(y1-y0)*.45),offset:.55,state:'closed',foreground:true},{id:uid('opening'),wallId:project.walls[3].id,kind:'arch',width:Math.min(110,(y1-y0)*.55),offset:.55,state:'open',foreground:true}];
+  viewMode='room';changed();fit();notify('Добавлены две комнаты: общая дверь и наружная арка. Отмена вернёт прежний черновик.');
+ };
+ document.querySelector('.wall-settings')?.append(example);
+}
 function updateProjectionStatus(){
  const r=referenceForCurrentRoom();
- $('#canvasStatus').textContent=viewMode==='game'?'Игровой вид Godot · 65° · пол ×'+FLOOR_DEPTH_RATIO.toFixed(3):'Технический план · XY';
+ $('#canvasStatus').textContent=viewMode==='game'?'Игровой вид Godot · 65° · пол ×'+FLOOR_DEPTH_RATIO.toFixed(3):viewMode==='room'?'Объёмная комната · 65° / 45°':'Технический план · XY';
  const warning=$('#renderWarning');
  if(viewMode==='plan')warning.textContent='Вид сверху — вспомогательный. Проверяй композицию в игровом режиме 65°.';
+ else if(viewMode==='room')warning.textContent='Замкни прямоугольник стен — появится комната. Соседний прямоугольник использует общую стену; дверь или арка в ней соединяет помещения. Это визуальный cutaway, координаты не меняются.';
  else if(!r)warning.textContent='Игровая проекция активна, но данные карты Godot недоступны. Графика предметов пока схематическая.';
  else if(!r.aligned)warning.textContent='Черновик '+project.width+'×'+project.height+' не совпадает с размером Godot '+r.width+'×'+r.height+'. Фон и порталы скрыты. Координаты не менялись.';
  else warning.textContent=activeContract()?'Пилотные PNG, прямостоящие спрайты и сортировка относительно Оноэ. Двери/коллизии/маски и финальный арт ещё не утверждены.':'Проекция и двери Godot: PNG предметов пока не доступны.';
@@ -361,7 +378,59 @@ function useGodotZoom(){
  draw();
 }
 
-function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.canvas.height);c.save();c.setTransform(viewport.scale,0,0,viewport.scale*depthRatio(viewMode),viewport.x,viewport.y);c.fillStyle='#bdb6a8';c.fillRect(0,0,project.width,project.height);
+const ROOM_WALL_HEIGHT=200;
+const roomScreen=(point,z,viewport)=>{const p=toScreen(point,viewport,'room');return{x:p.x,y:p.y-z*Math.cos(GODOT_CAMERA_DEGREES*Math.PI/180)*viewport.scale};};
+function polygon(c,points,fill,stroke='#2a211e',lineWidth=1){c.beginPath();points.forEach((p,i)=>(i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y)));c.closePath();if(fill){c.fillStyle=fill;c.fill();}if(stroke){c.strokeStyle=stroke;c.lineWidth=lineWidth;c.stroke();}}
+function roomQuad(c,a,b,z0,z1,viewport,fill,stroke='#2a211e'){
+ polygon(c,[roomScreen(a,z0,viewport),roomScreen(b,z0,viewport),roomScreen(b,z1,viewport),roomScreen(a,z1,viewport)],fill,stroke,Math.max(1,viewport.scale*1.3));
+}
+function pointAlong(segment,distance){const length=Math.hypot(segment.b.x-segment.a.x,segment.b.y-segment.a.y),t=length?distance/length:0;return{x:segment.a.x+(segment.b.x-segment.a.x)*t,y:segment.a.y+(segment.b.y-segment.a.y)*t};}
+function drawRoomWall(c,segment,viewport){
+ const length=Math.hypot(segment.b.x-segment.a.x,segment.b.y-segment.a.y),style=WALL_STYLES[segment.style]||WALL_STYLES.grand;
+ const openings=segmentOpenings(segment,project.walls||[],project.openings||[]),portals=openings.filter(o=>isPortal(o.kind));
+ const intervals=portals.map(o=>[o.start,o.end]).sort((a,b)=>a[0]-b[0]);let cursor=0;
+ const face=segment.a.y===segment.b.y?style.color:'#49353a';
+ for(const [start,end] of intervals){if(start>cursor)roomQuad(c,pointAlong(segment,cursor),pointAlong(segment,start),0,ROOM_WALL_HEIGHT,viewport,face);cursor=Math.max(cursor,end);}
+ if(cursor<length)roomQuad(c,pointAlong(segment,cursor),pointAlong(segment,length),0,ROOM_WALL_HEIGHT,viewport,face);
+ for(const opening of portals){
+  const a=pointAlong(segment,opening.start),b=pointAlong(segment,opening.end);
+  if(opening.kind==='arch'){
+   const strips=18,spring=95,rise=78;
+   for(let i=0;i<strips;i++){
+    const t0=i/strips,t1=(i+1)/strips;
+    const archHeight=t=>spring+rise*(1-Math.abs(2*t-1));
+    roomQuad(c,pointAlong(segment,opening.start+(opening.end-opening.start)*t0),pointAlong(segment,opening.start+(opening.end-opening.start)*t1),Math.min(archHeight(t0),archHeight(t1)),ROOM_WALL_HEIGHT,viewport,face,null);
+   }
+  }else roomQuad(c,a,b,opening.kind==='stair'?190:138,ROOM_WALL_HEIGHT,viewport,face);
+  c.strokeStyle=style.trim;c.lineWidth=Math.max(2,viewport.scale*4);
+  for(const edge of [a,b]){const p0=roomScreen(edge,0,viewport),p1=roomScreen(edge,opening.kind==='arch'?95:(opening.kind==='stair'?190:138),viewport);c.beginPath();c.moveTo(p0.x,p0.y);c.lineTo(p1.x,p1.y);c.stroke();}
+ }
+ for(const opening of openings.filter(o=>!isPortal(o.kind))){
+  const a=pointAlong(segment,opening.start),b=pointAlong(segment,opening.end);
+  roomQuad(c,a,b,58,150,viewport,'#71939a',style.trim);
+ }
+ const topA=roomScreen(segment.a,ROOM_WALL_HEIGHT,viewport),topB=roomScreen(segment.b,ROOM_WALL_HEIGHT,viewport);
+ c.strokeStyle='#8d7769';c.lineWidth=Math.max(3,viewport.scale*8);c.beginPath();c.moveTo(topA.x,topA.y);c.lineTo(topB.x,topB.y);c.stroke();
+}
+function drawRoomScene(c,viewport,exporting=false){
+ c.clearRect(0,0,c.canvas.width,c.canvas.height);c.save();
+ const rooms=detectRooms(project.walls||[]),floorRooms=rooms.length?rooms:[{x0:0,y0:0,x1:project.width,y1:project.height}];
+ for(const [index,room] of floorRooms.entries()){
+  const corners=[{x:room.x0,y:room.y0},{x:room.x1,y:room.y0},{x:room.x1,y:room.y1},{x:room.x0,y:room.y1}].map(p=>roomScreen(p,0,viewport));
+  polygon(c,corners,index%2?'#81776d':'#8d8174','#665b51',Math.max(1,viewport.scale*2));
+ }
+ if(showGrid&&!exporting){c.strokeStyle='#d9ccb51f';c.lineWidth=1;for(let x=0;x<=project.width;x+=project.grid){const a=roomScreen({x,y:0},0,viewport),b=roomScreen({x,y:project.height},0,viewport);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}for(let y=0;y<=project.height;y+=project.grid){const a=roomScreen({x:0,y},0,viewport),b=roomScreen({x:project.width,y},0,viewport);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();}}
+ const walls=shellSegments(project.walls||[]).sort((a,b)=>((a.a.x+a.b.x+a.a.y+a.b.y)-(b.a.x+b.b.x+b.a.y+b.b.y)));
+ for(const segment of walls){const a=roomScreen(segment.a,0,viewport),b=roomScreen(segment.b,0,viewport),offset={x:38*viewport.scale,y:48*viewport.scale};polygon(c,[a,b,{x:b.x+offset.x,y:b.y+offset.y},{x:a.x+offset.x,y:a.y+offset.y}],'#231a1940',null);drawRoomWall(c,segment,viewport);}
+ for(const o of project.objects.filter(o=>layerFor(o)?.visible&&(!rooms.length||rooms.some(r=>o.x+o.w/2>=r.x0&&o.x+o.w/2<=r.x1&&o.y+o.h/2>=r.y0&&o.y+o.h/2<=r.y1)))){
+  const a=assetFor(o);if(!a)continue;const points=[{x:o.x,y:o.y},{x:o.x+o.w,y:o.y},{x:o.x+o.w,y:o.y+o.h},{x:o.x,y:o.y+o.h}].map(p=>roomScreen(p,0,viewport));
+  polygon(c,points,a.color||'#735d64','#382e31',Math.max(1,viewport.scale));const center=roomScreen({x:o.x+o.w/2,y:o.y+o.h/2},0,viewport);c.fillStyle='#f3e2ce';c.font=`${Math.max(10,18*viewport.scale)}px system-ui`;c.textAlign='center';c.textBaseline='middle';c.fillText(a.symbol||'▪',center.x,center.y);
+ }
+ if(wallDraft){const wall=normalizeWall(wallDraft.start,wallDraft.end,project.grid);if(wall){const a=roomScreen({x:wall.ax,y:wall.ay},0,viewport),b=roomScreen({x:wall.bx,y:wall.by},0,viewport);c.strokeStyle='#79d9bd';c.lineWidth=5;c.setLineDash([10,6]);c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.stroke();c.setLineDash([]);}}
+ c.restore();
+}
+
+function drawScene(c,viewport,exporting=false){if(viewMode==='room'){drawRoomScene(c,viewport,exporting);return;}c.clearRect(0,0,c.canvas.width,c.canvas.height);c.save();c.setTransform(viewport.scale,0,0,viewport.scale*depthRatio(viewMode),viewport.x,viewport.y);c.fillStyle='#bdb6a8';c.fillRect(0,0,project.width,project.height);
  const ref=referenceForCurrentRoom();if(viewMode==='game'&&ref?.aligned&&project.roomId==='RM-ROOM-HALL'){const bg=ensureHallReferenceImage();if(bg.complete&&bg.naturalWidth)c.drawImage(bg,0,0,project.width,project.height);}
  c.strokeStyle='#4d3f46';c.lineWidth=16;c.strokeRect(7,7,project.width-14,project.height-14);
  if(showGrid&&!exporting){c.strokeStyle='#69645c33';c.lineWidth=1/viewport.scale;c.beginPath();for(let x=0;x<=project.width;x+=project.grid){c.moveTo(x,0);c.lineTo(x,project.height);}for(let y=0;y<=project.height;y+=project.grid){c.moveTo(0,y);c.lineTo(project.width,y);}c.stroke();}
@@ -385,22 +454,47 @@ function drawScene(c,viewport,exporting=false){c.clearRect(0,0,c.canvas.width,c.
  c.restore();if(viewMode==='game'&&(contract||characterObjects().length))drawGameSprites(c,viewport,contract,exporting);}
 function draw(){if(!ready)return;const dpr=window.devicePixelRatio||1,w=Math.round(canvas.clientWidth*dpr),h=Math.round(canvas.clientHeight*dpr);if(w!==canvas.width||h!==canvas.height){canvas.width=w;canvas.height=h;}ctx.setTransform(dpr,0,0,dpr,0,0); // canvas coordinates are CSS pixels
  const fake={scale:view.scale*dpr,x:view.x*dpr,y:view.y*dpr};ctx.setTransform(1,0,0,1,0,0);drawScene(ctx,fake);$('#zoomLabel').textContent=`${Math.round(view.scale*100)}%`;updateProjectionStatus();}
-function fit(){view=fitProjectedRoom(project.width,project.height,canvas.clientWidth,canvas.clientHeight,viewMode);draw();}
+function volumetricBounds(){
+ const walls=project.walls||[],xs=walls.length?walls.flatMap(w=>[w.ax,w.bx]):[0,project.width],ys=walls.length?walls.flatMap(w=>[w.ay,w.by]):[0,project.height];
+ const x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys),axis=Math.SQRT1_2;
+ return {minX:(x0-y1)*axis,maxX:(x1-y0)*axis,
+  minY:(x0+y0)*axis*FLOOR_DEPTH_RATIO-ROOM_WALL_HEIGHT*Math.cos(GODOT_CAMERA_DEGREES*Math.PI/180),
+  maxY:(x1+y1)*axis*FLOOR_DEPTH_RATIO};
+}
+function fit(){
+ if(viewMode==='room'&&(project.walls||[]).length){
+  const bounds=volumetricBounds(),padding=72,scale=Math.max(.01,Math.min((canvas.clientWidth-padding)/(bounds.maxX-bounds.minX),(canvas.clientHeight-padding)/(bounds.maxY-bounds.minY),3));
+  view={scale,x:canvas.clientWidth/2-(bounds.minX+bounds.maxX)*scale/2,y:canvas.clientHeight/2-(bounds.minY+bounds.maxY)*scale/2};
+ }else view=fitProjectedRoom(project.width,project.height,canvas.clientWidth,canvas.clientHeight,viewMode);
+ draw();
+}
 function toLocal(ev){const r=canvas.getBoundingClientRect();return{x:ev.clientX-r.left,y:ev.clientY-r.top};}
 function world(pos){return toWorld(pos,view,viewMode);}
 function zoomAt(x,y,factor){const old=view.scale;view.scale=bounds(view.scale*factor,.15,5);view.x=x-(x-view.x)*(view.scale/old);view.y=y-(y-view.y)*(view.scale/old);draw();}
 function changeTool(next){tool=next;wallDraft=null;document.querySelectorAll('[data-tool]').forEach(b=>b.classList.toggle('active',b.dataset.tool===next));const messages={stamp:'Коснись комнаты, чтобы поставить выбранный предмет',wall:'Проведи стену от точки до точки',opening:'Коснись стены, чтобы поставить выбранный проём',pan:'Перетаскивай холст'};notify(messages[next]||'Готово');draw();}
-function paint(pos){const w=world(pos);if(w.x<0||w.y<0||w.x>project.width||w.y>project.height)return;
+function nearestRoomWall(pos,maxDistance=55){
+ let best=null,bestDistance=maxDistance;
+ const inside=(p,poly)=>{let hit=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++)if(((poly[i].y>p.y)!==(poly[j].y>p.y))&&(p.x<(poly[j].x-poly[i].x)*(p.y-poly[i].y)/(poly[j].y-poly[i].y)+poly[i].x))hit=!hit;return hit;};
+ for(const segment of shellSegments(project.walls||[])){
+  const wall=(project.walls||[]).find(w=>segment.wallIds.includes(w.id));if(!wall)continue;
+  const a=roomScreen(segment.a,0,view),b=roomScreen(segment.b,0,view),at=roomScreen(segment.a,ROOM_WALL_HEIGHT,view),bt=roomScreen(segment.b,ROOM_WALL_HEIGHT,view);
+  const dx=b.x-a.x,dy=b.y-a.y,l2=dx*dx+dy*dy,t=Math.max(0,Math.min(1,((pos.x-a.x)*dx+(pos.y-a.y)*dy)/l2));
+  const distance=inside(pos,[a,b,bt,at])?0:Math.hypot(pos.x-(a.x+t*dx),pos.y-(a.y+t*dy));
+  if(distance<=bestDistance){const x=segment.a.x+(segment.b.x-segment.a.x)*t,y=segment.a.y+(segment.b.y-segment.a.y)*t,total=wallLength(wall),wallT=total?((x-wall.ax)*(wall.bx-wall.ax)+(y-wall.ay)*(wall.by-wall.ay))/(total*total):0;bestDistance=distance;best={wall,t:Math.max(0,Math.min(1,wallT)),x,y,distance};}
+ }
+ return best;
+}
+function paint(pos){const w=world(pos);if((viewMode!=='room'||!['opening','erase'].includes(tool))&&(w.x<0||w.y<0||w.x>project.width||w.y>project.height))return;
  if(tool==='stamp'){const asset=project.assets.find(a=>a.id===selectedAsset);const layer=asset?.kind==='tile'?'floor':(asset?.layerId||selectedLayer);const o=placeObject(project,selectedAsset,w.x,w.y,layer,asset?.kind==='tile');if(o){if(asset?.kind==='character'){o.x=w.x-o.w/2;o.y=w.y-o.h;}selected=o.id;changed();}}
  else if(tool==='opening'){
-  const nearest=nearestWall(project.walls||[],w,Math.max(30,project.grid));if(!nearest){notify('Рядом нет стены');return;}
+  const nearest=viewMode==='room'?nearestRoomWall(pos):nearestWall(project.walls||[],w,Math.max(30,project.grid));if(!nearest){notify('Рядом нет стены');return;}
   const kind=$('#openingKind').value,definition=OPENING_KINDS[kind],doorId=$('#openingDoorId').value.trim();
   if(doorId&&!/^RM-DOOR-[A-Z0-9-]+$/.test(doorId)){notify('RM-DOOR ID имеет неверный формат');return;}
   const length=wallLength(nearest.wall),width=Math.min(definition.defaultWidth,length),offset=length?Math.max(width/2/length,Math.min(1-width/2/length,nearest.t)):0.5;
   if((project.openings||[]).some(o=>o.wallId===nearest.wall.id&&Math.abs(o.offset-offset)*length<(o.width+width)/2)){notify('Проёмы на этой стене пересекаются');return;}
   project.openings.push({id:uid('opening'),wallId:nearest.wall.id,kind,width,offset,doorId,state:kind.includes('door')?'closed':'open',foreground:true});changed();
  }else if(tool==='erase'){
-  const nearest=nearestWall(project.walls||[],w,Math.max(24,project.grid*.7));
+  const nearest=viewMode==='room'?nearestRoomWall(pos):nearestWall(project.walls||[],w,Math.max(24,project.grid*.7));
   if(nearest){const opening=(project.openings||[]).find(o=>o.wallId===nearest.wall.id&&Math.abs(o.offset-nearest.t)*wallLength(nearest.wall)<=Math.max(18,o.width/2));if(opening){project.openings=project.openings.filter(o=>o.id!==opening.id);changed();return;}}
   const o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y);if(o){project.objects=project.objects.filter(a=>a.id!==o.id);if(selected===o.id)selected=null;changed();}
   else if(nearest){project.walls=project.walls.filter(wall=>wall.id!==nearest.wall.id);project.openings=project.openings.filter(opening=>opening.wallId!==nearest.wall.id);changed();}
@@ -414,7 +508,21 @@ function pointerDown(ev){if(ev.pointerType==='mouse'&&ev.button!==0)return;ev.pr
  const w=world(pos),o=hitGamePilot(pos)||topObjectAt(project,w.x,w.y); selected=o?.id||null;renderProperties();draw();if(o){gesture={mode:'drag',pos,startX:o.x,startY:o.y,id:o.id,moved:false};}else gesture=null;}
 function pointerMove(ev){if(!pointers.has(ev.pointerId))return;ev.preventDefault();const pos=toLocal(ev),old=pointers.get(ev.pointerId);pointers.set(ev.pointerId,pos);if(pointers.size>=2){const vals=[...pointers.values()];const oldVals=vals.map(p=>p===pos?old:p);const dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y);const before=dist(oldVals[0],oldVals[1]),after=dist(vals[0],vals[1]);const prevMid={x:(oldVals[0].x+oldVals[1].x)/2,y:(oldVals[0].y+oldVals[1].y)/2};const nextMid={x:(vals[0].x+vals[1].x)/2,y:(vals[0].y+vals[1].y)/2};if(before>0)zoomAt(prevMid.x,prevMid.y,after/before);view.x+=nextMid.x-prevMid.x;view.y+=nextMid.y-prevMid.y;draw();return;}
  if(!gesture)return;if(gesture.mode==='pan'){view.x+=pos.x-gesture.pos.x;view.y+=pos.y-gesture.pos.y;gesture.pos=pos;draw();}else if(gesture.mode==='wall'){wallDraft.end=world(pos);draw();}else if(gesture.mode==='drag'){const o=project.objects.find(a=>a.id===gesture.id);if(!o||layerFor(o)?.locked)return;const offset=worldDragDelta(pos.x-gesture.pos.x,pos.y-gesture.pos.y,view.scale,viewMode),deltaX=offset.x,deltaY=offset.y;if(!gesture.moved&&Math.hypot(deltaX,deltaY)>3){checkpoint();gesture.moved=true;}if(gesture.moved){o.x=snap(gesture.startX+deltaX,project.grid/2);o.y=snap(gesture.startY+deltaY,project.grid/2);draw();}}else if(gesture.mode==='paint'){paint(pos);}}
-function pointerUp(ev){if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);if(gesture?.mode==='wall'&&wallDraft){const geometry=normalizeWall(wallDraft.start,wallDraft.end,project.grid);if(geometry){project.walls.push({id:uid('wall'),...geometry,style:$('#wallStyle').value,thickness:18,layerId:'architecture'});changed();}wallDraft=null;}if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};draw();}
+function pointerUp(ev){
+ if(!pointers.has(ev.pointerId))return;pointers.delete(ev.pointerId);
+ if(gesture?.mode==='wall'&&wallDraft){
+  const geometry=normalizeWall(wallDraft.start,wallDraft.end,project.grid);
+  if(geometry){
+   const before=detectRooms(project.walls||[]).length;
+   const duplicate=(project.walls||[]).some(w=>(w.ax===geometry.ax&&w.ay===geometry.ay&&w.bx===geometry.bx&&w.by===geometry.by)||(w.ax===geometry.bx&&w.ay===geometry.by&&w.bx===geometry.ax&&w.by===geometry.ay));
+   if(!duplicate){project.walls.push({id:uid('wall'),...geometry,style:$('#wallStyle').value,thickness:18,layerId:'architecture'});const after=detectRooms(project.walls).length;if(after>before){viewMode='room';changed();fit();notify(after===1?'Комната замкнута — включён объёмный вид 65°/45°':`Добавлена соседняя комната. Всего замкнутых помещений: ${after}`);}else changed();}
+   else notify('Эта стена уже существует — используй её как общую для соседней комнаты');
+  }
+  wallDraft=null;
+ }
+ if(gesture?.mode==='drag'&&gesture.moved){changed();renderProperties();}
+ if(pointers.size===0)gesture=null;else gesture={mode:'pan',pos:[...pointers.values()][0]};draw();
+}
 function updateCatalogProgress(){const items=productionCatalog?.items.filter(i=>i.roomId===project.roomId)||[];const present=new Set(project.objects.map(o=>o.assetRefId).filter(Boolean));const count=items.filter(i=>present.has(i.id)).length;$('#roomProgress').textContent=productionCatalog?`На плане: ${count} из ${items.length} позиций · осталось ${items.length-count}`:'Загрузка списка предметов…';}
 function renderPalette(){
  const term=$('#search').value.toLocaleLowerCase().trim();
@@ -516,7 +624,10 @@ async function exportPNG(){
     await Promise.all(files.map(async file=>{const img=pilotImage(file);if(!img.complete||!img.naturalWidth)await img.decode();}));
    }catch(err){notify('Ошибка загрузки игрового PNG — экспорт отменён');return;}
  }
- const off=document.createElement('canvas');off.width=project.width;off.height=projectedPixelHeight(project.height,viewMode);drawScene(off.getContext('2d'),{x:0,y:0,scale:1},true);off.toBlob(blob=>{if(blob)download(blob,`${project.roomId.toLowerCase()}-preview.png`);else notify('Ошибка экспорта PNG');},'image/png');$('#exportDialog').close();}
+ const off=document.createElement('canvas');let exportView={x:0,y:0,scale:1};
+ if(viewMode==='room'){const b=volumetricBounds(),padding=40;off.width=Math.ceil(b.maxX-b.minX+padding*2);off.height=Math.ceil(b.maxY-b.minY+padding*2);exportView={x:padding-b.minX,y:padding-b.minY,scale:1};}
+ else{off.width=project.width;off.height=projectedPixelHeight(project.height,viewMode);}
+ drawScene(off.getContext('2d'),exportView,true);off.toBlob(blob=>{if(blob)download(blob,`${project.roomId.toLowerCase()}-preview.png`);else notify('Ошибка экспорта PNG');},'image/png');$('#exportDialog').close();}
 async function importJSON(file){if(!file||file.size>45*1024*1024)throw new Error('JSON слишком большой (макс. 45 MB)');const p=validateProject(JSON.parse(await file.text()));migrateLegacyHallReferences(p);if(productionCatalog)mergeCatalogAssets(p,productionCatalog);migrateLegacyCharacter(p);
  if(!await save())throw new Error('Сначала экспортируй несохранённый черновик');
  project=p;selected=null;selectedAsset=p.assets[0]?.id||'';selectedLayer=p.layers[0]?.id||'';past=[];future=[];historyButtons();refresh();fit();changed();notify('Проект импортирован');}
@@ -550,7 +661,7 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
-async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadWallKit();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
+async function start(){installRoomViewOption();wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadWallKit();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
 window.addEventListener('error',event=>{console.error(event.error||event.message);notify('Ошибка интерфейса: '+(event.error?.message||event.message));});
 window.addEventListener('unhandledrejection',event=>{console.error(event.reason);notify('Ошибка загрузки: '+(event.reason?.message||event.reason));});
 start().catch(error=>{console.error(error);notify('Ошибка запуска: '+error.message);});

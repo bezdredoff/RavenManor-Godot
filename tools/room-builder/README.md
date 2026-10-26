@@ -2,6 +2,11 @@
 
 A self-contained, dependency-free room composition prototype. Designed for Android phone/tablet, S Pen and desktop; built with HTML Canvas, native pointer events and IndexedDB rather than Sprite Fusion's mouse shortcuts. **This is an editor for draft room layout, not canonical game geometry or finished art.**
 
+The view selector includes **Объёмная комната 65°/45°**. Draw four snapped wall sides to close a
+rectangle; Builder detects the room and switches to the cutaway automatically. Add three sides
+against an existing wall for a neighbouring room, then place a door or arch on the shared wall.
+See `../../docs/ROOM_BUILDER_VOLUMETRIC_ROOMS.md` for the rendering contract and limits.
+
 ## Launch
 
 - Hosted: After merge to `main` and successful Pages workflow: `https://bezdredoff.github.io/RavenManor-Godot/builder/`
