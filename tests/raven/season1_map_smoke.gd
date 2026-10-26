@@ -72,6 +72,17 @@ func _run() -> void:
 	assert(calibration.status == "MEASURED_DRAFT_NOT_APPROVED")
 	assert(calibration.openings.size() == 5)
 	assert(calibration.staircases.size() == 2)
+	assert(scene.hall_calibration_valid)
+	assert(scene._validate_hall_measurements())
+	assert(not scene.show_hall_calibration)
+	assert(not scene.calibration_button.disabled)
+	assert(not scene.seat_collision_button.disabled)
+	scene._toggle_calibration_guides()
+	assert(scene.show_hall_calibration)
+	assert(scene.calibration_button.text == "Стыки: ВИД")
+	scene._toggle_calibration_guides()
+	assert(not scene.show_hall_calibration)
+	assert(scene.calibration_button.text == "Стыки: СКР")
 	var hall_door_ids := {}
 	for door in data.doors:
 		if int(door.a) == 1 or int(door.b) == 1:
@@ -82,7 +93,9 @@ func _run() -> void:
 		assert(Vector2(float(map_point[0]), float(map_point[1])) == hall_door_ids[str(opening.id)])
 	var legacy_seat_point := Vector2(718, 585)
 	assert(not scene._is_walkable(legacy_seat_point))
-	scene.precise_seating_collision = true
+	scene._toggle_precise_seating()
+	assert(scene.precise_seating_collision)
+	assert(scene.seat_collision_button.text == "Кресла: 3 ТЕСТ")
 	assert(scene._is_walkable(legacy_seat_point), "opt-in seat bases free the space behind their sprites")
 	assert(not scene._is_walkable(Vector2(665, 650)))
 	assert(not scene._is_walkable(Vector2(765, 650)))
@@ -91,8 +104,11 @@ func _run() -> void:
 	for target in [[Vector2(245, 650), 2], [Vector2(1540, 690), 4], [Vector2(605, 630), 1]]:
 		assert(not scene._path_between(scene.actor_pos, target[0], target[1]).is_empty(),
 			"Opt-in seat bases must preserve hall routes")
-	scene.precise_seating_collision = false
-	scene._rebuild_navigation()
+	scene._toggle_precise_seating()
+	assert(not scene.precise_seating_collision)
+	assert(scene.seat_collision_button.text == "Кресла: ОРИГ.")
+	assert(not scene._is_walkable(legacy_seat_point))
+	assert(scene.movement_points.is_empty())
 	var import_pass: Dictionary = scene._hall_draw_source_counts()
 	assert(import_pass.imported_floor == 1)
 	assert(import_pass.imported_upright == 6)
@@ -137,6 +153,10 @@ func _run() -> void:
 		var safe: Rect2 = scene._safe_viewport_rect(device)
 		assert(safe.size.y >= device.y * 0.74, "map usable height must dominate portrait display")
 		assert(safe.position.y >= scene.TOP_UI_HEIGHT)
+		for button in [scene.calibration_button, scene.seat_collision_button]:
+			assert(button.position.x >= 0 and button.position.y >= 0)
+			assert(button.position.x + button.size.x <= scene.debug_panel.size.x + 0.1)
+			assert(button.position.y + button.size.y <= scene.debug_panel.size.y + 0.1)
 		assert(safe.end.y <= device.y - scene.BOTTOM_UI_HEIGHT + 1.0)
 		for b in [scene.zoom_minus_button, scene.zoom_preset_button, scene.zoom_plus_button,
 				scene.recenter_button, scene.debug_toggle_button, scene.action_button,
