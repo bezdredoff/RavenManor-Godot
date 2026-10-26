@@ -778,20 +778,6 @@
     {
       "id": "RM-BEAT-02-01-L001",
       "sceneId": "RM-BEAT-02-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "холл, утро. *Эвелин сидит с пакетом вчерашней доставки. Ада приносит чай.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-02-01-L002",
-      "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
       "localized": {
@@ -804,7 +790,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L003",
+      "id": "RM-BEAT-02-01-L002",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -818,7 +804,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L004",
+      "id": "RM-BEAT-02-01-L003",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -832,7 +818,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L005",
+      "id": "RM-BEAT-02-01-L004",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -846,7 +832,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L006",
+      "id": "RM-BEAT-02-01-L005",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -860,7 +846,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L007",
+      "id": "RM-BEAT-02-01-L006",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -874,7 +860,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L008",
+      "id": "RM-BEAT-02-01-L007",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -888,7 +874,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L009",
+      "id": "RM-BEAT-02-01-L008",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -902,7 +888,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L010",
+      "id": "RM-BEAT-02-01-L009",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -916,7 +902,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L011",
+      "id": "RM-BEAT-02-01-L010",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -930,7 +916,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L012",
+      "id": "RM-BEAT-02-01-L011",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -944,7 +930,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L013",
+      "id": "RM-BEAT-02-01-L012",
       "sceneId": "RM-BEAT-02-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -958,35 +944,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-01-L014",
-      "sceneId": "RM-BEAT-02-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "осмотреть кухню, открыть список бытовых работ. Match-3 с неизменными тематическими фишками даёт очки подготовки; безопасный доступ к щиту и электромонтаж обеспечивает специалист, а не игрок."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-02-02-L001",
-      "sceneId": "RM-BEAT-02-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "холл, затем вход в сад. *Роуэн стоит с рабочей сумкой; куртка в земле.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-02-02-L002",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1000,7 +958,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L003",
+      "id": "RM-BEAT-02-02-L002",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1014,7 +972,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L004",
+      "id": "RM-BEAT-02-02-L003",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1028,7 +986,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L005",
+      "id": "RM-BEAT-02-02-L004",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1042,7 +1000,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L006",
+      "id": "RM-BEAT-02-02-L005",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1056,7 +1014,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L007",
+      "id": "RM-BEAT-02-02-L006",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1070,7 +1028,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L008",
+      "id": "RM-BEAT-02-02-L007",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1084,7 +1042,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L009",
+      "id": "RM-BEAT-02-02-L008",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1098,7 +1056,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L010",
+      "id": "RM-BEAT-02-02-L009",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1112,7 +1070,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L011",
+      "id": "RM-BEAT-02-02-L010",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1126,7 +1084,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L012",
+      "id": "RM-BEAT-02-02-L011",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1140,7 +1098,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L013",
+      "id": "RM-BEAT-02-02-L012",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1154,7 +1112,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L014",
+      "id": "RM-BEAT-02-02-L013",
       "sceneId": "RM-BEAT-02-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -1168,35 +1126,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-02-L015",
-      "sceneId": "RM-BEAT-02-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "показать закрытую по физическим причинам оранжерею и безопасные точки осмотра сада; новые области не открываются магическими ключами."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-02-03-L001",
-      "sceneId": "RM-BEAT-02-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "кухня. *На расчищенном столе лежат счета, квитанции и хозяйственная книга.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-02-03-L002",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1210,7 +1140,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L003",
+      "id": "RM-BEAT-02-03-L002",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1224,7 +1154,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L004",
+      "id": "RM-BEAT-02-03-L003",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1238,7 +1168,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L005",
+      "id": "RM-BEAT-02-03-L004",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1252,7 +1182,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L006",
+      "id": "RM-BEAT-02-03-L005",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1266,7 +1196,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L007",
+      "id": "RM-BEAT-02-03-L006",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1280,7 +1210,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L008",
+      "id": "RM-BEAT-02-03-L007",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1294,7 +1224,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L009",
+      "id": "RM-BEAT-02-03-L008",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1308,7 +1238,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L010",
+      "id": "RM-BEAT-02-03-L009",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1322,7 +1252,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L011",
+      "id": "RM-BEAT-02-03-L010",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1336,7 +1266,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L012",
+      "id": "RM-BEAT-02-03-L011",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1350,7 +1280,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L013",
+      "id": "RM-BEAT-02-03-L012",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1364,7 +1294,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L014",
+      "id": "RM-BEAT-02-03-L013",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1378,7 +1308,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L015",
+      "id": "RM-BEAT-02-03-L014",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1392,7 +1322,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L016",
+      "id": "RM-BEAT-02-03-L015",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1406,7 +1336,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L017",
+      "id": "RM-BEAT-02-03-L016",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1420,7 +1350,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L018",
+      "id": "RM-BEAT-02-03-L017",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1434,7 +1364,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L019",
+      "id": "RM-BEAT-02-03-L018",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1448,7 +1378,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L020",
+      "id": "RM-BEAT-02-03-L019",
       "sceneId": "RM-BEAT-02-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1462,35 +1392,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-03-L021",
-      "sceneId": "RM-BEAT-02-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "записи становятся проверяемыми уликами об упадке здания и причиной искать архив. Match-3 — классическое поле с фиксированными фишками и базовыми препятствиями для заработка очков подготовительной работы."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-02-04-L001",
-      "sceneId": "RM-BEAT-02-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "кухня, вечер. *Электрик восстановил безопасные цепи, остальные оставил отключёнными. Горит свет, гудит холодильник.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-02-04-L002",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1504,7 +1406,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L003",
+      "id": "RM-BEAT-02-04-L002",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1518,7 +1420,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L004",
+      "id": "RM-BEAT-02-04-L003",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1532,7 +1434,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L005",
+      "id": "RM-BEAT-02-04-L004",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1546,7 +1448,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L006",
+      "id": "RM-BEAT-02-04-L005",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1560,7 +1462,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L007",
+      "id": "RM-BEAT-02-04-L006",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1574,7 +1476,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L008",
+      "id": "RM-BEAT-02-04-L007",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1588,7 +1490,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L009",
+      "id": "RM-BEAT-02-04-L008",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1602,7 +1504,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L010",
+      "id": "RM-BEAT-02-04-L009",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1616,7 +1518,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L011",
+      "id": "RM-BEAT-02-04-L010",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1630,7 +1532,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L012",
+      "id": "RM-BEAT-02-04-L011",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1644,7 +1546,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L013",
+      "id": "RM-BEAT-02-04-L012",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1658,7 +1560,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L014",
+      "id": "RM-BEAT-02-04-L013",
       "sceneId": "RM-BEAT-02-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1672,35 +1574,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-02-04-L015",
-      "sceneId": "RM-BEAT-02-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "безопасная часть кухни пригодна для ограниченного использования; библиотека — следующая цель. Не описывать кухню как современную или полностью отремонтированную."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-03-01-L001",
-      "sceneId": "RM-BEAT-03-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, вечер. *Лукас приехал после заката. Дверь открывают осторожно; внутри пыль и покосившаяся полка.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-03-01-L002",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -1714,7 +1588,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L003",
+      "id": "RM-BEAT-03-01-L002",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1728,7 +1602,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L004",
+      "id": "RM-BEAT-03-01-L003",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1742,7 +1616,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L005",
+      "id": "RM-BEAT-03-01-L004",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1756,7 +1630,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L006",
+      "id": "RM-BEAT-03-01-L005",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -1770,7 +1644,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L007",
+      "id": "RM-BEAT-03-01-L006",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1784,7 +1658,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L008",
+      "id": "RM-BEAT-03-01-L007",
       "sceneId": "RM-BEAT-03-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1798,35 +1672,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-01-L009",
-      "sceneId": "RM-BEAT-03-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "подготовка библиотеки через обычные уровни Match-3; опасную полку закрепляет мастер, документы открываются для исследования после соответствующего сюжетного состояния."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-03-02-L001",
-      "sceneId": "RM-BEAT-03-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека. *Эвелин открывает семейный альбом.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-03-02-L002",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1840,7 +1686,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L003",
+      "id": "RM-BEAT-03-02-L002",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1854,7 +1700,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L004",
+      "id": "RM-BEAT-03-02-L003",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1868,7 +1714,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L005",
+      "id": "RM-BEAT-03-02-L004",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -1882,7 +1728,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L006",
+      "id": "RM-BEAT-03-02-L005",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1896,7 +1742,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L007",
+      "id": "RM-BEAT-03-02-L006",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1910,7 +1756,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L008",
+      "id": "RM-BEAT-03-02-L007",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -1924,7 +1770,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L009",
+      "id": "RM-BEAT-03-02-L008",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1938,7 +1784,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L010",
+      "id": "RM-BEAT-03-02-L009",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -1952,7 +1798,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L011",
+      "id": "RM-BEAT-03-02-L010",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1966,7 +1812,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L012",
+      "id": "RM-BEAT-03-02-L011",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -1980,7 +1826,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L013",
+      "id": "RM-BEAT-03-02-L012",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -1994,7 +1840,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L014",
+      "id": "RM-BEAT-03-02-L013",
       "sceneId": "RM-BEAT-03-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2008,35 +1854,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-02-L015",
-      "sceneId": "RM-BEAT-03-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "открыть улику «неотправленные открытки»; игрок сопоставляет подписи и даты в журнале, не получая готовой разгадки."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-03-03-L001",
-      "sceneId": "RM-BEAT-03-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, вечер. *Ада ненадолго вышла; Эвелин разговаривает с Лукасом.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-03-03-L002",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2050,7 +1868,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L003",
+      "id": "RM-BEAT-03-03-L002",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -2064,7 +1882,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L004",
+      "id": "RM-BEAT-03-03-L003",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2078,7 +1896,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L005",
+      "id": "RM-BEAT-03-03-L004",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -2092,7 +1910,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L006",
+      "id": "RM-BEAT-03-03-L005",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2106,7 +1924,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L007",
+      "id": "RM-BEAT-03-03-L006",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -2120,7 +1938,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L008",
+      "id": "RM-BEAT-03-03-L007",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2134,7 +1952,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L009",
+      "id": "RM-BEAT-03-03-L008",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -2148,7 +1966,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L010",
+      "id": "RM-BEAT-03-03-L009",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2162,7 +1980,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L011",
+      "id": "RM-BEAT-03-03-L010",
       "sceneId": "RM-BEAT-03-03",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -2176,35 +1994,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-03-L012",
-      "sceneId": "RM-BEAT-03-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "доступен журнал с отдельными вкладками «факты», «воспоминания», «предположения»."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-03-04-L001",
-      "sceneId": "RM-BEAT-03-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека. *В письменном столе Эвелин находит записку без подписи.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-03-04-L002",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2218,7 +2008,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L003",
+      "id": "RM-BEAT-03-04-L002",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -2232,7 +2022,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L004",
+      "id": "RM-BEAT-03-04-L003",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2246,7 +2036,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L005",
+      "id": "RM-BEAT-03-04-L004",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -2260,7 +2050,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L006",
+      "id": "RM-BEAT-03-04-L005",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2274,7 +2064,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L007",
+      "id": "RM-BEAT-03-04-L006",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -2288,7 +2078,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L008",
+      "id": "RM-BEAT-03-04-L007",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2302,7 +2092,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L009",
+      "id": "RM-BEAT-03-04-L008",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -2316,7 +2106,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L010",
+      "id": "RM-BEAT-03-04-L009",
       "sceneId": "RM-BEAT-03-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2330,35 +2120,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-03-04-L011",
-      "sceneId": "RM-BEAT-03-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "восстановлена доступная библиотека, найдены неподписанные письма и открытки; причина отъезда не подтверждена, личность автора не установлена."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-04-01-L001",
-      "sceneId": "RM-BEAT-04-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "сад, день. *Роуэн меняет доску в ограждении. Эвелин подходит с термосом и двумя кружками.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-04-01-L002",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2372,7 +2134,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L003",
+      "id": "RM-BEAT-04-01-L002",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2386,7 +2148,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L004",
+      "id": "RM-BEAT-04-01-L003",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2400,7 +2162,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L005",
+      "id": "RM-BEAT-04-01-L004",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2414,7 +2176,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L006",
+      "id": "RM-BEAT-04-01-L005",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2428,7 +2190,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L007",
+      "id": "RM-BEAT-04-01-L006",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2442,7 +2204,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L008",
+      "id": "RM-BEAT-04-01-L007",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2456,7 +2218,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L009",
+      "id": "RM-BEAT-04-01-L008",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2470,7 +2232,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L010",
+      "id": "RM-BEAT-04-01-L009",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2484,7 +2246,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L011",
+      "id": "RM-BEAT-04-01-L010",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2498,7 +2260,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L012",
+      "id": "RM-BEAT-04-01-L011",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2512,7 +2274,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L013",
+      "id": "RM-BEAT-04-01-L012",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2526,7 +2288,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L014",
+      "id": "RM-BEAT-04-01-L013",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2540,7 +2302,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L015",
+      "id": "RM-BEAT-04-01-L014",
       "sceneId": "RM-BEAT-04-01",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2554,35 +2316,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-01-L016",
-      "sceneId": "RM-BEAT-04-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "классический Match-3 с постоянными фишками, иной формой поля и уже знакомыми препятствиями; подготовленные очки идут на работы, безопасное остекление делает стекольщик."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-04-02-L001",
-      "sceneId": "RM-BEAT-04-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "частично отремонтированная оранжерея, день. *Рамы закреплены, проход очищен.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-04-02-L002",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2596,7 +2330,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L003",
+      "id": "RM-BEAT-04-02-L002",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2610,7 +2344,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L004",
+      "id": "RM-BEAT-04-02-L003",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2624,7 +2358,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L005",
+      "id": "RM-BEAT-04-02-L004",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2638,7 +2372,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L006",
+      "id": "RM-BEAT-04-02-L005",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2652,7 +2386,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L007",
+      "id": "RM-BEAT-04-02-L006",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2666,7 +2400,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L008",
+      "id": "RM-BEAT-04-02-L007",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2680,7 +2414,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-02-L009",
+      "id": "RM-BEAT-04-02-L008",
       "sceneId": "RM-BEAT-04-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2696,20 +2430,6 @@
     {
       "id": "RM-BEAT-04-03-L001",
       "sceneId": "RM-BEAT-04-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "оранжерея. *Роуэн достаёт из-под скамьи старую коробку.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-04-03-L002",
-      "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
       "localized": {
@@ -2722,7 +2442,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L003",
+      "id": "RM-BEAT-04-03-L002",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2736,7 +2456,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L004",
+      "id": "RM-BEAT-04-03-L003",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2750,7 +2470,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L005",
+      "id": "RM-BEAT-04-03-L004",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2764,7 +2484,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L006",
+      "id": "RM-BEAT-04-03-L005",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2778,7 +2498,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L007",
+      "id": "RM-BEAT-04-03-L006",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2792,7 +2512,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L008",
+      "id": "RM-BEAT-04-03-L007",
       "sceneId": "RM-BEAT-04-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2806,35 +2526,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-03-L009",
-      "sceneId": "RM-BEAT-04-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "открывается детская карта как сюжетная улика, но опасный проход пока остаётся недоступным."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-04-04-L001",
-      "sceneId": "RM-BEAT-04-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "оранжерея, вечер. *Дождь негромко стучит по новому стеклу.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-04-04-L002",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2848,7 +2540,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L003",
+      "id": "RM-BEAT-04-04-L002",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2862,7 +2554,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L004",
+      "id": "RM-BEAT-04-04-L003",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2876,7 +2568,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L005",
+      "id": "RM-BEAT-04-04-L004",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2890,7 +2582,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L006",
+      "id": "RM-BEAT-04-04-L005",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2904,7 +2596,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L007",
+      "id": "RM-BEAT-04-04-L006",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2918,7 +2610,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L008",
+      "id": "RM-BEAT-04-04-L007",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2932,7 +2624,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L009",
+      "id": "RM-BEAT-04-04-L008",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2946,7 +2638,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L010",
+      "id": "RM-BEAT-04-04-L009",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2960,7 +2652,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L011",
+      "id": "RM-BEAT-04-04-L010",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -2974,7 +2666,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L012",
+      "id": "RM-BEAT-04-04-L011",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -2988,7 +2680,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L013",
+      "id": "RM-BEAT-04-04-L012",
       "sceneId": "RM-BEAT-04-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3002,35 +2694,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-04-04-L014",
-      "sceneId": "RM-BEAT-04-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "оранжерея стала частично пригодной; найдена детская карта; буря угрожает незавершённому ремонту."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-05-01-L001",
-      "sceneId": "RM-BEAT-05-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "холл, ночь. *Ветер, шум дождя. Ада ставит фонарь; часть электросети отключена для безопасности.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-05-01-L002",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3044,7 +2708,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L003",
+      "id": "RM-BEAT-05-01-L002",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3058,7 +2722,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L004",
+      "id": "RM-BEAT-05-01-L003",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3072,7 +2736,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L005",
+      "id": "RM-BEAT-05-01-L004",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3086,7 +2750,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L006",
+      "id": "RM-BEAT-05-01-L005",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3100,7 +2764,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L007",
+      "id": "RM-BEAT-05-01-L006",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3114,7 +2778,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L008",
+      "id": "RM-BEAT-05-01-L007",
       "sceneId": "RM-BEAT-05-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3128,35 +2792,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-01-L009",
-      "sceneId": "RM-BEAT-05-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "Match-3 с тем же пулом фишек, повышенной сложностью и знакомыми блокерами; результат — очки безопасной подготовки. Не вводить режим выживания, новую валюту или специальную механику бури."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-05-02-L001",
-      "sceneId": "RM-BEAT-05-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, ночь. *Через повреждённую раму попала вода; Эвелин и Ада уносят папки от окна.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-05-02-L002",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3170,7 +2806,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L003",
+      "id": "RM-BEAT-05-02-L002",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3184,7 +2820,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L004",
+      "id": "RM-BEAT-05-02-L003",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3198,7 +2834,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L005",
+      "id": "RM-BEAT-05-02-L004",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3212,7 +2848,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L006",
+      "id": "RM-BEAT-05-02-L005",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3226,7 +2862,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L007",
+      "id": "RM-BEAT-05-02-L006",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3240,7 +2876,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L008",
+      "id": "RM-BEAT-05-02-L007",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3254,7 +2890,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L009",
+      "id": "RM-BEAT-05-02-L008",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3268,7 +2904,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L010",
+      "id": "RM-BEAT-05-02-L009",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3282,7 +2918,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L011",
+      "id": "RM-BEAT-05-02-L010",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3296,7 +2932,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L012",
+      "id": "RM-BEAT-05-02-L011",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3310,7 +2946,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L013",
+      "id": "RM-BEAT-05-02-L012",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3324,7 +2960,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L014",
+      "id": "RM-BEAT-05-02-L013",
       "sceneId": "RM-BEAT-05-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3338,35 +2974,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-02-L015",
-      "sceneId": "RM-BEAT-05-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "очередной классический уровень на подготовку архивных работ; затем сохранение улик, а повреждённую раму ремонтирует мастер. Фартук Ады — видимая странность без объяснения её природы."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-05-03-L001",
-      "sceneId": "RM-BEAT-05-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, поздняя ночь. *Дождь ослабевает.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-05-03-L002",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3380,7 +2988,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L003",
+      "id": "RM-BEAT-05-03-L002",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3394,7 +3002,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L004",
+      "id": "RM-BEAT-05-03-L003",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3408,7 +3016,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L005",
+      "id": "RM-BEAT-05-03-L004",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3422,7 +3030,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L006",
+      "id": "RM-BEAT-05-03-L005",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3436,7 +3044,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L007",
+      "id": "RM-BEAT-05-03-L006",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3450,7 +3058,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L008",
+      "id": "RM-BEAT-05-03-L007",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3464,7 +3072,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L009",
+      "id": "RM-BEAT-05-03-L008",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3478,7 +3086,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L010",
+      "id": "RM-BEAT-05-03-L009",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3492,7 +3100,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L011",
+      "id": "RM-BEAT-05-03-L010",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3506,7 +3114,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L012",
+      "id": "RM-BEAT-05-03-L011",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3520,7 +3128,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L013",
+      "id": "RM-BEAT-05-03-L012",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3534,7 +3142,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L014",
+      "id": "RM-BEAT-05-03-L013",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3548,7 +3156,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L015",
+      "id": "RM-BEAT-05-03-L014",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3562,7 +3170,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L016",
+      "id": "RM-BEAT-05-03-L015",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3576,7 +3184,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L017",
+      "id": "RM-BEAT-05-03-L016",
       "sceneId": "RM-BEAT-05-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3590,35 +3198,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-03-L018",
-      "sceneId": "RM-BEAT-05-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "история отъезда усложняется, но ни виновный, ни причина забывания, ни авторы писем не определены."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-05-04-L001",
-      "sceneId": "RM-BEAT-05-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "холл, утро после бури. *Входит Роуэн в мокрой куртке.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-05-04-L002",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3632,7 +3212,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L003",
+      "id": "RM-BEAT-05-04-L002",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3646,7 +3226,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L004",
+      "id": "RM-BEAT-05-04-L003",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3660,7 +3240,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L005",
+      "id": "RM-BEAT-05-04-L004",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3674,7 +3254,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L006",
+      "id": "RM-BEAT-05-04-L005",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3688,7 +3268,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L007",
+      "id": "RM-BEAT-05-04-L006",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3702,7 +3282,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L008",
+      "id": "RM-BEAT-05-04-L007",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3716,7 +3296,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L009",
+      "id": "RM-BEAT-05-04-L008",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3730,7 +3310,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L010",
+      "id": "RM-BEAT-05-04-L009",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3744,7 +3324,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L011",
+      "id": "RM-BEAT-05-04-L010",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3758,7 +3338,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L012",
+      "id": "RM-BEAT-05-04-L011",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3772,7 +3352,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L013",
+      "id": "RM-BEAT-05-04-L012",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3786,7 +3366,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L014",
+      "id": "RM-BEAT-05-04-L013",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3800,7 +3380,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L015",
+      "id": "RM-BEAT-05-04-L014",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3814,7 +3394,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L016",
+      "id": "RM-BEAT-05-04-L015",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -3828,7 +3408,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L017",
+      "id": "RM-BEAT-05-04-L016",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3842,7 +3422,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L018",
+      "id": "RM-BEAT-05-04-L017",
       "sceneId": "RM-BEAT-05-04",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -3856,35 +3436,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-05-04-L019",
-      "sceneId": "RM-BEAT-05-04",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "Лукас в этой утренней сцене отсутствует. Его следующая очная встреча назначается на вечер."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-06-01-L001",
-      "sceneId": "RM-BEAT-06-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, поздний вечер. *Лукас раскладывает бумаги. Эвелин смотрит в окно на сад; в оранжерее горит лампа.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-06-01-L002",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -3898,7 +3450,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L003",
+      "id": "RM-BEAT-06-01-L002",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3912,7 +3464,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L004",
+      "id": "RM-BEAT-06-01-L003",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -3926,7 +3478,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L005",
+      "id": "RM-BEAT-06-01-L004",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3940,7 +3492,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L006",
+      "id": "RM-BEAT-06-01-L005",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -3954,7 +3506,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L007",
+      "id": "RM-BEAT-06-01-L006",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3968,7 +3520,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L008",
+      "id": "RM-BEAT-06-01-L007",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -3982,7 +3534,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L009",
+      "id": "RM-BEAT-06-01-L008",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -3996,7 +3548,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L010",
+      "id": "RM-BEAT-06-01-L009",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4010,7 +3562,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L011",
+      "id": "RM-BEAT-06-01-L010",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4024,7 +3576,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L012",
+      "id": "RM-BEAT-06-01-L011",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4038,7 +3590,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L013",
+      "id": "RM-BEAT-06-01-L012",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4052,7 +3604,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L014",
+      "id": "RM-BEAT-06-01-L013",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4066,7 +3618,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L015",
+      "id": "RM-BEAT-06-01-L014",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4080,7 +3632,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L016",
+      "id": "RM-BEAT-06-01-L015",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4094,7 +3646,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L017",
+      "id": "RM-BEAT-06-01-L016",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4108,7 +3660,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L018",
+      "id": "RM-BEAT-06-01-L017",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4122,7 +3674,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L019",
+      "id": "RM-BEAT-06-01-L018",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4136,7 +3688,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L020",
+      "id": "RM-BEAT-06-01-L019",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4150,7 +3702,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L021",
+      "id": "RM-BEAT-06-01-L020",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4164,7 +3716,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L022",
+      "id": "RM-BEAT-06-01-L021",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4178,7 +3730,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L023",
+      "id": "RM-BEAT-06-01-L022",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4192,7 +3744,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L024",
+      "id": "RM-BEAT-06-01-L023",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4206,7 +3758,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L025",
+      "id": "RM-BEAT-06-01-L024",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4220,7 +3772,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L026",
+      "id": "RM-BEAT-06-01-L025",
       "sceneId": "RM-BEAT-06-01",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4234,35 +3786,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-01-L027",
-      "sceneId": "RM-BEAT-06-01",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "решение остаться каноническое, без ветвления сезона; игрок видит цену выбора и получает долгосрочный план восстановления, но не новую экономику в текущем вертикальном срезе."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-06-02-L001",
-      "sceneId": "RM-BEAT-06-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "холл, следующий день. *Эвелин, Ада и Роуэн отмечают безопасные части дома.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-06-02-L002",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4276,7 +3800,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L003",
+      "id": "RM-BEAT-06-02-L002",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -4290,7 +3814,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L004",
+      "id": "RM-BEAT-06-02-L003",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4304,7 +3828,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L005",
+      "id": "RM-BEAT-06-02-L004",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -4318,7 +3842,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L006",
+      "id": "RM-BEAT-06-02-L005",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4332,7 +3856,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L007",
+      "id": "RM-BEAT-06-02-L006",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4346,7 +3870,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L008",
+      "id": "RM-BEAT-06-02-L007",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4360,7 +3884,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L009",
+      "id": "RM-BEAT-06-02-L008",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4374,7 +3898,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L010",
+      "id": "RM-BEAT-06-02-L009",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4388,7 +3912,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L011",
+      "id": "RM-BEAT-06-02-L010",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ROWAN",
       "delivery": "speech",
@@ -4402,7 +3926,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L012",
+      "id": "RM-BEAT-06-02-L011",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4416,7 +3940,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L013",
+      "id": "RM-BEAT-06-02-L012",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4430,7 +3954,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L014",
+      "id": "RM-BEAT-06-02-L013",
       "sceneId": "RM-BEAT-06-02",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4444,35 +3968,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-02-L015",
-      "sceneId": "RM-BEAT-06-02",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "игрок видит карту следующего этапа восстановления. Западное крыло и второй этаж остаются физически закрытыми, а не открываются сюжетным волшебным ключом."
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
       "id": "RM-BEAT-06-03-L001",
-      "sceneId": "RM-BEAT-06-03",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "спальня, ночь. *На столе детская карта, письма, фотография и дневник.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-06-03-L002",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "writing",
@@ -4486,7 +3982,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L003",
+      "id": "RM-BEAT-06-03-L002",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4500,7 +3996,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L004",
+      "id": "RM-BEAT-06-03-L003",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4514,7 +4010,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L005",
+      "id": "RM-BEAT-06-03-L004",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4528,7 +4024,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L006",
+      "id": "RM-BEAT-06-03-L005",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4542,7 +4038,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L007",
+      "id": "RM-BEAT-06-03-L006",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4556,7 +4052,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L008",
+      "id": "RM-BEAT-06-03-L007",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4570,7 +4066,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L009",
+      "id": "RM-BEAT-06-03-L008",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4584,7 +4080,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L010",
+      "id": "RM-BEAT-06-03-L009",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-UNKNOWN-VOICE",
       "delivery": "memory_voice",
@@ -4598,7 +4094,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-03-L011",
+      "id": "RM-BEAT-06-03-L010",
       "sceneId": "RM-BEAT-06-03",
       "speakerId": "RM-CHAR-EVELYN",
       "delivery": "speech",
@@ -4614,20 +4110,6 @@
     {
       "id": "RM-BEAT-06-POST-L001",
       "sceneId": "RM-BEAT-06-POST",
-      "speakerId": "RM-CHAR-UNKNOWN-VOICE",
-      "delivery": "speech",
-      "localized": {
-        "ru": {
-          "text": "библиотека, поздний вечер. *Лукас закрывает папку, Ада собирает чашки.*"
-        },
-        "be": null,
-        "en": null
-      },
-      "source": "screenplay"
-    },
-    {
-      "id": "RM-BEAT-06-POST-L002",
-      "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
       "localized": {
@@ -4640,7 +4122,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L003",
+      "id": "RM-BEAT-06-POST-L002",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4654,7 +4136,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L004",
+      "id": "RM-BEAT-06-POST-L003",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4668,7 +4150,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L005",
+      "id": "RM-BEAT-06-POST-L004",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4682,7 +4164,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L006",
+      "id": "RM-BEAT-06-POST-L005",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4696,7 +4178,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L007",
+      "id": "RM-BEAT-06-POST-L006",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
@@ -4710,7 +4192,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L008",
+      "id": "RM-BEAT-06-POST-L007",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-LUCAS",
       "delivery": "speech",
@@ -4724,7 +4206,7 @@
       "source": "screenplay"
     },
     {
-      "id": "RM-BEAT-06-POST-L009",
+      "id": "RM-BEAT-06-POST-L008",
       "sceneId": "RM-BEAT-06-POST",
       "speakerId": "RM-CHAR-ADA",
       "delivery": "speech",
