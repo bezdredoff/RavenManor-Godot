@@ -90,6 +90,9 @@ jobs:
           for file in index.html app.mjs model.mjs wall-tools.mjs catalog.mjs projection.mjs visual-contract.mjs hall-pilot.mjs sw.js style.css manifest.webmanifest catalog/room-items.json reference/season1_world_map.json reference/season1_wall_kit.json reference/hall_twin_staircases.png reference/hall_visual_contract.json reference/wall_tileset/grand_module.png reference/sprites/armchair_clean.png reference/sprites/burgundy_runner.png reference/sprites/grandfather_clock.png reference/sprites/round_side_table.png reference/sprites/entry_console.png reference/sprites/ancestor_gallery_composite.png reference/sprites/onoe_walk_sheet_v1.png icons/icon.svg icons/icon-192.png icons/icon-512.png; do
             cmp "tools/room-builder/$file" "builder/$file"
           done
+          for file in $(cd tools/room-builder/reference/wall_kit && find . -type f); do
+            cmp "tools/room-builder/reference/wall_kit/$file" "builder/reference/wall_kit/$file"
+          done
           cmp data/raven/season1_world_map.json tools/room-builder/reference/season1_world_map.json
           cmp data/raven/season1_wall_kit.json tools/room-builder/reference/season1_wall_kit.json
           cmp data/raven/hall_visual_contract.json tools/room-builder/reference/hall_visual_contract.json
@@ -110,6 +113,7 @@ jobs:
           cp tools/room-builder/catalog/room-items.json build/web/builder/catalog/
           cp tools/room-builder/reference/season1_world_map.json tools/room-builder/reference/season1_wall_kit.json tools/room-builder/reference/hall_twin_staircases.png tools/room-builder/reference/hall_visual_contract.json build/web/builder/reference/
           cp tools/room-builder/reference/wall_tileset/grand_module.png build/web/builder/reference/wall_tileset/
+          cp -r tools/room-builder/reference/wall_kit build/web/builder/reference/
           cp tools/room-builder/reference/sprites/*.png build/web/builder/reference/sprites/
           cp tools/room-builder/icons/icon.svg tools/room-builder/icons/icon-192.png tools/room-builder/icons/icon-512.png build/web/builder/icons/
           test -f build/web/builder/index.html

@@ -164,3 +164,31 @@ the rail can be swapped per state (intact / damaged) without re-rendering the fl
 
 Evidence: `docs/evidence/blender_kit/stairs.png` — a stair opening, an ascending flight behind
 it and two foreground rails with a central gap.
+## Full kit and the builder
+
+`tools/blender/wall_kit_render.py` renders the whole set — four styles × seven pieces — and
+writes `manifest.json`. Each entry records the file, the world size, the alpha bounding box,
+pixels per unit and the projected pivot, so a sprite can be placed without guessing:
+
+```powershell
+& "C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" -b -noaudio `
+  -P tools/blender/wall_kit_render.py
+```
+
+The rendered set is copied into `tools/room-builder/reference/wall_kit/` (and mirrored into
+`builder/reference/wall_kit/` for the published PWA). Contact sheet:
+`docs/evidence/blender_kit/kit_contact_sheet.png`.
+
+In the Room Builder the «Текстурные стены (превью)» toggle now prefers real sprites:
+
+- walls that run across the view are drawn from the kit; `straight` tiles along the run at its
+  natural size, while a run that carries a door, arch or window is drawn with that piece centred
+  on the opening;
+- walls that run away from the camera keep the pattern band, because a billboard would be wrong
+  there;
+- `chooseWallPiece()` in `wall-tools.mjs` decides which sprite a run uses, and is unit tested.
+
+Known gap: the kit is rendered at **50°** elevation for readability, while the builder's game
+view is **65°**. Sprite heights therefore do not agree with the plan projection yet. Deciding
+the projection contract (50° 3/4, 65°, or 2:1 isometric) is the next step before this can be
+called final art.

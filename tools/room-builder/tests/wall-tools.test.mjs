@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {exampleProject,validateProject} from '../model.mjs';
-import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls,wallBand,WALL_BAND_HEIGHT,isPortal} from '../wall-tools.mjs';
+import {normalizeWall,nearestWall,solidWallRuns,endpointTopology,validateWalls,wallBand,WALL_BAND_HEIGHT,isPortal,chooseWallPiece} from '../wall-tools.mjs';
 
 test('wall strokes snap orthogonally and derive connected corners',()=>{
  const first={id:'w1',...normalizeWall({x:2,y:3},{x:103,y:22},25),style:'grand',thickness:18};
@@ -58,4 +58,14 @@ test('only traversable openings cut the wall; windows stay on a solid wall',()=>
  assert.deepEqual(solidWallRuns(wall,[door,window_]),[[0,70],[130,200]]);
  assert.equal(isPortal('door'),true);assert.equal(isPortal('arch'),true);assert.equal(isPortal('stair'),true);
  assert.equal(isPortal('window'),false);assert.equal(isPortal('glass'),false);assert.equal(isPortal('nope'),false);
+});
+test('wall sprite choice follows the opening on the run',()=>{
+ const wall={id:'w',ax:0,ay:0,bx:300,by:0,style:'grand',thickness:18};
+ const door={id:'d',wallId:'w',kind:'door',width:80,offset:.5};
+ assert.equal(chooseWallPiece(wall,[], [0,300]),'straight');
+ assert.equal(chooseWallPiece(wall,[door],[0,130]),'straight');   // run left of the door
+ assert.equal(chooseWallPiece(wall,[door],[110,190]),'door');     // run covering the door
+ assert.equal(chooseWallPiece(wall,[{...door,kind:'arch'}],[110,190]),'arch');
+ assert.equal(chooseWallPiece(wall,[{...door,kind:'window'}],[110,190]),'window');
+ assert.equal(chooseWallPiece(wall,[{...door,kind:'stair'}],[110,190]),'straight');
 });

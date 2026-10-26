@@ -108,3 +108,13 @@ export function validateWalls(project){
   }
   return {walls,openings};
 }
+// Which kit sprite represents a solid wall run. Openings win over the plain wall, so the run
+// under a door is drawn with the door piece instead of a stretched straight one.
+export function chooseWallPiece(wall, openings, run){
+  const [start,end]=run||[0,wallLength(wall)];
+  const mid=(start+end)/2;
+  const own=openings.filter(o=>o.wallId===wall.id).map(o=>({kind:o.kind,interval:openingInterval(o,wall)}));
+  const inside=own.find(o=>o.interval.start<=mid&&mid<=o.interval.end);
+  if(inside&&['door','arch','window'].includes(inside.kind))return inside.kind;
+  return 'straight';
+}

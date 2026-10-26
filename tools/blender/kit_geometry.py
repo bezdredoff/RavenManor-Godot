@@ -188,7 +188,7 @@ def wall_with_openings(length: float,
     return boxes
 
 def door_leaf(open_x0: float, open_x1: float, open_z0: float, open_z1: float,
-              gap: float = 1.5) -> list[Box]:
+              gap: float = 0.0) -> list[Box]:
     """Closed leaf plus casing, sitting inside the reveal so states are separate sprites."""
     y0, y1 = -THICKNESS + 8.0, -8.0
     return [
@@ -383,3 +383,16 @@ def stair_rail(width: float, steps: int, rise: float, run: float, height: float 
         z1 = rise * steps * t1 + height
         boxes.append((x0, min(y0, y1), z0, x1, max(y0, y1), z1))
     return boxes
+
+def stairs_to_height(width: float, height: float, rise: float = 15.0, run: float = 24.0,
+                     depth: float = 0.0) -> list[Box]:
+    """Flight that actually reaches `height`.
+
+    A staircase leads to the next floor, so its top tread must sit at or above the wall top.
+    The step count is the smallest that covers the height; the flight gets deeper, not taller
+    per step.
+    """
+    if height <= 0:
+        raise ValueError("stairs_to_height needs a positive height")
+    steps = max(1, math.ceil(height / rise))
+    return stairs(width, steps, rise, run, depth)
