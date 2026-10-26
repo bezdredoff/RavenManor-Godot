@@ -757,6 +757,7 @@ func _load_imported_hall() -> void:
 		push_warning("Imported Hall disabled: " + str(imported_hall.get("reason", "unknown")))
 		return
 	assert(imported_hall.door_count == 5)
+	assert(imported_hall.opening_count == 5)
 	assert(imported_hall.footprint_count == 6)
 
 func _import_mode() -> bool:
@@ -773,6 +774,9 @@ func _draw_imported_floor() -> void:
 	if not _import_mode(): return
 	var stage: Rect2 = imported_hall.world_rect
 	draw_texture_rect(imported_hall.background, stage, false)
+	for run in imported_hall.get("wall_runs", []):
+		if str(run.role) == "balustrade-review": continue
+		draw_line(run.a, run.b, Color("c29a68"), float(run.width), true)
 	for record in imported_hall.items:
 		if str(record.mode) != "floor": continue
 		if record.texture != null:
@@ -883,6 +887,13 @@ func _draw_hall_upright_visuals(front: bool, target: CanvasItem) -> void:
 func _draw_foreground_overlay() -> void:
 	if _import_mode(): _draw_imported_upright(true, foreground_overlay)
 	else: _draw_hall_upright_visuals(true, foreground_overlay)
+	# Measured stair rails are isolated foreground strokes. They demonstrate
+	# correct actor occlusion without pretending the pilot PNG has final alpha.
+	if _import_mode():
+		for run in imported_hall.get("wall_runs", []):
+			if str(run.role) != "balustrade-review": continue
+			foreground_overlay.draw_line(_screen_from_world(run.a), _screen_from_world(run.b),
+				Color("c29a68"), maxf(2.0, float(run.width) * zoom), true)
 	# The legacy background has no approved alpha mask for door jambs or
 	# balustrades. Show map/art disagreements only in the bounds review view.
 	if (debug_art_bounds or show_hall_calibration) and _import_mode() and hall_calibration_valid:

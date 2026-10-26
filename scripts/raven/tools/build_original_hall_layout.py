@@ -14,6 +14,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 MAP_PATH = ROOT / "data/raven/season1_world_map.json"
 VISUALS_PATH = ROOT / "data/raven/hall_visual_contract.json"
+WALL_PLAN_PATH = ROOT / "data/raven/hall_wall_plan.json"
 OUTPUTS = [
     ROOT / "examples/room_builder_hall_original.json",
     ROOT / "tests/fixtures/hall_room_builder_export_sample.json",
@@ -25,12 +26,14 @@ KINDS = {
 }
 
 
-def build_original_layout(world, visual):
+def build_original_layout(world, visual, wall_plan):
     room_id = "RM-ROOM-HALL"
     room_idx = next(i for i, x in enumerate(world["rooms"]) if x["id"] == room_id)
     wx, wy, w, h = world["rooms"][room_idx]["rect"]
     if visual["roomWorldRect"] != [wx, wy, w, h] or len(visual["sprites"]) != 7:
         raise ValueError("Godot Hall geometry and the pilot layout must agree")
+    if wall_plan.get("roomId") != room_id or wall_plan.get("roomSize") != [w, h]:
+        raise ValueError("Hall wall plan and current world map must agree")
     assets = [
         {"id": "catalog:" + s["assetRefId"], "label": s["id"],
          "kind": KINDS[s["id"]], "w": s["rect"][2], "h": s["rect"][3],
@@ -88,6 +91,13 @@ def build_original_layout(world, visual):
              "visible": True, "locked": False}
         ],
         "assets": assets, "objects": objects, "anchors": anchors,
+        "walls": wall_plan["walls"], "openings": wall_plan["openings"],
+        "wallPlan": {
+            "source": "data/raven/hall_wall_plan.json",
+            "status": wall_plan["status"],
+            "staircases": wall_plan["staircases"],
+            "collisionPolicy": wall_plan["collisionPolicy"]
+        },
         "referenceFootprints": footprints,
         "provenance": (
             "Exact copy of current Godot provisional world-map Hall geometry + "
@@ -103,7 +113,8 @@ def main():
     args = parser.parse_args()
     result = build_original_layout(
         json.loads(MAP_PATH.read_text(encoding="utf-8")),
-        json.loads(VISUALS_PATH.read_text(encoding="utf-8"))
+        json.loads(VISUALS_PATH.read_text(encoding="utf-8")),
+        json.loads(WALL_PLAN_PATH.read_text(encoding="utf-8"))
     )
     content = json.dumps(result, ensure_ascii=False, indent=2) + "\n"
     for output in OUTPUTS:
@@ -116,7 +127,8 @@ def main():
     print(f"Original Hall synchronized from existing Godot: "
           f"{len(result['objects'])} objects, "
           f"{len(result['anchors'])} anchors, "
-          f"{len(result['referenceFootprints'])} collision references")
+          f"{len(result['referenceFootprints'])} collision references, "
+          f"{len(result['walls'])} wall runs, {len(result['openings'])} openings")
 
 
 if __name__ == "__main__":

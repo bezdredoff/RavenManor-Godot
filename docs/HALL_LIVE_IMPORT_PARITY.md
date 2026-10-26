@@ -48,6 +48,8 @@ Next production approval gate: compare actual images with doorstep markers and s
 
 The measured follow-up, real Godot viewport captures, opt-in three-piece seating footprints and remaining acceptance criteria are recorded in [HALL_VISUAL_ACCURACY_GATE.md](HALL_VISUAL_ACCURACY_GATE.md). The legacy seating obstacle remains the default.
 
+The subsequent five-portal wall plan, exact twin-stair records and schematic foreground rail pass are documented in [HALL_WALL_PARITY.md](HALL_WALL_PARITY.md).
+
 ## Measured art QA controls
 
 **Настр. → Стыки: ВИД** overlays the source map stair boxes and true door-vs-painting discrepancy arrows from `data/raven/hall_render_calibration.json`, and displays the existing seating collider next to three provisional contact shapes. **Кресла: 3 ТЕСТ** runs a reversible in-memory pathfinding comparison; default **Кресла: ОРИГ.** remains canonical. Both controls are protected by map/calibration parity validation and never persist to saves. Current background geometry and foreground rail masks still fail final art acceptance; see `docs/HALL_VISUAL_ACCURACY_GATE.md`.

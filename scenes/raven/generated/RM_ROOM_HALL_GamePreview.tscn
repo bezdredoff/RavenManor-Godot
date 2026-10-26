@@ -28,6 +28,194 @@ color = Color(0.36, 0.32, 0.34, 1)
 polygon = PackedVector2Array(0, 0, 700.0000, 0, 700.0000, 625.3524, 0, 625.3524)
 z_index = -3000
 
+[node name="DraftWalls" type="Node2D" parent="."]
+metadata/status = "DRAFT_VISUAL_ONLY_NO_PHYSICS"
+
+[node name="Wall_hall-north_0_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(0.0000, 0.0000, 700.0000, 0.0000)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-north"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-west_1_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(0.0000, 0.0000, 0.0000, 312.6762)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-west"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-west_1_1" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(0.0000, 412.3700, 0.0000, 625.3524)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-west"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-east_2_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(700.0000, 0.0000, 700.0000, 344.3970)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-east"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-east_2_1" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(700.0000, 444.0908, 700.0000, 625.3524)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-east"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-south_3_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(0.0000, 625.3524, 295.0000, 625.3524)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-south"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-south_3_1" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(405.0000, 625.3524, 700.0000, 625.3524)
+width = 18.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-south"
+metadata/wall_style = "grand"
+metadata/wall_role = "perimeter"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-east-wing-intent_4_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(280.0000, 181.2616, 295.0000, 181.2616)
+width = 14.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-east-wing-intent"
+metadata/wall_style = "grand"
+metadata/wall_role = "interior-portal-intent"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-east-wing-intent_4_1" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(405.0000, 181.2616, 420.0000, 181.2616)
+width = 14.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-east-wing-intent"
+metadata/wall_style = "grand"
+metadata/wall_role = "interior-portal-intent"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-upper-landing-intent_5_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(260.0000, 154.0723, 280.0000, 154.0723)
+width = 12.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-upper-landing-intent"
+metadata/wall_style = "grand"
+metadata/wall_role = "stair-landing-intent"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-upper-landing-intent_5_1" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(420.0000, 154.0723, 440.0000, 154.0723)
+width = 12.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-upper-landing-intent"
+metadata/wall_style = "grand"
+metadata/wall_role = "stair-landing-intent"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-stair-left-outer_6_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(140.0000, 36.2523, 140.0000, 212.9823)
+width = 10.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-stair-left-outer"
+metadata/wall_style = "grand"
+metadata/wall_role = "balustrade-review"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-stair-left-inner_7_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(255.0000, 36.2523, 255.0000, 212.9823)
+width = 10.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-stair-left-inner"
+metadata/wall_style = "grand"
+metadata/wall_role = "balustrade-review"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-stair-right-inner_8_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(445.0000, 36.2523, 445.0000, 212.9823)
+width = 10.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-stair-right-inner"
+metadata/wall_style = "grand"
+metadata/wall_role = "balustrade-review"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Wall_hall-stair-right-outer_9_0" type="Line2D" parent="DraftWalls"]
+points = PackedVector2Array(560.0000, 36.2523, 560.0000, 212.9823)
+width = 10.0000
+default_color = Color(0.37, 0.27, 0.25, 1)
+metadata/builder_wall_id = "hall-stair-right-outer"
+metadata/wall_style = "grand"
+metadata/wall_role = "balustrade-review"
+metadata/physics_authority = "NONE_DRAFT_ONLY"
+
+[node name="Opening_hall-entry_0" type="Marker2D" parent="DraftWalls"]
+position = Vector2(350.0000, 625.3524)
+metadata/builder_opening_id = "hall-entry"
+metadata/wall_id = "hall-south"
+metadata/opening_kind = "double_door"
+metadata/opening_width = 110.0000
+metadata/door_id = "RM-DOOR-ENTRY-HALL"
+metadata/foreground_occluder_requested = false
+metadata/approval = "DRAFT_ONLY"
+
+[node name="Opening_hall-archive_1" type="Marker2D" parent="DraftWalls"]
+position = Vector2(0.0000, 362.5231)
+metadata/builder_opening_id = "hall-archive"
+metadata/wall_id = "hall-west"
+metadata/opening_kind = "arch"
+metadata/opening_width = 110.0000
+metadata/door_id = "RM-DOOR-HALL-ARCHIVE"
+metadata/foreground_occluder_requested = true
+metadata/approval = "DRAFT_ONLY"
+
+[node name="Opening_hall-corridor_2" type="Marker2D" parent="DraftWalls"]
+position = Vector2(700.0000, 394.2439)
+metadata/builder_opening_id = "hall-corridor"
+metadata/wall_id = "hall-east"
+metadata/opening_kind = "arch"
+metadata/opening_width = 110.0000
+metadata/door_id = "RM-DOOR-HALL-CORRIDOR"
+metadata/foreground_occluder_requested = true
+metadata/approval = "DRAFT_ONLY"
+
+[node name="Opening_hall-east-wing_3" type="Marker2D" parent="DraftWalls"]
+position = Vector2(350.0000, 181.2616)
+metadata/builder_opening_id = "hall-east-wing"
+metadata/wall_id = "hall-east-wing-intent"
+metadata/opening_kind = "double_door"
+metadata/opening_width = 110.0000
+metadata/door_id = "RM-DOOR-HALL-EAST-WING"
+metadata/foreground_occluder_requested = true
+metadata/approval = "DRAFT_ONLY"
+
+[node name="Opening_hall-upper-floor_4" type="Marker2D" parent="DraftWalls"]
+position = Vector2(350.0000, 154.0723)
+metadata/builder_opening_id = "hall-upper-floor"
+metadata/wall_id = "hall-upper-landing-intent"
+metadata/opening_kind = "stair"
+metadata/opening_width = 140.0000
+metadata/door_id = "RM-DOOR-HALL-UPPER-FLOOR"
+metadata/foreground_occluder_requested = true
+metadata/approval = "DRAFT_ONLY"
+
 [node name="HallPilotBackground" type="TextureRect" parent="."]
 texture = ExtResource("1")
 expand_mode = 1

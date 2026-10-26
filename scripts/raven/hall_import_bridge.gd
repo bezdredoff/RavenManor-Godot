@@ -16,7 +16,8 @@ static func _near(a: Vector2, b: Vector2, tolerance: float = 0.12) -> bool:
 static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionary:
 	var result := {"ready": false, "reason": "", "items": [], "background": null,
 		"world_rect": Rect2(), "door_count": 0, "footprint_count": 0,
-		"pilot_count": 0, "placeholder_count": 0}
+		"pilot_count": 0, "placeholder_count": 0, "wall_runs": [],
+		"opening_count": 0}
 	if scene == null:
 		result.reason = "Imported Hall PackedScene is missing"
 		return result
@@ -111,6 +112,40 @@ static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionar
 		source.free()
 		result.reason = "Imported Hall is missing door anchors"
 		return result
+	# Builder wall geometry remains visual-only. Read it from the generated
+	# scene so the live map and standalone review use one source of truth.
+	var wall_runs: Array = []
+	var openings_verified := {}
+	var draft_walls: Node = source.get_node_or_null("DraftWalls")
+	if draft_walls != null:
+		for child in draft_walls.get_children():
+			if child is Line2D:
+				var line := child as Line2D
+				if line.points.size() != 2 or str(line.get_meta("physics_authority", "")) != "NONE_DRAFT_ONLY":
+					source.free()
+					result.reason = "Invalid draft wall run"
+					return result
+				var first := Vector2(line.points[0].x, line.points[0].y / PROJECTION_RATIO) + world_rect.position
+				var last := Vector2(line.points[1].x, line.points[1].y / PROJECTION_RATIO) + world_rect.position
+				wall_runs.append({"a": first, "b": last, "width": line.width,
+					"style": str(line.get_meta("wall_style", "")),
+					"role": str(line.get_meta("wall_role", "wall"))})
+			elif child is Marker2D and child.has_meta("builder_opening_id"):
+				var door_id := str(child.get_meta("door_id", ""))
+				if not expected_doors.has(door_id) or openings_verified.has(door_id):
+					source.free()
+					result.reason = "Unknown or duplicate draft opening: " + door_id
+					return result
+				var local := Vector2(child.position.x, child.position.y / PROJECTION_RATIO)
+				if not _near(local + world_rect.position, expected_doors[door_id], 0.2):
+					source.free()
+					result.reason = "Draft opening disagrees with world: " + door_id
+					return result
+				openings_verified[door_id] = true
+	if openings_verified.size() != expected_doors.size():
+		source.free()
+		result.reason = "Draft Hall must represent all five canonical openings"
+		return result
 	var items: Array = []
 	var imported_ids := {}
 	var pilot_count := 0
@@ -160,5 +195,7 @@ static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionar
 	result.placeholder_count = placeholder_count
 	result.door_count = doors_verified.size()
 	result.footprint_count = verified.size()
+	result.wall_runs = wall_runs
+	result.opening_count = openings_verified.size()
 	source.free()
 	return result

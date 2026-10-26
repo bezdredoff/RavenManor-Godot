@@ -79,3 +79,7 @@ The active map reads the actual committed Builder-generated scene in **Импо�
 ## RM-PIPE-004: measured Hall QA controls (2026-10-26)
 
 The already measured Hall art discrepancies (PR #32) now have accessible source-validated in-map **Стыки** guide overlays and an in-memory reversible **Кресла: 3 ТЕСТ** navigation button. The default one-piece seat collider, five real door points, fixed routes, game art and saves are unchanged. New Godot smoke tests cover both buttons and portrait layout. Architectural image re-authoring and alpha foreground masks remain unapproved; see `docs/HALL_VISUAL_ACCURACY_GATE.md`.
+
+## Hall wall parity draft (2026-10-26)
+
+The generated Builder/Godot Hall now contains ten measured wall/balustrade segments, five separate canonical portal intents and both exact staircase rectangles. The live map validates and draws the generated wall nodes; four schematic rail strokes render in the foreground pass for actor-depth review. Real 390×844, 412×915 and 430×932 OpenGL captures are committed. Routes, saves, door states and default collision remain unchanged; the pilot painting, final transparent masks and three-piece seating collision are still unapproved. See `docs/HALL_WALL_PARITY.md`.

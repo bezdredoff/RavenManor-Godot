@@ -52,3 +52,5 @@ Imported Hall art from the .tscn is now drawn in the actual Whole Manor Map with
 ## Following Hall render calibration: production art work
 
 Use the now instrumented import map to compare fixed five door markers and the two staircase bounds against the existing measured 1254×1254 painting. Replace the offset library/corridor arches using geometry-conditioned artwork and create separate doorway/balustrade alpha occlusion layers before approving pixel alignment. Then evaluate chair/table contact masks with the reversible test-only AStar mode and promote shapes only after review. Full criteria: `docs/HALL_VISUAL_ACCURACY_GATE.md`.
+
+The wall/portal/stair geometry portion is now implemented and captured; see `docs/HALL_WALL_PARITY.md`. The remaining work is asset production: repaint or tile the pilot background to those fixed guides, replace schematic rail strokes with transparent art cutouts, review both collision modes, and only then promote the three individual seating footprints.
