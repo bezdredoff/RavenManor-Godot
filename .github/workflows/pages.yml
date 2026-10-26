@@ -53,6 +53,7 @@ jobs:
 
       - name: Validate Room Builder PWA and Godot draft importer
         run: |
+          python3 -m pip install --quiet pillow
           node --check tools/room-builder/app.mjs
           node --check tools/room-builder/model.mjs
           node --check tools/room-builder/wall-tools.mjs

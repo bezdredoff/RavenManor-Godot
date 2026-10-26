@@ -13,7 +13,7 @@
   "24": {"class_type":"RandomNoise","inputs":{"noise_seed":26010001}},
   "25": {"class_type":"SamplerCustomAdvanced","inputs":{"noise":["24",0],"sigmas":["22",0],"guider":["23",0],"sampler":["13",0],"latent_image":["20",2]}},
   "26": {"class_type":"VAEDecode","inputs":{"samples":["25",0],"vae":["12",0]}},
-  "27": {"class_type":"VNCCS_RMBG2","inputs":{"image":["26",0],"model":"BiRefNet_toonout.safetensors","background":"Alpha","refine_foreground":true,"process_res":1024,"mask_blur":0,"invert_mask":false}},
+  "27": {"class_type":"BiRefNetRMBG","inputs":{"image":["26",0],"model":"BiRefNet_toonout","background":"Alpha","refine_foreground":true,"sensitivity":1.0,"mask_blur":0,"mask_offset":0,"invert_output":false,"background_color":"#222222"}},
   "80": {"class_type":"SaveImage","inputs":{"images":["26",0],"filename_prefix":"RavenManor/walls/raw/ASSET_ID"}},
   "81": {"class_type":"SaveImage","inputs":{"images":["27",0],"filename_prefix":"RavenManor/walls/alpha/ASSET_ID"}}
 }

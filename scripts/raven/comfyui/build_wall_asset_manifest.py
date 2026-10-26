@@ -14,18 +14,21 @@ STYLES = {
 SHAPES = [
     ("straight_h", "long horizontal seamless wall section", "straight_h"),
     ("straight_v", "long vertical seamless wall section", "straight_v"),
-    ("inner_corner_l", "left-facing concave inside corner wall piece", "corner_l"),
-    ("inner_corner_r", "right-facing concave inside corner wall piece", "corner_r"),
-    ("outer_corner_l", "left-facing convex outside corner wall piece", "corner_l"),
-    ("outer_corner_r", "right-facing convex outside corner wall piece", "corner_r"),
-    ("end_pillar", "wall termination with a narrow structural end pillar", "pillar")
+    ("inner_corner_l", "concave inside wall corner band, two flat panelled faces meeting at one vertical seam, the notch between them showing the plain white studio backdrop", "corner_l"),
+    ("inner_corner_r", "concave inside wall corner band, two flat panelled faces meeting at one vertical seam, the notch between them showing the plain white studio backdrop", "corner_r"),
+    ("outer_corner_l", "convex outside wall corner band, two flat panelled faces meeting at one vertical seam, both free ends cut straight against the plain white studio backdrop", "corner_l"),
+    ("outer_corner_r", "convex outside wall corner band, two flat panelled faces meeting at one vertical seam, both free ends cut straight against the plain white studio backdrop", "corner_r"),
+    ("end_pillar", "flat wall end section finishing in a narrow structural pillar, standing on the plain white studio backdrop with the backdrop continuing on every side", "pillar")
 ]
 BASE = (
+    # The sampler runs without CFG, so exclusions cannot be pushed into a negative prompt.
+    # Negated nouns such as "no characters" are read as content by Flux and must stay out.
     "Isolated modular environment asset for Raven Manor, a late-Victorian Gothic mystery adventure game. "
-    "Hand-painted stylized realism, crisp game-readable silhouette, orthographic 65-degree top-down camera, "
-    "same scale and warm directional lighting as the supplied hall reference. Match the black geometry guide exactly. "
-    "Centered complete object on plain white background for clean alpha extraction; no floor plane, no room scene, "
-    "no characters, no furniture, no text, no watermark, no border, no crop, no fisheye, no extra openings. "
+    "Hand-painted stylized realism, crisp game-readable silhouette, orthographic 65-degree top-down game view, "
+    "same scale and warm directional lighting as the supplied hall reference. Reproduce the black geometry guide: "
+    "identical footprint, proportions and outer silhouette. One detached architectural component, centred on a "
+    "blank pure-white studio backdrop, fully inside the frame with a wide empty white margin on every side, "
+    "clean product cut-out presentation of empty interior architecture. "
 )
 
 def job(asset_id, category, description, guide, seed, style="shared", state="default"):
@@ -41,15 +44,18 @@ for style, _ in STYLES.items():
         jobs.append(job(f"wall_{style}_{suffix}", "structure", desc, guide, seed, style)); seed += 1
 
 doors = {
-    "grand_single": "single grand interior Victorian door in a carved frame",
+    "grand_single": "single-leaf grand interior Victorian door in a carved frame",
     "grand_double": "symmetrical double grand Victorian doors in a carved frame",
-    "service_single": "plain sturdy service door in a practical timber frame",
+    "service_single": "plain sturdy single-leaf service door in a practical timber frame",
     "glazed_double": "symmetrical bronze-framed glazed conservatory double doors"
 }
 for family, desc in doors.items():
     style = "service" if family.startswith("service") else ("glass" if family.startswith("glazed") else "grand")
     for state in ("closed", "open", "damaged"):
-        state_desc = {"closed":"fully closed and readable", "open":"open inward with a completely clear walkable threshold",
+        # An opening that is described as "clear" still gets painted as a room unless the
+        # prompt names the backdrop, because the model fills every visible cavity.
+        state_desc = {"closed":"fully closed and readable",
+                      "open":"open inward with the doorway behind the leaf showing the plain white studio backdrop",
                       "damaged":"story-safe damaged version, cracked trim and loose panel but still recognizable"}[state]
         jobs.append(job(f"door_{family}_{state}", "door", f"{desc}, {state_desc}", "door_double" if "double" in family else "door_single", seed, style, state)); seed += 1
 
@@ -63,9 +69,9 @@ windows = [
 for suffix, desc, style in windows:
     jobs.append(job(f"window_{suffix}", "window", desc, "window", seed, style)); seed += 1
 
-for state, desc in [("open","open ceremonial pointed arch with a clear threshold"),
-                    ("gated","ceremonial pointed arch closed by an ornate iron story gate"),
-                    ("damaged","damaged ceremonial pointed arch with cracked trim but a readable threshold")]:
+for state, desc in [("open","open ceremonial pointed arch with the opening showing the plain white studio backdrop"),
+                    ("gated","ceremonial pointed arch closed by an ornate iron story gate, the space behind the gate showing the plain white studio backdrop"),
+                    ("damaged","damaged ceremonial pointed arch with cracked trim and the opening showing the plain white studio backdrop")]:
     jobs.append(job(f"arch_grand_{state}", "arch", desc, "arch", seed, "grand", state)); seed += 1
 
 for side in ("left", "right"):
@@ -77,7 +83,7 @@ for side in ("left", "right"):
 assert len(jobs) == 52 and len({x["id"] for x in jobs}) == 52
 manifest = {"schemaVersion":1,"status":"GENERATION_CANDIDATES_NOT_ART_APPROVED",
             "model":{"unet":"Flux2-Klein-9B-True-V3-fp8mixed.safetensors","clip":"qwen_3_8b_fp8mixed.safetensors",
-                     "vae":"flux2-vae.safetensors","rembg":"BiRefNet_toonout.safetensors"},
+                     "vae":"flux2-vae.safetensors","rembg":"BiRefNet_toonout"},
             "count":len(jobs),"jobs":jobs,
             "acceptance":["transparent PNG has non-empty alpha and no clipped opaque pixels",
                           "straight joins align across same-style pieces", "door/window opening preserves guide silhouette",
