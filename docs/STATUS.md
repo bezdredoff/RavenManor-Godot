@@ -83,3 +83,7 @@ The already measured Hall art discrepancies (PR #32) now have accessible source-
 ## Hall wall parity draft (2026-10-26)
 
 The generated Builder/Godot Hall now contains ten measured wall/balustrade segments, five separate canonical portal intents and both exact staircase rectangles. The live map validates and draws the generated wall nodes; four schematic rail strokes render in the foreground pass for actor-depth review. Real 390×844, 412×915 and 430×932 OpenGL captures are committed. Routes, saves, door states and default collision remain unchanged; the pilot painting, final transparent masks and three-piece seating collision are still unapproved. See `docs/HALL_WALL_PARITY.md`.
+
+## ComfyUI wall-art production package (2026-10-26)
+
+A deterministic 52-job Flux2 Klein batch now covers the full approved first-act wall budget: 28 structural pieces, 12 door states, five windows, three arch states and four staircase balustrades. Each job has an exact prompt, seed, guide silhouette and stable filename; the runner validates live ComfyUI nodes/models and saves raw plus alpha candidates. It does not auto-promote generated images. See `docs/RAVEN_WALL_COMFYUI_WORKFLOW.md`.

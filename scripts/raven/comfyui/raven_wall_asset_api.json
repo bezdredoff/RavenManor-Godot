@@ -1,0 +1,19 @@
+{
+  "1": {"class_type":"LoadImage","inputs":{"image":"RavenManorWallKit/guide.png"}},
+  "2": {"class_type":"LoadImage","inputs":{"image":"RavenManorWallKit/hall_style_reference.png"}},
+  "3": {"class_type":"ImageScaleToTotalPixels","inputs":{"image":["1",0],"resolution_steps":16,"upscale_method":"lanczos","megapixels":1.0}},
+  "4": {"class_type":"ImageScaleToTotalPixels","inputs":{"image":["2",0],"resolution_steps":16,"upscale_method":"lanczos","megapixels":1.0}},
+  "10": {"class_type":"UNETLoader","inputs":{"weight_dtype":"default","unet_name":"Flux2-Klein-9B-True-V3-fp8mixed.safetensors"}},
+  "11": {"class_type":"CLIPLoader","inputs":{"clip_name":"qwen_3_8b_fp8mixed.safetensors","type":"flux2","device":"default"}},
+  "12": {"class_type":"VAELoader","inputs":{"vae_name":"flux2-vae.safetensors"}},
+  "13": {"class_type":"KSamplerSelect","inputs":{"sampler_name":"euler"}},
+  "20": {"class_type":"VNCCS_Flux_Klein_Encoder","inputs":{"megapixels":1.0,"prompt":"PROMPT_FROM_MANIFEST","image1":["3",0],"image2":["4",0],"resolution_steps":16,"vae":["12",0],"clip":["11",0],"empty_height":1024,"empty_width":1024,"upscale_method":"lanczos","batch_size":1}},
+  "22": {"class_type":"Flux2Scheduler","inputs":{"height":1024,"width":1024,"steps":12}},
+  "23": {"class_type":"BasicGuider","inputs":{"model":["10",0],"conditioning":["20",0]}},
+  "24": {"class_type":"RandomNoise","inputs":{"noise_seed":26010001}},
+  "25": {"class_type":"SamplerCustomAdvanced","inputs":{"noise":["24",0],"sigmas":["22",0],"guider":["23",0],"sampler":["13",0],"latent_image":["20",2]}},
+  "26": {"class_type":"VAEDecode","inputs":{"samples":["25",0],"vae":["12",0]}},
+  "27": {"class_type":"VNCCS_RMBG2","inputs":{"image":["26",0],"model":"BiRefNet_toonout.safetensors","background":"Alpha","refine_foreground":true,"process_res":1024,"mask_blur":0,"invert_mask":false}},
+  "80": {"class_type":"SaveImage","inputs":{"images":["26",0],"filename_prefix":"RavenManor/walls/raw/ASSET_ID"}},
+  "81": {"class_type":"SaveImage","inputs":{"images":["27",0],"filename_prefix":"RavenManor/walls/alpha/ASSET_ID"}}
+}
