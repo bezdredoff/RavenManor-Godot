@@ -196,19 +196,27 @@ def door_leaf(open_x0: float, open_x1: float, open_z0: float, open_z1: float,
     ]
 
 
-def window_parts(open_x0: float, open_x1: float, open_z0: float,
-                 open_z1: float) -> tuple[list[Box], tuple[float, float, float, float]]:
-    """Mullioned frame plus the glass rectangle, which the game draws as its own layer."""
-    frame = 7.0
-    y0, y1 = -THICKNESS + 9.0, -9.0
+def window_parts(open_x0: float, open_x1: float, open_z0: float, open_z1: float,
+                 casing: float = 7.0, proud: float = 2.0
+                 ) -> tuple[list[Box], tuple[float, float, float, float]]:
+    """Window for a SOLID wall: proud casing, mullions and a glass pane.
+
+    Windows are not traversable, so they stay part of the wall sprite instead of cutting a
+    hole: no see-through opening, no occlusion work and no invented exterior behind the glass.
+    Doorways and arches use `wall_with_openings()` instead.
+    """
     mid_x = (open_x0 + open_x1) / 2
     mid_z = (open_z0 + open_z1) / 2
-    boxes: list[Box] = [
-        (open_x0 + frame, y0, open_z0 + frame, open_x1 - frame, y1, open_z1 - frame),
-        (mid_x - 2.5, y0, open_z0 + frame, mid_x + 2.5, y1, open_z1 - frame),
-        (open_x0 + frame, y0, mid_z - 2.5, open_x1 - frame, y1, mid_z + 2.5),
+    frame = [
+        (open_x0 - casing, 0.0, open_z0 - casing, open_x1 + casing, proud, open_z0),
+        (open_x0 - casing, 0.0, open_z1, open_x1 + casing, proud, open_z1 + casing),
+        (open_x0 - casing, 0.0, open_z0, open_x0, proud, open_z1),
+        (open_x1, 0.0, open_z0, open_x1 + casing, proud, open_z1),
+        (mid_x - 2.5, 0.0, open_z0, mid_x + 2.5, proud * 0.8, open_z1),
+        (open_x0, 0.0, mid_z - 2.5, open_x1, proud * 0.8, mid_z + 2.5),
     ]
-    return boxes, (open_x0 + frame, open_z0 + frame, open_x1 - frame, open_z1 - frame)
+    glass = (open_x0, 0.0, open_z0, open_x1, proud * 0.4, open_z1)
+    return frame, glass
 
 def covers(boxes: list[Box], x: float, y: float, z: float) -> bool:
     """Public point-in-kit query used by the opening tests."""

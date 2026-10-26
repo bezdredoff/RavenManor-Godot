@@ -63,18 +63,35 @@ class WallKitGeometryTests(unittest.TestCase):
                 self.assertGreaterEqual(report["size"][0], self.kit.LENGTH)
 
 
-    def test_openings_keep_wall_above_a_door_and_below_a_window(self):
-        wall = self.kit.wall_with_openings(
-            600.0, [(150.0, 250.0, 0.0, 130.0), (400.0, 540.0, 70.0, 175.0)])
-        y = -11.0
-        self.assertFalse(self.kit.covers(wall, 200, y, 60))     # inside the doorway
-        self.assertTrue(self.kit.covers(wall, 200, y, 150))     # header above the door
-        self.assertFalse(self.kit.covers(wall, 470, y, 100))    # inside the window
-        self.assertTrue(self.kit.covers(wall, 470, y, 30))      # wall under the window
-        self.assertTrue(self.kit.covers(wall, 470, y, 185))     # wall above the window
-        self.assertTrue(self.kit.covers(wall, 320, y, 60))      # pier between openings
+    def test_door_is_a_through_hole_and_the_header_stays_solid(self):
+        door = (150.0, 250.0, 0.0, 130.0)
+        wall = self.kit.wall_with_openings(600.0, [door])
+        self.assertFalse(self.kit.covers(wall, 200, -21.0, 60))   # through the doorway
+        self.assertFalse(self.kit.covers(wall, 200, -5.0, 60))    # nothing in the reveal
+        self.assertTrue(self.kit.covers(wall, 200, -11.0, 150))   # header above the door
+        self.assertTrue(self.kit.covers(wall, 320, -11.0, 60))    # pier beside it
 
-    def test_door_leaf_and_window_frame_sit_inside_the_hole(self):
+    def test_window_keeps_the_wall_solid(self):
+        # Windows are not traversable: they stay part of the wall sprite, with no hole.
+        door = (150.0, 250.0, 0.0, 130.0)
+        wall = self.kit.wall_with_openings(600.0, [door])
+        window = (400.0, 540.0, 70.0, 175.0)
+        for y in (-21.0, -11.0, -1.0):
+            with self.subTest(y=y):
+                self.assertTrue(self.kit.covers(wall, 470, y, 120))
+        frame, glass = self.kit.window_parts(*window)
+        self.assertTrue(frame)
+        self.assertGreaterEqual(glass[0], window[0])
+        self.assertLessEqual(glass[2], window[1])
+
+    def test_window_frame_sits_proud_of_the_wall_face(self):
+        frame, glass = self.kit.window_parts(400.0, 540.0, 70.0, 175.0)
+        for box in frame:
+            self.assertGreaterEqual(box[1], 0.0)          # starts at the inner face
+            self.assertGreater(box[4], 0.0)               # and stands proud of it
+        self.assertGreater(glass[4], 0.0)
+
+    def test_door_leaf_sits_inside_the_hole(self):
         door = (150.0, 250.0, 0.0, 130.0)
         leaf = self.kit.door_leaf(*door)
         xs = [b[0] for b in leaf] + [b[3] for b in leaf]
@@ -86,15 +103,6 @@ class WallKitGeometryTests(unittest.TestCase):
         self.assertLessEqual(max(zs), door[3])
         self.assertGreaterEqual(min(ys), -self.kit.THICKNESS)
         self.assertLessEqual(max(ys), 0.0)
-
-        window = (400.0, 540.0, 70.0, 175.0)
-        parts, glass = self.kit.window_parts(*window)
-        for box in parts:
-            self.assertGreaterEqual(box[0], window[0])
-            self.assertLessEqual(box[3], window[1])
-        self.assertGreaterEqual(glass[0], window[0])
-        self.assertLessEqual(glass[2], window[1])
-
     def test_wall_without_openings_matches_a_straight_run(self):
         self.assertEqual(self.kit.wall_with_openings(200.0, []), self.kit.straight())
     def test_mirror_keeps_geometry_valid(self):

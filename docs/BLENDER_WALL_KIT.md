@@ -78,12 +78,20 @@ wall thickness for free.
 
 Each opening then owns independent layers:
 
+Two kinds of opening, two very different treatments:
+
+- **Doors, arches and stair openings are traversable, so they cut a real hole.**
+- **Windows are not traversable, so they do not cut anything.** The frame, mullions and glass
+  are proud of the wall face by a couple of units and the wall stays solid behind them. That
+  is cheaper and more robust: no see-through gap, no invented exterior behind the glass, no
+  extra occlusion mask, and the window is simply part of the wall sprite.
+
 | Layer | What it is | Swapped per state |
 |---|---|---|
-| Wall with hole | the structural piece; never changes | no |
+| Wall with hole | structural piece for doors/arches/stairs; never changes | no |
 | Casing / frame | trim around the reveal, part of the wall finish | damaged variant only |
-| Leaf / sash | door leaf, window sash, gate | yes: closed / open / damaged |
-| Glass | separate transparent layer, so the game can show a room behind it | no |
+| Leaf | door leaf or gate | yes: closed / open / damaged |
+| Window | proud frame + mullions + glass **on a solid wall** | intact / broken / boarded |
 | Threshold | floor line; for open doors and arches it is just floor | no |
 | Stair opening | big hole plus a separate stair mesh; the balustrade in front is a foreground cutout with alpha | intact / damaged |
 
