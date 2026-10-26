@@ -13,7 +13,7 @@
       "sceneId": "RM-BEAT-00-01",
       "legacyRuntimeScene": "letter",
       "title": {
-        "ru": "RM-BEAT-00-01",
+        "ru": "Письмо",
         "be": null,
         "en": null
       },
@@ -24,7 +24,7 @@
       "sceneId": "RM-BEAT-00-02",
       "legacyRuntimeScene": "road",
       "title": {
-        "ru": "RM-BEAT-00-02",
+        "ru": "Дорога",
         "be": null,
         "en": null
       },
@@ -35,7 +35,7 @@
       "sceneId": "RM-BEAT-00-03",
       "legacyRuntimeScene": "gates",
       "title": {
-        "ru": "RM-BEAT-00-03",
+        "ru": "Ворота",
         "be": null,
         "en": null
       },
@@ -46,7 +46,7 @@
       "sceneId": "RM-BEAT-01-01",
       "legacyRuntimeScene": "arrival",
       "title": {
-        "ru": "RM-BEAT-01-01",
+        "ru": "Прибытие",
         "be": null,
         "en": null
       },
@@ -57,7 +57,7 @@
       "sceneId": "RM-BEAT-01-02",
       "legacyRuntimeScene": "bedroom",
       "title": {
-        "ru": "RM-BEAT-01-02",
+        "ru": "Знакомая спальня",
         "be": null,
         "en": null
       },
@@ -68,7 +68,7 @@
       "sceneId": "RM-BEAT-01-03",
       "legacyRuntimeScene": "trace",
       "title": {
-        "ru": "RM-BEAT-01-03",
+        "ru": "Нужен специалист",
         "be": null,
         "en": null
       },
@@ -79,7 +79,7 @@
       "sceneId": "RM-BEAT-01-04",
       "legacyRuntimeScene": "night",
       "title": {
-        "ru": "RM-BEAT-01-04",
+        "ru": "Первая ночь",
         "be": null,
         "en": null
       },
@@ -90,7 +90,7 @@
       "sceneId": "RM-BEAT-01-05",
       "legacyRuntimeScene": "complete",
       "title": {
-        "ru": "RM-BEAT-01-05",
+        "ru": "Утро: кухня, Роуэн и оранжерея",
         "be": null,
         "en": null
       },
