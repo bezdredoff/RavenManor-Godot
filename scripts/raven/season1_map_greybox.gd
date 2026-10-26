@@ -52,6 +52,8 @@ var art_variant := 4
 var debug_art_bounds := false
 # Preview-only opt-in. The accepted map and saved campaign never persist this.
 var precise_seating_collision := false
+var show_hall_calibration := false
+var hall_calibration_valid := false
 var dragging := false
 var drag_distance := 0.0
 var actor_pos := Vector2(875, 635)
@@ -75,6 +77,8 @@ var toggle_button: Button
 var camera_button: Button
 var art_button: Button
 var bounds_button: Button
+var calibration_button: Button
+var seat_collision_button: Button
 var zoom_preset_button: Button
 var recenter_button: Button
 var zoom_minus_button: Button
@@ -96,6 +100,8 @@ func _ready() -> void:
 	props = DATA.data.props
 	_load_hall_visuals()
 	_load_imported_hall()
+	hall_calibration_valid = _validate_hall_measurements()
+	if not hall_calibration_valid: push_warning("Hall measured calibration is stale; trial collision disabled")
 	snapshot = Store.new().load_campaign()
 	_make_ui()
 	_make_onoe()
@@ -171,6 +177,10 @@ func _make_ui() -> void:
 	bounds_button = _button("Габариты: СКР", Vector2.ZERO, Vector2(110, 36), _toggle_bounds, debug_panel)
 	safe_button = _button("Safe area: ВЫКЛ", Vector2.ZERO, Vector2(110, 36), _toggle_safe_viewport, debug_panel)
 	overview_button = _button("Обзор этажа", Vector2.ZERO, Vector2(110, 36), _overview, debug_panel)
+	calibration_button = _button("Стыки: СКР", Vector2.ZERO, Vector2(115, 36), _toggle_calibration_guides, debug_panel)
+	seat_collision_button = _button("Кресла: ОРИГ.", Vector2.ZERO, Vector2(133, 36), _toggle_precise_seating, debug_panel)
+	calibration_button.disabled = not hall_calibration_valid
+	seat_collision_button.disabled = not hall_calibration_valid
 	debug_panel.visible = false
 	resized.connect(_layout_hud)
 	_layout_hud()
@@ -218,7 +228,7 @@ func _layout_hud() -> void:
 	back_button.position = Vector2(margin + match_width + repair_width + 2.0 * gap, size.y - 39.0)
 	back_button.size = Vector2(footer_space - match_width - repair_width, 35.0)
 	debug_panel.position = Vector2(margin, TOP_UI_HEIGHT + 5.0)
-	debug_panel.size = Vector2(usable_width, 102.0)
+	debug_panel.size = Vector2(usable_width, 149.0)
 	var panel_row_width := debug_panel.size.x - 18.0 - 2.0 * gap
 	toggle_button.position = Vector2(9, 9)
 	toggle_button.size = Vector2(panel_row_width * 0.50, 36)
@@ -232,6 +242,10 @@ func _layout_hud() -> void:
 	safe_button.size = Vector2(panel_row_width * 0.37, 36)
 	overview_button.position = Vector2(9 + panel_row_width * 0.70 + 2.0 * gap, 53)
 	overview_button.size = Vector2(panel_row_width * 0.30, 36)
+	calibration_button.position = Vector2(9, 99)
+	calibration_button.size = Vector2(panel_row_width * 0.49, 36)
+	seat_collision_button.position = Vector2(9 + panel_row_width * 0.49 + gap, 99)
+	seat_collision_button.size = Vector2(panel_row_width * 0.51, 36)
 	queue_redraw()
 
 
@@ -406,6 +420,101 @@ func _toggle_art() -> void:
 	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
 
 
+func _validate_hall_measurements() -> bool:
+	# The measured painting coordinates are observations, NEVER replacement
+	# door positions or implicitly accepted collision. Fail closed on map drift.
+	var measure: Dictionary = HALL_CALIBRATION.data
+	if str(measure.get("status", "")) != "MEASURED_DRAFT_NOT_APPROVED" or \
+			int(measure.get("schemaVersion", 0)) != 1:
+		return false
+	var door_lookup := {}
+	for door in doors:
+		if int(door.a) == 1 or int(door.b) == 1:
+			door_lookup[str(door.id)] = door
+	var seen := {}
+	if measure.openings.size() != door_lookup.size(): return false
+	for opening in measure.openings:
+		var ident := str(opening.id)
+		if not door_lookup.has(ident) or seen.has(ident): return false
+		var canonical: Array = door_lookup[ident].point
+		var expected := Vector2(float(canonical[0]), float(canonical[1]))
+		var mp: Array = opening.mapPoint
+		if Vector2(float(mp[0]), float(mp[1])).distance_to(expected) > 0.01: return false
+		seen[ident] = true
+	var stairs := {}
+	for prop in props:
+		if int(prop.room) == 1 and str(prop.id).contains("STAIRS"):
+			stairs[str(prop.id)] = _prop_rect(prop)
+	if measure.staircases.size() != stairs.size(): return false
+	var registered_stairs := {}
+	for stair in measure.staircases:
+		var ident := str(stair.id)
+		if not stairs.has(ident) or registered_stairs.has(ident): return false
+		var rect: Array = stair.mapRect
+		var bounds := Rect2(float(rect[0]), float(rect[1]), float(rect[2]), float(rect[3]))
+		if bounds != stairs[ident]: return false
+		registered_stairs[ident] = true
+	var parent: Rect2
+	var parent_found := false
+	for prop in props:
+		if str(prop.id) == "RM-ASSET-HALL-SEATS":
+			parent = _prop_rect(prop)
+			parent_found = true
+	if not parent_found or measure.seatingFootprints.size() != 3: return false
+	var valid := {}
+	for candidate in measure.seatingFootprints:
+		var ident := str(candidate.id)
+		if ident not in ["chair-left", "chair-right", "round-table"] or valid.has(ident): return false
+		var rect: Array = candidate.rect
+		var bounds := Rect2(float(rect[0]), float(rect[1]), float(rect[2]), float(rect[3]))
+		if bounds.size.x <= 0 or bounds.size.y <= 0 or not parent.encloses(bounds): return false
+		valid[ident] = true
+	return valid.size() == 3
+
+func _toggle_calibration_guides() -> void:
+	if not hall_calibration_valid: return
+	show_hall_calibration = not show_hall_calibration
+	calibration_button.text = "Стыки: ВИД" if show_hall_calibration else "Стыки: СКР"
+	status_label.text = "Зелёное: карта · коралловое: оценка PNG · НЕ финальный арт"
+	queue_redraw()
+	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
+
+func _toggle_precise_seating() -> void:
+	if not hall_calibration_valid: return
+	precise_seating_collision = not precise_seating_collision
+	_rebuild_navigation()
+	movement_points.clear()
+	if is_instance_valid(actor_sprite):
+		actor_sprite.stop()
+	seat_collision_button.text = "Кресла: 3 ТЕСТ" if precise_seating_collision else "Кресла: ОРИГ."
+	status_label.text = "Три отдельных тестовых основания; НЕ сохранено" if precise_seating_collision else "Исходная физика кресел восстановлена"
+	queue_redraw()
+
+func _draw_hall_calibration_guides() -> void:
+	if not show_hall_calibration or not hall_calibration_valid: return
+	# These guides use *real* world coordinates under the game floor transform.
+	# Door displacement arrows live in PilotFrontOcclusion above the painting.
+	for stair in HALL_CALIBRATION.data.staircases:
+		var fixed: Array = stair.mapRect
+		var painted: Array = stair.paintedApproxRect
+		var original := Rect2(float(fixed[0]), float(fixed[1]), float(fixed[2]), float(fixed[3]))
+		var estimated := Rect2(float(painted[0]), float(painted[1]), float(painted[2]), float(painted[3]))
+		draw_rect(original, Color("64d8fb"), false, 3.0)
+		draw_rect(estimated, Color("ff8d72"), false, 3.0)
+		for i in range(1, 6):
+			var y: float = original.position.y + original.size.y * float(i) / 6.0
+			draw_line(Vector2(original.position.x + 6, y),
+				Vector2(original.end.x - 6, y), Color(0.35, 0.80, 1.0, 0.68), 1.5)
+	for prop in props:
+		if str(prop.id) == "RM-ASSET-HALL-SEATS":
+			draw_rect(_prop_rect(prop), Color("ffb56a"), false, 3.0)
+	for proposed in HALL_CALIBRATION.data.seatingFootprints:
+		var r: Array = proposed.rect
+		var rect := Rect2(float(r[0]), float(r[1]), float(r[2]), float(r[3]))
+		draw_rect(rect, Color("a1e881"), false, 2.0)
+	draw_line(actor_pos - Vector2(30, 0), actor_pos + Vector2(30, 0),
+		Color("d99bff"), 2.0)
+
 func _toggle_bounds() -> void:
 	debug_art_bounds = not debug_art_bounds
 	bounds_button.text = "Габариты: ВИД" if debug_art_bounds else "Габариты: СКР"
@@ -471,7 +580,7 @@ func _is_walkable(p: Vector2) -> bool:
 	for prop in props:
 		if int(prop.room) != index:
 			continue
-		if precise_seating_collision and str(prop.id) == "RM-ASSET-HALL-SEATS":
+		if precise_seating_collision and hall_calibration_valid and str(prop.id) == "RM-ASSET-HALL-SEATS":
 			for footprint in HALL_CALIBRATION.data.seatingFootprints:
 				var a: Array = footprint.rect
 				var base := Rect2(float(a[0]), float(a[1]), float(a[2]), float(a[3]))
@@ -776,7 +885,7 @@ func _draw_foreground_overlay() -> void:
 	else: _draw_hall_upright_visuals(true, foreground_overlay)
 	# The legacy background has no approved alpha mask for door jambs or
 	# balustrades. Show map/art disagreements only in the bounds review view.
-	if debug_art_bounds and _import_mode():
+	if (debug_art_bounds or show_hall_calibration) and _import_mode() and hall_calibration_valid:
 		for opening in HALL_CALIBRATION.data.openings:
 			var expected: Array = opening.mapPoint
 			var painted: Array = opening.paintedPoint
@@ -878,6 +987,7 @@ func _draw() -> void:
 					HORIZONTAL_ALIGNMENT_LEFT, int(r.size.x) - 12, 15, Color.WHITE)
 		if debug_art_bounds or chosen:
 			draw_rect(r, Color("f6d888") if chosen else Color("cf9e86"), false, 3.0)
+	_draw_hall_calibration_guides()
 	if not movement_points.is_empty():
 		var last := actor_pos
 		for waypoint in movement_points:
