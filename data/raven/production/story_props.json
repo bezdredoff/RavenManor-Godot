@@ -1,0 +1,712 @@
+{
+  "schemaVersion": 1,
+  "status": "PROPOSED_NOT_FULLY_INTEGRATED",
+  "sourceOfPhysicalAssetIds": "docs/assets/ROOM_OBJECT_REGISTER.csv",
+  "sourceOfPilotMapIds": "data/raven/season1_world_map.json",
+  "objects": [
+    {
+      "id": "PROP-LETTER",
+      "nameRu": "конверт с наследством",
+      "assetRefId": "RM-ASSET-ENTRY-006",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "sealed",
+        "opened",
+        "read"
+      ],
+      "sceneIds": [
+        "RM-BEAT-00-01",
+        "RM-BEAT-00-03"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-SUITCASE",
+      "nameRu": "дорожный чемодан",
+      "assetRefId": "RM-ASSET-ENTRY-005",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "packed",
+        "arrived",
+        "unpacked"
+      ],
+      "sceneIds": [
+        "RM-BEAT-00-01",
+        "RM-BEAT-00-03",
+        "RM-BEAT-01-01"
+      ],
+      "representation": "map_layer",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-TEA-TRAY",
+      "nameRu": "поднос Ады",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "full",
+        "cup_removed"
+      ],
+      "sceneIds": [
+        "RM-BEAT-00-03",
+        "RM-BEAT-02-01",
+        "RM-BEAT-05-04",
+        "RM-BEAT-06-03",
+        "RM-BEAT-06-POST"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-TEACUP",
+      "nameRu": "фарфоровая чашка",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "empty",
+        "filled",
+        "left_untouched"
+      ],
+      "sceneIds": [
+        "RM-BEAT-00-03",
+        "RM-BEAT-02-01",
+        "RM-BEAT-02-04",
+        "RM-BEAT-04-01",
+        "RM-BEAT-05-04",
+        "RM-BEAT-06-POST"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-NOTARY-FOLDER",
+      "nameRu": "папка Лукаса",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "closed",
+        "opened",
+        "papers_offered"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-01",
+        "RM-BEAT-03-01",
+        "RM-BEAT-06-01",
+        "RM-BEAT-06-POST"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-BEDROOM-DOOR",
+      "nameRu": "заклинившая дверь",
+      "assetRefId": "RM-ASSET-CORRIDOR-002",
+      "existingHotspotId": "RM-HS-005",
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "jammed",
+        "cleared_open"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-01",
+        "RM-BEAT-01-02"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-BED",
+      "nameRu": "кровать и матрас",
+      "assetRefId": "RM-ASSET-BEDROOM-001",
+      "existingHotspotId": "RM-HS-002",
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-BEDROOM-BED",
+      "states": [
+        "covered",
+        "clean_made"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-02",
+        "RM-BEAT-01-04",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CHILD-TRUNK",
+      "nameRu": "сундук детских вещей",
+      "assetRefId": "RM-ASSET-BEDROOM-006",
+      "existingHotspotId": "RM-HS-004",
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "closed",
+        "opened",
+        "searched"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-02",
+        "RM-BEAT-01-04",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "map_and_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CHILDHOOD-OBJECT",
+      "nameRu": "детская памятная вещь",
+      "assetRefId": "RM-ASSET-BEDROOM-014",
+      "existingHotspotId": "RM-HS-004",
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "hidden",
+        "found",
+        "recorded"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-04"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-BATH-PIPES",
+      "nameRu": "ванная сантехника",
+      "assetRefId": "RM-ASSET-BATHROOM-001",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-BATHROOM-PLUMBING",
+      "states": [
+        "leaking",
+        "exposed",
+        "specialist_fixed"
+      ],
+      "sceneIds": [
+        "RM-BEAT-01-03"
+      ],
+      "representation": "vignette",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-KITCHEN-CIRCUIT",
+      "nameRu": "электрощит и проводка",
+      "assetRefId": "RM-ASSET-CORRIDOR-010",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unsafe",
+        "inspected",
+        "safe_circuits_enabled"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-01",
+        "RM-BEAT-02-03",
+        "RM-BEAT-02-04"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-KITCHEN-TABLE",
+      "nameRu": "кухонный стол",
+      "assetRefId": "RM-ASSET-KITCHEN-002",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-KITCHEN-TABLE",
+      "states": [
+        "cluttered",
+        "cleared"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-03",
+        "RM-BEAT-02-04"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-KITCHEN-LIGHT",
+      "nameRu": "кухонный свет",
+      "assetRefId": "RM-ASSET-KITCHEN-008",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "off",
+        "lit_safe"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-01",
+        "RM-BEAT-02-04"
+      ],
+      "representation": "map_light",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-HOUSEHOLD-LEDGER",
+      "nameRu": "хозяйственная книга",
+      "assetRefId": "RM-ASSET-KITCHEN-010",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "closed",
+        "open_dates",
+        "indexed"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-03",
+        "RM-BEAT-03-01"
+      ],
+      "representation": "closeup_and_prop",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-HALL-CLOCK",
+      "nameRu": "напольные часы",
+      "assetRefId": "RM-ASSET-HALL-002",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-HALL-CLOCK",
+      "states": [
+        "stopped",
+        "repaired"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-01",
+        "RM-BEAT-06-02"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-LIBRARY-DOOR",
+      "nameRu": "дверь библиотеки",
+      "assetRefId": "RM-ASSET-HALL-005",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "closed_unsafe",
+        "opened"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-01"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-LIBRARY-SHELVES",
+      "nameRu": "полки библиотеки",
+      "assetRefId": "RM-ASSET-ARCHIVE-001",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-ARCHIVE-SHELF",
+      "states": [
+        "dusty_unsafe",
+        "supported_clean"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-01",
+        "RM-BEAT-03-02"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-LIBRARY-DESK",
+      "nameRu": "письменный стол",
+      "assetRefId": "RM-ASSET-ARCHIVE-005",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-ARCHIVE-DESK",
+      "states": [
+        "covered",
+        "cleared",
+        "drawer_open"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-01",
+        "RM-BEAT-03-02",
+        "RM-BEAT-03-04",
+        "RM-BEAT-05-02",
+        "RM-BEAT-06-01"
+      ],
+      "representation": "map_and_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-FAMILY-ALBUM",
+      "nameRu": "семейный альбом",
+      "assetRefId": "RM-ASSET-ARCHIVE-006",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "closed",
+        "opened"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-02"
+      ],
+      "representation": "insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-FADED-PHOTO",
+      "nameRu": "выцветшая фотография",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "face_down",
+        "date_visible",
+        "envelope"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-02",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-UNSENT-POSTCARDS",
+      "nameRu": "неотправленные открытки",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "hidden",
+        "inspected",
+        "journaled"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-02"
+      ],
+      "representation": "insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-UNSIGNED-LETTER",
+      "nameRu": "записка без подписи",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "hidden",
+        "read",
+        "journaled"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-04"
+      ],
+      "representation": "insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-GARDEN-FENCE",
+      "nameRu": "ограждение сада",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "broken",
+        "fixed"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-01"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-HAMMER",
+      "nameRu": "молоток Роуэна",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "in_hand",
+        "in_toolbox"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-01"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-THERMOS",
+      "nameRu": "термос и две кружки",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "carried",
+        "poured",
+        "put_away"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-01"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CONSERVATORY-GLASS",
+      "nameRu": "рамы оранжереи",
+      "assetRefId": "RM-ASSET-CONSERVATORY-001",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "broken_unsafe",
+        "specialist_safe",
+        "storm_damaged"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-02",
+        "RM-BEAT-04-01",
+        "RM-BEAT-04-02",
+        "RM-BEAT-04-04",
+        "RM-BEAT-05-01",
+        "RM-BEAT-05-04"
+      ],
+      "representation": "map_state",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CONSERVATORY-BENCH",
+      "nameRu": "каменная скамья",
+      "assetRefId": "RM-ASSET-CONSERVATORY-010",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": "RM-ASSET-CONSERVATORY-BENCH",
+      "states": [
+        "dusty",
+        "clean"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-02",
+        "RM-BEAT-04-03"
+      ],
+      "representation": "map_and_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CHILDHOOD-BOX",
+      "nameRu": "детская коробка",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "hidden_under_bench",
+        "found",
+        "opened"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-02",
+        "RM-BEAT-04-03",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-CHILDHOOD-MAP",
+      "nameRu": "нарисованная детская карта",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "folded",
+        "revealed",
+        "diary_reference"
+      ],
+      "sceneIds": [
+        "RM-BEAT-04-03",
+        "RM-BEAT-05-01",
+        "RM-BEAT-06-02",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-LANTERN",
+      "nameRu": "фонарь Ады",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unlit",
+        "lit"
+      ],
+      "sceneIds": [
+        "RM-BEAT-05-01"
+      ],
+      "representation": "hand_overlay",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-WET-DOCUMENTS",
+      "nameRu": "намокшие листы",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "wet",
+        "hung_if_sturdy",
+        "laid_flat_delicate",
+        "safe"
+      ],
+      "sceneIds": [
+        "RM-BEAT-05-02",
+        "RM-BEAT-05-03"
+      ],
+      "representation": "map_and_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-APRON-SUPPLIES",
+      "nameRu": "карман фартука: бечёвка, прищепки, связка писем",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unseen",
+        "twine_reveal",
+        "letters_reveal"
+      ],
+      "sceneIds": [
+        "RM-BEAT-05-02"
+      ],
+      "representation": "hand_prop_fx",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-RESTORATION-COSTS",
+      "nameRu": "предварительная смета",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "filed",
+        "presented"
+      ],
+      "sceneIds": [
+        "RM-BEAT-06-01"
+      ],
+      "representation": "insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-ESTATE-FORMS",
+      "nameRu": "документы управления поместьем",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unsigned",
+        "signed"
+      ],
+      "sceneIds": [
+        "RM-BEAT-06-01"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-DIARY",
+      "nameRu": "дневник воспоминаний",
+      "assetRefId": null,
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "blank",
+        "facts_added",
+        "staying_entry",
+        "memory_quote"
+      ],
+      "sceneIds": [
+        "RM-BEAT-03-03",
+        "RM-BEAT-05-03",
+        "RM-BEAT-06-03"
+      ],
+      "representation": "hand_insert",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-STAIRCASE",
+      "nameRu": "лестница в верхний этаж",
+      "assetRefId": "RM-ASSET-HALL-001",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unsafe",
+        "future_pro_inspection"
+      ],
+      "sceneIds": [
+        "RM-BEAT-06-02"
+      ],
+      "representation": "map_gate",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    },
+    {
+      "id": "PROP-WEST-WING",
+      "nameRu": "западное крыло",
+      "assetRefId": "RM-ASSET-HALL-003",
+      "existingHotspotId": null,
+      "proposedFutureHotspotId": null,
+      "pilotMapId": null,
+      "states": [
+        "unsafe_closed",
+        "future_inspection"
+      ],
+      "sceneIds": [
+        "RM-BEAT-02-03",
+        "RM-BEAT-06-02"
+      ],
+      "representation": "map_gate",
+      "authoringRule": "Map instance and VN close-up refer to the same logical object; physical world state comes only from reducer/story event; decorative texture changes must not mutate save."
+    }
+  ],
+  "rules": [
+    "Do not equate the named photograph with the established RM-CLUE-01-CHILDHOOD-OBJECT; two separate objects until narrative decision.",
+    "Do not assume the proposed object asset IDs exist in world-map greybox or navigation graph; they originate from the object register.",
+    "In first slice retain RM-HS-002/004/005, RM-REST-001/002 and RM-LVL-001..003 without renaming.",
+    "Safety: never portray a specialist repair as a direct consequence of tile-color matching; show professional work in vignette or state transition."
+  ]
+}
