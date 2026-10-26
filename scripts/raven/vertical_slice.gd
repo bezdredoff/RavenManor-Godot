@@ -8,8 +8,8 @@ const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 
-const TILE_COLORS := {"raven":Color("40506b"),"key":Color("b8954d"),"rose":Color("884f62"),"candle":Color("d5c38b"),"book":Color("5d704d")}
-const TILE_MARKS := {"raven":"R","key":"K","rose":"✦","candle":"C","book":"B"}
+const TILE_COLORS := {"raven":Color("40506b"),"key":Color("b8954d"),"rose":Color("884f62"),"candle":Color("d5c38b"),"book":Color("5d704d"),"cup":Color("e8dcc8"),"brooch":Color("a883bc"),"quill":Color("bc9b73")}
+const TILE_MARKS := {"raven":"R","key":"K","rose":"✦","candle":"C","book":"B","cup":"☕","brooch":"◆","quill":"Q"}
 
 var store := Store.new()
 var state := Snapshot.fresh()
@@ -51,7 +51,7 @@ func _build_shell() -> void:
 func _render() -> void:
 	for child in body.get_children(): child.queue_free()
 	step = Director.next_step(state)
-	status.text = "Прогресс %d/12 · очки %d · save rev.%d" % [_step_index(step.id), state.workPoints, state.revision]
+	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
 	body.add_child(_label(str(step.title), 20, Color("f0dfbd")))
 	match str(step.kind):
 		"map","restore","clue":
@@ -66,7 +66,8 @@ func _render() -> void:
 
 
 func _render_vn() -> void:
-	var config: Dictionary = content.vnScenes[str(step.scene)]
+	var scene_id := str(step.scene)
+	var config: Dictionary = content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
 	if vn_player == null or vn_player.scene.get("beatId", "") != config.beatId:
 		vn_player = VN.new(); vn_player.open(config)
 	body.add_child(_paragraph("[%s] %s" % [config.beatId, vn_player.current_speaker()]))
@@ -140,7 +141,7 @@ func _level(id: String) -> Dictionary:
 
 func _step_index(current: String) -> int:
 	for index in Director.STEPS.size():
-		if Director.STEPS[index].id == current: return mini(index, 12)
+		if Director.STEPS[index].id == current: return index
 	return 0
 
 

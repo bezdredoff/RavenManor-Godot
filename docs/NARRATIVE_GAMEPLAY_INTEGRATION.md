@@ -107,3 +107,16 @@ The player should **not** yet receive an explicit confirmation that Ada is a gho
 ## Open narrative work
 
 This sync intentionally does not invent the cause of the memory effect, exact supernatural reveal scenes, final dialogue polish, romance/relationship arcs, or the exact position of the library/archive chapter. Those require explicit story approval and should then be added with stable IDs rather than hidden in room-art or navigation files.
+
+
+## 2026-10-26 reviewed-script addendum: prologue and tile pool
+
+The current narrative/script handoff is `docs/NARRATIVE_SCRIPT_READABLE.md`. The revised revision marker for `data/raven/season1_narrative.json` and `data/raven/rm_vs_01_content.json` is `2026-10-26-chat-sync-prologue`.
+
+Three VN prologue beats now precede the existing arrival beat in the prototype's 16-step director: `RM-BEAT-00-01` (letter in Evelyn's rented apartment), `RM-BEAT-00-02` (road/return to town), `RM-BEAT-00-03` (Ada at the manor gates). They are saved through the existing `story_beat_seen` event and `storyBeatsSeen` field; no save-schema version change is required. Existing saves that have advanced past arrival but never recorded these new beats may enter the new prologue on resume; migration/skip treatment remains a separate product decision.
+
+The letter has an authored **non-binding** choice, `RM-CHOICE-00-01`, documented in the narrative JSON. Its outcomes deliberately converge, but the current prototype plays the dialogue linearly and does **not** yet display an actual two-option choice widget.
+
+`data/raven/tile_pool.json` defines eight thematic tile designs (candle, key, rose, book, raven, cup, brooch, quill), three per-level subsets and art/FX direction. The prototype displays simple coded glyphs and flat colors for them. Descriptive `matchAnimation`, sounds and texture metadata are **not** implemented game effects or finished art assets.
+
+The three level objectives, first-clear 2/2/2 rewards and restoration costs 2/4 are intentionally unchanged; the new level tile sets are synchronized between the content JSON and pool. The story remains cozy gothic-anime, with specialists handling genuine repairs and no early supernatural character reveals.
