@@ -39,10 +39,14 @@ jobs:
           unzip -q templates.tpz -d template-unpack
           mv template-unpack/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
 
-      - name: Create Hall fixture from exported Builder JSON
+      - name: Verify original Hall layout and regenerate the actual Godot scene
         run: |
-          python3 scripts/raven/tools/import_room_builder_game.py tests/fixtures/hall_room_builder_export_sample.json
+          python3 scripts/raven/tools/build_original_hall_layout.py --check
+          python3 scripts/raven/tools/import_room_builder_game.py examples/room_builder_hall_original.json
           test -f scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
+          echo '=== ORIGINAL_HALL_SCENE_BEGIN ==='
+          cat scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn
+          echo '=== ORIGINAL_HALL_SCENE_END ==='
 
       - name: Run Raven checks
         run: bash scripts/check.sh

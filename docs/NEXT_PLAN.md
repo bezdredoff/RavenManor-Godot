@@ -40,3 +40,7 @@ First-season CSV proposals now total **120 positions**, including separate Hall 
 ## RM-PIPE pilot update — render contract (2026-10-25)
 
 Hall now has a shared experimental 7-cutout visual contract for Room Builder v0.4 and Godot. Upright foot-depth sorting and independent actor occlusion work on this supported subset. The manual JSON→Godot visual override deliberately leaves physical routes/collisions unchanged; do not mistake a moved image for a moved physical obstacle. The next approval gate is to validate Hall world footprints/door thresholds, collision and occlusion masks, and state-specific artwork before any 120-item art scale-out. See \`docs/ROOM_BUILDER_GAME_PROJECTION.md\`.
+
+## RM-PIPE-002B — original placement import parity
+
+Godot's provisional Hall world map and seven-item visual contract are now mirrored into a stable, Builder-compatible authored JSON and a dedicated, directly launchable Godot scene. Original door and physical footprint guides included for visual review. The next gate is actual art alignment/collider approval; no live-game scene swap is implied.
