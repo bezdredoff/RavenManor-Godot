@@ -1,0 +1,582 @@
+{
+  "schemaVersion": 1,
+  "status": "PROPOSED_NOT_EXECUTABLE",
+  "runtimeAuthority": [
+    "data/raven/manor_greybox_graph.json",
+    "data/raven/foundation_catalog.json",
+    "scripts/raven/raven_slice_director.gd"
+  ],
+  "fullMapPilot": "data/raven/season1_world_map.json is exploratory; prop-to-level references in that pilot are NOT canonical gameplay mappings",
+  "sceneTriggers": [
+    {
+      "sceneId": "RM-BEAT-00-01",
+      "ordinal": 0,
+      "gate": {
+        "kind": "auto_new_game",
+        "ref": "none",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "envelope",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-00-02",
+      "ordinal": 1,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-00-01",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "road_transition",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-00-03",
+      "ordinal": 2,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-00-02",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "estate_gate",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-01",
+      "ordinal": 3,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-00-03",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "entry_to_hall",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-02",
+      "ordinal": 4,
+      "gate": {
+        "kind": "restoration_done",
+        "ref": "RM-REST-001",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "RM-HS-002",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-03",
+      "ordinal": 5,
+      "gate": {
+        "kind": "first_clear",
+        "ref": "RM-LVL-002",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "RM-HS-003",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-04",
+      "ordinal": 6,
+      "gate": {
+        "kind": "clue_recorded",
+        "ref": "RM-CLUE-01-CHILDHOOD-OBJECT",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "RM-HS-004",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-01-05",
+      "ordinal": 7,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-01-04",
+        "approvedRuntime": true,
+        "proposedRuntime": false
+      },
+      "interactionTarget": "RM-ROOM-HALL",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-01",
+      "ordinal": 8,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-01-05",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "hall_chair_table",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-02",
+      "ordinal": 9,
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-ROWAN",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "entry",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-03",
+      "ordinal": 10,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-HOUSEHOLD-LEDGER",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "kitchen_table",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-02-04",
+      "ordinal": 11,
+      "gate": {
+        "kind": "specialist_result",
+        "ref": "kitchen_power_safe",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "kitchen",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-01",
+      "ordinal": 12,
+      "gate": {
+        "kind": "door_tap",
+        "ref": "RM-DOOR-HALL-ARCHIVE",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-02",
+      "ordinal": 13,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-FAMILY-ALBUM",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library_desk",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-03",
+      "ordinal": 14,
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-LUCAS",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-03-04",
+      "ordinal": 15,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-LIBRARY-DESK",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library_drawer",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-01",
+      "ordinal": 16,
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-ROWAN",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "garden_fence",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-02",
+      "ordinal": 17,
+      "gate": {
+        "kind": "specialist_result",
+        "ref": "conservatory_glass_safe",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "conservatory",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-03",
+      "ordinal": 18,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-CONSERVATORY-BENCH",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "conservatory_bench",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-04-04",
+      "ordinal": 19,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-04-03",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "conservatory_evening",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-01",
+      "ordinal": 20,
+      "gate": {
+        "kind": "time_phase",
+        "ref": "storm_night",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "hall",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-02",
+      "ordinal": 21,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-WET-DOCUMENTS",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library_window",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-03",
+      "ordinal": 22,
+      "gate": {
+        "kind": "clue_recorded",
+        "ref": "old_correspondence_read",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-05-04",
+      "ordinal": 23,
+      "gate": {
+        "kind": "time_phase",
+        "ref": "storm_morning",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "hall",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-01",
+      "ordinal": 24,
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-LUCAS",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library_evening",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": "Lucas only in-person late evening"
+    },
+    {
+      "sceneId": "RM-BEAT-06-02",
+      "ordinal": 25,
+      "gate": {
+        "kind": "object_tap",
+        "ref": "estate_plan",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "hall",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-03",
+      "ordinal": 26,
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-06-02",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "bedroom_night",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": ""
+    },
+    {
+      "sceneId": "RM-BEAT-06-POST",
+      "ordinal": 27,
+      "gate": {
+        "kind": "optional_postcredits",
+        "ref": "season_completed",
+        "approvedRuntime": false,
+        "proposedRuntime": true
+      },
+      "interactionTarget": "library_evening",
+      "whenReached": "play_once_then_unlock_next_state",
+      "revisit": "show_inspect_popup_without_replaying_one_shot_scene",
+      "postSceneAction": "record_story_beat_only_after_player_finishes_VN",
+      "notes": "Optional, no prerequisite for main-season completion"
+    }
+  ],
+  "commonPriority": [
+    "finalize_prepared_match3_result",
+    "show_one_shot_relevant_repair_or_clue",
+    "play_required_VN",
+    "record_after_VN_close",
+    "show_optional_inspect"
+  ],
+  "modalRule": "Tap/click hotspot -> route Evelyn to existing or planned interaction anchor -> approach animation -> short localized popup -> present task or story choice -> VN/play/restore -> reducer state save; never scene-start merely on selecting a room thumbnail.",
+  "npcPlacements": {
+    "schemaVersion": 1,
+    "status": "PROPOSED_PLACEMENT_NOT_CALIBRATED",
+    "navigationRule": "Only target/hotspot/door authored routes. Never tap empty ground for free movement. For each NPC, provide an approach anchor and idle anchor outside path/door blockage; data authored in Room Builder and reviewed for graph reachability.",
+    "existingAcceptedAnchorRefs": [
+      "RM-NAV-HALL-SPAWN",
+      "RM-NAV-HS-001",
+      "RM-NAV-HS-003",
+      "RM-NAV-HS-005",
+      "RM-NAV-HS-002",
+      "RM-NAV-HS-004",
+      "RM-NAV-CORRIDOR-CENTER",
+      "RM-NAV-BEDROOM-CENTER"
+    ],
+    "walkers": [
+      {
+        "id": "RM-CHAR-EVELYN",
+        "tier": "full",
+        "idleLocations": [
+          {
+            "chapter": "1-6",
+            "roomId": "RM-ROOM-HALL",
+            "near": "RM-NAV-HALL-SPAWN",
+            "status": "existing_graph_safe_anchor"
+          },
+          {
+            "chapter": "1",
+            "roomId": "RM-ROOM-BEDROOM",
+            "near": "RM-NAV-BEDROOM-CENTER",
+            "status": "existing_graph_safe_anchor"
+          },
+          {
+            "chapter": "2-6",
+            "roomId": "RM-ROOM-ARCHIVE",
+            "near": "PROP-LIBRARY-DESK",
+            "status": "planned"
+          },
+          {
+            "chapter": "4-5",
+            "roomId": "RM-ROOM-CONSERVATORY",
+            "near": "PROP-CONSERVATORY-BENCH",
+            "status": "planned"
+          }
+        ],
+        "moves": "authored route to chosen hotspot; source and destination ID saved; no click-to-ground"
+      },
+      {
+        "id": "RM-CHAR-ADA",
+        "tier": "short_walk",
+        "idleLocations": [
+          {
+            "chapter": "1",
+            "roomId": "RM-ROOM-HALL",
+            "near": "entry_console",
+            "status": "planned"
+          },
+          {
+            "chapter": "2",
+            "roomId": "RM-ROOM-KITCHEN",
+            "near": "PROP-KITCHEN-TABLE",
+            "status": "planned"
+          },
+          {
+            "chapter": "3,5",
+            "roomId": "RM-ROOM-ARCHIVE",
+            "near": "PROP-LIBRARY-DESK",
+            "status": "planned"
+          },
+          {
+            "chapter": "6",
+            "roomId": "RM-ROOM-HALL",
+            "near": "tea_seating",
+            "status": "planned"
+          }
+        ],
+        "moves": "hall <-> service-side, 1–2 route segments; carrying tea tray/apron FX; no teleport in player-facing blocking"
+      },
+      {
+        "id": "RM-CHAR-ROWAN",
+        "tier": "limited_walk",
+        "idleLocations": [
+          {
+            "chapter": "2",
+            "roomId": "RM-ROOM-ENTRY",
+            "near": "garden_entry_path",
+            "status": "planned"
+          },
+          {
+            "chapter": "4",
+            "roomId": "RM-ROOM-CONSERVATORY",
+            "near": "PROP-CONSERVATORY-BENCH",
+            "status": "planned"
+          },
+          {
+            "chapter": "4-5",
+            "roomId": "RM-ROOM-GARDEN-PLANNED",
+            "near": "PROP-GARDEN-FENCE",
+            "status": "proposed_zone_not_runtime_room"
+          },
+          {
+            "chapter": "5",
+            "roomId": "RM-ROOM-HALL",
+            "near": "entry_door",
+            "status": "planned"
+          }
+        ],
+        "moves": "short entry/fence/bench segments; movement only when on-screen; same shared directional rigs as Ada"
+      },
+      {
+        "id": "RM-CHAR-LUCAS",
+        "tier": "static_minimal",
+        "idleLocations": [
+          {
+            "chapter": "1",
+            "roomId": "RM-ROOM-HALL",
+            "near": "entry_console",
+            "time": "evening",
+            "status": "planned"
+          },
+          {
+            "chapter": "3,6",
+            "roomId": "RM-ROOM-ARCHIVE",
+            "near": "PROP-LIBRARY-DESK",
+            "time": "after_sunset",
+            "status": "planned"
+          }
+        ],
+        "moves": "no full 4-direction walker required at first; spawn at off-route idle anchor, turn/folder presentation; optional short exit later"
+      }
+    ],
+    "specialists": "No navigational cast by default; use safe timed offscreen/vignette when services are completed."
+  },
+  "authoringRequirements": [
+    "No blocking NPC idle on portal or path node",
+    "Don't introduce free tap-to-move",
+    "One-shot story beats idempotent on reload",
+    "Existing RM-HS-005 unlock not gated by bathroom",
+    "Separate room art state from narrative flags, reducer owns progression",
+    "Gate inaccessible wing with physical structural danger reason",
+    "Optional inspect text cannot prematurely reveal clues",
+    "Emergency storm only after Chapter IV completion, not real-time timer"
+  ]
+}
