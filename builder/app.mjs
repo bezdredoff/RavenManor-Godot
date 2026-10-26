@@ -3,7 +3,7 @@ import {ROOM_NAMES,validateCatalog,mergeCatalogAssets,filterLibraryAssets,newRoo
 import {validateVisualContract,contractFits,spriteForAsset,actorLocalFoot,previewActorFoot,visualInstances,projectedUprightRect,seedPilotVisuals,canPopulateHall} from './visual-contract.mjs';
 import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference} from './projection.mjs';
-import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,wallLength,wallBand} from './wall-tools.mjs';
+import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,openingInterval,isPortal,chooseWallPiece,wallLength,wallBand} from './wall-tools.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
@@ -11,7 +11,31 @@ let wallDraft=null;
 let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
 let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null;
-const pointers=new Map(),imageCache=new Map(),pilotImages=new Map();
+const pointers=new Map(),imageCache=new Map(),pilotImages=new Map(),wallKitImages=new Map();
+let wallKit=null;
+function kitSprite(style,name){
+ if(!wallKit)return null;
+ const entry=wallKit.pieces.find(item=>item.style===style);
+ const piece=entry&&entry.items?entry.items[name]:null;
+ if(!piece)return null;
+ let image=wallKitImages.get(piece.file);
+ if(!image){image=new Image();image.src='./reference/wall_kit/'+piece.file;image.onload=draw;wallKitImages.set(piece.file,image);}
+ if(!image.complete||!image.naturalWidth)return null;
+ return {image,piece};
+}
+async function loadWallKit(){
+ try{
+  const response=await fetch('./reference/wall_kit/manifest.json',{cache:'no-cache'});
+  if(!response.ok)return;
+  wallKit=await response.json();
+  if(!document.querySelector('.side-portal-proof')){
+   const figure=document.createElement('figure');figure.className='side-portal-proof';
+   figure.innerHTML='<img src="./reference/wall_kit/grand/side_portals.png" alt="Угловая проверка: арка во фронтальной стене и дверь в боковой стене"><figcaption>Боковая стена: дверь и арка остаются настоящими сквозными проёмами. Геометрическая проверка 65°, не финальный арт.</figcaption>';
+   document.querySelector('.wall-settings')?.append(figure);
+  }
+  draw();
+ }catch(error){wallKit=null;}
+}
 function notify(message){$('#notice').textContent=message;}
 function changed(){editRevision++;dirty=true;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.walls?.length||0} стен • ${project.openings?.length||0} проёмов`;clearTimeout(saveTimer);saveTimer=setTimeout(save,550);if(productionCatalog){if(onlyMissing)renderPalette();else updateCatalogProgress();}draw();}
 function checkpoint(){past.push(JSON.stringify(project));if(past.length>60)past.shift();future=[];historyButtons();}
@@ -255,9 +279,38 @@ function drawWalls(c,exporting=false){
  const walls=project.walls||[],openings=project.openings||[];
  c.save();c.lineCap='square';c.lineJoin='miter';
  const pattern=$('#showWallTexture')?.checked?wallPatternFor(c):null;
+ const kit=$('#showWallTexture')?.checked?wallKit:null;
  for(const wall of walls){
   const style=WALL_STYLES[wall.style]||WALL_STYLES.grand,length=wallLength(wall),dx=(wall.bx-wall.ax)/length,dy=(wall.by-wall.ay)/length;
   const runs=solidWallRuns(wall,openings);
+  if(kit&&Math.abs(wall.bx-wall.ax)>=Math.abs(wall.by-wall.ay)){
+   // Solid runs and opening modules are separate. A portal has already cut `runs`, so trying
+   // to choose an opening sprite from a solid-run midpoint can never find that portal.
+   const depth=depthRatio(viewMode)||1,baseY=wall.ay;
+   for(const [start,end] of runs){
+    const sprite=kitSprite(wall.style,'straight');
+    if(!sprite)continue;
+    const it=sprite.piece,box=it.bbox,srcH=box[3]-box[1];
+    const hWorld=it.worldHeight/depth,wWorld=it.worldWidth;
+    const sx0=wall.ax+dx*start,sx1=wall.ax+dx*end;
+    const left=Math.min(sx0,sx1),right=Math.max(sx0,sx1);
+    for(let x=left;x<right-0.01;x+=wWorld){
+     const w=Math.min(wWorld,right-x);
+     c.drawImage(sprite.image,box[0],box[1],w*it.pixelsPerUnit,srcH,x,baseY-hWorld,w,hWorld);
+    }
+   }
+   for(const opening of openings.filter(item=>item.wallId===wall.id)){
+    const piece=opening.kind==='double_door'?'door':opening.kind;
+    if(!['door','arch','window'].includes(piece))continue;
+    const sprite=kitSprite(wall.style,piece);if(!sprite)continue;
+    const it=sprite.piece,box=it.bbox,srcH=box[3]-box[1];
+    const hWorld=it.worldHeight/depth,wWorld=it.worldWidth;
+    const center=wall.ax+(wall.bx-wall.ax)*opening.offset;
+    c.drawImage(sprite.image,box[0],box[1],box[2]-box[0],srcH,
+                center-wWorld/2,baseY-hWorld,wWorld,hWorld);
+   }
+   continue;
+  }
   if(pattern){
    // Textured preview: one constructed module per 80 world pixels along the wall.
    for(const [start,end] of runs){
@@ -279,6 +332,13 @@ function drawWalls(c,exporting=false){
  for(const opening of openings){
   const wall=walls.find(w=>w.id===opening.wallId);if(!wall)continue;
   const kind=OPENING_KINDS[opening.kind],x=wall.ax+(wall.bx-wall.ax)*opening.offset,y=wall.ay+(wall.by-wall.ay)*opening.offset;
+  if(!isPortal(opening.kind)){
+   // A window is not traversable: draw it as a band inside the solid wall, not as a gap.
+   const iv=openingInterval(opening,wall),len=wallLength(wall),ux=(wall.bx-wall.ax)/len,uy=(wall.by-wall.ay)/len;
+   c.strokeStyle=kind.color;c.lineWidth=Math.max(4,wall.thickness*.55);c.lineCap='butt';
+   c.beginPath();c.moveTo(wall.ax+ux*iv.start,wall.ay+uy*iv.start);c.lineTo(wall.ax+ux*iv.end,wall.ay+uy*iv.end);c.stroke();
+   c.lineCap='square';
+  }
   c.fillStyle=kind.color;c.strokeStyle='#201a21';c.lineWidth=2;c.beginPath();c.arc(x,y,Math.max(5,Math.min(12,opening.width*.12)),0,Math.PI*2);c.fill();c.stroke();
   if(!exporting&&opening.doorId){c.fillStyle='#f2e5d1';c.font='10px sans-serif';c.fillText(opening.doorId,x+8,y-8);}
  }
@@ -490,7 +550,7 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
-async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
+async function start(){wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadWallKit();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
 window.addEventListener('error',event=>{console.error(event.error||event.message);notify('Ошибка интерфейса: '+(event.error?.message||event.message));});
 window.addEventListener('unhandledrejection',event=>{console.error(event.reason);notify('Ошибка загрузки: '+(event.reason?.message||event.reason));});
 start().catch(error=>{console.error(error);notify('Ошибка запуска: '+error.message);});

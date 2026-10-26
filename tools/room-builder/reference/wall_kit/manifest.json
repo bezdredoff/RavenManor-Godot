@@ -1,0 +1,845 @@
+{
+  "schemaVersion": 1,
+  "camera": {
+    "elevation": 65.0,
+    "azimuth": 0.0
+  },
+  "pixels": [
+    640,
+    640
+  ],
+  "pieces": [
+    {
+      "style": "grand",
+      "items": {
+        "straight": {
+          "file": "grand/straight.png",
+          "worldSize": [
+            400.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            400.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.28,
+          "anchor": [
+            576.0,
+            385.1
+          ],
+          "bbox": [
+            63,
+            251,
+            577,
+            386
+          ],
+          "worldWidth": 401.56,
+          "worldHeight": 105.47
+        },
+        "corner": {
+          "file": "grand/corner.png",
+          "worldSize": [
+            327.0,
+            327.0,
+            200.0
+          ],
+          "worldBounds": [
+            -27.0,
+            -27.0,
+            0.0,
+            300.0,
+            300.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.5657,
+          "anchor": [
+            533.7,
+            192.5
+          ],
+          "bbox": [
+            63,
+            29,
+            577,
+            618
+          ],
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
+        },
+        "end_pillar": {
+          "file": "grand/end_pillar.png",
+          "worldSize": [
+            322.0,
+            34.0,
+            214.0
+          ],
+          "worldBounds": [
+            0.0,
+            -28.0,
+            0.0,
+            322.0,
+            6.0,
+            214.0
+          ],
+          "pixelsPerUnit": 1.5901,
+          "anchor": [
+            576.0,
+            407.8
+          ],
+          "bbox": [
+            63,
+            223,
+            577,
+            414
+          ],
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
+        },
+        "door": {
+          "file": "grand/door.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "arch": {
+          "file": "grand/arch.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            411
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 107.23
+        },
+        "window": {
+          "file": "grand/window.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "stair": {
+          "file": "grand/stair.png",
+          "worldSize": [
+            360.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            360.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.4222,
+          "anchor": [
+            576.0,
+            392.4
+          ],
+          "bbox": [
+            63,
+            243,
+            577,
+            393
+          ],
+          "worldWidth": 361.41,
+          "worldHeight": 105.47
+        }
+      }
+    },
+    {
+      "style": "residential",
+      "items": {
+        "straight": {
+          "file": "residential/straight.png",
+          "worldSize": [
+            400.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            400.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.28,
+          "anchor": [
+            576.0,
+            385.1
+          ],
+          "bbox": [
+            63,
+            251,
+            577,
+            386
+          ],
+          "worldWidth": 401.56,
+          "worldHeight": 105.47
+        },
+        "corner": {
+          "file": "residential/corner.png",
+          "worldSize": [
+            327.0,
+            327.0,
+            200.0
+          ],
+          "worldBounds": [
+            -27.0,
+            -27.0,
+            0.0,
+            300.0,
+            300.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.5657,
+          "anchor": [
+            533.7,
+            192.5
+          ],
+          "bbox": [
+            63,
+            29,
+            577,
+            618
+          ],
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
+        },
+        "end_pillar": {
+          "file": "residential/end_pillar.png",
+          "worldSize": [
+            322.0,
+            34.0,
+            214.0
+          ],
+          "worldBounds": [
+            0.0,
+            -28.0,
+            0.0,
+            322.0,
+            6.0,
+            214.0
+          ],
+          "pixelsPerUnit": 1.5901,
+          "anchor": [
+            576.0,
+            407.8
+          ],
+          "bbox": [
+            63,
+            223,
+            577,
+            414
+          ],
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
+        },
+        "door": {
+          "file": "residential/door.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "arch": {
+          "file": "residential/arch.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            411
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 107.23
+        },
+        "window": {
+          "file": "residential/window.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "stair": {
+          "file": "residential/stair.png",
+          "worldSize": [
+            360.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            360.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.4222,
+          "anchor": [
+            576.0,
+            392.4
+          ],
+          "bbox": [
+            63,
+            243,
+            577,
+            393
+          ],
+          "worldWidth": 361.41,
+          "worldHeight": 105.47
+        }
+      }
+    },
+    {
+      "style": "service",
+      "items": {
+        "straight": {
+          "file": "service/straight.png",
+          "worldSize": [
+            400.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            400.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.28,
+          "anchor": [
+            576.0,
+            385.1
+          ],
+          "bbox": [
+            63,
+            251,
+            577,
+            386
+          ],
+          "worldWidth": 401.56,
+          "worldHeight": 105.47
+        },
+        "corner": {
+          "file": "service/corner.png",
+          "worldSize": [
+            327.0,
+            327.0,
+            200.0
+          ],
+          "worldBounds": [
+            -27.0,
+            -27.0,
+            0.0,
+            300.0,
+            300.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.5657,
+          "anchor": [
+            533.7,
+            192.5
+          ],
+          "bbox": [
+            63,
+            29,
+            577,
+            618
+          ],
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
+        },
+        "end_pillar": {
+          "file": "service/end_pillar.png",
+          "worldSize": [
+            322.0,
+            34.0,
+            214.0
+          ],
+          "worldBounds": [
+            0.0,
+            -28.0,
+            0.0,
+            322.0,
+            6.0,
+            214.0
+          ],
+          "pixelsPerUnit": 1.5901,
+          "anchor": [
+            576.0,
+            407.8
+          ],
+          "bbox": [
+            63,
+            223,
+            577,
+            414
+          ],
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
+        },
+        "door": {
+          "file": "service/door.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "arch": {
+          "file": "service/arch.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            411
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 107.23
+        },
+        "window": {
+          "file": "service/window.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "stair": {
+          "file": "service/stair.png",
+          "worldSize": [
+            360.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            360.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.4222,
+          "anchor": [
+            576.0,
+            392.4
+          ],
+          "bbox": [
+            63,
+            243,
+            577,
+            393
+          ],
+          "worldWidth": 361.41,
+          "worldHeight": 105.47
+        }
+      }
+    },
+    {
+      "style": "glass",
+      "items": {
+        "straight": {
+          "file": "glass/straight.png",
+          "worldSize": [
+            400.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            400.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.28,
+          "anchor": [
+            576.0,
+            385.1
+          ],
+          "bbox": [
+            63,
+            251,
+            577,
+            386
+          ],
+          "worldWidth": 401.56,
+          "worldHeight": 105.47
+        },
+        "corner": {
+          "file": "glass/corner.png",
+          "worldSize": [
+            327.0,
+            327.0,
+            200.0
+          ],
+          "worldBounds": [
+            -27.0,
+            -27.0,
+            0.0,
+            300.0,
+            300.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.5657,
+          "anchor": [
+            533.7,
+            192.5
+          ],
+          "bbox": [
+            63,
+            29,
+            577,
+            618
+          ],
+          "worldWidth": 328.28,
+          "worldHeight": 376.18
+        },
+        "end_pillar": {
+          "file": "glass/end_pillar.png",
+          "worldSize": [
+            322.0,
+            34.0,
+            214.0
+          ],
+          "worldBounds": [
+            0.0,
+            -28.0,
+            0.0,
+            322.0,
+            6.0,
+            214.0
+          ],
+          "pixelsPerUnit": 1.5901,
+          "anchor": [
+            576.0,
+            407.8
+          ],
+          "bbox": [
+            63,
+            223,
+            577,
+            414
+          ],
+          "worldWidth": 323.26,
+          "worldHeight": 120.12
+        },
+        "door": {
+          "file": "glass/door.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "arch": {
+          "file": "glass/arch.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            411
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 107.23
+        },
+        "window": {
+          "file": "glass/window.png",
+          "worldSize": [
+            300.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            300.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.7067,
+          "anchor": [
+            576.0,
+            406.8
+          ],
+          "bbox": [
+            63,
+            228,
+            577,
+            407
+          ],
+          "worldWidth": 301.17,
+          "worldHeight": 104.88
+        },
+        "stair": {
+          "file": "glass/stair.png",
+          "worldSize": [
+            360.0,
+            25.0,
+            200.0
+          ],
+          "worldBounds": [
+            0.0,
+            -22.0,
+            0.0,
+            360.0,
+            3.0,
+            200.0
+          ],
+          "pixelsPerUnit": 1.4222,
+          "anchor": [
+            576.0,
+            392.4
+          ],
+          "bbox": [
+            63,
+            243,
+            577,
+            393
+          ],
+          "worldWidth": 361.41,
+          "worldHeight": 105.47
+        }
+      }
+    }
+  ]
+}
