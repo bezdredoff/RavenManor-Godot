@@ -1,0 +1,282 @@
+[gd_scene load_steps=8 format=3]
+
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/backgrounds/hall_twin_staircases.png" id="1"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/ancestor_gallery_composite.png" id="2"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/armchair_clean.png" id="3"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/burgundy_runner.png" id="4"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/entry_console.png" id="5"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/grandfather_clock.png" id="6"]
+[ext_resource type="Texture2D" path="res://assets/raven/hall/generated_pilot/props/round_side_table.png" id="7"]
+
+[node name="RM_ROOM_HALL_GamePreview" type="Node2D"]
+metadata/geometry_approval = "DRAFT_ONLY"
+metadata/import_kind = "ROOM_BUILDER_GAME_VISUAL_ONLY"
+metadata/game_camera_degrees = 65
+metadata/ignore_test_characters = true
+metadata/room_id = "RM-ROOM-HALL"
+metadata/world_origin = Vector2(500.0000, 150.0000)
+metadata/source_size = Vector2(700.0000, 690.0000)
+metadata/summary = "7 pilot, 0 embedded, 0 placeholders"
+
+[node name="ReviewCamera" type="Camera2D" parent="."]
+position = Vector2(350.0000, 312.6762)
+zoom = Vector2(0.7400, 0.7400)
+enabled = true
+
+[node name="DraftFloor" type="Polygon2D" parent="."]
+color = Color(0.36, 0.32, 0.34, 1)
+polygon = PackedVector2Array(0, 0, 700.0000, 0, 700.0000, 625.3524, 0, 625.3524)
+z_index = -3000
+
+[node name="HallPilotBackground" type="TextureRect" parent="."]
+texture = ExtResource("1")
+expand_mode = 1
+stretch_mode = 0
+offset_right = 700.0000
+offset_bottom = 625.3524
+z_index = -2500
+metadata/approval = "PILOT_NOT_APPROVED"
+
+[node name="original-rug_0" type="Node2D" parent="."]
+position = Vector2(350.0000, 437.7467)
+rotation_degrees = 0.0000
+z_index = -1500
+metadata/builder_instance_id = "original-rug"
+metadata/asset_id = "catalog:RM-ASSET-HALL-010"
+metadata/asset_ref_id = "RM-ASSET-HALL-010"
+metadata/hotspot_id = ""
+metadata/visual_state = "laid"
+metadata/world_local_top_left = Vector2(285.0000, 285.0000)
+metadata/world_local_size = Vector2(130.0000, 396.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "floor"
+
+[node name="Art" type="TextureRect" parent="original-rug_0"]
+texture = ExtResource("4")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -65.0000
+offset_top = -179.4489
+offset_right = 65.0000
+offset_bottom = 179.4489
+
+[node name="original-clock_1" type="Node2D" parent="."]
+position = Vector2(105.0000, 317.5231)
+rotation_degrees = 0.0000
+z_index = 400
+metadata/builder_instance_id = "original-clock"
+metadata/asset_id = "catalog:RM-ASSET-HALL-002"
+metadata/asset_ref_id = "RM-ASSET-HALL-002"
+metadata/hotspot_id = ""
+metadata/visual_state = "stopped"
+metadata/world_local_top_left = Vector2(75.0000, 310.0000)
+metadata/world_local_size = Vector2(60.0000, 90.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-clock_1"]
+texture = ExtResource("6")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -30.0000
+offset_top = -45.0000
+offset_right = 30.0000
+offset_bottom = 45.0000
+
+[node name="original-chair-left_2" type="Node2D" parent="."]
+position = Vector2(171.0000, 421.4674)
+rotation_degrees = 0.0000
+z_index = 518
+metadata/builder_instance_id = "original-chair-left"
+metadata/asset_id = "catalog:RM-ASSET-HALL-017"
+metadata/asset_ref_id = "RM-ASSET-HALL-017"
+metadata/hotspot_id = ""
+metadata/visual_state = "clean"
+metadata/world_local_top_left = Vector2(142.0000, 422.0000)
+metadata/world_local_size = Vector2(58.0000, 96.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-chair-left_2"]
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -29.0000
+offset_top = -48.0000
+offset_right = 29.0000
+offset_bottom = 48.0000
+
+[node name="original-chair-right_3" type="Node2D" parent="."]
+position = Vector2(270.0000, 421.4674)
+rotation_degrees = 0.0000
+z_index = 518
+metadata/builder_instance_id = "original-chair-right"
+metadata/asset_id = "catalog:RM-ASSET-HALL-018"
+metadata/asset_ref_id = "RM-ASSET-HALL-018"
+metadata/hotspot_id = ""
+metadata/visual_state = "clean"
+metadata/world_local_top_left = Vector2(241.0000, 422.0000)
+metadata/world_local_size = Vector2(58.0000, 96.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-chair-right_3"]
+texture = ExtResource("3")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -29.0000
+offset_top = -48.0000
+offset_right = 29.0000
+offset_bottom = 48.0000
+
+[node name="original-round-table_4" type="Node2D" parent="."]
+position = Vector2(221.0000, 438.3107)
+rotation_degrees = 0.0000
+z_index = 509
+metadata/builder_instance_id = "original-round-table"
+metadata/asset_id = "catalog:RM-ASSET-HALL-019"
+metadata/asset_ref_id = "RM-ASSET-HALL-019"
+metadata/hotspot_id = ""
+metadata/visual_state = "polished"
+metadata/world_local_top_left = Vector2(198.0000, 463.0000)
+metadata/world_local_size = Vector2(46.0000, 46.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-round-table_4"]
+texture = ExtResource("7")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -23.0000
+offset_top = -23.0000
+offset_right = 23.0000
+offset_bottom = 23.0000
+
+[node name="original-console_5" type="Node2D" parent="."]
+position = Vector2(645.0000, 543.0054)
+rotation_degrees = 0.0000
+z_index = 635
+metadata/builder_instance_id = "original-console"
+metadata/asset_id = "catalog:RM-ASSET-HALL-007"
+metadata/asset_ref_id = "RM-ASSET-HALL-007"
+metadata/hotspot_id = ""
+metadata/visual_state = "polished"
+metadata/world_local_top_left = Vector2(610.0000, 570.0000)
+metadata/world_local_size = Vector2(70.0000, 65.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-console_5"]
+texture = ExtResource("5")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -35.0000
+offset_top = -32.5000
+offset_right = 35.0000
+offset_bottom = 32.5000
+
+[node name="original-gallery_6" type="Node2D" parent="."]
+position = Vector2(57.5000, 130.4823)
+rotation_degrees = 0.0000
+z_index = 235
+metadata/builder_instance_id = "original-gallery"
+metadata/asset_id = "catalog:RM-ASSET-HALL-006"
+metadata/asset_ref_id = "RM-ASSET-HALL-006"
+metadata/hotspot_id = ""
+metadata/visual_state = "clean"
+metadata/world_local_top_left = Vector2(25.0000, 70.0000)
+metadata/world_local_size = Vector2(65.0000, 165.0000)
+metadata/art_provenance = "PILOT"
+metadata/visual_mode = "upright"
+
+[node name="Art" type="TextureRect" parent="original-gallery_6"]
+texture = ExtResource("2")
+expand_mode = 1
+stretch_mode = 0
+offset_left = -32.5000
+offset_top = -82.5000
+offset_right = 32.5000
+offset_bottom = 82.5000
+
+[node name="Anchor_RM-DOOR-ENTRY-HALL_0" type="Marker2D" parent="."]
+position = Vector2(350.0000, 625.3524)
+metadata/nav_id = "RM-DOOR-ENTRY-HALL"
+metadata/hotspot_id = ""
+
+[node name="Anchor_RM-DOOR-HALL-ARCHIVE_1" type="Marker2D" parent="."]
+position = Vector2(0.0000, 362.5231)
+metadata/nav_id = "RM-DOOR-HALL-ARCHIVE"
+metadata/hotspot_id = ""
+
+[node name="Anchor_RM-DOOR-HALL-CORRIDOR_2" type="Marker2D" parent="."]
+position = Vector2(700.0000, 394.2439)
+metadata/nav_id = "RM-DOOR-HALL-CORRIDOR"
+metadata/hotspot_id = ""
+
+[node name="Anchor_RM-DOOR-HALL-EAST-WING_3" type="Marker2D" parent="."]
+position = Vector2(350.0000, 181.2616)
+metadata/nav_id = "RM-DOOR-HALL-EAST-WING"
+metadata/hotspot_id = ""
+
+[node name="Anchor_RM-DOOR-HALL-UPPER-FLOOR_4" type="Marker2D" parent="."]
+position = Vector2(350.0000, 154.0723)
+metadata/nav_id = "RM-DOOR-HALL-UPPER-FLOOR"
+metadata/hotspot_id = ""
+
+[node name="Anchor_RM-NAV-HALL-SPAWN_5" type="Marker2D" parent="."]
+position = Vector2(350.0000, 561.9108)
+metadata/nav_id = "RM-NAV-HALL-SPAWN"
+metadata/hotspot_id = ""
+
+[node name="ReferenceGeometry" type="Node2D" parent="."]
+visible = false
+metadata/status = "MAP_GEOMETRY_GUIDES_ONLY"
+
+[node name="MapFootprint_RM-ASSET-HALL-CLOCK_0" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(75.0000, 280.9554, 135.0000, 280.9554, 135.0000, 362.5231, 75.0000, 362.5231, 75.0000, 280.9554)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-CLOCK"
+metadata/world_local_top_left = Vector2(75.0000, 310.0000)
+metadata/world_local_size = Vector2(60.0000, 90.0000)
+
+[node name="MapFootprint_RM-ASSET-HALL-SEATS_1" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(140.0000, 371.5862, 300.0000, 371.5862, 300.0000, 484.8747, 140.0000, 484.8747, 140.0000, 371.5862)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-SEATS"
+metadata/world_local_top_left = Vector2(140.0000, 410.0000)
+metadata/world_local_size = Vector2(160.0000, 125.0000)
+
+[node name="MapFootprint_RM-ASSET-HALL-STAIRS-L_2" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(140.0000, 36.2523, 255.0000, 36.2523, 255.0000, 212.9823, 140.0000, 212.9823, 140.0000, 36.2523)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-STAIRS-L"
+metadata/world_local_top_left = Vector2(140.0000, 40.0000)
+metadata/world_local_size = Vector2(115.0000, 195.0000)
+
+[node name="MapFootprint_RM-ASSET-HALL-STAIRS-R_3" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(445.0000, 36.2523, 560.0000, 36.2523, 560.0000, 212.9823, 445.0000, 212.9823, 445.0000, 36.2523)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-STAIRS-R"
+metadata/world_local_top_left = Vector2(445.0000, 40.0000)
+metadata/world_local_size = Vector2(115.0000, 195.0000)
+
+[node name="MapFootprint_RM-ASSET-HALL-CONSOLE_4" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(610.0000, 516.5954, 680.0000, 516.5954, 680.0000, 575.5054, 610.0000, 575.5054, 610.0000, 516.5954)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-CONSOLE"
+metadata/world_local_top_left = Vector2(610.0000, 570.0000)
+metadata/world_local_size = Vector2(70.0000, 65.0000)
+
+[node name="MapFootprint_RM-ASSET-HALL-GALLERY_5" type="Line2D" parent="ReferenceGeometry"]
+points = PackedVector2Array(25.0000, 63.4415, 90.0000, 63.4415, 90.0000, 212.9823, 25.0000, 212.9823, 25.0000, 63.4415)
+default_color = Color(0.98, 0.76, 0.37, 0.78)
+width = 2.0000
+metadata/source_prop_id = "RM-ASSET-HALL-GALLERY"
+metadata/world_local_top_left = Vector2(25.0000, 70.0000)
+metadata/world_local_size = Vector2(65.0000, 165.0000)
+
