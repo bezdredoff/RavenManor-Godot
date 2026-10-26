@@ -15,6 +15,8 @@
   assert(d.querySelector('.side-portal-proof figcaption')?.textContent.includes('не финальный арт'),'side-wall portal proof must retain its prototype warning');
   await waitUntil(()=>!!d.querySelector('#newRoom')?.onclick);
   assert(d.querySelector('#previewMode')?.value==='game','default view must be game');
+  assert(d.querySelector('#previewMode option[value="room"]')?.textContent.includes('65°/45°'),'volumetric room view must be available');
+  assert(d.querySelector('#seedRoomShell'),'two-room example action must be available');
   d.querySelector('#exportMenu').click();
   d.querySelector('#newRoom').click();
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('8 объектов'));
@@ -50,6 +52,9 @@
   d.querySelector('[data-tool="opening"]').click();
   pointer('pointerdown',cx,cy-90);pointer('pointerup',cx,cy-90);
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('1 проём'));
+  d.querySelector('#previewMode').value='room';d.querySelector('#previewMode').dispatchEvent(new w.Event('change',{bubbles:true}));
+  await waitUntil(()=>d.querySelector('#canvasStatus')?.textContent?.includes('65° / 45°'));
+  d.querySelector('#previewMode').value='game';d.querySelector('#previewMode').dispatchEvent(new w.Event('change',{bubbles:true}));
   const textureToggle=d.querySelector('#showWallTexture');
   assert(textureToggle,'textured wall preview toggle exists');
   textureToggle.checked=true;textureToggle.dispatchEvent(new w.Event('change',{bubbles:true}));
@@ -69,7 +74,7 @@
   pointer('pointermove',cx+34,cy-13);pointer('pointerup',cx+34,cy-13);
   await waitUntil(()=>Number(d.querySelector('#properties input[type="number"]')?.value)!==initialX);
   assert(d.querySelector('#exportDialog').open===false,'new-room dialog should be closed');
-  output.textContent='PASS: wall draw/opening socket, textured wall preview, side-wall portal proof, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
+  output.textContent='PASS: wall draw/opening socket, volumetric room view, textured wall preview, side-wall portal proof, 8 Hall objects, 7 PNG cards, dual panels, character stamp/select/drag';
   document.documentElement.dataset.testResult='pass';
  }catch(err){output.textContent='FAIL: '+(err.stack||err.message);document.documentElement.dataset.testResult='fail';}
 })();
