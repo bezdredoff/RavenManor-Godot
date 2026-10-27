@@ -410,10 +410,10 @@ func _show_clear_impacts(frame: Dictionary) -> void:
 			glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 			glyph.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 			glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			glyph.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 			glyph.add_theme_font_size_override("font_size", 22)
 			glyph.add_theme_color_override("font_color", Color("161625"))
 			flash.add_child(glyph)
+			glyph.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		var fade := create_tween()
 		fade.tween_property(flash, "modulate:a", 0.0, 0.18)
 		fade.tween_callback(flash.queue_free)
