@@ -328,7 +328,7 @@ func _index_at(position: Vector2) -> int:
 
 
 func tap_cell(index: int) -> void:
-	if input_locked or help_open or not game.can_interact_with_tile(index):
+	if input_locked or help_open or str(game.state) != "playing" or not game.can_interact_with_tile(index):
 		return
 	if selected_index < 0:
 		selected_index = index
@@ -493,8 +493,9 @@ func _paint_selection() -> void:
 	for i in cells.size():
 		var style := (cells[i].get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
 		var chosen := i == selected_index or highlighted.has(i)
-		style.border_color = Color("f5e8c8") if chosen else Color.TRANSPARENT
-		style.set_border_width_all(3 if chosen else 0)
+		var blocked := int(game.blocker_layers[i]) > 0
+		style.border_color = Color("f5e8c8") if chosen else Color("d5aa79") if blocked else Color.TRANSPARENT
+		style.set_border_width_all(3 if chosen else 2 if blocked else 0)
 		cells[i].add_theme_stylebox_override("normal", style)
 		cells[i].add_theme_stylebox_override("hover", style)
 		cells[i].add_theme_stylebox_override("pressed", style)
