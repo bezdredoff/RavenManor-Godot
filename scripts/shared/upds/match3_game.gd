@@ -1,9 +1,9 @@
 extends RefCounted
 
-const CampaignData = preload("res://scripts/raven/upds_match3_campaign_adapter.gd")
-const SeededRandom = preload("res://scripts/shared/upds/seeded_random.gd")
+const CampaignData = preload("res://scripts/match3/match3_campaign_data.gd")
+const SeededRandom = preload("res://scripts/core/seeded_random.gd")
 const CASCADE_LIMIT := 24
-const DEFAULT_LEVEL_ID := "RM-LVL-001"
+const DEFAULT_LEVEL_ID := "M3_00_LOCKER_TUTORIAL"
 
 var level_data: Dictionary
 var tiles: Array[String] = []
