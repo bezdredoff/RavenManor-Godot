@@ -1,6 +1,6 @@
 # Raven Manor — загрузка больших патчей в GitHub с телефона
 
-**Status:** *design + local security validator foundation*. Не заявлять, что автоматический importer, candidate PR или `/preview/` уже работают в Raven до merge ZIP workflow, одноразового bootstrap, GitHub permission проверки и успешного end-to-end теста. В UPDS похожий workflow уже реализован, но его npm-проверки и зависимости нельзя применять к Godot как есть.
+**Status:** *MOB-00 merged; MOB-01/MOB-02 implementation candidate only*. Реальный автоматический workflow добавлен в ветке `feature/mobile-zip-import-candidate-preview`; он не доступен из стабильного `main` до ревью и мержа. Не заявлять, что автоматический importer, candidate PR или `/preview/` работают в Raven до bootstrap ветки `incoming`, GitHub permission проверки и end-to-end теста. В UPDS похожий workflow уже реализован, но его npm-проверки и зависимости нельзя применять к Godot как есть.
 
 ## Когда использовать
 
@@ -66,11 +66,24 @@ python3 scripts/raven/tools/validate_mobile_patch.py \
 
 **Пока MOB-01 ещё не активирован:** передать ZIP с телефона в `incoming/` отдельной upload branch и дать ссылку Codex/ассистенту с доступом к Git. Агент скачивает этот конкретный ZIP, проверяет его **валидатором из доверенного `main`**, в чистой копии main применяет файлы/удаления, запускает полные тесты Godot, создаёт отдельный PR вручную. В текущем состоянии `/preview/` **не гарантирован**: URL будет доступен лишь после MOB-03. Нельзя исполнять скрипты из ZIP с write-token; нельзя переносить ZIP напрямую в `main`.
 
+
+## Checklist для первого настоящего мобильного ZIP (после мержа workflow)
+
+1. Убедиться, что в `main` есть `.github/workflows/import-mobile-zip.yml` и новый защищённый `pages.yml`; тогда создать ветку `incoming` **от актуального `main`**. Не создавать её заранее на ветке без импортирующего workflow: push-триггер зависит от наличия YAML на ветке.
+2. Проверить в GitHub Settings → Actions → General, что настройка **Allow GitHub Actions to create and approve pull requests** допускает создание PR через `GITHUB_TOKEN`. При блокировке — не обходить права PAT с расширенными разрешениями; изменить политику явно или оставить ручное создание candidate PR.
+3. Создать harmless ZIP с `patch-manifest.json`, `taskIds: ["MOB-04"]`, `baseSha` точного текущего `main`, одним неисполняемым файлом `docs/evidence/mobile_zip_smoke.txt`; не включать секретов или ещё не одобренных assets.
+4. Загрузить ZIP в `incoming/<feature>_R1.zip` с телефона на ветку `incoming`. Оставить на ветке **ровно один** ZIP. Проверить, что import workflow создал candidate PR, и что содержимое PR соответствует manifest и исходному архиву.
+5. Проверить **две независимые CI стадии**: импортирование безопасных данных без запуска candidate-кода с write-token и отдельный Godot/Room Builder/Web workflow с правами только `contents: read`. Проверить текущее значение SHA в PR и успешный workflow run.
+6. Атакующие кейсы: stale base, запрещённый `.github/`, symlink, ZIP-slip, duplicate casefold, >25 MiB, неправильный manifest; каждый должен завершиться без candidate PR. Провести тесты с телефона и записать evidence в progress JSON.
+7. Пока нет MOB-03, `/preview/` не используется: `workflow_dispatch` на candidate **проверяет**, но не публикует. Merge в `main` только после человеческого review и device QA.
+
+**Ограничение автоматизации:** PR с этим кодом доказывает успешную сборку/модульные тесты, но **не может удостоверить фактическое создание candidate PR через Actions до установки этого workflow в default branch и настройки разрешений**. Этот acceptance gate остаётся явно открытым.
+
 ## Current implementation stages
 
-- **MOB-00**: security validator/test fixtures for `raven-delta-v1` in this planning PR; local validation takes archive and expected main SHA, rejects unsafe paths before extraction.
-- **MOB-01**: bootstrap Actions `incoming` branch, separate read-only validation and write-capable candidate PR with protected files/permissions, stale-base checks. This is **not delivered** by mere description.
-- **MOB-02**: independent Godot PR CI; isolated artifact from validated candidate; no script execution in a write-token job.
+- **MOB-00**: смержен в PR #48 — упаковщик, security validator и тесты `raven-delta-v1`.
+- **MOB-01**: в отдельной feature-ветке реализованы два доверительных домена: read-only проверка ZIP на `incoming` и отдельное создание `candidate/*` PR по точному `main SHA` (проверяется повторно перед записью). **Ещё необходимо смержить workflow, создать `incoming` от нового `main`, подтвердить право GitHub Actions создавать PR и выполнить живой тест**.
+- **MOB-02**: feature-ветка запускает штатный `pages.yml` на candidate через `workflow_dispatch`, ожидает реальный результат Godot/Builder/Web проверок и завершает импорт с ошибкой при failed CI. Build job имеет только `contents: read`; `pages: write` и OIDC доступны исключительно deploy job для `main`. **Подтверждение на реальном candidate PR остаётся после мержа и bootstrap**.
 - **MOB-03**: safe GitHub Pages `/preview/` packaging with stable main root and separate SW/cache scope; preview auto-expiry/rollback.
 - **MOB-04**: end-to-end phone upload, invalid ZIP attacks, stale SHA, PR creation, iPhone/Android viewport test, manual merge → stable deploy proof.
 
