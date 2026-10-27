@@ -29,7 +29,7 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(len(ids), len(set(ids)))
         self.assertGreaterEqual(len(ids), 120)
         self.assertIn("RM-GAP-002", ids)
-        self.assertIn("GFX-11-01", ids)
+        self.assertIn("GFX-11-T01", ids)
         self.assertIn("CODE-01-01", ids)
         merged = next(t for t in data["tasks"] if t["id"] == "CODE-01-01")
         self.assertEqual(merged["status"], "merged")
