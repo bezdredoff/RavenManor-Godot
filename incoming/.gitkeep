@@ -1,0 +1,6 @@
+# Mobile patch inbox
+
+Upload one `RM-*.zip` at a time to this folder **on branch incoming**, never main.
+The archive manifest's baseSha must match RavenManor-Godot main at upload time.
+ZIP import opens a candidate PR and starts independent CI; do not merge smoke PRs.
+See docs/process/MOBILE_ZIP_PIPELINE_RU.md on main for safety and QA.
