@@ -12,17 +12,17 @@
     },
     {
       "id": "PROC-001",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Process PR for unified agent instructions; not yet reviewed."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
     },
     {
       "id": "PROC-002",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Dashboard PR in progress; not accepted."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
     },
     {
       "id": "PROC-003",
@@ -30,6 +30,13 @@
       "owner": "ChatGPT",
       "updated": "2026-10-27",
       "evidence": "Security design and upload contract in work; no approved mobile test."
+    },
+    {
+      "id": "PROC-004",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — PR template and status discipline, pending merge/review."
     }
   ],
   "rules": [
