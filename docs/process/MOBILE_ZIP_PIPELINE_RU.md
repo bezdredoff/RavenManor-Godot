@@ -120,3 +120,16 @@ GitHub Pages `https://bezdredoff.github.io/RavenManor-Godot/` и `/preview/` и�
 - Independent read-only candidate build [40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376) passed and published `raven-candidate-web-40545034376` Web artifact, retained for seven days. Stable Pages deployment remained skipped.
 - Initial ZIP R2 used an outdated `main` because PR #51 merged mid-test and was **correctly rejected**. R3 targeted the merged main and succeeded. The inbox was cleaned without pushing any test file into `main`.
 - **Remaining manual acceptance:** upload a fresh small ZIP from iPhone/Android into `incoming`, verify automatic candidate PR and CI, confirm file can be downloaded from Actions and (if a playable preview is needed) decide on hosting with a separate origin. Use newly generated `baseSha` after any later main merge — never reuse R3 with an old SHA. Do not merge smoke-only PRs.
+
+## Принятие основного флоу загрузки с телефона — 2026-10-27
+
+Владелец **загрузил `RM-MOB04_PHONE_R1.zip` с телефона** в `incoming/` и подтвердил прохождение запрошенного GitHub approval. GitHub документально подтвердил:
+
+1. [Автоматический import run 40554280539](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539): успешные `validate`, `candidate` и `test_candidate`. Manifest имел `taskIds: MOB-04`, точный `baseSha: 4751be46481c8735b7da3daadfcc6bda4bde63a3`.
+2. [Автоматический кандидат PR #55](https://github.com/bezdredoff/RavenManor-Godot/pull/55) содержит **ровно один** новый неисполняемый `docs/evidence/mobile_phone_upload_20261027.txt`, не затрагивает игру и был закрыт без мержа.
+3. [Независимая сборка 40554457157](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157): complete Godot/UPDS/Room Builder/Web pipeline **success**, `raven-candidate-web-40554457157` artifact published for seven days. Stable Pages deploy для candidate **skipped**.
+4. Тестовый ZIP удалён из `incoming/`. Постоянные файлы `.gitkeep` и `README.md` оставлены для будущей загрузки. Не использовать старый ZIP после следующего merge: в нём зафиксирован прошлый SHA `main`.
+
+**Доказано:** физическая загрузка, GitHub Actions permission/auto PR, отдельный CI и создание Web-артефакта без деплоя на стабильный origin. **Не доказано/остаётся задачей:** live-интеграция всех атакующих ZIP-наборов, открытие/загрузка артефакта непосредственно в мобильном браузере, перенос больших бинарных пакетов, а также играбельная версия candidate на отдельном origin. Не отмечать весь MOB-04 как `accepted` до этих проверок.
+
+Продолжение разработки CODE-02A: [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54) переносит проверенные UI primitives UPDS; он не входит в smoke ZIP, и его можно мержить отдельно, когда завершена мобильная загрузка.
