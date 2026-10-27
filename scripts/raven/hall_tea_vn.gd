@@ -154,8 +154,9 @@ func _layout() -> void:
 	actor_right.position = Vector2(w * 0.41, h * 0.135)
 	actor_right.size = Vector2(character_width, character_height)
 
-	get_node("HeadingBackground").position = Vector2(0, 42)
-	get_node("HeadingBackground").size = Vector2(w, 46)
+	var heading_bg := get_node("HeadingBackground") as ColorRect
+	heading_bg.position = Vector2(0, 42)
+	heading_bg.size = Vector2(w, 46)
 	chapter.position = Vector2(58, 44)
 	chapter.size = Vector2(maxf(1, w - 117), 40)
 	back_button.position = Vector2(8, 4)
