@@ -191,7 +191,7 @@ class CandidateReviewTests(unittest.TestCase):
         self.assertNotIn("innerHTML", client)
         self.assertNotIn("<iframe", portal.lower())
         self.assertNotIn("<script src=\"../candidate", portal.lower())
-        self.assertIn("отдельном домене", portal)
+        self.assertIn("отдельного домена", portal)
 
 
 if __name__ == "__main__":
