@@ -539,6 +539,25 @@
       },
       "repeatPolicy": "repeatable_with_state_aware_overrides",
       "note": "Default inspect copy only. Chapter-specific task CTA/gates are specified in map_narrative_routes.json; these cannot prematurely award story flags."
+    },
+    {
+      "id": "RM-POP-TEA-TABLE",
+      "objectId": null,
+      "roomId": "RM-ROOM-HALL",
+      "trigger": "arrive_at_authored_approach_anchor",
+      "localized": {
+        "ru": {
+          "text": "Ада оставила чай у кресел. Может, поговорим о том, что делать дальше?"
+        },
+        "be": {
+          "text": "Ада пакінула гарбату каля крэслаў. Можа, пагаворым пра тое, што рабіць далей?"
+        },
+        "en": {
+          "text": "Ada left tea by the armchairs. Perhaps we should talk about what comes next?"
+        }
+      },
+      "repeatPolicy": "repeatable",
+      "note": "Requires RM-BEAT-01-05 to launch story VN; replays are read-only."
     }
   ]
 }

@@ -5,6 +5,8 @@ const Graph = preload("res://scripts/raven/manor_navigation_graph.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
+const ProductionLocale = preload("res://scripts/raven/raven_production_localization.gd")
+const HALL_TEA_SCENE := "res://scenes/raven/hall_tea_vn.tscn"
 const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
 const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
 const WORLD_SIZE := Vector2(800, 1600)
@@ -76,7 +78,7 @@ func _build_ui() -> void:
 	door_panel = ColorRect.new(); door_panel.position = Vector2(350, 1040); door_panel.size = Vector2(100, 90); door_panel.z_index = 1150; world.add_child(door_panel)
 	var lintel := ColorRect.new(); lintel.position = Vector2(340, 1038); lintel.size = Vector2(120, 30); lintel.color = Color("0b0d12"); lintel.z_index = 2000; world.add_child(lintel)
 	route_lines = Node2D.new(); route_lines.z_index = 50; world.add_child(route_lines)
-	for hotspot_id in ["RM-HS-001", "RM-HS-002", "RM-HS-003", "RM-HS-004", "RM-HS-005"]:
+	for hotspot_id in ["RM-HS-001", "RM-HS-002", "RM-HS-003", "RM-HS-004", "RM-HS-005", "RM-HS-TEA-TABLE"]:
 		_add_hotspot(hotspot_id)
 	actor = _make_actor(); actor.position = graph.position(current_anchor); world.add_child(actor)
 	feedback = _label("Выберите hotspot. Синие линии — доступные связи.", 12, Color("d8d0c1"))
@@ -95,7 +97,7 @@ func _add_room(rect: Rect2, room_id: String, color: Color) -> void:
 
 func _add_hotspot(hotspot_id: String) -> void:
 	var anchor_id := graph.interaction_anchor(hotspot_id)
-	var button := Button.new(); button.text = hotspot_id.trim_prefix("RM-"); button.position = graph.position(anchor_id) - Vector2(62, 24); button.size = Vector2(124, 48)
+	var button := Button.new(); button.text = "АДА · ЧАЙ" if hotspot_id == "RM-HS-TEA-TABLE" else hotspot_id.trim_prefix("RM-"); button.position = graph.position(anchor_id) - Vector2(62, 24); button.size = Vector2(124, 48)
 	button.tooltip_text = "%s → %s" % [hotspot_id, anchor_id]; button.z_index = 1600; button.pressed.connect(_move_to_hotspot.bind(hotspot_id)); world.add_child(button)
 
 
@@ -141,6 +143,31 @@ func _anchor_reached(anchor_id: String) -> void:
 func _interaction_reached(hotspot_id: String) -> void:
 	actor_sprite.stop(); actor_sprite.frame = 0
 	feedback.text = "Достигнут %s через %s." % [hotspot_id, current_anchor]
+	if hotspot_id == "RM-HS-TEA-TABLE":
+		_show_tea_popup()
+
+
+func _show_tea_popup() -> void:
+	# The player has to approach the table by the authored graph first.
+	# Chapter II is gated by completion of RM-VS-01, not by a debug shortcut.
+	var locale := ProductionLocale.new().locale
+	var preview_copy := ProductionLocale.popup_text("RM-POP-TEA-TABLE", locale)
+	var popup := ConfirmationDialog.new()
+	popup.title = {"ru":"Чай в холле", "be":"Гарбата ў холе", "en":"Tea in the Hall"}.get(locale, "Tea in the Hall")
+	popup.dialog_text = preview_copy
+	popup.ok_button_text = {"ru":"ПОГОВОРИТЬ", "be":"ПАГАВАРЫЦЬ", "en":"TALK"}.get(locale, "TALK")
+	popup.cancel_button_text = {"ru":"ЗАКРЫТЬ", "be":"ЗАКРЫЦЬ", "en":"CLOSE"}.get(locale, "CLOSE")
+	popup.unresizable = true
+	popup.exclusive = true
+	add_child(popup)
+	popup.close_requested.connect(popup.queue_free)
+	popup.canceled.connect(popup.queue_free)
+	if snapshot.storyBeatsSeen.has("RM-BEAT-01-05"):
+		popup.confirmed.connect(func(): get_tree().change_scene_to_file(HALL_TEA_SCENE))
+	else:
+		popup.dialog_text += "\n\n" + {"ru":"Сначала завершите первый этап восстановления поместья.", "be":"Спачатку завяршыце першы этап аднаўлення маёнтка.", "en":"Complete the first restoration chapter first."}.get(locale, "Complete the first chapter first.")
+		popup.get_ok_button().disabled = true
+	popup.popup_centered(Vector2i(325, 196))
 
 
 func _start_animation(delta: Vector2) -> void:

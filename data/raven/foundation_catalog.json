@@ -51,7 +51,8 @@
     "RM-HS-002",
     "RM-HS-003",
     "RM-HS-004",
-    "RM-HS-005"
+    "RM-HS-005",
+    "RM-HS-TEA-TABLE"
   ],
   "clues": [
     "RM-CLUE-01-CHILDHOOD-OBJECT"
@@ -68,7 +69,8 @@
     "RM-BEAT-01-02",
     "RM-BEAT-01-03",
     "RM-BEAT-01-04",
-    "RM-BEAT-01-05"
+    "RM-BEAT-01-05",
+    "RM-BEAT-02-01"
   ],
   "doorAliases": {
     "RM-DOOR-HALL-BEDROOM": "RM-DOOR-CORRIDOR-BEDROOM"
