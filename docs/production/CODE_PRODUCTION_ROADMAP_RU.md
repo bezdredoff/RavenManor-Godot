@@ -134,7 +134,7 @@
 
 ### CODE-02 — Общий Match-3 экран, touch, boosters и feedback
 
-**Подготовка к GFX-10, не требует финального tile art.** Подзадача `CODE-02-00` (перенос неизменённых UI primitives UPDS, PR #54) смержена; `CODE-02-01/02` остаются в работе до полной integration/mobile QA.
+**Подготовка к GFX-10, не требует финального tile art.** Следующий кандидат CODE-02 input/frame (`code/code-02-upds-match3-interactive-board`) переносит UPDS drag model с порогом 24%, воспроизводит engine swap/clear/settle/reshuffle на общем presenter и подключается к `RM-VS-01`. До проверки CI и реального device QA эта работа остаётся `PR_review`, не `accepted`. Подзадача `CODE-02-00` (перенос неизменённых UI primitives UPDS, PR #54) смержена; `CODE-02-01/02` остаются в работе до полной integration/mobile QA.
 
 - `CODE-02-01` Выделить input model свайп/тап, drag threshold, invalid feedback и touch capture из UPDS `match3_screen.gd`, сохранив keyboard/mouse fallback.
 - `CODE-02-02` Переиспользовать `match3_board_shape.gd`: authored shape, holes, board masks, масштаб мобильного портрета.

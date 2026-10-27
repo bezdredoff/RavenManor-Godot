@@ -6,10 +6,9 @@ const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
+const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
+const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
-
-const TILE_COLORS := {"raven":Color("40506b"),"key":Color("b8954d"),"rose":Color("884f62"),"candle":Color("d5c38b"),"book":Color("5d704d"),"cup":Color("e8dcc8"),"brooch":Color("a883bc"),"quill":Color("bc9b73")}
-const TILE_MARKS := {"raven":"R","key":"K","rose":"✦","candle":"C","book":"B","cup":"☕","brooch":"◆","quill":"Q"}
 
 var store := Store.new()
 var state := Snapshot.fresh()
@@ -79,34 +78,13 @@ func _render_vn() -> void:
 func _render_match3() -> void:
 	var level := _level(str(step.level))
 	if match_game == null or match_game.level_data.id != level.id:
-		match_game = Match3.new(level); selected = -1
+		match_game = Match3.new(level)
 	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
-	body.add_child(_paragraph("%s · Ходы: %d · %s: %d/%d" % [level.id, match_game.moves_left, level.objective.label, match_game.collected, level.objective.target]))
-	var grid := GridContainer.new(); grid.columns = int(level.columns); grid.add_theme_constant_override("h_separation", 3); grid.add_theme_constant_override("v_separation", 3); body.add_child(grid)
-	for index in match_game.tiles.size():
-		var button := Button.new(); button.text = TILE_MARKS[match_game.tiles[index]]; button.custom_minimum_size = Vector2(50, 50)
-		button.add_theme_color_override("font_color", Color("101217")); button.add_theme_font_size_override("font_size", 18)
-		var style := StyleBoxFlat.new(); style.bg_color = TILE_COLORS[match_game.tiles[index]]; style.set_corner_radius_all(8)
-		if index == selected: style.border_color = Color("ffffff"); style.set_border_width_all(3)
-		button.add_theme_stylebox_override("normal", style); button.pressed.connect(_tile_pressed.bind(index)); grid.add_child(button)
-	_add_button(body, "ПОДСКАЗКА: СДЕЛАТЬ ЛУЧШИЙ ХОД", _play_hint)
-
-
-func _tile_pressed(index: int) -> void:
-	if selected < 0: selected = index; _render(); return
-	var result: Dictionary = match_game.attempt_swap(selected, index); selected = -1
-	if result.get("won", false): _complete_level()
-	elif result.get("lost", false): match_game.reset(); _render()
-	else: _render()
-
-
-func _play_hint() -> void:
-	var hint: Dictionary = match_game.get_hint_move()
-	if hint.is_empty(): match_game.reset(); _render(); return
-	var result: Dictionary = match_game.attempt_swap(int(hint.first), int(hint.second))
-	if result.get("won", false): _complete_level()
-	elif result.get("lost", false): match_game.reset(); _render()
-	else: _render()
+	var board_view := Match3Board.new()
+	board_view.name = "RavenMatch3Board"
+	body.add_child(board_view)
+	board_view.setup(match_game, Match3Theme.placeholder())
+	board_view.level_won.connect(_complete_level)
 
 
 func _complete_level() -> void:

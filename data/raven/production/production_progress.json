@@ -82,17 +82,17 @@
     },
     {
       "id": "CODE-02-01",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Merged https://github.com/bezdredoff/RavenManor-Godot/pull/54 (source-verbatim UPDS board-shape/tile-motion/tutorial/easing + Godot component smoke, CI success). Only CODE-02-00 component import is merged; touch drag/swap and complete input/board integration pending."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
     },
     {
       "id": "CODE-02-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Merged https://github.com/bezdredoff/RavenManor-Godot/pull/54 (source-verbatim UPDS board-shape/tile-motion/tutorial/easing + Godot component smoke, CI success). Only CODE-02-00 component import is merged; full cascade frame/HUD/feedback/specials integration and device QA pending."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
     },
     {
       "id": "CODE-02-00",
