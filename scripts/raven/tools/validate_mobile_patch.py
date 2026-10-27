@@ -22,6 +22,10 @@ PROTECTED = (
     ".github/", ".git/", "AGENTS.md", "CODEX.md", "DEEPSEEK.md",
     "CHATGPT.md", "docs/DECISIONS.md",
     "scripts/raven/tools/validate_mobile_patch.py",
+    "scripts/raven/tools/package_mobile_patch.py",
+    "scripts/raven/tools/package_mobile_web_site.sh",
+    "scripts/raven/tools/test_production_dashboard_mobile.py",
+    "scripts/check.sh", "check.ps1",
     "incoming/", "dashboard/status.json", "build/", "addons/",
 )
 FORBIDDEN_PARTS = {".git", ".godot", "node_modules", "dist", ".vite",
