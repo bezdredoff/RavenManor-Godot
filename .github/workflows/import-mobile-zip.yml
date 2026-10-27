@@ -35,6 +35,7 @@ jobs:
       - name: Checkout untrusted incoming branch (no credentials)
         uses: actions/checkout@v4
         with:
+          ref: incoming
           path: inbox
           persist-credentials: false
       - name: Checkout trusted current main (no credentials)
@@ -90,7 +91,8 @@ jobs:
     permissions:
       contents: write
       pull-requests: write
-      actions: write
+    outputs:
+      candidate_branch: ${{ steps.publish.outputs.branch }}
     steps:
       - name: Checkout exactly validated main commit
         uses: actions/checkout@v4
@@ -112,6 +114,7 @@ jobs:
           test "$(git rev-parse HEAD)" = "$BASE_SHA"
           python3 scripts/raven/tools/validate_mobile_patch.py "$RUNNER_TEMP/mobile-inbox/raven-upload.zip" "$BASE_SHA" .
       - name: Commit validated changes and open candidate PR
+        id: publish
         env:
           GH_TOKEN: ${{ github.token }}
           TASK_IDS: ${{ needs.validate.outputs.task_ids }}
@@ -124,7 +127,10 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git config core.hooksPath /dev/null
+          live_main="$(git ls-remote origin refs/heads/main | awk '{print $1}')"
+          test "$live_main" = "$MAIN_SHA" || { echo 'Main advanced since ZIP validation. Repackage against latest main.' >&2; exit 1; }
           git switch -c "$branch"
+          echo "branch=$branch" >> "$GITHUB_OUTPUT"
           git add -A
           if git diff --cached --quiet; then
             echo "ZIP introduces no changes" >&2
@@ -141,6 +147,21 @@ jobs:
           This is an unreviewed candidate, not a merged, accepted or device-verified change.
           Update production_progress.json, documentation, tests and review asset provenance before manual merge.
           The PR must pass its own Godot/Room Builder checks and relevant device QA."
-          # GITHUB_TOKEN-originated PRs may not trigger pull_request workflows.
-          # workflow_dispatch is an explicit permitted GitHub Actions trigger.
-          gh workflow run pages.yml --ref "$branch"
+  test_candidate:
+    name: Start independent read-only candidate Godot CI
+    needs: candidate
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      contents: read
+    steps:
+      - name: Dispatch standard checks for candidate branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: ${{ needs.candidate.outputs.candidate_branch }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          [[ "$BRANCH" =~ ^candidate/mobile-[0-9]+$ ]] || { echo 'Invalid generated candidate branch' >&2; exit 1; }
+          gh workflow run pages.yml --repo "$REPO" --ref "$BRANCH"
+          echo "Queued read-only build/test workflow on $BRANCH; candidate is NOT merged or approved."
