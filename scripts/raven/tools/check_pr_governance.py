@@ -7,6 +7,7 @@ excluded: they pass independent security/test checks before a human can merge.
 from __future__ import annotations
 
 import argparse
+import re
 import subprocess
 import sys
 
@@ -17,7 +18,7 @@ REQUIRED = frozenset({
 
 
 def missing_files(changed: set[str], head_ref: str) -> set[str]:
-    if head_ref.startswith("candidate/mobile-"):
+    if re.fullmatch(r"candidate/mobile-[0-9]+", head_ref):
         return set()
     return REQUIRED.difference(changed)
 
@@ -44,7 +45,7 @@ def check_pr(base_sha: str, head_ref: str) -> int:
         )
         return 1
     print("Raven PR governance PASS: canonical STATUS and progress included"
-          if not head_ref.startswith("candidate/mobile-")
+          if not re.fullmatch(r"candidate/mobile-[0-9]+", head_ref)
           else "Raven PR governance SKIP: untrusted mobile ZIP candidate (manual review required)")
     return 0
 
