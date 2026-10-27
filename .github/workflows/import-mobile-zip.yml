@@ -94,6 +94,7 @@ jobs:
       pull-requests: write
     outputs:
       candidate_branch: ${{ steps.publish.outputs.branch }}
+      pr_created: ${{ steps.publish.outputs.pr_created }}
     steps:
       - name: Checkout exactly validated main commit
         uses: actions/checkout@v4
@@ -139,7 +140,7 @@ jobs:
           fi
           git commit -m "mobile: import ${TASK_IDS} candidate from validated ZIP"
           git push origin "HEAD:refs/heads/$branch"
-          gh pr create --base main --head "$branch" \
+          if gh pr create --base main --head "$branch" \
             --title "Mobile ZIP candidate: ${FEATURE} (${TASK_IDS})" \
             --body "Task IDs: ${TASK_IDS}
           Base main SHA: ${MAIN_SHA}
@@ -147,7 +148,13 @@ jobs:
           Generated from a checksum-pinned mobile archive; no candidate code executed with write access.
           This is an unreviewed candidate, not a merged, accepted or device-verified change.
           Update production_progress.json, documentation, tests and review asset provenance before manual merge.
-          The PR must pass its own Godot/Room Builder checks and relevant device QA."
+          The PR must pass its own Godot/Room Builder checks and relevant device QA."; then
+            echo "pr_created=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "pr_created=no" >> "$GITHUB_OUTPUT"
+            echo "::warning::GitHub Actions could not create a PR. Create one manually from $branch after CI. GitHub Settings > Actions > General > Workflow permissions may block Actions-created PRs."
+            echo "Manual PR link: https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1"
+          fi
   test_candidate:
     name: Start independent read-only candidate Godot CI
     needs: candidate
@@ -177,3 +184,7 @@ jobs:
           echo "Running independent Godot/Room Builder/Web checks: $run_id"
           gh run watch "$run_id" --repo "$REPO" --exit-status --interval 15
           echo "Independent candidate build passed. PR still requires manual review and device QA."
+          if [[ "${{ needs.candidate.outputs.pr_created }}" != "yes" ]]; then
+            echo "::error::Candidate build PASSED, but automatic PR creation is blocked by repository settings. Use the candidate branch link in the writer job and enable GitHub Actions PR creation deliberately."
+            exit 1
+          fi
