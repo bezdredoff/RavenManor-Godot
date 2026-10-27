@@ -10,12 +10,14 @@ signal board_feedback(message: String)
 const Drag = preload("res://scripts/match3/match3_drag_model.gd")
 const Shape = preload("res://scripts/match3/match3_board_shape.gd")
 const MotionScene = preload("res://scenes/match3_tile_motion_layer.tscn")
+const FrameVisuals = preload("res://scripts/match3/match3_frame_visuals.gd")
 
 var game: RefCounted
 var skin: Dictionary = {}
 var board_area: Control
 var grid: GridContainer
 var motion_layer: Control
+var impact_layer: Control
 var outline: Control
 var feedback: Label
 var objective: Label
@@ -142,6 +144,12 @@ func _build() -> void:
 	motion_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	board_area.add_child(motion_layer)
 	motion_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	impact_layer = Control.new()
+	impact_layer.name = "UPDSClearImpacts"
+	impact_layer.z_index = 5
+	impact_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_area.add_child(impact_layer)
+	impact_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	feedback = Label.new()
 	feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	feedback.add_theme_color_override("font_color", Color("c0dab7"))
@@ -229,6 +237,7 @@ func retry_level() -> void:
 	if input_locked or str(game.state) != "lost":
 		return
 	motion_layer.call("cancel_motions")
+	_clear_impacts()
 	game.reset()
 	_completed = false
 	selected_index = -1
@@ -370,6 +379,46 @@ func show_hint() -> void:
 	_paint_selection()
 
 
+
+func _clear_impacts() -> void:
+	if not is_instance_valid(impact_layer):
+		return
+	for child in impact_layer.get_children():
+		impact_layer.remove_child(child)
+		child.queue_free()
+
+
+func _show_clear_impacts(frame: Dictionary) -> void:
+	_clear_impacts()
+	var feedback_kind := str(frame.get("feedback", ""))
+	var badge_map: Dictionary = skin.get("special_badges", {})
+	for index in FrameVisuals.cleared_indices(frame, cells.size()):
+		if not cells[index].visible:
+			continue
+		var special := FrameVisuals.special_at(frame, index)
+		var flash := ColorRect.new()
+		flash.name = "ClearImpact_%d" % index
+		flash.position = cells[index].position
+		flash.size = cells[index].size
+		flash.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		flash.color = FrameVisuals.impact_color(special, feedback_kind)
+		flash.modulate.a = 0.44 if not special.is_empty() else 0.65
+		impact_layer.add_child(flash)
+		if not special.is_empty():
+			var glyph := Label.new()
+			glyph.text = str(badge_map.get(special, "✦"))
+			glyph.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+			glyph.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+			glyph.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			glyph.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			glyph.add_theme_font_size_override("font_size", 22)
+			glyph.add_theme_color_override("font_color", Color("161625"))
+			flash.add_child(glyph)
+		var fade := create_tween()
+		fade.tween_property(flash, "modulate:a", 0.0, 0.18)
+		fade.tween_callback(flash.queue_free)
+
+
 func _play_result(result: Dictionary, first: int, second: int) -> void:
 	input_locked = true
 	highlighted.clear()
@@ -389,25 +438,35 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 			var frame: Dictionary = raw
 			var phase := str(frame.get("phase", ""))
 			_paint_frame(frame)
+			var message := FrameVisuals.phase_feedback(frame, skin)
+			if not message.is_empty():
+				feedback.text = message
 			if phase == "swap":
 				await get_tree().create_timer(0.12).timeout
 			elif phase == "clear":
+				_show_clear_impacts(frame)
 				for idx in frame.get("cleared", []):
 					var cell_index := int(idx)
 					if cell_index >= 0 and cell_index < stacks.size():
 						stacks[cell_index].modulate.a = 0.35
 				await get_tree().create_timer(0.10).timeout
 			elif phase == "settle":
+				_clear_impacts()
 				await get_tree().process_frame
 				for raw_motion in frame.get("motions", []):
 					var motion: Dictionary = raw_motion
 					var index := int(motion.get("index", -1))
 					if index >= 0 and index < stacks.size():
-						motion_layer.call("animate_tile", stacks[index], motion, 0.22)
+						var bounded := motion.duplicate()
+						bounded["clipRect"] = FrameVisuals.clip_for_motion(
+							motion, int(game.level_data.columns), int(game.level_data.rows),
+							stacks[index].size, 3.0)
+						motion_layer.call("animate_tile", stacks[index], bounded, 0.22)
 				await get_tree().create_timer(0.23).timeout
 				motion_layer.call("cancel_motions")
 			elif phase == "reshuffle":
 				await get_tree().create_timer(0.1).timeout
+	_clear_impacts()
 	_paint_live()
 	if int(result.get("cascades", 0)) >= 2:
 		feedback.text = "%s ×%d" % [str(skin.get("chain", "Цепочка")), int(result.cascades)]
