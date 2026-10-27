@@ -154,7 +154,7 @@ class MobileZipTests(unittest.TestCase):
         self.assertNotIn("permissions:\n  contents: read\n  pages: write", pages)
         self.assertIn("    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'", pages)
         self.assertIn("    permissions:\n      contents: read\n      pages: write\n      id-token: write", pages)
-        self.assertIn("ref: incoming", importer)
+        self.assertIn("github.sha || 'incoming'", importer)
         self.assertIn("needs.validate.outputs.base_sha", importer)
         self.assertIn("test \"$live_main\" = \"$MAIN_SHA\"", importer)
         self.assertIn("test_candidate:", importer)
