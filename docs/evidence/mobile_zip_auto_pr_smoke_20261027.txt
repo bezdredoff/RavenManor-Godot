@@ -1,0 +1,3 @@
+Raven Manor MOB-04 automatic Actions-created PR validation R3
+Source: synthetic GitHub ZIP test, not a physical phone upload.
+This evidence is deliberately harmless; DO NOT MERGE candidate PR.
