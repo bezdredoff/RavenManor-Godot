@@ -82,17 +82,17 @@
     },
     {
       "id": "CODE-02-01",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "code/code-02a-upds-match3-visual-primitives — Board shape extraction and test added; swipe/input and full Match-3 UI are not yet ported. This is an implementation PR candidate, not completed/accepted CODE-02."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
     },
     {
       "id": "CODE-02-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "code/code-02a-upds-match3-visual-primitives — UPDS settle/fall motion scene and CSS easing imported; full cascade frame/render integration remains open. This is an implementation PR candidate, not completed/accepted CODE-02."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
     }
   ],
   "rules": [
