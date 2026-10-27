@@ -1,6 +1,6 @@
 # Raven Manor — единый протокол ChatGPT / Codex / DeepSeek / human PR
 
-**Version 1 — 2026-10-27.** Эти правила не зависят от языка/модели AI и являются частью репозитория. Точка входа — `AGENTS.md`; все платформенные entrypoints ссылаются сюда. **Инструкции в чате не имеют права незаметно переписывать подтверждённые решения `docs/DECISIONS.md`.**
+**Version 1.1 — 2026-10-27.** Эти правила не зависят от языка/модели AI и являются частью репозитория. Точка входа — `AGENTS.md`; все платформенные entrypoints ссылаются сюда. **Инструкции в чате не имеют права незаметно переписывать подтверждённые решения `docs/DECISIONS.md`.**
 
 ## 0. До ответа или правки
 
@@ -66,3 +66,15 @@ Default — connector/direct branch PR для небольших изменен�
 | Human review | Принимает стиль, персонажей, canon, geometry, мобильную пригодность, бюджеты/миграции и релиз. CI не заменяет эти решения. |
 
 **Обязательное правило:** после любой правки source/dependencies/script состояние задач и docs остаются консистентными с main. Дашборд не хранит независимую правду.
+
+
+## Строгое обязательное правило для каждого авторского PR — PROC-005
+
+**В каждом PR** от ChatGPT, Codex, DeepSeek или человека (включая docs-only и process PR), в той же ветке должны быть изменены **оба** файла:
+
+- `docs/STATUS.md` — датированное объяснение фактического scope, task IDs, проверок и оставшихся gates.
+- `data/raven/production/production_progress.json` — связанная задача с status/owner/updated/evidence и ссылкой на реальный PR. Для нового ID сначала добавить work package в CODE/GFX/gap backlog. `PR_review` не равно `merged`; в открытом PR не писать, что он уже смержен.
+
+При изменении scope/dependencies/acceptance дополнительно обновить связанные CODE/GFX roadmap и backlog. GitHub Actions вызывает `scripts/raven/tools/check_pr_governance.py` и завершает authored PR с ошибкой, если любой обязательный файл не изменён. `dashboard/status.json` генерируется — не заменяет source of truth.
+
+**Узкое исключение:** автоматически импортируемые ZIP candidate PR `candidate/mobile-<run>`, до human review. Эти архивы могут содержать только ассеты/смоук-файл, но для интеграции в production владелец обязан сверить связанные задачи и документы; ветка candidate не является обходом human acceptance. Не помечать игру accepted от одного green CI.

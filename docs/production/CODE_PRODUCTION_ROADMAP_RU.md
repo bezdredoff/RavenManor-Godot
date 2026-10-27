@@ -428,3 +428,10 @@ C7 props & repairs → C8 save/season flow ──┤
 - Кодовый дефект перед этим пакетом: UPDS `_settle_columns()` уже возвращает `segmentTop/segmentBottom`, но Raven отдавал их tile-motion слою без `clipRect`, поэтому визуальные копии могли пересекать заблокированные сегменты. Новый адаптер `match3_frame_visuals.gd` создаёт `clipRect` строго по сегменту и не меняет физику UPDS. `clear` кадры рисуют отдельный прозрачный FX слой с отличающимися цветами и символами special kinds; `cascade`/reshuffle получают временную обратную связь.
 - Новый Godot тест проверяет оригинальные motion clips, пару `flash-row + flash-column`, порядок fade/settle, очистку transient nodes и путь reduced-motion. Пакет **не** утверждает финальный Match-3 экран без GFX-10 и мобильного QA. Задача `CODE-02-02` остаётся `PR_review`, затем `in_progress` до final-effects/device gate.
 - Следующий code gate: адаптивный portrait HUD с safe area, фиксированное место целям, доступность кнопок, визуальная проверка iPhone 390/430 px, плюс real assets & soundtrack/haptics после GFX-10.
+
+
+## CODE-02D — mobile HUD, safe area и размеры поля (кандидат, 2026-10-27)
+
+После смерженного [PR #60](https://github.com/bezdredoff/RavenManor-Godot/pull/60) settle frames ограничены по сегментам колонок, а special clear feedback получает временные FX; CODE-02-02 имеет статус **merged**, но не device/art-accepted. Новый `CODE-02-04` предусматривает: отказ от жёсткой минимальной ширины 354px, динамический размер поля/клеток по ширине контейнера без смены UPDS game state, раздельные строки целей и ходов, нижние кнопки в две колонки и 44px action targets. Для нативного mobile учитываются safe insets из DisplayServer; Web host/браузер требуют отдельного device QA.
+
+Godot regression тестирует 320/390/412/430 px, недопустимость horizontal overflow, оригинальные UPDS game/moves при resize, safe inset conversion, структуру реального RM-VS-01. `CODE-02-04` = **PR_review**, до реального iPhone/Android screenshot/gestures QA не считать accepted. GFX-10 отдельно утверждает окончательный вид тайлов и HUD.

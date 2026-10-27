@@ -11,6 +11,7 @@ const Drag = preload("res://scripts/match3/match3_drag_model.gd")
 const Shape = preload("res://scripts/match3/match3_board_shape.gd")
 const MotionScene = preload("res://scenes/match3_tile_motion_layer.tscn")
 const FrameVisuals = preload("res://scripts/match3/match3_frame_visuals.gd")
+const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 
 var game: RefCounted
 var skin: Dictionary = {}
@@ -39,6 +40,7 @@ var _gesture_kind := ""
 var _gesture_touch := -1
 var _last_touch_ms := -10000
 var _cell_size := 48.0
+var _layout_width := -1.0
 var _completed := false
 
 
@@ -47,11 +49,15 @@ func setup(next_game: RefCounted, theme: Dictionary) -> void:
 	skin = theme.duplicate(true)
 	add_theme_constant_override("separation", 8)
 	_build()
+	resized.connect(_on_board_resized)
 	_paint_live()
+	call_deferred("_on_board_resized")
 
 
 func _build() -> void:
 	objective = Label.new()
+	objective.name = "Match3Objectives"
+	objective.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	objective.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	objective.add_theme_color_override("font_color", Color("f0dfbd"))
 	add_child(objective)
@@ -60,8 +66,8 @@ func _build() -> void:
 	add_child(center)
 	var cols := int(game.level_data.columns)
 	var rows := int(game.level_data.rows)
-	_cell_size = minf(50.0, maxf(34.0, (350.0 - float(cols - 1) * 3.0) / float(cols)))
-	var extent := Vector2(float(cols) * (_cell_size + 3.0) - 3.0, float(rows) * (_cell_size + 3.0) - 3.0)
+	_cell_size = MobileLayout.tile_size(350.0, cols)
+	var extent := MobileLayout.board_extent(_cell_size, cols, rows)
 	board_area = Control.new()
 	board_area.name = "UPDSBoardArea"
 	board_area.custom_minimum_size = extent
@@ -155,8 +161,9 @@ func _build() -> void:
 	feedback.add_theme_color_override("font_color", Color("c0dab7"))
 	add_child(feedback)
 	hint_button = Button.new()
+	hint_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	hint_button.text = str(skin.get("hint", "Показать подсказку"))
-	hint_button.custom_minimum_size.y = 44
+	hint_button.custom_minimum_size.y = MobileLayout.MIN_TAP
 	hint_button.pressed.connect(show_hint)
 	add_child(hint_button)
 
@@ -166,19 +173,19 @@ func _build() -> void:
 	help_button = Button.new()
 	help_button.text = str(skin.get("help_button", "Как играть"))
 	help_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	help_button.custom_minimum_size.y = 44
+	help_button.custom_minimum_size.y = MobileLayout.MIN_TAP
 	help_button.pressed.connect(toggle_help)
 	toolbar.add_child(help_button)
 	motion_button = Button.new()
 	motion_button.text = str(skin.get("motion_on", "Анимация: вкл."))
 	motion_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	motion_button.custom_minimum_size.y = 44
+	motion_button.custom_minimum_size.y = MobileLayout.MIN_TAP
 	motion_button.pressed.connect(toggle_motion)
 	toolbar.add_child(motion_button)
 	retry_button = Button.new()
 	retry_button.name = "RetryButton"
 	retry_button.text = str(skin.get("retry", "Попробовать снова"))
-	retry_button.custom_minimum_size.y = 44
+	retry_button.custom_minimum_size.y = MobileLayout.MIN_TAP
 	retry_button.pressed.connect(retry_level)
 	retry_button.visible = false
 	add_child(retry_button)
@@ -196,20 +203,57 @@ func _build() -> void:
 	var help_content := VBoxContainer.new()
 	help_content.add_theme_constant_override("separation", 9)
 	help_panel.add_child(help_content)
+	help_content.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	for key in ["help_title", "help_intro", "help_blockers", "help_specials", "help_goal"]:
 		var paragraph := Label.new()
 		paragraph.name = key
 		paragraph.text = str(skin.get(key, ""))
 		paragraph.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		paragraph.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 		paragraph.add_theme_color_override("font_color", Color("e9ddca"))
 		paragraph.add_theme_font_size_override("font_size", 16 if key == "help_title" else 13)
 		help_content.add_child(paragraph)
 	var close_button := Button.new()
 	close_button.text = str(skin.get("help_close", "Закрыть"))
-	close_button.custom_minimum_size.y = 44
+	close_button.custom_minimum_size.y = MobileLayout.MIN_TAP
 	close_button.pressed.connect(toggle_help)
 	help_content.add_child(close_button)
 
+
+
+
+func _on_board_resized() -> void:
+	# The VBox/ScrollContainer determines the true available content width.
+	# One deferred reflow avoids reacting to intermediate zero-width layout.
+	var width := size.x
+	if width < 100.0:
+		width = MobileLayout.content_width(get_viewport().get_visible_rect().size.x)
+	apply_available_width(width)
+
+
+func apply_available_width(available_width: float) -> void:
+	if game == null or board_area == null:
+		return
+	var columns := int(game.level_data.columns)
+	var rows := int(game.level_data.rows)
+	var next_size := MobileLayout.tile_size(available_width, columns)
+	if is_equal_approx(next_size, _cell_size) and is_equal_approx(_layout_width, available_width):
+		return
+	_layout_width = available_width
+	_cell_size = next_size
+	var next_extent := MobileLayout.board_extent(next_size, columns, rows)
+	board_area.custom_minimum_size = next_extent
+	board_area.size = next_extent
+	grid.size = next_extent
+	outline.size = next_extent
+	for cell in cells:
+		cell.custom_minimum_size = Vector2(next_size, next_size)
+		var glyph := cell.get_node("TileStack/Glyph") as Label
+		glyph.add_theme_font_size_override("font_size", clampi(int(next_size * 0.44), 12, 21))
+		var badge := cell.get_node("TileStack/SpecialBadge") as Label
+		badge.add_theme_font_size_override("font_size", clampi(int(next_size * 0.34), 10, 17))
+	# Full-rect child layers follow board_area automatically; avoid rebuilding
+	# nodes or reseeding the UPDS game when rotating / resizing the viewport.
 
 
 func toggle_help() -> void:
@@ -497,7 +541,7 @@ func _paint_live() -> void:
 		var target := int(entry.get("target", 0))
 		var value := int(game.objective_value(index))
 		descriptions.append("%s %d/%d" % [label, mini(target, value), target])
-	objective.text = "  ·  ".join(descriptions) + "  ·  %s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
+	objective.text = "  ·  ".join(descriptions) + "\n%s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
 	_paint_selection()
 	_refresh_controls()
 

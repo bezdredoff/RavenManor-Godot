@@ -207,6 +207,24 @@
       "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
     },
     {
+      "id": "CODE-02-04",
+      "title": "Adapt portrait Match-3 HUD, objective wrapping, safe area and touch targets",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-02-01",
+        "CODE-02-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "Responsive UPDS board presenter for 320/390/412/430 px, no forced 354 px width, native safe-area shell, 2-column footer and min-44px actions; no game-state reset on resize",
+      "acceptance": "Godot viewport smoke, unchanged reducer/save/UPDS rules, readable objectives and no horizontal overflow; physical iPhone/Android screenshot QA remains separate",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
       "id": "CODE-03-01",
       "title": "Extract shared VN state/controller and UI",
       "stage": "CODE-03",

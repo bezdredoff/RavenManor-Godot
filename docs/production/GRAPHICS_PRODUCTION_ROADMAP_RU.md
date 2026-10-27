@@ -413,3 +413,8 @@ Inventory
 ## Cross-gate GFX-10 × CODE-02C (27.10.2026)
 
 Программные highlight/fade для `flash-row/flash-column/evidence/lead/insight` и clip по сегментам колонок из UPDS подготовлены в ветке `code/code-02c-special-impact-segment-motion`. Это **временный programmer art**: цветная вспышка / символ типа / числовые слои blocker, без утверждения tile sprites, silhouettes, FX, particles, animations, background или accessibility цвета. Все acceptance критерии `GFX-10` и совместный `CODE-11 × GFX-11` Hall Pilot остаются отдельными gates. Финальные ассеты должны подставляться в Raven theme/manifest без переписывания UPDS match rules.
+
+
+## Cross-gate GFX-10 × CODE-02D — responsive placeholder UI (2026-10-27)
+
+CODE-02D адаптирует размеры поля и кнопок, строки целей/ходов и safe area, но **не утверждает никакого финального GFX-10 арта**. Все восемь тайлов, blocker/special sprites, FX и HUD-хром пока programmer art. После GFX-10 подставить графические пакеты через Raven theme; проверить legibility целей и значков на 320/390/412/430px, 44px touch targets и физический iPhone без поперечной прокрутки. GFX-11 × CODE-11 Hall Pilot остаётся совместным gate.

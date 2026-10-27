@@ -8,6 +8,7 @@ const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
+const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 
 var store := Store.new()
@@ -33,14 +34,34 @@ func _build_shell() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new(); bg.color = Color("0d1118"); bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(bg)
 	var margin := MarginContainer.new(); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
-	for side in ["margin_left","margin_right","margin_top","margin_bottom"]: margin.add_theme_constant_override(side, 14)
+	var insets := Vector4.ZERO
+	if OS.has_feature("mobile") and not OS.has_feature("web"):
+		insets = MobileLayout.native_safe_insets(
+			get_viewport().get_visible_rect().size, DisplayServer.screen_get_size(),
+			DisplayServer.get_display_safe_area())
+	margin.add_theme_constant_override("margin_left", MobileLayout.gutter(MobileLayout.BASE_GUTTER, insets.x))
+	margin.add_theme_constant_override("margin_top", MobileLayout.gutter(MobileLayout.BASE_GUTTER, insets.y))
+	margin.add_theme_constant_override("margin_right", MobileLayout.gutter(MobileLayout.BASE_GUTTER, insets.z))
+	margin.add_theme_constant_override("margin_bottom", MobileLayout.gutter(MobileLayout.BASE_GUTTER, insets.w))
 	add_child(margin)
 	var root := VBoxContainer.new(); root.add_theme_constant_override("separation", 10); margin.add_child(root)
-	var title := _label("RAVEN MANOR · RM-VS-01", 22, Color("eadbbf")); root.add_child(title)
+	var title := _label("RAVEN MANOR · RM-VS-01", 18, Color("eadbbf")); title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; root.add_child(title)
 	status = _label("", 12, Color("9fc8bc")); status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; root.add_child(status)
-	var scroll := ScrollContainer.new(); scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL; root.add_child(scroll)
-	body = VBoxContainer.new(); body.custom_minimum_size = Vector2(354, 0); body.add_theme_constant_override("separation", 10); scroll.add_child(body)
-	var footer := HBoxContainer.new(); footer.add_theme_constant_override("separation", 6); root.add_child(footer)
+	var scroll := ScrollContainer.new()
+	scroll.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	root.add_child(scroll)
+	body = VBoxContainer.new()
+	body.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	body.add_theme_constant_override("separation", 10)
+	scroll.add_child(body)
+	# A two-column footer fits narrow phones without a forced scroll width.
+	var footer := GridContainer.new()
+	footer.columns = 2
+	footer.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	footer.add_theme_constant_override("h_separation", 6)
+	footer.add_theme_constant_override("v_separation", 6)
+	root.add_child(footer)
 	_add_button(footer, "← Лаунчер", func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
 	_add_button(footer, "Save", _save)
 	_add_button(footer, "Reload", _reload)
@@ -129,7 +150,7 @@ func _reset() -> void: store.reset_campaign(); state = Snapshot.fresh(); match_g
 
 
 func _add_button(parent: Container, text: String, action: Callable) -> void:
-	var button := Button.new(); button.text = text; button.custom_minimum_size = Vector2(0, 44); button.pressed.connect(action); parent.add_child(button)
+	var button := Button.new(); button.text = text; button.custom_minimum_size = Vector2(0, MobileLayout.MIN_TAP); button.size_flags_horizontal = Control.SIZE_EXPAND_FILL; button.pressed.connect(action); parent.add_child(button)
 
 
 func _label(text: String, size: int, color: Color) -> Label:

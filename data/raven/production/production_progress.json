@@ -89,10 +89,10 @@
     },
     {
       "id": "CODE-02-02",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 and #59 merged: basic frame-driven interactive board and UX. New CODE-02C feature branch code/code-02c-special-impact-segment-motion adds exact UPDS segmentTop/segmentBottom motion clipping and transient special clear impacts, separate CI pending. Complete GFX-10 art/real phone QA still open."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/60 merged 2026-10-27: original UPDS frame-driven clear/special impact and blocker-segment clip boundaries, Godot smoke and CI passing. Device QA and final GFX-10 polish remain open; not accepted."
     },
     {
       "id": "CODE-02-00",
@@ -106,6 +106,20 @@
       "owner": "ChatGPT",
       "status": "merged",
       "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/59 merged 2026-10-27T19:02:39Z: temporary UPDS specials/blocker badge/goal HUD, Raven-only help, explicit retry and local reduced-motion toggle, Godot tests passed. Full tutorial polish, locale/device QA, GFX-10 art NOT accepted.",
+      "updated": "2026-10-27"
+    },
+    {
+      "id": "CODE-02-04",
+      "status": "PR_review",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — responsive board for 320/390/412/430px, no fixed 354px minimum, native safe-area offset and 2-column controls; Godot viewport smoke pending final-head CI; physical phone QA not verified.",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27"
+    },
+    {
+      "id": "PROC-005",
+      "status": "PR_review",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — scripted GitHub Actions requirement for BOTH docs/STATUS.md and data/raven/production/production_progress.json in all authored PRs, with test and documented incoming/mobile candidate exception. Final-head CI pending.",
+      "owner": "ChatGPT",
       "updated": "2026-10-27"
     }
   ],

@@ -18,6 +18,8 @@
 **Progress update:** fields in production_progress.json.
 ```
 
+**PROC-005 — правило для каждого PR:** обязательно изменить оба источника `docs/STATUS.md` и `data/raven/production/production_progress.json` прямо в PR. GitHub CI проверит их в diff, даже если работа только с документацией. При изменении scope или acceptance обновить CODE/GFX/gap roadmap/backlog. Исключение только для автоматически импортированного `candidate/mobile-<run>` ZIP на этапе triage; дальнейший review и статус обязательны.
+
 ## PR description (заполняется автоматически/вручную)
 
 ```markdown
