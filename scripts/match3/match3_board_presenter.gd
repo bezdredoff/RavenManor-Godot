@@ -20,6 +20,11 @@ var outline: Control
 var feedback: Label
 var objective: Label
 var hint_button: Button
+var help_button: Button
+var help_panel: PanelContainer
+var retry_button: Button
+var motion_button: Button
+var help_open := false
 var cells: Array[Button] = []
 var stacks: Array[Control] = []
 var selected_index := -1
@@ -97,6 +102,30 @@ func _build() -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		stack.add_child(label)
 		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var special_badge := Label.new()
+		special_badge.name = "SpecialBadge"
+		special_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		special_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		special_badge.add_theme_color_override("font_color", Color("fff3b8"))
+		special_badge.add_theme_font_size_override("font_size", 17)
+		stack.add_child(special_badge)
+		special_badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		special_badge.offset_left = -27.0
+		special_badge.offset_right = -2.0
+		special_badge.offset_top = 0.0
+		special_badge.offset_bottom = 23.0
+		var blocker_badge := Label.new()
+		blocker_badge.name = "BlockerBadge"
+		blocker_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		blocker_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		blocker_badge.add_theme_color_override("font_color", Color("ffffff"))
+		blocker_badge.add_theme_font_size_override("font_size", 15)
+		stack.add_child(blocker_badge)
+		blocker_badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		blocker_badge.offset_left = 2.0
+		blocker_badge.offset_top = 0.0
+		blocker_badge.offset_right = 23.0
+		blocker_badge.offset_bottom = 23.0
 		cells.append(cell)
 		stacks.append(stack)
 
@@ -122,6 +151,102 @@ func _build() -> void:
 	hint_button.custom_minimum_size.y = 44
 	hint_button.pressed.connect(show_hint)
 	add_child(hint_button)
+
+	var toolbar := HBoxContainer.new()
+	toolbar.add_theme_constant_override("separation", 6)
+	add_child(toolbar)
+	help_button = Button.new()
+	help_button.text = str(skin.get("help_button", "Как играть"))
+	help_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	help_button.custom_minimum_size.y = 44
+	help_button.pressed.connect(toggle_help)
+	toolbar.add_child(help_button)
+	motion_button = Button.new()
+	motion_button.text = str(skin.get("motion_on", "Анимация: вкл."))
+	motion_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	motion_button.custom_minimum_size.y = 44
+	motion_button.pressed.connect(toggle_motion)
+	toolbar.add_child(motion_button)
+	retry_button = Button.new()
+	retry_button.name = "RetryButton"
+	retry_button.text = str(skin.get("retry", "Попробовать снова"))
+	retry_button.custom_minimum_size.y = 44
+	retry_button.pressed.connect(retry_level)
+	retry_button.visible = false
+	add_child(retry_button)
+	help_panel = PanelContainer.new()
+	help_panel.name = "Match3HelpPanel"
+	help_panel.visible = false
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color("2b2634")
+	panel_style.border_color = Color("a88b66")
+	panel_style.set_border_width_all(1)
+	panel_style.set_corner_radius_all(7)
+	panel_style.set_content_margin_all(12)
+	help_panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(help_panel)
+	var help_content := VBoxContainer.new()
+	help_content.add_theme_constant_override("separation", 9)
+	help_panel.add_child(help_content)
+	for key in ["help_title", "help_intro", "help_blockers", "help_specials", "help_goal"]:
+		var paragraph := Label.new()
+		paragraph.name = key
+		paragraph.text = str(skin.get(key, ""))
+		paragraph.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		paragraph.add_theme_color_override("font_color", Color("e9ddca"))
+		paragraph.add_theme_font_size_override("font_size", 16 if key == "help_title" else 13)
+		help_content.add_child(paragraph)
+	var close_button := Button.new()
+	close_button.text = str(skin.get("help_close", "Закрыть"))
+	close_button.custom_minimum_size.y = 44
+	close_button.pressed.connect(toggle_help)
+	help_content.add_child(close_button)
+
+
+
+func toggle_help() -> void:
+	if input_locked:
+		return
+	help_open = not help_open
+	help_panel.visible = help_open
+	selected_index = -1
+	highlighted.clear()
+	_gesture_index = -1
+	_gesture_kind = ""
+	_paint_selection()
+	_refresh_controls()
+
+
+func toggle_motion() -> void:
+	if input_locked:
+		return
+	reduced_motion = not reduced_motion
+	motion_button.text = str(skin.get("motion_off" if reduced_motion else "motion_on", "Анимация"))
+	feedback.text = motion_button.text
+
+
+func retry_level() -> void:
+	if input_locked or str(game.state) != "lost":
+		return
+	motion_layer.call("cancel_motions")
+	game.reset()
+	_completed = false
+	selected_index = -1
+	highlighted.clear()
+	_gesture_index = -1
+	_gesture_kind = ""
+	feedback.text = str(skin.get("retry_message", "Новая попытка"))
+	_paint_live()
+
+
+func _refresh_controls() -> void:
+	if is_instance_valid(hint_button):
+		hint_button.disabled = input_locked or help_open or str(game.state) != "playing"
+	if is_instance_valid(retry_button):
+		retry_button.visible = str(game.state) == "lost" and not _completed
+		retry_button.disabled = input_locked
+	if is_instance_valid(motion_button):
+		motion_button.disabled = input_locked
 
 
 func _input(event: InputEvent) -> void:
