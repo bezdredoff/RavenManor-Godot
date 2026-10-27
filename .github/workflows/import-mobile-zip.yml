@@ -35,7 +35,8 @@ jobs:
       - name: Checkout untrusted incoming branch (no credentials)
         uses: actions/checkout@v4
         with:
-          ref: incoming
+          # Immutable triggering commit for push; latest incoming for manual dispatch.
+          ref: ${{ github.event_name == 'push' && github.sha || 'incoming' }}
           path: inbox
           persist-credentials: false
       - name: Checkout trusted current main (no credentials)
