@@ -29,7 +29,7 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "GitHub automatic ZIP-to-PR and independent candidate CI proven via PR #52 and run 40544933737; live mobile-device usability not yet accepted. Candidate playable preview still requires distinct-origin hosting."
+      "evidence": "Complete phone-to-GitHub ZIP → candidate PR → isolated Godot/Room Builder/Web CI verified after owner phone upload: https://github.com/bezdredoff/RavenManor-Godot/pull/55 ; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 and /actions/runs/40554457157. PR closed unmerged, inbox cleaned. Live malicious ZIP edge cases and optional distinct-origin playable preview still separate gates."
     },
     {
       "id": "PROC-004",
@@ -77,7 +77,7 @@
       "id": "MOB-04",
       "owner": "ChatGPT",
       "status": "in_progress",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/52 — automatically opened from real harmless ZIP; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737 and /actions/runs/40545034376 green; PR closed unmerged and incoming ZIP cleaned. Still requires physical iPhone/Android upload, negative-path integration tests and user device acceptance.",
+      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented.",
       "updated": "2026-10-27"
     }
   ],
