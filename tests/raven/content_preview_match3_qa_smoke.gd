@@ -17,7 +17,7 @@ func _run() -> void:
 	assert(not preview_source.contains("Store.new("), "QA preview must not read/write campaign store")
 	assert(not preview_source.contains("level_won\""), "QA preview must not produce reducer events")
 
-	get_tree().set_meta("raven_direct_preview_level", "RM-LVL-001")
+	set_meta("raven_direct_preview_level", "RM-LVL-001")
 	var preview := Preview.new()
 	preview.size = Vector2(390, 844)
 	root.add_child(preview)
@@ -25,8 +25,8 @@ func _run() -> void:
 	assert(preview.current_kind == "match3")
 	assert(preview.current_id == "RM-LVL-001")
 	assert(not preview.return_to_map, "Launcher QA shortcut must not create unwanted map backlink")
-	assert(not get_tree().has_meta("raven_direct_preview_level"), "One-shot level request must be consumed")
-	assert(preview.board_view is Board)
+	assert(not has_meta("raven_direct_preview_level"), "One-shot level request must be consumed")
+	assert(preview.board_view.get_script() == Board)
 	assert(preview.board_view.name == "QA_UPDSMatch3Board")
 	assert(preview.match_game.state == "playing")
 	assert(preview.body.custom_minimum_size.x == 0.0, "Old 354px min width must be gone")
@@ -56,20 +56,20 @@ func _run() -> void:
 	await process_frame
 	assert(preview.current_id == "RM-LVL-002")
 	assert(preview.match_game.level_data.id == "RM-LVL-002")
-	assert(preview.board_view is Board)
+	assert(preview.board_view.get_script() == Board)
 	preview._show_menu()
 	assert(preview.current_kind == "menu" and preview.match_game == null)
 
 	# The map's existing selected-object preview link is preserved separately.
 	preview.queue_free()
 	await process_frame
-	get_tree().set_meta("raven_map_preview_level", "RM-LVL-003")
+	set_meta("raven_map_preview_level", "RM-LVL-003")
 	var map_preview := Preview.new()
 	root.add_child(map_preview)
 	await process_frame
 	assert(map_preview.return_to_map and map_preview.current_id == "RM-LVL-003")
-	assert(map_preview.board_view is Board)
-	assert(not get_tree().has_meta("raven_map_preview_level"))
+	assert(map_preview.board_view.get_script() == Board)
+	assert(not has_meta("raven_map_preview_level"))
 	map_preview.queue_free()
 	print("Raven Manor Match-3 QA shortcut and UPDS Content Preview parity smoke passed.")
 	quit()
