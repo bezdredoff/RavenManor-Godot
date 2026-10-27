@@ -84,18 +84,18 @@ func _build() -> void:
 		grid.add_child(cell)
 		var stack := Control.new()
 		stack.name = "TileStack"
-		stack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		cell.add_child(stack)
+		stack.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		var label := Label.new()
 		label.name = "Glyph"
 		label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 		label.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		label.add_theme_font_size_override("font_size", 21)
 		label.add_theme_color_override("font_color", Color("15151d"))
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		stack.add_child(label)
+		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		cells.append(cell)
 		stacks.append(stack)
 
