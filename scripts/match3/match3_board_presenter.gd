@@ -30,6 +30,7 @@ var _gesture_index := -1
 var _gesture_start := Vector2.ZERO
 var _gesture_kind := ""
 var _gesture_touch := -1
+var _last_touch_ms := -10000
 var _cell_size := 48.0
 var _completed := false
 
@@ -153,6 +154,12 @@ func _input(event: InputEvent) -> void:
 		touch_index = event.index
 		is_move = true
 	else:
+		return
+	# On mobile Godot can synthesize mouse events after touch events. Never
+	# interpret both streams as two independent tile selections.
+	if kind == "touch":
+		_last_touch_ms = Time.get_ticks_msec()
+	elif Time.get_ticks_msec() - _last_touch_ms < 650:
 		return
 	if is_press:
 		if _gesture_index >= 0 or _gesture_kind == "touch" and kind == "mouse":
