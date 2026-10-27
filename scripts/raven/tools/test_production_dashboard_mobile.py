@@ -166,5 +166,31 @@ class MobileZipTests(unittest.TestCase):
 
 
 
+class CandidateReviewTests(unittest.TestCase):
+    def test_pages_candidate_no_deploy_and_artifact_isolated(self):
+        pages = (dashboard.ROOT / ".github/workflows/pages.yml").read_text()
+        importer = (dashboard.ROOT / ".github/workflows/import-mobile-zip.yml").read_text()
+        portal = (dashboard.ROOT / "preview/index.html").read_text()
+        client = (dashboard.ROOT / "preview/app.mjs").read_text()
+        self.assertIn("permissions:\n  contents: read\n", pages)
+        self.assertIn("github.ref == 'refs/heads/main'", pages)
+        self.assertIn("Upload non-deployed candidate Web artifact", pages)
+        self.assertIn("raven-candidate-web-", pages)
+        self.assertIn("retention-days: 7", pages)
+        self.assertIn("Bundle trusted candidate-review portal", pages)
+        self.assertIn("build/web/preview/", pages)
+        self.assertIn("pr_created=no", importer)
+        self.assertIn("test_candidate:", importer)
+        self.assertIn("gh run watch", importer)
+        # Client displays only GitHub links, never executes raw candidate JS
+        # on the same-origin stable game domain.
+        self.assertIn("candidate/mobile-", client)
+        self.assertIn("textContent", client)
+        self.assertNotIn("innerHTML", client)
+        self.assertNotIn("<iframe", portal.lower())
+        self.assertNotIn("<script src=\"../candidate", portal.lower())
+        self.assertIn("отдельном домене", portal)
+
+
 if __name__ == "__main__":
     unittest.main()
