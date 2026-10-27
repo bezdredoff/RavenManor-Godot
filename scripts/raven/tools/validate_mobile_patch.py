@@ -116,19 +116,28 @@ def preflight(archive: Path, main_sha: str, output_dir: Path | None = None) -> d
             base = output_dir.resolve()
             if not base.exists() or not base.is_dir():
                 raise PatchError("output directory must already exist")
-            for path in files:
-                dest = (base / path).resolve()
+            # Validate EVERY destination before writing any bytes, not one by
+            # one while extracting. A symlink in ANY parent is disallowed.
+            destination_paths = {}
+            for path in [*files, *deletes]:
+                current = base
+                for component in PurePosixPath(path).parts:
+                    current = current / component
+                    if current.is_symlink():
+                        raise PatchError(f"symlink in output path: {path}")
+                dest = current.resolve()
                 if base not in dest.parents:
-                    raise PatchError("output path escapes target")
-                if dest.exists() and dest.is_symlink():
-                    raise PatchError(f"destination symlink: {path}")
+                    raise PatchError(f"output path escapes target: {path}")
+                if path in deletes and dest.is_dir():
+                    raise PatchError(f"unsafe delete target: {path}")
+                destination_paths[path] = dest
+            for path in files:
+                dest = destination_paths[path]
                 dest.parent.mkdir(parents=True, exist_ok=True)
                 with zf.open(f"files/{path}") as source, dest.open("wb") as output:
                     shutil.copyfileobj(source, output)
             for path in deletes:
-                dest = (base / path).resolve()
-                if base not in dest.parents or dest.is_dir():
-                    raise PatchError(f"unsafe delete target: {path}")
+                dest = destination_paths[path]
                 if dest.exists():
                     dest.unlink()
     return {"feature":feature,"taskIds":task_ids,"files":len(files),"deleted":len(deletes),"unpackedBytes":total}
