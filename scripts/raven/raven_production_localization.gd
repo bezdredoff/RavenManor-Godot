@@ -1,7 +1,6 @@
-extends RefCounted
+extends "res://scripts/shared/upds/player_preferences.gd"
 ## Independent production-localization adapter; NOT yet wired into playable RM-VS-01.
 ## Mirrors UPDS language persistence & line-key lookup without importing UPDS story.
-signal locale_changed(locale: String)
 
 const DialogueData = preload("res://data/raven/production/season1_dialogue_catalog.json")
 const PopupData = preload("res://data/raven/production/hotspot_popup_copy.json")
@@ -16,33 +15,6 @@ const SPEAKERS := {
 	"RM-CHAR-ROWAN": {"ru": "Роуэн", "be": "Роўэн", "en": "Rowan"},
 	"RM-CHAR-UNKNOWN-VOICE": {"ru": "Неизвестный голос", "be": "Невядомы голас", "en": "Unknown voice"}
 }
-
-var locale := DEFAULT_LOCALE
-var settings_path: String
-
-
-func _init(path: String = SETTINGS_PATH) -> void:
-	settings_path = path
-	var cfg := ConfigFile.new()
-	if cfg.load(settings_path) == OK:
-		var selected: String = str(cfg.get_value("interface", "locale", DEFAULT_LOCALE))
-		if SUPPORTED_LOCALES.has(selected):
-			locale = selected
-
-
-func set_locale(next_locale: String) -> Error:
-	if not SUPPORTED_LOCALES.has(next_locale):
-		return ERR_INVALID_PARAMETER
-	if locale == next_locale:
-		return OK
-	var cfg := ConfigFile.new()
-	cfg.set_value("interface", "locale", next_locale)
-	var result := cfg.save(settings_path)
-	if result == OK:
-		locale = next_locale
-		locale_changed.emit(locale)
-	return result
-
 
 static func normalize_locale(candidate: String) -> String:
 	return candidate if SUPPORTED_LOCALES.has(candidate) else FALLBACK_LOCALE
