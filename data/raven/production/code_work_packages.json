@@ -139,6 +139,23 @@
       "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
     },
     {
+      "id": "CODE-02-00",
+      "title": "Vendor original UPDS Match-3 visual primitives (CODE-02A / PR #54)",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "S",
+      "dependsOn": [
+        "CODE-01-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "Original UPDS board shape, holes, tile-motion layer scene, tutorial event predicates and CSS easing imported with pinned source SHA; runtime Godot component smoke wired into Linux/Windows CI.",
+      "acceptance": "Source-identical modules and real Godot instantiate/motion/test pass on PR head; no claim of touch/drag, cascade UI or approved GFX-10 artwork.",
+      "status": "proposed",
+      "sourceDecision": "docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md"
+    },
+    {
       "id": "CODE-02-01",
       "title": "Extract UPDS Match3 input/board-shape UI",
       "stage": "CODE-02",
