@@ -31,6 +31,7 @@ jobs:
       archive_file: ${{ steps.check.outputs.archive_file }}
       task_ids: ${{ steps.check.outputs.task_ids }}
       feature: ${{ steps.check.outputs.feature }}
+      skip: ${{ steps.check.outputs.skip }}
     steps:
       - name: Checkout untrusted incoming branch (no credentials)
         uses: actions/checkout@v4
@@ -59,6 +60,11 @@ jobs:
             archive="$INPUT_ARCHIVE"
           else
             mapfile -t archives < <(find inbox/incoming -maxdepth 1 -type f -name '*.zip' -printf '%f\n')
+            if [[ "${#archives[@]}" -eq 0 ]]; then
+              echo "No archive left in inbox: this is a cleanup push, not an import."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             test "${#archives[@]}" -eq 1 || { echo "Expected one ZIP in incoming; found ${#archives[@]}" >&2; exit 1; }
             archive="incoming/${archives[0]}"
           fi
@@ -78,6 +84,7 @@ jobs:
               out.write("task_ids="+",".join(manifest["taskIds"])+"\n")
           PY
       - name: Store checksum-pinned ZIP (artifact is still untrusted data)
+        if: steps.check.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: raven-mobile-${{ github.run_id }}
@@ -88,12 +95,14 @@ jobs:
   candidate:
     name: Create isolated PR without executing candidate code
     needs: validate
+    if: needs.validate.outputs.skip != 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
       pull-requests: write
     outputs:
       candidate_branch: ${{ steps.publish.outputs.branch }}
+      pr_created: ${{ steps.publish.outputs.pr_created }}
     steps:
       - name: Checkout exactly validated main commit
         uses: actions/checkout@v4
@@ -139,7 +148,7 @@ jobs:
           fi
           git commit -m "mobile: import ${TASK_IDS} candidate from validated ZIP"
           git push origin "HEAD:refs/heads/$branch"
-          gh pr create --base main --head "$branch" \
+          if gh pr create --base main --head "$branch" \
             --title "Mobile ZIP candidate: ${FEATURE} (${TASK_IDS})" \
             --body "Task IDs: ${TASK_IDS}
           Base main SHA: ${MAIN_SHA}
@@ -147,7 +156,13 @@ jobs:
           Generated from a checksum-pinned mobile archive; no candidate code executed with write access.
           This is an unreviewed candidate, not a merged, accepted or device-verified change.
           Update production_progress.json, documentation, tests and review asset provenance before manual merge.
-          The PR must pass its own Godot/Room Builder checks and relevant device QA."
+          The PR must pass its own Godot/Room Builder checks and relevant device QA."; then
+            echo "pr_created=yes" >> "$GITHUB_OUTPUT"
+          else
+            echo "pr_created=no" >> "$GITHUB_OUTPUT"
+            echo "::warning::GitHub Actions could not create a PR. Create one manually from $branch after CI. GitHub Settings > Actions > General > Workflow permissions may block Actions-created PRs."
+            echo "Manual PR link: https://github.com/${GITHUB_REPOSITORY}/compare/main...${branch}?expand=1"
+          fi
   test_candidate:
     name: Start independent read-only candidate Godot CI
     needs: candidate
@@ -177,3 +192,7 @@ jobs:
           echo "Running independent Godot/Room Builder/Web checks: $run_id"
           gh run watch "$run_id" --repo "$REPO" --exit-status --interval 15
           echo "Independent candidate build passed. PR still requires manual review and device QA."
+          if [[ "${{ needs.candidate.outputs.pr_created }}" != "yes" ]]; then
+            echo "::error::Candidate build PASSED, but automatic PR creation is blocked by repository settings. Use the candidate branch link in the writer job and enable GitHub Actions PR creation deliberately."
+            exit 1
+          fi

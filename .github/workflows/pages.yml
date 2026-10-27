@@ -133,6 +133,22 @@ jobs:
           test -s build/web/dashboard/index.html
           test -s build/web/dashboard/status.json
 
+      - name: Bundle trusted candidate-review portal
+        run: |
+          mkdir -p build/web/preview
+          cp preview/index.html preview/style.css preview/app.mjs build/web/preview/
+          node --check preview/app.mjs
+          test -s build/web/preview/index.html
+
+      - name: Upload non-deployed candidate Web artifact
+        if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/candidate/mobile-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: raven-candidate-web-${{ github.run_id }}
+          path: build/web/
+          retention-days: 7
+          if-no-files-found: error
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 
