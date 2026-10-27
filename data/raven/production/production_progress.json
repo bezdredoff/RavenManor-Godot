@@ -29,7 +29,7 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "ZIP tested on GitHub push run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40538610191; candidate branch created. Actions PR creation blocked by repository setting, manual candidate PR #50 CI passed and closed unmerged."
+      "evidence": "GitHub automatic ZIP-to-PR and independent candidate CI proven via PR #52 and run 40544933737; live mobile-device usability not yet accepted. Candidate playable preview still requires distinct-origin hosting."
     },
     {
       "id": "PROC-004",
@@ -47,37 +47,37 @@
     },
     {
       "id": "MOB-01",
-      "status": "blocked",
+      "status": "integrated",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40538610191 — trusted ZIP validation and candidate branch push worked. Automatic PR create failed: GitHub Actions is not permitted to create or approve pull requests. Owner must enable Settings > Actions > General > Allow GitHub Actions to create and approve pull requests. Manual PR #50 fallback tested."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737 — trusted ZIP validation + automatic candidate branch + GitHub Actions-created PR #52 succeeded after owner enabled permission; synthetic smoke PR closed unmerged."
     },
     {
       "id": "MOB-02",
-      "status": "in_progress",
+      "status": "integrated",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/50 — independent pull_request Godot/Room Builder/Web checks passed for genuine ZIP-derived branch. Actions workflow_dispatch of candidate not yet independently proven because Actions PR creation was blocked."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376 — independent workflow_dispatch checks succeeded on candidate; UPDS/Godot/Room Builder/Web export and non-deployed 7-day artifact raven-candidate-web-40545034376 passed."
     },
     {
       "id": "RM-GAP-009",
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Main PR #49 merged; GitHub run and generated progress reconciliation in feature/mobile-preview-artifact-and-handoff. Historical audit remains open."
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit."
     },
     {
       "id": "MOB-03",
       "owner": "ChatGPT",
-      "status": "in_progress",
-      "evidence": "New isolated Web build artifact and trusted /preview review portal under feature/mobile-preview-artifact-and-handoff; not a playable web preview; human approval requires distinct origin for candidate JavaScript.",
+      "status": "integrated",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/51 merged; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376 confirms candidate Web artifact. Trusted /preview/ review portal is NOT a playable candidate site and was not manually tested on phone.",
       "updated": "2026-10-27"
     },
     {
       "id": "MOB-04",
       "owner": "ChatGPT",
       "status": "in_progress",
-      "evidence": "Automated harmless real ZIP push on incoming: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40538610191. No physical mobile-device upload, no complete automatic PR path, no phone viewport approval.",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/52 — automatically opened from real harmless ZIP; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737 and /actions/runs/40545034376 green; PR closed unmerged and incoming ZIP cleaned. Still requires physical iPhone/Android upload, negative-path integration tests and user device acceptance.",
       "updated": "2026-10-27"
     }
   ],
