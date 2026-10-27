@@ -1,6 +1,6 @@
 # Agent instructions — Raven Manor Godot
 
-Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md`, `docs/IMPLEMENTATION_PLAN.md`, then relevant Stage 1–3 specifications and audits before making changes.
+Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md`, `docs/IMPLEMENTATION_PLAN.md`, then the paired `docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md` and `docs/production/CODE_PRODUCTION_ROADMAP_RU.md` for any production implementation, and relevant Stage 1–3 specs/audits. Roadmaps are **plans**, not evidence that functionality has shipped.
 
 ## Authority
 1. Explicit product-owner decisions in `docs/DECISIONS.md`.
@@ -12,7 +12,9 @@ Do not silently reconcile contradictory source files. Preserve historical source
 ## Implementation rules
 - Preserve established `RM-*` identifiers, including deprecated aliases. Validate catalog references.
 - Godot 4.7.2 and GDScript are the target; no engine migration or third-party addon without evidence of need.
-- This repo begins documentation-only; reuse/import UPDS VN, Match-3, saves and catalog deliberately, with attribution and isolation, never assume present.
+- Raven is now an executable Godot project. Treat UPDS-godot as the source of reusable VN, Match-3, settings, input, animation/audio, responsive and test patterns. Before new gameplay/UI code, verify whether it already exists in UPDS. Prefer source-preserving import/extraction + Raven data/theme adapters; pin upstream blob SHA and test parity. Avoid a second Raven-only copy of proven rules.
+- Raven-specific engineering owns the authored manor map, hotspot/door routes, room/prop/NPC state, restoration and specialist-gated metaprogression. Only Raven reducer/store own authoritative campaign state; do not import UPDS story progression or introduce a second save authority.
+- PR #46 is an *open, proposed* upstream core migration at roadmap creation time, not a merged main baseline. Check actual status before implementing work from this plan.
 - No free tap-to-move. Players click hotspots/doors, then travel on connected, authored navigation anchors along plausible routes. Use reusable graph traversal, not unique hardcoded waypoint scripts for each target.
 - Bedroom entry MUST NOT depend on bathroom repair. Bedroom restoration occurs after physical entry.
 - Doors may remain permanently open or visually disappear once unlocked; physical portal, foreground, collision and save states remain correct.

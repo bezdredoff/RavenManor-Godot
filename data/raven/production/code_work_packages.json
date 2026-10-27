@@ -1,0 +1,696 @@
+{
+  "schemaVersion": 1,
+  "planRevision": "2026-10-27-v0.1",
+  "status": "PROPOSAL_NOT_RUNTIME",
+  "ownerRepo": "bezdredoff/RavenManor-Godot",
+  "sourceRepos": {
+    "upds": "bezdredoff/UPDS-godot",
+    "raven": "bezdredoff/RavenManor-Godot"
+  },
+  "baseline": {
+    "referenceBranch": "main",
+    "existingReusePR": 46,
+    "existingReusePRStateAtPlan": "open_not_merged",
+    "graphicsRoadmap": "docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md",
+    "engineeringRoadmap": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+  },
+  "priorities": [
+    "P0",
+    "P1",
+    "P2"
+  ],
+  "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+  ],
+  "statusVocabulary": [
+    "proposed",
+    "ready",
+    "in_progress",
+    "PR_review",
+    "merged",
+    "integrated",
+    "device_verified",
+    "accepted"
+  ],
+  "workPackages": [
+    {
+      "id": "CODE-00-01",
+      "title": "Audit UPDS source and current PR #46",
+      "stage": "CODE-00",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [],
+      "graphicsDependencies": [
+        "GFX-00"
+      ],
+      "deliverable": "source manifest + open-PR baseline",
+      "acceptance": "document actual source blob SHAs and main status",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-00-02",
+      "title": "Define data provider and event sink ownership",
+      "stage": "CODE-00",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-00"
+      ],
+      "deliverable": "interface contract + adapter ownership",
+      "acceptance": "no second save authority",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-00-03",
+      "title": "Capture baseline and compatibility test matrix",
+      "stage": "CODE-00",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-00"
+      ],
+      "deliverable": "CI baseline + old saves + viewport screenshots",
+      "acceptance": "existing RM-VS-01 remains green",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-01-01",
+      "title": "Review / merge UPDS engine migration PR #46",
+      "stage": "CODE-01",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-01",
+        "CODE-00-03"
+      ],
+      "graphicsDependencies": [
+        "GFX-00"
+      ],
+      "deliverable": "source-pinned Match3, RNG, paging, settings in main",
+      "acceptance": "upstream parity and old-save tests pass",
+      "status": "PR_review",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-01-02",
+      "title": "Expand engine parity to blockers/specials/holes",
+      "stage": "CODE-01",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-01-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "source oracle vectors and Raven smoke",
+      "acceptance": "same seeded board, hint, match, cascade and reshuffle",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-01-03",
+      "title": "Protect Raven rewards and legacy level configs",
+      "stage": "CODE-01",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-01-01",
+        "CODE-00-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-00"
+      ],
+      "deliverable": "Raven adapter/result sink",
+      "acceptance": "2/2/2 workPoints, 2/4 costs, idempotent outcomes",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-02-01",
+      "title": "Extract UPDS Match3 input/board-shape UI",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-01-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "touch/drag and holes on placeholder tiles",
+      "acceptance": "mobile touch/mouse and no invalid move reward",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-02-02",
+      "title": "Port tile motion, cascade frames and feedback",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-02-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "swaps, falling, specials, FX and visual goals",
+      "acceptance": "UPDS cascade-frame parity and reduced-motion pass",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-02-03",
+      "title": "Adapt intro/tutorial/result/help and 8 tile set",
+      "stage": "CODE-02",
+      "priority": "P1",
+      "size": "M",
+      "dependsOn": [
+        "CODE-02-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "reskinned screens with Raven tutorial copy",
+      "acceptance": "8 ordinary tiles max + 3 reusable blocker families",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-03-01",
+      "title": "Extract shared VN state/controller and UI",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-01-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-06",
+        "GFX-08"
+      ],
+      "deliverable": "renderer + line/history/auto/skip controls",
+      "acceptance": "Raven stable IDs and current line not reset",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-03-02",
+      "title": "Wire 1-3 character layout, cues and motion",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-03-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "staging/cue driven portrait presentation",
+      "acceptance": "3 actors, offscreen lines, reduced-motion variants",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-03-03",
+      "title": "Replace dedicated Hall tea VN screen",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-03-01",
+        "CODE-03-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-11"
+      ],
+      "deliverable": "Hall 2.1 via common VN renderer",
+      "acceptance": "RU/BE/EN paging, history, replay and save QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-04-01",
+      "title": "Port shared UPDS preference/settings controls",
+      "stage": "CODE-04",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-01-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "language, audio, haptics, reduced-motion UI",
+      "acceptance": "restart persistence and safe locale switch",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-04-02",
+      "title": "Bridge shared audio/feedback runtime",
+      "stage": "CODE-04",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-04-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "sound FX and audio setting adapter",
+      "acceptance": "mute/volume/haptic behavior consistent",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-04-03",
+      "title": "Translation workflow and release coverage gate",
+      "stage": "CODE-04",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-03-01",
+        "CODE-04-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-11",
+        "GFX-13"
+      ],
+      "deliverable": "ru/be/en ledger, review and export",
+      "acceptance": "0 empty required release strings",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-05-01",
+      "title": "Calibrate Hall Room Builder→Godot importer",
+      "stage": "CODE-05",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-00-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-08"
+      ],
+      "deliverable": "dry-run local/world transform + pivot/masks",
+      "acceptance": "door/anchor geometry and rollback verified",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-05-02",
+      "title": "Reconcile pilot map vs authored route graph",
+      "stage": "CODE-05",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-05-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-08"
+      ],
+      "deliverable": "reviewed graph/door/collider authority",
+      "acceptance": "no free tap-to-move and bedroom gate preserved",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-05-03",
+      "title": "Replicate map pipeline to Corridor/Bedroom",
+      "stage": "CODE-05",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-05-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-08"
+      ],
+      "deliverable": "second/third room import evidence",
+      "acceptance": "accepted path and occlusion without shortcuts",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-06-01",
+      "title": "Map walker/Evelyn and npc staging contract",
+      "stage": "CODE-06",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-05-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-07"
+      ],
+      "deliverable": "walker/spawn/wait schema and preview",
+      "acceptance": "reaches anchors and no blocked thresholds",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-06-02",
+      "title": "Implement Ada/Rowan and Lucas schedules",
+      "stage": "CODE-06",
+      "priority": "P1",
+      "size": "M",
+      "dependsOn": [
+        "CODE-06-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-07",
+        "GFX-11"
+      ],
+      "deliverable": "short NPC routes and evening-only Lucas",
+      "acceptance": "no early supernatural reveal; save-resume valid",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-07-01",
+      "title": "Unify map/VN/insert identity of story props",
+      "stage": "CODE-07",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-09"
+      ],
+      "deliverable": "37 family prop map and state contract",
+      "acceptance": "one logical ID across presentations",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-07-02",
+      "title": "Implement interaction and repair pipeline",
+      "stage": "CODE-07",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-05-02",
+        "CODE-07-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-09",
+        "GFX-11"
+      ],
+      "deliverable": "route→popup→action→reducer→overlay",
+      "acceptance": "professional repair, no magical match repair",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-07-03",
+      "title": "Implement clue inserts and revisit states",
+      "stage": "CODE-07",
+      "priority": "P1",
+      "size": "M",
+      "dependsOn": [
+        "CODE-07-02",
+        "CODE-03-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-09"
+      ],
+      "deliverable": "diary/evidence and read-only revisits",
+      "acceptance": "idempotent state after reopen/reload",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-08-01",
+      "title": "Implement season graph and progression gating",
+      "stage": "CODE-08",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-07-02",
+        "CODE-03-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "approved 28-scene prerequisite mapping",
+      "acceptance": "fresh/old saves no softlocks or spoilers",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-08-02",
+      "title": "Wire UPDS result sink to Raven economy",
+      "stage": "CODE-08",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-01-03",
+        "CODE-07-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-11"
+      ],
+      "deliverable": "M3 win→workPoints→restoration flow",
+      "acceptance": "atomic event once and no extra currency",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-09-01",
+      "title": "Accepted asset manifest schema and resolver",
+      "stage": "CODE-09",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-00",
+        "GFX-05"
+      ],
+      "deliverable": "assetId/presentation/state/pivot loader",
+      "acceptance": "accepted vs candidate enforced",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-09-02",
+      "title": "Godot import, alpha/pivot and provenance QA",
+      "stage": "CODE-09",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-09-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-05",
+        "GFX-08"
+      ],
+      "deliverable": "art handoff checker + fallback assets",
+      "acceptance": "replacement without source code changes",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-10-01",
+      "title": "Reuse responsive UI and accessibility utilities",
+      "stage": "CODE-10",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-03-01",
+        "CODE-02-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "phone frame/safe areas/input/reduced motion",
+      "acceptance": "390×844, 412×915, 430×932, tablet",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-10-02",
+      "title": "Extend offline/Web/CI/diagnostics",
+      "stage": "CODE-10",
+      "priority": "P1",
+      "size": "M",
+      "dependsOn": [
+        "CODE-00-03"
+      ],
+      "graphicsDependencies": [
+        "GFX-13"
+      ],
+      "deliverable": "Web export tests, logs, screenshot evidence",
+      "acceptance": "offline resume and no unapproved SDK",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-11-01",
+      "title": "Integrate joint Hall vertical pilot",
+      "stage": "CODE-11",
+      "priority": "P0",
+      "size": "XL",
+      "dependsOn": [
+        "CODE-02-02",
+        "CODE-03-03",
+        "CODE-04-01",
+        "CODE-05-02",
+        "CODE-06-01",
+        "CODE-07-02",
+        "CODE-08-02",
+        "CODE-09-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-11"
+      ],
+      "deliverable": "playable Hall map→VN→M3→repair→story",
+      "acceptance": "GFX-11 + C11 joint human/device approval",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-12-W1",
+      "title": "Season wave W1 / chapter II",
+      "stage": "CODE-12",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-11-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "kitchen and Rowan entry",
+      "acceptance": "chapter II narrative and state/device QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-12-W2",
+      "title": "Season wave W2 / chapter III",
+      "stage": "CODE-12",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-12-W1"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "library and documents",
+      "acceptance": "chapter III narrative and state/device QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-12-W3",
+      "title": "Season wave W3 / chapter IV",
+      "stage": "CODE-12",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "CODE-12-W2"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "garden/conservatory and childhood map",
+      "acceptance": "chapter IV narrative and state/device QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-12-W4",
+      "title": "Season wave W4 / chapter V",
+      "stage": "CODE-12",
+      "priority": "P2",
+      "size": "L",
+      "dependsOn": [
+        "CODE-12-W3"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "storm/archive overlays and rescue",
+      "acceptance": "chapter V narrative and state/device QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-12-W5",
+      "title": "Season wave W5 / chapter VI",
+      "stage": "CODE-12",
+      "priority": "P2",
+      "size": "L",
+      "dependsOn": [
+        "CODE-12-W4"
+      ],
+      "graphicsDependencies": [
+        "GFX-12"
+      ],
+      "deliverable": "estate decision/finale/post-credits",
+      "acceptance": "chapter VI narrative and save QA",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-13-01",
+      "title": "Full season quality and three-locale release gate",
+      "stage": "CODE-13",
+      "priority": "P2",
+      "size": "XL",
+      "dependsOn": [
+        "CODE-12-W5",
+        "CODE-04-03",
+        "CODE-10-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-13"
+      ],
+      "deliverable": "RC reports, provenance and rollback pack",
+      "acceptance": "no broken mandatory scene, locale, accepted-art, save defects",
+      "status": "proposed",
+      "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    }
+  ],
+  "approvalGates": [
+    "C0",
+    "C1",
+    "C2",
+    "C3",
+    "C4",
+    "C5",
+    "C6",
+    "C7",
+    "C8",
+    "C9",
+    "C10",
+    "C11_X_GFX11",
+    "C12",
+    "C13_X_GFX13"
+  ],
+  "notes": [
+    "No sprint dates before measured Hall pilot throughput",
+    "All new source components should cite upstream blob SHA or justify original code",
+    "The baseline data registries for future chapters are not proof those chapters run in Godot",
+    "This backlog is not a claim that work items/issues have been created or delivered"
+  ]
+}
