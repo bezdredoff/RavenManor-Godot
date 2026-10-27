@@ -10,6 +10,12 @@
 - `RAVEN_WALL_COMFYUI_WORKFLOW.md`: first-act wall-art ComfyUI batch, prompt contract and art review gate.
 - `WALL_TILESET_PIPELINE.md`: constructed wall tileset prototype compared with the generated batch.
 - `BLENDER_WALL_KIT.md`: procedural Blender wall kit with a verified corner joint and leak check.
+- `../dashboard/`: public Pages production overview, generated from machine-readable backlog and status; not an editable authority.
+- `process/AI_COLLABORATION_RU.md`: shared ChatGPT/Codex/DeepSeek read/propose/implement/PR/status workflow.
+- `process/TASK_AND_PR_TEMPLATE_RU.md`: task proposal and PR format.
+- `process/MOBILE_ZIP_PIPELINE_RU.md`: scoped mobile ZIP delta delivery design, security gates and pending importer activation.
+- `../data/raven/production/production_progress.json`: semantic status owner/date/evidence for the dashboard.
+- `../data/raven/production/gap_work_packages.json`: missed UX/production/QA work from recent project discussions.
 - `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
 - `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
 - `../data/raven/production/code_work_packages.json`: машинный бэклог с P0/P1/P2, оценками S–XL, зависимостями и связями с GFX-этапами.
