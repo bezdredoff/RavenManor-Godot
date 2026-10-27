@@ -12,17 +12,17 @@
     },
     {
       "id": "PROC-001",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "PROC-002",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "PROC-003",
@@ -33,17 +33,38 @@
     },
     {
       "id": "PROC-004",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — PR template and status discipline, pending merge/review."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "MOB-00",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+    },
+    {
+      "id": "MOB-01",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — archive packaging/validator/tests in PR. No automated importer or verified phone upload."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — feature code under PR review. CI on latest head required; no live incoming ZIP/candidate PR has yet been verified."
+    },
+    {
+      "id": "MOB-02",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — feature code under PR review. CI on latest head required; no live incoming ZIP/candidate PR has yet been verified."
+    },
+    {
+      "id": "RM-GAP-009",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — reconcile #48 statuses; broader historical status audit not completed."
     }
   ],
   "rules": [
