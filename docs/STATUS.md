@@ -1,6 +1,6 @@
 # Raven Manor — canonical project status
 
-Last reconciled: **2026-10-27** after merged PRs #49 and #51 and actual MOB-04 ZIP smoke test. Earlier sections preserve their historical milestones. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
+Last reconciled: **2026-10-27**, including merged PRs #54 and #56, real phone ZIP smoke and CODE-02A component-source audit. Older dated sections are historical snapshots, not current PR-state assertions. Earlier sections preserve their historical milestones. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
 
 ## Implemented and merged
 
@@ -151,3 +151,10 @@ Older historical milestones and acceptance statements above remain in place, but
 - [Import workflow 40554280539](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539) completed its **read-only validation, candidate creation, automatic PR #55 and isolated CI dispatch** successfully. [PR #55](https://github.com/bezdredoff/RavenManor-Godot/pull/55) automatically created by GitHub Actions, reviewed as exactly one harmless text-file addition and deliberately **closed without merge**.
 - Both normal PR CI and [dispatched independent candidate CI 40554457157](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157) succeeded: Godot / UPDS / Room Builder / Web export; candidate Web artifact `raven-candidate-web-40554457157` uploaded for seven days, **candidate Pages deploy skipped**. Disposable ZIP removed from `incoming` while retaining the stable upload folder README.
 - **MOB-04 remains in progress** until live malformed-archive rejection, phone-based review/download usability and remaining device acceptance are evidenced. Current `/preview/` lists CI artifacts, not playable candidate JavaScript. The automated, permitted phone-to-PR delivery path itself is operational.
+
+## 2026-10-27 — CODE-02A after merged PR #54; roadmap/status reconciliation
+
+- [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54) is **merged in main** (2026-10-27T18:07:19Z). The original UPDS `match3_board_shape.gd`, `match3_tile_motion_layer.gd`, `match3_tutorials.gd`, `css_motion.gd` and `match3_tile_motion_layer.tscn` are now committed alongside `tests/raven/upds_match3_visual_primitives_smoke.gd`, Linux/Windows checks and source blob SHA documentation.
+- **Scope distinction:** `CODE-02-00` = **merged** reusable primitives. `CODE-02-01` (input/touch/swipe and full board UI) and `CODE-02-02` (full cascades/feedback/specials renderer) remain **in_progress**; current playable vertical slice still uses the old Raven Match-3 greybox. GFX-10 tile/blocker/FX approval is independent and still pending.
+- [PR #56](https://github.com/bezdredoff/RavenManor-Godot/pull/56) is **merged** (2026-10-27T18:07:46Z), recording the owner-confirmed phone ZIP upload, automatic [PR #55](https://github.com/bezdredoff/RavenManor-Godot/pull/55) and independent green Actions runs. PR #55 was deliberately closed unmerged; `incoming/` ZIP cleaned. MOB-04 remains **in_progress**, not accepted, until live adversarial cases and phone artifact/device review are verified.
+- The paired engineering/graphics roadmaps remain **scope and acceptance plans**, while `data/raven/production/production_progress.json` overrides runtime/progress statuses for the dashboard. No change to save economy, story IDs, approved art or map navigation from these two PRs.
