@@ -44,6 +44,28 @@ Archive paths are relative POSIX paths with **no** absolute / ../ / symlinks. Ru
 7. Public repo `incoming` archives are **public and remain recoverable in git history** without intentional cleanup. Never upload private bible/spoilers not approved for publication, personal data, keys, licensed models, purchased assets. On failure, invalidate/delete inbox tree, and rotate any leaked secret outside this pipeline (commits do not magically erase history).
 8. Proposed `incoming` branch must be created from `main` only during pipeline bootstrap; no direct branch overwrite from phone. Subsequent changed ZIPs must be distinguishable; do not assume GitHub can upload >25 MiB.
 
+
+## Как упаковать патч уже сейчас (рабочий ручной fallback)
+
+Агент, имеющий доступ к файлам проекта, может собрать только нужные файлы из одной task branch. **Требуется точный 40-символьный SHA `main`**, а не текущий head старой feature branch.
+
+```bash
+python3 scripts/raven/tools/package_mobile_patch.py \
+  --base <40-hex-raven-main-SHA> \
+  --feature CODE-02_R1 --task CODE-02-01 \
+  --file scripts/raven/example.gd \
+  --file docs/STATUS.md \
+  --file data/raven/production/production_progress.json \
+  --output /tmp/RM-CODE-02_R1.zip
+
+python3 scripts/raven/tools/validate_mobile_patch.py \
+  /tmp/RM-CODE-02_R1.zip <40-hex-raven-main-SHA>
+```
+
+Этот упаковщик сохранит точный список файлов и перепроверит итоговый ZIP. Отдельные большие артефакты лучше делить на небольшие партии по независимым задачам.
+
+**Пока MOB-01 ещё не активирован:** передать ZIP с телефона в `incoming/` отдельной upload branch и дать ссылку Codex/ассистенту с доступом к Git. Агент скачивает этот конкретный ZIP, проверяет его **валидатором из доверенного `main`**, в чистой копии main применяет файлы/удаления, запускает полные тесты Godot, создаёт отдельный PR вручную. В текущем состоянии `/preview/` **не гарантирован**: URL будет доступен лишь после MOB-03. Нельзя исполнять скрипты из ZIP с write-token; нельзя переносить ZIP напрямую в `main`.
+
 ## Current implementation stages
 
 - **MOB-00**: security validator/test fixtures for `raven-delta-v1` in this planning PR; local validation takes archive and expected main SHA, rejects unsafe paths before extraction.
