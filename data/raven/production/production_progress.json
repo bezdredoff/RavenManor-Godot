@@ -82,17 +82,17 @@
     },
     {
       "id": "CODE-02-01",
-      "status": "PR_review",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged on 2026-10-27; UPDS drag/touch board connected in playable RM-VS-01, Godot CI passed. In-person iPhone/Android thumb QA still missing; not device_verified or accepted."
     },
     {
       "id": "CODE-02-02",
-      "status": "PR_review",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged with UPDS frames/animations. CODE-02B branch adds differentiated special/blocker readability and reduced-motion toggle; richer impact FX, blocker-clip fall polish and mobile QA remain pending."
     },
     {
       "id": "CODE-02-00",
@@ -100,6 +100,13 @@
       "owner": "ChatGPT",
       "updated": "2026-10-27",
       "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 merged 2026-10-27T18:07:19Z: byte-identical UPDS Match3 board shape, CSS easing, tile motion GDScript + scene and tutorial predicates; dedicated Godot smoke wired into Raven checks. Not accepted as full Match-3 screen or GFX-10 art."
+    },
+    {
+      "id": "CODE-02-03",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "evidence": "CODE-02B code/code-02b-match3-help-blockers-results: Raven-only contextual help, five UPDS special IDs and layered blocker badges, all UPDS objective counters, explicit non-reward loss/retry, motion toggle and new Godot smoke; temporary 8-tile glyphs not approved GFX-10 and full tutorial/result art still pending.",
+      "updated": "2026-10-27"
     }
   ],
   "rules": [

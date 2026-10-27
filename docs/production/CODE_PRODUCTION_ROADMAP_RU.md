@@ -413,3 +413,10 @@ C7 props & repairs → C8 save/season flow ──┤
 12. Совместно с GFX-11 получить Hall pilot на согласованных Эвелин/Аде, 2 keyframe motions, 2 позах/3 эмоциях, мобильных RU/BE/EN viewports; измерить фактическую цену следующих production waves.
 
 После 12-й задачи пересчитать зависимости, batch size и сроки. **Ни одна строка этого документа не утверждает, что P1/P2 уже реализованы.**
+
+## CODE-02B — последовательный пакет help, specials, blockers, retry (кандидат PR)
+
+- После смерженного [PR #58](https://github.com/bezdredoff/RavenManor-Godot/pull/58) input/swipe и исходные UPDS frame snapshots используются в `RM-VS-01`. CODE-02-01 остаётся `in_progress` до проверки пальцем на физическом телефоне. CODE-02-02 ещё не завершён в части всех визуальных FX.
+- Текущая ветка `code/code-02b-match3-help-blockers-results` добавляет: отдельную индикацию пяти UPDS specials, видимость слоёв blockers, tooltip, все objective counter values, встроенную инструкцию, session-level reduced-motion toggle, **явную** кнопку повтора при проигрыше и Godot regression test. CODE-02-03 в `PR_review`.
+- UPDS исходный `match3_help_overlay.gd` изучен, но зависит от school fonts/assets — его нельзя копировать без отделения этих зависимостей. Raven copy для help — адаптер, исходные правила Match3 и сохранения не переписаны.
+- Последующие gates: animation overlap + frame parity for specials/combinations, blocker-segment clipping and FX, authored hint/tutor onboarding, полноценный result UI, сохраняемая настройка motion, BE/EN перевод, accessibility touch, утверждённый GFX-10, iPhone screenshot QA. Не закрывать CODE-02 от зелёного CI без human/device/art acceptance.

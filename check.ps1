@@ -68,6 +68,7 @@ Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, 
 Invoke-GodotCheck 'UPDS engine port parity smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_core_reuse_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS core reuse smoke passed'
 Invoke-GodotCheck 'UPDS M3 visual primitives' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_visual_primitives_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 visual primitives smoke passed'
 Invoke-GodotCheck 'UPDS Match3 interactive board' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_interactive_board_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS interactive Match-3 board smoke passed'
+Invoke-GodotCheck 'UPDS M3 help, blockers and retry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_presentation_states_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 help, objectives, special/blocker and retry smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'

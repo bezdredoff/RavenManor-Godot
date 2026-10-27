@@ -40,6 +40,7 @@ run_check 'Prototype Lab smoke' 'Raven Manor Prototype Lab smoke passed' --scrip
 run_check 'UPDS engine port parity smoke' 'Raven Manor UPDS core reuse smoke passed' --script res://tests/raven/upds_core_reuse_smoke.gd --quit-after 120
 run_check 'UPDS M3 visual primitives' 'Raven Manor UPDS Match-3 visual primitives smoke passed' --script res://tests/raven/upds_match3_visual_primitives_smoke.gd --quit-after 120
 run_check 'UPDS Match3 interactive board' 'Raven Manor UPDS interactive Match-3 board smoke passed' --script res://tests/raven/upds_match3_interactive_board_smoke.gd --quit-after 120
+run_check 'UPDS M3 help, blockers and retry' 'Raven Manor UPDS Match-3 help, objectives, special/blocker and retry smoke passed' --script res://tests/raven/upds_match3_presentation_states_smoke.gd --quit-after 120
 run_check 'RM-VS-01 vertical slice smoke' 'Raven Manor RM-VS-01 smoke passed' --script res://tests/raven/vertical_slice_smoke.gd --quit-after 120
 run_check 'Narrative production contract smoke' 'Raven Manor production narrative contract smoke passed' --script res://tests/raven/production_narrative_smoke.gd --quit-after 120
 run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120

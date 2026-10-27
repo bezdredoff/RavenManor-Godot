@@ -20,6 +20,11 @@ var outline: Control
 var feedback: Label
 var objective: Label
 var hint_button: Button
+var help_button: Button
+var help_panel: PanelContainer
+var retry_button: Button
+var motion_button: Button
+var help_open := false
 var cells: Array[Button] = []
 var stacks: Array[Control] = []
 var selected_index := -1
@@ -97,6 +102,30 @@ func _build() -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		stack.add_child(label)
 		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var special_badge := Label.new()
+		special_badge.name = "SpecialBadge"
+		special_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		special_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+		special_badge.add_theme_color_override("font_color", Color("fff3b8"))
+		special_badge.add_theme_font_size_override("font_size", 17)
+		stack.add_child(special_badge)
+		special_badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_RIGHT)
+		special_badge.offset_left = -27.0
+		special_badge.offset_right = -2.0
+		special_badge.offset_top = 0.0
+		special_badge.offset_bottom = 23.0
+		var blocker_badge := Label.new()
+		blocker_badge.name = "BlockerBadge"
+		blocker_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		blocker_badge.horizontal_alignment = HORIZONTAL_ALIGNMENT_LEFT
+		blocker_badge.add_theme_color_override("font_color", Color("ffffff"))
+		blocker_badge.add_theme_font_size_override("font_size", 15)
+		stack.add_child(blocker_badge)
+		blocker_badge.set_anchors_and_offsets_preset(Control.PRESET_TOP_LEFT)
+		blocker_badge.offset_left = 2.0
+		blocker_badge.offset_top = 0.0
+		blocker_badge.offset_right = 23.0
+		blocker_badge.offset_bottom = 23.0
 		cells.append(cell)
 		stacks.append(stack)
 
@@ -123,9 +152,105 @@ func _build() -> void:
 	hint_button.pressed.connect(show_hint)
 	add_child(hint_button)
 
+	var toolbar := HBoxContainer.new()
+	toolbar.add_theme_constant_override("separation", 6)
+	add_child(toolbar)
+	help_button = Button.new()
+	help_button.text = str(skin.get("help_button", "Как играть"))
+	help_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	help_button.custom_minimum_size.y = 44
+	help_button.pressed.connect(toggle_help)
+	toolbar.add_child(help_button)
+	motion_button = Button.new()
+	motion_button.text = str(skin.get("motion_on", "Анимация: вкл."))
+	motion_button.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	motion_button.custom_minimum_size.y = 44
+	motion_button.pressed.connect(toggle_motion)
+	toolbar.add_child(motion_button)
+	retry_button = Button.new()
+	retry_button.name = "RetryButton"
+	retry_button.text = str(skin.get("retry", "Попробовать снова"))
+	retry_button.custom_minimum_size.y = 44
+	retry_button.pressed.connect(retry_level)
+	retry_button.visible = false
+	add_child(retry_button)
+	help_panel = PanelContainer.new()
+	help_panel.name = "Match3HelpPanel"
+	help_panel.visible = false
+	var panel_style := StyleBoxFlat.new()
+	panel_style.bg_color = Color("2b2634")
+	panel_style.border_color = Color("a88b66")
+	panel_style.set_border_width_all(1)
+	panel_style.set_corner_radius_all(7)
+	panel_style.set_content_margin_all(12)
+	help_panel.add_theme_stylebox_override("panel", panel_style)
+	add_child(help_panel)
+	var help_content := VBoxContainer.new()
+	help_content.add_theme_constant_override("separation", 9)
+	help_panel.add_child(help_content)
+	for key in ["help_title", "help_intro", "help_blockers", "help_specials", "help_goal"]:
+		var paragraph := Label.new()
+		paragraph.name = key
+		paragraph.text = str(skin.get(key, ""))
+		paragraph.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		paragraph.add_theme_color_override("font_color", Color("e9ddca"))
+		paragraph.add_theme_font_size_override("font_size", 16 if key == "help_title" else 13)
+		help_content.add_child(paragraph)
+	var close_button := Button.new()
+	close_button.text = str(skin.get("help_close", "Закрыть"))
+	close_button.custom_minimum_size.y = 44
+	close_button.pressed.connect(toggle_help)
+	help_content.add_child(close_button)
+
+
+
+func toggle_help() -> void:
+	if input_locked:
+		return
+	help_open = not help_open
+	help_panel.visible = help_open
+	selected_index = -1
+	highlighted.clear()
+	_gesture_index = -1
+	_gesture_kind = ""
+	_paint_selection()
+	_refresh_controls()
+
+
+func toggle_motion() -> void:
+	if input_locked:
+		return
+	reduced_motion = not reduced_motion
+	motion_button.text = str(skin.get("motion_off" if reduced_motion else "motion_on", "Анимация"))
+	feedback.text = motion_button.text
+
+
+func retry_level() -> void:
+	if input_locked or str(game.state) != "lost":
+		return
+	motion_layer.call("cancel_motions")
+	game.reset()
+	_completed = false
+	selected_index = -1
+	highlighted.clear()
+	_gesture_index = -1
+	_gesture_kind = ""
+	feedback.text = str(skin.get("retry_message", "Новая попытка"))
+	_paint_live()
+
+
+func _refresh_controls() -> void:
+	if is_instance_valid(hint_button):
+		hint_button.disabled = input_locked or help_open or str(game.state) != "playing"
+	if is_instance_valid(retry_button):
+		retry_button.visible = str(game.state) == "lost" and not _completed
+		retry_button.disabled = input_locked
+	if is_instance_valid(motion_button):
+		motion_button.disabled = input_locked
+
 
 func _input(event: InputEvent) -> void:
-	if game == null or input_locked or str(game.state) != "playing":
+	if game == null or input_locked or help_open or str(game.state) != "playing":
 		return
 	var position := Vector2.ZERO
 	var kind := ""
@@ -203,7 +328,7 @@ func _index_at(position: Vector2) -> int:
 
 
 func tap_cell(index: int) -> void:
-	if input_locked or not game.can_interact_with_tile(index):
+	if input_locked or help_open or str(game.state) != "playing" or not game.can_interact_with_tile(index):
 		return
 	if selected_index < 0:
 		selected_index = index
@@ -231,7 +356,7 @@ func _commit_swap(first: int, second: int) -> void:
 
 
 func show_hint() -> void:
-	if input_locked:
+	if input_locked or help_open or str(game.state) != "playing":
 		return
 	var hint: Dictionary = game.get_hint_move()
 	highlighted.clear()
@@ -250,9 +375,12 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 	highlighted.clear()
 	selected_index = -1
 	if not bool(result.get("valid", false)):
-		feedback.text = str(skin.get("invalid", "Этот ход не даёт комбинацию"))
+		var reason := str(result.get("reason", ""))
+		var key := "invalid_blocked" if reason == "blocked" else "invalid_adjacent" if reason == "not-adjacent" else "invalid"
+		feedback.text = str(skin.get(key, "Этот ход не даёт комбинацию"))
 		_paint_selection()
 		input_locked = false
+		_refresh_controls()
 		board_feedback.emit(feedback.text)
 		return
 	feedback.text = str(skin.get("matched", "Комбинация!"))
@@ -289,9 +417,10 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 		level_won.emit()
 	elif bool(result.get("lost", false)):
 		feedback.text = str(skin.get("lost", "Попробуйте ещё раз"))
-		game.reset()
-		_paint_live()
+		# Do not reset the board until the player explicitly requests a retry.
+		# Only the Raven reducer owns first-clear rewards, never this UI.
 	input_locked = false
+	_refresh_controls()
 	board_feedback.emit(feedback.text)
 
 
@@ -301,15 +430,17 @@ func _paint_frame(frame: Dictionary) -> void:
 
 func _paint_live() -> void:
 	_paint_board(game.tiles, game.specials, game.blocker_layers, game.ingredients)
-	var value := int(game.collected)
-	var target := 0
-	var label := ""
-	if not game.level_data.get("objectives", []).is_empty():
-		var first: Dictionary = game.level_data.objectives[0]
-		target = int(first.get("target", 0))
-		label = str(first.get("label", first.get("tile", "")))
-	objective.text = "%s %d/%d  ·  %s %d" % [label, value, target, str(skin.get("moves", "Ходы:")), int(game.moves_left)]
+	var descriptions: Array[String] = []
+	var objectives: Array = game.level_data.get("objectives", [])
+	for index in objectives.size():
+		var entry: Dictionary = objectives[index]
+		var label := str(entry.get("label", entry.get("tile", entry.get("kind", ""))))
+		var target := int(entry.get("target", 0))
+		var value := int(game.objective_value(index))
+		descriptions.append("%s %d/%d" % [label, mini(target, value), target])
+	objective.text = "  ·  ".join(descriptions) + "  ·  %s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
 	_paint_selection()
+	_refresh_controls()
 
 
 func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: Array) -> void:
@@ -330,16 +461,29 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 		if not str(ingredients[i]).is_empty():
 			symbol = "◇"
 		var special := str(specials[i])
-		if not special.is_empty():
-			symbol += "✦"
-		if int(blockers[i]) > 0:
-			symbol += "▣"
+		var blocker_layers := int(blockers[i])
 		var glyph := stack.get_node("Glyph") as Label
 		glyph.text = symbol
+		var special_badge := stack.get_node("SpecialBadge") as Label
+		special_badge.text = str(skin.get("special_badges", {}).get(special, "✦"))
+		special_badge.visible = not special.is_empty()
+		var blocker_badge := stack.get_node("BlockerBadge") as Label
+		blocker_badge.text = str(blocker_layers)
+		blocker_badge.visible = blocker_layers > 0
+		var description := str(skin.get("tile_names", {}).get(tile, tile))
+		if not special.is_empty():
+			description += " · %s" % str(skin.get("special_names", {}).get(special, special))
+		if blocker_layers > 0:
+			description += " · блокер: %d сл." % blocker_layers
+		cell.tooltip_text = description
+		cell.disabled = not game.can_interact_with_tile(i) or str(game.state) != "playing"
 		var style := (cell.get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
 		style.bg_color = colors.get(tile, Color("344054"))
-		if int(blockers[i]) > 0:
+		if blocker_layers > 0:
 			style.bg_color = style.bg_color.darkened(0.35)
+			style.border_color = Color("d5aa79")
+			style.set_border_width_all(2)
+		cell.add_theme_stylebox_override("disabled", style)
 		cell.add_theme_stylebox_override("normal", style)
 		cell.add_theme_stylebox_override("hover", style)
 		cell.add_theme_stylebox_override("pressed", style)
@@ -349,8 +493,9 @@ func _paint_selection() -> void:
 	for i in cells.size():
 		var style := (cells[i].get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
 		var chosen := i == selected_index or highlighted.has(i)
-		style.border_color = Color("f5e8c8") if chosen else Color.TRANSPARENT
-		style.set_border_width_all(3 if chosen else 0)
+		var blocked := int(game.blocker_layers[i]) > 0
+		style.border_color = Color("f5e8c8") if chosen else Color("d5aa79") if blocked else Color.TRANSPARENT
+		style.set_border_width_all(3 if chosen else 2 if blocked else 0)
 		cells[i].add_theme_stylebox_override("normal", style)
 		cells[i].add_theme_stylebox_override("hover", style)
 		cells[i].add_theme_stylebox_override("pressed", style)

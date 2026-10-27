@@ -164,3 +164,9 @@ Older historical milestones and acceptance statements above remain in place, but
 - [PR #58](https://github.com/bezdredoff/RavenManor-Godot/pull/58) (unmerged at authoring; branch `code/code-02-upds-match3-interactive-board`) reuses UPDS swipe thresholds/direction/neighbour bounds (source blob `76b42df35d4857f242d3f6bc06b9f989d43ad0a3`), UPDS rules/frames and the previously merged tile motion/shape scene. It replaces the click-only Match-3 grid in playable `RM-VS-01` with a touch/mouse board and frame-driven animations; theme remains temporary Raven colors/glyphs.
 - Match3 `level_won` still updates **only** the existing Raven reducer/store; no second save authority, campaign migration or story ID change. Hints highlight rather than autoplay an artificial best move.
 - `CODE-02-01/02` remain **PR_review**, not accepted. Complete phone QA, advanced special/help/UI polish and GFX-10 visual acceptance remain open. This section is provisional until review/merge/CI confirmation.
+
+## 2026-10-27 — CODE-02B candidate for Match-3 guidance, specials and retry
+
+- [PR #58](https://github.com/bezdredoff/RavenManor-Godot/pull/58) merged: the playable `RM-VS-01` board now consumes UPDS drag and frame contract; original UPDS engine remains unchanged.
+- The `code/code-02b-match3-help-blockers-results` candidate extends that shared presenter with Raven-only contextual help, explicit loss/retry that **does not award level_won**, reduced-motion toggle, distinct five UPDS special symbols and layer-count blocker badges, plus progress for all UPDS objectives.
+- New tests: `tests/raven/upds_match3_presentation_states_smoke.gd` added to `scripts/check.sh` and `check.ps1`. Pending CI and manual mobile QA. `CODE-02-01/02` stay `in_progress`; `CODE-02-03` is `PR_review`, not completed. Eight themed tiles are placeholders; **GFX-10 approval remains separate**.
