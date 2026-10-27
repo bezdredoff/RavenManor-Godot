@@ -1,0 +1,146 @@
+name: Import Raven mobile ZIP candidate
+
+on:
+  push:
+    branches: [incoming]
+    paths:
+      - "incoming/*.zip"
+  workflow_dispatch:
+    inputs:
+      archive_path:
+        description: "Archive committed on the selected ref (incoming/RM-CODE-02_R1.zip)"
+        required: true
+        type: string
+
+concurrency:
+  group: raven-mobile-zip-import
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Validate untrusted archive with read-only token
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      base_sha: \${{ steps.baseline.outputs.sha }}
+      archive_sha: \${{ steps.check.outputs.archive_sha }}
+      archive_file: \${{ steps.check.outputs.archive_file }}
+      task_ids: \${{ steps.check.outputs.task_ids }}
+      feature: \${{ steps.check.outputs.feature }}
+    steps:
+      - name: Checkout untrusted incoming branch (no credentials)
+        uses: actions/checkout@v4
+        with:
+          path: inbox
+          persist-credentials: false
+      - name: Checkout trusted current main (no credentials)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+          persist-credentials: false
+      - name: Freeze main SHA
+        id: baseline
+        run: echo "sha=$(git -C baseline rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Select exactly one uploaded archive
+        id: check
+        env:
+          INPUT_ARCHIVE: \${{ inputs.archive_path }}
+          BASE_SHA: \${{ steps.baseline.outputs.sha }}
+        run: |
+          set -euo pipefail
+          if [[ -n "$INPUT_ARCHIVE" ]]; then
+            archive="$INPUT_ARCHIVE"
+          else
+            mapfile -t archives < <(find inbox/incoming -maxdepth 1 -type f -name '*.zip' -printf '%f\n')
+            test "\${#archives[@]}" -eq 1 || { echo "Expected one ZIP in incoming; found \${#archives[@]}" >&2; exit 1; }
+            archive="incoming/\${archives[0]}"
+          fi
+          [[ "$archive" =~ ^incoming/[A-Za-z0-9._-]+\.zip$ ]] || { echo "Invalid archive path" >&2; exit 1; }
+          test -f "inbox/$archive"
+          cp "inbox/$archive" "$RUNNER_TEMP/raven-upload.zip"
+          python3 baseline/scripts/raven/tools/validate_mobile_patch.py "$RUNNER_TEMP/raven-upload.zip" "$BASE_SHA"
+          archive_sha="$(sha256sum "$RUNNER_TEMP/raven-upload.zip" | awk '{print $1}')"
+          echo "archive_sha=$archive_sha" >> "$GITHUB_OUTPUT"
+          echo "archive_file=$(basename "$archive")" >> "$GITHUB_OUTPUT"
+          python3 - "$RUNNER_TEMP/raven-upload.zip" "$GITHUB_OUTPUT" <<'PY'
+          import json, sys, zipfile
+          with zipfile.ZipFile(sys.argv[1]) as z:
+              manifest=json.loads(z.read("patch-manifest.json"))
+          with open(sys.argv[2],"a",encoding="utf8") as out:
+              out.write("feature="+manifest["feature"]+"\n")
+              out.write("task_ids="+",".join(manifest["taskIds"])+"\n")
+          PY
+      - name: Store checksum-pinned ZIP (artifact is still untrusted data)
+        uses: actions/upload-artifact@v4
+        with:
+          name: raven-mobile-\${{ github.run_id }}
+          path: \${{ runner.temp }}/raven-upload.zip
+          if-no-files-found: error
+          retention-days: 3
+
+  candidate:
+    name: Create isolated PR without executing candidate code
+    needs: validate
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Checkout exactly validated main commit
+        uses: actions/checkout@v4
+        with:
+          ref: \${{ needs.validate.outputs.base_sha }}
+          fetch-depth: 1
+      - name: Download archive as data only
+        uses: actions/download-artifact@v4
+        with:
+          name: raven-mobile-\${{ github.run_id }}
+          path: \${{ runner.temp }}/mobile-inbox
+      - name: Revalidate checksum, paths and apply with trusted main script
+        env:
+          BASE_SHA: \${{ needs.validate.outputs.base_sha }}
+          ZIP_SHA: \${{ needs.validate.outputs.archive_sha }}
+        run: |
+          set -euo pipefail
+          printf '%s  %s\n' "$ZIP_SHA" "$RUNNER_TEMP/mobile-inbox/raven-upload.zip" | sha256sum -c -
+          test "$(git rev-parse HEAD)" = "$BASE_SHA"
+          python3 scripts/raven/tools/validate_mobile_patch.py "$RUNNER_TEMP/mobile-inbox/raven-upload.zip" "$BASE_SHA" .
+      - name: Commit validated changes and open candidate PR
+        env:
+          GH_TOKEN: \${{ github.token }}
+          TASK_IDS: \${{ needs.validate.outputs.task_ids }}
+          FEATURE: \${{ needs.validate.outputs.feature }}
+          MAIN_SHA: \${{ needs.validate.outputs.base_sha }}
+          ZIP_SHA: \${{ needs.validate.outputs.archive_sha }}
+        run: |
+          set -euo pipefail
+          branch="candidate/mobile-\${GITHUB_RUN_ID}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config core.hooksPath /dev/null
+          git switch -c "$branch"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "ZIP introduces no changes" >&2
+            exit 1
+          fi
+          git commit -m "mobile: import \${TASK_IDS} candidate from validated ZIP"
+          git push origin "HEAD:refs/heads/$branch"
+          gh pr create --base main --head "$branch" \
+            --title "Mobile ZIP candidate: \${FEATURE} (\${TASK_IDS})" \
+            --body "Task IDs: \${TASK_IDS}
+          Base main SHA: \${MAIN_SHA}
+          ZIP SHA-256: \${ZIP_SHA}
+          Generated from a checksum-pinned mobile archive; no candidate code executed with write access.
+          This is an unreviewed candidate, not a merged, accepted or device-verified change.
+          Update production_progress.json, documentation, tests and review asset provenance before manual merge.
+          The PR must pass its own Godot/Room Builder checks and relevant device QA."
+          # GITHUB_TOKEN-originated PRs may not trigger pull_request workflows.
+          # workflow_dispatch is an explicit permitted GitHub Actions trigger.
+          gh workflow run pages.yml --ref "$branch"
