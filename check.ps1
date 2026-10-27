@@ -48,6 +48,7 @@ foreach ($script in @(
 	'res://scripts/match3/match3_tile_motion_layer.gd',
 	'res://scripts/match3/match3_tutorials.gd',
 	'res://scripts/match3/match3_drag_model.gd',
+	'res://scripts/match3/match3_mobile_layout.gd',
 	'res://scripts/match3/match3_frame_visuals.gd',
 	'res://scripts/match3/match3_board_presenter.gd',
 	'res://scripts/raven/raven_match3_theme.gd',
@@ -71,6 +72,7 @@ Invoke-GodotCheck 'UPDS M3 visual primitives' @('--headless', '--path', $project
 Invoke-GodotCheck 'UPDS Match3 interactive board' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_interactive_board_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS interactive Match-3 board smoke passed'
 Invoke-GodotCheck 'UPDS M3 help, blockers and retry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_presentation_states_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 help, objectives, special/blocker and retry smoke passed'
 Invoke-GodotCheck 'UPDS Match3 frame FX / blocker segments' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_frame_fx_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS special-impact and blocker-segment settle smoke passed'
+Invoke-GodotCheck 'CODE-02D mobile HUD and safe-area' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_mobile_hud_smoke.gd', '--quit-after', '120') 'Raven Manor CODE-02D mobile HUD layout and safe-area smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
