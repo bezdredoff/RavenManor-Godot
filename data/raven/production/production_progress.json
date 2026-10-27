@@ -82,17 +82,24 @@
     },
     {
       "id": "CODE-02-01",
-      "status": "PR_review",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
+      "evidence": "Merged https://github.com/bezdredoff/RavenManor-Godot/pull/54 (source-verbatim UPDS board-shape/tile-motion/tutorial/easing + Godot component smoke, CI success). Only CODE-02-00 component import is merged; touch drag/swap and complete input/board integration pending."
     },
     {
       "id": "CODE-02-02",
-      "status": "PR_review",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
+      "evidence": "Merged https://github.com/bezdredoff/RavenManor-Godot/pull/54 (source-verbatim UPDS board-shape/tile-motion/tutorial/easing + Godot component smoke, CI success). Only CODE-02-00 component import is merged; full cascade frame/HUD/feedback/specials integration and device QA pending."
+    },
+    {
+      "id": "CODE-02-00",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 merged 2026-10-27T18:07:19Z: byte-identical UPDS Match3 board shape, CSS easing, tile motion GDScript + scene and tutorial predicates; dedicated Godot smoke wired into Raven checks. Not accepted as full Match-3 screen or GFX-10 art."
     }
   ],
   "rules": [
