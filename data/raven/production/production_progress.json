@@ -37,6 +37,13 @@
       "owner": "ChatGPT",
       "updated": "2026-10-27",
       "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — PR template and status discipline, pending merge/review."
+    },
+    {
+      "id": "MOB-00",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — archive packaging/validator/tests in PR. No automated importer or verified phone upload."
     }
   ],
   "rules": [
