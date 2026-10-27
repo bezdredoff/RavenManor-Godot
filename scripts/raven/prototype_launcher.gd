@@ -21,6 +21,12 @@ func _ready() -> void:
 	column.add_child(_title("Prototype Lab · RM-HUB-001", 17, Color("a9c8be")))
 	column.add_child(_paragraph("Единая интерактивная сборка для изолированной и совместной проверки прототипов. Данные обоих режимов используют одно Raven-сохранение."))
 	column.add_child(_card(
+		"0 · MATCH-3 QA · АКТУАЛЬНЫЙ ЭКРАН",
+		"Открыть RM-LVL-001 сразу, без вступления и прогулки по карте. Это тот же UPDS Match-3 интерфейс, что в RM-VS-01: свайпы, цели, блокеры, спецфишки, подсказки и справка. Режим QA не меняет Raven-save.",
+		"ТЕСТИРОВАТЬ MATCH-3 БЕЗ СЮЖЕТА",
+		_open_match3_qa
+	))
+	column.add_child(_card(
 		"5 · Whole Manor Map · S1 GREYBOX",
 		"Все восемь зон, единая прокручиваемая схема, 11 дверей, габариты ключевой мебели, переходы между помещениями, выбор ремонтных объектов. Тестовая геометрия — НЕ готовая планировка.",
 		"ПРОВЕРИТЬ ОБЩУЮ КАРТУ",
@@ -62,7 +68,7 @@ func _ready() -> void:
 	))
 	column.add_child(_card(
 		"3 · RM-VS-01 vertical slice",
-		"Сквозной маршрут: дверь, VN-сцены, три настоящих Match-3 уровня, две реставрации, улика, ночной эпизод и resume из Raven-save.",
+		"Сюжетный маршрут: письмо → дорога → ворота → возвращение → освобождение двери спальни → первый Match-3. Для быстрого теста Match-3 используй карточку 0 выше. Режим сохраняет прогресс Raven.",
 		"ЗАПУСТИТЬ ВЕРТИКАЛЬНЫЙ СРЕЗ",
 		_open.bind(VERTICAL_SLICE_SCENE)
 	))
@@ -73,6 +79,11 @@ func _ready() -> void:
 		_open.bind(VERTICAL_SLICE_SCENE)
 	))
 	column.add_child(_paragraph("Все режимы запускаются отдельно или вместе из одной web/desktop сборки."))
+
+
+func _open_match3_qa() -> void:
+	get_tree().set_meta("raven_direct_preview_level", "RM-LVL-001")
+	get_tree().change_scene_to_file(CONTENT_PREVIEW_SCENE)
 
 
 func _open(path: String) -> void:
