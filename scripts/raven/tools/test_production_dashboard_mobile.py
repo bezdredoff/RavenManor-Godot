@@ -180,6 +180,8 @@ class CandidateReviewTests(unittest.TestCase):
         self.assertIn("Bundle trusted candidate-review portal", pages)
         self.assertIn("build/web/preview/", pages)
         self.assertIn("pr_created=no", importer)
+        self.assertIn("skip=true", importer)
+        self.assertIn("needs.validate.outputs.skip != 'true'", importer)
         self.assertIn("test_candidate:", importer)
         self.assertIn("gh run watch", importer)
         # Client displays only GitHub links, never executes raw candidate JS
