@@ -12,17 +12,17 @@
     },
     {
       "id": "PROC-001",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "PROC-002",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "PROC-003",
@@ -33,17 +33,38 @@
     },
     {
       "id": "PROC-004",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — PR template and status discipline, pending merge/review."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
     },
     {
       "id": "MOB-00",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — archive packaging/validator/tests in PR. No automated importer or verified phone upload."
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+    },
+    {
+      "id": "MOB-01",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "Existing feature branch feature/mobile-zip-import-candidate-preview contains protected ZIP importer and candidate PR workflow; bootstrap/live Action PR creation not yet verified."
+    },
+    {
+      "id": "MOB-02",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "Feature branch adds isolated read-only candidate workflow_dispatch with test-result gating; no real candidate run yet."
+    },
+    {
+      "id": "RM-GAP-009",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "PR work reconciles stale progress ledger from #48; full historical STATUS audit remains open."
     }
   ],
   "rules": [
