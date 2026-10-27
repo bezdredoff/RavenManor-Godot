@@ -258,6 +258,84 @@
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
       "requiresHumanAcceptance": false
+    },
+    {
+      "id": "MOB-00",
+      "title": "ZIP packager, manifest validator and adversarial fixtures",
+      "domain": "mobile",
+      "priority": "P0",
+      "size": "S",
+      "description": "read-only package/preflight, SHA and path security; no upload credentials",
+      "deliverable": "PR #48 package_mobile_patch.py, validate_mobile_patch.py, tests",
+      "acceptance": "read-only package/preflight, SHA and path security; no upload credentials",
+      "status": "proposed",
+      "dependsOn": [],
+      "graphicsDependencies": [],
+      "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
+    },
+    {
+      "id": "MOB-01",
+      "title": "Bootstrap incoming branch and separated candidate PR importer",
+      "domain": "mobile",
+      "priority": "P0",
+      "size": "L",
+      "description": "one archive, read-only validate then isolated write job, exact validated main commit, candidate/* PR with no auto-merge",
+      "deliverable": "separate security-reviewed Actions PR and protected inbox",
+      "acceptance": "one archive, read-only validate then isolated write job, exact validated main commit, candidate/* PR with no auto-merge",
+      "status": "proposed",
+      "dependsOn": [
+        "MOB-00"
+      ],
+      "graphicsDependencies": [],
+      "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
+    },
+    {
+      "id": "MOB-02",
+      "title": "Candidate independent Godot tests and artifacts",
+      "domain": "mobile",
+      "priority": "P0",
+      "size": "M",
+      "description": "untrusted candidate never executed in write-token job; run Raven CI and maintain evidence on last PR head",
+      "deliverable": "independent low-privilege Godot/Room Builder/Web gate",
+      "acceptance": "untrusted candidate never executed in write-token job; run Raven CI and maintain evidence on last PR head",
+      "status": "proposed",
+      "dependsOn": [
+        "MOB-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
+    },
+    {
+      "id": "MOB-03",
+      "title": "Stable main plus isolated Pages /preview/ candidate",
+      "domain": "mobile",
+      "priority": "P1",
+      "size": "L",
+      "description": "preview only on GitHub Pages, stable / unaffected, separate SW/cache identity, manual merge",
+      "deliverable": "preview deploy and rollback tests",
+      "acceptance": "preview only on GitHub Pages, stable / unaffected, separate SW/cache identity, manual merge",
+      "status": "proposed",
+      "dependsOn": [
+        "MOB-02"
+      ],
+      "graphicsDependencies": [],
+      "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
+    },
+    {
+      "id": "MOB-04",
+      "title": "Phone end-to-end acceptance and malicious-archive attacks",
+      "domain": "mobile",
+      "priority": "P1",
+      "size": "M",
+      "description": "iPhone/Android upload, stale base, zip-slip/symlinks, validated PR, preview, merge, post-merge stable",
+      "deliverable": "device/screenshots/PR evidence and owner approval",
+      "acceptance": "iPhone/Android upload, stale base, zip-slip/symlinks, validated PR, preview, merge, post-merge stable",
+      "status": "proposed",
+      "dependsOn": [
+        "MOB-03"
+      ],
+      "graphicsDependencies": [],
+      "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
     }
   ]
 }
