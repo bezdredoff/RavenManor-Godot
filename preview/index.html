@@ -1,0 +1,10 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#201820"><title>Raven Manor — Candidate review</title><link rel="stylesheet" href="./style.css"></head>
+<body><header><a href="../">◈ Raven Manor</a><span>Candidate review · безопасный предпросмотр</span><a href="../dashboard/">Дашборд</a></header>
+<main><div class="eyebrow">PREVIEW / INDEPENDENT BUILDS</div><h1>Проверка кандидатных сборок</h1>
+<p>Эта страница показывает результаты независимых проверок ZIP-патчей. Candidate-код <b>не исполняется на том же домене</b>, что и опубликованная игра. Проверенную Web-сборку можно получить из артефактов GitHub Actions; интерактивный запуск потребует отдельного домена или доверенной среды.</p>
+<section class="safety"><strong>Стабильная версия защищена.</strong> Для candidate GitHub Actions выдаются только права чтения исходников. Ни одна candidate-сборка не публикует файлы в корень игры или Service Worker. Доступность артефакта ограничена сроком хранения GitHub.</section>
+<section class="filters"><label><span>Поиск по ветке или коммиту</span><input type="search" id="query" placeholder="candidate/mobile-…"></label><button id="refresh" type="button">Обновить</button></section>
+<div id="status" role="status">Получаем последние результаты GitHub Actions…</div><div id="runs" class="cards"></div>
+<section class="how"><h2>Как проверить candidate</h2><ol><li>Откройте нужный запуск GitHub Actions.</li><li>Убедитесь, что Godot, Room Builder и Web export прошли успешно.</li><li>Загрузите артефакт <code>raven-candidate-web-…</code> со страницы запуска и разверните его в отдельной тестовой среде с другим origin.</li><li>Сверьте PR, task IDs, изменения и UX на телефоне. Только после ручного ревью мержите candidate.</li></ol><p>Для автоматического запуска интерактивной версии на отдельном origin потребуется дополнительная настройка preview hosting. GitHub Pages не изолирует JavaScript по путям <code>/</code> и <code>/preview/</code>.</p></section>
+</main><script type="module" src="./app.mjs"></script></body></html>
