@@ -225,6 +225,24 @@
       "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
     },
     {
+      "id": "CODE-02-05",
+      "title": "One-tap Match-3 QA route and UPDS Content Preview parity",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "S",
+      "dependsOn": [
+        "CODE-02-01",
+        "CODE-02-04"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "Prototype Lab direct QA card starts RM-LVL-001 without story/map/save mutation; map-selected preview and three level menu options use the same updated UPDS Match3Board and responsive HUD as RM-VS-01",
+      "acceptance": "Real Godot CI tests direct metadata route, actual UPDS gameplay and victory, no saver/reducer on preview, old map preview compatibility and menu replay; physical iPhone acceptance remains separate",
+      "status": "proposed",
+      "sourceDecision": "User QA report 2026-10-27: after first VN scene map appears rather than expected Match-3; old Content Preview still used greybox UI"
+    },
+    {
       "id": "CODE-03-01",
       "title": "Extract shared VN state/controller and UI",
       "stage": "CODE-03",

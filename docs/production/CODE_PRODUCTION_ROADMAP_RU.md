@@ -435,3 +435,13 @@ C7 props & repairs → C8 save/season flow ──┤
 После смерженного [PR #60](https://github.com/bezdredoff/RavenManor-Godot/pull/60) settle frames ограничены по сегментам колонок, а special clear feedback получает временные FX; CODE-02-02 имеет статус **merged**, но не device/art-accepted. Новый `CODE-02-04` предусматривает: отказ от жёсткой минимальной ширины 354px, динамический размер поля/клеток по ширине контейнера без смены UPDS game state, раздельные строки целей и ходов, нижние кнопки в две колонки и 44px action targets. Для нативного mobile учитываются safe insets из DisplayServer; Web host/браузер требуют отдельного device QA.
 
 Godot regression тестирует 320/390/412/430 px, недопустимость horizontal overflow, оригинальные UPDS game/moves при resize, safe inset conversion, структуру реального RM-VS-01. `CODE-02-04` = **PR_review**, до реального iPhone/Android screenshot/gestures QA не считать accepted. GFX-10 отдельно утверждает окончательный вид тайлов и HUD.
+
+
+## CODE-02-05 — QA shortcut & Content Preview parity (candidate 27.10.2026)
+
+During physical phone QA, the owner reported reaching a walkable map after an introductory VN scene rather than the tested Match-3 HUD. Audit established **two distinct pathways**, not a new story rule:
+
+- Production-facing RM-VS-01: `letter → road → gates → arrival → access (ВЫПОЛНИТЬ) → RM-LVL-001` with saved campaign authority. This route must preserve narrative unlock logic; no artificial skip in the real campaign.
+- Standalone content preview: isolated levels 001–003 without campaign progression. Before this package, this preview had its **own stale click-only Match-3 grid**. After CODE-02-05, a prominent launcher card `0 · MATCH-3 QA` selects isolated RM-LVL-001 and content preview instantiates the exact same UPDS board presenter/theme as RM-VS-01; map-selected level previews follow the same shared renderer. This is an *execution parity fix*, not a new reducer.
+
+Test contract: real Godot invocation from SceneTree metadata into preview, original UPDS gameplay + level_won callback as QA text only, no `Store` or `Reducer` writes, map-preview backward compatibility, and responsive scroll width. The CODE-02-05 task is `PR_review` pending CI; iPhone screenshots/touch gestures are not yet verified. GFX-10 source art is still programmer placeholders.

@@ -110,15 +110,22 @@
     },
     {
       "id": "CODE-02-04",
-      "status": "PR_review",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — responsive board for 320/390/412/430px, no fixed 354px minimum, native safe-area offset and 2-column controls; Godot viewport smoke pending final-head CI; physical phone QA not verified.",
+      "status": "merged",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged 2026-10-27; responsive 320/390/412/430 board, vertical-slice safe-area shell and HUD Godot smoke CI passed. Actual Safari mobile QA not yet accepted; old Content Preview did not use this board until CODE-02-05 candidate.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
     },
     {
       "id": "PROC-005",
+      "status": "merged",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged; GitHub Actions now requires authored PRs to update docs/STATUS.md and production_progress.json, tested with numeric incoming candidate exception; no claim of protection against all possible malicious actor branches.",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27"
+    },
+    {
+      "id": "CODE-02-05",
       "status": "PR_review",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — scripted GitHub Actions requirement for BOTH docs/STATUS.md and data/raven/production/production_progress.json in all authored PRs, with test and documented incoming/mobile candidate exception. Final-head CI pending.",
+      "evidence": "fix/match3-qa-entry-content-preview-parity: direct Prototype Lab MATCH-3 QA for RM-LVL-001 without prologue; Content Preview switched from legacy click-grid to exactly the reusable UPDS Match3Board for 001/002/003 and map selection. Godot smoke/CI pending; QA preview never touches Raven store/reducer; human phone check remains needed.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
     }
