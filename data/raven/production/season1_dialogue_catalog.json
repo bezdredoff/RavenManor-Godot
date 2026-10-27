@@ -101,11 +101,11 @@
       "sceneId": "RM-BEAT-02-01",
       "title": {
         "ru": "2.1. Завтрак без кухни",
-        "be": null,
-        "en": null
+        "be": "2.1. Сняданак без кухні",
+        "en": "2.1. Breakfast Without a Kitchen"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
-      "status": "proposed_future_runtime"
+      "status": "pilot_runtime"
     },
     {
       "sceneId": "RM-BEAT-02-02",
@@ -784,8 +784,12 @@
         "ru": {
           "text": "Вчера мне казалось, что после ночи здесь я проснусь и всё вспомню."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Учора мне здавалася, што пасля ночы тут я прачнуся і ўсё ўспомню."
+        },
+        "en": {
+          "text": "Yesterday I thought I'd wake up after a night here and remember everything."
+        }
       },
       "source": "screenplay"
     },
@@ -798,8 +802,12 @@
         "ru": {
           "text": "И как?"
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "І як?"
+        },
+        "en": {
+          "text": "And did you?"
+        }
       },
       "source": "screenplay"
     },
@@ -812,8 +820,12 @@
         "ru": {
           "text": "Вспомнила, что матрас скрипит. Считается?"
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Успомніла, што матрац рыпіць. Лічыцца?"
+        },
+        "en": {
+          "text": "I remembered that the mattress squeaks. Does that count?"
+        }
       },
       "source": "screenplay"
     },
@@ -826,8 +838,12 @@
         "ru": {
           "text": "Для матраса — большое достижение."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Для матраца — вялікае дасягненне."
+        },
+        "en": {
+          "text": "A great achievement for the mattress."
+        }
       },
       "source": "screenplay"
     },
@@ -840,8 +856,12 @@
         "ru": {
           "text": "А часы в холле? Мне казалось, в детстве я засыпала под их бой."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "А гадзіннік у холе? Мне здавалася, у дзяцінстве я засынала пад яго бой."
+        },
+        "en": {
+          "text": "And the clock in the hall? I thought I used to fall asleep to its chimes as a child."
+        }
       },
       "source": "screenplay"
     },
@@ -854,8 +874,12 @@
         "ru": {
           "text": "Они давно не ходят. Потребуется часовщик."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Ён даўно не ходзіць. Спатрэбіцца гадзіншчык."
+        },
+        "en": {
+          "text": "It hasn't worked for years. We'll need a clockmaker."
+        }
       },
       "source": "screenplay"
     },
@@ -868,8 +892,12 @@
         "ru": {
           "text": "Здесь всё требует специалиста."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Тут для ўсяго патрэбны спецыяліст."
+        },
+        "en": {
+          "text": "Everything here needs a specialist."
+        }
       },
       "source": "screenplay"
     },
@@ -882,8 +910,12 @@
         "ru": {
           "text": "Зато некоторые специалисты ещё отвечают на телефон."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Затое некаторыя спецыялісты яшчэ адказваюць на званкі."
+        },
+        "en": {
+          "text": "At least some specialists still answer the phone."
+        }
       },
       "source": "screenplay"
     },
@@ -896,8 +928,12 @@
         "ru": {
           "text": "Электрик?"
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Электрык?"
+        },
+        "en": {
+          "text": "An electrician?"
+        }
       },
       "source": "screenplay"
     },
@@ -910,8 +946,12 @@
         "ru": {
           "text": "Я оставила заявку. До проверки ничего на кухне не включаем."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Я пакінула заяўку. Пакуль усё не правераць, на кухні нічога не ўключаем."
+        },
+        "en": {
+          "text": "I've requested a visit. Until it's checked, we won't switch anything on in the kitchen."
+        }
       },
       "source": "screenplay"
     },
@@ -924,8 +964,12 @@
         "ru": {
           "text": "А это, должно быть, садовник."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "А гэта, мусіць, садоўнік."
+        },
+        "en": {
+          "text": "That must be the gardener."
+        }
       },
       "source": "screenplay"
     },
@@ -938,8 +982,12 @@
         "ru": {
           "text": "Ещё одна профессия, без которой здесь не выжить."
         },
-        "be": null,
-        "en": null
+        "be": {
+          "text": "Яшчэ адна прафесія, без якой тут не выжыць."
+        },
+        "en": {
+          "text": "Another profession we can't survive without here."
+        }
       },
       "source": "screenplay"
     },
