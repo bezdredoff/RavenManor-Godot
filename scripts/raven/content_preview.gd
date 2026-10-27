@@ -11,7 +11,7 @@ var content: Dictionary
 var body: VBoxContainer
 var match_game: RefCounted
 var vn_player: RefCounted
-var board_view: VBoxContainer
+var board_view: Variant
 var level_status: Label
 var current_kind := "menu"
 var current_id := ""
