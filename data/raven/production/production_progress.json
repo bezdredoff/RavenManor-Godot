@@ -111,14 +111,14 @@
     {
       "id": "CODE-02-04",
       "status": "PR_review",
-      "evidence": "CODE-02D PR candidate code/code-02d-mobile-hud-governance: responsive board for 320/390/412/430px, no fixed 354px minimum, native safe-area offset and 2-column controls; Godot viewport smoke pending final-head CI; physical phone QA not verified.",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — responsive board for 320/390/412/430px, no fixed 354px minimum, native safe-area offset and 2-column controls; Godot viewport smoke pending final-head CI; physical phone QA not verified.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
     },
     {
       "id": "PROC-005",
       "status": "PR_review",
-      "evidence": "CODE-02D PR candidate: scripted GitHub Actions requirement for BOTH docs/STATUS.md and data/raven/production/production_progress.json in all authored PRs, with test and documented incoming/mobile candidate exception. Final-head CI pending.",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 — scripted GitHub Actions requirement for BOTH docs/STATUS.md and data/raven/production/production_progress.json in all authored PRs, with test and documented incoming/mobile candidate exception. Final-head CI pending.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
     }
