@@ -25,10 +25,11 @@
 - [ ] No accidental UPDS game content dependencies
 - [ ] No unapproved production art
 
-## Production/dashboard status and docs
-- [ ] Updated data/raven/production/production_progress.json with status/owner/date/evidence, or explained no change
-- [ ] Updated docs/STATUS.md for new actually merged/shipped behavior, or explained N/A
-- [ ] Updated CODE/GFX backlog sources if scope/dependencies changed, or explained N/A
+## Mandatory documentation + dashboard source changes in THIS PR (CI checked)
+- [ ] Updated `docs/STATUS.md` with task ID, test and manual QA evidence
+- [ ] Updated `data/raven/production/production_progress.json` with status/owner/date/evidence
+- [ ] Updated associated CODE/GFX/gap backlog and roadmaps if scope or acceptance changed
+<!-- First two changes are mandatory even for documentation-only PRs. Only automated incoming ZIP candidate/mobile-<run> PRs are exempt pending explicit human review. -->
 - [ ] Checked dashboard generation and paired gates as relevant
 
 ## PR head CI and acceptance evidence
