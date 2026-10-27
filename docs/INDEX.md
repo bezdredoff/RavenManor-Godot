@@ -10,7 +10,9 @@
 - `RAVEN_WALL_COMFYUI_WORKFLOW.md`: first-act wall-art ComfyUI batch, prompt contract and art review gate.
 - `WALL_TILESET_PIPELINE.md`: constructed wall tileset prototype compared with the generated batch.
 - `BLENDER_WALL_KIT.md`: procedural Blender wall kit with a verified corner joint and leak check.
-- `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: полный gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
+- `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
+- `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
+- `../data/raven/production/code_work_packages.json`: машинный бэклог с P0/P1/P2, оценками S–XL, зависимостями и связями с GFX-этапами.
 - `PRODUCT_QUESTIONS.md`: resolved answers that unblock PR 3; future unresolved decisions should be added explicitly.
 - Source materials and narrative authority: [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor); executable Godot runtime remains in this repository.
 - `preproduction/stage1/`: approved Stage 1 v0.5 story baseline.
