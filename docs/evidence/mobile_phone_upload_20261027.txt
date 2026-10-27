@@ -1,0 +1,5 @@
+Raven Manor MOB-04 physical mobile-upload smoke test
+This is a harmless evidence marker and is NOT gameplay/content/art.
+Expected main SHA at packaging: 4751be46481c8735b7da3daadfcc6bda4bde63a3
+Created for an iPhone/Android browser upload to incoming/ on the incoming branch.
+Candidate PR from this archive is TEST-ONLY, DO NOT MERGE.
