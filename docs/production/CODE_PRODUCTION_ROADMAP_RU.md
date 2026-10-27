@@ -1,8 +1,8 @@
 # Raven Manor — план и roadmap производства кода
 
-**Версия:** 0.1  
+**Версия:** 0.2 (reconciliation; исходные этапы и требования сохранены)  
 **Дата:** 27 октября 2026  
-**Статус:** предлагаемый рабочий engineering production plan; кодовые результаты утверждаются по техническим и игровым gates.  
+**Статус:** действующий engineering production plan; фактическое исполнение и evidence ведутся в `data/raven/production/production_progress.json`, а не выводятся из наличия пункта плана.  
 **Парный план:** `docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md` (GFX-00…GFX-13, версия 0.1 от 27.10.2026).  
 **Цель:** довести первый сезон Raven Manor до production-ready Godot 4.7.2 через **максимальное переиспользование реального кода UPDS-godot**, добавив только уникальные механики исследуемой карты особняка, комнат, NPC, предметов и восстановления. Проводить art/code интеграцию вертикальными срезами и не масштабировать производство до совместного Hall pilot gate.
 
@@ -20,7 +20,9 @@
 
 План опирается на проверенные исходники `bezdredoff/UPDS-godot` и текущий `bezdredoff/RavenManor-Godot`, а не на утверждение, что все функции UPDS уже интегрированы в Raven.
 
-## 2. Проверенный статус на дату плана
+## 2. Базовый статус при первоначальном составлении плана (историческая запись)
+
+Следующие пункты фиксируют исходное состояние в момент написания версии 0.1. **Текущий статус приведён в разделе 2A ниже**; историческое указание «PR #46 открыт» нельзя считать актуальным.
 
 - **В `main` Raven:** Godot standalone `RM-VS-01` с прологом/главой I, 3 игровыми уровнями, 2 restorations, сохранением и навигацией; Chapter-II Hall tea VN pilot `RM-BEAT-02-01` с 12 линиями RU/BE/EN и временными арт-слоями. Изолированные Room Builder, карта сезона в режиме feasibility и Hall render/import существуют; их координаты/арт всё ещё требуют acceptance.
 - **На уровне документации:** 28 предложенных story scenes, 280 source RU dialogue lines, 11 background families, 37 story prop families, 28 inspect popups, character/cue/staging registries в `data/raven/production/`. Большинство `be/en` реплик будущих глав не переведено. Эти JSON не следует считать полностью подключёнными к игровому runtime.
@@ -29,6 +31,15 @@
 - Старый `docs/UPDS_COMPONENT_ADAPTATION.md` описывает исторический минимальный Raven-only движок и **не отражает целевую архитектуру**; не использовать его как текущий reuse-стандарт. Целевой документ в PR #46 — `docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md`.
 
 **Состояния задач:** `proposed → ready → in_progress → PR_review → merged → integrated → device_verified → accepted`. Прошедший unit/smoke test не равен device-approved продуктовой функции.
+
+## 2A. Текущее состояние после мержа PR #54 и #56 (27.10.2026)
+
+- **PR #46 merged:** правила Match-3, RNG, VN paging и preferences из UPDS работают через оригинальные компоненты и Raven adapters. Их наличие **не** означает готовый UPDS Match-3/VN экран.
+- **PR #54 merged — CODE-02-00:** оригинальные `match3_board_shape.gd`, `match3_tile_motion_layer.gd`, `match3_tutorials.gd`, `css_motion.gd`, `match3_tile_motion_layer.tscn` и component smoke добавлены в Raven с pinned исходными SHA. Это промежуточный завершённый пакет.
+- **CODE-02-01/02 — in_progress:** input/drag/swipe, полный board cell presenter, каскады, спецкомбинации, HUD/feedback, мобильный QA и 연결ение в действующий Raven level ещё не завершены. Следующий PR должен выделить из оригинального UPDS Match3Screen его общие контроллеры/UI, а не написать новый Raven-specific экран.
+- **PR #56 merged — mobile handoff evidence:** физическая загрузка ZIP в `incoming`, автоматический PR #55, независимый Godot/UPDS/Room Builder/Web CI и non-deployed artifact подтверждены. PR #55 закрыт без мержа. **MOB-04 остаётся in_progress** для live-negative ZIP cases, phone artifact review и device acceptance; `/preview/` — безопасный просмотр CI, а не исполняемый candidate.
+- **Graphics GFX-10 пока proposed:** кодовые анимационные примитивы `CODE-02-00` не утверждают тайлы, блокеры, FX или визуальный стиль. Масштабирование требует самостоятельных GFX gates.
+- Источник текущих фактов — `production_progress.json`; [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54), [PR #56](https://github.com/bezdredoff/RavenManor-Godot/pull/56) и связанные Actions. Зелёный CI != human acceptance.
 
 ## 3. Архитектура и границы ответственности
 
@@ -79,12 +90,12 @@
 
 | Подсистема | Источник UPDS | Стратегия | Что Raven добавляет | Степень готовности |
 |---|---|---|---|---|
-| Match-3 rules + hints, blockers, specials, cascades | `scripts/match3/match3_game.gd`, `scripts/core/seeded_random.gd` | **vendor exact / thin adapter** | JSON уровней, фикс. 8 типов, workPoints | PR #46 OPEN; merge pending |
-| Match-3 input, swap, board shape, animations, HUD | `match3_screen.gd`, `match3_board_shape.gd`, `match3_tile_motion_layer.gd` | **extract common UI + reskin** | gothic-art/sound, map result callback | ещё не перенесено |
-| Match-3 tutorials, reactions, help, intro/result | `match3_tutorials.gd`, `match3_help_overlay.gd`, `match3_reaction_runtime.gd`, `match3_campaign_screen.gd` | **extract / content adapter** | story-based intro and room fiction | ещё не перенесено |
-| VN pagination, layout, animation, auto/skip/history | `scripts/vn/dialogue_paging.gd`, `vn_screen.gd`, `portrait_motion_rig.gd` | **vendor paging, extract controllers/renderers** | 1–3 actor slots, cues, backgrounds | paging in PR #46; остальные pending |
-| Preferences, settings UI, audio feedback | `player_preferences.gd`, `settings_screen.gd`, `menu_audio.gd` | **vendor logic / reskin UI / isolate audio** | RU default, gothic copy, save-path | preferences PR #46; UI pending |
-| Reusable UI layout, fonts, touch and motion | `phone_frame.gd`, `touch_scroll_container.gd`, `ui_fonts.gd`, `css_motion.gd`, `reduced_motion.gd` | **reuse/extract** | Raven palette, portrait-safe areas | review before adaptation |
+| Match-3 rules + hints, blockers, specials, cascades | `scripts/match3/match3_game.gd`, `scripts/core/seeded_random.gd` | **vendor exact / thin adapter** | JSON уровней, фикс. 8 типов, workPoints | **PR #46 merged**; game rules core integrated, full visual UI pending |
+| Match-3 input, swap, board shape, animations, HUD | `match3_screen.gd`, `match3_board_shape.gd`, `match3_tile_motion_layer.gd` | **extract common UI + reskin** | gothic-art/sound, map result callback | **PR #54 merged board shape/motion primitives; full screen/input/HUD pending** |
+| Match-3 tutorials, reactions, help, intro/result | `match3_tutorials.gd`, `match3_help_overlay.gd`, `match3_reaction_runtime.gd`, `match3_campaign_screen.gd` | **extract / content adapter** | story-based intro and room fiction | **PR #54 merged tutorial predicates only; help/screens/reactions pending** |
+| VN pagination, layout, animation, auto/skip/history | `scripts/vn/dialogue_paging.gd`, `vn_screen.gd`, `portrait_motion_rig.gd` | **vendor paging, extract controllers/renderers** | 1–3 actor slots, cues, backgrounds | **paging merged in PR #46**; остальные pending |
+| Preferences, settings UI, audio feedback | `player_preferences.gd`, `settings_screen.gd`, `menu_audio.gd` | **vendor logic / reskin UI / isolate audio** | RU default, gothic copy, save-path | **preferences merged in PR #46**; UI pending |
+| Reusable UI layout, fonts, touch and motion | `phone_frame.gd`, `touch_scroll_container.gd`, `ui_fonts.gd`, `css_motion.gd`, `reduced_motion.gd` | **reuse/extract** | Raven palette, portrait-safe areas | **CSS easing merged in PR #54**; остальная адаптация pending |
 | Story/campaign state & persistence | UPDS `story_session.gd`, `save_format.gd`, `campaign_store.gd` | **reuse patterns + algorithms, NOT a second save authority** | atomic Raven reducer, stable IDs, restoration | Raven implementation already active |
 | Character asset layout / animation | UPDS `actor_layout_catalog.gd`, `portrait_motion_rig.gd` | **extract common layout/rig** | Raven identity/cues, map sprites | rig pending; pilot only fade |
 | Map, graph navigation, Room Builder import | no UPDS manor equivalent | **Raven-only** | 65° map, authored routes, colliders, depth | engineering prototype; production calibration pending |
@@ -123,7 +134,7 @@
 
 ### CODE-02 — Общий Match-3 экран, touch, boosters и feedback
 
-**Подготовка к GFX-10, не требует финального tile art.**
+**Подготовка к GFX-10, не требует финального tile art.** Подзадача `CODE-02-00` (перенос неизменённых UI primitives UPDS, PR #54) смержена; `CODE-02-01/02` остаются в работе до полной integration/mobile QA.
 
 - `CODE-02-01` Выделить input model свайп/тап, drag threshold, invalid feedback и touch capture из UPDS `match3_screen.gd`, сохранив keyboard/mouse fallback.
 - `CODE-02-02` Переиспользовать `match3_board_shape.gd`: authored shape, holes, board masks, масштаб мобильного портрета.
@@ -337,8 +348,8 @@ C7 props & repairs → C8 save/season flow ──┤
 **Рекомендуемые первые независимые PR:**
 
 1. **CODE-00:** audit/pinned-source manifest, compatibility matrix, tests baseline; при этом не менять runtime.
-2. **CODE-01:** закрыть PR #46 (или исправить его) с upstream parity и existing slice regressions.
-3. **CODE-02A:** импорт/извлечение UPDS board/tile-motion/input и один механический demo level с blockers/specials на placeholders.
+2. **CODE-01:** PR #46 смержен; проверить регрессии и donor source pin при каждом обновлении Match-3/VN.
+3. **CODE-02A:** board-shape/tile-motion/tutorial primitives смержены в PR #54 (`CODE-02-00`). Следующие PR: input/drag + full board/HUD/cascade/specials с placeholders и блокерами; **не** считать механический demo/full screen уже завершёнными.
 4. **CODE-03A:** reusable VN renderer + Hall 2.1 reskin вместо one-off screen, 1–3 sprites, UPDS paging/history/Auto/Skip subset.
 5. **CODE-04A:** settings/preferences/localization/audio component extraction с RU/BE/EN тестами.
 6. **CODE-09A:** accepted-asset manifests/renderer с GFX-05 export contract, fallback and preview.
@@ -390,7 +401,7 @@ C7 props & repairs → C8 save/season flow ──┤
 
 1. Зафиксировать inventory и pinned UPDS/Raven baselines; сопоставить версии обоих репозиториев.
 2. Подготовить dependency graph UPDS Match-3 Screen/VN Screen/Settings и список common extraction boundaries.
-3. Принять и смержить PR #46 после review с latest `main` и доказательством старого save compatibility.
+3. PR #46 уже смержен; продолжать регрессию старых Raven saves и donor parity при переносе визуального Match-3 экрана.
 4. Утвердить `IVnSceneProvider / IMatch3LevelProvider / ISettingsProvider / ICampaignProgress` contracts.
 5. Создать/зафиксировать source-oracle для Match-3 специальных фишек, board holes, blockers и motion frames.
 6. Показать один настоящий UPDS Match-3 screen/render sequence в Raven с фальш-тайлами и phone touch QA.
