@@ -4,7 +4,7 @@ extends SceneTree
 const Drag = preload("res://scripts/match3/match3_drag_model.gd")
 const Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Game = preload("res://scripts/raven/raven_match3_game.gd")
-const Theme = preload("res://scripts/raven/raven_match3_theme.gd")
+const RavenTheme = preload("res://scripts/raven/raven_match3_theme.gd")
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 
 
@@ -20,7 +20,7 @@ func _run() -> void:
 	root.add_child(source)
 	var board := Board.new()
 	source.add_child(board)
-	board.setup(game, Theme.placeholder())
+	board.setup(game, RavenTheme.placeholder())
 	board.reduced_motion = true
 	await process_frame
 	assert(board.cells.size() == 36)
