@@ -1,5 +1,7 @@
 # Agent instructions — Raven Manor Godot
 
+**MANDATORY FOR EVERY AUTHORED PR:** update `docs/STATUS.md` **and** `data/raven/production/production_progress.json` in the SAME branch and PR, with task ID, truthful status and evidence. This applies to code, art, process and docs-only PRs. GitHub Actions checks both changed files; only automatically imported `candidate/mobile-<run>` ZIP intake PRs are exempt and still require human review. Do not edit generated `dashboard/status.json` as the source of truth.
+
 **All ChatGPT, Codex and DeepSeek work follows [docs/process/AI_COLLABORATION_RU.md](docs/process/AI_COLLABORATION_RU.md) and [docs/process/TASK_AND_PR_TEMPLATE_RU.md](docs/process/TASK_AND_PR_TEMPLATE_RU.md). Start with one task ID, current main and status; update source-of-truth progress/evidence in the same PR, not the generated dashboard.**
 
 Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md`, `docs/IMPLEMENTATION_PLAN.md`, then the paired `docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md` and `docs/production/CODE_PRODUCTION_ROADMAP_RU.md` for any production implementation, and relevant Stage 1–3 specs/audits. Roadmaps are **plans**, not evidence that functionality has shipped.
