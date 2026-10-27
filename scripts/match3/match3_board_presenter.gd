@@ -250,7 +250,7 @@ func _refresh_controls() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if game == null or input_locked or str(game.state) != "playing":
+	if game == null or input_locked or help_open or str(game.state) != "playing":
 		return
 	var position := Vector2.ZERO
 	var kind := ""
@@ -328,7 +328,7 @@ func _index_at(position: Vector2) -> int:
 
 
 func tap_cell(index: int) -> void:
-	if input_locked or not game.can_interact_with_tile(index):
+	if input_locked or help_open or not game.can_interact_with_tile(index):
 		return
 	if selected_index < 0:
 		selected_index = index
@@ -356,7 +356,7 @@ func _commit_swap(first: int, second: int) -> void:
 
 
 func show_hint() -> void:
-	if input_locked:
+	if input_locked or help_open or str(game.state) != "playing":
 		return
 	var hint: Dictionary = game.get_hint_move()
 	highlighted.clear()
@@ -375,9 +375,12 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 	highlighted.clear()
 	selected_index = -1
 	if not bool(result.get("valid", false)):
-		feedback.text = str(skin.get("invalid", "Этот ход не даёт комбинацию"))
+		var reason := str(result.get("reason", ""))
+		var key := "invalid_blocked" if reason == "blocked" else "invalid_adjacent" if reason == "not-adjacent" else "invalid"
+		feedback.text = str(skin.get(key, "Этот ход не даёт комбинацию"))
 		_paint_selection()
 		input_locked = false
+		_refresh_controls()
 		board_feedback.emit(feedback.text)
 		return
 	feedback.text = str(skin.get("matched", "Комбинация!"))
@@ -414,9 +417,10 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 		level_won.emit()
 	elif bool(result.get("lost", false)):
 		feedback.text = str(skin.get("lost", "Попробуйте ещё раз"))
-		game.reset()
-		_paint_live()
+		# Do not reset the board until the player explicitly requests a retry.
+		# Only the Raven reducer owns first-clear rewards, never this UI.
 	input_locked = false
+	_refresh_controls()
 	board_feedback.emit(feedback.text)
 
 
@@ -426,15 +430,17 @@ func _paint_frame(frame: Dictionary) -> void:
 
 func _paint_live() -> void:
 	_paint_board(game.tiles, game.specials, game.blocker_layers, game.ingredients)
-	var value := int(game.collected)
-	var target := 0
-	var label := ""
-	if not game.level_data.get("objectives", []).is_empty():
-		var first: Dictionary = game.level_data.objectives[0]
-		target = int(first.get("target", 0))
-		label = str(first.get("label", first.get("tile", "")))
-	objective.text = "%s %d/%d  ·  %s %d" % [label, value, target, str(skin.get("moves", "Ходы:")), int(game.moves_left)]
+	var descriptions: Array[String] = []
+	var objectives: Array = game.level_data.get("objectives", [])
+	for index in objectives.size():
+		var entry: Dictionary = objectives[index]
+		var label := str(entry.get("label", entry.get("tile", entry.get("kind", ""))))
+		var target := int(entry.get("target", 0))
+		var value := int(game.objective_value(index))
+		descriptions.append("%s %d/%d" % [label, mini(target, value), target])
+	objective.text = "  ·  ".join(descriptions) + "  ·  %s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
 	_paint_selection()
+	_refresh_controls()
 
 
 func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: Array) -> void:
@@ -455,16 +461,29 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 		if not str(ingredients[i]).is_empty():
 			symbol = "◇"
 		var special := str(specials[i])
-		if not special.is_empty():
-			symbol += "✦"
-		if int(blockers[i]) > 0:
-			symbol += "▣"
+		var blocker_layers := int(blockers[i])
 		var glyph := stack.get_node("Glyph") as Label
 		glyph.text = symbol
+		var special_badge := stack.get_node("SpecialBadge") as Label
+		special_badge.text = str(skin.get("special_badges", {}).get(special, "✦"))
+		special_badge.visible = not special.is_empty()
+		var blocker_badge := stack.get_node("BlockerBadge") as Label
+		blocker_badge.text = str(blocker_layers)
+		blocker_badge.visible = blocker_layers > 0
+		var description := str(skin.get("tile_names", {}).get(tile, tile))
+		if not special.is_empty():
+			description += " · %s" % str(skin.get("special_names", {}).get(special, special))
+		if blocker_layers > 0:
+			description += " · блокер: %d сл." % blocker_layers
+		cell.tooltip_text = description
+		cell.disabled = not game.can_interact_with_tile(i) or str(game.state) != "playing"
 		var style := (cell.get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
 		style.bg_color = colors.get(tile, Color("344054"))
-		if int(blockers[i]) > 0:
+		if blocker_layers > 0:
 			style.bg_color = style.bg_color.darkened(0.35)
+			style.border_color = Color("d5aa79")
+			style.set_border_width_all(2)
+		cell.add_theme_stylebox_override("disabled", style)
 		cell.add_theme_stylebox_override("normal", style)
 		cell.add_theme_stylebox_override("hover", style)
 		cell.add_theme_stylebox_override("pressed", style)
