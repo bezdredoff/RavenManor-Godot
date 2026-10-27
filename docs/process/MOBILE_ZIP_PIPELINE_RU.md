@@ -1,6 +1,6 @@
 # Raven Manor — загрузка больших патчей в GitHub с телефона
 
-**Status (27.10.2026):** MOB-00 и код MOB-01/02 смержены (#48, #49); ветка `incoming` создана и реальный безвредный ZIP успешно проверен. GitHub Actions создал `candidate/mobile-40538610191`, но **автоматическое открытие PR блокируется настройкой GitHub**. Ручной тестовый PR #50 с полностью успешным Godot/Room Builder/Web CI закрыт без мержа. `/preview/` в следующем PR — безопасный портал ревью с Web artifacts, **не playable candidate на общем origin**. Физическую загрузку с телефона ещё не проверяли. В UPDS похожий workflow уже реализован, но его npm-проверки и зависимости нельзя применять к Godot как есть.
+**Status (27.10.2026):** MOB-00…03 implemented in main. After owner enabled Actions PR creation, a GitHub-uploaded harmless delta ZIP produced automatic [PR #52](https://github.com/bezdredoff/RavenManor-Godot/pull/52), and independent candidate Web/Godot CI produced a seven-day artifact ([run 40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376)). PR #52 was closed without merge, the inbox was cleaned. **MOB-04 remains open**: no actual upload from a physical phone, no full malicious-archive live matrix, no interactive candidate preview on a separate origin.
 
 ## Когда использовать
 
@@ -113,3 +113,10 @@ GitHub Pages `https://bezdredoff.github.io/RavenManor-Godot/` и `/preview/` и�
 3. Повторяет загрузку безопасного ZIP и проверяет **автоматически** открытый candidate PR и отдельные CI Web-артефакты.
 4. Проверяет upload с телефона, защищённые пути/старая база, артефакт, отказ ошибочного ZIP и отсутствие влияния на стабильный root.
 5. Для playable preview принимает отдельный origin/хостинг — отдельная задача, не смешивать с безопасным CI.
+
+## MOB-04 integration evidence after owner enabled GitHub Actions PR creation
+
+- Archive ingestion and candidate PR generation: [successful import run 40544933737](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737), candidate branch `candidate/mobile-40544933737`, GitHub Actions-created [PR #52](https://github.com/bezdredoff/RavenManor-Godot/pull/52) (closed unmerged after smoke).
+- Independent read-only candidate build [40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376) passed and published `raven-candidate-web-40545034376` Web artifact, retained for seven days. Stable Pages deployment remained skipped.
+- Initial ZIP R2 used an outdated `main` because PR #51 merged mid-test and was **correctly rejected**. R3 targeted the merged main and succeeded. The inbox was cleaned without pushing any test file into `main`.
+- **Remaining manual acceptance:** upload a fresh small ZIP from iPhone/Android into `incoming`, verify automatic candidate PR and CI, confirm file can be downloaded from Actions and (if a playable preview is needed) decide on hosting with a separate origin. Use newly generated `baseSha` after any later main merge — never reuse R3 with an old SHA. Do not merge smoke-only PRs.
