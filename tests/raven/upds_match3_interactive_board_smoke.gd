@@ -48,6 +48,26 @@ func _run() -> void:
 	assert(game.moves_left == before_moves, "Tapping same normal tile must not consume moves")
 	var won := {"count": 0}
 	board.level_won.connect(func(): won.count += 1)
+	# Exercise the actual touch event path, not only the pure drag helper.
+	var first_hint: Dictionary = game.get_hint_move()
+	var start := board.cells[int(first_hint.first)].get_global_rect().get_center()
+	var finish := board.cells[int(first_hint.second)].get_global_rect().get_center()
+	assert(start.distance_to(finish) > 12.0, "Grid must have real touch target geometry")
+	var touch_start := InputEventScreenTouch.new()
+	touch_start.index = 0
+	touch_start.pressed = true
+	touch_start.position = start
+	board._input(touch_start)
+	var touch_drag := InputEventScreenDrag.new()
+	touch_drag.index = 0
+	touch_drag.position = finish
+	board._input(touch_drag)
+	var touch_end := InputEventScreenTouch.new()
+	touch_end.index = 0
+	touch_end.pressed = false
+	touch_end.position = finish
+	board._input(touch_end)
+	assert(game.moves_left == before_moves - 1, "A real touch swipe must commit exactly one legal move")
 	var safety := 0
 	while game.state == "playing" and safety < 40:
 		var hint: Dictionary = game.get_hint_move()
