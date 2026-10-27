@@ -79,6 +79,20 @@
       "status": "in_progress",
       "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/52 — automatically opened from real harmless ZIP; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737 and /actions/runs/40545034376 green; PR closed unmerged and incoming ZIP cleaned. Still requires physical iPhone/Android upload, negative-path integration tests and user device acceptance.",
       "updated": "2026-10-27"
+    },
+    {
+      "id": "CODE-02-01",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
+    },
+    {
+      "id": "CODE-02-02",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 — source-identical UPDS board-shape/tutorial/tile-motion primitives and Godot component smoke, awaiting review; the full Raven Match-3 input/UI/cascade integration is NOT finished."
     }
   ],
   "rules": [

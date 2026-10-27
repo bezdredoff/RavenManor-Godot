@@ -43,6 +43,10 @@ foreach ($script in @(
 	'res://scripts/shared/upds/dialogue_paging.gd',
 	'res://scripts/shared/upds/player_preferences.gd',
 	'res://scripts/shared/upds/seeded_random.gd',
+	'res://scripts/ui/css_motion.gd',
+	'res://scripts/match3/match3_board_shape.gd',
+	'res://scripts/match3/match3_tile_motion_layer.gd',
+	'res://scripts/match3/match3_tutorials.gd',
 	'res://scripts/raven/raven_menu_copy.gd',
 	'res://scripts/raven/upds_match3_campaign_adapter.gd',
 	'res://scripts/raven/raven_vn_player.gd',
@@ -59,6 +63,7 @@ Invoke-GodotCheck 'Raven foundation smoke' @('--headless', '--path', $projectPat
 Invoke-GodotCheck 'Raven navigation graph smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/manor_navigation_graph_smoke.gd', '--quit-after', '120') 'Raven Manor authored navigation graph smoke passed'
 Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/prototype_lab_smoke.gd', '--quit-after', '120') 'Raven Manor Prototype Lab smoke passed'
 Invoke-GodotCheck 'UPDS engine port parity smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_core_reuse_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS core reuse smoke passed'
+Invoke-GodotCheck 'UPDS M3 visual primitives' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_visual_primitives_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 visual primitives smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'

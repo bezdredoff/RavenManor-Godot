@@ -63,3 +63,20 @@ UPDS DialoguePaging is imported verbatim and now paginates the Hall tea VN scree
 5. **All-content rollout:** apply shared systems to Chapters II–VI and regression-test old saves, localization and mobile views.
 
 This is a source-code reuse policy, not a claim that the entire UPDS game is already ported.
+
+
+## CODE-02A — Source-identical UPDS board/motion/tutorial components (under review)
+
+This extraction **reuses the actual UPDS Godot presentation modules**, not a rewritten Raven copy. Source snapshot pinned from `bezdredoff/UPDS-godot@main`:
+
+| UPDS original → Raven destination (same path) | Git blob SHA | Boundary |
+|---|---|---|
+| `scripts/ui/css_motion.gd` | `a021a3afee3157f514ccda541b9b7fdf95a3da86` | cubic-bezier easing, no game content |
+| `scripts/match3/match3_board_shape.gd` | `8f320c7f18e3a2744375a58cd11edca08b1f9a40` | hole/shape outline and translucent fill renderer |
+| `scripts/match3/match3_tile_motion_layer.gd` | `0b9819cbf8d6f26b74a317678ad68e11c2c9c25e` | transient settle/spawn visual copies; board game owns state |
+| `scripts/match3/match3_tutorials.gd` | `cda888d62080ec09b16f2617a1eee9604441f3d8` | tutorial event predicates, not school text |
+| `scenes/match3_tile_motion_layer.tscn` | `bb5d774c1ac9d6c63109317d8e6adc0f7af7c494` | original reusable Control presentation node |
+
+**Current integration:** `tests/raven/upds_match3_visual_primitives_smoke.gd` instantiates the real scene, drives a spawn/fall animation to completion, asserts hole masks, tutorial completion events and easing endpoints. Linux and Windows CI test the original source. No Raven story data, UI theme, input listener or save store lives in these files. No new `RM-*` ID or gameplay currency is introduced.
+
+**Important remaining work:** CODE-02-01/02 are **not complete**. The working Raven vertical slice still uses its existing Match-3 greybox HUD. The large upstream `match3_screen.gd` (150+ KB) must be extracted into reusable input, board cell presenter, motion/feedback and objective controls with Raven theme/asset adapters; direct copying would drag in school content and save/session coupling. Connect these original primitives there and prove mouse/touch drag, invalid swap, blocker holes/special combos, cascade frames and mobile viewport QA. Do **not** mark `CODE-02-01` accepted based on this component smoke test.
