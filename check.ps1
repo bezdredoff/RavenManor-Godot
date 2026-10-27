@@ -57,4 +57,5 @@ Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $pro
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
 
 Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
+Invoke-GodotCheck 'Hall VN runtime UI smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_ui_smoke.gd', '--quit-after', '240') 'Raven Manor Hall VN UI runtime smoke passed'
 Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/season1_map_smoke.gd', '--quit-after', '120') 'Raven Manor continuous season1 map smoke passed'
