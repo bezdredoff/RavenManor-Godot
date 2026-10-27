@@ -24,8 +24,8 @@ func _run() -> void:
 	board.reduced_motion = true
 	await process_frame
 	assert(board.cells.size() == 36)
-	assert(board.get_node("UPDSBoardArea/UPDSBoardShape") != null)
-	assert(board.get_node("UPDSBoardArea/UPDSTileMotion") != null)
+	assert(board.board_area.get_node("UPDSBoardShape") != null)
+	assert(board.board_area.get_node("UPDSTileMotion") != null)
 	assert(board.objective.text.contains("16"))
 	assert(game.state == "playing")
 	assert(Drag.direction(Vector2(50, 1)) == "right")
