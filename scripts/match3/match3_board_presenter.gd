@@ -109,10 +109,10 @@ func _build() -> void:
 	outline.configure(rows, cols, game.level_data.get("boardHoles", []), false)
 	motion_layer = MotionScene.instantiate() as Control
 	motion_layer.name = "UPDSTileMotion"
-	motion_layer.size = extent
 	motion_layer.z_index = 4
 	motion_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	board_area.add_child(motion_layer)
+	motion_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	feedback = Label.new()
 	feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	feedback.add_theme_color_override("font_color", Color("c0dab7"))
@@ -175,7 +175,10 @@ func _input(event: InputEvent) -> void:
 	elif _gesture_index >= 0 and kind == _gesture_kind and (kind != "touch" or touch_index == _gesture_touch):
 		if is_move:
 			var target := Drag.preview_target(_gesture_index, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
-			highlighted = [_gesture_index, target] if target >= 0 else [_gesture_index]
+			highlighted.clear()
+			highlighted.append(_gesture_index)
+			if target >= 0:
+				highlighted.append(target)
 			_paint_selection()
 		elif is_release:
 			var start := _gesture_index
@@ -235,7 +238,8 @@ func show_hint() -> void:
 	if hint.is_empty():
 		feedback.text = str(skin.get("no_hint", "Нет доступных ходов"))
 	else:
-		highlighted = [int(hint.first), int(hint.second)]
+		highlighted.append(int(hint.first))
+		highlighted.append(int(hint.second))
 		feedback.text = str(skin.get("hint_message", "Подсвечен возможный ход"))
 	selected_index = -1
 	_paint_selection()
