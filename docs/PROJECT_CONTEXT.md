@@ -1,6 +1,6 @@
 # Raven Manor — project context
 
-**Status reconciled 2026-10-26:** Stage 1 v0.5 narrative and Stage 2 v0.2 architecture remain the approved source baseline; Stage 3 v0.2 research remains planning evidence. Godot 4.7.2 Raven foundation, authored Hall → Corridor → Bedroom navigation, standalone `RM-VS-01` vertical slice (VN, three Match-3 levels, restorations, clue/night/save), Prototype Lab launcher, isolated previews and CI/Web deployment are **implemented on main**. Owner accepted engineering Prototype Lab on 2026-10-24.
+**Historical baseline reconciled 2026-10-26:** Stage 1 v0.5 narrative and Stage 2 v0.2 architecture remain the approved source baseline; Stage 3 v0.2 research remains planning evidence. Godot 4.7.2 Raven foundation, authored Hall → Corridor → Bedroom navigation, standalone `RM-VS-01` vertical slice (VN, three Match-3 levels, restorations, clue/night/save), Prototype Lab launcher, isolated previews and CI/Web deployment are **implemented on main**. Owner accepted engineering Prototype Lab on 2026-10-24.
 
 The subsequent independent whole-season continuous-map feasibility preview has eight proposed area footprints/11 door relations, portrait-oriented 65°/0.74× preferred framing, and preliminary AI1/AI2/SVG/PLAN art comparisons. Eight generated Hall PNG files and their provenance/reconstructed prompts landed in merged PR #17; they are **not** spatially calibrated or approved as final artwork.
 
@@ -27,3 +27,9 @@ Core loop: short VN scene → selected hotspot → sorting/cleaning/clearing/fin
 `RM-VS-01`: Hall → Corridor → Bedroom access independent from bathroom repair; authored graph routing; 3 Match-3 first-clear rewards (2/2/2); bedroom restoration cost 2; bathroom specialist vignette cost 4; clue and Ada scenes; first night and persisted resume.
 
 Constraints: no free tap-to-move, only authored hotspot/door routes in the accepted slice. Doors may remain visually open once unlocked. Bathroom may be a corridor-side vignette. Onoe art is owned/authorized only as a technical placeholder, not canonical Evelyn. Preserve stable `RM-*` IDs, separately designed VN vs mildly-chibi map characters, coherent style gating and provenance before bulk art.
+
+## Production context update — 2026-10-27
+
+The current executable branch now includes source-verbatim UPDS Match-3 gameplay/paging/preferences (merged #46), plus upstream board shape, tile-motion, easing, tutorial predicates and real Godot smoke from merged [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54). This **does not yet replace Raven's Match-3 greybox with the complete UPDS screen**. CODE-02-00 is merged; CODE-02-01/02 continue with input, frame/HUD integration and mobile QA; GFX-10 remains subject to art acceptance.
+
+The phone-to-GitHub ZIP/candidate PR/independent CI flow has real owner-confirmed upload evidence from merged [PR #56](https://github.com/bezdredoff/RavenManor-Godot/pull/56); remaining malicious-archive live and phone artifact review gates keep MOB-04 in progress. The working dashboard and current statuses are defined by the paired CODE/GFX roadmaps, `code_work_packages.json` and `production_progress.json`. Do not infer current progress from the historical v0.1 narrative/room-builder paragraphs above.
