@@ -420,3 +420,11 @@ C7 props & repairs → C8 save/season flow ──┤
 - Текущая ветка `code/code-02b-match3-help-blockers-results` добавляет: отдельную индикацию пяти UPDS specials, видимость слоёв blockers, tooltip, все objective counter values, встроенную инструкцию, session-level reduced-motion toggle, **явную** кнопку повтора при проигрыше и Godot regression test. CODE-02-03 в `PR_review`.
 - UPDS исходный `match3_help_overlay.gd` изучен, но зависит от school fonts/assets — его нельзя копировать без отделения этих зависимостей. Raven copy для help — адаптер, исходные правила Match3 и сохранения не переписаны.
 - Последующие gates: animation overlap + frame parity for specials/combinations, blocker-segment clipping and FX, authored hint/tutor onboarding, полноценный result UI, сохраняемая настройка motion, BE/EN перевод, accessibility touch, утверждённый GFX-10, iPhone screenshot QA. Не закрывать CODE-02 от зелёного CI без human/device/art acceptance.
+
+
+## CODE-02C — settle по сегментам и спецкомбинации (candidate, 27.10.2026)
+
+- После смерженного [PR #59](https://github.com/bezdredoff/RavenManor-Godot/pull/59) в runtime есть временные метки спецфишек/блокеров, справка и явный retry. `CODE-02-03` **merged**, но не `accepted`: production tutorial/result, локализация и GFX-10 ещё не приняты.
+- Кодовый дефект перед этим пакетом: UPDS `_settle_columns()` уже возвращает `segmentTop/segmentBottom`, но Raven отдавал их tile-motion слою без `clipRect`, поэтому визуальные копии могли пересекать заблокированные сегменты. Новый адаптер `match3_frame_visuals.gd` создаёт `clipRect` строго по сегменту и не меняет физику UPDS. `clear` кадры рисуют отдельный прозрачный FX слой с отличающимися цветами и символами special kinds; `cascade`/reshuffle получают временную обратную связь.
+- Новый Godot тест проверяет оригинальные motion clips, пару `flash-row + flash-column`, порядок fade/settle, очистку transient nodes и путь reduced-motion. Пакет **не** утверждает финальный Match-3 экран без GFX-10 и мобильного QA. Задача `CODE-02-02` остаётся `PR_review`, затем `in_progress` до final-effects/device gate.
+- Следующий code gate: адаптивный portrait HUD с safe area, фиксированное место целям, доступность кнопок, визуальная проверка iPhone 390/430 px, плюс real assets & soundtrack/haptics после GFX-10.
