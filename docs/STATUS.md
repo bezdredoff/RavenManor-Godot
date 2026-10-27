@@ -113,3 +113,13 @@ Result of the completed pass: 52/52 candidates, 0 missing, 0 mechanically flagge
 
 `scripts/raven/tools/build_wall_tileset.py` inverts the structural half of the wall pipeline: one AI render supplies the material patches (mahogany, carved trim, damask), and all seven shapes are composed from a single 160×160 framed module whose four edges are pixel-identical. Result: seven `grand` shapes in 0.03 s, seam edge delta 0.0, exact rectangle/L alpha, identical trim height, no room scenes or black plates. This is a **prototype for review**, not an integrated tileset: corners are butt-jointed rather than mitred, there is no wall-top/cap convention yet, and nothing is wired into the Room Builder or Godot. Comparison and limits: `docs/WALL_TILESET_PIPELINE.md`; evidence `docs/evidence/wall_tileset/`.
 
+
+
+## Production coordination / late October 2026 (source reconciliation)
+
+- **Merged in `main` since the older 2026-10-26 snapshot:** PR #45 introduced the provisional Chapter II Hall tea VN art pilot (not final production sprites); PR #46 introduced source-preserving UPDS Match-3 rules, paging and preferences reuse with Raven adapters, **not** the full UPDS Match-3/VN screen; PR #47 introduced the paired CODE-00…CODE-13 production roadmap and 36 engineering work packages. Their merge state was verified from GitHub.
+- **New process work in PR #48 (candidate, not yet merged/accepted at authoring):** common ChatGPT/Codex/DeepSeek instructions, machine-readable semantic status/evidence ledger, generated CODE/GFX/gap dashboard at planned `/dashboard/`, and manual phone ZIP delta preflight/packager. Automatic ZIP inbox→PR and Pages `/preview/` remain future security-review tasks (MOB-01…04), **not active features**.
+- **Additional uncovered production obligations** now tracked in `data/raven/production/gap_work_packages.json`: Room Builder 65° editing parity/touch panels/NPC drag, scene-import round-trip, Qwen/MOSS/FLUX object-state trial and Art Job Pack, wall/door/stair calibration, private canon-public build separation, localization, phone acceptance and narrative unresolved questions.
+- **Task status authority:** code roadmap + GFX roadmap + supplemental gaps define scope; `data/raven/production/production_progress.json` records actual owner/date/status/evidence. The dashboard is a generated view and **cannot itself approve** art, functionality, Web device QA, or release. Preserve original `RM-VS-01` saves and map gating until explicitly migrated.
+
+Older historical milestones and acceptance statements above remain in place, but do not supersede newer reconciled dates, commits and merge evidence.

@@ -126,6 +126,15 @@ jobs:
           test -f build/web/builder/reference/sprites/onoe_walk_sheet_v1.png
           test -f build/web/builder/icons/icon-512.png
 
+      - name: Build production dashboard from tracked status sources
+        run: |
+          python3 scripts/raven/tools/build_production_dashboard.py --check
+          python3 scripts/raven/tools/build_production_dashboard.py --output build/web/dashboard/status.json
+          cp dashboard/index.html dashboard/style.css dashboard/app.mjs build/web/dashboard/
+          node --check dashboard/app.mjs
+          test -s build/web/dashboard/index.html
+          test -s build/web/dashboard/status.json
+
       - name: Configure Pages
         uses: actions/configure-pages@v5
 

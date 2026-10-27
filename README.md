@@ -34,3 +34,9 @@ Full scene/asset/map production shotlist: `docs/production/SEASON1_VISUAL_MAP_AN
 ## Paired production roadmaps (2026-10-27)
 
 The [graphics plan](docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md) (GFX-00…GFX-13) and [code plan](docs/production/CODE_PRODUCTION_ROADMAP_RU.md) (CODE-00…CODE-13) share a **Hall end-to-end approval gate** before chapter-scale production. The code roadmap prioritizes extracting proven systems from `bezdredoff/UPDS-godot`; Raven-specific additions are map navigation, NPC/object interactions and restoration/metaprogression. The detailed proposed [engineering work backlog](data/raven/production/code_work_packages.json) tracks prerequisites and art gates; it does not imply tasks are already implemented. At roadmap creation, source-code migration PR #46 remained unmerged.
+
+## Production Dashboard & multi-agent collaboration
+
+After deployment, the [Raven Manor production dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) displays the current CODE/GFX tasks and additional process/UX gaps, their criteria, dependencies, priority and explicit evidence. Dashboard files are **generated**, while `data/raven/production/production_progress.json` owns ongoing task status/evidence.
+
+All agents (ChatGPT, Codex, DeepSeek) use `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/process/TASK_AND_PR_TEMPLATE_RU.md`; no task PR should omit current status/docs updates. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.

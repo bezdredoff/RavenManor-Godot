@@ -1,0 +1,56 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-27",
+  "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
+  "entries": [
+    {
+      "id": "CODE-01-01",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/46 (merged; CI success). C1 full release gate still needs review; not accepted."
+    },
+    {
+      "id": "PROC-001",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+    },
+    {
+      "id": "PROC-002",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — open PR with docs/dashboard and CI; awaiting review, not accepted."
+    },
+    {
+      "id": "PROC-003",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "Security design and upload contract in work; no approved mobile test."
+    },
+    {
+      "id": "PROC-004",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — PR template and status discipline, pending merge/review."
+    },
+    {
+      "id": "MOB-00",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/48 — archive packaging/validator/tests in PR. No automated importer or verified phone upload."
+    }
+  ],
+  "rules": [
+    "merged requires a concrete PR link",
+    "accepted requires product owner or direct art/device approval and evidence",
+    "never infer task completion from green CI or presence of a document",
+    "evidence must be updated when changing status",
+    "repo main may advance; always verify merged PR state before claiming current status"
+  ]
+}
