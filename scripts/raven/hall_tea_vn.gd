@@ -5,6 +5,7 @@ const SceneId := "RM-BEAT-02-01"
 const ScriptData = preload("res://data/raven/production/season1_dialogue_catalog.json")
 const CueData = preload("res://data/raven/production/line_performance_cues.json")
 const Copy = preload("res://scripts/raven/raven_production_localization.gd")
+const Paging = preload("res://scripts/shared/upds/dialogue_paging.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -17,6 +18,8 @@ var preferences := Copy.new()
 var store := Store.new()
 var lines: Array = []
 var line_index := 0
+var dialogue_page := 0
+var dialogue_pages: Array[String] = []
 var background: TextureRect
 var dimmer: ColorRect
 var actor_left: TextureRect
@@ -188,8 +191,11 @@ func _render(animate: bool = false) -> void:
 	var lang := preferences.locale
 	chapter.text = _scene_title(lang)
 	nameplate.text = Copy.speaker_name(who, lang).to_upper()
-	dialogue.text = Copy.line_text(str(line.id), lang)
-	line_progress.text = "%d / %d" % [line_index + 1, lines.size()]
+	var full_text := Copy.line_text(str(line.id), lang)
+	dialogue_pages = Paging.paginate(full_text, Callable(self, "_fits_dialogue"), lang)
+	dialogue_page = mini(dialogue_page, dialogue_pages.size() - 1)
+	dialogue.text = Paging.continuation(dialogue_pages[dialogue_page], dialogue_page < dialogue_pages.size() - 1)
+	line_progress.text = "%d/%d · %d/%d" % [line_index + 1, lines.size(), dialogue_page + 1, dialogue_pages.size()]
 	next_button.text = {"ru": "Далее ›", "be": "Далей ›", "en": "Next ›"}.get(lang, "Next ›")
 	var state: Dictionary = store.load_campaign()
 	if state.storyBeatsSeen.has(SceneId):
@@ -203,6 +209,13 @@ func _render(animate: bool = false) -> void:
 	locale_selector.select(Copy.SUPPORTED_LOCALES.find(lang))
 	if animate:
 		_focus_speaker(who)
+
+
+func _fits_dialogue(candidate: String) -> bool:
+	var font: Font = dialogue.get_theme_font("font")
+	var font_size := dialogue.get_theme_font_size("font_size")
+	var measured := font.get_multiline_string_size(candidate, HORIZONTAL_ALIGNMENT_LEFT, maxf(40.0, dialogue.size.x), font_size)
+	return measured.y <= dialogue.size.y - 3.0
 
 
 func _scene_title(lang: String) -> String:
@@ -228,12 +241,18 @@ func _switch_locale(selected_index: int) -> void:
 	if selected_index < 0 or selected_index >= Copy.SUPPORTED_LOCALES.size():
 		return
 	if preferences.set_locale(Copy.SUPPORTED_LOCALES[selected_index]) == OK:
+		dialogue_page = 0
 		_render(false)
 
 
 func _next() -> void:
+	if dialogue_page < dialogue_pages.size() - 1:
+		dialogue_page += 1
+		_render(false)
+		return
 	if line_index < lines.size() - 1:
 		line_index += 1
+		dialogue_page = 0
 		_render(true)
 		return
 	_commit_completed_beat()
