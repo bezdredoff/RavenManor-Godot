@@ -1,0 +1,68 @@
+{
+  "sourceRepository": "bezdredoff/UPDS-godot",
+  "sourcePath": "tests/fixtures/dialogue_paging_cases.json",
+  "sourceSha": "f85a8044d294861591bf57361e01c8724d8a7d85",
+  "scope": "3 representative identical upstream oracle vectors",
+  "cases": [
+    {
+      "id": "ru-VN0001-58",
+      "locale": "ru",
+      "text": "После звонка кампус японского колледжа Сэйран не затихал: спортивные клубы расходились на тренировки. Я же искала детективный клуб.",
+      "budget": 58,
+      "sentences": [
+        "После звонка кампус японского колледжа Сэйран не затихал: спортивные клубы расходились на тренировки.",
+        "Я же искала детективный клуб."
+      ],
+      "pages": [
+        "После звонка кампус японского колледжа Сэйран не затихал:",
+        "спортивные клубы расходились на тренировки.",
+        "Я же искала детективный клуб."
+      ],
+      "displayed": [
+        "После звонка кампус японского колледжа Сэйран не затихал…",
+        "спортивные клубы расходились на тренировки…",
+        "Я же искала детективный клуб."
+      ]
+    },
+    {
+      "id": "be-VN0001-58",
+      "locale": "be",
+      "text": "Пасля званка кампус японскага каледжа Сэйран не сціхаў: спартыўныя клубы разыходзіліся на трэніроўкі. А я шукала дэтэктыўны клуб.",
+      "budget": 58,
+      "sentences": [
+        "Пасля званка кампус японскага каледжа Сэйран не сціхаў: спартыўныя клубы разыходзіліся на трэніроўкі.",
+        "А я шукала дэтэктыўны клуб."
+      ],
+      "pages": [
+        "Пасля званка кампус японскага каледжа Сэйран не сціхаў:",
+        "спартыўныя клубы разыходзіліся на трэніроўкі.",
+        "А я шукала дэтэктыўны клуб."
+      ],
+      "displayed": [
+        "Пасля званка кампус японскага каледжа Сэйран не сціхаў…",
+        "спартыўныя клубы разыходзіліся на трэніроўкі…",
+        "А я шукала дэтэктыўны клуб."
+      ]
+    },
+    {
+      "id": "en-VN0001-58",
+      "locale": "en",
+      "text": "After the bell, Seiran College in Japan was still buzzing as sports clubs headed to practice. I was looking for the detective club.",
+      "budget": 58,
+      "sentences": [
+        "After the bell, Seiran College in Japan was still buzzing as sports clubs headed to practice.",
+        "I was looking for the detective club."
+      ],
+      "pages": [
+        "After the bell, Seiran College in Japan was still buzzing",
+        "as sports clubs headed to practice.",
+        "I was looking for the detective club."
+      ],
+      "displayed": [
+        "After the bell, Seiran College in Japan was still buzzing…",
+        "as sports clubs headed to practice…",
+        "I was looking for the detective club."
+      ]
+    }
+  ]
+}
