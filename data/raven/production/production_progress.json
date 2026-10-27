@@ -85,14 +85,14 @@
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "CODE-02 interactive board PR candidate: actual UPDS touch drag threshold/neighbor logic extracted, shared frame-driven board presenter and UPDS motion/shape scene integrated in playable RM-VS-01. Await CI and human phone QA; full polish/reduced-motion/special FX and GFX-10 art gate still open."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
     },
     {
       "id": "CODE-02-02",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "CODE-02 interactive board PR candidate: actual UPDS touch drag threshold/neighbor logic extracted, shared frame-driven board presenter and UPDS motion/shape scene integrated in playable RM-VS-01. Await CI and human phone QA; full polish/reduced-motion/special FX and GFX-10 art gate still open."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 — actual UPDS touch thresholds/neighbor model, engine frame-driven board and UPDS motion/shape scene integrated with RM-VS-01. Pending final-head CI and human iPhone/Android QA. Full GFX-10 art/help/FX polish unaccepted."
     },
     {
       "id": "CODE-02-00",
