@@ -3,7 +3,7 @@ extends SceneTree
 const Layout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Game = preload("res://scripts/raven/raven_match3_game.gd")
-const Skin = preload("res://scripts/raven/raven_match3_theme.gd")
+const RavenSkin = preload("res://scripts/raven/raven_match3_theme.gd")
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 const Slice = preload("res://scripts/raven/vertical_slice.gd")
 
@@ -23,7 +23,7 @@ func _run() -> void:
 	root.add_child(host)
 	var board := Board.new()
 	host.add_child(board)
-	board.setup(game, Skin.placeholder())
+	board.setup(game, RavenSkin.placeholder())
 	await process_frame
 	for viewport_width in [320.0, 390.0, 412.0, 430.0]:
 		var usable := Layout.content_width(viewport_width)
