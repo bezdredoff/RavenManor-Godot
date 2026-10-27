@@ -65,6 +65,24 @@
       "requiresHumanAcceptance": false
     },
     {
+      "id": "PROC-005",
+      "title": "CI-гейт: документация и статус дашборда обязательны в каждом авторском PR",
+      "domain": "process",
+      "priority": "P0",
+      "size": "S",
+      "description": "ChatGPT/Codex/DeepSeek обязаны менять docs/STATUS.md и data/raven/production/production_progress.json в том же PR с кодом, артом, схемами или документацией; автоматический incoming ZIP candidate может быть исключён из pre-merge gate, но обязан пройти ручной review и follow-up.",
+      "deliverable": "PR template + canonical agent policy + scripts/raven/tools/check_pr_governance.py and tests + CI fail-on-omission",
+      "acceptance": "Authored PR without either status source fails CI, both present succeeds; only candidate/mobile-* intake is exempt with documented review follow-up; no generated dashboard/status.json edited",
+      "status": "proposed",
+      "dependsOn": [
+        "PROC-004",
+        "PROC-002"
+      ],
+      "graphicsDependencies": [],
+      "source": "user rule 2026-10-27 all PRs must keep docs + dashboard status current",
+      "requiresHumanAcceptance": false
+    },
+    {
       "id": "RM-GAP-001",
       "title": "Room Builder ↔ Godot пространственный паритет",
       "domain": "map",
