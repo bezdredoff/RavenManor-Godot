@@ -37,4 +37,5 @@ run_check 'Prototype Lab smoke' 'Raven Manor Prototype Lab smoke passed' --scrip
 run_check 'RM-VS-01 vertical slice smoke' 'Raven Manor RM-VS-01 smoke passed' --script res://tests/raven/vertical_slice_smoke.gd --quit-after 120
 run_check 'Narrative production contract smoke' 'Raven Manor production narrative contract smoke passed' --script res://tests/raven/production_narrative_smoke.gd --quit-after 120
 run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
+run_check 'Hall VN runtime UI smoke' 'Raven Manor Hall VN UI runtime smoke passed' --script res://tests/raven/hall_tea_vn_ui_smoke.gd --quit-after 240
 run_check 'Whole season1 map smoke' 'Raven Manor continuous season1 map smoke passed' --script res://tests/raven/season1_map_smoke.gd --quit-after 120
