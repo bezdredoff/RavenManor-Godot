@@ -1,6 +1,6 @@
 # Raven Manor — загрузка больших патчей в GitHub с телефона
 
-**Status:** *MOB-00 merged; MOB-01/MOB-02 implementation candidate only*. Реальный автоматический workflow добавлен в ветке `feature/mobile-zip-import-candidate-preview`; он не доступен из стабильного `main` до ревью и мержа. Не заявлять, что автоматический importer, candidate PR или `/preview/` работают в Raven до bootstrap ветки `incoming`, GitHub permission проверки и end-to-end теста. В UPDS похожий workflow уже реализован, но его npm-проверки и зависимости нельзя применять к Godot как есть.
+**Status (27.10.2026):** MOB-00 и код MOB-01/02 смержены (#48, #49); ветка `incoming` создана и реальный безвредный ZIP успешно проверен. GitHub Actions создал `candidate/mobile-40538610191`, но **автоматическое открытие PR блокируется настройкой GitHub**. Ручной тестовый PR #50 с полностью успешным Godot/Room Builder/Web CI закрыт без мержа. `/preview/` в следующем PR — безопасный портал ревью с Web artifacts, **не playable candidate на общем origin**. Физическую загрузку с телефона ещё не проверяли. В UPDS похожий workflow уже реализован, но его npm-проверки и зависимости нельзя применять к Godot как есть.
 
 ## Когда использовать
 
@@ -88,3 +88,28 @@ python3 scripts/raven/tools/validate_mobile_patch.py \
 - **MOB-04**: end-to-end phone upload, invalid ZIP attacks, stale SHA, PR creation, iPhone/Android viewport test, manual merge → stable deploy proof.
 
 Отсутствие MOB-01–04 не означает, что ChatGPT не может подготовить готовый ZIP для ручной загрузки в будущий pipeline. Отдельный PR потребуется для security-reviewed GitHub Actions. Можно воспользоваться direct connector PR небольших файлов до активации importer. **Статус MOB-01–04 должен быть явно отображён в production dashboard, без ложных «готово».**
+
+
+## Фактический тест и необходимые действия владельца (2026-10-27)
+
+- Реальная загрузка ZIP с валидным manifest: [Actions run 40538610191](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40538610191). Read-only ZIP validation: **success**. Отдельная candidate branch `candidate/mobile-40538610191`: **создана**.
+- `gh pr create` в write-job вернул GitHub GraphQL: **GitHub Actions is not permitted to create or approve pull requests**. Невозможно активировать это из PR; потребуется действие владельца: GitHub → RavenManor-Godot → **Settings → Actions → General → Workflow permissions** → **Allow GitHub Actions to create and approve pull requests**. Включать автоматическое одобрение PR не требуется; только разрешение создавать PR. Если политика запрещает — оставить создание PR вручную с ограниченным connector access.
+- Тестовый [PR #50](https://github.com/bezdredoff/RavenManor-Godot/pull/50) создан отдельно из той же candidate branch, полный Godot/Room Builder/Web CI прошёл. PR **закрыт без мержа**; тестовый файл не попал в `main`.
+- Следующий импорт по `incoming` после PR с исправлением будет создавать candidate branch и **продолжать независимые проверки, даже если настройка PR creation выключена**. Workflow выдаст ссылку на ручной PR и завершится с явным warning/error, если PR не создан. Не помечать полный pipeline принятым до успешного прогона с включённой настройкой.
+- MOB-04 остаётся незакрытым: синтетический реальный Git push ZIP не является физической загрузкой с iPhone/Android.
+
+## Почему не публикуем candidate игру прямо в /preview/
+
+GitHub Pages `https://bezdredoff.github.io/RavenManor-Godot/` и `/preview/` имеют **одинаковый origin**. JavaScript, который находится в `/preview/`, потенциально может воздействовать на storage, cache, service worker и данные стабильной игры; путь URL не создаёт origin isolation. Запуск непроверенного кандидата в одной области безопасности с `main` не удовлетворяет требованиям production handoff.
+
+Поэтому безопасная стадия MOB-03 публикует в `/preview/` **только доверенную страницу списка CI-сборок**, а candidate Web export загружает в GitHub Actions как отдельный артефакт `raven-candidate-web-<run_id>` на **7 дней**, с `contents:read` и без Pages deploy. Пользователь видит состояние проверок и получает архив со сборкой, который может разместить на изолированном домене.
+
+Для **играбельного preview по ссылке** надо заранее создать **отдельный Pages-репозиторий или иной хостинг с отдельным origin**, отдельной политикой доступа и cache/SW. Пока такого репозитория нет, публичный `/preview/` **не является играбельной candidate версией**. Не отправлять туда произвольные файлы ZIP через workflow с правами Pages deployment.
+
+### Чеклист приёмки следующей партии
+
+1. Owner проверяет Settings → Actions → General для PR creation, без расширенных PAT.
+2. Мержит отдельный PR для trusted portal и fallback CI; проверяет доступность `/preview/`.
+3. Повторяет загрузку безопасного ZIP и проверяет **автоматически** открытый candidate PR и отдельные CI Web-артефакты.
+4. Проверяет upload с телефона, защищённые пути/старая база, артефакт, отказ ошибочного ZIP и отсутствие влияния на стабильный root.
+5. Для playable preview принимает отдельный origin/хостинг — отдельная задача, не смешивать с безопасным CI.

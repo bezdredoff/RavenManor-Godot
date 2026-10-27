@@ -11,6 +11,7 @@
 - `WALL_TILESET_PIPELINE.md`: constructed wall tileset prototype compared with the generated batch.
 - `BLENDER_WALL_KIT.md`: procedural Blender wall kit with a verified corner joint and leak check.
 - `../dashboard/`: public Pages production overview, generated from machine-readable backlog and status; not an editable authority.
+- `../preview/`: trusted GitHub Actions candidate review portal (CI links / downloadable Web artifacts only). **Not playable preview until separate origin.**
 - `process/AI_COLLABORATION_RU.md`: shared ChatGPT/Codex/DeepSeek read/propose/implement/PR/status workflow.
 - `process/TASK_AND_PR_TEMPLATE_RU.md`: task proposal and PR format.
 - `process/MOBILE_ZIP_PIPELINE_RU.md`: scoped mobile ZIP delta delivery design, security gates and pending importer activation.

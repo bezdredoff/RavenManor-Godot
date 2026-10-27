@@ -40,3 +40,7 @@ The [graphics plan](docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md) (GFX-00â€
 After deployment, the [Raven Manor production dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) displays the current CODE/GFX tasks and additional process/UX gaps, their criteria, dependencies, priority and explicit evidence. Dashboard files are **generated**, while `data/raven/production/production_progress.json` owns ongoing task status/evidence.
 
 All agents (ChatGPT, Codex, DeepSeek) use `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/process/TASK_AND_PR_TEMPLATE_RU.md`; no task PR should omit current status/docs updates. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.
+
+### Candidate ZIP review and non-deployed Web artifacts
+
+The trusted [candidate review portal](https://bezdredoff.github.io/RavenManor-Godot/preview/) lists recent independent candidate CI runs. Candidate Web builds are downloadable as GitHub Actions artifacts; they are **not executed under the stable game's Pages origin**. Until a separate-origin preview host is configured, this is a review/download portal, **not a playable /preview/ game**. See `docs/process/MOBILE_ZIP_PIPELINE_RU.md` for the actual upload test, the GitHub Actions PR-creation policy blocker and manual fallback.
