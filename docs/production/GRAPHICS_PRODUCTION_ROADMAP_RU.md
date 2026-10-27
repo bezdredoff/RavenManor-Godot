@@ -408,3 +408,8 @@ Inventory
 12. Сделать Evelyn/Ada Hall pilot с двумя keyframe-микроанимациями и мобильным ревью.
 
 После задачи 12 пересчитать объём, утвердить batch size и расписать W0–W5 в календарный производственный график.
+
+
+## Cross-gate GFX-10 × CODE-02C (27.10.2026)
+
+Программные highlight/fade для `flash-row/flash-column/evidence/lead/insight` и clip по сегментам колонок из UPDS подготовлены в ветке `code/code-02c-special-impact-segment-motion`. Это **временный programmer art**: цветная вспышка / символ типа / числовые слои blocker, без утверждения tile sprites, silhouettes, FX, particles, animations, background или accessibility цвета. Все acceptance критерии `GFX-10` и совместный `CODE-11 × GFX-11` Hall Pilot остаются отдельными gates. Финальные ассеты должны подставляться в Raven theme/manifest без переписывания UPDS match rules.

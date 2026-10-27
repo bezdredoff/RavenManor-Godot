@@ -85,14 +85,14 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged on 2026-10-27; UPDS drag/touch board connected in playable RM-VS-01, Godot CI passed. In-person iPhone/Android thumb QA still missing; not device_verified or accepted."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged; input, touch and adjacent swap contract present in RM-VS-01; human iPhone/Android touch reach and duplicate-event QA pending, so in_progress rather than accepted."
     },
     {
       "id": "CODE-02-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged with UPDS frames/animations. CODE-02B branch adds differentiated special/blocker readability and reduced-motion toggle; richer impact FX, blocker-clip fall polish and mobile QA remain pending."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 and #59 merged: basic frame-driven interactive board and UX. New CODE-02C feature branch code/code-02c-special-impact-segment-motion adds exact UPDS segmentTop/segmentBottom motion clipping and transient special clear impacts, separate CI pending. Complete GFX-10 art/real phone QA still open."
     },
     {
       "id": "CODE-02-00",
@@ -104,8 +104,8 @@
     {
       "id": "CODE-02-03",
       "owner": "ChatGPT",
-      "status": "PR_review",
-      "evidence": "CODE-02B code/code-02b-match3-help-blockers-results: Raven-only contextual help, five UPDS special IDs and layered blocker badges, all UPDS objective counters, explicit non-reward loss/retry, motion toggle and new Godot smoke; temporary 8-tile glyphs not approved GFX-10 and full tutorial/result art still pending.",
+      "status": "merged",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/59 merged 2026-10-27T19:02:39Z: temporary UPDS specials/blocker badge/goal HUD, Raven-only help, explicit retry and local reduced-motion toggle, Godot tests passed. Full tutorial polish, locale/device QA, GFX-10 art NOT accepted.",
       "updated": "2026-10-27"
     }
   ],

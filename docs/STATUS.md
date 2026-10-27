@@ -170,3 +170,10 @@ Older historical milestones and acceptance statements above remain in place, but
 - [PR #58](https://github.com/bezdredoff/RavenManor-Godot/pull/58) merged: the playable `RM-VS-01` board now consumes UPDS drag and frame contract; original UPDS engine remains unchanged.
 - The `code/code-02b-match3-help-blockers-results` candidate extends that shared presenter with Raven-only contextual help, explicit loss/retry that **does not award level_won**, reduced-motion toggle, distinct five UPDS special symbols and layer-count blocker badges, plus progress for all UPDS objectives.
 - New tests: `tests/raven/upds_match3_presentation_states_smoke.gd` added to `scripts/check.sh` and `check.ps1`. Pending CI and manual mobile QA. `CODE-02-01/02` stay `in_progress`; `CODE-02-03` is `PR_review`, not completed. Eight themed tiles are placeholders; **GFX-10 approval remains separate**.
+
+
+## 2026-10-27 — CODE-02C original UPDS motion segment/impact parity candidate
+
+- [PR #59](https://github.com/bezdredoff/RavenManor-Godot/pull/59) **merged**. Temporary Raven Match-3 help, five specials, blockers and explicit retry are present in main; the larger task `CODE-02-03` is merged, not art/device-accepted.
+- `code/code-02c-special-impact-segment-motion` adds a pure visual adapter for existing UPDS `segmentTop/segmentBottom` per tile fall; passes `clipRect` to the **unchanged UPDS tile motion layer** so visual copies cannot pass through blocker/hole rows. Original UPDS clear/settle/cascade snapshots drive temporary special-specific impact flashes and concise feedback; reduced-motion bypasses visual transitions.
+- CI candidate `tests/raven/upds_match3_frame_fx_smoke.gd` exercises real UPDS direct special combo, segment bounds and effect cleanup. No balance, story, first-clear work points or save schema changes. Await CI + review. Real device safe area/gestures, persisted motion setting and approved GFX-10 sprites remain pending.
