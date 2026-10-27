@@ -34,6 +34,10 @@ class GovernanceTests(unittest.TestCase):
             guard.missing_files({"docs/evidence/smoke.txt"}, "candidate/other"),
             set(guard.REQUIRED),
         )
+        self.assertEqual(
+            guard.missing_files({"docs/evidence/smoke.txt"}, "candidate/mobile-1234-spoof"),
+            set(guard.REQUIRED),
+        )
 
 
 if __name__ == "__main__":
