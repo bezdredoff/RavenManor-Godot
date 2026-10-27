@@ -31,6 +31,7 @@ jobs:
       archive_file: ${{ steps.check.outputs.archive_file }}
       task_ids: ${{ steps.check.outputs.task_ids }}
       feature: ${{ steps.check.outputs.feature }}
+      skip: ${{ steps.check.outputs.skip }}
     steps:
       - name: Checkout untrusted incoming branch (no credentials)
         uses: actions/checkout@v4
@@ -59,6 +60,11 @@ jobs:
             archive="$INPUT_ARCHIVE"
           else
             mapfile -t archives < <(find inbox/incoming -maxdepth 1 -type f -name '*.zip' -printf '%f\n')
+            if [[ "${#archives[@]}" -eq 0 ]]; then
+              echo "No archive left in inbox: this is a cleanup push, not an import."
+              echo "skip=true" >> "$GITHUB_OUTPUT"
+              exit 0
+            fi
             test "${#archives[@]}" -eq 1 || { echo "Expected one ZIP in incoming; found ${#archives[@]}" >&2; exit 1; }
             archive="incoming/${archives[0]}"
           fi
@@ -78,6 +84,7 @@ jobs:
               out.write("task_ids="+",".join(manifest["taskIds"])+"\n")
           PY
       - name: Store checksum-pinned ZIP (artifact is still untrusted data)
+        if: steps.check.outputs.skip != 'true'
         uses: actions/upload-artifact@v4
         with:
           name: raven-mobile-${{ github.run_id }}
@@ -88,6 +95,7 @@ jobs:
   candidate:
     name: Create isolated PR without executing candidate code
     needs: validate
+    if: needs.validate.outputs.skip != 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
