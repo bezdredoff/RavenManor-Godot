@@ -1,6 +1,6 @@
 # Raven Manor — canonical project status
 
-Last reconciled: **2026-10-26** after merged PRs #17–#19. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
+Last reconciled: **2026-10-27** after merged PRs #49 and #51 and actual MOB-04 ZIP smoke test. Earlier sections preserve their historical milestones. The owner confirmed that the published Prototype Lab and mobile Room Builder open and operate. This is **working preview acceptance**, not production art approval or a complete device-certification report.
 
 ## Implemented and merged
 
@@ -137,3 +137,10 @@ Older historical milestones and acceptance statements above remain in place, but
 - New candidate work branch `feature/mobile-preview-artifact-and-handoff` creates an independent read-only Web build **artifact** for candidate CI and a **trusted** `/preview/` artifact/review portal. It intentionally does not run untrusted candidate JavaScript on the same origin as the stable game. This is a reviewer tool, not playable /preview/.
 - A separate origin is required for any future runnable candidate preview. Owner must enable **Settings → Actions → General → Allow GitHub Actions to create and approve pull requests** if automatic PR creation is desired. Manual PR fallback remains valid; full iPhone/Android handoff not yet tested.
 - Progress statuses for MOB-01/02/03/04 now reflect the real blockers and evidence. Do not claim full MOB-04 acceptance or complete mobile preview capability from this infrastructure PR.
+
+## 2026-10-27 — GitHub Actions mobile candidate PR setting verified (MOB-01/02/03)
+
+- Owner enabled GitHub Actions creation of PRs; real synthetic ZIP `MOB04-AUTO-PR-R3` was uploaded to `incoming` on GitHub, rebased to latest `main` after PR #51 merged. Import [Actions run 40544933737](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737): read-only validation, safe candidate branch, **automatic GitHub Actions-created [PR #52](https://github.com/bezdredoff/RavenManor-Godot/pull/52)** and independent test orchestration all successful.
+- Candidate test [Actions run 40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376) passed Godot / UPDS / Room Builder / Web export and produced `raven-candidate-web-40545034376` for seven-day retention. Candidate deployment to stable Pages was **skipped**. PR #52 was closed **unmerged** and ZIP removed from `incoming`.
+- Dashboard status now reflects **integrated** MOB-01 (automatic PR), MOB-02 (CI) and MOB-03 (trusted review portal + non-deployed Web artifact). This is **not** full MOB-04 acceptance: no physical phone ZIP upload, no exhaustive adversarial live integration test, no playable preview on a distinct origin.
+- The first R2 ZIP failed safely because `main` changed during the test (PR #51 merged); R3 was rebased against latest SHA and succeeded. This proves stale-base protection, not an unexplained defect.
