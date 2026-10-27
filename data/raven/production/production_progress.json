@@ -47,24 +47,24 @@
     },
     {
       "id": "MOB-01",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Existing feature branch feature/mobile-zip-import-candidate-preview contains protected ZIP importer and candidate PR workflow; bootstrap/live Action PR creation not yet verified."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — feature code under PR review. CI on latest head required; no live incoming ZIP/candidate PR has yet been verified."
     },
     {
       "id": "MOB-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "Feature branch adds isolated read-only candidate workflow_dispatch with test-result gating; no real candidate run yet."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — feature code under PR review. CI on latest head required; no live incoming ZIP/candidate PR has yet been verified."
     },
     {
       "id": "RM-GAP-009",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "PR work reconciles stale progress ledger from #48; full historical STATUS audit remains open."
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/49 — reconcile #48 statuses; broader historical status audit not completed."
     }
   ],
   "rules": [
