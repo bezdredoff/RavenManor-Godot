@@ -445,3 +445,12 @@ During physical phone QA, the owner reported reaching a walkable map after an in
 - Standalone content preview: isolated levels 001–003 without campaign progression. Before this package, this preview had its **own stale click-only Match-3 grid**. After CODE-02-05, a prominent launcher card `0 · MATCH-3 QA` selects isolated RM-LVL-001 and content preview instantiates the exact same UPDS board presenter/theme as RM-VS-01; map-selected level previews follow the same shared renderer. This is an *execution parity fix*, not a new reducer.
 
 Test contract: real Godot invocation from SceneTree metadata into preview, original UPDS gameplay + level_won callback as QA text only, no `Store` or `Reducer` writes, map-preview backward compatibility, and responsive scroll width. The CODE-02-05 task is `PR_review` pending CI; iPhone screenshots/touch gestures are not yet verified. GFX-10 source art is still programmer placeholders.
+
+
+## CODE-02 recovery gate after owner real Web QA failure (27.10.2026)
+
+- **Observed fail:** deployed Godot Match-3 after PR #62 is NOT feature- or design-equivalent to UPDS, and the original RavenManor PWA visual quality is absent. Swipe doesn't work on iPhone/desktop, hint looks like one tile, help expands inline instead of opening the polished modal.
+- The new lightweight Godot board presenter is a *reimplementation*, not genuine UPDS `match3_screen.gd` screen parity. Reuse of upstream engine/shape/motion is partial and should never be represented as full screen port. Prior headless smoke tested synthetic direct `_input`/game calls and missed browser GUI hit testing.
+- New `CODE-02-06` P0 recovery: attach GUI events to live cells, strong two-cell hint, non-expanding modal help; validate actual browser mouse and mobile touch. **Only after verified** do we close input/help regressions.
+- Next dedicated **visual parity** workstream: inventory and compare UPDS Godot `match3_screen.gd` and `match3_help_overlay.gd`, UPDS Web `match3Production.css`, `match3Help.css`, and `bezdredoff/RavenManor` source `src/ui/GameApp.ts`, `src/style.css`, tile art/FX; use Raven gothic-anime identity and original assets, not school-story copy. Compare screenshots and tap placement, objective HUD, board aspect/gap, blockers/specials, animations, help/result modal. Require owner sign-off, not only smoke CI.
+- Change no campaign/save/economy/reducer rules; update both mandatory status docs every PR. Keep CODE-02 task states honest until real mobile acceptance.

@@ -85,7 +85,7 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged; input, touch and adjacent swap contract present in RM-VS-01; human iPhone/Android touch reach and duplicate-event QA pending, so in_progress rather than accepted."
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign."
     },
     {
       "id": "CODE-02-02",
@@ -104,8 +104,8 @@
     {
       "id": "CODE-02-03",
       "owner": "ChatGPT",
-      "status": "merged",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/59 merged 2026-10-27T19:02:39Z: temporary UPDS specials/blocker badge/goal HUD, Raven-only help, explicit retry and local reduced-motion toggle, Godot tests passed. Full tutorial polish, locale/device QA, GFX-10 art NOT accepted.",
+      "status": "in_progress",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.",
       "updated": "2026-10-27"
     },
     {
@@ -124,10 +124,17 @@
     },
     {
       "id": "CODE-02-05",
-      "status": "PR_review",
-      "evidence": "fix/match3-qa-entry-content-preview-parity: direct Prototype Lab MATCH-3 QA for RM-LVL-001 without prologue; Content Preview switched from legacy click-grid to exactly the reusable UPDS Match3Board for 001/002/003 and map selection. Godot smoke/CI pending; QA preview never touches Raven store/reducer; human phone check remains needed.",
+      "status": "in_progress",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
+    },
+    {
+      "id": "CODE-02-06",
+      "owner": "ChatGPT",
+      "updated": "2026-10-27",
+      "status": "PR_review",
+      "evidence": "User-reported critical parity regression; recovery branch fixes cell GUI input and modal help/hint style, with tests. Must re-evaluate on actual Web build/phone. Full faithful UPDS Godot or PWA presentation + legacy Raven art parity is a distinct unfinished stage."
     }
   ],
   "rules": [

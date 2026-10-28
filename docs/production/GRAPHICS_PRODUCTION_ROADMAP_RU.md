@@ -418,3 +418,8 @@ Inventory
 ## Cross-gate GFX-10 × CODE-02D — responsive placeholder UI (2026-10-27)
 
 CODE-02D адаптирует размеры поля и кнопок, строки целей/ходов и safe area, но **не утверждает никакого финального GFX-10 арта**. Все восемь тайлов, blocker/special sprites, FX и HUD-хром пока programmer art. После GFX-10 подставить графические пакеты через Raven theme; проверить legibility целей и значков на 320/390/412/430px, 44px touch targets и физический iPhone без поперечной прокрутки. GFX-11 × CODE-11 Hall Pilot остаётся совместным gate.
+
+
+## GFX-10 urgent visual parity problem (real QA, 2026-10-27)
+
+Owner reports deployed Godot Match-3 is markedly less finished than old RavenManor PWA (https://bezdredoff.github.io/RavenManor/) and UPDS reference. Current simple colored Button tiles are **programmer art**, not an approved port. The next GFX-10 gate must inventory reusable **original Raven Manor source art** `bezdredoff/RavenManor/src/assets`, HUD/theme/specials/FX in `src/ui` and style CSS, and the UPDS Godot/Web board/heavy effect/help layouts for UX reference. Build a photographic/screenshot side-by-side matrix with real-device captures and implement coherent gothic-anime Raven theme while retaining the proven UPDS interaction mechanics. No approval by CI alone.

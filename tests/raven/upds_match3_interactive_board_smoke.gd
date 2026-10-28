@@ -37,6 +37,23 @@ func _run() -> void:
 	assert(Drag.neighbour(6, "up", 6, 6, active) == 0)
 	assert(Drag.target_for_drag(7, Vector2(10, 0), 50.0, 6, 6, active) == -1)
 	assert(Drag.target_for_drag(7, Vector2(20, 0), 50.0, 6, 6, active) == 8)
+	assert(board.cells[7].gui_input.is_connected(board._on_cell_gui_input), "Each UPDS tile must bind gui_input")
+	# Assert the real signal path starts an interaction on a tile, including
+	# coordinate conversion from local tile space to canvas coordinates.
+	var press := InputEventMouseButton.new()
+	press.button_index = MOUSE_BUTTON_LEFT
+	press.pressed = true
+	press.position = board.cells[7].size * 0.5
+	board._on_cell_gui_input(press, 7)
+	assert(board._gesture_index == 7, "Local tile press must begin a real gesture")
+	var release := InputEventMouseButton.new()
+	release.button_index = MOUSE_BUTTON_LEFT
+	release.pressed = false
+	release.position = press.position
+	board._on_cell_gui_input(release, 7)
+	assert(board._gesture_index == -1 and board.selected_index == 7)
+	board.tap_cell(7)
+	assert(board.selected_index == -1)
 	var before_moves := game.moves_left
 	board.show_hint()
 	assert(game.moves_left == before_moves, "Hint must not automatically play a move")

@@ -25,6 +25,7 @@ var objective: Label
 var hint_button: Button
 var help_button: Button
 var help_panel: PanelContainer
+var help_dialog: AcceptDialog
 var retry_button: Button
 var motion_button: Button
 var help_open := false
@@ -96,6 +97,9 @@ func _build() -> void:
 		cell.add_theme_stylebox_override("hover", style)
 		cell.add_theme_stylebox_override("pressed", style)
 		grid.add_child(cell)
+		# Follow UPDS Match3Screen: bind input to each actual tile Control,
+		# not only the scene-wide _input handler (unreliable over ScrollContainer).
+		cell.gui_input.connect(_on_cell_gui_input.bind(index))
 		var stack := Control.new()
 		stack.name = "TileStack"
 		stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -189,6 +193,19 @@ func _build() -> void:
 	retry_button.pressed.connect(retry_level)
 	retry_button.visible = false
 	add_child(retry_button)
+	help_dialog = AcceptDialog.new()
+	help_dialog.name = "Match3HelpModal"
+	help_dialog.title = str(skin.get("help_title", "Как играть"))
+	help_dialog.dialog_text = "\n\n".join([
+		str(skin.get("help_intro", "")),
+		str(skin.get("help_blockers", "")),
+		str(skin.get("help_specials", "")),
+		str(skin.get("help_goal", ""))
+	])
+	help_dialog.min_size = Vector2i(280, 340)
+	help_dialog.confirmed.connect(_on_help_modal_closed)
+	help_dialog.close_requested.connect(_on_help_modal_closed)
+	add_child(help_dialog)
 	help_panel = PanelContainer.new()
 	help_panel.name = "Match3HelpPanel"
 	help_panel.visible = false
@@ -260,13 +277,71 @@ func toggle_help() -> void:
 	if input_locked:
 		return
 	help_open = not help_open
-	help_panel.visible = help_open
+	# Keep the legacy inline help tree hidden; do not expand the board
+	# layout when showing instructions.
+	help_panel.visible = false
+	if help_open:
+		help_dialog.popup_centered_ratio(0.86)
+	else:
+		help_dialog.hide()
 	selected_index = -1
 	highlighted.clear()
 	_gesture_index = -1
 	_gesture_kind = ""
 	_paint_selection()
 	_refresh_controls()
+
+
+func _on_help_modal_closed() -> void:
+	help_open = false
+	help_panel.visible = false
+	_refresh_controls()
+
+
+func _on_cell_gui_input(event: InputEvent, index: int) -> void:
+	if game == null or input_locked or help_open or str(game.state) != "playing":
+		return
+	var position := Vector2.ZERO
+	var kind := ""
+	var is_press := false
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		kind = "mouse"
+		is_press = event.pressed
+		position = cells[index].get_global_transform_with_canvas() * event.position
+	elif event is InputEventScreenTouch:
+		kind = "touch"
+		is_press = event.pressed
+		position = cells[index].get_global_transform_with_canvas() * event.position
+	else:
+		return
+	if is_press and _gesture_index < 0 and game.can_interact_with_tile(index):
+		_gesture_index = index
+		_gesture_start = position
+		_gesture_kind = kind
+		_gesture_touch = event.index if event is InputEventScreenTouch else -1
+		if kind == "touch":
+			_last_touch_ms = Time.get_ticks_msec()
+		accept_event()
+	elif not is_press and _gesture_index >= 0 and _gesture_kind == kind:
+		_finish_gesture(position)
+		accept_event()
+
+
+func _finish_gesture(position: Vector2) -> void:
+	var start := _gesture_index
+	if start < 0:
+		return
+	var target := Drag.target_for_drag(start, position - _gesture_start, _cell_size,
+		int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
+	_gesture_index = -1
+	_gesture_kind = ""
+	_gesture_touch = -1
+	highlighted.clear()
+	if target >= 0:
+		selected_index = -1
+		_commit_swap(start, target)
+	else:
+		tap_cell(start)
 
 
 func toggle_motion() -> void:
@@ -359,17 +434,7 @@ func _input(event: InputEvent) -> void:
 				highlighted.append(target)
 			_paint_selection()
 		elif is_release:
-			var start := _gesture_index
-			var target := Drag.target_for_drag(start, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
-			_gesture_index = -1
-			_gesture_kind = ""
-			_gesture_touch = -1
-			highlighted.clear()
-			if target >= 0:
-				selected_index = -1
-				_commit_swap(start, target)
-			else:
-				tap_cell(start)
+			_finish_gesture(position)
 			get_viewport().set_input_as_handled()
 
 
@@ -598,7 +663,10 @@ func _paint_selection() -> void:
 		var chosen := i == selected_index or highlighted.has(i)
 		var blocked := int(game.blocker_layers[i]) > 0
 		style.border_color = Color("f5e8c8") if chosen else Color("d5aa79") if blocked else Color.TRANSPARENT
-		style.set_border_width_all(3 if chosen else 2 if blocked else 0)
+		style.set_border_width_all(5 if chosen else 2 if blocked else 0)
+		if chosen:
+			style.bg_color = style.bg_color.lightened(0.30)
 		cells[i].add_theme_stylebox_override("normal", style)
 		cells[i].add_theme_stylebox_override("hover", style)
 		cells[i].add_theme_stylebox_override("pressed", style)
+		cells[i].add_theme_stylebox_override("disabled", style)

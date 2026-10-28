@@ -722,6 +722,23 @@
       "acceptance": "no broken mandatory scene, locale, accepted-art, save defects",
       "status": "proposed",
       "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-02-06",
+      "title": "Recover Match-3 real browser touch/mouse input, two-cell hints and UPDS modal help",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "CODE-02-05"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "Original UPDS tile gui_input integration, real phone mouse/touch regression, strong two-cell hint and non-expanding modal help; whole-screen visual parity follow-up",
+      "acceptance": "Observed in actual deployed Web build and iPhone, not only Godot synthetic smoke. Swipe one move, hint both tiles, modal help overlays board, no game/saves mutation. Compare UI side-by-side with UPDS and original RavenManor PWA.",
+      "status": "proposed",
+      "sourceDecision": "2026-10-27 user QA fail on #62"
     }
   ],
   "approvalGates": [
