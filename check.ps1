@@ -74,6 +74,7 @@ Invoke-GodotCheck 'UPDS M3 help, blockers and retry' @('--headless', '--path', $
 Invoke-GodotCheck 'UPDS Match3 frame FX / blocker segments' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_frame_fx_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS special-impact and blocker-segment settle smoke passed'
 Invoke-GodotCheck 'CODE-02D mobile HUD and safe-area' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_mobile_hud_smoke.gd', '--quit-after', '120') 'Raven Manor CODE-02D mobile HUD layout and safe-area smoke passed'
 Invoke-GodotCheck 'Match3 direct QA Content Preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/content_preview_match3_qa_smoke.gd', '--quit-after', '120') 'Raven Manor Match-3 QA shortcut and UPDS Content Preview parity smoke passed.'
+Invoke-GodotCheck 'CODE-02 pointer/hint/help regression' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_pointer_help_regression.gd', '--quit-after', '120') 'Raven Manor CODE-02 pointer, hint and help-overlay parity smoke passed.'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
