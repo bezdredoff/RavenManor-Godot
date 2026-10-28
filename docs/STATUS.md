@@ -202,3 +202,7 @@ The owner tested merged PR #62 in real Web browsers and reported: (1) no working
 Audit found Godot's Raven Match3 UI was largely a newly authored simplified button-based `match3_board_presenter.gd`, **not** a source-identical transplant of the polished UPDS `match3_screen.gd` presentation. Its global-only `_input` handler was not tied to individual tile `gui_input`, and the help was an inline PanelContainer. The hints showed two indices in data, but their button visual styling was too weak and lacked proper disabled-state consistency. This branch `fix/code02-input-help-parity-recovery` adds per-cell GUI event listeners, merges drag release into one path, a centered modal dialog, stronger two-tile visual indication, and a Godot regression for cell event path and modal help.
 
 **Not yet accepted:** The complete visual style/design and feature parity must be planned against BOTH polished UPDS Godot/Web help/board interfaces and the original Raven Manor PWA art. No claim the current prototype matches either. Acceptance requires testing the **built Web version on real iPhone/desktop** and user screenshots, plus side-by-side design parity before closing CODE-02. Asset/GFX-10 approval independent.
+
+## RM-GFX-WATERCOLOR-001 — candidate watercolor VN A/B pilot (2026-10-28)
+
+Candidate feature/vn-watercolor-pilot-rebased adds separate Evelyn/Ada tea scene under original launcher card; no campaign mutation. Pending CI/Web/mobile verification. See docs/VN_WATERCOLOR_PILOT.md.
