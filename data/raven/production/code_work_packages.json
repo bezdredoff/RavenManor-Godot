@@ -722,6 +722,23 @@
       "acceptance": "no broken mandatory scene, locale, accepted-art, save defects",
       "status": "proposed",
       "sourceDecision": "docs/production/CODE_PRODUCTION_ROADMAP_RU.md"
+    },
+    {
+      "id": "CODE-02-06",
+      "title": "Restore UPDS input and hint/help UX after owner device QA failure",
+      "stage": "CODE-02",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "CODE-02-05"
+      ],
+      "graphicsDependencies": [
+        "GFX-10"
+      ],
+      "deliverable": "Route drag via tile gui_input, display both hint targets above board and provide overlay Help instead of expanding spoiler; audit UI and art parity against UPDS Godot and original RavenManor PWA",
+      "acceptance": "Real Godot GUI pointer regression and manual phone+desktop gestures and screenshot comparisons pass. No full visual parity claimed until sprite/UI transfer gate.",
+      "status": "proposed",
+      "sourceDecision": "Owner manual QA 2026-10-28: swipe mouse/touch fails, only one hint tile visible, help expands downward, full aesthetic/UI mismatch"
     }
   ],
   "approvalGates": [
