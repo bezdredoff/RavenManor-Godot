@@ -84,8 +84,8 @@
       "id": "CODE-02-01",
       "status": "in_progress",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/58 merged; input, touch and adjacent swap contract present in RM-VS-01; human iPhone/Android touch reach and duplicate-event QA pending, so in_progress rather than accepted."
+      "updated": "2026-10-28",
+      "evidence": "Owner manual QA 2026-10-28 FAILED: real touch and mouse swipes did not work in current published version. Prior Godot scripted checks were not sufficient. Fix and real device retest tracked in CODE-02-06."
     },
     {
       "id": "CODE-02-02",
@@ -110,10 +110,10 @@
     },
     {
       "id": "CODE-02-04",
-      "status": "merged",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged 2026-10-27; responsive 320/390/412/430 board, vertical-slice safe-area shell and HUD Godot smoke CI passed. Actual Safari mobile QA not yet accepted; old Content Preview did not use this board until CODE-02-05 candidate.",
+      "status": "in_progress",
+      "evidence": "Owner manual QA 2026-10-28 FAILED: real touch and mouse swipes did not work in current published version. Prior Godot scripted checks were not sufficient. Fix and real device retest tracked in CODE-02-06.",
       "owner": "ChatGPT",
-      "updated": "2026-10-27"
+      "updated": "2026-10-28"
     },
     {
       "id": "PROC-005",
@@ -128,6 +128,13 @@
       "evidence": "fix/match3-qa-entry-content-preview-parity: direct Prototype Lab MATCH-3 QA for RM-LVL-001 without prologue; Content Preview switched from legacy click-grid to exactly the reusable UPDS Match3Board for 001/002/003 and map selection. Godot smoke/CI pending; QA preview never touches Raven store/reducer; human phone check remains needed.",
       "owner": "ChatGPT",
       "updated": "2026-10-27"
+    },
+    {
+      "id": "CODE-02-06",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-28",
+      "evidence": "fix/code02-input-hint-help-parity: user-reported failed touch+mouse swipe, single hint tile, expanding Help, visual mismatch with UPDS and legacy RavenManor. Proposes UPDS tile gui_input path, 2-cell top-layer hint and modal Help + regression. CI and physical QA pending; full art/UI parity NOT resolved."
     }
   ],
   "rules": [
