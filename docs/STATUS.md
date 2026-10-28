@@ -193,3 +193,7 @@ Older historical milestones and acceptance statements above remain in place, but
 - CODE-02-05 candidate branch `fix/match3-qa-entry-content-preview-parity` introduces a prominent `0 · MATCH-3 QA` launcher button to open `RM-LVL-001` immediately, without prologue, map traversal, unlocks, or changing Raven-save. Content Preview now renders **the same UPDS-powered `match3_board_presenter.gd` and Raven theme** for `RM-LVL-001..003`, including calls from the map's selected object, while keeping isolated QA result text and 320px-friendly scrolling. Actual prologue, map, director order and canonical story are unchanged.
 - Regression `tests/raven/content_preview_match3_qa_smoke.gd` tests one-shot QA metadata, correct shared presenter, real UPDS level completion with no campaign reward, menu switching, map preview compatibility. Must pass CI; physical iPhone QA remains open.
 - Reconciled previously merged [PR #61](https://github.com/bezdredoff/RavenManor-Godot/pull/61): `CODE-02-04` and `PROC-005` marked `merged` (not accepted) in production progress. New `CODE-02-05` added to code backlog as `PR_review`. This fix updates both mandatory docs/progress sources in same PR.
+
+## RM-GFX-WATERCOLOR-001 — candidate VN watercolor A/B pilot (2026-10-28)
+
+Candidate branch feature/vn-watercolor-pilot adds a separate Evelyn/Ada tea scene under the original launcher card, with procedural canvas_item pigment/paper/edge shader and no campaign mutation. Not merged, not CI-tested, not published or device-accepted. See docs/VN_WATERCOLOR_PILOT.md.
