@@ -19,6 +19,7 @@ var board_area: Control
 var grid: GridContainer
 var motion_layer: Control
 var impact_layer: Control
+var hint_layer: Control
 var outline: Control
 var feedback: Label
 var objective: Label
@@ -36,8 +37,10 @@ var input_locked := false
 var reduced_motion := false
 var _gesture_index := -1
 var _gesture_start := Vector2.ZERO
+var _gesture_last := Vector2.ZERO
 var _gesture_kind := ""
 var _gesture_touch := -1
+var _release_suppression_ms := -10000
 var _last_touch_ms := -10000
 var _cell_size := 48.0
 var _layout_width := -1.0
@@ -96,6 +99,7 @@ func _build() -> void:
 		cell.add_theme_stylebox_override("hover", style)
 		cell.add_theme_stylebox_override("pressed", style)
 		grid.add_child(cell)
+		cell.gui_input.connect(_on_cell_gui_input.bind(index))
 		var stack := Control.new()
 		stack.name = "TileStack"
 		stack.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -156,6 +160,12 @@ func _build() -> void:
 	impact_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	board_area.add_child(impact_layer)
 	impact_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	hint_layer = Control.new()
+	hint_layer.name = "HintOverlay"
+	hint_layer.z_index = 8
+	hint_layer.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_area.add_child(hint_layer)
+	hint_layer.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	feedback = Label.new()
 	feedback.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	feedback.add_theme_color_override("font_color", Color("c0dab7"))
@@ -302,6 +312,72 @@ func _refresh_controls() -> void:
 		motion_button.disabled = input_locked
 
 
+func _on_cell_gui_input(event: InputEvent, index: int) -> void:
+	# The actual UPDS Match3Screen owns pointer gestures through each tile's
+	# gui_input signal. ScrollContainer can consume touch drags before a global
+	# _input-only implementation sees a coherent gesture.
+	if input_locked or help_open or str(game.state) != "playing":
+		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_begin_gesture(index, cells[index].get_global_mouse_position(), "mouse", -1)
+		else:
+			_finish_gesture(cells[index].get_global_mouse_position(), "mouse", -1)
+	elif event is InputEventMouseMotion and (event.button_mask & MOUSE_BUTTON_MASK_LEFT) != 0:
+		_preview_gesture(cells[index].get_global_mouse_position(), "mouse", -1)
+	elif event is InputEventScreenTouch:
+		var canvas_position: Vector2 = cells[index].get_global_transform_with_canvas() * event.position
+		if event.pressed:
+			_begin_gesture(index, canvas_position, "touch", event.index)
+		else:
+			_finish_gesture(canvas_position, "touch", event.index)
+	elif event is InputEventScreenDrag:
+		var canvas_position: Vector2 = cells[index].get_global_transform_with_canvas() * event.position
+		_preview_gesture(canvas_position, "touch", event.index)
+
+
+func _begin_gesture(index: int, position: Vector2, kind: String, touch_index: int) -> void:
+	if _gesture_index >= 0 or not game.can_interact_with_tile(index):
+		return
+	_gesture_index = index
+	_gesture_start = position
+	_gesture_last = position
+	_gesture_kind = kind
+	_gesture_touch = touch_index
+	selected_index = -1
+	highlighted.clear()
+	_paint_selection()
+
+
+func _preview_gesture(position: Vector2, kind: String, touch_index: int) -> void:
+	if _gesture_index < 0 or _gesture_kind != kind or (kind == "touch" and _gesture_touch != touch_index):
+		return
+	_gesture_last = position
+	var target := Drag.preview_target(_gesture_index, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
+	highlighted.clear()
+	highlighted.append(_gesture_index)
+	if target >= 0:
+		highlighted.append(target)
+	_paint_selection()
+
+
+func _finish_gesture(position: Vector2, kind: String, touch_index: int) -> void:
+	if _gesture_index < 0 or _gesture_kind != kind or (kind == "touch" and _gesture_touch != touch_index):
+		return
+	var start := _gesture_index
+	var target := Drag.target_for_drag(start, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
+	_gesture_index = -1
+	_gesture_kind = ""
+	_gesture_touch = -1
+	_release_suppression_ms = Time.get_ticks_msec()
+	highlighted.clear()
+	if target >= 0:
+		selected_index = -1
+		_commit_swap(start, target)
+	else:
+		tap_cell(start)
+
+
 func _input(event: InputEvent) -> void:
 	if game == null or input_locked or help_open or str(game.state) != "playing":
 		return
@@ -345,32 +421,12 @@ func _input(event: InputEvent) -> void:
 		var index := _index_at(position)
 		if index < 0 or not game.can_interact_with_tile(index):
 			return
-		_gesture_index = index
-		_gesture_start = position
-		_gesture_kind = kind
-		_gesture_touch = touch_index
-		get_viewport().set_input_as_handled()
-	elif _gesture_index >= 0 and kind == _gesture_kind and (kind != "touch" or touch_index == _gesture_touch):
+		_begin_gesture(index, position, kind, touch_index)
+	elif _gesture_index >= 0:
 		if is_move:
-			var target := Drag.preview_target(_gesture_index, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
-			highlighted.clear()
-			highlighted.append(_gesture_index)
-			if target >= 0:
-				highlighted.append(target)
-			_paint_selection()
+			_preview_gesture(position, kind, touch_index)
 		elif is_release:
-			var start := _gesture_index
-			var target := Drag.target_for_drag(start, position - _gesture_start, _cell_size, int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
-			_gesture_index = -1
-			_gesture_kind = ""
-			_gesture_touch = -1
-			highlighted.clear()
-			if target >= 0:
-				selected_index = -1
-				_commit_swap(start, target)
-			else:
-				tap_cell(start)
-			get_viewport().set_input_as_handled()
+			_finish_gesture(position, kind, touch_index)
 
 
 func _index_at(position: Vector2) -> int:
@@ -592,6 +648,32 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 		cell.add_theme_stylebox_override("pressed", style)
 
 
+func _paint_hint_overlays() -> void:
+	# The UPDS board-outline layer is rendered above tile buttons: a border
+	# applied to a button can disappear behind it. These live in a dedicated
+	# top-level visual layer so BOTH hint cells stay visible.
+	if not is_instance_valid(hint_layer):
+		return
+	for child in hint_layer.get_children():
+		hint_layer.remove_child(child)
+		child.queue_free()
+	for index in highlighted:
+		if index < 0 or index >= cells.size() or not cells[index].visible:
+			continue
+		var marker := Panel.new()
+		marker.name = "Hint_%d" % index
+		marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		marker.position = cells[index].position
+		marker.size = cells[index].size
+		var style := StyleBoxFlat.new()
+		style.bg_color = Color(1.0, 0.83, 0.32, 0.23)
+		style.border_color = Color("fff3a6")
+		style.set_border_width_all(3)
+		style.set_corner_radius_all(7)
+		marker.add_theme_stylebox_override("panel", style)
+		hint_layer.add_child(marker)
+
+
 func _paint_selection() -> void:
 	for i in cells.size():
 		var style := (cells[i].get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
@@ -602,3 +684,4 @@ func _paint_selection() -> void:
 		cells[i].add_theme_stylebox_override("normal", style)
 		cells[i].add_theme_stylebox_override("hover", style)
 		cells[i].add_theme_stylebox_override("pressed", style)
+	_paint_hint_overlays()
