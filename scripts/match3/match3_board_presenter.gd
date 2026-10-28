@@ -26,6 +26,7 @@ var objective: Label
 var hint_button: Button
 var help_button: Button
 var help_panel: PanelContainer
+var help_backdrop: ColorRect
 var retry_button: Button
 var motion_button: Button
 var help_open := false
@@ -199,9 +200,24 @@ func _build() -> void:
 	retry_button.pressed.connect(retry_level)
 	retry_button.visible = false
 	add_child(retry_button)
+	# Overlay like UPDS, not a spoiler expanding the scrolling playfield.
+	var overlay := CanvasLayer.new()
+	overlay.name = "Match3HelpOverlay"
+	overlay.layer = 20
+	add_child(overlay)
+	help_backdrop = ColorRect.new()
+	help_backdrop.name = "HelpBackdrop"
+	help_backdrop.color = Color(0.02, 0.02, 0.05, 0.85)
+	help_backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
+	help_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	overlay.add_child(help_backdrop)
+	help_backdrop.visible = false
 	help_panel = PanelContainer.new()
 	help_panel.name = "Match3HelpPanel"
 	help_panel.visible = false
+	help_panel.custom_minimum_size = Vector2(300, 0)
+	help_panel.set_anchors_and_offsets_preset(Control.PRESET_CENTER)
+	overlay.add_child(help_panel)
 	var panel_style := StyleBoxFlat.new()
 	panel_style.bg_color = Color("2b2634")
 	panel_style.border_color = Color("a88b66")
@@ -209,7 +225,6 @@ func _build() -> void:
 	panel_style.set_corner_radius_all(7)
 	panel_style.set_content_margin_all(12)
 	help_panel.add_theme_stylebox_override("panel", panel_style)
-	add_child(help_panel)
 	var help_content := VBoxContainer.new()
 	help_content.add_theme_constant_override("separation", 9)
 	help_panel.add_child(help_content)
@@ -266,11 +281,23 @@ func apply_available_width(available_width: float) -> void:
 	# nodes or reseeding the UPDS game when rotating / resizing the viewport.
 
 
+func _layout_help_overlay() -> void:
+	if not is_instance_valid(help_panel):
+		return
+	var bounds := get_viewport().get_visible_rect().size
+	var width := minf(360.0, maxf(260.0, bounds.x - 26.0))
+	help_panel.position = Vector2((bounds.x - width) * 0.5, maxf(18.0, (bounds.y - 480.0) * 0.5))
+	help_panel.size = Vector2(width, 0)
+
+
 func toggle_help() -> void:
 	if input_locked:
 		return
 	help_open = not help_open
 	help_panel.visible = help_open
+	help_backdrop.visible = help_open
+	if help_open:
+		_layout_help_overlay()
 	selected_index = -1
 	highlighted.clear()
 	_gesture_index = -1
