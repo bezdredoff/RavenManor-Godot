@@ -44,6 +44,7 @@ run_check 'UPDS M3 help, blockers and retry' 'Raven Manor UPDS Match-3 help, obj
 run_check 'UPDS Match3 frame FX / blocker segments' 'Raven Manor UPDS special-impact and blocker-segment settle smoke passed' --script res://tests/raven/upds_match3_frame_fx_smoke.gd --quit-after 120
 run_check 'CODE-02D mobile HUD and safe-area' 'Raven Manor CODE-02D mobile HUD layout and safe-area smoke passed' --script res://tests/raven/upds_match3_mobile_hud_smoke.gd --quit-after 120
 run_check 'Match3 direct QA Content Preview' 'Raven Manor Match-3 QA shortcut and UPDS Content Preview parity smoke passed.' --script res://tests/raven/content_preview_match3_qa_smoke.gd --quit-after 120
+run_check 'CODE-02 pointer/hint/help regression' 'Raven Manor CODE-02 pointer, hint and help-overlay parity smoke passed.' --script res://tests/raven/upds_match3_pointer_help_regression.gd --quit-after 120
 run_check 'RM-VS-01 vertical slice smoke' 'Raven Manor RM-VS-01 smoke passed' --script res://tests/raven/vertical_slice_smoke.gd --quit-after 120
 run_check 'Narrative production contract smoke' 'Raven Manor production narrative contract smoke passed' --script res://tests/raven/production_narrative_smoke.gd --quit-after 120
 run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
