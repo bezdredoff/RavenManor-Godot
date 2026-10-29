@@ -354,6 +354,21 @@
       ],
       "graphicsDependencies": [],
       "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
+    },
+    {
+      "id": "RM-GFX-WATERCOLOR-001",
+      "title": "Акварельный шейдер — A/B сцена Эвелин и Ады",
+      "domain": "art",
+      "priority": "P2",
+      "size": "S",
+      "description": "Сравнить оригинальную VN-сцену с отдельной версией с процедурной акварельной обработкой на Godot Web.",
+      "deliverable": "Отдельная сцена и карточка под оригиналом в Prototype Lab; исходная сцена не изменена.",
+      "acceptance": "CI/Web export проходят; оригинал визуально неизменён; диалоги и RU/BE/EN совпадают; прозрачность корректна; эксперимент не пишет в save; визуальный QA на телефоне.",
+      "status": "proposed",
+      "dependsOn": [],
+      "graphicsDependencies": [],
+      "source": "User request 2026-10-28 / docs/VN_WATERCOLOR_PILOT.md",
+      "requiresHumanAcceptance": true
     }
   ]
 }

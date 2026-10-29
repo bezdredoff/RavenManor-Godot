@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-10-27",
+  "updated": "2026-10-28",
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
@@ -135,6 +135,13 @@
       "updated": "2026-10-27",
       "status": "PR_review",
       "evidence": "User-reported critical parity regression; recovery branch fixes cell GUI input and modal help/hint style, with tests. Must re-evaluate on actual Web build/phone. Full faithful UPDS Godot or PWA presentation + legacy Raven art parity is a distinct unfinished stage."
+    },
+    {
+      "id": "RM-GFX-WATERCOLOR-001",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-28",
+      "evidence": "Candidate feature/vn-watercolor-pilot; separate VN scene, shader, launcher card, documentation; CI and phone QA not yet verified."
     }
   ],
   "rules": [
