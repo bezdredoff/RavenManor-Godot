@@ -206,3 +206,7 @@ Audit found Godot's Raven Match3 UI was largely a newly authored simplified butt
 ## RM-GFX-WATERCOLOR-001 — candidate watercolor VN A/B pilot (2026-10-28)
 
 Candidate feature/vn-watercolor-pilot-rebased adds separate Evelyn/Ada tea scene under original launcher card; no campaign mutation. Pending CI/Web/mobile verification. See docs/VN_WATERCOLOR_PILOT.md.
+
+## 2026-10-29 — RM-GFX-WATERCOLOR-001 rejected and retired
+
+Owner inspected the deployed watercolor shader duplicate of Evelyn/Ada tea VN from merged PR #66 and found the visual result unsatisfactory. This approach is **not accepted** as the game's art style. Remove the experimental duplicate scene, runtime shader and launcher entry, retaining the original tea VN and all unrelated functionality. Preserve the trial outcome in docs/VN_WATERCOLOR_PILOT.md and dashboard task status `deferred`; do not present the experiment as pending approval.

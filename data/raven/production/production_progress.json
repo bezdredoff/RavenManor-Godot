@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-10-28",
+  "updated": "2026-10-29",
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
@@ -138,10 +138,10 @@
     },
     {
       "id": "RM-GFX-WATERCOLOR-001",
-      "status": "PR_review",
+      "status": "deferred",
       "owner": "ChatGPT",
-      "updated": "2026-10-28",
-      "evidence": "Candidate feature/vn-watercolor-pilot; separate VN scene, shader, launcher card, documentation; CI and phone QA not yet verified."
+      "updated": "2026-10-29",
+      "evidence": "PR #66 merged 2026-10-29. Owner reviewed published Evelyn/Ada watercolor shader comparison and rejected visual result. Experiment retired; standalone shader/scene/launcher entry removed by cleanup PR. Do not treat as accepted art direction. Historical record: docs/VN_WATERCOLOR_PILOT.md."
     }
   ],
   "rules": [

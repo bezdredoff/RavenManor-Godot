@@ -6,7 +6,6 @@ const WHOLE_MAP_SCENE := "res://scenes/raven/season1_map_greybox.tscn"
 const VERTICAL_SLICE_SCENE := "res://scenes/raven/vertical_slice.tscn"
 const CONTENT_PREVIEW_SCENE := "res://scenes/raven/content_preview.tscn"
 const HALL_TEA_PILOT := "res://scenes/raven/hall_tea_vn.tscn"
-const HALL_TEA_WATERCOLOR := "res://scenes/raven/hall_tea_watercolor.tscn"
 const BUILDER_GAME_PREVIEW_SCENE := "res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn"
 
 
@@ -48,12 +47,6 @@ func _ready() -> void:
 		"Живые слои: фон холла, отдельные прозрачные персонажи, 12 канонических реплик 2.1 и RU/BE/EN. Здесь можно открыть демо без влияния на сохранение. В сюжетной карте разговор доступен только после первого акта.",
 		"ОТКРЫТЬ VN АРТ-ПРОТОТИП",
 		_open.bind(HALL_TEA_PILOT)
-	))
-	column.add_child(_card(
-		"7b · VN Art Pilot · WATERCOLOR",
-		"Точная копия сцены Эвелин и Ады с процедурным акварельным шейдером на персонажах и фоне. Сохранение не изменяется.",
-		"ОТКРЫТЬ АКВАРЕЛЬНУЮ ВЕРСИЮ",
-		_open.bind(HALL_TEA_WATERCOLOR)
 	))
 	column.add_child(_card(
 		"4 · Content Preview",

@@ -7,3 +7,7 @@ Shader controls: `paper_strength`, `pigment_strength`, `edge_strength`, `grain_s
 Acceptance checklist: both cards open from GitHub Pages; original appearance unchanged; 12 lines and RU/BE/EN behave identically; both actors preserve alpha; no save mutation in the comparison; no shader compilation errors; 390x844 and tablet portrait readability; record screenshots and device FPS.
 
 Status: candidate code only; Godot CI, Pages publication and real-device QA have not been verified in this authoring session.
+
+## Outcome — 2026-10-29: rejected, archived
+
+The owner tested the Godot Pages prototype after PR #66 was merged and explicitly found the watercolor effect visually unsatisfactory. The runtime shader approach as implemented here is **rejected**, not an approved style solution. The duplicate scene, shader and launcher entry are removed in the follow-up cleanup PR; the original Evelyn/Ada tea VN remains unchanged. This document is retained only as a historical record of what was tried. Do not reintroduce this implementation without a new art-direction review. Future alternatives (pre-stylized AI assets, a substantially different rendering pipeline) require separate experiments and acceptance; none are approved by this result.
