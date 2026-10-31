@@ -201,10 +201,10 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Stacked candidate code/vn-studio-raven-stage-designer atop open PR #77. Native stage background/actor/pose/emotion editor with normalized drag, SHA-locked stagePatches, no-write stage candidate JSON, tests. No runtime integration, missing art placeholders, CI and manual UX approval pending."
+      "evidence": "Stacked PR #78 https://github.com/bezdredoff/RavenManor-Godot/pull/78 targeting open PR #77 (NOT main). Scene-wide stage drag, existing asset preview, background/pose/emotion selectors, SHA-pinned draft + separate local JSON candidate. Latest CI and human visual QA pending; no runtime/save changes."
     }
   ],
   "rules": [
