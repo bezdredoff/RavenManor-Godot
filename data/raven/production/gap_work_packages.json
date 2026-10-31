@@ -387,6 +387,25 @@
       "graphicsDependencies": [],
       "source": "User request 2026-10-31; addons/vn_studio/README.md",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-02",
+      "title": "Raven VN Studio: визуальная постановка персонажей, фонов и поз, отдельный stage export",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Extend native Raven text editor with scene-wide 2D stage canvas, drag actors with normalized positions, catalog-backed background/cast/pose/emotion, reversible local draft patches, distinct immutable stage JSON candidate for review.",
+      "deliverable": "Godot visual stage editor, stage SHA-pinned private draft, candidates from existing production staging, CI smoke and manual QA.",
+      "acceptance": "Owner verifies desktop actor drag/selection, scene backgrounds, pose/emotion controls, undo/redo, save/reopen, no writes into production files or runtime, approve visual clarity; missing art labeled placeholders.",
+      "status": "proposed",
+      "dependsOn": [
+        "RAVEN-VN-EDITOR-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-11"
+      ],
+      "source": "User request 2026-10-31; addons/vn_studio/README.md",
+      "requiresHumanAcceptance": true
     }
   ]
 }
