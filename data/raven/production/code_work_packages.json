@@ -888,13 +888,13 @@
       "size": "M",
       "dependsOn": [
         "VN-EDITOR-03",
-        "VN-EDITOR-07",
+        "VN-EDITOR-04",
         "CODE-03-03"
       ],
       "graphicsDependencies": [
         "GFX-11"
       ],
-      "deliverable": "RM-BEAT-02-01 authoring + preview through shared core, no saving/gameplay mutations in preview",
+      "deliverable": "RM-BEAT-02-01 authoring + preview through shared core, parallel to full UPDS corpus conversion; no gameplay mutations in preview",
       "acceptance": "Edited scene plays via common renderer with RU/BE/EN and safe Raven reducer, not duplicate Hall-only code",
       "status": "proposed",
       "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
