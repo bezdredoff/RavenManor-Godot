@@ -194,10 +194,17 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-01",
+      "status": "merged",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "PR #77 merged into main; native Raven screenplay draft and safe local JSON export. Godot native stage UI via follow-on PR; desktop manual QA not yet accepted."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-02",
       "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Open PR #77 https://github.com/bezdredoff/RavenManor-Godot/pull/77. CI on implementation head 4d31131e0527f341dfa84a9885f33b1100a34271 PASSED: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41235837433, including Raven production 28 scenes/280 entries and synthetic local save/reopen/export/no-overwrite/SHA-drift, existing VN Studio and dashboard. User Godot desktop QA not done; exported JSON is candidate only, no runtime switching."
+      "evidence": "Clean main-based integration PR for stage editor after #78 was merged into an old feature branch. CI pending; Godot UI visual QA pending; no runtime rewrites."
     }
   ],
   "rules": [
