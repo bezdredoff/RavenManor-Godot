@@ -152,10 +152,17 @@
     },
     {
       "id": "VN-EDITOR-01",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "PR #69 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/69 at commit 8f1604cc913c3ba513fd98040e69b411a6609bf9; 45 donor scenes/source SHAs and read-only audit script/tests. No full private donor local parity approval."
+    },
+    {
+      "id": "VN-EDITOR-02",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "45 UPDS-godot source files read and pinned to private donor SHA 3deed628efd6c22bcd1717f7c545b7d3ca865781, public text-free baseline/read-only validator/synthetic tests in open https://github.com/bezdredoff/RavenManor-Godot/pull/69. Local synthetic tests passed (6); latest PR CI pending. No full local donor checker run, Godot viewer or converter/runtime parity."
+      "evidence": "Open https://github.com/bezdredoff/RavenManor-Godot/pull/70: native Godot VN Studio read-only 45-scene legacy viewer, local asset preview, RU/EN/BE and A/B/C, synthetic Godot smoke wired CI. No private donor copied, no editor/manual donor QA, pixel-parity, editing/conversion, or save migration claimed; latest head CI pending."
     }
   ],
   "rules": [

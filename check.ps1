@@ -28,6 +28,7 @@ function Invoke-GodotCheck {
 }
 
 Invoke-GodotCheck 'Project import' @('--headless', '--editor', '--path', $projectPath, '--quit')
+Invoke-GodotCheck 'VN Studio Legacy Viewer synthetic' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_legacy_smoke.gd', '--quit-after', '120') 'Raven VN Studio read-only legacy viewer smoke passed'
 foreach ($script in @(
 	'res://scripts/core/save_storage.gd',
 	'res://scripts/raven/raven_ids.gd',
