@@ -520,6 +520,7 @@ func _render_line() -> void:
 		details_text += "\nФинал: " + str(scene["ending"].get("endingId", ""))
 	details_text += "\n\nDRAFT ONLY — никаких действий в кампании или UPDS."
 	_details.text = details_text
+	_update_catalog_action()
 
 
 func _ensure_draft(scene_index: int) -> void:
@@ -650,6 +651,7 @@ func _update_pose_options(actors: Array) -> void:
 
 func _on_actor_selected(index: int) -> void:
 	_selected_actor = index
+	_update_catalog_action()
 	_update_pose_options(_effective_line(_current_line).get("actors", []))
 
 
@@ -755,3 +757,144 @@ func _update_status() -> void:
 		_undo_button.disabled = not _editable() or _undo_history.get(_current_scene, []).is_empty()
 	if _redo_button != null:
 		_redo_button.disabled = not _editable() or _redo_history.get(_current_scene, []).is_empty()
+
+
+func _refresh_library() -> void:
+	_library_ids.clear()
+	_catalog_list.clear()
+	_catalog_selected = ""
+	_catalog_pose = ""
+	_catalog_preview.texture = null
+	_catalog_apply.disabled = true
+	if _project.is_empty():
+		return
+	var catalog: Dictionary = _project.get("catalog", {})
+	var root: String = str(_project.get("root", ""))
+	_library_ids = Library.character_ids(catalog)
+	for char_id in _library_ids:
+		_catalog_list.add_item(char_id)
+		var portrait_icon: Texture2D = Reader.image_for(root, catalog, "characters", char_id, "icon")
+		if portrait_icon != null:
+			_catalog_list.set_item_icon(_catalog_list.item_count - 1, portrait_icon)
+	if not _library_ids.is_empty():
+		_catalog_list.select(0)
+		_select_library_character(_library_ids[0])
+
+
+func _on_library_character(index: int) -> void:
+	if index >= 0 and index < _library_ids.size():
+		_select_library_character(_library_ids[index])
+
+
+func _select_library_character(character_id: String) -> void:
+	_catalog_selected = character_id
+	_catalog_pose = ""
+	for child in _catalog_gallery.get_children():
+		_catalog_gallery.remove_child(child)
+		child.queue_free()
+	_catalog_preview.texture = null
+	var root: String = str(_project.get("root", ""))
+	var assets: Dictionary = _project.get("catalog", {})
+	var info: Dictionary = Library.inspect(root, assets, character_id)
+	if not info.get("ok", false):
+		_catalog_description.text = str(info.get("error", "Ошибка каталога"))
+		_update_catalog_action()
+		return
+	var entries: Array = info["entries"]
+	var valid_poses: int = 0
+	var unavailable: int = 0
+	for entry in entries:
+		if entry["kind"] != "portrait":
+			continue
+		var pose_id: String = str(entry["id"])
+		var available: bool = bool(entry["exists"])
+		if available:
+			valid_poses += 1
+		else:
+			unavailable += 1
+		var panel := PanelContainer.new()
+		panel.custom_minimum_size = Vector2(138, 132)
+		_catalog_gallery.add_child(panel)
+		var column := VBoxContainer.new()
+		panel.add_child(column)
+		var thumbnail := TextureRect.new()
+		thumbnail.custom_minimum_size = Vector2(120, 92)
+		thumbnail.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		thumbnail.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		thumbnail.texture = Reader.image_for(root, assets, "characters", character_id, pose_id) if available else null
+		column.add_child(thumbnail)
+		var select_button := Button.new()
+		select_button.text = pose_id if available else "⚠ " + pose_id + " · нет файла"
+		select_button.disabled = not available
+		select_button.pressed.connect(_on_library_pose.bind(pose_id))
+		column.add_child(select_button)
+	_catalog_description.text = "%s · %d изображений · %d недоступно. Костюмы: нет метаданных. Слои лица: нет. Анимации: нет исходных клипов." % [character_id, valid_poses, unavailable]
+	if valid_poses > 0:
+		for entry in entries:
+			if entry["kind"] == "portrait" and entry["exists"]:
+				_on_library_pose(str(entry["id"]))
+				break
+	else:
+		_update_catalog_action()
+
+
+func _on_library_pose(pose_id: String) -> void:
+	_catalog_pose = pose_id
+	var root: String = str(_project.get("root", ""))
+	var catalog: Dictionary = _project.get("catalog", {})
+	_catalog_preview.texture = Reader.image_for(root, catalog, "characters", _catalog_selected, pose_id)
+	_update_catalog_action()
+	_apply_catalog_motion()
+
+
+func _update_catalog_action() -> void:
+	if _catalog_apply == null:
+		return
+	_catalog_apply.disabled = true
+	if not _editable() or _catalog_pose.is_empty():
+		return
+	var actors: Array = _effective_line(_current_line).get("actors", [])
+	if _selected_actor >= 0 and _selected_actor < actors.size():
+		var actor: Dictionary = actors[_selected_actor]
+		_catalog_apply.disabled = str(actor.get("character", "")) != _catalog_selected or _catalog_preview.texture == null
+
+
+func _on_apply_library_pose() -> void:
+	if _catalog_apply.disabled or not _editable():
+		return
+	var actors: Array = _effective_line(_current_line).get("actors", [])
+	if _selected_actor < 0 or _selected_actor >= actors.size():
+		return
+	_capture_undo()
+	Drafts.set_actor(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _selected_actor, _catalog_selected, "pose", _catalog_pose)
+	_record_edit()
+	_render_line()
+
+
+func _on_motion_choice(_index: int) -> void:
+	_apply_catalog_motion()
+
+
+func _on_reduced_motion_changed(_enabled: bool) -> void:
+	_apply_catalog_motion()
+
+
+func _apply_catalog_motion() -> void:
+	# Non-destructive library test animation; never serialized into UPDS drafts.
+	if _catalog_tween != null and _catalog_tween.is_valid():
+		_catalog_tween.kill()
+	_catalog_tween = null
+	_catalog_preview.scale = Vector2.ONE
+	_catalog_preview.modulate.a = 1.0
+	if _catalog_preview.texture == null or _catalog_reduced_motion.button_pressed:
+		return
+	var preset: int = _catalog_motion.selected
+	if preset == 1:
+		_catalog_preview.pivot_offset = _catalog_preview.size * 0.5
+		_catalog_tween = create_tween().set_loops()
+		_catalog_tween.tween_property(_catalog_preview, "scale", Vector2(1.02, 1.02), 0.9).set_trans(Tween.TRANS_SINE)
+		_catalog_tween.tween_property(_catalog_preview, "scale", Vector2.ONE, 0.9).set_trans(Tween.TRANS_SINE)
+	elif preset == 2:
+		_catalog_preview.modulate.a = 0.0
+		_catalog_tween = create_tween()
+		_catalog_tween.tween_property(_catalog_preview, "modulate:a", 1.0, 0.45).set_trans(Tween.TRANS_SINE)
