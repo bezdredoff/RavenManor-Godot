@@ -169,7 +169,7 @@
       "owner": "ChatGPT",
       "updated": "2026-10-31",
       "status": "PR_review",
-      "evidence": "Open PR #71: https://github.com/bezdredoff/RavenManor-Godot/pull/71; Godot draft overlay data + UI + synthetic roundtrip smoke, privacy-safe and source SHA locked. CI on latest head pending; actual UPDS editor QA and runtime parity not accepted."
+      "evidence": "Open PR #71: https://github.com/bezdredoff/RavenManor-Godot/pull/71. CI on code head 1203dcbf36ea2654b902727f5568b7b5da71726f completed successfully: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41222548519; includes legacy viewer synthetic and draft overlay roundtrip. Draft editing and local SHA-pinned save only, no actual private donor editor/device acceptance, game runtime parity or conversion."
     }
   ],
   "rules": [
