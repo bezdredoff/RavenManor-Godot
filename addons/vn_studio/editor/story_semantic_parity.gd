@@ -44,7 +44,7 @@ static func compare(project: Dictionary, plan: Dictionary) -> Dictionary:
 			continue
 		if parsed.get("sceneId", "") != sources[index].get("id", ""):
 			errors.append("ID исходника не совпадает с bundle: " + relative)
-		var original: Dictionary = sources[index].get("data", {})
+		var original: Dictionary = JSON.parse_string(JSON.stringify(sources[index].get("data", {})))
 		if parsed.get("legacyOriginal", {}) != original:
 			errors.append("В bundle изменён immutable legacyOriginal: " + relative)
 		var candidate: Dictionary = parsed.get("payload", {})
