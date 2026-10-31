@@ -15,7 +15,7 @@ var _details: RichTextLabel
 var _confirm: CheckBox
 var _export_button: Button
 var _path_hint: LineEdit
-var _save_dialog: EditorFileDialog
+var _save_dialog: FileDialog
 var _save_report: RichTextLabel
 var _save_button: Button
 
@@ -98,9 +98,9 @@ func _ready() -> void:
 	_save_report.bbcode_enabled = false
 	_save_report.text = "Сначала выполните dry-run. Файлы сейвов не копируются."
 	add_child(_save_report)
-	_save_dialog = EditorFileDialog.new()
-	_save_dialog.access = EditorFileDialog.ACCESS_FILESYSTEM
-	_save_dialog.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
+	_save_dialog = FileDialog.new()
+	_save_dialog.access = FileDialog.ACCESS_FILESYSTEM
+	_save_dialog.file_mode = FileDialog.FILE_MODE_OPEN_FILE
 	_save_dialog.title = "Локальный JSON-сейв UPDS"
 	_save_dialog.add_filter("*.json", "UPDS JSON save")
 	_save_dialog.file_selected.connect(_on_save_selected)
