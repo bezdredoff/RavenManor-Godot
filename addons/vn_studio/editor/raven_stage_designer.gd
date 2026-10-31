@@ -52,37 +52,75 @@ func _ready() -> void:
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	var controls := HBoxContainer.new()
 	add_child(controls)
+	var bg_caption := Label.new()
+	bg_caption.text = "Фон"
+	controls.add_child(bg_caption)
 	_background = OptionButton.new()
 	_background.custom_minimum_size.x = 134
 	_background.item_selected.connect(_on_background)
 	controls.add_child(_background)
+	_lighting = OptionButton.new()
+	_lighting.custom_minimum_size.x = 100
+	_lighting.item_selected.connect(_on_lighting)
+	controls.add_child(_lighting)
+	_room_state = OptionButton.new()
+	_room_state.custom_minimum_size.x = 125
+	_room_state.item_selected.connect(_on_room_state)
+	controls.add_child(_room_state)
+	_browse_background = Button.new()
+	_browse_background.text = "Просмотреть фоны…"
+	_browse_background.pressed.connect(_on_browse)
+	controls.add_child(_browse_background)
+	var actors_row := HBoxContainer.new()
+	add_child(actors_row)
 	_actor_pick = OptionButton.new()
 	_actor_pick.custom_minimum_size.x = 130
 	_actor_pick.item_selected.connect(_on_actor_select)
-	controls.add_child(_actor_pick)
+	actors_row.add_child(_actor_pick)
 	_pose = OptionButton.new()
 	_pose.custom_minimum_size.x = 115
 	_pose.item_selected.connect(_on_pose)
-	controls.add_child(_pose)
+	actors_row.add_child(_pose)
 	_emotion = OptionButton.new()
 	_emotion.custom_minimum_size.x = 110
 	_emotion.item_selected.connect(_on_emotion)
-	controls.add_child(_emotion)
+	actors_row.add_child(_emotion)
 	_new_actor = OptionButton.new()
 	_new_actor.custom_minimum_size.x = 100
-	controls.add_child(_new_actor)
+	actors_row.add_child(_new_actor)
 	_add = Button.new()
 	_add.text = "+ Персонаж"
 	_add.pressed.connect(_on_add)
-	controls.add_child(_add)
+	actors_row.add_child(_add)
 	_remove = Button.new()
 	_remove.text = "−"
 	_remove.tooltip_text = "Убрать выделенного персонажа из постановки"
 	_remove.pressed.connect(_on_remove)
-	controls.add_child(_remove)
+	actors_row.add_child(_remove)
 
+	var options_row := HBoxContainer.new()
+	add_child(options_row)
+	_grid_toggle = CheckBox.new()
+	_grid_toggle.text = "Сетка (px)"
+	_grid_toggle.toggled.connect(_on_grid_toggle)
+	options_row.add_child(_grid_toggle)
+	_vn_toggle = CheckBox.new()
+	_vn_toggle.text = "Показать интерфейс VN"
+	_vn_toggle.toggled.connect(_on_vn_toggle)
+	options_row.add_child(_vn_toggle)
+	var scale_caption := Label.new()
+	scale_caption.text = "Размер"
+	options_row.add_child(scale_caption)
+	_portrait_scale = HSlider.new()
+	_portrait_scale.custom_minimum_size.x = 100
+	_portrait_scale.min_value = 0.35
+	_portrait_scale.max_value = 1.0
+	_portrait_scale.step = 0.05
+	_portrait_scale.value = 0.55
+	_portrait_scale.value_changed.connect(_on_portrait_scale)
+	options_row.add_child(_portrait_scale)
 	_canvas = Panel.new()
-	_canvas.custom_minimum_size = Vector2(540, 335)
+	_canvas.custom_minimum_size = Vector2(345, 480)
 	_canvas.size_flags_horizontal = SIZE_EXPAND_FILL
 	_canvas.clip_contents = true
 	_canvas.resized.connect(_layout_cards)
@@ -97,6 +135,10 @@ func _ready() -> void:
 	_placeholders.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	_placeholders.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_canvas.add_child(_placeholders)
+	_overlay = StageOverlay.new()
+	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_canvas.add_child(_overlay)
+	_build_background_browser()
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "Изменения здесь остаются только в Raven-черновике до ручного ревью."
