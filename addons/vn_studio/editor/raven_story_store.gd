@@ -7,6 +7,7 @@ const RELATIVE := "data/raven/production/season1_dialogue_catalog.json"
 const STAGING := "data/raven/production/vn_staging.json"
 const ROUTES := "data/raven/production/map_narrative_routes.json"
 const CUES := "data/raven/production/line_performance_cues.json"
+const CAST := "data/raven/production/character_performance.json"
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
 
@@ -19,7 +20,8 @@ static func open_project(root: String) -> Dictionary:
 	var staging: Dictionary = _json(root.path_join(STAGING))
 	var routes: Dictionary = _json(root.path_join(ROUTES))
 	var cues: Dictionary = _json(root.path_join(CUES))
-	if raw.is_empty() or staging.is_empty() or routes.is_empty() or cues.is_empty():
+	var cast_info: Dictionary = _json(root.path_join(CAST))
+	if raw.is_empty() or staging.is_empty() or routes.is_empty() or cues.is_empty() or cast_info.is_empty():
 		return {"ok": false, "error": "Для Raven нужны season1_dialogue_catalog, vn_staging, map_narrative_routes и line_performance_cues."}
 	if not raw.get("scenes") is Array or not raw.get("entries") is Array:
 		return {"ok": false, "error": "Неверный формат исходного каталога Raven."}
@@ -70,6 +72,8 @@ static func open_project(root: String) -> Dictionary:
 			return {"ok": false, "error": "Нет постановки или trigger для сцены " + id}
 	return {"ok": true, "root": root.simplify_path(), "sourcePath": path, "sha": FileAccess.get_sha256(path),
 		"data": raw, "scenes": raw["scenes"], "linesByScene": groupings,
+		"stagingData": staging, "stagingSha": FileAccess.get_sha256(root.path_join(STAGING)),
+		"castData": cast_info, "castSha": FileAccess.get_sha256(root.path_join(CAST)),
 		"shots": shots, "routes": triggers, "cues": performance,
 		"sceneCount": order.size(), "lineCount": line_ids.size()}
 
@@ -82,7 +86,9 @@ static func fresh(project: Dictionary) -> Dictionary:
 	return {"format": FORMAT, "schemaVersion": 1,
 		"sourceSha256": str(project.get("sha", "")),
 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
-		"patches": {}}
+		"stageSourceSha256": str(project.get("stagingSha", "")),
+		"castSourceSha256": str(project.get("castSha", "")),
+		"patches": {}, "stagePatches": {}}
 
 
 static func load_draft(project: Dictionary) -> Dictionary:
@@ -105,6 +111,20 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		return "Raven-сценарий изменился после сохранения черновика. Нужен ручной diff; автоматический rebase запрещён."
 	if FileAccess.get_sha256(str(project["sourcePath"])) != project["sha"]:
 		return "Сценарий в репозитории изменён извне; повторно откройте редактор."
+	var stage_patches: Variant = draft.get("stagePatches", {})
+	if not stage_patches is Dictionary:
+		return "Повреждённый список изменений постановки."
+	if not stage_patches.is_empty():
+		if draft.get("stageSourceSha256", "") != project.get("stagingSha", "") or draft.get("castSourceSha256", "") != project.get("castSha", ""):
+			return "Исходная постановка или справочник персонажей изменились. Нужен ручной diff."
+		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
+			return "Постановка изменилась на диске после открытия. Повторно откройте проект."
+		for stage_id in stage_patches:
+			if not project["shots"].has(stage_id):
+				return "В черновике неизвестная сцена постановки."
+			var stage_error: String = validate_stage(project, stage_patches[stage_id])
+			if not stage_error.is_empty():
+				return "%s: %s" % [stage_id, stage_error]
 	var patches: Variant = draft.get("patches", {})
 	if not patches is Dictionary:
 		return "Повреждённый набор правок."
@@ -180,6 +200,98 @@ static func export_candidate(project: Dictionary, draft: Dictionary) -> Dictiona
 		saved["notice"] = "Локальный кандидат: не заменяет игровой сценарий. Для коммита нужен ревью и перенос в production catalog."
 	return saved
 
+
+## Returns only the selected authored production-stage shot, never modifies res://.
+static func effective_stage(project: Dictionary, draft: Dictionary, scene_id: String) -> Dictionary:
+	return draft.get("stagePatches", {}).get(scene_id, project.get("shots", {}).get(scene_id, {})).duplicate(true)
+
+
+static func stage_options(project: Dictionary) -> Dictionary:
+	var backgrounds: Array[String] = []
+	for master in project.get("stagingData", {}).get("masters", []):
+		backgrounds.append(str(master.get("id", "")))
+	var actors: Dictionary = {}
+	for actor in project.get("castData", {}).get("characters", []):
+		actors[str(actor.get("id", ""))] = actor
+	return {"backgrounds": backgrounds, "actors": actors}
+
+
+static func validate_stage(project: Dictionary, stage: Variant) -> String:
+	if not stage is Dictionary:
+		return "Постановка должна быть объектом."
+	var id: String = str(stage.get("sceneId", ""))
+	if not project.get("shots", {}).has(id):
+		return "Неизвестная сцена."
+	var original: Dictionary = project["shots"][id]
+	var approved: Dictionary = original.duplicate(true)
+	approved["backgroundId"] = stage.get("backgroundId")
+	approved["cast"] = stage.get("cast")
+	approved["visibleCount"] = stage.get("visibleCount")
+	if stage != approved:
+		return "Изменены поля вне backgroundId/cast/visibleCount."
+	var opts: Dictionary = stage_options(project)
+	if stage.get("backgroundId") not in opts["backgrounds"]:
+		return "Фон отсутствует в каталоге постановки."
+	var cast_list: Variant = stage.get("cast", [])
+	if not cast_list is Array or cast_list.size() > 3 or int(stage.get("visibleCount", -1)) != cast_list.size():
+		return "В кадре можно разместить не более трёх персонажей."
+	var used: Dictionary = {}
+	for item in cast_list:
+		if not item is Dictionary:
+			return "Некорректный персонаж."
+		var actor_id: String = str(item.get("characterId", ""))
+		if not opts["actors"].has(actor_id) or used.has(actor_id):
+			return "Неизвестный или повторяющийся персонаж."
+		used[actor_id] = true
+		var spec: Dictionary = opts["actors"][actor_id]
+		if item.get("pose") not in spec.get("poses", []):
+			return "Поза не разрешена для персонажа."
+		if item.get("emotion") not in spec.get("emotions", []):
+			return "Эмоция не разрешена для персонажа."
+		if item.get("slot") not in ["left", "center", "right"]:
+			return "Неизвестный слот постановки."
+		for key in item.keys():
+			if key not in ["characterId", "slot", "pose", "emotion", "micro", "x", "y"]:
+				return "Недопустимое поле персонажа: " + str(key)
+		for axis in ["x", "y"]:
+			if item.has(axis) and (not (item[axis] is float or item[axis] is int) or not is_finite(float(item[axis])) or float(item[axis]) < 0 or float(item[axis]) > 1):
+				return "Координаты должны быть нормализованы в диапазоне 0–1."
+	return ""
+
+
+static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary) -> String:
+	var error: String = validate_stage(project, stage)
+	if not error.is_empty():
+		return error
+	draft["stageSourceSha256"] = str(project["stagingSha"])
+	draft["castSourceSha256"] = str(project["castSha"])
+	if not draft.has("stagePatches"):
+		draft["stagePatches"] = {}
+	draft["stagePatches"][str(stage["sceneId"])] = stage.duplicate(true)
+	return ""
+
+
+static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var data: Dictionary = project["stagingData"].duplicate(true)
+	var patches: Dictionary = draft.get("stagePatches", {})
+	for i in range(data.get("sceneShots", []).size()):
+		var scene_id: String = str(data["sceneShots"][i]["sceneId"])
+		if patches.has(scene_id):
+			data["sceneShots"][i] = patches[scene_id].duplicate(true)
+	return data
+
+
+static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var error: String = validate(project, draft)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	if draft.get("stagePatches", {}).is_empty():
+		return {"ok": false, "error": "Нет изменений постановки."}
+	var data: Dictionary = materialize_staging(project, draft)
+	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/v1/exports")
+	var target: String = folder.path_join("raven-staging-" + str(project["stagingSha"]).substr(0, 12) + "-" +
+			JSON.stringify(draft["stagePatches"]).sha256_text().substr(0, 12) + ".json")
+	return _write_new(target, JSON.stringify(data, "\t") + "\n", false)
 
 static func _write_new(path: String, payload: String, overwrite: bool) -> Dictionary:
 	if not overwrite and FileAccess.file_exists(path):

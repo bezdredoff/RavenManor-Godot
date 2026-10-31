@@ -198,6 +198,13 @@
       "updated": "2026-10-31",
       "owner": "ChatGPT",
       "evidence": "Open PR #77 https://github.com/bezdredoff/RavenManor-Godot/pull/77. CI on implementation head 4d31131e0527f341dfa84a9885f33b1100a34271 PASSED: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41235837433, including Raven production 28 scenes/280 entries and synthetic local save/reopen/export/no-overwrite/SHA-drift, existing VN Studio and dashboard. User Godot desktop QA not done; exported JSON is candidate only, no runtime switching."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-02",
+      "status": "PR_review",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "Stacked PR #78 https://github.com/bezdredoff/RavenManor-Godot/pull/78 (base remains open #77). CI PASS on implementation head 5a7e087eea917c278c963b130bed45d0b574a83a: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41237623952. Godot Raven source/visual stage synthetic test, stage/source SHA drift, JSON export, original VN tests, dashboard, browser succeeded. No runtime integration or owner manual Godot UI acceptance."
     }
   ],
   "rules": [
