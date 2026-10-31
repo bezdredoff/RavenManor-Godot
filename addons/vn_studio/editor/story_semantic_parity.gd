@@ -113,7 +113,7 @@ static func compare(project: Dictionary, plan: Dictionary) -> Dictionary:
 						ending_count += 1
 	# Each branch and static target is checked again outside any snapshot.
 	for idx in range(45):
-		var source: Dictionary = donor_scenes[idx]
+		var source: Dictionary = JSON.parse_string(JSON.stringify(donor_scenes[idx]))
 		var migrated: Dictionary = candidates[idx]
 		for key in ["sceneId", "sceneIndex", "nextSceneId", "nextSceneIndex", "nextSceneIndices",
 				"nextLevelId", "onWinSceneIndex", "choiceGate", "branchChoiceId", "ending",
