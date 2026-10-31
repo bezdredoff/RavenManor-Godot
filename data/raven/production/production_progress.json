@@ -190,7 +190,7 @@
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Partial VN-EDITOR-06B in open PR #75 https://github.com/bezdredoff/RavenManor-Godot/pull/75. Successful CI on code head f9cecceb0c79576c096189da144d567c93ffeb14: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41228302230; legacy save position and strict field diff synthetic, plus all prior VN Studio, PR governance and dashboard checks. No real donor save replay, import into runtime, 45 scene full parity or manual visual QA claimed; full VN-EDITOR-06 remains unfinished."
+      "evidence": "PR #76 open https://github.com/bezdredoff/RavenManor-Godot/pull/76; implementation code head a2ad482c8c4a8957343ad6a6888f8fdfabf6c427 passed CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41229807616: 45-scene synthetic data semantic replay, previous VN Studio, PR governance/dashboard/browser checks. JSON-number normalization fixed in test. Only data-level replay, not independently running real UPDS StorySession, persisted save migration, CampaignData clue parity or manual donor visual QA; full VN-EDITOR-06 incomplete."
     }
   ],
   "rules": [
