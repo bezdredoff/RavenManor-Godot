@@ -145,10 +145,10 @@
     },
     {
       "id": "VN-EDITOR-00",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Architecture/specification PR being prepared: docs/VN_STUDIO_EDITOR_SPEC.md, docs/process/VN_STUDIO_AGENT_GUIDE_RU.md and CODE-03 companion backlog. No plugin, UPDS conversion, test execution or runtime acceptance yet."
+      "evidence": "Draft design/spec, agent guide, CODE-03-linked backlog and status in open PR #68: https://github.com/bezdredoff/RavenManor-Godot/pull/68. Code plan/dashboard/agent file review pending CI; no plugin, importer, conversion, human art/phone QA or runtime implemented."
     }
   ],
   "rules": [
