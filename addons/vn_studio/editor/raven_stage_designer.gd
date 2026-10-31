@@ -307,6 +307,9 @@ func _on_card_input(event: InputEvent, index: int) -> void:
 		_stage_data["cast"][index]["x"] = snappedf(coords.x, 0.001)
 		_stage_data["cast"][index]["y"] = snappedf(coords.y, 0.001)
 		_cards[index].position = _position_for(coords)
+		_status.text = "%s · x=%d px, y=%d px (390×844 reference)" % [
+			str(_stage_data["cast"][index]["characterId"]),
+			roundi(coords.x * REFERENCE_SIZE.x), roundi(coords.y * REFERENCE_SIZE.y)]
 
 
 func _on_background(index: int) -> void:
