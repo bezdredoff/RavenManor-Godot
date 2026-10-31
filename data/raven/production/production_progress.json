@@ -168,8 +168,8 @@
       "id": "VN-EDITOR-03",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "status": "in_progress",
-      "evidence": "Native VN Studio local draft authoring overlay, source SHA/root fingerprint validation, RU/EN/BE text/speaker/emotion edits, pose/drag placement, per-scene Undo/Redo, temp/backup save, new Godot synthetic smoke. Candidate branch code/vn-editor-03-draft-authoring; PR/CI and manual UPDS desktop-editor QA pending. No donor file writes, private UPDS content in public repo, or game runtime integration."
+      "status": "PR_review",
+      "evidence": "Open PR #71: https://github.com/bezdredoff/RavenManor-Godot/pull/71; Godot draft overlay data + UI + synthetic roundtrip smoke, privacy-safe and source SHA locked. CI on latest head pending; actual UPDS editor QA and runtime parity not accepted."
     }
   ],
   "rules": [
