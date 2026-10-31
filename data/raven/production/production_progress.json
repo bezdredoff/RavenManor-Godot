@@ -204,7 +204,7 @@
       "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Stacked PR #78 https://github.com/bezdredoff/RavenManor-Godot/pull/78 targeting open PR #77 (NOT main). Scene-wide stage drag, existing asset preview, background/pose/emotion selectors, SHA-pinned draft + separate local JSON candidate. Latest CI and human visual QA pending; no runtime/save changes."
+      "evidence": "Stacked PR #78 https://github.com/bezdredoff/RavenManor-Godot/pull/78 (base remains open #77). CI PASS on implementation head 5a7e087eea917c278c963b130bed45d0b574a83a: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41237623952. Godot Raven source/visual stage synthetic test, stage/source SHA drift, JSON export, original VN tests, dashboard, browser succeeded. No runtime integration or owner manual Godot UI acceptance."
     }
   ],
   "rules": [
