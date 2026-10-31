@@ -14,7 +14,7 @@ function Invoke-GodotCheck {
 			-RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
 		$stdout = Get-Content -LiteralPath $stdoutPath -Raw
 		$stderr = Get-Content -LiteralPath $stderrPath -Raw
-		if ($process.ExitCode -ne 0 -or $stderr -match 'SCRIPT ERROR:') {
+		if ($process.ExitCode -ne 0 -or $stderr -match 'SCRIPT ERROR:' -or $stderr.Contains('res://addons/vn_studio/res:') -or $stderr.Contains('Failed loading resource: res://addons/vn_studio/')) {
 			throw "$Stage failed.`n$stdout`n$stderr"
 		}
 		if ($ExpectedOutput -and -not $stdout.Contains($ExpectedOutput)) {
