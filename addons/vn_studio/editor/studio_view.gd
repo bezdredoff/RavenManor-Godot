@@ -4,6 +4,7 @@ extends Control
 
 const Reader = preload("res://addons/vn_studio/editor/legacy_reader.gd")
 const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
+const Library = preload("res://addons/vn_studio/editor/character_library.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -44,6 +45,18 @@ var _emotion_edit: LineEdit
 var _actor_picker: OptionButton
 var _pose_picker: OptionButton
 
+var _library_ids: Array[String] = []
+var _catalog_selected: String = ""
+var _catalog_pose: String = ""
+var _catalog_list: ItemList
+var _catalog_gallery: GridContainer
+var _catalog_preview: TextureRect
+var _catalog_description: Label
+var _catalog_apply: Button
+var _catalog_motion: OptionButton
+var _catalog_reduced_motion: CheckBox
+var _catalog_tween: Tween
+
 
 func _init() -> void:
 	name = "VN Studio"
@@ -75,6 +88,7 @@ func open_source(folder: String) -> bool:
 	_scene_filter.text = ""
 	_refresh_scene_list()
 	_select_scene(0)
+	_refresh_library()
 	return true
 
 
@@ -210,21 +224,74 @@ func _make_ui() -> void:
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
 	working.add_child(details_panel)
+	var tabs := TabContainer.new()
+	tabs.size_flags_vertical = SIZE_EXPAND_FILL
+	details_panel.add_child(tabs)
+	var dialogue_tab := VBoxContainer.new()
+	dialogue_tab.name = "Реплики"
+	tabs.add_child(dialogue_tab)
 	var line_label := Label.new()
 	line_label.text = "Реплики и ветви"
-	details_panel.add_child(line_label)
+	dialogue_tab.add_child(line_label)
 	_variant_picker = OptionButton.new()
 	_variant_picker.item_selected.connect(_on_variant_selected)
-	details_panel.add_child(_variant_picker)
+	dialogue_tab.add_child(_variant_picker)
 	_line_list = ItemList.new()
 	_line_list.size_flags_vertical = SIZE_EXPAND_FILL
 	_line_list.item_selected.connect(_on_line_selected)
-	details_panel.add_child(_line_list)
+	dialogue_tab.add_child(_line_list)
 	_details = RichTextLabel.new()
 	_details.bbcode_enabled = false
 	_details.custom_minimum_size.y = 160
 	_details.fit_content = false
-	details_panel.add_child(_details)
+	dialogue_tab.add_child(_details)
+
+	var characters_tab := VBoxContainer.new()
+	characters_tab.name = "Персонажи"
+	tabs.add_child(characters_tab)
+	var library_caption := Label.new()
+	library_caption.text = "Каталог выбранного UPDS (не импортируется в Raven)"
+	characters_tab.add_child(library_caption)
+	_catalog_list = ItemList.new()
+	_catalog_list.custom_minimum_size.y = 125
+	_catalog_list.item_selected.connect(_on_library_character)
+	characters_tab.add_child(_catalog_list)
+	_catalog_preview = TextureRect.new()
+	_catalog_preview.custom_minimum_size.y = 140
+	_catalog_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_catalog_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_catalog_preview.size_flags_horizontal = SIZE_EXPAND_FILL
+	characters_tab.add_child(_catalog_preview)
+	_catalog_description = Label.new()
+	_catalog_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_catalog_description.text = "Откройте UPDS-godot для просмотра ассетов."
+	characters_tab.add_child(_catalog_description)
+	_catalog_apply = Button.new()
+	_catalog_apply.text = "Применить изображение к актёру текущей реплики"
+	_catalog_apply.disabled = true
+	_catalog_apply.pressed.connect(_on_apply_library_pose)
+	characters_tab.add_child(_catalog_apply)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size.y = 140
+	scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	characters_tab.add_child(scroll)
+	_catalog_gallery = GridContainer.new()
+	_catalog_gallery.columns = 2
+	_catalog_gallery.size_flags_horizontal = SIZE_EXPAND_FILL
+	scroll.add_child(_catalog_gallery)
+	var animation_caption := Label.new()
+	animation_caption.text = "Микродвижения (только предпросмотр, без экспорта)"
+	characters_tab.add_child(animation_caption)
+	_catalog_motion = OptionButton.new()
+	for preset in Library.motion_presets():
+		_catalog_motion.add_item(str(preset["name"]))
+	_catalog_motion.item_selected.connect(_on_motion_choice)
+	characters_tab.add_child(_catalog_motion)
+	_catalog_reduced_motion = CheckBox.new()
+	_catalog_reduced_motion.text = "Reduced motion · выключить анимации"
+	_catalog_reduced_motion.button_pressed = true
+	_catalog_reduced_motion.toggled.connect(_on_reduced_motion_changed)
+	characters_tab.add_child(_catalog_reduced_motion)
 
 	_choose_folder = EditorFileDialog.new()
 	_choose_folder.access = EditorFileDialog.ACCESS_FILESYSTEM
@@ -453,6 +520,7 @@ func _render_line() -> void:
 		details_text += "\nФинал: " + str(scene["ending"].get("endingId", ""))
 	details_text += "\n\nDRAFT ONLY — никаких действий в кампании или UPDS."
 	_details.text = details_text
+	_update_catalog_action()
 
 
 func _ensure_draft(scene_index: int) -> void:
@@ -563,9 +631,10 @@ func _update_pose_options(actors: Array) -> void:
 	var actor: Dictionary = actors[_selected_actor]
 	var character: String = str(actor.get("character", ""))
 	var catalog: Dictionary = _project.get("catalog", {}).get("characters", {}).get(character, {})
-	var names: Array = catalog.keys()
-	names.erase("icon")
-	names.erase("phone")
+	var names: Array = []
+	for id in Library.pose_ids(str(_project.get("root", "")), _project.get("catalog", {}), character):
+		names.append(id)
+	# Retain a legacy pose if its source asset is missing; do not silently replace it.
 	names.sort()
 	var current_pose: String = str(actor.get("pose", "neutral"))
 	if current_pose not in names:
@@ -582,6 +651,7 @@ func _update_pose_options(actors: Array) -> void:
 
 func _on_actor_selected(index: int) -> void:
 	_selected_actor = index
+	_update_catalog_action()
 	_update_pose_options(_effective_line(_current_line).get("actors", []))
 
 
@@ -687,3 +757,144 @@ func _update_status() -> void:
 		_undo_button.disabled = not _editable() or _undo_history.get(_current_scene, []).is_empty()
 	if _redo_button != null:
 		_redo_button.disabled = not _editable() or _redo_history.get(_current_scene, []).is_empty()
+
+
+func _refresh_library() -> void:
+	_library_ids.clear()
+	_catalog_list.clear()
+	_catalog_selected = ""
+	_catalog_pose = ""
+	_catalog_preview.texture = null
+	_catalog_apply.disabled = true
+	if _project.is_empty():
+		return
+	var catalog: Dictionary = _project.get("catalog", {})
+	var root: String = str(_project.get("root", ""))
+	_library_ids = Library.character_ids(catalog)
+	for char_id in _library_ids:
+		_catalog_list.add_item(char_id)
+		var portrait_icon: Texture2D = Reader.image_for(root, catalog, "characters", char_id, "icon")
+		if portrait_icon != null:
+			_catalog_list.set_item_icon(_catalog_list.item_count - 1, portrait_icon)
+	if not _library_ids.is_empty():
+		_catalog_list.select(0)
+		_select_library_character(_library_ids[0])
+
+
+func _on_library_character(index: int) -> void:
+	if index >= 0 and index < _library_ids.size():
+		_select_library_character(_library_ids[index])
+
+
+func _select_library_character(character_id: String) -> void:
+	_catalog_selected = character_id
+	_catalog_pose = ""
+	for child in _catalog_gallery.get_children():
+		_catalog_gallery.remove_child(child)
+		child.queue_free()
+	_catalog_preview.texture = null
+	var root: String = str(_project.get("root", ""))
+	var assets: Dictionary = _project.get("catalog", {})
+	var info: Dictionary = Library.inspect(root, assets, character_id)
+	if not info.get("ok", false):
+		_catalog_description.text = str(info.get("error", "Ошибка каталога"))
+		_update_catalog_action()
+		return
+	var entries: Array = info["entries"]
+	var valid_poses: int = 0
+	var unavailable: int = 0
+	for entry in entries:
+		if entry["kind"] != "portrait":
+			continue
+		var pose_id: String = str(entry["id"])
+		var available: bool = bool(entry["exists"])
+		if available:
+			valid_poses += 1
+		else:
+			unavailable += 1
+		var panel := PanelContainer.new()
+		panel.custom_minimum_size = Vector2(138, 132)
+		_catalog_gallery.add_child(panel)
+		var column := VBoxContainer.new()
+		panel.add_child(column)
+		var thumbnail := TextureRect.new()
+		thumbnail.custom_minimum_size = Vector2(120, 92)
+		thumbnail.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		thumbnail.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		thumbnail.texture = Reader.image_for(root, assets, "characters", character_id, pose_id) if available else null
+		column.add_child(thumbnail)
+		var select_button := Button.new()
+		select_button.text = pose_id if available else "⚠ " + pose_id + " · нет файла"
+		select_button.disabled = not available
+		select_button.pressed.connect(_on_library_pose.bind(pose_id))
+		column.add_child(select_button)
+	_catalog_description.text = "%s · %d изображений · %d недоступно. Костюмы: нет метаданных. Слои лица: нет. Анимации: нет исходных клипов." % [character_id, valid_poses, unavailable]
+	if valid_poses > 0:
+		for entry in entries:
+			if entry["kind"] == "portrait" and entry["exists"]:
+				_on_library_pose(str(entry["id"]))
+				break
+	else:
+		_update_catalog_action()
+
+
+func _on_library_pose(pose_id: String) -> void:
+	_catalog_pose = pose_id
+	var root: String = str(_project.get("root", ""))
+	var catalog: Dictionary = _project.get("catalog", {})
+	_catalog_preview.texture = Reader.image_for(root, catalog, "characters", _catalog_selected, pose_id)
+	_update_catalog_action()
+	_apply_catalog_motion()
+
+
+func _update_catalog_action() -> void:
+	if _catalog_apply == null:
+		return
+	_catalog_apply.disabled = true
+	if not _editable() or _catalog_pose.is_empty():
+		return
+	var actors: Array = _effective_line(_current_line).get("actors", [])
+	if _selected_actor >= 0 and _selected_actor < actors.size():
+		var actor: Dictionary = actors[_selected_actor]
+		_catalog_apply.disabled = str(actor.get("character", "")) != _catalog_selected or _catalog_preview.texture == null
+
+
+func _on_apply_library_pose() -> void:
+	if _catalog_apply.disabled or not _editable():
+		return
+	var actors: Array = _effective_line(_current_line).get("actors", [])
+	if _selected_actor < 0 or _selected_actor >= actors.size():
+		return
+	_capture_undo()
+	Drafts.set_actor(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _selected_actor, _catalog_selected, "pose", _catalog_pose)
+	_record_edit()
+	_render_line()
+
+
+func _on_motion_choice(_index: int) -> void:
+	_apply_catalog_motion()
+
+
+func _on_reduced_motion_changed(_enabled: bool) -> void:
+	_apply_catalog_motion()
+
+
+func _apply_catalog_motion() -> void:
+	# Non-destructive library test animation; never serialized into UPDS drafts.
+	if _catalog_tween != null and _catalog_tween.is_valid():
+		_catalog_tween.kill()
+	_catalog_tween = null
+	_catalog_preview.scale = Vector2.ONE
+	_catalog_preview.modulate.a = 1.0
+	if _catalog_preview.texture == null or _catalog_reduced_motion.button_pressed:
+		return
+	var preset: int = _catalog_motion.selected
+	if preset == 1:
+		_catalog_preview.pivot_offset = _catalog_preview.size * 0.5
+		_catalog_tween = create_tween().set_loops()
+		_catalog_tween.tween_property(_catalog_preview, "scale", Vector2(1.02, 1.02), 0.9).set_trans(Tween.TRANS_SINE)
+		_catalog_tween.tween_property(_catalog_preview, "scale", Vector2.ONE, 0.9).set_trans(Tween.TRANS_SINE)
+	elif preset == 2:
+		_catalog_preview.modulate.a = 0.0
+		_catalog_tween = create_tween()
+		_catalog_tween.tween_property(_catalog_preview, "modulate:a", 1.0, 0.45).set_trans(Tween.TRANS_SINE)

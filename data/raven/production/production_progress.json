@@ -168,8 +168,15 @@
       "id": "VN-EDITOR-03",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
+      "status": "merged",
+      "evidence": "PR #71 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/71, merge commit 83e7bcd78dc1fcce000d89b4a65682f16f68d12e; Godot local SHA-pinned draft authoring (text/pose/drag/undo), synthetic CI passed. Human donor/editor visual approval not recorded."
+    },
+    {
+      "id": "VN-EDITOR-04",
       "status": "PR_review",
-      "evidence": "Open PR #71: https://github.com/bezdredoff/RavenManor-Godot/pull/71; Godot draft overlay data + UI + synthetic roundtrip smoke, privacy-safe and source SHA locked. CI on latest head pending; actual UPDS editor QA and runtime parity not accepted."
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "Open https://github.com/bezdredoff/RavenManor-Godot/pull/72: Godot Characters tab from 17 source catalog IDs, image variant thumbnails, missing-art warnings, apply-to-same-actor local draft, preview-only soft idle/fade with Reduced Motion; synthetic test/CI pending, no donor UX acceptance or production costume/layered rig claim."
     }
   ],
   "rules": [
