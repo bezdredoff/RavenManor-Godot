@@ -208,10 +208,10 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-03",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "code/raven-vn-stage-preview-controls: compact UPDS gallery & Raven actor scale, 11 canonical background masters with permitted lighting/state variants, browse gallery noting ART PENDING, 390x844 editor grid and selected-dialogue overlay toggles; CI/manual UI QA pending. No runtime changes."
+      "evidence": "Open PR #81 https://github.com/bezdredoff/RavenManor-Godot/pull/81. Full CI PASS on implementation head 3b0e95e2330c8109ac866c577f6a0f6992dd3789: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41240979721. Canonical 11 background masters/lighting/state, compact UPDS pose gallery, Raven actor scale, optional 390x844 logical px grid and selected dialogue overlay; synthetic stage test and browser suite passed. Desktop owner UI QA and missing background-state artwork pending; no runtime changes."
     }
   ],
   "rules": [
