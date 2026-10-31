@@ -190,7 +190,7 @@
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Merged PR #74 introduced private bridge v1; open PR #75 https://github.com/bezdredoff/RavenManor-Godot/pull/75 adds old-save in-memory position inspector and field-level semantic guard. Latest CI pending; real donor/save replay and runtime migration NOT accepted. Work package remains incomplete."
+      "evidence": "Partial VN-EDITOR-06B in open PR #75 https://github.com/bezdredoff/RavenManor-Godot/pull/75. Successful CI on code head f9cecceb0c79576c096189da144d567c93ffeb14: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41228302230; legacy save position and strict field diff synthetic, plus all prior VN Studio, PR governance and dashboard checks. No real donor save replay, import into runtime, 45 scene full parity or manual visual QA claimed; full VN-EDITOR-06 remains unfinished."
     }
   ],
   "rules": [
