@@ -4,6 +4,7 @@ extends Control
 
 const Reader = preload("res://addons/vn_studio/editor/legacy_reader.gd")
 const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
+const Library = preload("res://addons/vn_studio/editor/character_library.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -44,6 +45,18 @@ var _emotion_edit: LineEdit
 var _actor_picker: OptionButton
 var _pose_picker: OptionButton
 
+var _library_ids: Array[String] = []
+var _catalog_selected: String = ""
+var _catalog_pose: String = ""
+var _catalog_list: ItemList
+var _catalog_gallery: GridContainer
+var _catalog_preview: TextureRect
+var _catalog_description: Label
+var _catalog_apply: Button
+var _catalog_motion: OptionButton
+var _catalog_reduced_motion: CheckBox
+var _catalog_tween: Tween
+
 
 func _init() -> void:
 	name = "VN Studio"
@@ -75,6 +88,7 @@ func open_source(folder: String) -> bool:
 	_scene_filter.text = ""
 	_refresh_scene_list()
 	_select_scene(0)
+	_refresh_library()
 	return true
 
 
@@ -210,21 +224,74 @@ func _make_ui() -> void:
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
 	working.add_child(details_panel)
+	var tabs := TabContainer.new()
+	tabs.size_flags_vertical = SIZE_EXPAND_FILL
+	details_panel.add_child(tabs)
+	var dialogue_tab := VBoxContainer.new()
+	dialogue_tab.name = "Реплики"
+	tabs.add_child(dialogue_tab)
 	var line_label := Label.new()
 	line_label.text = "Реплики и ветви"
-	details_panel.add_child(line_label)
+	dialogue_tab.add_child(line_label)
 	_variant_picker = OptionButton.new()
 	_variant_picker.item_selected.connect(_on_variant_selected)
-	details_panel.add_child(_variant_picker)
+	dialogue_tab.add_child(_variant_picker)
 	_line_list = ItemList.new()
 	_line_list.size_flags_vertical = SIZE_EXPAND_FILL
 	_line_list.item_selected.connect(_on_line_selected)
-	details_panel.add_child(_line_list)
+	dialogue_tab.add_child(_line_list)
 	_details = RichTextLabel.new()
 	_details.bbcode_enabled = false
 	_details.custom_minimum_size.y = 160
 	_details.fit_content = false
-	details_panel.add_child(_details)
+	dialogue_tab.add_child(_details)
+
+	var characters_tab := VBoxContainer.new()
+	characters_tab.name = "Персонажи"
+	tabs.add_child(characters_tab)
+	var library_caption := Label.new()
+	library_caption.text = "Каталог выбранного UPDS (не импортируется в Raven)"
+	characters_tab.add_child(library_caption)
+	_catalog_list = ItemList.new()
+	_catalog_list.custom_minimum_size.y = 125
+	_catalog_list.item_selected.connect(_on_library_character)
+	characters_tab.add_child(_catalog_list)
+	_catalog_preview = TextureRect.new()
+	_catalog_preview.custom_minimum_size.y = 140
+	_catalog_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_catalog_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	_catalog_preview.size_flags_horizontal = SIZE_EXPAND_FILL
+	characters_tab.add_child(_catalog_preview)
+	_catalog_description = Label.new()
+	_catalog_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_catalog_description.text = "Откройте UPDS-godot для просмотра ассетов."
+	characters_tab.add_child(_catalog_description)
+	_catalog_apply = Button.new()
+	_catalog_apply.text = "Применить изображение к актёру текущей реплики"
+	_catalog_apply.disabled = true
+	_catalog_apply.pressed.connect(_on_apply_library_pose)
+	characters_tab.add_child(_catalog_apply)
+	var scroll := ScrollContainer.new()
+	scroll.custom_minimum_size.y = 140
+	scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	characters_tab.add_child(scroll)
+	_catalog_gallery = GridContainer.new()
+	_catalog_gallery.columns = 2
+	_catalog_gallery.size_flags_horizontal = SIZE_EXPAND_FILL
+	scroll.add_child(_catalog_gallery)
+	var animation_caption := Label.new()
+	animation_caption.text = "Микродвижения (только предпросмотр, без экспорта)"
+	characters_tab.add_child(animation_caption)
+	_catalog_motion = OptionButton.new()
+	for preset in Library.motion_presets():
+		_catalog_motion.add_item(str(preset["name"]))
+	_catalog_motion.item_selected.connect(_on_motion_choice)
+	characters_tab.add_child(_catalog_motion)
+	_catalog_reduced_motion = CheckBox.new()
+	_catalog_reduced_motion.text = "Reduced motion · выключить анимации"
+	_catalog_reduced_motion.button_pressed = true
+	_catalog_reduced_motion.toggled.connect(_on_reduced_motion_changed)
+	characters_tab.add_child(_catalog_reduced_motion)
 
 	_choose_folder = EditorFileDialog.new()
 	_choose_folder.access = EditorFileDialog.ACCESS_FILESYSTEM
@@ -563,9 +630,10 @@ func _update_pose_options(actors: Array) -> void:
 	var actor: Dictionary = actors[_selected_actor]
 	var character: String = str(actor.get("character", ""))
 	var catalog: Dictionary = _project.get("catalog", {}).get("characters", {}).get(character, {})
-	var names: Array = catalog.keys()
-	names.erase("icon")
-	names.erase("phone")
+	var names: Array = []
+	for id in Library.pose_ids(str(_project.get("root", "")), _project.get("catalog", {}), character):
+		names.append(id)
+	# Retain a legacy pose if its source asset is missing; do not silently replace it.
 	names.sort()
 	var current_pose: String = str(actor.get("pose", "neutral"))
 	if current_pose not in names:
