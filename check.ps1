@@ -31,6 +31,7 @@ Invoke-GodotCheck 'Project import' @('--headless', '--editor', '--path', $projec
 Invoke-GodotCheck 'VN Studio Legacy Viewer synthetic' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_legacy_smoke.gd', '--quit-after', '120') 'Raven VN Studio read-only legacy viewer smoke passed'
 Invoke-GodotCheck 'VN Studio draft overlay round-trip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_drafts_smoke.gd', '--quit-after', '120') 'Raven VN Studio draft overlay round-trip smoke passed'
 Invoke-GodotCheck 'VN Studio character catalog' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_catalog_smoke.gd', '--quit-after', '120') 'Raven VN Studio character library smoke passed'
+Invoke-GodotCheck 'VN Studio story graph' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_story_graph_smoke.gd', '--quit-after', '120') 'Raven VN Studio story graph smoke passed'
 foreach ($script in @(
 	'res://scripts/core/save_storage.gd',
 	'res://scripts/raven/raven_ids.gd',
