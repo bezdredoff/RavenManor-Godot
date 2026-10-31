@@ -180,10 +180,10 @@
     },
     {
       "id": "VN-EDITOR-05",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Native Godot GraphEdit read-only graph from UPDS-godot 45-scenes save_contract, A/B/C variants, inline choiceGate, Match-3 win transitions, endings/requirement/fallback. Separate deterministic model and UI, synthetic 45-scene tests in CI. Candidate branch code/vn-editor-05-story-graph; PR/CI and local manual donor visual QA pending. No runtime/choices/save data changed."
+      "evidence": "Open PR #73 https://github.com/bezdredoff/RavenManor-Godot/pull/73. Read-only GraphEdit story topology from 45 scene source model, choices/variants, M3, endings/fallback with synthetic QA. Latest CI pending; private UPDS runtime/visual/user QA and editing/export are not completed."
     }
   ],
   "rules": [
