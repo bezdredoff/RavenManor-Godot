@@ -108,7 +108,7 @@ static func build(project: Dictionary) -> Dictionary:
 				warnings.append("%s: Match-3 без корректного onWinSceneIndex" % id)
 			else:
 				_add_edge(edges, unique_edges, match_key, "scene:" + resumed, "победа", "win", nodes, warnings)
-		elif data.get("nextSceneIndex", -1) is int and int(data["nextSceneIndex"]) >= 0:
+		elif data.get("nextSceneIndex", -1) is int and int(data.get("nextSceneIndex", -1)) >= 0:
 			var next_index: int = int(data["nextSceneIndex"])
 			var next_id: String = _scene_at(scenes, next_index)
 			if next_id.is_empty():
