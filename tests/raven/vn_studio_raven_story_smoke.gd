@@ -2,6 +2,7 @@ extends SceneTree
 ## Raven Manor two-source authoring safety. Only synthetic user:// sources are modified.
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const View = preload("res://addons/vn_studio/editor/raven_story_view.gd")
+const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 
 
 func _initialize() -> void:
@@ -35,6 +36,9 @@ func _run() -> void:
 	assert(view._project["sceneCount"] == 28)
 	assert(view._scenes.item_count == 28)
 	assert(view._lines.item_count == 4)
+	assert(view._stage_designer._stage_data["sceneId"] == "RM-BEAT-00-01")
+	assert(view._stage_designer._cards.size() == 1)
+	assert(view._stage_designer._background.item_count >= 10)
 	view.queue_free()
 	# Synthetic miniature corpus: validates state without writing public production content.
 	var source: String = ProjectSettings.globalize_path("user://vn_raven_source_synthetic_01")
@@ -58,12 +62,15 @@ func _run() -> void:
 		"notices": [{"kind": "non_spoken_stage_direction", "sceneId": scene_a, "textRu": "Тест"}]}
 	var original_path: String = source.path_join(Store.RELATIVE)
 	_write(original_path, payload)
-	_write(source.path_join(Store.STAGING), {"sceneShots": [
-		{"sceneId": scene_a, "backgroundId": "BG-HALL", "cast": [{"characterId": "RM-CHAR-EVELYN", "slot": "left"}]},
-		{"sceneId": scene_b, "backgroundId": "BG-KITCHEN", "cast": []}]})
+	_write(source.path_join(Store.STAGING), {"masters": [{"id": "BG-HALL"}, {"id": "BG-KITCHEN"}], "sceneShots": [
+		{"sceneId": scene_a, "backgroundId": "BG-HALL", "lighting": "day", "roomState": "dusty", "visibleCount": 1, "layout": "portrait_first", "note": "", "cast": [{"characterId": "RM-CHAR-EVELYN", "slot": "left", "pose": "relaxed", "emotion": "neutral", "micro": ""}]},
+		{"sceneId": scene_b, "backgroundId": "BG-KITCHEN", "lighting": "day", "roomState": "unrestored", "visibleCount": 0, "layout": "portrait_first", "note": "", "cast": []}]})
 	_write(source.path_join(Store.ROUTES), {"sceneTriggers": [
 		{"sceneId": scene_a, "gate": {"kind": "auto_new_game", "ref": "none"}},
 		{"sceneId": scene_b, "gate": {"kind": "scene_complete", "ref": scene_a}}]})
+	_write(source.path_join(Store.CAST), {"characters": [
+		{"id": "RM-CHAR-EVELYN", "poses": ["relaxed", "investigate"], "emotions": ["neutral", "curious"]},
+		{"id": "RM-CHAR-ADA", "poses": ["composed", "offer_tray"], "emotions": ["neutral", "dry_amused"]}]})
 	_write(source.path_join(Store.CUES), {"cues": [
 		{"lineId": "RM-TEST-A-L001", "poseId": "relaxed", "emotionId": "neutral"}]})
 	var original: String = FileAccess.get_file_as_string(original_path)
@@ -76,6 +83,44 @@ func _run() -> void:
 	Store.edit(draft, "RM-TEST-A-L001", "ru", "Добрый вечер")
 	Store.edit(draft, "RM-TEST-A-L001", "en", "Good evening")
 	assert(Store.change_count(draft) == 2)
+	var original_stage_path: String = source.path_join(Store.STAGING)
+	var original_stage_json: String = FileAccess.get_file_as_string(original_stage_path)
+	var scene_stage: Dictionary = Store.effective_stage(project, draft, scene_a)
+	assert(scene_stage["cast"].size() == 1)
+	scene_stage["backgroundId"] = "BG-KITCHEN"
+	scene_stage["cast"][0]["pose"] = "investigate"
+	scene_stage["cast"][0]["emotion"] = "curious"
+	scene_stage["cast"][0]["x"] = 0.348
+	scene_stage["cast"][0]["y"] = 0.725
+	assert(Store.set_stage(project, draft, scene_stage).is_empty())
+	assert(Store.validate(project, draft).is_empty())
+	assert(Store.effective_stage(project, draft, scene_a)["cast"][0]["x"] == 0.348)
+	var materialized_stage: Dictionary = Store.materialize_staging(project, draft)
+	assert(materialized_stage["sceneShots"][0]["backgroundId"] == "BG-KITCHEN")
+	assert(materialized_stage["sceneShots"][0]["cast"][0]["pose"] == "investigate")
+	assert(materialized_stage["sceneShots"][1]["cast"].is_empty())
+	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
+	var invalid_stage: Dictionary = scene_stage.duplicate(true)
+	invalid_stage["cast"][0]["pose"] = "illegal_pose"
+	assert(not Store.validate_stage(project, invalid_stage).is_empty())
+	invalid_stage = scene_stage.duplicate(true)
+	invalid_stage["cast"][0]["x"] = 2.5
+	assert(not Store.validate_stage(project, invalid_stage).is_empty())
+	invalid_stage = scene_stage.duplicate(true)
+	invalid_stage["gate"] = {"kind": "wrong"}
+	assert(not Store.validate_stage(project, invalid_stage).is_empty())
+	var visual := StageDesigner.new()
+	root.add_child(visual)
+	visual.set_scene(project, draft, scene_a)
+	assert(visual._cards.size() == 1)
+	assert(visual._background.item_count == 2)
+	assert(visual._pose.item_count == 2)
+	visual._on_add()
+	assert(visual._stage_data["cast"].size() == 2)
+	assert(visual._stage_data["cast"][1]["characterId"] == "RM-CHAR-ADA")
+	visual._on_remove()
+	assert(visual._stage_data["cast"].size() == 1)
+	visual.queue_free()
 	assert(Store.validate(project, draft).is_empty())
 	assert(Store.localized(payload["entries"][0], draft, "en")["translated"])
 	assert(Store.localized(payload["entries"][0], draft, "en")["text"] == "Good evening")
@@ -85,6 +130,7 @@ func _run() -> void:
 	var read: Dictionary = Store.load_draft(project)
 	assert(read["ok"] and read["found"])
 	assert(read["draft"]["patches"] == draft["patches"])
+	assert(read["draft"]["stagePatches"] == draft["stagePatches"])
 	var applied: Dictionary = Store.materialize(project, draft)
 	assert(applied["entries"][0]["localized"]["ru"]["text"] == "Добрый вечер")
 	assert(applied["entries"][0]["localized"]["en"]["text"] == "Good evening")
@@ -104,6 +150,24 @@ func _run() -> void:
 	assert(not Store.export_candidate(project, draft)["ok"]) # No overwrite.
 	assert(FileAccess.get_file_as_string(original_path) == original)
 	assert(DirAccess.remove_absolute(path) == OK) # Keep smoke repeatable.
+	var stage_export: Dictionary = Store.export_stage_candidate(project, draft)
+	assert(stage_export.get("ok", false), JSON.stringify(stage_export))
+	var stage_file: String = str(stage_export["path"])
+	assert(FileAccess.file_exists(stage_file))
+	assert(JSON.parse_string(FileAccess.get_file_as_string(stage_file))["sceneShots"][0]["cast"][0]["y"] == 0.725)
+	assert(not Store.export_stage_candidate(project, draft)["ok"])
+	assert(DirAccess.remove_absolute(stage_file) == OK)
+	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
+	# Prevent a stale staged draft from writing after another agent changes stage source.
+	_write(original_stage_path, {"masters": [], "sceneShots": []})
+	assert(not Store.validate(project, draft).is_empty())
+	assert(not Store.export_stage_candidate(project, draft)["ok"])
+	var restored_stage: FileAccess = FileAccess.open(original_stage_path, FileAccess.WRITE)
+	assert(restored_stage != null)
+	restored_stage.store_string(original_stage_json)
+	restored_stage.close()
+	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
+	assert(Store.validate(project, draft).is_empty())
 	# Unsupported locale and deleted authoring IDs never silently pass.
 	var bad: Dictionary = draft.duplicate(true)
 	bad["patches"]["RM-TEST-A-L001"]["fr"] = "Bonjour"
