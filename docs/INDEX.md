@@ -19,6 +19,7 @@
 - `../data/raven/production/gap_work_packages.json`: missed UX/production/QA work from recent project discussions.
 - `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
 - `UPDS_VN_CORPUS_AUDIT.md`: pinned UPDS-godot VN 45-scene inventory, reader oracle, migration risks, privacy and next-gate evidence.
+- `../addons/vn_studio/README.md`: native Godot VN Studio Legacy Viewer setup, read-only privacy contract, known limits and manual QA.
 - `VN_STUDIO_EDITOR_SPEC.md`: proposed native Godot VN Studio EditorPlugin, UPDS-godot legacy inspection/controlled conversion, parity gates and CODE-03 work packages.
 - `process/VN_STUDIO_AGENT_GUIDE_RU.md`: future human/AI editing and migration runbook (proposal, not implemented plugin).
 - `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
