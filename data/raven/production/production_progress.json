@@ -190,7 +190,7 @@
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "PR #74 open: https://github.com/bezdredoff/RavenManor-Godot/pull/74; bridge-v1 local private conversion dry-run and explicit no-overwrite export, provisional save map (NOT VALIDATED against real saves). CI and authorized donor QA pending. The full migration work package remains incomplete."
+      "evidence": "Open PR #74 https://github.com/bezdredoff/RavenManor-Godot/pull/74. CI passed on implementation head ceb1595769b486176e93d42342672aa4b4c669ac (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41227436159): 45-scene synthetic migration/export, prior viewer/draft/catalog/graph tests, dashboard and plugin path guards; no failing plugin resource error. Partial bridge-v1 only; real private UPDS QA, true normalized runtime, old-save migration and full parity NOT accepted."
     }
   ],
   "rules": [
