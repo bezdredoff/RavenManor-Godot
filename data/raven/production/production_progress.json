@@ -187,10 +187,10 @@
     },
     {
       "id": "VN-EDITOR-06",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Merged PR #75 https://github.com/bezdredoff/RavenManor-Godot/pull/75 (main f236f6449dd44f5dd03e1833cb32067877dab00a), synthetic old-save position inspection and field diff. New VN-EDITOR-06C code/vn-editor-06c-transition-parity: source-vs-bridge data-level observational replay (45 scenes, variants/gates/M3/finals/outcome rules); CI/PR pending. Not a donor runtime oracle, real save import or full human acceptance."
+      "evidence": "Open PR #76 https://github.com/bezdredoff/RavenManor-Godot/pull/76 (06C data semantics replay). All 45 scene index/line/choice/M3/ending data observations across donor JSON and migration payload, plus outcome rules; GUI export parity gate; synthetic test. CI/latest head and actual UPDS runtime/save parity not accepted. Full 06 incomplete."
     }
   ],
   "rules": [
