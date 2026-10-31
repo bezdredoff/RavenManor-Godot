@@ -250,5 +250,5 @@ static func _change_paths(before: Variant, after: Variant, prefix: String = "") 
 static func _allowed_change(path: String) -> bool:
 	# No insertion/removal/reorder of lines, actors, branches or gameplay metadata.
 	var matcher: RegEx = RegEx.create_from_string(
-		"^(?:lines\\\\[[0-9]+\\\\]|variants/[ABC]\\\\[[0-9]+\\\\])/(?:localized/(?:ru|en|be)/(?:speaker|emotion|text)|actors\\\\[[0-9]+\\\\]/(?:pose|vnStudioX|vnStudioY))$")
+		"^(?:lines\\[[0-9]+\\]|variants/[ABC]\\[[0-9]+\\])/(?:localized/(?:ru|en|be)/(?:speaker|emotion|text)|actors\\[[0-9]+\\]/(?:pose|vnStudioX|vnStudioY))$")
 	return matcher.search(path) != null
