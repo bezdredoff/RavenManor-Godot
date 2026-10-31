@@ -145,10 +145,17 @@
     },
     {
       "id": "VN-EDITOR-00",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "Architecture/specification/agent guide and proposed CODE-03-linked backlog merged via https://github.com/bezdredoff/RavenManor-Godot/pull/68 at commit 81353fdb8d72b191fbf1e8c53dc131618321349c; design only, no plugin or converter implemented."
+    },
+    {
+      "id": "VN-EDITOR-01",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Draft design/spec, agent guide, CODE-03-linked backlog and status in open PR #68: https://github.com/bezdredoff/RavenManor-Godot/pull/68. Code plan/dashboard/agent file review pending CI; no plugin, importer, conversion, human art/phone QA or runtime implemented."
+      "evidence": "45 UPDS-godot source files read and pinned to private donor SHA 3deed628efd6c22bcd1717f7c545b7d3ca865781, public text-free baseline/read-only validator/synthetic tests in open https://github.com/bezdredoff/RavenManor-Godot/pull/69. Local synthetic tests passed (6); latest PR CI pending. No full local donor checker run, Godot viewer or converter/runtime parity."
     }
   ],
   "rules": [
