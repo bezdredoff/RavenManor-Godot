@@ -62,7 +62,7 @@ func _run() -> void:
 		"notices": [{"kind": "non_spoken_stage_direction", "sceneId": scene_a, "textRu": "Тест"}]}
 	var original_path: String = source.path_join(Store.RELATIVE)
 	_write(original_path, payload)
-	_write(source.path_join(Store.STAGING), {"masters": [{"id": "BG-HALL"}, {"id": "BG-KITCHEN"}], "sceneShots": [
+	_write(source.path_join(Store.STAGING), {"masters": [{"id": "BG-HALL", "lightingVariants": ["day", "night"], "stateLayers": ["dusty", "habitable"]}, {"id": "BG-KITCHEN", "lightingVariants": ["day", "evening"], "stateLayers": ["power_off", "partial_lighting"]}], "sceneShots": [
 		{"sceneId": scene_a, "backgroundId": "BG-HALL", "lighting": "day", "roomState": "dusty", "visibleCount": 1, "layout": "portrait_first", "note": "", "cast": [{"characterId": "RM-CHAR-EVELYN", "slot": "left", "pose": "relaxed", "emotion": "neutral", "micro": ""}]},
 		{"sceneId": scene_b, "backgroundId": "BG-KITCHEN", "lighting": "day", "roomState": "unrestored", "visibleCount": 0, "layout": "portrait_first", "note": "", "cast": []}]})
 	_write(source.path_join(Store.ROUTES), {"sceneTriggers": [
