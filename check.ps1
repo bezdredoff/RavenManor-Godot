@@ -14,7 +14,7 @@ function Invoke-GodotCheck {
 			-RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
 		$stdout = Get-Content -LiteralPath $stdoutPath -Raw
 		$stderr = Get-Content -LiteralPath $stderrPath -Raw
-		if ($process.ExitCode -ne 0 -or $stderr -match 'SCRIPT ERROR:') {
+		if ($process.ExitCode -ne 0 -or $stderr -match 'SCRIPT ERROR:' -or $stderr.Contains('res://addons/vn_studio/res:') -or $stderr.Contains('Failed loading resource: res://addons/vn_studio/')) {
 			throw "$Stage failed.`n$stdout`n$stderr"
 		}
 		if ($ExpectedOutput -and -not $stdout.Contains($ExpectedOutput)) {
@@ -32,6 +32,7 @@ Invoke-GodotCheck 'VN Studio Legacy Viewer synthetic' @('--headless', '--path', 
 Invoke-GodotCheck 'VN Studio draft overlay round-trip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_drafts_smoke.gd', '--quit-after', '120') 'Raven VN Studio draft overlay round-trip smoke passed'
 Invoke-GodotCheck 'VN Studio character catalog' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_catalog_smoke.gd', '--quit-after', '120') 'Raven VN Studio character library smoke passed'
 Invoke-GodotCheck 'VN Studio story graph' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_story_graph_smoke.gd', '--quit-after', '120') 'Raven VN Studio story graph smoke passed'
+Invoke-GodotCheck 'VN Studio conversion dry-run and export' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_migration_smoke.gd', '--quit-after', '120') 'Raven VN Studio migration dry-run and immutable export smoke passed'
 foreach ($script in @(
 	'res://scripts/core/save_storage.gd',
 	'res://scripts/raven/raven_ids.gd',

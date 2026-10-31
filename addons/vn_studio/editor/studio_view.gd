@@ -6,6 +6,7 @@ const Reader = preload("res://addons/vn_studio/editor/legacy_reader.gd")
 const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
 const Library = preload("res://addons/vn_studio/editor/character_library.gd")
 const StoryGraphView = preload("res://addons/vn_studio/editor/story_graph_view.gd")
+const MigrationReview = preload("res://addons/vn_studio/editor/migration_review_view.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -59,6 +60,7 @@ var _catalog_reduced_motion: CheckBox
 var _catalog_tween: Tween
 var _story_graph_view: Control
 var _stage_tabs: TabContainer
+var _migration_review: Control
 
 
 func _init() -> void:
@@ -92,6 +94,7 @@ func open_source(folder: String) -> bool:
 	_refresh_scene_list()
 	_story_graph_view.set_project(_project)
 	_story_graph_view.set_locale(_language)
+	_migration_review.set_project(_project)
 	_select_scene(0)
 	_refresh_library()
 	return true
@@ -237,6 +240,10 @@ func _make_ui() -> void:
 	_story_graph_view.name = "Граф сюжета"
 	_story_graph_view.open_scene_requested.connect(_on_graph_scene_requested)
 	_stage_tabs.add_child(_story_graph_view)
+	_migration_review = MigrationReview.new()
+	_migration_review.name = "Migration & Review"
+	_migration_review.analyze_requested.connect(_on_migration_analyze)
+	_stage_tabs.add_child(_migration_review)
 
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
@@ -586,6 +593,7 @@ func _capture_undo() -> void:
 
 
 func _record_edit() -> void:
+	_migration_review.invalidate()
 	_dirty[_current_scene] = true
 	_update_status()
 
@@ -760,6 +768,7 @@ func _on_save_draft() -> void:
 		_status.text = str(result.get("error", "Сохранение черновика не удалось."))
 		return
 	_dirty.erase(_current_scene)
+	_migration_review.invalidate()
 	_update_status()
 
 
@@ -929,3 +938,7 @@ func _on_graph_scene_requested(index: int) -> void:
 			_scene_list.select(i)
 			break
 	_stage_tabs.current_tab = 0
+
+func _on_migration_analyze() -> void:
+	# Warn on and refuse all unsaved edits instead of exporting a stale view.
+	_migration_review.analyze(_project, _drafts, _dirty)

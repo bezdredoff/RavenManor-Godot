@@ -180,10 +180,17 @@
     },
     {
       "id": "VN-EDITOR-05",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Open PR #73 https://github.com/bezdredoff/RavenManor-Godot/pull/73. Read-only GraphEdit story topology from 45 scene source model, choices/variants, M3, endings/fallback with synthetic QA. Latest CI pending; private UPDS runtime/visual/user QA and editing/export are not completed."
+      "evidence": "PR #73 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/73 (main c29dea932c21eda0d68fc9477ed5699cd766cf79). Read-only Godot GraphEdit story graph; post-merge main CI 41226672594 succeeded including synthetic 45-scene graph, donor manual QA not recorded."
+    },
+    {
+      "id": "VN-EDITOR-06",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "PR #74 open: https://github.com/bezdredoff/RavenManor-Godot/pull/74; bridge-v1 local private conversion dry-run and explicit no-overwrite export, provisional save map (NOT VALIDATED against real saves). CI and authorized donor QA pending. The full migration work package remains incomplete."
     }
   ],
   "rules": [
