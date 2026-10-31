@@ -145,10 +145,17 @@
     },
     {
       "id": "VN-EDITOR-00",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Draft design/spec, agent guide, CODE-03-linked backlog and status in open PR #68: https://github.com/bezdredoff/RavenManor-Godot/pull/68. Code plan/dashboard/agent file review pending CI; no plugin, importer, conversion, human art/phone QA or runtime implemented."
+      "evidence": "Architecture/specification/agent guide and proposed CODE-03-linked backlog merged via https://github.com/bezdredoff/RavenManor-Godot/pull/68 at commit 81353fdb8d72b191fbf1e8c53dc131618321349c; design only, no plugin or converter implemented."
+    },
+    {
+      "id": "VN-EDITOR-01",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "Scanned all 45 canonical private UPDS-godot JSON scene files from commit 3deed628efd6c22bcd1717f7c545b7d3ca865781; proposed text-free SHA corpus manifest, audit script, synthetic tests, docs in code/vn-editor-01-upds-audit. Live private checkout execution and full game parity gates pending; candidate PR not merged."
     }
   ],
   "rules": [
