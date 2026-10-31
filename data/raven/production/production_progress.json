@@ -198,6 +198,13 @@
       "updated": "2026-10-31",
       "owner": "ChatGPT",
       "evidence": "Open PR #77 https://github.com/bezdredoff/RavenManor-Godot/pull/77. CI on implementation head 4d31131e0527f341dfa84a9885f33b1100a34271 PASSED: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41235837433, including Raven production 28 scenes/280 entries and synthetic local save/reopen/export/no-overwrite/SHA-drift, existing VN Studio and dashboard. User Godot desktop QA not done; exported JSON is candidate only, no runtime switching."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-02",
+      "status": "in_progress",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "Stacked candidate code/vn-studio-raven-stage-designer atop open PR #77. Native stage background/actor/pose/emotion editor with normalized drag, SHA-locked stagePatches, no-write stage candidate JSON, tests. No runtime integration, missing art placeholders, CI and manual UX approval pending."
     }
   ],
   "rules": [
