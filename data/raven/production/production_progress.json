@@ -152,10 +152,10 @@
     },
     {
       "id": "VN-EDITOR-01",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Scanned all 45 canonical private UPDS-godot JSON scene files from commit 3deed628efd6c22bcd1717f7c545b7d3ca865781; proposed text-free SHA corpus manifest, audit script, synthetic tests, docs in code/vn-editor-01-upds-audit. Live private checkout execution and full game parity gates pending; candidate PR not merged."
+      "evidence": "45 UPDS-godot source files read and pinned to private donor SHA 3deed628efd6c22bcd1717f7c545b7d3ca865781, public text-free baseline/read-only validator/synthetic tests in open https://github.com/bezdredoff/RavenManor-Godot/pull/69. Local synthetic tests passed (6); latest PR CI pending. No full local donor checker run, Godot viewer or converter/runtime parity."
     }
   ],
   "rules": [
