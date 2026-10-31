@@ -33,6 +33,7 @@ Invoke-GodotCheck 'VN Studio draft overlay round-trip' @('--headless', '--path',
 Invoke-GodotCheck 'VN Studio character catalog' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_catalog_smoke.gd', '--quit-after', '120') 'Raven VN Studio character library smoke passed'
 Invoke-GodotCheck 'VN Studio story graph' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_story_graph_smoke.gd', '--quit-after', '120') 'Raven VN Studio story graph smoke passed'
 Invoke-GodotCheck 'VN Studio conversion dry-run and export' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_migration_smoke.gd', '--quit-after', '120') 'Raven VN Studio migration dry-run and immutable export smoke passed'
+Invoke-GodotCheck 'VN Studio old-save preview and semantic diff' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_save_position_smoke.gd', '--quit-after', '120') 'Raven VN Studio old-save position inspection smoke passed'
 foreach ($script in @(
 	'res://scripts/core/save_storage.gd',
 	'res://scripts/raven/raven_ids.gd',

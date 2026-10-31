@@ -112,6 +112,11 @@ static func prepare(project: Dictionary, drafts: Dictionary = {}) -> Dictionary:
 			"repository": SOURCE_REF, "relativeFile": "data/" + file_name,
 			"sceneSha256": sha, "rootFingerprint": root.simplify_path().sha256_text()
 		}
+		# Inspect exact field paths, not just counts; reject unexpected narrative/transition rewrites.
+		var modified_paths: Array[String] = _change_paths(original, effective)
+		for modified_path in modified_paths:
+			if not _allowed_change(modified_path):
+				errors.append("%s: неразрешённая мутация структуры: %s" % [source_id, modified_path])
 		# Lossless stage-one schema: full legacy data remains available for reverse import.
 		# The candidate is NOT yet an executable, fully normalized VN-runtime scene.
 		var wrapped: Dictionary = {
@@ -127,7 +132,8 @@ static func prepare(project: Dictionary, drafts: Dictionary = {}) -> Dictionary:
 		per_scene.append({"sceneId": source_id, "sceneIndex": i, "sourceFile": "data/" + file_name,
 			"sourceSha256": sha, "targetFile": "scenes/" + output_name,
 			"targetSha256": json.sha256_text(), "lines": count_here,
-			"patchedLines": changed_here, "branchGroups": position_groups.keys()})
+			"patchedLines": changed_here, "changePaths": modified_paths,
+			"branchGroups": position_groups.keys()})
 		index_map[str(i)] = source_id
 		line_positions[source_id] = position_groups
 		if effective.has("choiceGate"):
@@ -212,3 +218,37 @@ static func export_new_bundle(project: Dictionary, preview: Dictionary, explicit
 
 static func _invalid(errors: Array[String], warnings: Array[String] = []) -> Dictionary:
 	return {"ok": false, "errors": errors, "warnings": warnings, "files": []}
+
+
+## Returns deterministic field paths, never private text or values.
+static func _change_paths(before: Variant, after: Variant, prefix: String = "") -> Array[String]:
+	var changes: Array[String] = []
+	if before is Dictionary and after is Dictionary:
+		var names: Array = before.keys()
+		for key in after:
+			if key not in names:
+				names.append(key)
+		names.sort()
+		for key in names:
+			var name: String = str(key)
+			var path: String = name if prefix.is_empty() else prefix + "/" + name
+			if not before.has(key) or not after.has(key):
+				changes.append(path)
+			else:
+				changes.append_array(_change_paths(before[key], after[key], path))
+	elif before is Array and after is Array:
+		if before.size() != after.size():
+			changes.append(prefix + "/size")
+		else:
+			for i in range(before.size()):
+				changes.append_array(_change_paths(before[i], after[i], prefix + "[" + str(i) + "]"))
+	elif before != after:
+		changes.append(prefix)
+	return changes
+
+
+static func _allowed_change(path: String) -> bool:
+	# No insertion/removal/reorder of lines, actors, branches or gameplay metadata.
+	var matcher: RegEx = RegEx.create_from_string(
+		"^(?:lines\\[[0-9]+\\]|variants/[ABC]\\[[0-9]+\\])/(?:localized/(?:ru|en|be)/(?:speaker|emotion|text)|actors\\[[0-9]+\\]/(?:pose|vnStudioX|vnStudioY))$")
+	return matcher.search(path) != null
