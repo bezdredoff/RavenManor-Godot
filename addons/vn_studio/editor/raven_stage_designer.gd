@@ -180,7 +180,7 @@ func _draw_stage() -> void:
 			var display := TextureRect.new()
 			display.texture = picture
 			display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CONTAINED
+			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			display.mouse_filter = Control.MOUSE_FILTER_IGNORE
 			display.position = Vector2(8, 5)
 			display.size = Vector2(CARD_SIZE.x - 16, CARD_SIZE.y - 47)
@@ -210,7 +210,7 @@ func _coordinates(index: int) -> Vector2:
 
 
 func _layout_cards() -> void:
-	if _canvas == null:
+	if _canvas == null or _bg_image == null or _placeholders == null:
 		return
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
