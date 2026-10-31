@@ -2,6 +2,7 @@
 extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const LOCALES := ["ru", "be", "en"]
 
 var _project: Dictionary = {}
@@ -26,6 +27,8 @@ var _diff: Label
 var _path: LineEdit
 var _save: Button
 var _export: Button
+var _export_stage: Button
+var _stage_designer: Control
 var _undo_button: Button
 var _redo_button: Button
 
@@ -56,6 +59,10 @@ func _build() -> void:
 	_export.text = "Экспортировать JSON-кандидат"
 	_export.pressed.connect(_export_candidate)
 	toolbar.add_child(_export)
+	_export_stage = Button.new()
+	_export_stage.text = "Экспорт постановки JSON"
+	_export_stage.pressed.connect(_export_stage_candidate)
+	toolbar.add_child(_export_stage)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -102,24 +109,39 @@ func _build() -> void:
 	_line_info = Label.new()
 	_line_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	editor.add_child(_line_info)
+	var workspace := TabContainer.new()
+	workspace.size_flags_vertical = SIZE_EXPAND_FILL
+	workspace.size_flags_horizontal = SIZE_EXPAND_FILL
+	editor.add_child(workspace)
+	var text_column := VBoxContainer.new()
+	text_column.name = "Диалог"
+	text_column.size_flags_vertical = SIZE_EXPAND_FILL
+	workspace.add_child(text_column)
 	_text_edit = TextEdit.new()
 	_text_edit.custom_minimum_size.y = 160
 	_text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
 	_text_edit.size_flags_vertical = SIZE_EXPAND_FILL
 	_text_edit.focus_entered.connect(_capture_undo)
 	_text_edit.text_changed.connect(_on_text_changed)
-	editor.add_child(_text_edit)
+	text_column.add_child(_text_edit)
 	_diff = Label.new()
 	_diff.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	editor.add_child(_diff)
+	text_column.add_child(_diff)
+	var visual_column := VBoxContainer.new()
+	visual_column.name = "Постановка"
+	visual_column.size_flags_vertical = SIZE_EXPAND_FILL
+	workspace.add_child(visual_column)
+	_stage_designer = StageDesigner.new()
+	_stage_designer.stage_modified.connect(_on_stage_modified)
+	visual_column.add_child(_stage_designer)
 	var visual_label := Label.new()
-	visual_label.text = "Постановка сцены и персонажи · пока план, не рендер"
-	editor.add_child(visual_label)
+	visual_label.text = "Пилотные изображения при наличии; остальное — placeholder. Не игровой runtime."
+	visual_column.add_child(visual_label)
 	_preview = RichTextLabel.new()
 	_preview.custom_minimum_size.y = 140
 	_preview.size_flags_vertical = SIZE_EXPAND_FILL
 	_preview.bbcode_enabled = false
-	editor.add_child(_preview)
+	visual_column.add_child(_preview)
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
@@ -180,6 +202,7 @@ func _scene_switch() -> void:
 			str(loc["text"]).replace("\n", " ").left(36)])
 	_line_idx = 0
 	_line_render()
+	_stage_designer.set_scene(_project, _draft, id)
 	_refresh_preview()
 
 
@@ -289,13 +312,14 @@ func _on_redo() -> void:
 
 
 func _update_diff() -> void:
-	_diff.text = "%d изменённых переводов · %s" % [
-		Store.change_count(_draft), "есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
+	_diff.text = "%d изменённых переводов, %d сцен постановки · %s" % [
+		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), "есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
 
 
 func _refresh_buttons() -> void:
 	_save.disabled = _blocked or _project.is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
+	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty()
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
 
@@ -325,3 +349,37 @@ func _export_candidate() -> void:
 		_path.text = str(result["path"])
 	else:
 		_status.text = "Экспорт заблокирован: " + str(result.get("error", ""))
+
+
+func _on_stage_modified(stage: Dictionary) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var old: Dictionary = Store.effective_stage(_project, _draft, str(stage.get("sceneId", "")))
+	if old == stage:
+		return
+	var snapshot: Dictionary = _draft.duplicate(true)
+	var error: String = Store.set_stage(_project, _draft, stage)
+	if not error.is_empty():
+		_status.text = "Ошибка постановки: " + error
+		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		return
+	_undo.append(snapshot)
+	_redo.clear()
+	_dirty = true
+	_refresh_preview()
+	_update_diff()
+	_refresh_buttons()
+
+
+func _export_stage_candidate() -> void:
+	if _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните Raven-черновик, затем экспортируйте постановку."
+		return
+	var result: Dictionary = Store.export_stage_candidate(_project, _draft)
+	if result.get("ok", false):
+		_status.text = "Экспортирован JSON-кандидат постановки без перезаписи канона."
+		_path.text = str(result["path"])
+	else:
+		_status.text = "Не удалось экспортировать постановку: " + str(result.get("error", ""))
