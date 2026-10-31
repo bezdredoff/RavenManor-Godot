@@ -21,6 +21,7 @@ var _save_report: RichTextLabel
 var _save_button: Button
 var _parity_button: Button
 var _parity_label: Label
+var _parity_ok: bool = false
 
 
 func _ready() -> void:
@@ -126,6 +127,7 @@ func set_project(project: Dictionary) -> void:
 
 func invalidate() -> void:
 	_result = {}
+	_parity_ok = false
 	_files.clear()
 	_warnings.clear()
 	_confirm.button_pressed = false
@@ -184,11 +186,11 @@ func _on_scene_select(idx: int) -> void:
 
 
 func _on_confirm(_pressed: bool) -> void:
-	_export_button.disabled = not bool(_result.get("ok", false)) or not _confirm.button_pressed
+	_export_button.disabled = not bool(_result.get("ok", false)) or not _confirm.button_pressed or not _parity_ok
 
 
 func _on_export() -> void:
-	if not _confirm.button_pressed or not bool(_result.get("ok", false)):
+	if not _confirm.button_pressed or not bool(_result.get("ok", false)) or not _parity_ok:
 		return
 	var reply: Dictionary = Bundle.export_new_bundle(_project, _result, true)
 	if not bool(reply.get("ok", false)):
@@ -238,6 +240,7 @@ func _on_parity() -> void:
 		return
 	var compared: Dictionary = StoryParity.compare(_project, _result)
 	if not bool(compared.get("ok", false)):
+		_parity_ok = false
 		_parity_label.text = "FAIL / Нельзя считать миграцию совместимой: " + (
 			"; ".join(compared.get("errors", []).slice(0, 3)))
 		for message in compared.get("errors", []).slice(0, 10):
@@ -245,6 +248,8 @@ func _on_parity() -> void:
 		_confirm.button_pressed = false
 		_export_button.disabled = true
 		return
+	_parity_ok = true
+	_on_confirm(_confirm.button_pressed)
 	_parity_label.text = "DATA SEMANTICS ONLY: %d сценариев · выборов %d · Match-3 %d · финалов %d · hidden/resume %d. НЕ независимый runtime oracle." % [
 		int(compared["scenarioCount"]), int(compared["choiceGateObservations"]),
 		int(compared["match3Observations"]), int(compared["endingObservations"]),
