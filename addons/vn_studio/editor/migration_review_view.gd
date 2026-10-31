@@ -5,6 +5,7 @@ signal analyze_requested
 
 const Bundle = preload("res://addons/vn_studio/editor/conversion_bundle.gd")
 const SaveInspector = preload("res://addons/vn_studio/editor/save_position_inspector.gd")
+const StoryParity = preload("res://addons/vn_studio/editor/story_semantic_parity.gd")
 
 var _project: Dictionary = {}
 var _result: Dictionary = {}
@@ -18,6 +19,8 @@ var _path_hint: LineEdit
 var _save_dialog: FileDialog
 var _save_report: RichTextLabel
 var _save_button: Button
+var _parity_button: Button
+var _parity_label: Label
 
 
 func _ready() -> void:
@@ -37,6 +40,11 @@ func _ready() -> void:
 	inspect.text = "Проверить 45 сцен (dry-run)"
 	inspect.pressed.connect(func(): analyze_requested.emit())
 	actions.add_child(inspect)
+	_parity_button = Button.new()
+	_parity_button.text = "Сравнить переходы и концовки"
+	_parity_button.disabled = true
+	_parity_button.pressed.connect(_on_parity)
+	actions.add_child(_parity_button)
 	_confirm = CheckBox.new()
 	_confirm.text = "Я проверил отчёт и подтверждаю приватный экспорт"
 	_confirm.toggled.connect(_on_confirm)
@@ -50,6 +58,10 @@ func _ready() -> void:
 	_summary.text = "Откройте UPDS-godot и выполните dry-run."
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
+	_parity_label = Label.new()
+	_parity_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_parity_label.text = "Semantic replay ещё не выполнялся. Не является запуском оригинального StorySession."
+	add_child(_parity_label)
 	var sections := HSplitContainer.new()
 	sections.size_flags_vertical = SIZE_EXPAND_FILL
 	add_child(sections)
@@ -119,6 +131,8 @@ func invalidate() -> void:
 	_confirm.button_pressed = false
 	_export_button.disabled = true
 	_save_button.disabled = true
+	_parity_button.disabled = true
+	_parity_label.text = "Semantic replay ещё не выполнялся."
 	_save_report.text = "Нет актуальной карты миграции. Выполните dry-run."
 	_details.text = "Схема предварительная: оригинал сохраняется в legacyOriginal, новые поля в payload. Не подключена к VN runtime."
 	_summary.text = "Выполните dry-run для исходной версии и сохранённых черновиков."
@@ -140,6 +154,7 @@ func analyze(project: Dictionary, drafts: Dictionary, dirty: Dictionary) -> void
 		return
 	_result = result
 	_save_button.disabled = false
+	_parity_button.disabled = false
 	var stats: Dictionary = result["stats"]
 	_summary.text = "Готово: %d сцен · %d реплик (ветки учитываются) · %d правок · %d выходных файлов. Источники не изменены." % [
 		int(stats["scenes"]), int(stats["lines"]), int(stats["changed"]), int(stats["files"])]
@@ -216,3 +231,21 @@ func _on_save_selected(path: String) -> void:
 	_save_report.text += "Возможность загрузить в новом runtime ещё НЕ подтверждена.\n"
 	for warning in result.get("warnings", []):
 		_save_report.text += "⚠ " + str(warning) + "\n"
+
+
+func _on_parity() -> void:
+	if not bool(_result.get("ok", false)):
+		return
+	var compared: Dictionary = StoryParity.compare(_project, _result)
+	if not bool(compared.get("ok", false)):
+		_parity_label.text = "FAIL / Нельзя считать миграцию совместимой: " + (
+			"; ".join(compared.get("errors", []).slice(0, 3)))
+		for message in compared.get("errors", []).slice(0, 10):
+			_warnings.add_item("PARITY · " + str(message))
+		_confirm.button_pressed = false
+		_export_button.disabled = true
+		return
+	_parity_label.text = "DATA SEMANTICS ONLY: %d сценариев · выборов %d · Match-3 %d · финалов %d · hidden/resume %d. НЕ независимый runtime oracle." % [
+		int(compared["scenarioCount"]), int(compared["choiceGateObservations"]),
+		int(compared["match3Observations"]), int(compared["endingObservations"]),
+		int(compared["hiddenResumeObservations"])]
