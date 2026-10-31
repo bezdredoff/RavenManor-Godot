@@ -173,10 +173,10 @@
     },
     {
       "id": "VN-EDITOR-04",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Candidate native Godot Characters library on code/vn-editor-04-character-library: actual 17 UPDS donor catalog entries, thumbnail pose gallery, missing-art audit, explicit apply to matching actor through local draft, preview-only soft idle/fade with reduced motion on by default; synthetic Godot smoke and runner entries. No outfits, layered face rigs or runtime animation data added; PR/CI/human QA pending."
+      "evidence": "Open https://github.com/bezdredoff/RavenManor-Godot/pull/72: Godot Characters tab from 17 source catalog IDs, image variant thumbnails, missing-art warnings, apply-to-same-actor local draft, preview-only soft idle/fade with Reduced Motion; synthetic test/CI pending, no donor UX acceptance or production costume/layered rig claim."
     }
   ],
   "rules": [
