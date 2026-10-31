@@ -32,6 +32,7 @@ run_check() {
 
 run_check 'Project import' '' --editor --quit
 run_check 'VN Studio Legacy Viewer synthetic' 'Raven VN Studio read-only legacy viewer smoke passed' --script res://tests/raven/vn_studio_legacy_smoke.gd --quit-after 120
+run_check 'VN Studio draft overlay round-trip' 'Raven VN Studio draft overlay round-trip smoke passed' --script res://tests/raven/vn_studio_drafts_smoke.gd --quit-after 120
 for script in core/save_storage.gd raven/raven_ids.gd raven/raven_snapshot.gd raven/raven_reducer.gd raven/raven_campaign_store.gd raven/manor_navigation_graph.gd raven/manor_greybox.gd raven/prototype_launcher.gd raven/foundation_lab.gd raven/raven_match3_game.gd shared/upds/match3_game.gd shared/upds/dialogue_paging.gd shared/upds/player_preferences.gd shared/upds/seeded_random.gd ui/css_motion.gd match3/match3_board_shape.gd match3/match3_tile_motion_layer.gd match3/match3_tutorials.gd match3/match3_drag_model.gd match3/match3_mobile_layout.gd match3/match3_frame_visuals.gd match3/match3_board_presenter.gd raven/raven_match3_theme.gd raven/raven_menu_copy.gd raven/upds_match3_campaign_adapter.gd raven/raven_vn_player.gd raven/raven_production_localization.gd raven/hall_tea_vn.gd raven/raven_slice_director.gd raven/vertical_slice.gd raven/content_preview.gd raven/season1_map_greybox.gd; do
 	run_check "Parse $script" '' --check-only --script "res://scripts/$script"
 done
