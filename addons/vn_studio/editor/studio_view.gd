@@ -7,6 +7,7 @@ const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
 const Library = preload("res://addons/vn_studio/editor/character_library.gd")
 const StoryGraphView = preload("res://addons/vn_studio/editor/story_graph_view.gd")
 const MigrationReview = preload("res://addons/vn_studio/editor/migration_review_view.gd")
+const RavenStoryView = preload("res://addons/vn_studio/editor/raven_story_view.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -61,6 +62,7 @@ var _catalog_tween: Tween
 var _story_graph_view: Control
 var _stage_tabs: TabContainer
 var _migration_review: Control
+var _raven_story_view: Control
 
 
 func _init() -> void:
@@ -72,6 +74,7 @@ func _init() -> void:
 
 func _ready() -> void:
 	_make_ui()
+	_stage_tabs.current_tab = 3 # Raven Manor is the project-owned starting workspace.
 
 
 func open_source(folder: String) -> bool:
@@ -97,6 +100,7 @@ func open_source(folder: String) -> bool:
 	_migration_review.set_project(_project)
 	_select_scene(0)
 	_refresh_library()
+	_stage_tabs.current_tab = 0
 	return true
 
 
@@ -244,6 +248,9 @@ func _make_ui() -> void:
 	_migration_review.name = "Migration & Review"
 	_migration_review.analyze_requested.connect(_on_migration_analyze)
 	_stage_tabs.add_child(_migration_review)
+	_raven_story_view = RavenStoryView.new()
+	_raven_story_view.name = "Raven Manor"
+	_stage_tabs.add_child(_raven_story_view)
 
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
