@@ -32,5 +32,9 @@ Do not silently reconcile contradictory source files. Preserve historical source
 
 - Match-3 is preparation work in fiction; specialist repairs remain specialist work. Do not use room art, navigation importers or Match-3 completion to invent story-state mutations outside the documented reducer events.
 
+## VN Studio editor / UPDS migration (VN-EDITOR-00..08)
+
+Read `docs/VN_STUDIO_EDITOR_SPEC.md` and `docs/process/VN_STUDIO_AGENT_GUIDE_RU.md` before touching VN Studio runtime/editor or importing UPDS content. Proposed native **Godot EditorPlugin**, not PWA; this documentation does **not** mean the plugin is implemented. Canonical donor is private `bezdredoff/UPDS-godot@main`, not an assumed output of historical TypeScript exports. Legacy imports must default to read-only; writes go only to versioned drafts/overlays or reviewed conversion outputs. Pin donor commit/path/blob SHA, preserve line/scene IDs, RU/BE/EN, hidden directions, choice branches, Match-3 gates, save compatibility and original assets. No automatic donor overwrite or private UPDS art transfer into public Raven; renderer/editor do not own campaign state. `CODE-03` and `VN-EDITOR-*` are linked workstreams; preserve parity and require explicit review/rollback before game switch-over. Every PR still updates canonical status sources and validates dashboard.
+
 ## Hygiene
 Never commit credentials, local saves, Godot import caches, unlicensed assets, unrelated UPDS story content or generated build outputs.
