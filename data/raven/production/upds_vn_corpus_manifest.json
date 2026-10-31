@@ -1,0 +1,389 @@
+{
+  "schemaVersion": 1,
+  "format": "vn-studio-upds-audit-v1",
+  "status": "IMMUTABLE_REFERENCE_NOT_IMPORTED_CONTENT",
+  "donor": {
+    "repository": "bezdredoff/UPDS-godot",
+    "commit": "3deed628efd6c22bcd1717f7c545b7d3ca865781",
+    "branchAtAudit": "main",
+    "checked": "2026-10-31",
+    "visibility": "private",
+    "rights": "NO_PRIVATE_CONTENT_IN_RAVEN"
+  },
+  "expected": {
+    "scenes": 45,
+    "lineOccurrences": 1026,
+    "hiddenOccurrences": 213,
+    "variantScenes": 1,
+    "choiceGateScenes": 8,
+    "match3GateScenes": 22,
+    "endingScenes": 3,
+    "branchRoutes": 3
+  },
+  "scenes": [
+    {
+      "path": "data/abandoned_laundry_scene.json",
+      "blobSha": "cb855cebff1249a9aada5b2f0823b66473bc7e28",
+      "bytes": 18979,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 8
+    },
+    {
+      "path": "data/asterion_lab_scene.json",
+      "blobSha": "5bb005ee77397f6912659d894768791b1ecd2294",
+      "bytes": 22180,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/asterion_transfer_scene.json",
+      "blobSha": "d43264a4389a207258e4a9992c405a66095fbc41",
+      "bytes": 20271,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 5
+    },
+    {
+      "path": "data/basketball_lockers_scene.json",
+      "blobSha": "e16599106e1d08fddc3ca13935915d1e0b0d6ff9",
+      "bytes": 19983,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/control_sample_gear_scene.json",
+      "blobSha": "05a0864fd4555524bd0c6e24e9997eca8b95544c",
+      "bytes": 21077,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/convenient_case_scene.json",
+      "blobSha": "249c0f7dedfbc21058b325eda19f3047baa13848",
+      "bytes": 18315,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/emergency_meeting_scene.json",
+      "blobSha": "790f7bfd4d5a4f6c281d4aeda0fa91e682fa9d12",
+      "bytes": 21420,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/full_timeline_proof_scene.json",
+      "blobSha": "9538a8ec576ffd4ccad36035661ff5d1e4865c25",
+      "bytes": 20019,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/full_truth_scene.json",
+      "blobSha": "21be40a0c913d52dafae1186565fc5b44eab1cba",
+      "bytes": 19619,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/kendo_pilot_list_scene.json",
+      "blobSha": "c894d3bc8bfca6237699a1f9b6e1f481d7388bd6",
+      "bytes": 21527,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/kubo_atelier_scene.json",
+      "blobSha": "7f4dbba964e60395496983c172bde2bd53a28937",
+      "bytes": 20184,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/locker_scene.json",
+      "blobSha": "a8b2f4b7779ef4e013903ab711065eaf86c8fb03",
+      "bytes": 100117,
+      "lineOccurrences": 103,
+      "hiddenOccurrences": 15
+    },
+    {
+      "path": "data/lost_found_scene.json",
+      "blobSha": "211c89566cb03fe4fc9efbe2bedb688f88401f07",
+      "bytes": 19189,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/maintenance_keys_scene.json",
+      "blobSha": "e292b2a0a319c6be297098a63d79b2439fee6e71",
+      "bytes": 20711,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/ordered_inspection_scene.json",
+      "blobSha": "20ccd01da8d4a7073d3b71887d7e2d7ad9933e84",
+      "bytes": 20797,
+      "lineOccurrences": 25,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/photo_scene.json",
+      "blobSha": "5c77da381f20aab3bf3cf9cb0e193773721fac67",
+      "bytes": 22222,
+      "lineOccurrences": 26,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/pink_ribbon_scanner_scene.json",
+      "blobSha": "4c9a4acae33f2a3c6c6b3241488c9b7af34b5ce4",
+      "bytes": 20800,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/pool_scene.json",
+      "blobSha": "165795c6dc2109819d0952421b2068d114b424df",
+      "bytes": 20824,
+      "lineOccurrences": 24,
+      "hiddenOccurrences": 2
+    },
+    {
+      "path": "data/post_abandoned_laundry_scene.json",
+      "blobSha": "21a572d8878590b4aa7d7db2264a1a51d1021d1e",
+      "bytes": 17592,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/post_asterion_lab_scene.json",
+      "blobSha": "0fe7c3d6a05c41c89a146b5621bcc57d6a74a8ac",
+      "bytes": 18334,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_asterion_transfer_scene.json",
+      "blobSha": "88fc510bcdf50a7f7b7bde0592691079adbdc853",
+      "bytes": 21157,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/post_basketball_lockers_scene.json",
+      "blobSha": "06cbff82c247789e96c5f772ae1649b95b024fcc",
+      "bytes": 16647,
+      "lineOccurrences": 18,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/post_control_sample_gear_scene.json",
+      "blobSha": "71c9f485eaf828700dd167cdb93373a9831aabba",
+      "bytes": 18533,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_convenient_case_scene.json",
+      "blobSha": "84f92dde400c252ccc95f44ab6ac5d5842c1dab8",
+      "bytes": 17987,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/post_emergency_meeting_scene.json",
+      "blobSha": "61a271961d5b70b6fbd05a21ee504fbecd08be7e",
+      "bytes": 16382,
+      "lineOccurrences": 18,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_full_timeline_proof_scene.json",
+      "blobSha": "82eb5eeef665e62de769f23a7b0f2a96b014c236",
+      "bytes": 20857,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 5
+    },
+    {
+      "path": "data/post_full_truth_scene.json",
+      "blobSha": "e180672131f86beecf0b786941087834b3b70b59",
+      "bytes": 19692,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_kendo_pilot_list_scene.json",
+      "blobSha": "e4727a2c21c2899946592036072de0bba53bce17",
+      "bytes": 17652,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_kubo_atelier_scene.json",
+      "blobSha": "1fe3786232e16519ad4970ea1536f851c89a53fd",
+      "bytes": 20546,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 7
+    },
+    {
+      "path": "data/post_lost_found_scene.json",
+      "blobSha": "3957dc8f03e8e23fb5292dc48b8c2192ad0d2cbd",
+      "bytes": 18516,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_maintenance_keys_scene.json",
+      "blobSha": "c97ce5cb0780c10eed938900dba374854253dcc7",
+      "bytes": 20992,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/post_match_scene.json",
+      "blobSha": "5e8d178226efcdaf693db4ff79a5f5575750fc9b",
+      "bytes": 22228,
+      "lineOccurrences": 25,
+      "hiddenOccurrences": 5
+    },
+    {
+      "path": "data/post_ordered_inspection_scene.json",
+      "blobSha": "58d93b93fef1fc7c378af18e0041998cef67f84a",
+      "bytes": 28003,
+      "lineOccurrences": 34,
+      "hiddenOccurrences": 9
+    },
+    {
+      "path": "data/post_photo_scene.json",
+      "blobSha": "425e3a76574cef46b6db211b62808883eef9766c",
+      "bytes": 23460,
+      "lineOccurrences": 28,
+      "hiddenOccurrences": 7
+    },
+    {
+      "path": "data/post_pink_ribbon_scanner_scene.json",
+      "blobSha": "ba987e8be850fad9b901f38d0a60db5a4947ed50",
+      "bytes": 19562,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 6
+    },
+    {
+      "path": "data/post_pool_scene.json",
+      "blobSha": "bb601662b25b5a1875ff62f53600ed0e11b95839",
+      "bytes": 21153,
+      "lineOccurrences": 25,
+      "hiddenOccurrences": 4
+    },
+    {
+      "path": "data/post_private_return_scene.json",
+      "blobSha": "ec5f6b97aec94bce85e13d9d032126b1d7493250",
+      "bytes": 16373,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/post_rina_archive_catalog_scene.json",
+      "blobSha": "fdd5d573532540b7c9023baabe8f06512c2bb51e",
+      "bytes": 17070,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/post_second_skin_signal_scene.json",
+      "blobSha": "0be81f3d5c540fc22a2da5936347d0f674bf682c",
+      "bytes": 20638,
+      "lineOccurrences": 19,
+      "hiddenOccurrences": 7
+    },
+    {
+      "path": "data/post_textile_workshop_scene.json",
+      "blobSha": "e9a18aa03b5790e5aa47e0ee0887bf13e64f86b1",
+      "bytes": 23358,
+      "lineOccurrences": 22,
+      "hiddenOccurrences": 7
+    },
+    {
+      "path": "data/private_return_scene.json",
+      "blobSha": "1d10fa836e78f4ff98a13a63d7903a7788482b9c",
+      "bytes": 19543,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 3
+    },
+    {
+      "path": "data/prologue.json",
+      "blobSha": "9b1391ef97edeab43aa1a01ab6e167d7c4cccb4d",
+      "bytes": 19871,
+      "lineOccurrences": 22,
+      "hiddenOccurrences": 1
+    },
+    {
+      "path": "data/rina_archive_catalog_scene.json",
+      "blobSha": "1b732f4aef218c6d652359e1ad43ea5aafc8341e",
+      "bytes": 17709,
+      "lineOccurrences": 20,
+      "hiddenOccurrences": 5
+    },
+    {
+      "path": "data/second_skin_signal_scene.json",
+      "blobSha": "09c4e82fb6a6f902adbb9f16d1252b90d040cfa6",
+      "bytes": 19765,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 5
+    },
+    {
+      "path": "data/textile_workshop_scene.json",
+      "blobSha": "c1877c6543c3b2cd09080cfd86a364c3a26266ec",
+      "bytes": 20861,
+      "lineOccurrences": 21,
+      "hiddenOccurrences": 5
+    }
+  ],
+  "references": [
+    {
+      "path": "data/asset_catalog.json",
+      "blobSha": "1786f09836dff2421ec5f4776c7868cf62c70a48",
+      "bytes": 10015
+    },
+    {
+      "path": "data/actor_layouts.json",
+      "blobSha": "06bef3e99f850fac73bc229a3992c9334e2eb428",
+      "bytes": 3110
+    },
+    {
+      "path": "data/ending_outcomes.json",
+      "blobSha": "e8f629710a32117c9bd74807f226180f93f56bb5",
+      "bytes": 12306
+    },
+    {
+      "path": "data/save_contract.json",
+      "blobSha": "d98b0b6b6bfe8d88685a14a18c67220be7363e39",
+      "bytes": 2999
+    },
+    {
+      "path": "scripts/core/story_session.gd",
+      "blobSha": "ac926a6fcdcbd359cdc4a36081d02be8cd7ebe02",
+      "bytes": 16061
+    },
+    {
+      "path": "scripts/vn/vn_screen.gd",
+      "blobSha": "c44edec0f4a29f05e128cf2d4005009adca0f842",
+      "bytes": 102083
+    },
+    {
+      "path": "scripts/vn/dialogue_paging.gd",
+      "blobSha": "d9f22ca8533017d112a62ec174fd2c66546e4290",
+      "bytes": 5044
+    },
+    {
+      "path": "scripts/vn/portrait_motion_rig.gd",
+      "blobSha": "fcef111542a0d4bbef7ac50743a3f362efbd4782",
+      "bytes": 4012
+    }
+  ],
+  "notes": [
+    "No dialogue text or image contents copied. Manifest derived from private donor Git tree plus 45 parsed scene files.",
+    "lineOccurrences includes each A/B/C alternative occurrence; NOT a distinct-line-ID count.",
+    "Locker sceneIndex is absent; index comes from data/save_contract.json storySceneIds.",
+    "Source SHA is pinned to donor commit; update only after deliberate baseline review.",
+    "Check individual scenes/references and old-save runtime semantics before claiming conversion parity."
+  ]
+}
