@@ -2,6 +2,22 @@
 
 **Status:** proposed native editor draft-authoring pilot, not a converter or runtime renderer. Requires Godot 4.7.2 desktop editor. UPDS-godot source files are **read-only**.
 
+## Raven Manor — отдельный сценарий и сохранение результата (RAVEN-VN-EDITOR-01)
+
+**В текущем Godot RavenManor-Godot откройте `VN Studio → Raven Manor`.** Эту вкладку можно открыть сразу, без приватной папки UPDS. Это **настоящий существующий Raven production screenplay**, не вымышленный тест: `data/raven/production/season1_dialogue_catalog.json` — 28 сцен / 280 реплик (8 `already_runtime`, 1 `pilot_runtime`, 18 `proposed_future_runtime`, 1 `optional`). Каталог статуса `PRODUCTION_DRAFT_NOT_RUNTIME` **не** подменяет уже работающие VN-сцены `data/raven/rm_vs_01_content.json`. Вкладка читает постановку из `vn_staging.json`, per-line directing из `line_performance_cues.json` и story/map triggers из `map_narrative_routes.json`.
+
+**Как сохранить свою работу:**
+1. Выберите сцену, затем реплику; смените `RU / BE / EN` и отредактируйте текст. Отсутствующие переводы BE/EN отображаются **как RU fallback с предупреждением**, без подмены реально отсутствующей локализации. Полные переводы есть пока только у части реплик (в этом источнике 12 из 280 для BE и EN).
+2. Нажмите **«Сохранить Raven-черновик»**. Локальные правки записываются в `user://raven_story_studio/v1/<project-root-sha256>/draft.json` и автоматически восстановятся после перезапуска редактора. Этот файл содержит лишь **локальные переопределения текста**, не все 280 реплик. Кнопка не изменяет исходники Git.
+3. Для review нажмите **«Экспортировать JSON-кандидат»** (сначала сохраните черновик). Создаётся версия **всего** каталога с правками: `user://raven_story_studio/v1/exports/raven-season1-<source-sha>-<patch-sha>.json`. Экспорт не перезаписывает существующий файл. Точный абсолютный путь показан под редактором. Сохранённый кандидат пригоден для сравнения с каноническим `data/raven/production/season1_dialogue_catalog.json` и отдельного review/PR; это **не** автоматическая публикация или подключение к игре. Не следует вручную заменять канон без проверки tests/PR governance.
+4. Чтобы новый текст попал в репозиторий, сравните экспорт с каноническим JSON, внесите одобренные изменения через отдельный PR (с `docs/STATUS.md`, production dashboard, локализацией и тестами) и проверьте runtime-сцены отдельно. Существующие `rm_vs_01_content.json` и `Hall Tea` не получают изменений от локального draft/export.
+
+**Безопасность:** каждый черновик связан с SHA256 канонического каталога и fingerprint пути проекта. Изменения в `season1_dialogue_catalog.json` извне блокируют сохранение/экспорт старого черновика; silent rebase/overwrite отсутствует. ID, порядок сцен и реплик, `speakerId`, `delivery`, route gates, production-stage/cues не меняются. Только `localized.ru/be/en.text`; русский текст не может быть пустым. Результаты прежнего UPDS не смешиваются с Raven — у них разные папки и схемы сохранения.
+
+**Честные ограничения:** план постановки читается в текстовом виде, без генерации отсутствующего арта и без переноса/сохранения авторских координат. Это **редактор текстового production catalog**, ещё не полностью визуальный PowerPoint-like редактор сцены и **не** новый playable VN-runtime. Undo/Redo действует только на черновики; UI не гарантирует, что прокрутка длинных 280 реплик удобна, до ручного QA. Для внешних правок исходного JSON сначала экспортируйте локальный кандидат или сохраните свой draft, затем разрешите конфликт вручную. Статусы `already_runtime/pilot_runtime/proposed_future_runtime` не изменяются автоматически.
+
+**Проверки:** `godot --headless --path . --script res://tests/raven/vn_studio_raven_story_smoke.gd --quit-after 120`. Тест читает **реальные** 28/280 канонических записей Raven в репозитории, затем синтетическую отдельную копию под `user://` для тестов редактирования RU/EN, fallback BE, сохранения/повторного открытия, экспорта/защиты от перезаписи, сохранения структуры и SHA drift. Основной канонический JSON, реальные UPDS файлы и сохранения не изменяются. Реальный desktop UX требует ручного QA.
+
 ## VN-EDITOR-06C — replay семантики сюжета перед приватным экспортом
 
 После открытия **Migration & Review** и успешного dry-run нажмите **«Сравнить переходы и концовки»**. Это запускает `story_semantic_parity.gd` над **двумя независимыми представлениями данных**: read-only UPDS JSON и `vn-studio-scene-v1.payload` из текущего bundle. Проверка не изменяет источник и не включает новый runtime.
