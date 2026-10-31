@@ -187,10 +187,17 @@
     },
     {
       "id": "VN-EDITOR-06",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "PR #76 open https://github.com/bezdredoff/RavenManor-Godot/pull/76; implementation code head a2ad482c8c4a8957343ad6a6888f8fdfabf6c427 passed CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41229807616: 45-scene synthetic data semantic replay, previous VN Studio, PR governance/dashboard/browser checks. JSON-number normalization fixed in test. Only data-level replay, not independently running real UPDS StorySession, persisted save migration, CampaignData clue parity or manual donor visual QA; full VN-EDITOR-06 incomplete."
+      "evidence": "Sub-increments #74, #75 and #76 all merged: https://github.com/bezdredoff/RavenManor-Godot/pull/76 at commit 41f78a786d8d8b37d0d90e7ac7bb93b3fa9333eb; post-merge CI 41231531095 and 41231531685 successful. MERGED code only; work package still missing independent original StorySession oracle, actual saved-state import and user acceptance."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-01",
+      "status": "in_progress",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "Candidate branch code/vn-studio-raven-authoring: VN Studio Raven Manor tab sourced from canonical season1_dialogue_catalog.json (28 scenes/280 lines), staging and route/cue metadata; SHA-pinned local text draft, editable RU/BE/EN, no-overwrite export candidate, synthetic safety tests plus production JSON validation. PR/CI and manual UI QA pending; not synced to playable VN runtime."
     }
   ],
   "rules": [
