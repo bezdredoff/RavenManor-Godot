@@ -158,6 +158,12 @@ func _run() -> void:
 	assert(not Store.export_stage_candidate(project, draft)["ok"])
 	assert(DirAccess.remove_absolute(stage_file) == OK)
 	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
+	# Prevent a stale staged draft from writing after another agent changes stage source.
+	_write(original_stage_path, {"masters": [], "sceneShots": []})
+	assert(not Store.validate(project, draft).is_empty())
+	assert(not Store.export_stage_candidate(project, draft)["ok"])
+	_write(original_stage_path, JSON.parse_string(original_stage_json))
+	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
 	# Unsupported locale and deleted authoring IDs never silently pass.
 	var bad: Dictionary = draft.duplicate(true)
 	bad["patches"]["RM-TEST-A-L001"]["fr"] = "Bonjour"
