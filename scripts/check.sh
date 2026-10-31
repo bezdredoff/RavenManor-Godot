@@ -22,6 +22,11 @@ run_check() {
 		printf '%s\n' "$output" >&2
 		return 1
 	fi
+	if [[ "$output" == *"res://addons/vn_studio/res:"* || "$output" == *"Failed loading resource: res://addons/vn_studio/"* ]]; then
+		printf 'ERROR: %s reported a broken VN Studio plugin path\n' "$stage" >&2
+		printf '%s\n' "$output" >&2
+		return 1
+	fi
 	if [[ "$output" == *"SCRIPT ERROR:"* ]]; then
 		printf 'ERROR: %s reported a Godot script error\n' "$stage" >&2
 		printf '%s\n' "$output" >&2
