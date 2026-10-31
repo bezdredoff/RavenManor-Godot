@@ -187,10 +187,10 @@
     },
     {
       "id": "VN-EDITOR-06",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "PR #74 merged to main commit 65cfee2bd8fc1496aaab8e3271353d03237b1b02, first private immutable conversion bridge v1 + 45-scene synthetic smoke. Current candidate 06B adds read-only old save position preview (scene/line/choice/readLines/completed/storyChoices) and restricted field diff; CI and real donor/save acceptance pending. Full 06 not complete."
+      "evidence": "Merged PR #74 introduced private bridge v1; open PR #75 https://github.com/bezdredoff/RavenManor-Godot/pull/75 adds old-save in-memory position inspector and field-level semantic guard. Latest CI pending; real donor/save replay and runtime migration NOT accepted. Work package remains incomplete."
     }
   ],
   "rules": [
