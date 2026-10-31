@@ -369,6 +369,24 @@
       "graphicsDependencies": [],
       "source": "User request 2026-10-28 / docs/VN_WATERCOLOR_PILOT.md",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-01",
+      "title": "Редактор своего сюжета Raven Manor в VN Studio: черновики и кандидат на ревью",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Native Godot editor tab for canonical 28-scene/280-line Raven Season1 production screenplay, RU/BE/EN editing with accurate fallback and scene/cue/route metadata; separate SHA-locked draft and no-overwrite candidate export.",
+      "deliverable": "Raven Manor authoring tab independent from UPDS, local persistence and JSON export, synthetic tests + production corpus validation",
+      "acceptance": "Owner verifies editing/saving/reopening/export, source SHA fail-closed, no runtime/source overwrite and readable desktop UI; production catalog promotion only by separate reviewed PR.",
+      "status": "proposed",
+      "dependsOn": [
+        "VN-EDITOR-03",
+        "VN-EDITOR-04"
+      ],
+      "graphicsDependencies": [],
+      "source": "User request 2026-10-31; addons/vn_studio/README.md",
+      "requiresHumanAcceptance": true
     }
   ]
 }
