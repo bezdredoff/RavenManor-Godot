@@ -378,3 +378,119 @@ func _commit() -> void:
 		return
 	stage_modified.emit(_stage_data.duplicate(true))
 	_reload()
+
+func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
+	_overlay.set_preview(next_speaker, text_value, id)
+
+
+func _reload_variants() -> void:
+	var master: Dictionary = Store.stage_master(_project, str(_stage_data.get("backgroundId", "")))
+	_lighting.clear()
+	_room_state.clear()
+	for lighting in master.get("lightingVariants", []):
+		_lighting.add_item(str(lighting))
+		if lighting == _stage_data.get("lighting"):
+			_lighting.select(_lighting.item_count - 1)
+	for condition in master.get("stateLayers", []):
+		_room_state.add_item(str(condition))
+		if condition == _stage_data.get("roomState"):
+			_room_state.select(_room_state.item_count - 1)
+
+
+func _on_lighting(index: int) -> void:
+	if _suppress or index < 0:
+		return
+	_stage_data["lighting"] = _lighting.get_item_text(index)
+	_commit()
+
+
+func _on_room_state(index: int) -> void:
+	if _suppress or index < 0:
+		return
+	_stage_data["roomState"] = _room_state.get_item_text(index)
+	_commit()
+
+
+func _select_background(bg_id: String) -> void:
+	var master: Dictionary = Store.stage_master(_project, bg_id)
+	if master.is_empty():
+		return
+	_stage_data["backgroundId"] = bg_id
+	if _stage_data.get("lighting") not in master.get("lightingVariants", []):
+		_stage_data["lighting"] = master["lightingVariants"][0]
+	if _stage_data.get("roomState") not in master.get("stateLayers", []):
+		_stage_data["roomState"] = master["stateLayers"][0]
+	_commit()
+
+
+func _on_grid_toggle(value: bool) -> void:
+	_overlay.show_grid = value
+	_overlay.queue_redraw()
+
+
+func _on_vn_toggle(value: bool) -> void:
+	_overlay.show_vn = value
+	_overlay.queue_redraw()
+
+
+func _on_portrait_scale(value: float) -> void:
+	_card_size = CARD_SIZE * value
+	_draw_stage()
+
+
+func _build_background_browser() -> void:
+	_browser = ConfirmationDialog.new()
+	_browser.title = "Фоны Raven Manor: мастер и состояния"
+	_browser.ok_button_text = "Выбрать фон"
+	_browser.confirmed.connect(_apply_browser_background)
+	add_child(_browser)
+	var split := HSplitContainer.new()
+	split.custom_minimum_size = Vector2(640, 390)
+	_browser.add_child(split)
+	_browser_list = ItemList.new()
+	_browser_list.custom_minimum_size.x = 180
+	_browser_list.item_selected.connect(_on_browser_selected)
+	split.add_child(_browser_list)
+	var details := VBoxContainer.new()
+	details.custom_minimum_size.x = 340
+	split.add_child(details)
+	_browser_image = TextureRect.new()
+	_browser_image.custom_minimum_size.y = 270
+	_browser_image.size_flags_vertical = SIZE_EXPAND_FILL
+	_browser_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_browser_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	details.add_child(_browser_image)
+	_browser_description = Label.new()
+	_browser_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	details.add_child(_browser_description)
+
+
+func _on_browse() -> void:
+	_browser_list.clear()
+	var current_index: int = 0
+	for master in _project.get("stagingData", {}).get("masters", []):
+		_browser_list.add_item(str(master.get("id", "")))
+		if master.get("id") == _stage_data.get("backgroundId"):
+			current_index = _browser_list.item_count - 1
+	if _browser_list.item_count > 0:
+		_browser_list.select(current_index)
+		_on_browser_selected(current_index)
+	_browser.popup_centered(Vector2i(710, 475))
+
+
+func _on_browser_selected(index: int) -> void:
+	if index < 0 or index >= _browser_list.item_count:
+		return
+	_browser_selected = _browser_list.get_item_text(index)
+	var master: Dictionary = Store.stage_master(_project, _browser_selected)
+	_browser_image.texture = _texture(str(BACKDROP_PILOT.get(_browser_selected, "")))
+	var availability: String = "Референс мастера, НЕ конкретного состояния" if _browser_image.texture != null else "ART PENDING — изображения ещё нет"
+	_browser_description.text = "%s\n%s\nСвет: %s\nСостояния: %s\n%s" % [
+		_browser_selected, str(master.get("description", "")),
+		", ".join(master.get("lightingVariants", [])),
+		", ".join(master.get("stateLayers", [])), availability]
+
+
+func _apply_browser_background() -> void:
+	if not _browser_selected.is_empty():
+		_select_background(_browser_selected)
