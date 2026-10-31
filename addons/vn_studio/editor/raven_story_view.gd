@@ -239,7 +239,7 @@ func _line_render() -> void:
 func _refresh_preview() -> void:
 	var scene: Dictionary = _project["scenes"][_scene_idx]
 	var id: String = str(scene["sceneId"])
-	var shot: Dictionary = _project["shots"][id]
+	var shot: Dictionary = Store.effective_stage(_project, _draft, id)
 	var trigger: Dictionary = _project["routes"][id]
 	var output: String = "Фон: %s · свет: %s · состояние: %s\n" % [
 		str(shot.get("backgroundId", "—")), str(shot.get("lighting", "—")),
