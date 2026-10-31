@@ -5,12 +5,14 @@ extends VBoxContainer
 signal stage_modified(stage: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
 const BACKDROP_PILOT := {"BG-HALL": "res://assets/raven/vn_pilot/hall_morning.webp"}
 const ACTOR_PILOT := {
 	"RM-CHAR-EVELYN": "res://assets/raven/vn_pilot/evelyn_relaxed.webp",
 	"RM-CHAR-ADA": "res://assets/raven/vn_pilot/ada_offer_tea.webp"
 }
 const CARD_SIZE := Vector2(114, 176)
+const REFERENCE_SIZE := Vector2(390, 844)
 const MARGIN := 8.0
 
 var _project: Dictionary = {}
@@ -20,6 +22,9 @@ var _dragging_actor: int = -1
 var _grab_delta: Vector2 = Vector2.ZERO
 var _background: OptionButton
 var _actor_pick: OptionButton
+var _lighting: OptionButton
+var _room_state: OptionButton
+var _browse_background: Button
 var _pose: OptionButton
 var _emotion: OptionButton
 var _add: Button
@@ -29,6 +34,16 @@ var _canvas: Panel
 var _bg_image: TextureRect
 var _placeholders: Label
 var _cards: Array[Button] = []
+var _overlay: Control
+var _grid_toggle: CheckBox
+var _vn_toggle: CheckBox
+var _portrait_scale: HSlider
+var _card_size: Vector2 = CARD_SIZE * 0.55
+var _browser: ConfirmationDialog
+var _browser_list: ItemList
+var _browser_image: TextureRect
+var _browser_description: Label
+var _browser_selected: String = ""
 var _status: Label
 var _suppress: bool = false
 
