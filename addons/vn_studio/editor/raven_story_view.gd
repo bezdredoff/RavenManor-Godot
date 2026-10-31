@@ -234,6 +234,7 @@ func _line_render() -> void:
 		_line_info.text += "\nПоза: %s · эмоция: %s · микро: %s" % [
 			str(cue.get("poseId", "")), str(cue.get("emotionId", "")), str(cue.get("microOnEnter", "—"))]
 	_update_diff()
+	_sync_dialogue_preview()
 
 
 func _refresh_preview() -> void:
@@ -288,6 +289,7 @@ func _on_text_changed() -> void:
 	Store.edit(_draft, str(e["id"]), _language, _text_edit.text)
 	_dirty = true
 	_update_diff()
+	_sync_dialogue_preview()
 	_refresh_buttons()
 
 
@@ -383,3 +385,15 @@ func _export_stage_candidate() -> void:
 		_path.text = str(result["path"])
 	else:
 		_status.text = "Не удалось экспортировать постановку: " + str(result.get("error", ""))
+
+func _sync_dialogue_preview() -> void:
+	if _stage_designer == null or _project.is_empty():
+		return
+	var entry: Dictionary = _current_entry()
+	if entry.is_empty():
+		_stage_designer.set_dialogue_preview("", "", "")
+		return
+	var loc: Dictionary = Store.localized(entry, _draft, _language)
+	_stage_designer.set_dialogue_preview(
+		str(entry.get("speakerId", "")).trim_prefix("RM-CHAR-"),
+		str(loc.get("text", "")), str(entry.get("id", "")))

@@ -406,6 +406,23 @@
       ],
       "source": "User request 2026-10-31; addons/vn_studio/README.md",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-03",
+      "title": "Raven VN Studio: компактный просмотр, варианты фона, px-сетка и VN UI overlay",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Make all UPDS pose thumbnails and Raven stage actor previews browseable; canonical background lighting/state selectors and master browser with asset availability, optional 390x844 logical-pixel grid and selected-line dialogue UI overlay.",
+      "deliverable": "Godot editor controls and validation, editor-only overlay, smoke tests and manuals; no source asset fabrication or runtime changes.",
+      "acceptance": "Owner can browse all portrait options, choose master+light+state, distinguish real art from pending variant plates, toggle 390x844 grid and selected dialogue preview, drag and save; CI plus manual Godot QA.",
+      "status": "proposed",
+      "dependsOn": [
+        "RAVEN-VN-EDITOR-02"
+      ],
+      "graphicsDependencies": [],
+      "source": "User feedback 2026-10-31; addons/vn_studio/README.md",
+      "requiresHumanAcceptance": true
     }
   ]
 }

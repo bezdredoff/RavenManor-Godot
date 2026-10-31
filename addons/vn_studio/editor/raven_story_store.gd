@@ -216,6 +216,13 @@ static func stage_options(project: Dictionary) -> Dictionary:
 	return {"backgrounds": backgrounds, "actors": actors}
 
 
+static func stage_master(project: Dictionary, bg_id: String) -> Dictionary:
+	for master in project.get("stagingData", {}).get("masters", []):
+		if str(master.get("id", "")) == bg_id:
+			return master
+	return {}
+
+
 static func validate_stage(project: Dictionary, stage: Variant) -> String:
 	if not stage is Dictionary:
 		return "Постановка должна быть объектом."
@@ -225,13 +232,20 @@ static func validate_stage(project: Dictionary, stage: Variant) -> String:
 	var original: Dictionary = project["shots"][id]
 	var approved: Dictionary = original.duplicate(true)
 	approved["backgroundId"] = stage.get("backgroundId")
+	approved["lighting"] = stage.get("lighting")
+	approved["roomState"] = stage.get("roomState")
 	approved["cast"] = stage.get("cast")
 	approved["visibleCount"] = stage.get("visibleCount")
 	if stage != approved:
-		return "Изменены поля вне backgroundId/cast/visibleCount."
+		return "Изменены поля вне backgroundId/lighting/roomState/cast/visibleCount."
 	var opts: Dictionary = stage_options(project)
 	if stage.get("backgroundId") not in opts["backgrounds"]:
 		return "Фон отсутствует в каталоге постановки."
+	var master: Dictionary = stage_master(project, str(stage.get("backgroundId", "")))
+	if stage.get("lighting") not in master.get("lightingVariants", []):
+		return "Освещение не разрешено для выбранного фона."
+	if stage.get("roomState") not in master.get("stateLayers", []):
+		return "Состояние комнаты не разрешено для выбранного фона."
 	var cast_list: Variant = stage.get("cast", [])
 	if not cast_list is Array or cast_list.size() > 3 or int(stage.get("visibleCount", -1)) != cast_list.size():
 		return "В кадре можно разместить не более трёх персонажей."

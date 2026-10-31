@@ -5,12 +5,14 @@ extends VBoxContainer
 signal stage_modified(stage: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
 const BACKDROP_PILOT := {"BG-HALL": "res://assets/raven/vn_pilot/hall_morning.webp"}
 const ACTOR_PILOT := {
 	"RM-CHAR-EVELYN": "res://assets/raven/vn_pilot/evelyn_relaxed.webp",
 	"RM-CHAR-ADA": "res://assets/raven/vn_pilot/ada_offer_tea.webp"
 }
 const CARD_SIZE := Vector2(114, 176)
+const REFERENCE_SIZE := Vector2(390, 844)
 const MARGIN := 8.0
 
 var _project: Dictionary = {}
@@ -20,6 +22,9 @@ var _dragging_actor: int = -1
 var _grab_delta: Vector2 = Vector2.ZERO
 var _background: OptionButton
 var _actor_pick: OptionButton
+var _lighting: OptionButton
+var _room_state: OptionButton
+var _browse_background: Button
 var _pose: OptionButton
 var _emotion: OptionButton
 var _add: Button
@@ -29,6 +34,16 @@ var _canvas: Panel
 var _bg_image: TextureRect
 var _placeholders: Label
 var _cards: Array[Button] = []
+var _overlay: Control
+var _grid_toggle: CheckBox
+var _vn_toggle: CheckBox
+var _portrait_scale: HSlider
+var _card_size: Vector2 = CARD_SIZE * 0.55
+var _browser: ConfirmationDialog
+var _browser_list: ItemList
+var _browser_image: TextureRect
+var _browser_description: Label
+var _browser_selected: String = ""
 var _status: Label
 var _suppress: bool = false
 
@@ -37,37 +52,75 @@ func _ready() -> void:
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	var controls := HBoxContainer.new()
 	add_child(controls)
+	var bg_caption := Label.new()
+	bg_caption.text = "Фон"
+	controls.add_child(bg_caption)
 	_background = OptionButton.new()
 	_background.custom_minimum_size.x = 134
 	_background.item_selected.connect(_on_background)
 	controls.add_child(_background)
+	_lighting = OptionButton.new()
+	_lighting.custom_minimum_size.x = 100
+	_lighting.item_selected.connect(_on_lighting)
+	controls.add_child(_lighting)
+	_room_state = OptionButton.new()
+	_room_state.custom_minimum_size.x = 125
+	_room_state.item_selected.connect(_on_room_state)
+	controls.add_child(_room_state)
+	_browse_background = Button.new()
+	_browse_background.text = "Просмотреть фоны…"
+	_browse_background.pressed.connect(_on_browse)
+	controls.add_child(_browse_background)
+	var actors_row := HBoxContainer.new()
+	add_child(actors_row)
 	_actor_pick = OptionButton.new()
 	_actor_pick.custom_minimum_size.x = 130
 	_actor_pick.item_selected.connect(_on_actor_select)
-	controls.add_child(_actor_pick)
+	actors_row.add_child(_actor_pick)
 	_pose = OptionButton.new()
 	_pose.custom_minimum_size.x = 115
 	_pose.item_selected.connect(_on_pose)
-	controls.add_child(_pose)
+	actors_row.add_child(_pose)
 	_emotion = OptionButton.new()
 	_emotion.custom_minimum_size.x = 110
 	_emotion.item_selected.connect(_on_emotion)
-	controls.add_child(_emotion)
+	actors_row.add_child(_emotion)
 	_new_actor = OptionButton.new()
 	_new_actor.custom_minimum_size.x = 100
-	controls.add_child(_new_actor)
+	actors_row.add_child(_new_actor)
 	_add = Button.new()
 	_add.text = "+ Персонаж"
 	_add.pressed.connect(_on_add)
-	controls.add_child(_add)
+	actors_row.add_child(_add)
 	_remove = Button.new()
 	_remove.text = "−"
 	_remove.tooltip_text = "Убрать выделенного персонажа из постановки"
 	_remove.pressed.connect(_on_remove)
-	controls.add_child(_remove)
+	actors_row.add_child(_remove)
 
+	var options_row := HBoxContainer.new()
+	add_child(options_row)
+	_grid_toggle = CheckBox.new()
+	_grid_toggle.text = "Сетка (px)"
+	_grid_toggle.toggled.connect(_on_grid_toggle)
+	options_row.add_child(_grid_toggle)
+	_vn_toggle = CheckBox.new()
+	_vn_toggle.text = "Показать интерфейс VN"
+	_vn_toggle.toggled.connect(_on_vn_toggle)
+	options_row.add_child(_vn_toggle)
+	var scale_caption := Label.new()
+	scale_caption.text = "Размер"
+	options_row.add_child(scale_caption)
+	_portrait_scale = HSlider.new()
+	_portrait_scale.custom_minimum_size.x = 100
+	_portrait_scale.min_value = 0.35
+	_portrait_scale.max_value = 1.0
+	_portrait_scale.step = 0.05
+	_portrait_scale.value = 0.55
+	_portrait_scale.value_changed.connect(_on_portrait_scale)
+	options_row.add_child(_portrait_scale)
 	_canvas = Panel.new()
-	_canvas.custom_minimum_size = Vector2(540, 335)
+	_canvas.custom_minimum_size = Vector2(345, 480)
 	_canvas.size_flags_horizontal = SIZE_EXPAND_FILL
 	_canvas.clip_contents = true
 	_canvas.resized.connect(_layout_cards)
@@ -82,6 +135,10 @@ func _ready() -> void:
 	_placeholders.vertical_alignment = VERTICAL_ALIGNMENT_TOP
 	_placeholders.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	_canvas.add_child(_placeholders)
+	_overlay = StageOverlay.new()
+	_overlay.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_canvas.add_child(_overlay)
+	_build_background_browser()
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "Изменения здесь остаются только в Raven-черновике до ручного ревью."
@@ -107,6 +164,7 @@ func _reload() -> void:
 		_background.add_item(str(bg))
 		if bg == _stage_data.get("backgroundId"):
 			_background.select(_background.item_count - 1)
+	_reload_variants()
 	_actor_pick.clear()
 	var cast: Array = _stage_data.get("cast", [])
 	for item in cast:
@@ -160,15 +218,15 @@ func _draw_stage() -> void:
 	_cards.clear()
 	var bg_id: String = str(_stage_data.get("backgroundId", ""))
 	_bg_image.texture = _texture(str(BACKDROP_PILOT.get(bg_id, "")))
-	_placeholders.text = "" if _bg_image.texture != null else "ART PENDING · " + bg_id + " · preview layout only"
+	_placeholders.text = "MASTER REFERENCE · light/state not rendered" if _bg_image.texture != null else "ART PENDING · " + bg_id
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	var cast: Array = _stage_data.get("cast", [])
 	for index in range(cast.size()):
 		var actor: Dictionary = cast[index]
 		var card := Button.new()
-		card.custom_minimum_size = CARD_SIZE
-		card.size = CARD_SIZE
+		card.custom_minimum_size = _card_size
+		card.size = _card_size
 		card.clip_contents = true
 		card.text = str(actor["characterId"]).trim_prefix("RM-CHAR-") + "\n" + str(actor.get("emotion", ""))
 		card.alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -182,10 +240,11 @@ func _draw_stage() -> void:
 			display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			display.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			display.position = Vector2(8, 5)
-			display.size = Vector2(CARD_SIZE.x - 16, CARD_SIZE.y - 47)
+			display.position = Vector2(3, 3)
+			display.size = Vector2(_card_size.x - 6, _card_size.y - 28)
 			card.add_child(display)
 		_cards.append(card)
+	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
 	_status.text = "%s · %d персонажей · координаты нормализованы; реальные PNG доступны не для всех." % [
 		bg_id, cast.size()]
@@ -214,20 +273,21 @@ func _layout_cards() -> void:
 		return
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
+	_overlay.size = _canvas.size
 	for i in range(_cards.size()):
 		_cards[i].position = _position_for(_coordinates(i))
 
 
 func _position_for(normalized: Vector2) -> Vector2:
 	return Vector2(
-		MARGIN + normalized.x * maxf(_canvas.size.x - CARD_SIZE.x - 2.0 * MARGIN, 0.0),
-		MARGIN + normalized.y * maxf(_canvas.size.y - CARD_SIZE.y - 2.0 * MARGIN, 0.0))
+		MARGIN + normalized.x * maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 0.0),
+		MARGIN + normalized.y * maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 0.0))
 
 
 func _normalize_position(position: Vector2) -> Vector2:
 	return Vector2(
-		clampf((position.x - MARGIN) / maxf(_canvas.size.x - CARD_SIZE.x - 2.0 * MARGIN, 1.0), 0.0, 1.0),
-		clampf((position.y - MARGIN) / maxf(_canvas.size.y - CARD_SIZE.y - 2.0 * MARGIN, 1.0), 0.0, 1.0))
+		clampf((position.x - MARGIN) / maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 1.0), 0.0, 1.0),
+		clampf((position.y - MARGIN) / maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 1.0), 0.0, 1.0))
 
 
 func _on_card_input(event: InputEvent, index: int) -> void:
@@ -247,13 +307,15 @@ func _on_card_input(event: InputEvent, index: int) -> void:
 		_stage_data["cast"][index]["x"] = snappedf(coords.x, 0.001)
 		_stage_data["cast"][index]["y"] = snappedf(coords.y, 0.001)
 		_cards[index].position = _position_for(coords)
+		_status.text = "%s · x=%d px, y=%d px (390×844 reference)" % [
+			str(_stage_data["cast"][index]["characterId"]),
+			roundi(coords.x * REFERENCE_SIZE.x), roundi(coords.y * REFERENCE_SIZE.y)]
 
 
 func _on_background(index: int) -> void:
 	if _suppress or index < 0:
 		return
-	_stage_data["backgroundId"] = _background.get_item_text(index)
-	_commit()
+	_select_background(_background.get_item_text(index))
 
 
 func _on_actor_select(index: int) -> void:
@@ -319,3 +381,119 @@ func _commit() -> void:
 		return
 	stage_modified.emit(_stage_data.duplicate(true))
 	_reload()
+
+func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
+	_overlay.set_preview(next_speaker, text_value, id)
+
+
+func _reload_variants() -> void:
+	var master: Dictionary = Store.stage_master(_project, str(_stage_data.get("backgroundId", "")))
+	_lighting.clear()
+	_room_state.clear()
+	for lighting in master.get("lightingVariants", []):
+		_lighting.add_item(str(lighting))
+		if lighting == _stage_data.get("lighting"):
+			_lighting.select(_lighting.item_count - 1)
+	for condition in master.get("stateLayers", []):
+		_room_state.add_item(str(condition))
+		if condition == _stage_data.get("roomState"):
+			_room_state.select(_room_state.item_count - 1)
+
+
+func _on_lighting(index: int) -> void:
+	if _suppress or index < 0:
+		return
+	_stage_data["lighting"] = _lighting.get_item_text(index)
+	_commit()
+
+
+func _on_room_state(index: int) -> void:
+	if _suppress or index < 0:
+		return
+	_stage_data["roomState"] = _room_state.get_item_text(index)
+	_commit()
+
+
+func _select_background(bg_id: String) -> void:
+	var master: Dictionary = Store.stage_master(_project, bg_id)
+	if master.is_empty():
+		return
+	_stage_data["backgroundId"] = bg_id
+	if _stage_data.get("lighting") not in master.get("lightingVariants", []):
+		_stage_data["lighting"] = master["lightingVariants"][0]
+	if _stage_data.get("roomState") not in master.get("stateLayers", []):
+		_stage_data["roomState"] = master["stateLayers"][0]
+	_commit()
+
+
+func _on_grid_toggle(value: bool) -> void:
+	_overlay.show_grid = value
+	_overlay.queue_redraw()
+
+
+func _on_vn_toggle(value: bool) -> void:
+	_overlay.show_vn = value
+	_overlay.queue_redraw()
+
+
+func _on_portrait_scale(value: float) -> void:
+	_card_size = CARD_SIZE * value
+	_draw_stage()
+
+
+func _build_background_browser() -> void:
+	_browser = ConfirmationDialog.new()
+	_browser.title = "Фоны Raven Manor: мастер и состояния"
+	_browser.ok_button_text = "Выбрать фон"
+	_browser.confirmed.connect(_apply_browser_background)
+	add_child(_browser)
+	var split := HSplitContainer.new()
+	split.custom_minimum_size = Vector2(640, 390)
+	_browser.add_child(split)
+	_browser_list = ItemList.new()
+	_browser_list.custom_minimum_size.x = 180
+	_browser_list.item_selected.connect(_on_browser_selected)
+	split.add_child(_browser_list)
+	var details := VBoxContainer.new()
+	details.custom_minimum_size.x = 340
+	split.add_child(details)
+	_browser_image = TextureRect.new()
+	_browser_image.custom_minimum_size.y = 270
+	_browser_image.size_flags_vertical = SIZE_EXPAND_FILL
+	_browser_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	_browser_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+	details.add_child(_browser_image)
+	_browser_description = Label.new()
+	_browser_description.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	details.add_child(_browser_description)
+
+
+func _on_browse() -> void:
+	_browser_list.clear()
+	var current_index: int = 0
+	for master in _project.get("stagingData", {}).get("masters", []):
+		_browser_list.add_item(str(master.get("id", "")))
+		if master.get("id") == _stage_data.get("backgroundId"):
+			current_index = _browser_list.item_count - 1
+	if _browser_list.item_count > 0:
+		_browser_list.select(current_index)
+		_on_browser_selected(current_index)
+	_browser.popup_centered(Vector2i(710, 475))
+
+
+func _on_browser_selected(index: int) -> void:
+	if index < 0 or index >= _browser_list.item_count:
+		return
+	_browser_selected = _browser_list.get_item_text(index)
+	var master: Dictionary = Store.stage_master(_project, _browser_selected)
+	_browser_image.texture = _texture(str(BACKDROP_PILOT.get(_browser_selected, "")))
+	var availability: String = "Референс мастера, НЕ конкретного состояния" if _browser_image.texture != null else "ART PENDING — изображения ещё нет"
+	_browser_description.text = "%s\n%s\nСвет: %s\nСостояния: %s\n%s" % [
+		_browser_selected, str(master.get("description", "")),
+		", ".join(master.get("lightingVariants", [])),
+		", ".join(master.get("stateLayers", [])), availability]
+
+
+func _apply_browser_background() -> void:
+	if not _browser_selected.is_empty():
+		_select_background(_browser_selected)

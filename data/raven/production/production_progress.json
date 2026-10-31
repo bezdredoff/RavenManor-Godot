@@ -205,6 +205,13 @@
       "updated": "2026-10-31",
       "owner": "ChatGPT",
       "evidence": "Clean main-based integration PR for stage editor after #78 was merged into an old feature branch. CI pending; Godot UI visual QA pending; no runtime rewrites."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-03",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "Open PR #81 https://github.com/bezdredoff/RavenManor-Godot/pull/81. Full CI PASS on implementation head 3b0e95e2330c8109ac866c577f6a0f6992dd3789: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41240979721. Canonical 11 background masters/lighting/state, compact UPDS pose gallery, Raven actor scale, optional 390x844 logical px grid and selected dialogue overlay; synthetic stage test and browser suite passed. Desktop owner UI QA and missing background-state artwork pending; no runtime changes."
     }
   ],
   "rules": [
