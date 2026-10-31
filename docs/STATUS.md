@@ -210,3 +210,8 @@ Candidate feature/vn-watercolor-pilot-rebased adds separate Evelyn/Ada tea scene
 ## 2026-10-29 — RM-GFX-WATERCOLOR-001 rejected and retired
 
 Owner inspected the deployed watercolor shader duplicate of Evelyn/Ada tea VN from merged PR #66 and found the visual result unsatisfactory. This approach is **not accepted** as the game's art style. Remove the experimental duplicate scene, runtime shader and launcher entry, retaining the original tea VN and all unrelated functionality. Preserve the trial outcome in docs/VN_WATERCOLOR_PILOT.md and dashboard task status `deferred`; do not present the experiment as pending approval.
+
+
+## 2026-10-31 — VN-EDITOR-00: Godot-native VN Studio specification (PR candidate)
+
+Owner requested **inside-Godot** PowerPoint-like visual VN editor supporting both Raven and legacy **UPDS-godot**. Proposed `docs/VN_STUDIO_EDITOR_SPEC.md` defines EditorPlugin main screen, scene/staging/dialogue/character/timeline/graph UX, common CODE-03 VN runtime adapters, versioned data model, read-only UPDS 45-index viewer, conflict-safe overlays, deterministic converter with save mapping, parity+rollback gates. Agent/human workflow documented in `docs/process/VN_STUDIO_AGENT_GUIDE_RU.md`. Nine `VN-EDITOR-00..08` tasks are proposed in the CODE-03 backlog, dashboard derives from source JSON. **Documentation/design only:** no plugin, game logic, donor content migration, imported private assets, actual UPDS full-corpus audit, Godot test, CI or device evidence claimed. `VN-EDITOR-00` in progress until PR verified; all implementation and acceptance gates pending.
