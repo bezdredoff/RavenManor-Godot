@@ -205,6 +205,13 @@
       "updated": "2026-10-31",
       "owner": "ChatGPT",
       "evidence": "Clean main-based integration PR for stage editor after #78 was merged into an old feature branch. CI pending; Godot UI visual QA pending; no runtime rewrites."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-03",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-10-31",
+      "evidence": "code/raven-vn-stage-preview-controls: compact UPDS gallery & Raven actor scale, 11 canonical background masters with permitted lighting/state variants, browse gallery noting ART PENDING, 390x844 editor grid and selected-dialogue overlay toggles; CI/manual UI QA pending. No runtime changes."
     }
   ],
   "rules": [
