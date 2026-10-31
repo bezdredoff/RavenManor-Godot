@@ -161,6 +161,11 @@
 
 **Gate C3 — VN CORE PARITY:** Hall pilot воспроизводится через единый UPDS-origin renderer; историю, Auto/Skip, 1/2/3 portraits, language reflow и resume проверяют автоматические сценарии; отдельных hardcoded VN screens на каждую комнату нет.
 
+
+#### VN Studio — редакторский companion CODE-03 (решение 2026-10-31)
+
+**VN-EDITOR-00..08** — отдельные work packages **в стадии CODE-03** (единый VN core, не второй renderer). Спецификация: [VN_STUDIO_EDITOR_SPEC.md](../VN_STUDIO_EDITOR_SPEC.md); agent/human guide: [VN_STUDIO_AGENT_GUIDE_RU.md](../process/VN_STUDIO_AGENT_GUIDE_RU.md). В Godot 4.7.2 нужен native EditorPlugin / main screen `VN Studio`, с drag-and-drop staging, таймлайном, персонажами, графом ветвления, RU/BE/EN и `Legacy Viewer` для всех UPDS-godot 45 scene indexes. Отдельный gated converter c immutable legacy snapshot, source SHA, deterministic manifest, scene/line/asset/save mapping, diff/rollback. Источник правды UPDS: `bezdredoff/UPDS-godot`; производственный Raven state только reducer. `VN-EDITOR-00` — specification only; **плагин/прогон миграции не реализован**, остальные задачи предложены. `CODE-03-01..03` остаются техническими prerequisite и C3 parity gate. Не включать приватный UPDS content в публичный Raven repo, не снимать C11×G11 gating.
+
 ### CODE-04 — Настройки, локализация, аудио, accessibility
 
 **Подготовка к GFX-10/11.**
