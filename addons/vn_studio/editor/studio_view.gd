@@ -452,3 +452,237 @@ func _render_line() -> void:
 		details_text += "\nФинал: " + str(scene["ending"].get("endingId", ""))
 	details_text += "\n\nDRAFT ONLY — никаких действий в кампании или UPDS."
 	_details.text = details_text
+
+
+func _ensure_draft(scene_index: int) -> void:
+	if _drafts.has(scene_index) or _blocked.has(scene_index) or _project.is_empty():
+		return
+	var entry: Dictionary = _project["scenes"][scene_index]
+	var result: Dictionary = Drafts.load_draft(str(_project["root"]), entry)
+	if not result.get("ok", false):
+		_blocked[scene_index] = str(result.get("error", "Черновик заблокирован."))
+	else:
+		_drafts[scene_index] = result["draft"]
+	_update_status()
+
+
+func _editable() -> bool:
+	return not _project.is_empty() and not _blocked.has(_current_scene) and _drafts.has(_current_scene)
+
+
+func _effective_line(index: int) -> Dictionary:
+	var source: Array = _current_lines()
+	if index < 0 or index >= source.size():
+		return {}
+	var original: Dictionary = source[index]
+	if not _editable():
+		return original
+	return Drafts.materialize(original, _drafts[_current_scene], _variant, index)
+
+
+func _active_line_id() -> String:
+	var lines: Array = _current_lines()
+	return str(lines[_current_line].get("id", "")) if _current_line >= 0 and _current_line < lines.size() else ""
+
+
+func _capture_undo() -> void:
+	if not _editable():
+		return
+	var stack: Array = _undo_history.get(_current_scene, [])
+	stack.append(_drafts[_current_scene].duplicate(true))
+	if stack.size() > 50:
+		stack.pop_front()
+	_undo_history[_current_scene] = stack
+	_redo_history[_current_scene] = []
+	_update_status()
+
+
+func _record_edit() -> void:
+	_dirty[_current_scene] = true
+	_update_status()
+
+
+func _on_speaker_changed(value: String) -> void:
+	_update_localized("speaker", value)
+
+
+func _on_emotion_changed(value: String) -> void:
+	_update_localized("emotion", value)
+
+
+func _on_text_changed() -> void:
+	_update_localized("text", _text_edit.text)
+
+
+func _update_localized(field: String, value: String) -> void:
+	if _suppress_edit_signals or not _editable() or _current_lines().is_empty():
+		return
+	Drafts.set_localized(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _language, field, value)
+	_record_edit()
+	var locale: Dictionary = Reader.localize_line(_effective_line(_current_line), _language)
+	_speaker.text = str(locale["speaker"]) + " · " + str(locale["emotion"])
+	_dialogue.text = ("[РЕЖИССУРА] " if locale["hidden"] else "") + str(locale["text"])
+	_update_selected_line_label()
+
+
+func _update_selected_line_label() -> void:
+	if _line_list.item_count <= _current_line or _current_line < 0:
+		return
+	var loc: Dictionary = Reader.localize_line(_effective_line(_current_line), _language)
+	_line_list.set_item_text(_current_line, "%s %s · %s" % ["◆" if loc["hidden"] else "●", loc["id"], loc["speaker"]])
+
+
+func _populate_editors(line: Dictionary) -> void:
+	_suppress_edit_signals = true
+	var translated: Dictionary = Reader.localize_line(line, _language)
+	_speaker_edit.text = str(translated["speaker"])
+	_emotion_edit.text = str(translated["emotion"])
+	_text_edit.text = str(translated["text"])
+	_speaker_edit.editable = _editable()
+	_emotion_edit.editable = _editable()
+	_text_edit.editable = _editable()
+	_actor_picker.clear()
+	var actors: Array = line.get("actors", [])
+	for actor in actors:
+		_actor_picker.add_item(str(actor.get("character", "")))
+	_actor_picker.disabled = actors.is_empty() or not _editable()
+	if not actors.is_empty():
+		_selected_actor = clampi(_selected_actor, 0, actors.size() - 1)
+		_actor_picker.select(_selected_actor)
+	_update_pose_options(actors)
+	_suppress_edit_signals = false
+	_update_status()
+
+
+func _update_pose_options(actors: Array) -> void:
+	_pose_picker.clear()
+	_pose_picker.disabled = true
+	if actors.is_empty():
+		return
+	var actor: Dictionary = actors[_selected_actor]
+	var character: String = str(actor.get("character", ""))
+	var catalog: Dictionary = _project.get("catalog", {}).get("characters", {}).get(character, {})
+	var names: Array = catalog.keys()
+	names.erase("icon")
+	names.erase("phone")
+	names.sort()
+	var current_pose: String = str(actor.get("pose", "neutral"))
+	if current_pose not in names:
+		names.append(current_pose)
+	var current_idx: int = 0
+	for pose in names:
+		_pose_picker.add_item(str(pose))
+		if pose == current_pose:
+			current_idx = _pose_picker.item_count - 1
+	if _pose_picker.item_count > 0:
+		_pose_picker.select(current_idx)
+	_pose_picker.disabled = not _editable()
+
+
+func _on_actor_selected(index: int) -> void:
+	_selected_actor = index
+	_update_pose_options(_effective_line(_current_line).get("actors", []))
+
+
+func _on_pose_selected(index: int) -> void:
+	if not _editable() or _current_lines().is_empty():
+		return
+	var line: Dictionary = _effective_line(_current_line)
+	var actors: Array = line.get("actors", [])
+	if _selected_actor < 0 or _selected_actor >= actors.size():
+		return
+	_capture_undo()
+	Drafts.set_actor(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _selected_actor, str(actors[_selected_actor]["character"]), "pose", _pose_picker.get_item_text(index))
+	_record_edit()
+	_render_line()
+
+
+func _on_stage_input(event: InputEvent) -> void:
+	if not _editable() or _current_lines().is_empty():
+		return
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_dragging_actor = -1
+			for i in range(_actor_nodes.size() - 1, -1, -1):
+				var item: Dictionary = _actor_nodes[i]
+				var node: Control = item["node"]
+				if node.get_rect().has_point(event.position):
+					_dragging_actor = int(item["index"])
+					_selected_actor = _dragging_actor
+					_drag_offset = node.position + Vector2(node.size.x * 0.5, 0.0) - event.position
+					_capture_undo()
+					break
+		else:
+			_dragging_actor = -1
+	elif event is InputEventMouseMotion and _dragging_actor >= 0:
+		if _stage.size.x <= 0.0 or _stage.size.y <= 0.0:
+			return
+		var line: Dictionary = _effective_line(_current_line)
+		var actors: Array = line.get("actors", [])
+		if _dragging_actor >= actors.size():
+			return
+		var char_id: String = str(actors[_dragging_actor].get("character", ""))
+		var pos: Vector2 = event.position + _drag_offset
+		var center_x: float = clampf(pos.x / _stage.size.x, 0.22, 0.78)
+		var top_y: float = clampf(pos.y / _stage.size.y, 0.02, 0.54)
+		Drafts.set_actor(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _dragging_actor, char_id, "x", snappedf(center_x, 0.005))
+		Drafts.set_actor(_drafts[_current_scene], _variant, _current_line, _active_line_id(), _dragging_actor, char_id, "y", snappedf(top_y, 0.005))
+		_record_edit()
+		_render_line()
+
+
+func _on_undo() -> void:
+	if not _editable():
+		return
+	var stack: Array = _undo_history.get(_current_scene, [])
+	if stack.is_empty():
+		return
+	var redo: Array = _redo_history.get(_current_scene, [])
+	redo.append(_drafts[_current_scene].duplicate(true))
+	_redo_history[_current_scene] = redo
+	_drafts[_current_scene] = stack.pop_back()
+	_undo_history[_current_scene] = stack
+	_record_edit()
+	_refresh_lines()
+
+
+func _on_redo() -> void:
+	if not _editable():
+		return
+	var stack: Array = _redo_history.get(_current_scene, [])
+	if stack.is_empty():
+		return
+	var undo: Array = _undo_history.get(_current_scene, [])
+	undo.append(_drafts[_current_scene].duplicate(true))
+	_undo_history[_current_scene] = undo
+	_drafts[_current_scene] = stack.pop_back()
+	_redo_history[_current_scene] = stack
+	_record_edit()
+	_refresh_lines()
+
+
+func _on_save_draft() -> void:
+	if not _editable():
+		return
+	var entry: Dictionary = _current_entry()
+	var result: Dictionary = Drafts.save_draft(str(_project["root"]), entry, _drafts[_current_scene])
+	if not result.get("ok", false):
+		_status.text = str(result.get("error", "Сохранение черновика не удалось."))
+		return
+	_dirty.erase(_current_scene)
+	_update_status()
+
+
+func _update_status() -> void:
+	if _status == null or _project.is_empty():
+		return
+	if _blocked.has(_current_scene):
+		_status.text = "⚠ " + str(_blocked[_current_scene])
+	else:
+		_status.text = "DRAFT ONLY · %d сцен · %d несохранённых черновиков · оригинал UPDS не изменяется" % [_project["scenes"].size(), _dirty.size()]
+	if _save_button != null:
+		_save_button.disabled = not _editable() or not _dirty.has(_current_scene)
+	if _undo_button != null:
+		_undo_button.disabled = not _editable() or _undo_history.get(_current_scene, []).is_empty()
+	if _redo_button != null:
+		_redo_button.disabled = not _editable() or _redo_history.get(_current_scene, []).is_empty()
