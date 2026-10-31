@@ -281,14 +281,14 @@ func _make_ui() -> void:
 	characters_tab.name = "Персонажи"
 	tabs.add_child(characters_tab)
 	var library_caption := Label.new()
-	library_caption.text = "Каталог выбранного UPDS (не импортируется в Raven)"
+	library_caption.text = "UPDS: выбери актёра и прокручивай компактные варианты поз (не импортируется в Raven)"
 	characters_tab.add_child(library_caption)
 	_catalog_list = ItemList.new()
 	_catalog_list.custom_minimum_size.y = 125
 	_catalog_list.item_selected.connect(_on_library_character)
 	characters_tab.add_child(_catalog_list)
 	_catalog_preview = TextureRect.new()
-	_catalog_preview.custom_minimum_size.y = 140
+	_catalog_preview.custom_minimum_size.y = 105
 	_catalog_preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_catalog_preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	_catalog_preview.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -303,11 +303,11 @@ func _make_ui() -> void:
 	_catalog_apply.pressed.connect(_on_apply_library_pose)
 	characters_tab.add_child(_catalog_apply)
 	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.y = 140
+	scroll.custom_minimum_size.y = 165
 	scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	characters_tab.add_child(scroll)
 	_catalog_gallery = GridContainer.new()
-	_catalog_gallery.columns = 2
+	_catalog_gallery.columns = 3
 	_catalog_gallery.size_flags_horizontal = SIZE_EXPAND_FILL
 	scroll.add_child(_catalog_gallery)
 	var animation_caption := Label.new()
@@ -848,12 +848,12 @@ func _select_library_character(character_id: String) -> void:
 		else:
 			unavailable += 1
 		var panel := PanelContainer.new()
-		panel.custom_minimum_size = Vector2(138, 132)
+		panel.custom_minimum_size = Vector2(100, 104)
 		_catalog_gallery.add_child(panel)
 		var column := VBoxContainer.new()
 		panel.add_child(column)
 		var thumbnail := TextureRect.new()
-		thumbnail.custom_minimum_size = Vector2(120, 92)
+		thumbnail.custom_minimum_size = Vector2(86, 64)
 		thumbnail.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		thumbnail.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		thumbnail.texture = Reader.image_for(root, assets, "characters", character_id, pose_id) if available else null
