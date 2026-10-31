@@ -187,10 +187,17 @@
     },
     {
       "id": "VN-EDITOR-06",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "PR #76 open https://github.com/bezdredoff/RavenManor-Godot/pull/76; implementation code head a2ad482c8c4a8957343ad6a6888f8fdfabf6c427 passed CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41229807616: 45-scene synthetic data semantic replay, previous VN Studio, PR governance/dashboard/browser checks. JSON-number normalization fixed in test. Only data-level replay, not independently running real UPDS StorySession, persisted save migration, CampaignData clue parity or manual donor visual QA; full VN-EDITOR-06 incomplete."
+      "evidence": "Sub-increments #74, #75 and #76 all merged: https://github.com/bezdredoff/RavenManor-Godot/pull/76 at commit 41f78a786d8d8b37d0d90e7ac7bb93b3fa9333eb; post-merge CI 41231531095 and 41231531685 successful. MERGED code only; work package still missing independent original StorySession oracle, actual saved-state import and user acceptance."
+    },
+    {
+      "id": "RAVEN-VN-EDITOR-01",
+      "status": "PR_review",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "Open PR #77 https://github.com/bezdredoff/RavenManor-Godot/pull/77. CI on implementation head 4d31131e0527f341dfa84a9885f33b1100a34271 PASSED: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41235837433, including Raven production 28 scenes/280 entries and synthetic local save/reopen/export/no-overwrite/SHA-drift, existing VN Studio and dashboard. User Godot desktop QA not done; exported JSON is candidate only, no runtime switching."
     }
   ],
   "rules": [
