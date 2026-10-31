@@ -4,6 +4,7 @@ extends VBoxContainer
 signal analyze_requested
 
 const Bundle = preload("res://addons/vn_studio/editor/conversion_bundle.gd")
+const SaveInspector = preload("res://addons/vn_studio/editor/save_position_inspector.gd")
 
 var _project: Dictionary = {}
 var _result: Dictionary = {}
@@ -14,6 +15,9 @@ var _details: RichTextLabel
 var _confirm: CheckBox
 var _export_button: Button
 var _path_hint: LineEdit
+var _save_dialog: EditorFileDialog
+var _save_report: RichTextLabel
+var _save_button: Button
 
 
 func _ready() -> void:
@@ -79,6 +83,28 @@ func _ready() -> void:
 	_path_hint.editable = false
 	_path_hint.placeholder_text = "Появится после явного экспорта."
 	add_child(_path_hint)
+	var save_section := HBoxContainer.new()
+	add_child(save_section)
+	var save_caption := Label.new()
+	save_caption.text = "Проверка позиции старого UPDS-сейва (без записи)"
+	save_section.add_child(save_caption)
+	_save_button = Button.new()
+	_save_button.text = "Выбрать JSON-сейв…"
+	_save_button.disabled = true
+	_save_button.pressed.connect(_on_choose_save)
+	save_section.add_child(_save_button)
+	_save_report = RichTextLabel.new()
+	_save_report.custom_minimum_size.y = 145
+	_save_report.bbcode_enabled = false
+	_save_report.text = "Сначала выполните dry-run. Файлы сейвов не копируются."
+	add_child(_save_report)
+	_save_dialog = EditorFileDialog.new()
+	_save_dialog.access = EditorFileDialog.ACCESS_FILESYSTEM
+	_save_dialog.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILE
+	_save_dialog.title = "Локальный JSON-сейв UPDS"
+	_save_dialog.add_filter("*.json", "UPDS JSON save")
+	_save_dialog.file_selected.connect(_on_save_selected)
+	add_child(_save_dialog)
 
 
 func set_project(project: Dictionary) -> void:
@@ -92,6 +118,8 @@ func invalidate() -> void:
 	_warnings.clear()
 	_confirm.button_pressed = false
 	_export_button.disabled = true
+	_save_button.disabled = true
+	_save_report.text = "Нет актуальной карты миграции. Выполните dry-run."
 	_details.text = "Схема предварительная: оригинал сохраняется в legacyOriginal, новые поля в payload. Не подключена к VN runtime."
 	_summary.text = "Выполните dry-run для исходной версии и сохранённых черновиков."
 
@@ -111,6 +139,7 @@ func analyze(project: Dictionary, drafts: Dictionary, dirty: Dictionary) -> void
 			_warnings.add_item("⚠ " + str(message))
 		return
 	_result = result
+	_save_button.disabled = false
 	var stats: Dictionary = result["stats"]
 	_summary.text = "Готово: %d сцен · %d реплик (ветки учитываются) · %d правок · %d выходных файлов. Источники не изменены." % [
 		int(stats["scenes"]), int(stats["lines"]), int(stats["changed"]), int(stats["files"])]
@@ -135,6 +164,7 @@ func _on_scene_select(idx: int) -> void:
 		str(item["sceneId"]), int(item["sceneIndex"]), str(item["sourceFile"]),
 		str(item["sourceSha256"]), str(item["targetFile"]), str(item["targetSha256"]),
 		", ".join(item["branchGroups"]), int(item["lines"]), int(item["patchedLines"])]
+	_details.text += "\nИзменённые поля (только пути, без текста):\n" + "\n".join(item.get("changePaths", []))
 	_details.text += "\nОбратимость: legacyOriginal сохранён. Экспорт не затрагивает UPDS, RavenReducer и старые сейвы."
 
 
@@ -153,3 +183,36 @@ func _on_export() -> void:
 	_path_hint.text = str(reply["path"])
 	_summary.text = "Экспортирован приватный bundle " + str(reply["bundleId"]) + ". Игровая версия и сохранения НЕ переключены."
 	_confirm.button_pressed = false
+
+func _on_choose_save() -> void:
+	if bool(_result.get("ok", false)):
+		_save_dialog.popup_centered_ratio(0.65)
+
+
+func _on_save_selected(path: String) -> void:
+	if not bool(_result.get("ok", false)):
+		return
+	var file: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if file == null:
+		_save_report.text = "Не удалось открыть файл сохранения."
+		return
+	if file.get_length() > 2 * 1024 * 1024:
+		file.close()
+		_save_report.text = "Файл больше 2 MiB; чтение заблокировано."
+		return
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+	file.close()
+	var result: Dictionary = SaveInspector.inspect(_project, _result, parsed)
+	if not bool(result.get("ok", false)):
+		_save_report.text = "Сейв несовместим с выбранной версией:\n" + "\n".join(result.get("errors", []))
+		return
+	var mapped: Dictionary = result["mapped"]
+	_save_report.text = "Предпросмотр, не импорт сейва.\n"
+	_save_report.text += "Сцена %s (%d), ветка %s, реплика %d (%s)\n" % [
+		str(mapped["sceneId"]), int(mapped["sceneIndex"]), str(mapped["group"]),
+		int(mapped["lineIndex"]), str(mapped["lineId"])]
+	_save_report.text += "Match-3: %d; прочитано: %d; choices: %d\n" % [
+		mapped["completedLevelIds"].size(), mapped["readLineIds"].size(), mapped["storyChoices"].size()]
+	_save_report.text += "Возможность загрузить в новом runtime ещё НЕ подтверждена.\n"
+	for warning in result.get("warnings", []):
+		_save_report.text += "⚠ " + str(warning) + "\n"
