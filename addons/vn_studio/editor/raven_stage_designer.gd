@@ -23,6 +23,7 @@ var _actor_pick: OptionButton
 var _pose: OptionButton
 var _emotion: OptionButton
 var _add: Button
+var _new_actor: OptionButton
 var _remove: Button
 var _canvas: Panel
 var _bg_image: TextureRect
@@ -52,6 +53,9 @@ func _ready() -> void:
 	_emotion.custom_minimum_size.x = 110
 	_emotion.item_selected.connect(_on_emotion)
 	controls.add_child(_emotion)
+	_new_actor = OptionButton.new()
+	_new_actor.custom_minimum_size.x = 100
+	controls.add_child(_new_actor)
 	_add = Button.new()
 	_add.text = "+ Персонаж"
 	_add.pressed.connect(_on_add)
@@ -113,7 +117,16 @@ func _reload() -> void:
 	else:
 		_selected_actor = -1
 	_reload_poses()
-	_add.disabled = cast.size() >= 3 or cast.size() >= opts["actors"].size()
+	_new_actor.clear()
+	for candidate in opts["actors"]:
+		var found: bool = false
+		for present in cast:
+			if present.get("characterId", "") == candidate:
+				found = true
+				break
+		if not found:
+			_new_actor.add_item(str(candidate).trim_prefix("RM-CHAR-"))
+	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
 	_remove.disabled = _selected_actor < 0
 	_suppress = false
 	_draw_stage()
@@ -274,10 +287,10 @@ func _on_add() -> void:
 	for actor in present:
 		existing.append(str(actor["characterId"]))
 	var next_id: String = ""
-	for candidate in specs:
-		if candidate not in existing:
-			next_id = str(candidate)
-			break
+	if _new_actor.item_count > 0 and _new_actor.selected >= 0:
+		next_id = "RM-CHAR-" + _new_actor.get_item_text(_new_actor.selected)
+	if next_id in existing:
+		return
 	if next_id.is_empty():
 		return
 	var spec: Dictionary = specs[next_id]
