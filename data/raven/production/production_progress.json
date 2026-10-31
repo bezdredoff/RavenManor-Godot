@@ -173,10 +173,17 @@
     },
     {
       "id": "VN-EDITOR-04",
+      "status": "merged",
+      "updated": "2026-10-31",
+      "owner": "ChatGPT",
+      "evidence": "PR #72 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/72; merge commit 1cc99d93e3066d0ecc4003f3dde086e8148cb8dc. Character gallery and preview-only reduced-motion animation with synthetic CI; no owner-reported private UPDS editor visual acceptance."
+    },
+    {
+      "id": "VN-EDITOR-05",
       "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Open https://github.com/bezdredoff/RavenManor-Godot/pull/72: Godot Characters tab from 17 source catalog IDs, image variant thumbnails, missing-art warnings, apply-to-same-actor local draft, preview-only soft idle/fade with Reduced Motion; synthetic test/CI pending, no donor UX acceptance or production costume/layered rig claim."
+      "evidence": "Open PR #73 https://github.com/bezdredoff/RavenManor-Godot/pull/73. Read-only GraphEdit story topology from 45 scene source model, choices/variants, M3, endings/fallback with synthetic QA. Latest CI pending; private UPDS runtime/visual/user QA and editing/export are not completed."
     }
   ],
   "rules": [

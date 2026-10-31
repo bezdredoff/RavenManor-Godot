@@ -5,6 +5,7 @@ extends Control
 const Reader = preload("res://addons/vn_studio/editor/legacy_reader.gd")
 const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
 const Library = preload("res://addons/vn_studio/editor/character_library.gd")
+const StoryGraphView = preload("res://addons/vn_studio/editor/story_graph_view.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -56,6 +57,8 @@ var _catalog_apply: Button
 var _catalog_motion: OptionButton
 var _catalog_reduced_motion: CheckBox
 var _catalog_tween: Tween
+var _story_graph_view: Control
+var _stage_tabs: TabContainer
 
 
 func _init() -> void:
@@ -87,6 +90,8 @@ func open_source(folder: String) -> bool:
 	_status.text = "Только просмотр · %d сцен · оригинал не изменяется" % _project["scenes"].size()
 	_scene_filter.text = ""
 	_refresh_scene_list()
+	_story_graph_view.set_project(_project)
+	_story_graph_view.set_locale(_language)
 	_select_scene(0)
 	_refresh_library()
 	return true
@@ -160,10 +165,17 @@ func _make_ui() -> void:
 	working.size_flags_horizontal = SIZE_EXPAND_FILL
 	horizontal.add_child(working)
 
+	_stage_tabs = TabContainer.new()
+	_stage_tabs.custom_minimum_size = Vector2(380, 0)
+	_stage_tabs.size_flags_horizontal = SIZE_EXPAND_FILL
+	_stage_tabs.size_flags_vertical = SIZE_EXPAND_FILL
+	working.add_child(_stage_tabs)
 	var preview_panel := VBoxContainer.new()
+	preview_panel.name = "Постановка"
 	preview_panel.custom_minimum_size = Vector2(380, 0)
 	preview_panel.size_flags_horizontal = SIZE_EXPAND_FILL
-	working.add_child(preview_panel)
+	preview_panel.size_flags_vertical = SIZE_EXPAND_FILL
+	_stage_tabs.add_child(preview_panel)
 	_heading = Label.new()
 	_heading.text = "Постановка · предварительный просмотр"
 	preview_panel.add_child(_heading)
@@ -220,6 +232,11 @@ func _make_ui() -> void:
 	_pose_picker.custom_minimum_size.x = 150
 	_pose_picker.item_selected.connect(_on_pose_selected)
 	actor_row.add_child(_pose_picker)
+
+	_story_graph_view = StoryGraphView.new()
+	_story_graph_view.name = "Граф сюжета"
+	_story_graph_view.open_scene_requested.connect(_on_graph_scene_requested)
+	_stage_tabs.add_child(_story_graph_view)
 
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
@@ -346,6 +363,7 @@ func _select_scene(index: int) -> void:
 	if index < 0 or index >= all_scenes.size():
 		return
 	_current_scene = index
+	_story_graph_view.focus_scene(str(all_scenes[index].get("id", "")))
 	_current_line = 0
 	_selected_actor = 0
 	_ensure_draft(index)
@@ -369,6 +387,7 @@ func _on_variant_selected(index: int) -> void:
 
 func _on_locale_changed(index: int) -> void:
 	_language = ["ru", "en", "be"][index]
+	_story_graph_view.set_locale(_language)
 	_refresh_scene_list()
 	_refresh_lines()
 
@@ -898,3 +917,15 @@ func _apply_catalog_motion() -> void:
 		_catalog_preview.modulate.a = 0.0
 		_catalog_tween = create_tween()
 		_catalog_tween.tween_property(_catalog_preview, "modulate:a", 1.0, 0.45).set_trans(Tween.TRANS_SINE)
+
+func _on_graph_scene_requested(index: int) -> void:
+	if _project.is_empty():
+		return
+	_scene_filter.text = ""
+	_refresh_scene_list()
+	_select_scene(index)
+	for i in range(_scene_indexes.size()):
+		if _scene_indexes[i] == index:
+			_scene_list.select(i)
+			break
+	_stage_tabs.current_tab = 0
