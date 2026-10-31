@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "planRevision": "2026-10-27-v0.1",
+  "planRevision": "2026-10-31-vn-studio-spec-proposed",
   "status": "PROPOSAL_NOT_RUNTIME",
   "ownerRepo": "bezdredoff/RavenManor-Godot",
   "sourceRepos": {
@@ -739,6 +739,165 @@
       "acceptance": "Observed in actual deployed Web build and iPhone, not only Godot synthetic smoke. Swipe one move, hint both tiles, modal help overlays board, no game/saves mutation. Compare UI side-by-side with UPDS and original RavenManor PWA.",
       "status": "proposed",
       "sourceDecision": "2026-10-27 user QA fail on #62"
+    },
+    {
+      "id": "VN-EDITOR-00",
+      "title": "Specify native VN Studio and UPDS migration authority",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "S",
+      "dependsOn": [],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "Native plugin + donor/import/edit/convert design, agent/human rules, parity and rollback gates in docs",
+      "acceptance": "Documentation and backlog/CI review; does not imply an editor, importer or runtime",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-01",
+      "title": "Audit UPDS-godot scene corpus and freeze migration oracle",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "VN-EDITOR-00"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "Pinned 45-scene inventory, line/locale/asset/choice/gate/save baseline and representative fixtures",
+      "acceptance": "Exhaustive inventories reconcile donor paths/checksums; all unsupported legacy cases identified",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-02",
+      "title": "Create Godot main-screen plugin and read-only UPDS viewer",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "VN-EDITOR-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "VN Studio @tool main screen with source browser, scene/line/branch/locale/stage preview; no writes",
+      "acceptance": "All legacy scenes inspectable; byte-identical donor before/after, no runtime or save writes",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-03",
+      "title": "Build drag-and-drop stage, dialogue and cue timeline editing",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "VN-EDITOR-02",
+        "CODE-03-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "Editable draft stage, portraits/focus, text, RU/BE/EN, undo/redo and deterministic serialized overlay",
+      "acceptance": "Change pose/line/position in test scene; reopen/undo/redo fidelity; stable line/scene IDs",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-04",
+      "title": "Build asset/character inspector and animation catalog",
+      "stage": "CODE-03",
+      "priority": "P1",
+      "size": "L",
+      "dependsOn": [
+        "VN-EDITOR-03",
+        "CODE-03-02"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "Character/pose/emotion/outfit/overlay library with asset registry resolver and reduced-motion fallbacks",
+      "acceptance": "1-3 actors, missing/approved assets, locale fit and reduced-motion verified on preview",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-05",
+      "title": "Implement visual story graph, choices and gate inspector",
+      "stage": "CODE-03",
+      "priority": "P1",
+      "size": "M",
+      "dependsOn": [
+        "VN-EDITOR-02",
+        "CODE-03-01"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "GraphEdit for choices/conditions/scene and M3/map/ending edges without altering game state",
+      "acceptance": "Branches A/B/C, hidden directions and gates round-trip with stable IDs",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-06",
+      "title": "Implement reversible UPDS import/overlay/conversion with save mapping",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "XL",
+      "dependsOn": [
+        "VN-EDITOR-01",
+        "VN-EDITOR-03",
+        "VN-EDITOR-05"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "versioned schema, dry-run diff, SHA/source map, deterministic export, no overwrite, save migration and rollback",
+      "acceptance": "All known unsupported elements reported; no source changes; conversion and saved position parity tested",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-07",
+      "title": "Automate full UPDS semantic and visual parity regression",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "L",
+      "dependsOn": [
+        "VN-EDITOR-06",
+        "VN-EDITOR-04"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "deliverable": "45-scene line/locale/choice/M3/ending/old-save gates, screenshot matrix and reviewer report",
+      "acceptance": "No unreviewed semantic loss; representative portrait resolutions/viewports and verified source hashes",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
+    },
+    {
+      "id": "VN-EDITOR-08",
+      "title": "Prove Raven Hall tea authoring via common VN runtime",
+      "stage": "CODE-03",
+      "priority": "P0",
+      "size": "M",
+      "dependsOn": [
+        "VN-EDITOR-03",
+        "VN-EDITOR-04",
+        "CODE-03-03"
+      ],
+      "graphicsDependencies": [
+        "GFX-11"
+      ],
+      "deliverable": "RM-BEAT-02-01 authoring + preview through shared core, parallel to full UPDS corpus conversion; no gameplay mutations in preview",
+      "acceptance": "Edited scene plays via common renderer with RU/BE/EN and safe Raven reducer, not duplicate Hall-only code",
+      "status": "proposed",
+      "sourceDecision": "docs/VN_STUDIO_EDITOR_SPEC.md"
     }
   ],
   "approvalGates": [

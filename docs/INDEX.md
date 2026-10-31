@@ -18,6 +18,8 @@
 - `../data/raven/production/production_progress.json`: semantic status owner/date/evidence for the dashboard.
 - `../data/raven/production/gap_work_packages.json`: missed UX/production/QA work from recent project discussions.
 - `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
+- `VN_STUDIO_EDITOR_SPEC.md`: proposed native Godot VN Studio EditorPlugin, UPDS-godot legacy inspection/controlled conversion, parity gates and CODE-03 work packages.
+- `process/VN_STUDIO_AGENT_GUIDE_RU.md`: future human/AI editing and migration runbook (proposal, not implemented plugin).
 - `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
 - `../data/raven/production/code_work_packages.json`: машинный бэклог с P0/P1/P2, оценками S–XL, зависимостями и связями с GFX-этапами.
 - `PRODUCT_QUESTIONS.md`: resolved answers that unblock PR 3; future unresolved decisions should be added explicitly.
