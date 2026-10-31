@@ -194,10 +194,10 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-01",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-10-31",
       "owner": "ChatGPT",
-      "evidence": "Candidate branch code/vn-studio-raven-authoring: VN Studio Raven Manor tab sourced from canonical season1_dialogue_catalog.json (28 scenes/280 lines), staging and route/cue metadata; SHA-pinned local text draft, editable RU/BE/EN, no-overwrite export candidate, synthetic safety tests plus production JSON validation. PR/CI and manual UI QA pending; not synced to playable VN runtime."
+      "evidence": "Open PR #77 https://github.com/bezdredoff/RavenManor-Godot/pull/77: native Raven Manor story authoring from existing 28-scene 280-line corpus, private project-local SHA-pinned draft and explicit no-overwrite JSON-candidate export, test + docs. Latest CI and Godot desktop manual QA pending. No runtime integration/source overwrite."
     }
   ],
   "rules": [
