@@ -164,6 +164,7 @@ func _reload() -> void:
 		_background.add_item(str(bg))
 		if bg == _stage_data.get("backgroundId"):
 			_background.select(_background.item_count - 1)
+	_reload_variants()
 	_actor_pick.clear()
 	var cast: Array = _stage_data.get("cast", [])
 	for item in cast:
@@ -217,15 +218,15 @@ func _draw_stage() -> void:
 	_cards.clear()
 	var bg_id: String = str(_stage_data.get("backgroundId", ""))
 	_bg_image.texture = _texture(str(BACKDROP_PILOT.get(bg_id, "")))
-	_placeholders.text = "" if _bg_image.texture != null else "ART PENDING · " + bg_id + " · preview layout only"
+	_placeholders.text = "MASTER REFERENCE · light/state not rendered" if _bg_image.texture != null else "ART PENDING · " + bg_id
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	var cast: Array = _stage_data.get("cast", [])
 	for index in range(cast.size()):
 		var actor: Dictionary = cast[index]
 		var card := Button.new()
-		card.custom_minimum_size = CARD_SIZE
-		card.size = CARD_SIZE
+		card.custom_minimum_size = _card_size
+		card.size = _card_size
 		card.clip_contents = true
 		card.text = str(actor["characterId"]).trim_prefix("RM-CHAR-") + "\n" + str(actor.get("emotion", ""))
 		card.alignment = HORIZONTAL_ALIGNMENT_CENTER
@@ -239,10 +240,11 @@ func _draw_stage() -> void:
 			display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
 			display.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			display.position = Vector2(8, 5)
-			display.size = Vector2(CARD_SIZE.x - 16, CARD_SIZE.y - 47)
+			display.position = Vector2(3, 3)
+			display.size = Vector2(_card_size.x - 6, _card_size.y - 28)
 			card.add_child(display)
 		_cards.append(card)
+	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
 	_status.text = "%s · %d персонажей · координаты нормализованы; реальные PNG доступны не для всех." % [
 		bg_id, cast.size()]
@@ -271,20 +273,21 @@ func _layout_cards() -> void:
 		return
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
+	_overlay.size = _canvas.size
 	for i in range(_cards.size()):
 		_cards[i].position = _position_for(_coordinates(i))
 
 
 func _position_for(normalized: Vector2) -> Vector2:
 	return Vector2(
-		MARGIN + normalized.x * maxf(_canvas.size.x - CARD_SIZE.x - 2.0 * MARGIN, 0.0),
-		MARGIN + normalized.y * maxf(_canvas.size.y - CARD_SIZE.y - 2.0 * MARGIN, 0.0))
+		MARGIN + normalized.x * maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 0.0),
+		MARGIN + normalized.y * maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 0.0))
 
 
 func _normalize_position(position: Vector2) -> Vector2:
 	return Vector2(
-		clampf((position.x - MARGIN) / maxf(_canvas.size.x - CARD_SIZE.x - 2.0 * MARGIN, 1.0), 0.0, 1.0),
-		clampf((position.y - MARGIN) / maxf(_canvas.size.y - CARD_SIZE.y - 2.0 * MARGIN, 1.0), 0.0, 1.0))
+		clampf((position.x - MARGIN) / maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 1.0), 0.0, 1.0),
+		clampf((position.y - MARGIN) / maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 1.0), 0.0, 1.0))
 
 
 func _on_card_input(event: InputEvent, index: int) -> void:
@@ -309,8 +312,7 @@ func _on_card_input(event: InputEvent, index: int) -> void:
 func _on_background(index: int) -> void:
 	if _suppress or index < 0:
 		return
-	_stage_data["backgroundId"] = _background.get_item_text(index)
-	_commit()
+	_select_background(_background.get_item_text(index))
 
 
 func _on_actor_select(index: int) -> void:
