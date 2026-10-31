@@ -1,9 +1,9 @@
 @tool
 extends Control
-## VN-EDITOR-02: read-only, editor-only inspection of a local UPDS-godot project.
-## This preview is deliberately not the production VN renderer or a converter.
+## VN-EDITOR-03: local non-destructive authoring overlays over read-only UPDS.
 
 const Reader = preload("res://addons/vn_studio/editor/legacy_reader.gd")
+const Drafts = preload("res://addons/vn_studio/editor/draft_store.gd")
 
 var _project: Dictionary = {}
 var _current_scene: int = 0
@@ -25,6 +25,24 @@ var _details: RichTextLabel
 var _heading: Label
 var _line_indexes: Array[int] = []
 var _scene_indexes: Array[int] = []
+var _drafts: Dictionary = {}
+var _dirty: Dictionary = {}
+var _blocked: Dictionary = {}
+var _undo_history: Dictionary = {}
+var _redo_history: Dictionary = {}
+var _suppress_edit_signals: bool = false
+var _dragging_actor: int = -1
+var _drag_offset: Vector2 = Vector2.ZERO
+var _selected_actor: int = 0
+var _actor_nodes: Array[Dictionary] = []
+var _save_button: Button
+var _undo_button: Button
+var _redo_button: Button
+var _text_edit: TextEdit
+var _speaker_edit: LineEdit
+var _emotion_edit: LineEdit
+var _actor_picker: OptionButton
+var _pose_picker: OptionButton
 
 
 func _init() -> void:
@@ -39,11 +57,18 @@ func _ready() -> void:
 
 
 func open_source(folder: String) -> bool:
+	if not _dirty.is_empty():
+		_status.text = "Есть несохранённые правки. Сохраните черновики перед сменой источника."
+		return false
 	var result: Dictionary = Reader.read_project(folder)
 	if not result.get("ok", false):
 		_status.text = str(result.get("error", "Ошибка чтения UPDS-godot"))
 		return false
 	_project = result
+	_drafts.clear()
+	_blocked.clear()
+	_undo_history.clear()
+	_redo_history.clear()
 	_current_scene = 0
 	_current_line = 0
 	_status.text = "Только просмотр · %d сцен · оригинал не изменяется" % _project["scenes"].size()
@@ -63,7 +88,7 @@ func _make_ui() -> void:
 	var toolbar := HBoxContainer.new()
 	outer.add_child(toolbar)
 	var caption := Label.new()
-	caption.text = "VN Studio · Legacy Viewer"
+	caption.text = "VN Studio · Draft Authoring"
 	caption.size_flags_horizontal = SIZE_EXPAND_FILL
 	caption.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(caption)
@@ -71,6 +96,19 @@ func _make_ui() -> void:
 	open_button.text = "Выбрать локальную папку UPDS-godot…"
 	open_button.pressed.connect(_on_choose_folder)
 	toolbar.add_child(open_button)
+	_save_button = Button.new()
+	_save_button.text = "Сохранить черновик"
+	_save_button.pressed.connect(_on_save_draft)
+	_save_button.disabled = true
+	toolbar.add_child(_save_button)
+	_undo_button = Button.new()
+	_undo_button.text = "↶ Undo"
+	_undo_button.pressed.connect(_on_undo)
+	toolbar.add_child(_undo_button)
+	_redo_button = Button.new()
+	_redo_button.text = "↷ Redo"
+	_redo_button.pressed.connect(_on_redo)
+	toolbar.add_child(_redo_button)
 	var next_button := Button.new()
 	next_button.text = "Следующая реплика ▶"
 	next_button.pressed.connect(_on_next_line)
@@ -124,7 +162,8 @@ func _make_ui() -> void:
 	_stage = Control.new()
 	_stage.custom_minimum_size = Vector2(250, 400)
 	_stage.clip_contents = true
-	_stage.mouse_filter = MOUSE_FILTER_IGNORE
+	_stage.mouse_filter = MOUSE_FILTER_STOP
+	_stage.gui_input.connect(_on_stage_input)
 	stage_aspect.add_child(_stage)
 	var text_box := PanelContainer.new()
 	preview_panel.add_child(text_box)
@@ -138,6 +177,35 @@ func _make_ui() -> void:
 	_dialogue.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_dialogue.custom_minimum_size.y = 70
 	text_column.add_child(_dialogue)
+	var edit_title := Label.new()
+	edit_title.text = "Черновик (текущий язык) · без изменений исходника"
+	text_column.add_child(edit_title)
+	_speaker_edit = LineEdit.new()
+	_speaker_edit.placeholder_text = "Говорящий"
+	_speaker_edit.focus_entered.connect(_capture_undo)
+	_speaker_edit.text_changed.connect(_on_speaker_changed)
+	text_column.add_child(_speaker_edit)
+	_emotion_edit = LineEdit.new()
+	_emotion_edit.placeholder_text = "Эмоция"
+	_emotion_edit.focus_entered.connect(_capture_undo)
+	_emotion_edit.text_changed.connect(_on_emotion_changed)
+	text_column.add_child(_emotion_edit)
+	_text_edit = TextEdit.new()
+	_text_edit.custom_minimum_size.y = 92
+	_text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+	_text_edit.focus_entered.connect(_capture_undo)
+	_text_edit.text_changed.connect(_on_text_changed)
+	text_column.add_child(_text_edit)
+	var actor_row := HBoxContainer.new()
+	text_column.add_child(actor_row)
+	_actor_picker = OptionButton.new()
+	_actor_picker.custom_minimum_size.x = 150
+	_actor_picker.item_selected.connect(_on_actor_selected)
+	actor_row.add_child(_actor_picker)
+	_pose_picker = OptionButton.new()
+	_pose_picker.custom_minimum_size.x = 150
+	_pose_picker.item_selected.connect(_on_pose_selected)
+	actor_row.add_child(_pose_picker)
 
 	var details_panel := VBoxContainer.new()
 	details_panel.custom_minimum_size = Vector2(310, 0)
@@ -212,6 +280,8 @@ func _select_scene(index: int) -> void:
 		return
 	_current_scene = index
 	_current_line = 0
+	_selected_actor = 0
+	_ensure_draft(index)
 	var entry: Dictionary = all_scenes[index]
 	var groups: Dictionary = entry.get("groups", {})
 	_variant_picker.clear()
@@ -254,7 +324,7 @@ func _refresh_lines() -> void:
 	_line_indexes.clear()
 	var lines: Array = _current_lines()
 	for i in range(lines.size()):
-		var line: Dictionary = lines[i]
+		var line: Dictionary = _effective_line(i)
 		var localized: Dictionary = Reader.localize_line(line, _language)
 		var prefix: String = "◆" if localized["hidden"] else "●"
 		var display: String = "%s %s · %s" % [prefix, localized["id"], localized["speaker"]]
@@ -293,7 +363,7 @@ func _render_line() -> void:
 	if lines.is_empty():
 		_dialogue.text = "Нет реплик в выбранной ветке."
 		return
-	var line: Dictionary = lines[_current_line]
+	var line: Dictionary = _effective_line(_current_line)
 	var localized: Dictionary = Reader.localize_line(line, _language)
 	var titles: Dictionary = scene.get("titles", {})
 	_heading.text = "%02d · %s · %s" % [_current_scene, str(titles.get(_language, entry.get("id", ""))), _variant]
@@ -315,6 +385,7 @@ func _render_line() -> void:
 		fallback.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		_stage.add_child(fallback)
 
+	_actor_nodes.clear()
 	var actor_list: Array = line.get("actors", [])
 	var layouts: Dictionary = _project.get("layouts", {})
 	var frames: Dictionary = layouts.get("frames", {})
@@ -330,11 +401,21 @@ func _render_line() -> void:
 		actor_descriptions.append("%s · %s · %s" % [char_id, pose, slot])
 		var texture: Texture2D = Reader.image_for(root_path, catalog, "characters", char_id, pose)
 		if texture == null:
+			var placeholder := ColorRect.new()
+			placeholder.color = Color(0.45, 0.34, 0.47, 0.67)
+			var cx: float = float(actor.get("vnStudioX", 0.5))
+			placeholder.anchor_left = clampf(cx - 0.12, 0.0, 0.76)
+			placeholder.anchor_right = placeholder.anchor_left + 0.24
+			placeholder.anchor_top = float(actor.get("vnStudioY", 0.22))
+			placeholder.anchor_bottom = 0.95
+			placeholder.mouse_filter = MOUSE_FILTER_IGNORE
+			_stage.add_child(placeholder)
+			_actor_nodes.append({"index": actor_list.find(actor_value), "node": placeholder})
 			continue
 		var position: Dictionary = places.get(slot, {"x": 50.0})
 		var calib: Dictionary = frames.get(char_id, {})
-		var center_x: float = float(position.get("x", 50.0)) / 100.0
-		var top_y: float = clampf(float(calib.get("top", 25.0)) / 180.0, 0.0, 0.45)
+		var center_x: float = float(actor.get("vnStudioX", float(position.get("x", 50.0)) / 100.0))
+		var top_y: float = float(actor.get("vnStudioY", clampf(float(calib.get("top", 25.0)) / 180.0, 0.0, 0.45)))
 		var portrait := TextureRect.new()
 		portrait.texture = texture
 		portrait.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
@@ -345,7 +426,9 @@ func _render_line() -> void:
 		portrait.anchor_bottom = 0.96
 		portrait.mouse_filter = MOUSE_FILTER_IGNORE
 		_stage.add_child(portrait)
+		_actor_nodes.append({"index": actor_list.find(actor_value), "node": portrait})
 
+	_populate_editors(line)
 	_speaker.text = str(localized["speaker"]) + " · " + str(localized["emotion"])
 	_dialogue.text = "[РЕЖИССУРА — скрыто от игрока] " + str(localized["text"]) if localized["hidden"] else str(localized["text"])
 	var details_text: String = "sceneId: " + str(entry.get("id", ""))
@@ -367,5 +450,5 @@ func _render_line() -> void:
 		details_text += "\nMatch-3: " + str(scene["nextLevelId"])
 	if scene.has("ending"):
 		details_text += "\nФинал: " + str(scene["ending"].get("endingId", ""))
-	details_text += "\n\nPREVIEW ONLY — никаких действий в кампании."
+	details_text += "\n\nDRAFT ONLY — никаких действий в кампании или UPDS."
 	_details.text = details_text
