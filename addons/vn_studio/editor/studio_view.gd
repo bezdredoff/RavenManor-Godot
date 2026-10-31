@@ -382,6 +382,7 @@ func _render_line() -> void:
 	else:
 		var fallback := ColorRect.new()
 		fallback.color = Color(0.15, 0.15, 0.2)
+		fallback.mouse_filter = MOUSE_FILTER_IGNORE
 		fallback.set_anchors_and_offsets_preset(PRESET_FULL_RECT)
 		_stage.add_child(fallback)
 
