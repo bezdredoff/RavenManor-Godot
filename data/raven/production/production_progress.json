@@ -187,10 +187,10 @@
     },
     {
       "id": "VN-EDITOR-06",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "In code/vn-editor-06-conversion-dry-run preparing Godot Migration & Review, safe 45-scene bridge v1 with legacyOriginal/payload, per-scene SHA/line index mapping, explicit private user:// export, no overwrite and synthetic tests. Not runtime playable, full save migration, full text diff or donor full parity. PR & CI pending."
+      "evidence": "PR #74 open: https://github.com/bezdredoff/RavenManor-Godot/pull/74; bridge-v1 local private conversion dry-run and explicit no-overwrite export, provisional save map (NOT VALIDATED against real saves). CI and authorized donor QA pending. The full migration work package remains incomplete."
     }
   ],
   "rules": [
