@@ -162,8 +162,12 @@ func _run() -> void:
 	_write(original_stage_path, {"masters": [], "sceneShots": []})
 	assert(not Store.validate(project, draft).is_empty())
 	assert(not Store.export_stage_candidate(project, draft)["ok"])
-	_write(original_stage_path, JSON.parse_string(original_stage_json))
+	var restored_stage: FileAccess = FileAccess.open(original_stage_path, FileAccess.WRITE)
+	assert(restored_stage != null)
+	restored_stage.store_string(original_stage_json)
+	restored_stage.close()
 	assert(FileAccess.get_file_as_string(original_stage_path) == original_stage_json)
+	assert(Store.validate(project, draft).is_empty())
 	# Unsupported locale and deleted authoring IDs never silently pass.
 	var bad: Dictionary = draft.duplicate(true)
 	bad["patches"]["RM-TEST-A-L001"]["fr"] = "Bonjour"
