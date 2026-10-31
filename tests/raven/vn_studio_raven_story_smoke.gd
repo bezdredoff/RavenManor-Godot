@@ -88,6 +88,8 @@ func _run() -> void:
 	var scene_stage: Dictionary = Store.effective_stage(project, draft, scene_a)
 	assert(scene_stage["cast"].size() == 1)
 	scene_stage["backgroundId"] = "BG-KITCHEN"
+	scene_stage["lighting"] = "day"
+	scene_stage["roomState"] = "power_off"
 	scene_stage["cast"][0]["pose"] = "investigate"
 	scene_stage["cast"][0]["emotion"] = "curious"
 	scene_stage["cast"][0]["x"] = 0.348
@@ -107,6 +109,12 @@ func _run() -> void:
 	invalid_stage["cast"][0]["x"] = 2.5
 	assert(not Store.validate_stage(project, invalid_stage).is_empty())
 	invalid_stage = scene_stage.duplicate(true)
+	invalid_stage["lighting"] = "night"
+	assert(not Store.validate_stage(project, invalid_stage).is_empty())
+	invalid_stage = scene_stage.duplicate(true)
+	invalid_stage["roomState"] = "dusty"
+	assert(not Store.validate_stage(project, invalid_stage).is_empty())
+	invalid_stage = scene_stage.duplicate(true)
 	invalid_stage["gate"] = {"kind": "wrong"}
 	assert(not Store.validate_stage(project, invalid_stage).is_empty())
 	var visual := StageDesigner.new()
@@ -115,6 +123,21 @@ func _run() -> void:
 	assert(visual._cards.size() == 1)
 	assert(visual._background.item_count == 2)
 	assert(visual._pose.item_count == 2)
+	assert(visual._lighting.item_count == 1)
+	assert(visual._room_state.item_count == 1)
+	assert(visual._overlay.show_grid == false)
+	visual._on_grid_toggle(true)
+	assert(visual._overlay.show_grid)
+	visual._on_vn_toggle(true)
+	assert(visual._overlay.show_vn)
+	visual.set_dialogue_preview("EVELYN", "Test line", "RM-TEST-A-L001")
+	assert(visual._overlay.dialogue == "Test line")
+	visual._on_portrait_scale(0.4)
+	assert(visual._card_size.x < 60)
+	visual._on_browse()
+	assert(visual._browser_list.item_count == 2)
+	visual._on_browser_selected(0)
+	assert(visual._browser_selected == "BG-HALL")
 	visual._on_add()
 	assert(visual._stage_data["cast"].size() == 2)
 	assert(visual._stage_data["cast"][1]["characterId"] == "RM-CHAR-ADA")
