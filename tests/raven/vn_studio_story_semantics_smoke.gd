@@ -83,7 +83,7 @@ func _run() -> void:
 				"A": {"teamTrust": 1}, "B": {"sourceTrust": 1}, "C": {"teamTrust": 1}},
 			"final-strategy": {
 				"A": {"teamTrust": 1, "sourceTrust": 1},
-				"B": {"teamTrust": 1, "sourceTrust": 1},
+				"B": {"teamTrust": 1, "sourceTrust": 2},
 				"C": {"teamTrust": 1, "sourceTrust": 1}}}
 	}
 	var contract: Dictionary = {"storySceneIds": ids, "levelIds": ["M3_00", "M3_01"],
