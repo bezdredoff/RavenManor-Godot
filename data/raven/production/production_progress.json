@@ -159,10 +159,10 @@
     },
     {
       "id": "VN-EDITOR-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-10-31",
-      "evidence": "Native Godot EditorPlugin Legacy Viewer, reader and synthetic QA being prepared on code/vn-editor-02-native-legacy-viewer. Read-only, no private donor content imported, no editing/conversion. Pending PR + last head CI and manual Godot editor QA."
+      "evidence": "Open https://github.com/bezdredoff/RavenManor-Godot/pull/70: native Godot VN Studio read-only 45-scene legacy viewer, local asset preview, RU/EN/BE and A/B/C, synthetic Godot smoke wired CI. No private donor copied, no editor/manual donor QA, pixel-parity, editing/conversion, or save migration claimed; latest head CI pending."
     }
   ],
   "rules": [
