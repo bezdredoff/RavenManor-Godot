@@ -3,6 +3,7 @@ extends Control
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
+const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
@@ -11,6 +12,7 @@ var content: Dictionary
 var body: VBoxContainer
 var match_game: RefCounted
 var vn_player: RefCounted
+var vn_view: Control
 var board_view: Variant
 var level_status: Label
 var current_kind := "menu"
@@ -122,11 +124,9 @@ func _open_vn(scene_id: String) -> void:
 func _render_vn() -> void:
 	_clear()
 	var scene: Dictionary = vn_player.scene
-	body.add_child(_label("%s · %s" % [scene.beatId, current_id], 18, Color("f0dfbd")))
-	body.add_child(_paragraph("Говорит: " + vn_player.current_speaker()))
-	var dialogue := _paragraph(vn_player.current_line()); dialogue.custom_minimum_size.y = 170; dialogue.add_theme_color_override("font_color", Color("eee4d2")); body.add_child(dialogue)
-	body.add_child(_paragraph("Реплика " + vn_player.progress_text()))
-	_add_button(body, "ДАЛЕЕ", _advance_vn)
+	vn_view = VNGameView.new()
+	body.add_child(vn_view)
+	vn_view.show_beat(str(scene.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn)
 	_add_button(body, "ПЕРЕЗАПУСТИТЬ BEAT", _open_vn.bind(current_id))
 
 
