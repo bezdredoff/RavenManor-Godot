@@ -22,5 +22,7 @@ exports/
 *.translation
 *.csv.import
 *.import
+# VN portrait import settings are authored (lossless + mipmaps); caches stay in .godot/.
+!assets/raven/characters/**/*.webp.import
 *.gd.uid
 __pycache__/

@@ -64,6 +64,7 @@ func _build_ui() -> void:
 		comparison.add_child(card)
 		var picture := TextureRect.new()
 		picture.custom_minimum_size = Vector2(100, 170)
+		picture.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 		picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 		picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 		card.add_child(picture)
@@ -93,7 +94,7 @@ func set_registry(registry: Dictionary) -> void:
 	_group.clear()
 	_group.add_item("Все семейства")
 	if registry.get("ok", false):
-		var groups: Array = registry.get("masterIds", []).duplicate()
+		var groups: Array = registry.get("familyIds", registry.get("masterIds", [])).duplicate()
 		groups.sort()
 		for group in groups:
 			_group.add_item(str(group))
@@ -128,13 +129,13 @@ func _refresh() -> void:
 			continue
 		if not group_key.is_empty() and record["groupId"] != group_key:
 			continue
-		var searchable: String = "%s %s %s %s" % [record["id"], record["groupId"], record.get("roomState", ""), record.get("sourceType", "")]
+		var searchable: String = "%s %s %s %s %s %s %s" % [record["id"], record["groupId"], record.get("roomState", ""), record.get("sourceType", ""), record.get("displayName", ""), record.get("pose", ""), record.get("emotion", "")]
 		if not needle.is_empty() and not searchable.to_lower().contains(needle):
 			continue
 		_visible.append(record)
-		_list.add_item("%s · %s · %s" % [record["id"], record["status"], record["integrity"]])
-	_summary.text = "%d фонов / %d персонажей / %d зарегистрированных props · %d показано · %d проблем файлов. Отсутствующие позы и props не создаются автоматически." % [
-		_registry["backgroundCount"], _registry["characterCount"], _registry["propCount"],
+		_list.add_item("%s · %s · %s" % [record.get("displayName", record["id"]), record["status"], record["integrity"]])
+	_summary.text = "%d фонов / %d персонажей / %d кадров персонажей / %d отдельных props · %d показано · %d проблем файлов." % [
+		_registry["backgroundCount"], _registry["characterCount"], _registry.get("portraitCount", 0), _registry["propCount"],
 		_visible.size(), _registry["issues"].size()]
 
 
@@ -164,5 +165,6 @@ func _render_compare() -> void:
 			record["id"], record["status"], record["orientation"], record["integrity"],
 			record["rights"], record.get("path", ""), record.get("sha256", "Арты не зарегистрированы")]
 		var path: String = str(record.get("path", ""))
-		if record["integrity"] == "ok" and path.begins_with("res://assets/raven/vn_backgrounds/") and ResourceLoader.exists(path):
+		var approved_folder: bool = path.begins_with("res://assets/raven/vn_backgrounds/") or path.begins_with("res://assets/raven/characters/")
+		if record["integrity"] == "ok" and approved_folder and not path.contains("..") and ResourceLoader.exists(path):
 			_compare_images[i].texture = load(path) as Texture2D

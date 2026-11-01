@@ -10,8 +10,7 @@ const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
-const EVELYN = preload("res://assets/raven/vn_pilot/evelyn_relaxed.webp")
-const ADA = preload("res://assets/raven/vn_pilot/ada_offer_tea.webp")
+const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const BACK_TO_MAP := "res://scenes/raven/manor_greybox.tscn"
 
 var preferences := Copy.new()
@@ -64,8 +63,8 @@ func _build_ui() -> void:
 	dimmer.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	add_child(dimmer)
 
-	actor_left = _sprite(EVELYN)
-	actor_right = _sprite(ADA)
+	actor_left = _sprite(Characters.texture_for_actor({"characterId": "RM-CHAR-EVELYN", "pose": "relaxed", "emotion": "neutral"}))
+	actor_right = _sprite(Characters.texture_for_actor({"characterId": "RM-CHAR-ADA", "pose": "offer_tray", "emotion": "neutral"}))
 	add_child(actor_left)
 	add_child(actor_right)
 
@@ -132,6 +131,7 @@ func _build_ui() -> void:
 func _sprite(texture: Texture2D) -> TextureRect:
 	var sprite := TextureRect.new()
 	sprite.texture = texture
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 	sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 	sprite.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -188,6 +188,12 @@ func _render(animate: bool = false) -> void:
 		return
 	var line: Dictionary = lines[line_index]
 	var who := str(line.speakerId)
+	for actor: Dictionary in Characters.cast_for_scene(SceneId, str(line.id)):
+		var image: Texture2D = Characters.texture_for_actor(actor)
+		if actor["characterId"] == "RM-CHAR-EVELYN":
+			actor_left.texture = image
+		elif actor["characterId"] == "RM-CHAR-ADA":
+			actor_right.texture = image
 	var lang := preferences.locale
 	chapter.text = _scene_title(lang)
 	nameplate.text = Copy.speaker_name(who, lang).to_upper()

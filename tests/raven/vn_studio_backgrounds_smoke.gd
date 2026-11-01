@@ -40,7 +40,7 @@ func _run() -> void:
 	assert(designer._bg_image.texture.get_width() == 1080)
 	assert(designer._bg_image.texture.get_height() == 1920)
 	assert(designer._canvas.custom_minimum_size == designer.REFERENCE_SIZE)
-	assert(is_equal_approx(designer._card_size.x, designer.REFERENCE_SIZE.x * 0.77))
+	assert(is_equal_approx(designer._card_size.x, designer.REFERENCE_SIZE.x * 0.60)) # three actors, same as gameplay
 	assert(is_equal_approx(designer._card_size.y, designer.REFERENCE_SIZE.y * 0.73))
 	var full_actor_dimensions: Vector2 = designer._card_size
 	designer._on_portrait_scale(0.35)

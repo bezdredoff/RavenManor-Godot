@@ -1,22 +1,19 @@
 @tool
 extends VBoxContainer
 ## Godot-native, optional image-backed *editor* stage for canonical Raven Season 1.
-## No pixel-perfect/runtime claims: actors without an approved pilot PNG are labeled blocks.
+## Uses the same approved character registry as the gameplay VN compositor.
 signal stage_modified(stage: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
-const ACTOR_PILOT := {
-	"RM-CHAR-EVELYN": "res://assets/raven/vn_pilot/evelyn_relaxed.webp",
-	"RM-CHAR-ADA": "res://assets/raven/vn_pilot/ada_offer_tea.webp"
-}
+const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
 const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
 # Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
 # Do not multiply these sizes by an editor thumbnail slider.
 const GAME_PORTRAIT_FRACTION := Vector2(0.77, 0.73)
-const MARGIN := 8.0
 
 var _project: Dictionary = {}
 var _stage_data: Dictionary = {}
@@ -30,6 +27,7 @@ var _room_state: OptionButton
 var _browse_background: Button
 var _pose: OptionButton
 var _emotion: OptionButton
+var _asset_pick: OptionButton
 var _add: Button
 var _new_actor: OptionButton
 var _remove: Button
@@ -101,6 +99,11 @@ func _ready() -> void:
 	_emotion.custom_minimum_size.x = 110
 	_emotion.item_selected.connect(_on_emotion)
 	actors_row.add_child(_emotion)
+	_asset_pick = OptionButton.new()
+	_asset_pick.custom_minimum_size.x = 190
+	_asset_pick.tooltip_text = "Принятые изображения выбранного персонажа: позы, эмоции и предметы"
+	_asset_pick.item_selected.connect(_on_asset_pick)
+	actors_row.add_child(_asset_pick)
 	_new_actor = OptionButton.new()
 	_new_actor.custom_minimum_size.x = 100
 	actors_row.add_child(_new_actor)
@@ -214,9 +217,11 @@ func _reload() -> void:
 func _reload_poses() -> void:
 	_pose.clear()
 	_emotion.clear()
+	_asset_pick.clear()
 	if _selected_actor < 0 or _selected_actor >= _stage_data.get("cast", []).size():
 		_pose.disabled = true
 		_emotion.disabled = true
+		_asset_pick.disabled = true
 		return
 	var actor: Dictionary = _stage_data["cast"][_selected_actor]
 	var spec: Dictionary = Store.stage_options(_project)["actors"].get(str(actor["characterId"]), {})
@@ -230,6 +235,16 @@ func _reload_poses() -> void:
 			_emotion.select(_emotion.item_count - 1)
 	_pose.disabled = false
 	_emotion.disabled = false
+	_asset_pick.disabled = false
+	_asset_pick.add_item("Авто: поза и эмоция")
+	_asset_pick.set_item_metadata(0, "")
+	for image: Dictionary in Characters.entries_for(str(actor["characterId"])):
+		_asset_pick.add_item(str(image.get("labelRu", image["variant"])))
+		var index: int = _asset_pick.item_count - 1
+		_asset_pick.set_item_metadata(index, image["id"])
+		_asset_pick.set_item_tooltip(index, "%s · %s" % [image["pose"], image["emotion"]])
+		if image["id"] == actor.get("assetId", ""):
+			_asset_pick.select(index)
 
 
 func _draw_stage() -> void:
@@ -245,10 +260,11 @@ func _draw_stage() -> void:
 	# another lighting/state (or the legacy Hall pilot) when the exact plate is absent.
 	_bg_image.texture = VNBackgrounds.texture_for(bg_id, light, state)
 	var available: bool = _bg_image.texture != null
-	_placeholders.text = "ART CANDIDATE · НЕ УТВЕРЖДЁН" if available else "ART PENDING · %s / %s / %s" % [bg_id, light, state]
+	_placeholders.text = "ФОН: ART CANDIDATE" if available else "ФОН: ART PENDING · %s / %s / %s" % [bg_id, light, state]
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	var cast: Array = _stage_data.get("cast", [])
+	var missing_expressions: int = 0
 	for index in range(cast.size()):
 		var actor: Dictionary = cast[index]
 		var card := Button.new()
@@ -262,12 +278,19 @@ func _draw_stage() -> void:
 		card.focus_mode = Control.FOCUS_ALL
 		card.gui_input.connect(_on_card_input.bind(index))
 		_canvas.add_child(card)
-		var picture: Texture2D = _texture(str(ACTOR_PILOT.get(str(actor["characterId"]), "")))
+		var resolved: Dictionary = Characters.for_actor(actor)
+		var picture: Texture2D = Characters.texture_for_entry(resolved.get("entry", {}))
+		if picture != null and not resolved.get("exact", false):
+			missing_expressions += 1
+			card.tooltip_text += " · показана нейтральная эмоция; точный вариант ещё не создан"
+		if picture == null:
+			card.text += "\n%s / %s" % [actor.get("pose", ""), actor.get("emotion", "")]
 		if picture != null:
 			# Full game-sized portrait, not a compact tool/gallery thumbnail.
 			card.text = ""
 			var display := TextureRect.new()
 			display.texture = picture
+			display.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			display.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -279,6 +302,8 @@ func _draw_stage() -> void:
 	_layout_cards()
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size()]
+	if missing_expressions > 0:
+		_status.text += " Для %d персонажей точная эмоция в этой позе ещё не создана: показан нейтральный вариант." % missing_expressions
 
 
 ## Thumbnails only live in the tool row and never modify the stage dimensions
@@ -299,11 +324,12 @@ func _draw_actor_thumbnails() -> void:
 		thumb.text = str(actor["characterId"]).trim_prefix("RM-CHAR-")
 		thumb.pressed.connect(_select_actor.bind(index))
 		_thumbnail_strip.add_child(thumb)
-		var picture: Texture2D = _texture(str(ACTOR_PILOT.get(str(actor["characterId"]), "")))
+		var picture: Texture2D = Characters.texture_for_entry(Characters.for_actor(actor).get("entry", {}))
 		if picture != null:
 			thumb.text = ""
 			var preview := TextureRect.new()
 			preview.texture = picture
+			preview.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -321,21 +347,9 @@ func _select_actor(index: int) -> void:
 	_remove.disabled = false
 
 
-func _texture(path: String) -> Texture2D:
-	if not path.begins_with("res://assets/raven/vn_pilot/"):
-		return null
-	var location: String = ProjectSettings.globalize_path(path)
-	if not FileAccess.file_exists(location):
-		return null
-	var image := Image.new()
-	if image.load(location) != OK:
-		return null
-	return ImageTexture.create_from_image(image)
-
-
 func _coordinates(index: int) -> Vector2:
 	var actor: Dictionary = _stage_data["cast"][index]
-	var fallback: float = {"left": 0.12, "center": 0.50, "right": 0.88}.get(str(actor.get("slot", "center")), 0.5)
+	var fallback: float = PortraitLayout.slot_x(str(actor.get("slot", "center")))
 	return Vector2(float(actor.get("x", fallback)), float(actor.get("y", 0.50)))
 
 
@@ -345,7 +359,7 @@ func _layout_cards() -> void:
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	_overlay.size = _canvas.size
-	_card_size = Vector2(_canvas.size.x * GAME_PORTRAIT_FRACTION.x, _canvas.size.y * GAME_PORTRAIT_FRACTION.y)
+	_card_size = PortraitLayout.actor_size(_canvas.size, _cards.size())
 	for i in range(_cards.size()):
 		_cards[i].custom_minimum_size = _card_size
 		_cards[i].size = _card_size
@@ -356,15 +370,11 @@ func _layout_cards() -> void:
 
 
 func _position_for(normalized: Vector2) -> Vector2:
-	return Vector2(
-		MARGIN + normalized.x * maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 0.0),
-		MARGIN + normalized.y * maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 0.0))
+	return PortraitLayout.position_for(_canvas.size, _cards.size(), normalized)
 
 
 func _normalize_position(position: Vector2) -> Vector2:
-	return Vector2(
-		clampf((position.x - MARGIN) / maxf(_canvas.size.x - _card_size.x - 2.0 * MARGIN, 1.0), 0.0, 1.0),
-		clampf((position.y - MARGIN) / maxf(_canvas.size.y - _card_size.y - 2.0 * MARGIN, 1.0), 0.0, 1.0))
+	return PortraitLayout.normalize_position(_canvas.size, _cards.size(), position)
 
 
 func _on_card_input(event: InputEvent, index: int) -> void:
@@ -407,6 +417,7 @@ func _on_pose(index: int) -> void:
 	if _suppress or _selected_actor < 0 or index < 0:
 		return
 	_stage_data["cast"][_selected_actor]["pose"] = _pose.get_item_text(index)
+	_stage_data["cast"][_selected_actor].erase("assetId")
 	_commit()
 
 
@@ -414,6 +425,24 @@ func _on_emotion(index: int) -> void:
 	if _suppress or _selected_actor < 0 or index < 0:
 		return
 	_stage_data["cast"][_selected_actor]["emotion"] = _emotion.get_item_text(index)
+	_stage_data["cast"][_selected_actor].erase("assetId")
+	_commit()
+
+
+func _on_asset_pick(index: int) -> void:
+	if _suppress or _selected_actor < 0 or index < 0:
+		return
+	var actor: Dictionary = _stage_data["cast"][_selected_actor]
+	var asset_id: String = str(_asset_pick.get_item_metadata(index))
+	if asset_id.is_empty():
+		actor.erase("assetId")
+	else:
+		var image: Dictionary = Characters.entry_for_id(asset_id)
+		if image.get("characterId") != actor.get("characterId"):
+			return
+		actor["assetId"] = asset_id
+		actor["pose"] = image["pose"]
+		actor["emotion"] = image["emotion"]
 	_commit()
 
 

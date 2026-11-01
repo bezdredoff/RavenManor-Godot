@@ -2,9 +2,8 @@ extends Control
 ## Shared save-neutral visual-novel compositor used by active Raven gameplay.
 ## Scenes, lighting/state and character slots come from the same staging as VN Studio.
 const Backgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
-const Staging = preload("res://data/raven/production/vn_staging.json")
-const EVELYN = preload("res://assets/raven/vn_pilot/evelyn_relaxed.webp")
-const ADA = preload("res://assets/raven/vn_pilot/ada_offer_tea.webp")
+const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
 
 var scene_id := ""
 var background: TextureRect
@@ -135,33 +134,26 @@ func show_beat(beat_id: String, speaker: String, line_text: String, line_progres
 	missing_background.visible = texture == null
 	var entry: Dictionary = Backgrounds.entry_for_scene(beat_id)
 	missing_background.text = "ART PENDING · %s" % str(entry.get("id", beat_id))
-	_fill_actors(beat_id)
-	pilot_note.text = "ПЕРСОНАЖИ: ВРЕМЕННЫЙ АРТ" if not actors.is_empty() else ""
+	_fill_actors(beat_id, Characters.line_id_for_text(beat_id, line_text))
+	pilot_note.text = ""
 	_layout()
 
 
-func _fill_actors(beat_id: String) -> void:
+func _fill_actors(beat_id: String, line_id: String = "") -> void:
 	for child in actor_layer.get_children():
 		actor_layer.remove_child(child)
 		child.queue_free()
 	actors.clear()
-	var shot: Dictionary = {}
-	for candidate: Dictionary in Staging.data.get("sceneShots", []):
-		if str(candidate.get("sceneId", "")) == beat_id:
-			shot = candidate
-			break
-	for cast: Dictionary in shot.get("cast", []):
+	for cast: Dictionary in Characters.cast_for_scene(beat_id, line_id):
 		var character_id := str(cast.get("characterId", ""))
 		var slot := str(cast.get("slot", "center"))
-		var art: Texture2D = null
-		if character_id == "RM-CHAR-EVELYN":
-			art = EVELYN
-		elif character_id == "RM-CHAR-ADA":
-			art = ADA
+		var resolved: Dictionary = Characters.for_actor(cast)
+		var art: Texture2D = Characters.texture_for_entry(resolved.get("entry", {}))
 		var visual: Control
 		if art != null:
 			var sprite := TextureRect.new()
 			sprite.texture = art
+			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR_WITH_MIPMAPS
 			sprite.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 			sprite.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			visual = sprite
@@ -173,7 +165,9 @@ func _fill_actors(beat_id: String) -> void:
 			visual = marker
 		visual.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		actor_layer.add_child(visual)
-		actors.append({"node": visual, "slot": slot, "pilot": art != null})
+		actors.append({"node": visual, "slot": slot, "pilot": art != null,
+			"characterId": character_id, "asset": resolved.get("entry", {}), "exact": resolved.get("exact", false),
+			"x": cast.get("x", PortraitLayout.slot_x(slot)), "y": cast.get("y", 0.5)})
 
 
 func _layout() -> void:
@@ -185,18 +179,12 @@ func _layout() -> void:
 	background.size = Vector2(w, h)
 	(get_node("VNReadabilityShade") as ColorRect).size = Vector2(w, h)
 	actor_layer.size = Vector2(w, h)
-	var multi: bool = actors.size() > 2
-	var actor_w := w * (0.60 if multi else 0.77)
-	var actor_h := h * 0.73
 	for item: Dictionary in actors:
 		var visual := item["node"] as Control
 		var slot := str(item["slot"])
 		if bool(item["pilot"]):
-			visual.size = Vector2(actor_w, actor_h)
-			var left: float = -0.20 if not multi else -0.10
-			var center: float = 0.115 if not multi else 0.20
-			var right: float = 0.41 if not multi else 0.52
-			visual.position = Vector2(w * (left if slot == "left" else right if slot == "right" else center), h * 0.14)
+			visual.size = PortraitLayout.actor_size(Vector2(w, h), actors.size())
+			visual.position = PortraitLayout.position_for(Vector2(w, h), actors.size(), Vector2(float(item["x"]), float(item["y"])))
 		else:
 			visual.size = Vector2(w * 0.29, 58)
 			visual.position = Vector2(w * (0.02 if slot == "left" else 0.68 if slot == "right" else 0.35), h * 0.48)

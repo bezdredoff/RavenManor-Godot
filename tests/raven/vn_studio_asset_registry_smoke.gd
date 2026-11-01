@@ -22,7 +22,8 @@ func _run() -> void:
 	assert(registry.get("ok", false), str(registry.get("error", "")))
 	assert(registry["backgroundCount"] == expected_backgrounds and registry["characterCount"] == 4)
 	assert(registry["propCount"] == 0 and registry["masterIds"].size() == 11)
-	assert(registry["records"].size() == expected_backgrounds + 4)
+	assert(registry["portraitCount"] == 62)
+	assert(registry["records"].size() == expected_backgrounds + 4 + 62)
 	assert(registry["issues"].is_empty(), JSON.stringify(registry["issues"]))
 	var background_ids: Dictionary = {}
 	for record: Dictionary in registry["records"]:
@@ -31,7 +32,8 @@ func _run() -> void:
 			assert(record["integrity"] == "ok" and not background_ids.has(record["id"]))
 			background_ids[record["id"]] = true
 		else:
-			assert(record["category"] == "character" and record["integrity"] == "art_unregistered")
+			assert(record["category"] == "character" and record["integrity"] == "ok")
+			assert(record["status"] == "accepted" and record["path"].begins_with("res://assets/raven/characters/"))
 	var staging: Dictionary = _read(source_root, Registry.STAGING)
 	var catalog: Dictionary = live_catalog
 	var cast: Dictionary = _read(source_root, Registry.CHARACTERS)
@@ -50,7 +52,7 @@ func _run() -> void:
 	assert(Registry.build(staging, escape, cast, source_root)["issues"].size() == 1)
 	var library := Library.new()
 	root.add_child(library)
-	assert(library._visible.size() == expected_backgrounds + 4)
+	assert(library._visible.size() == expected_backgrounds + 4 + 62)
 	library._category.select(1)
 	library._refresh()
 	assert(library._visible.size() == expected_backgrounds)
@@ -60,7 +62,7 @@ func _run() -> void:
 	library._list.select(0)
 	library._pin("A")
 	assert(library._compare_labels[0].text.contains("BG-ROAD"))
-	library._status_filter.select(2) # No accepted art is registered.
+	library._status_filter.select(2) # Backgrounds remain candidates; cast art is accepted.
 	library._refresh()
 	assert(library._visible.is_empty())
 	library._status_filter.select(1)
@@ -79,7 +81,14 @@ func _run() -> void:
 	library._status_filter.select(0)
 	library._category.select(2)
 	library._refresh()
-	assert(library._visible.size() == 4)
+	assert(library._visible.size() == 4 + 62)
+	library._status_filter.select(2)
+	library._refresh()
+	assert(library._visible.size() == 4 + 62)
+	library._list.select(4)
+	library._pin("A")
+	assert(library._compare_images[0].texture != null)
+	assert(library._compare_images[0].texture.get_height() >= 1920)
 	library._category.select(3)
 	library._refresh()
 	assert(library._visible.is_empty())
