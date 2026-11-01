@@ -9,6 +9,7 @@ const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
+const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
 const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
 # Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
@@ -36,6 +37,14 @@ var _bg_image: TextureRect
 var _placeholders: Label
 var _cards: Array[Button] = []
 var _overlay: Control
+var _orientation: OptionButton
+var _bg_fit: OptionButton
+var _safe_toggle: CheckBox
+var _template_button: Button
+var _undo_button: Button
+var _preview_orientation: String = "portrait"
+var _undo_stages: Array[Dictionary] = []
+var _committed_stage: Dictionary = {}
 var _grid_toggle: CheckBox
 var _vn_toggle: CheckBox
 var _portrait_scale: HSlider
@@ -119,6 +128,33 @@ func _ready() -> void:
 
 	var options_row := HFlowContainer.new()
 	add_child(options_row)
+	_orientation = OptionButton.new()
+	_orientation.add_item("Портрет · 390×844")
+	_orientation.add_item("Альбом · 844×390")
+	_orientation.tooltip_text = "Ориентация preview — editor-only; не меняет текущую схему VN staging v1"
+	_orientation.item_selected.connect(_on_orientation)
+	options_row.add_child(_orientation)
+	_bg_fit = OptionButton.new()
+	_bg_fit.add_item("Фон: cover")
+	_bg_fit.add_item("Фон: fit")
+	_bg_fit.tooltip_text = "Только способ просмотра картинки, не новая генерация и не сохранённый crop"
+	_bg_fit.item_selected.connect(_on_background_fit)
+	options_row.add_child(_bg_fit)
+	_template_button = Button.new()
+	_template_button.text = "Шаблон 1/2/3"
+	_template_button.tooltip_text = "Применить шаблон для текущего количества персонажей; изменяет черновик, поддерживает отмену"
+	_template_button.pressed.connect(_on_template)
+	options_row.add_child(_template_button)
+	_undo_button = Button.new()
+	_undo_button.text = "Отменить постановку"
+	_undo_button.tooltip_text = "Отмена последних изменений stage в этой сцене (до 32 шагов)"
+	_undo_button.pressed.connect(_on_undo)
+	_undo_button.disabled = true
+	options_row.add_child(_undo_button)
+	_safe_toggle = CheckBox.new()
+	_safe_toggle.text = "Safe area"
+	_safe_toggle.toggled.connect(_on_safe_toggle)
+	options_row.add_child(_safe_toggle)
 	_grid_toggle = CheckBox.new()
 	_grid_toggle.text = "Сетка (px)"
 	_grid_toggle.toggled.connect(_on_grid_toggle)
@@ -174,7 +210,10 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 	_selected_actor = -1
 	if not bool(project.get("ok", false)):
 		return
+	if str(_stage_data.get("sceneId", "")) != id:
+		_undo_stages.clear()
 	_stage_data = Store.effective_stage(project, draft, id)
+	_committed_stage = _stage_data.duplicate(true)
 	_reload()
 
 
@@ -210,6 +249,8 @@ func _reload() -> void:
 			_new_actor.add_item(str(candidate).trim_prefix("RM-CHAR-"))
 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
 	_remove.disabled = _selected_actor < 0
+	_template_button.disabled = cast.is_empty()
+	_undo_button.disabled = _undo_stages.is_empty()
 	_suppress = false
 	_draw_stage()
 
@@ -300,8 +341,8 @@ func _draw_stage() -> void:
 		_cards.append(card)
 	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
-	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
-		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size()]
+	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
+		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
 	if missing_expressions > 0:
 		_status.text += " Для %d персонажей точная эмоция в этой позе ещё не создана: показан нейтральный вариант." % missing_expressions
 
@@ -359,7 +400,7 @@ func _layout_cards() -> void:
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	_overlay.size = _canvas.size
-	_card_size = PortraitLayout.actor_size(_canvas.size, _cards.size())
+	_card_size = StageLayout.actor_size(_canvas.size, _cards.size()) if _preview_orientation == StageLayout.LANDSCAPE else PortraitLayout.actor_size(_canvas.size, _cards.size())
 	for i in range(_cards.size()):
 		_cards[i].custom_minimum_size = _card_size
 		_cards[i].size = _card_size
@@ -370,10 +411,14 @@ func _layout_cards() -> void:
 
 
 func _position_for(normalized: Vector2) -> Vector2:
+	if _preview_orientation == StageLayout.LANDSCAPE:
+		return StageLayout.landscape_position(_canvas.size, _cards.size(), normalized)
 	return PortraitLayout.position_for(_canvas.size, _cards.size(), normalized)
 
 
 func _normalize_position(position: Vector2) -> Vector2:
+	if _preview_orientation == StageLayout.LANDSCAPE:
+		return StageLayout.landscape_normalized(_canvas.size, _cards.size(), position)
 	return PortraitLayout.normalize_position(_canvas.size, _cards.size(), position)
 
 
@@ -394,9 +439,10 @@ func _on_card_input(event: InputEvent, index: int) -> void:
 		_stage_data["cast"][index]["x"] = snappedf(coords.x, 0.001)
 		_stage_data["cast"][index]["y"] = snappedf(coords.y, 0.001)
 		_cards[index].position = _position_for(coords)
-		_status.text = "%s · x=%d px, y=%d px (390×844 reference)" % [
+		var reference: Vector2 = StageLayout.reference_size(_preview_orientation)
+		_status.text = "%s · x=%d px, y=%d px (%d×%d preview)" % [
 			str(_stage_data["cast"][index]["characterId"]),
-			roundi(coords.x * REFERENCE_SIZE.x), roundi(coords.y * REFERENCE_SIZE.y)]
+			roundi(coords.x * reference.x), roundi(coords.y * reference.y), roundi(reference.x), roundi(reference.y)]
 
 
 func _on_background(index: int) -> void:
@@ -484,9 +530,58 @@ func _commit() -> void:
 	var error: String = Store.validate_stage(_project, _stage_data)
 	if not error.is_empty():
 		_status.text = "Постановка заблокирована: " + error
+		_stage_data = _committed_stage.duplicate(true)
+		_reload()
 		return
+	if _stage_data == _committed_stage:
+		_reload()
+		return
+	_undo_stages.append(_committed_stage.duplicate(true))
+	if _undo_stages.size() > 32:
+		_undo_stages.remove_at(0)
+	_committed_stage = _stage_data.duplicate(true)
 	stage_modified.emit(_stage_data.duplicate(true))
 	_reload()
+
+
+func _on_undo() -> void:
+	if _undo_stages.is_empty():
+		return
+	var previous: Dictionary = _undo_stages.pop_back()
+	if not Store.validate_stage(_project, previous).is_empty():
+		_undo_stages.clear()
+		_status.text = "Undo остановлен: исходный проект изменился."
+		return
+	_stage_data = previous.duplicate(true)
+	_committed_stage = previous.duplicate(true)
+	stage_modified.emit(previous.duplicate(true))
+	_reload()
+
+
+func _on_template() -> void:
+	if _stage_data.is_empty() or _stage_data.get("cast", []).is_empty():
+		return
+	_stage_data = StageLayout.apply_template(_stage_data, _preview_orientation)
+	_commit()
+
+
+func _on_orientation(index: int) -> void:
+	if index < 0:
+		return
+	_preview_orientation = StageLayout.LANDSCAPE if index == 1 else StageLayout.PORTRAIT
+	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
+	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
+	_overlay.queue_redraw()
+	_layout_cards()
+
+
+func _on_background_fit(index: int) -> void:
+	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if index == 1 else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+
+
+func _on_safe_toggle(value: bool) -> void:
+	_overlay.show_safe = value
+	_overlay.queue_redraw()
 
 func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
 	_overlay.set_preview(next_speaker, text_value, id)
