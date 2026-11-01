@@ -1,0 +1,79 @@
+{
+  "schema": "raven-vns5-05a-implementation-handoff-v1",
+  "baseSha": "7652a20676bce76e7aead065bdd025b8cee5154b",
+  "taskId": "VNS5-05A",
+  "prerequisite": "VNS5-04B implementation PR #104 and GFX-05 PR #103 merged",
+  "files": [
+    {
+      "path": "addons/vn_studio/model/stage_fx_store.gd",
+      "bytes": 6219,
+      "sha256": "794145040835048ab66030121a9fa7537b69d9e5f52c0bec0d14cec3785aeba8",
+      "isNew": true
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_stage_designer.gd",
+      "bytes": 52112,
+      "sha256": "09383a87edc2bf3a7db820ea264d3a7fe9842486181c484679156c5fa7f57615",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_story_store.gd",
+      "bytes": 27429,
+      "sha256": "217bcceb8a883b0dd8bfae9b9c0754cc3b8c468ea5a06e6624e3cc9070c0f398",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_story_view.gd",
+      "bytes": 24547,
+      "sha256": "a6d9f60901f526c1cca33fae9030529fcc44136042aa94fdfbc7383a7fd1a34e",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/README.md",
+      "bytes": 63196,
+      "sha256": "5acd0ee30697905c1aab6d4898b023c2d8817d8268b77da7928c9869662a7de3",
+      "isNew": false
+    },
+    {
+      "path": "tests/raven/vn_studio_stage_fx_smoke.gd",
+      "bytes": 4298,
+      "sha256": "d2b5ce4d8655b026a1a0cdce2159f4c442c729955b6d9d4ae93d72ad1fbfd724",
+      "isNew": true
+    },
+    {
+      "path": "scripts/check.sh",
+      "bytes": 8359,
+      "sha256": "5886536230acb2285b335d8e4d4d3018db6eb9aab764d9cd7feec6dfb63ba2ed",
+      "isNew": false
+    },
+    {
+      "path": "check.ps1",
+      "bytes": 10750,
+      "sha256": "111e2e6b1df874d5616578f972cccbf64f2ba2abb01094f63b96328e77322937",
+      "isNew": false
+    },
+    {
+      "path": "data/raven/production/gap_work_packages.json",
+      "bytes": 33268,
+      "sha256": "da750007af4d27817b1a70bf8e8f8d69c71b88268a7e9db908c2df9010334f2f",
+      "isNew": false
+    },
+    {
+      "path": "docs/production/VNS5_05A_MICRO_FX_RU.md",
+      "bytes": 4335,
+      "sha256": "d8c6cf59a554a455d0ec2125c21a0154e7c56f90aaa569d5da28219122feaf1f",
+      "isNew": true
+    }
+  ],
+  "patchSha256": "6346619453e5c9e9122f86c7598b04869661636c5d5bdd4754e1c0d60ad724e0",
+  "requiredExtraOnImplementationPR": [
+    "Update live docs/STATUS.md and production_progress.json to VNS5-04B merged and VNS5-05A PR_review, avoiding stale GFX-05 data",
+    "Run Godot 4.7.2 independent head CI",
+    "Manual Editor QA before owner acceptance"
+  ],
+  "notExecuted": [
+    "Godot parser and Godot CI",
+    "physical Windows editor interaction",
+    "native runtime playback (not in scope)"
+  ]
+}

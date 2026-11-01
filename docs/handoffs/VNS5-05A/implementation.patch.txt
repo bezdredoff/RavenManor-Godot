@@ -1,0 +1,893 @@
+diff --git a/addons/vn_studio/README.md b/addons/vn_studio/README.md
+index bf14582..e2f9eb9 100644
+--- a/addons/vn_studio/README.md
++++ b/addons/vn_studio/README.md
+@@ -1,5 +1,11 @@
+ # VN Studio — native Godot EditorPlugin
+ 
++## VNS5-05A — editor-only сценный таймлайн микроанимаций (implementation candidate)
++
++`Raven Manor → Director → Постановка → Микроанимации (FX draft)` предлагает отдельный список FX-событий на уровне сцены. Цель выбирается **только из текущей сцены** (фон, один из 1–3 актёров, существующий prop instance). Доступны `breathe`, `blink`, `shake`, `pulse`, `fade_in` и `fade_out`; задаются `startMs` (0–15000), `durationMs` (120–4000), `repeat` (1–5), `intensity` (0–1). Не более 32 событий и 20 секунд на сцену. Встроенный ползунок времени и Play/Pause показывают deterministic editor proxy (blink — краткое вертикальное сжатие, а не новая нарисованная эмоция), FX Undo ограничен 32 шагами. Меняется только отрисовка редактора, не байты изображений.
++
++События сохраняются отдельно в `raven-vn-studio-draft-v1.stageFxPatches[sceneId]`, тип `raven-vn-stage-fx-v1`; старые черновики без FX остаются валидны. Цели проверяются против существующих stage-v1 актёров и stage-v2 props; удаление используемой цели блокируется. В `Экспорт FX review` входят текущие stage v1/v2 patches, FX cues и SHA исходников; результат пишется по hash-based имени в `user://raven_story_studio/fx/exports`, **никогда не перезаписывается**. Отдельные v1/v2 exports откажутся от FX, а не потеряют таймлайн. Эффекты **не исполняются в игровом VN**, не добавляют sprites/keyframes, не мигрируют `vn_staging.json`, не меняют `res://`, save или UPDS. Animation compositor, line-specific triggers, art assets и production promotion — отдельный gate. Подробные проверки: `docs/production/VNS5_05A_MICRO_FX_RU.md` и `tests/raven/vn_studio_stage_fx_smoke.gd`. Godot CI и ручная QA обязательны; без них не считать задачу принятой.
++
+ ## VNS5-04B — локальный editor-only v2 sidecar (Draft PR #104)
+ 
+ Теперь `Режиссёр → Постановка` хранит ориентацию 390×844/844×390 и fit/cover в **локальном** `stageV2Patches[sceneId]`, а не в каноническом `vn_staging.json`. Редактор также запоминает нормализованный focal (ориентир в preview, не runtime pan), z текущих актёров и независимые prop instances (ID, state, X/Y, Z, Scale, staged image / ART PENDING). Существующие v1 stage/line edits остаются совместимы с ранее сохранёнными черновиками. Новые V2 правки поддерживают отдельный Undo, source-SHA locks и строгую проверку schema/ID/path/range.
+diff --git a/addons/vn_studio/editor/raven_stage_designer.gd b/addons/vn_studio/editor/raven_stage_designer.gd
+index 33fe8a4..3ca99ea 100644
+--- a/addons/vn_studio/editor/raven_stage_designer.gd
++++ b/addons/vn_studio/editor/raven_stage_designer.gd
+@@ -4,6 +4,7 @@ extends VBoxContainer
+ ## Uses the same approved character registry as the gameplay VN compositor.
+ signal stage_modified(stage: Dictionary)
+ signal stage_v2_modified(overlay: Dictionary)
++signal stage_fx_modified(data: Dictionary)
+ 
+ const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+ const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+@@ -12,6 +13,7 @@ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+ const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
+ const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
+ const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
+ const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
+ const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
+ const REFERENCE_SIZE := Vector2(390, 844)
+@@ -42,6 +44,24 @@ var _selected_prop: int = -1
+ var _dragging_prop: int = -1
+ var _prop_grab_delta: Vector2 = Vector2.ZERO
+ var _suppress_v2: bool = false
++var _fx_data: Dictionary = {}
++var _fx_committed: Dictionary = {}
++var _fx_undo: Array[Dictionary] = []
++var _fx_selected: int = -1
++var _fx_suppress: bool = false
++var _fx_playing: bool = false
++var _fx_elapsed: float = 0.0
++var _fx_list: ItemList
++var _fx_target: OptionButton
++var _fx_kind: OptionButton
++var _fx_start: SpinBox
++var _fx_duration: SpinBox
++var _fx_repeat: SpinBox
++var _fx_intensity: SpinBox
++var _fx_scrub: HSlider
++var _fx_play: Button
++var _fx_remove: Button
++var _fx_undo_button: Button
+ var _selected_actor: int = -1
+ var _dragging_actor: int = -1
+ var _grab_delta: Vector2 = Vector2.ZERO
+@@ -257,6 +277,65 @@ func _ready() -> void:
+ 	_prop_scale = _numeric(transforms, 0.1, 3, 0.05, 1)
+ 	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
+ 		spinner.value_changed.connect(_on_prop_transform)
++	# VNS5-05A: editor-only scene-timed micro-FX. No gameplay or sprite authoring.
++	var fx_row := HFlowContainer.new()
++	add_child(fx_row)
++	var fx_title := Label.new()
++	fx_title.text = "Микроанимации (FX draft)"
++	fx_row.add_child(fx_title)
++	_fx_target = OptionButton.new()
++	_fx_target.custom_minimum_size.x = 135
++	fx_row.add_child(_fx_target)
++	var fx_add := Button.new()
++	fx_add.text = "+ FX"
++	fx_add.pressed.connect(_on_fx_add)
++	fx_row.add_child(fx_add)
++	_fx_remove = Button.new()
++	_fx_remove.text = "− FX"
++	_fx_remove.pressed.connect(_on_fx_remove)
++	fx_row.add_child(_fx_remove)
++	_fx_undo_button = Button.new()
++	_fx_undo_button.text = "↶ FX"
++	_fx_undo_button.pressed.connect(_on_fx_undo)
++	fx_row.add_child(_fx_undo_button)
++	_fx_list = ItemList.new()
++	_fx_list.custom_minimum_size = Vector2(230, 58)
++	_fx_list.item_selected.connect(_on_fx_select)
++	fx_row.add_child(_fx_list)
++	var fx_params := HFlowContainer.new()
++	add_child(fx_params)
++	_fx_kind = OptionButton.new()
++	for effect in StageFx.EFFECTS:
++		_fx_kind.add_item(effect)
++	_fx_kind.item_selected.connect(_on_fx_params)
++	fx_params.add_child(_fx_kind)
++	for label_text in ["Start ms", "Duration ms", "Repeat", "Strength"]:
++		var lbl := Label.new()
++		lbl.text = label_text
++		fx_params.add_child(lbl)
++	_fx_start = _numeric(fx_params, 0, 15000, 50, 0)
++	_fx_duration = _numeric(fx_params, 120, 4000, 20, 1400)
++	_fx_repeat = _numeric(fx_params, 1, 5, 1, 1)
++	_fx_intensity = _numeric(fx_params, 0, 1, 0.05, 0.35)
++	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
++		spinner.value_changed.connect(_on_fx_params)
++	var fx_playback := HFlowContainer.new()
++	add_child(fx_playback)
++	_fx_play = Button.new()
++	_fx_play.text = "▶ Play preview"
++	_fx_play.pressed.connect(_on_fx_play)
++	fx_playback.add_child(_fx_play)
++	var fx_stop := Button.new()
++	fx_stop.text = "■ Reset"
++	fx_stop.pressed.connect(_on_fx_stop)
++	fx_playback.add_child(fx_stop)
++	_fx_scrub = HSlider.new()
++	_fx_scrub.custom_minimum_size.x = 200
++	_fx_scrub.min_value = 0
++	_fx_scrub.max_value = StageFx.MAX_MS
++	_fx_scrub.step = 50
++	_fx_scrub.value_changed.connect(_on_fx_scrub)
++	fx_playback.add_child(_fx_scrub)
+ 	_staged_assets = ImageStaging.new()
+ 	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
+ 	_thumbnail_strip = HFlowContainer.new()
+@@ -309,10 +388,17 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
+ 	if str(_stage_data.get("sceneId", "")) != id:
+ 		_undo_stages.clear()
+ 		_undo_v2.clear()
++		_fx_undo.clear()
++		_fx_selected = -1
++		_fx_elapsed = 0.0
++		_fx_playing = false
++		_fx_scrub.value = 0
+ 	_stage_data = Store.effective_stage(project, draft, id)
+ 	_committed_stage = _stage_data.duplicate(true)
+ 	_stage_v2 = StageV2.effective(draft, id)
+ 	_committed_v2 = _stage_v2.duplicate(true)
++	_fx_data = StageFx.effective(draft, id)
++	_fx_committed = _fx_data.duplicate(true)
+ 	_reload()
+ 
+ 
+@@ -349,6 +435,7 @@ func _reload() -> void:
+ 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
+ 	_remove.disabled = _selected_actor < 0
+ 	_reload_v2_controls()
++	_reload_fx_controls()
+ 	_template_button.disabled = cast.is_empty()
+ 	_undo_button.disabled = _undo_stages.is_empty()
+ 	_suppress = false
+@@ -447,6 +534,7 @@ func _draw_stage() -> void:
+ 	_overlay.focal = Vector2(float(_stage_v2.get("focal", {}).get("x", 0.5)), float(_stage_v2.get("focal", {}).get("y", 0.5)))
+ 	_overlay.queue_redraw()
+ 	_layout_cards()
++	_apply_fx_preview(roundi(_fx_scrub.value))
+ 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
+ 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
+ 	if missing_expressions > 0:
+@@ -645,6 +733,11 @@ func _commit() -> void:
+ 	if _stage_data == _committed_stage:
+ 		_reload()
+ 		return
++	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
++		_status.text = "FX ссылается на удаляемого персонажа. Сначала удалите событие."
++		_stage_data = _committed_stage.duplicate(true)
++		_reload()
++		return
+ 	_undo_stages.append(_committed_stage.duplicate(true))
+ 	if _undo_stages.size() > 32:
+ 		_undo_stages.remove_at(0)
+@@ -755,6 +848,11 @@ func _apply_v2() -> void:
+ 		_stage_v2 = _committed_v2.duplicate(true)
+ 		_reload()
+ 		return
++	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
++		_status.text = "FX ссылается на удаляемый prop. Сначала удалите событие."
++		_stage_v2 = _committed_v2.duplicate(true)
++		_reload()
++		return
+ 	if _stage_v2 != _committed_v2:
+ 		_undo_v2.append(_committed_v2.duplicate(true))
+ 		if _undo_v2.size() > 32:
+@@ -1104,3 +1202,175 @@ func _popup_background_browser() -> void:
+ 	_browser.popup_centered(Vector2i(
+ 		maxi(300, mini(710, roundi(viewport_size.x - 40.0))),
+ 		maxi(280, mini(475, roundi(viewport_size.y - 72.0)))))
++
++
++func _process(delta: float) -> void:
++	if not _fx_playing or _stage_data.is_empty():
++		return
++	_fx_elapsed += maxf(0.0, delta) * 1000.0
++	if _fx_elapsed >= StageFx.MAX_MS:
++		_fx_playing = false
++		_fx_elapsed = 0.0
++		_fx_play.text = "▶ Play preview"
++	_fx_scrub.value = snappedf(_fx_elapsed, 50)
++	_apply_fx_preview(roundi(_fx_scrub.value))
++
++
++func _reload_fx_controls() -> void:
++	_fx_suppress = true
++	_fx_target.clear()
++	for target in StageFx.target_options(_stage_data, _stage_v2):
++		_fx_target.add_item(str(target["label"]))
++		_fx_target.set_item_metadata(_fx_target.item_count - 1, target)
++	_fx_list.clear()
++	var cues: Array = _fx_data.get("cues", [])
++	for cue in cues:
++		_fx_list.add_item("%s · %s/%s · %s @ %dms" % [cue["id"], cue["targetType"], cue["targetId"], cue["effect"], cue["startMs"]])
++	_fx_selected = mini(_fx_selected, cues.size() - 1)
++	if _fx_selected >= 0:
++		_fx_list.select(_fx_selected)
++		var cue: Dictionary = cues[_fx_selected]
++		for index in range(_fx_kind.item_count):
++			if _fx_kind.get_item_text(index) == cue["effect"]:
++				_fx_kind.select(index)
++		_fx_start.value = int(cue["startMs"])
++		_fx_duration.value = int(cue["durationMs"])
++		_fx_repeat.value = int(cue["repeat"])
++		_fx_intensity.value = float(cue["intensity"])
++	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
++		spinner.editable = _fx_selected >= 0
++	_fx_kind.disabled = _fx_selected < 0
++	_fx_remove.disabled = _fx_selected < 0
++	_fx_undo_button.disabled = _fx_undo.is_empty()
++	_fx_suppress = false
++
++
++func _on_fx_add() -> void:
++	if _fx_target.selected < 0 or _fx_data.get("cues", []).size() >= StageFx.MAX_CUES:
++		return
++	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
++	_fx_data = StageFx.new_cue(_fx_data, str(target["type"]), str(target["id"]))
++	_fx_selected = _fx_data["cues"].size() - 1
++	_commit_fx()
++
++
++func _on_fx_remove() -> void:
++	if _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
++		return
++	_fx_data["cues"].remove_at(_fx_selected)
++	_fx_selected = mini(_fx_selected, _fx_data["cues"].size() - 1)
++	_commit_fx()
++
++
++func _on_fx_select(index: int) -> void:
++	if index < 0 or _fx_suppress:
++		return
++	_fx_selected = index
++	_reload_fx_controls()
++
++
++func _on_fx_params(_value: Variant) -> void:
++	if _fx_suppress or _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
++		return
++	var cue: Dictionary = _fx_data["cues"][_fx_selected]
++	cue["effect"] = _fx_kind.get_item_text(_fx_kind.selected)
++	cue["startMs"] = roundi(_fx_start.value)
++	cue["durationMs"] = roundi(_fx_duration.value)
++	cue["repeat"] = roundi(_fx_repeat.value)
++	cue["intensity"] = float(_fx_intensity.value)
++	_commit_fx()
++
++
++func _commit_fx() -> void:
++	var error: String = StageFx.validate(_stage_data, _stage_v2, _fx_data)
++	if not error.is_empty():
++		_status.text = "FX: " + error
++		_fx_data = _fx_committed.duplicate(true)
++		_reload_fx_controls()
++		return
++	if _fx_data != _fx_committed:
++		_fx_undo.append(_fx_committed.duplicate(true))
++		if _fx_undo.size() > 32:
++			_fx_undo.remove_at(0)
++		_fx_committed = _fx_data.duplicate(true)
++		stage_fx_modified.emit(_fx_committed.duplicate(true))
++	_reload_fx_controls()
++	_apply_fx_preview(roundi(_fx_scrub.value))
++
++
++func _on_fx_undo() -> void:
++	if _fx_undo.is_empty():
++		return
++	var previous: Dictionary = _fx_undo.pop_back()
++	if not StageFx.validate(_stage_data, _stage_v2, previous).is_empty():
++		_fx_undo.clear()
++		return
++	_fx_data = previous.duplicate(true)
++	_fx_committed = previous.duplicate(true)
++	_fx_selected = mini(_fx_selected, _fx_data.get("cues", []).size() - 1)
++	stage_fx_modified.emit(previous.duplicate(true))
++	_reload_fx_controls()
++	_apply_fx_preview(roundi(_fx_scrub.value))
++
++
++func _on_fx_play() -> void:
++	_fx_playing = not _fx_playing
++	_fx_play.text = "Ⅱ Pause" if _fx_playing else "▶ Play preview"
++	_fx_elapsed = _fx_scrub.value
++
++
++func _on_fx_stop() -> void:
++	_fx_playing = false
++	_fx_play.text = "▶ Play preview"
++	_fx_elapsed = 0.0
++	_fx_scrub.value = 0
++	_apply_fx_preview(-1)
++
++
++func _on_fx_scrub(value: float) -> void:
++	if not _fx_playing:
++		_fx_elapsed = value
++	_apply_fx_preview(roundi(value))
++
++
++func _apply_fx_preview(time_ms: int) -> void:
++	if _canvas == null or _stage_data.is_empty():
++		return
++	# Reset to the canonical editor layout *before* every deterministic sample.
++	# Never mutate stageV1, stageV2, staged binaries, or a gameplay state node.
++	_layout_cards()
++	_bg_image.modulate = Color.WHITE
++	_bg_image.scale = Vector2.ONE
++	for card in _cards:
++		if is_instance_valid(card):
++			card.modulate = Color.WHITE
++			card.scale = Vector2.ONE
++			card.pivot_offset = card.size * 0.5
++	for card in _prop_cards:
++		if is_instance_valid(card):
++			card.modulate = Color.WHITE
++			card.scale = Vector2.ONE
++			card.pivot_offset = card.size * 0.5
++	for cue in _fx_data.get("cues", []):
++		var control: Control = null
++		match str(cue.get("targetType", "")):
++			"background":
++				control = _bg_image
++			"actor":
++				for index in range(_cards.size()):
++					if str(_stage_data["cast"][index]["characterId"]) == cue.get("targetId", ""):
++						control = _cards[index]
++						break
++			"prop":
++				for index in range(_prop_cards.size()):
++					if str(_stage_v2["props"][index]["instanceId"]) == cue.get("targetId", ""):
++						control = _prop_cards[index]
++						break
++		if control == null:
++			continue
++		var sampled: Dictionary = StageFx.sample(cue, time_ms)
++		control.position += sampled["offset"]
++		control.scale *= sampled["scale"]
++		var color: Color = control.modulate
++		color.a *= float(sampled["alpha"])
++		control.modulate = color
+diff --git a/addons/vn_studio/editor/raven_story_store.gd b/addons/vn_studio/editor/raven_story_store.gd
+index 5c7c957..796bf14 100644
+--- a/addons/vn_studio/editor/raven_story_store.gd
++++ b/addons/vn_studio/editor/raven_story_store.gd
+@@ -10,6 +10,7 @@ const CUES := "data/raven/production/line_performance_cues.json"
+ const CAST := "data/raven/production/character_performance.json"
+ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+ const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
+ const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
+ const FORMAT := "raven-vn-studio-draft-v1"
+ const LANGUAGES := ["ru", "be", "en"]
+@@ -91,7 +92,7 @@ static func fresh(project: Dictionary) -> Dictionary:
+ 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
+ 		"stageSourceSha256": str(project.get("stagingSha", "")),
+ 		"castSourceSha256": str(project.get("castSha", "")),
+-		"patches": {}, "stagePatches": {}, "stageV2Patches": {}}
++		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {}}
+ 
+ 
+ static func load_draft(project: Dictionary) -> Dictionary:
+@@ -143,6 +144,22 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
+ 			var v2_error: String = StageV2.validate(source_stage, v2_patches[scene_id])
+ 			if not v2_error.is_empty():
+ 				return "%s: %s" % [scene_id, v2_error]
++	var fx_patches: Variant = draft.get("stageFxPatches", {})
++	if not fx_patches is Dictionary:
++		return "Повреждённый FX-таймлайн."
++	if not fx_patches.is_empty():
++		if draft.get("stageSourceSha256", "") != project.get("stagingSha", "") or draft.get("castSourceSha256", "") != project.get("castSha", ""):
++			return "FX-черновик привязан к устаревшей постановке/касту."
++		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
++			return "FX: источники постановки изменились на диске."
++		for scene_id in fx_patches:
++			if not project["shots"].has(scene_id):
++				return "Неизвестный sceneId FX."
++			var fx_stage: Dictionary = effective_stage(project, draft, str(scene_id))
++			var fx_v2: Dictionary = StageV2.effective(draft, str(scene_id))
++			var fx_error: String = StageFx.validate(fx_stage, fx_v2, fx_patches[scene_id])
++			if not fx_error.is_empty():
++				return "%s: %s" % [scene_id, fx_error]
+ 	var patches: Variant = draft.get("patches", {})
+ 	if not patches is Dictionary:
+ 		return "Повреждённый набор правок."
+@@ -298,12 +315,18 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
+ 	var error: String = validate_stage(project, stage)
+ 	if not error.is_empty():
+ 		return error
++	var scene_id: String = str(stage.get("sceneId", ""))
++	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
++	if fx is Dictionary and not fx.is_empty():
++		var overlay: Dictionary = StageV2.trim_actor_z(stage, StageV2.effective(draft, scene_id))
++		var fx_error: String = StageFx.validate(stage, overlay, fx)
++		if not fx_error.is_empty():
++			return "Нельзя удалить цель FX: " + fx_error
+ 	draft["stageSourceSha256"] = str(project["stagingSha"])
+ 	draft["castSourceSha256"] = str(project["castSha"])
+ 	if not draft.has("stagePatches"):
+ 		draft["stagePatches"] = {}
+-	draft["stagePatches"][str(stage["sceneId"])] = stage.duplicate(true)
+-	var scene_id: String = str(stage["sceneId"])
++	draft["stagePatches"][scene_id] = stage.duplicate(true)
+ 	if draft.get("stageV2Patches", {}).has(scene_id):
+ 		draft["stageV2Patches"][scene_id] = StageV2.trim_actor_z(stage, draft["stageV2Patches"][scene_id])
+ 	return ""
+@@ -317,6 +340,11 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
+ 	var error: String = StageV2.validate(stage, overlay)
+ 	if not error.is_empty():
+ 		return error
++	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
++	if fx is Dictionary and not fx.is_empty():
++		var fx_error: String = StageFx.validate(stage, overlay, fx)
++		if not fx_error.is_empty():
++			return "Нельзя удалить prop, использующийся в FX: " + fx_error
+ 	draft["stageSourceSha256"] = str(project["stagingSha"])
+ 	draft["castSourceSha256"] = str(project["castSha"])
+ 	if not draft.has("stageV2Patches"):
+@@ -326,6 +354,8 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
+ 
+ 
+ static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
++	if not draft.get("stageFxPatches", {}).is_empty():
++		return {"ok": false, "error": "FX события требуют отдельный FX review export; v2 экспорт потеряет таймлайн."}
+ 	var error: String = validate(project, draft)
+ 	if not error.is_empty():
+ 		return {"ok": false, "error": error}
+@@ -366,6 +396,44 @@ static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dicti
+ 	return _write_new(path, payload, false)
+ 
+ 
++static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionary) -> String:
++	var scene_id: String = str(data.get("sceneId", ""))
++	if not project.get("shots", {}).has(scene_id):
++		return "FX содержит неизвестный sceneId."
++	var stage: Dictionary = effective_stage(project, draft, scene_id)
++	var overlay: Dictionary = StageV2.effective(draft, scene_id)
++	var error: String = StageFx.validate(stage, overlay, data)
++	if not error.is_empty():
++		return error
++	draft["stageSourceSha256"] = str(project["stagingSha"])
++	draft["castSourceSha256"] = str(project["castSha"])
++	if not draft.has("stageFxPatches"):
++		draft["stageFxPatches"] = {}
++	draft["stageFxPatches"][scene_id] = data.duplicate(true)
++	return ""
++
++
++static func export_fx_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
++	var error: String = validate(project, draft)
++	if not error.is_empty():
++		return {"ok": false, "error": error}
++	var fx_patches: Dictionary = draft.get("stageFxPatches", {})
++	if fx_patches.is_empty():
++		return {"ok": false, "error": "Нет FX событий для review."}
++	var output: Dictionary = {"format": "raven-stage-fx-review-candidate", "schemaVersion": 1,
++		"sourceSha256": project["sha"], "stageSourceSha256": project["stagingSha"],
++		"castSourceSha256": project["castSha"],
++		"stageV1Patches": draft.get("stagePatches", {}).duplicate(true),
++		"stageV2Patches": draft.get("stageV2Patches", {}).duplicate(true),
++		"stageFxPatches": fx_patches.duplicate(true),
++		"runtimeApplied": false, "requiresHumanReview": true,
++		"fxPreviewOnly": true}
++	var payload: String = JSON.stringify(output, "\t") + "\n"
++	var target: String = ProjectSettings.globalize_path("user://raven_story_studio/fx/exports").path_join(
++		"raven-stage-fx-" + payload.sha256_text().substr(0, 24) + ".json")
++	return _write_new(target, payload, false)
++
++
+ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dictionary:
+ 	var data: Dictionary = project["stagingData"].duplicate(true)
+ 	var patches: Dictionary = draft.get("stagePatches", {})
+@@ -377,6 +445,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
+ 
+ 
+ static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
++	if not draft.get("stageFxPatches", {}).is_empty():
++		return {"ok": false, "error": "Есть FX таймлайн. Используйте FX review export для сохранения событий."}
+ 	if not draft.get("stageV2Patches", {}).is_empty():
+ 		return {"ok": false, "error": "Есть stage-v2 данные. Используйте отдельный V2 review export: v1 исключит слои/props."}
+ 	var error: String = validate(project, draft)
+diff --git a/addons/vn_studio/editor/raven_story_view.gd b/addons/vn_studio/editor/raven_story_view.gd
+index bb7c00d..1be5d4d 100644
+--- a/addons/vn_studio/editor/raven_story_view.gd
++++ b/addons/vn_studio/editor/raven_story_view.gd
+@@ -31,6 +31,7 @@ var _save: Button
+ var _export: Button
+ var _export_stage: Button
+ var _export_stage_v2: Button
++var _export_fx: Button
+ var _stage_designer: Control
+ var _scene_panel: Control
+ var _line_panel: Control
+@@ -97,6 +98,11 @@ func _build() -> void:
+ 	_export_stage_v2.tooltip_text = "Сохранить отдельный JSON-кандидат ориентации/props/layers в user://"
+ 	_export_stage_v2.pressed.connect(_export_stage_v2_candidate)
+ 	toolbar.add_child(_export_stage_v2)
++	_export_fx = Button.new()
++	_export_fx.text = "Экспорт FX review"
++	_export_fx.tooltip_text = "Локальный кандидат анимаций и постановки, не runtime"
++	_export_fx.pressed.connect(_export_fx_candidate)
++	toolbar.add_child(_export_fx)
+ 	_undo_button = Button.new()
+ 	_undo_button.text = "↶"
+ 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
+@@ -218,6 +224,7 @@ func _build() -> void:
+ 	_stage_designer = StageDesigner.new()
+ 	_stage_designer.stage_modified.connect(_on_stage_modified)
+ 	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
++	_stage_designer.stage_fx_modified.connect(_on_stage_fx_modified)
+ 	stage_contents.add_child(_stage_designer)
+ 	var visual_label := Label.new()
+ 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
+@@ -457,8 +464,9 @@ func _update_diff() -> void:
+ func _refresh_buttons() -> void:
+ 	_save.disabled = _blocked or _project.is_empty()
+ 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
+-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty()
+-	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty()
++	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
++	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
++	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty()
+ 	_undo_button.disabled = _blocked or _undo.is_empty()
+ 	_redo_button.disabled = _blocked or _redo.is_empty()
+ 
+@@ -531,6 +539,39 @@ func _on_stage_v2_modified(overlay: Dictionary) -> void:
+ 	_refresh_buttons()
+ 
+ 
++func _on_stage_fx_modified(data: Dictionary) -> void:
++	if _blocked or _project.is_empty():
++		return
++	var id: String = str(data.get("sceneId", ""))
++	if _draft.get("stageFxPatches", {}).get(id, {}) == data:
++		return
++	var snapshot: Dictionary = _draft.duplicate(true)
++	var error: String = Store.set_stage_fx(_project, _draft, data)
++	if not error.is_empty():
++		_status.text = "FX не сохранено: " + error
++		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
++		return
++	_undo.append(snapshot)
++	_redo.clear()
++	_dirty = true
++	_update_diff()
++	_refresh_buttons()
++
++
++func _export_fx_candidate() -> void:
++	if _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty():
++		return
++	if _dirty:
++		_status.text = "Сначала сохраните локальный черновик, затем экспортируйте FX."
++		return
++	var result: Dictionary = Store.export_fx_candidate(_project, _draft)
++	if result.get("ok", false):
++		_status.text = "Создан отдельный FX review candidate (только редактор)."
++		_path.text = str(result["path"])
++	else:
++		_status.text = "FX export заблокирован: " + str(result.get("error", ""))
++
++
+ func _export_stage_v2_candidate() -> void:
+ 	if _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty():
+ 		return
+diff --git a/addons/vn_studio/model/stage_fx_store.gd b/addons/vn_studio/model/stage_fx_store.gd
+new file mode 100644
+index 0000000..0343731
+--- /dev/null
++++ b/addons/vn_studio/model/stage_fx_store.gd
+@@ -0,0 +1,129 @@
++@tool
++extends RefCounted
++## VNS5-05A: pure, bounded editor-only micro-animation cues and deterministic preview.
++## No gameplay, dialogue timing or save effects. Any future runtime consumer requires review.
++const FORMAT := "raven-vn-stage-fx-v1"
++const EFFECTS := ["breathe", "blink", "shake", "pulse", "fade_in", "fade_out"]
++const TARGET_TYPES := ["actor", "prop", "background"]
++const MAX_CUES := 32
++const MAX_MS := 20000
++const KEYS := ["format", "schemaVersion", "sceneId", "cues"]
++const CUE_KEYS := ["id", "targetType", "targetId", "effect", "startMs", "durationMs", "repeat", "intensity"]
++
++
++static func fresh(scene_id: String) -> Dictionary:
++	return {"format": FORMAT, "schemaVersion": 1, "sceneId": scene_id, "cues": []}
++
++
++static func effective(draft: Dictionary, scene_id: String) -> Dictionary:
++	var saved: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
++	return saved.duplicate(true) if saved is Dictionary and not saved.is_empty() else fresh(scene_id)
++
++
++static func target_options(stage: Dictionary, stage_v2: Dictionary) -> Array[Dictionary]:
++	var options: Array[Dictionary] = [{"type": "background", "id": "background", "label": "Фон"}]
++	for actor in stage.get("cast", []):
++		if actor is Dictionary:
++			var id: String = str(actor.get("characterId", ""))
++			options.append({"type": "actor", "id": id, "label": id.trim_prefix("RM-CHAR-")})
++	for prop in stage_v2.get("props", []):
++		if prop is Dictionary:
++			options.append({"type": "prop", "id": str(prop.get("instanceId", "")),
++				"label": str(prop.get("label", "Prop"))})
++	return options
++
++
++static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant) -> String:
++	if not data is Dictionary:
++		return "FX-постановка должна быть объектом."
++	for key in data.keys():
++		if key not in KEYS:
++			return "Неизвестное поле FX: " + str(key)
++	if data.get("format") != FORMAT or data.get("schemaVersion") != 1 \
++			or data.get("sceneId") != stage.get("sceneId"):
++		return "Неверная версия или sceneId FX."
++	var cues: Variant = data.get("cues")
++	if not cues is Array or cues.size() > MAX_CUES:
++		return "FX содержит больше 32 событий или некорректный список."
++	var valid_targets: Dictionary = {}
++	for candidate in target_options(stage, stage_v2):
++		valid_targets[str(candidate["type"]) + "/" + str(candidate["id"])] = true
++	var seen: Dictionary = {}
++	for cue in cues:
++		if not cue is Dictionary:
++			return "FX событие должно быть объектом."
++		for key in cue.keys():
++			if key not in CUE_KEYS:
++				return "Недопустимое поле события: " + str(key)
++		var id: Variant = cue.get("id", "")
++		if not id is String or not id.begins_with("fx-") or id.length() != 7:
++			return "Некорректный ID события FX."
++		for i in range(3, 7):
++			if not "0123456789".contains(id.substr(i, 1)):
++				return "Некорректный числовой ID FX."
++		if seen.has(id):
++			return "Повторный ID события FX."
++		seen[id] = true
++		var target_type: Variant = cue.get("targetType", "")
++		var target_id: Variant = cue.get("targetId", "")
++		if not target_type is String or target_type not in TARGET_TYPES or not target_id is String \
++				or not valid_targets.has(target_type + "/" + target_id):
++			return "Цель FX отсутствует в выбранной постановке."
++		if cue.get("effect", "") not in EFFECTS:
++			return "Неизвестная микроанимация."
++		var start: Variant = cue.get("startMs")
++		var duration: Variant = cue.get("durationMs")
++		var repeat_count: Variant = cue.get("repeat")
++		var intensity: Variant = cue.get("intensity")
++		if not start is int or not duration is int or not repeat_count is int \
++				or start < 0 or start > 15000 or duration < 120 or duration > 4000 \
++				or repeat_count < 1 or repeat_count > 5 or start + duration * repeat_count > MAX_MS:
++			return "Время FX вне лимитов (max 20 секунд)."
++		if not (intensity is float or intensity is int) or not is_finite(float(intensity)) \
++				or float(intensity) < 0.0 or float(intensity) > 1.0:
++			return "Сила FX должна быть конечной в диапазоне 0–1."
++	return ""
++
++
++static func new_cue(data: Dictionary, target_type: String, target_id: String) -> Dictionary:
++	var result: Dictionary = data.duplicate(true)
++	var ids: Dictionary = {}
++	for cue in result.get("cues", []):
++		ids[str(cue.get("id", ""))] = true
++	var number: int = 1
++	while ids.has("fx-%04d" % number):
++		number += 1
++	result["cues"].append({"id": "fx-%04d" % number, "targetType": target_type,
++		"targetId": target_id, "effect": "breathe", "startMs": 0,
++		"durationMs": 1400, "repeat": 1, "intensity": 0.35})
++	return result
++
++
++## Time-sampling is pure and independent of frame rate. Returns a visual-only
++## additive offset, scale factor and opacity factor for a single cue.
++static func sample(cue: Dictionary, elapsed_ms: int) -> Dictionary:
++	var neutral := {"offset": Vector2.ZERO, "scale": Vector2.ONE, "alpha": 1.0}
++	var start: int = int(cue.get("startMs", 0))
++	var duration: int = int(cue.get("durationMs", 1000))
++	var repeat_count: int = int(cue.get("repeat", 1))
++	if duration <= 0 or repeat_count <= 0 or elapsed_ms < start or elapsed_ms >= start + duration * repeat_count:
++		return neutral
++	var phase: float = float((elapsed_ms - start) % duration) / float(duration)
++	var strength: float = clampf(float(cue.get("intensity", 0.0)), 0.0, 1.0)
++	var wave: float = sin(PI * 2.0 * phase)
++	match str(cue.get("effect", "")):
++		"breathe":
++			neutral["scale"] = Vector2(1.0 + 0.018 * strength * wave, 1.0 + 0.028 * strength * wave)
++		"blink":
++			var close: float = maxf(0.0, 1.0 - absf(phase - 0.5) / 0.12)
++			neutral["scale"] = Vector2(1.0, 1.0 - 0.09 * strength * close)
++		"shake":
++			neutral["offset"] = Vector2(5.0 * strength * wave, 1.7 * strength * sin(PI * 6.0 * phase))
++		"pulse":
++			var pulse: float = 1.0 - cos(PI * 2.0 * phase)
++			neutral["scale"] = Vector2.ONE * (1.0 + 0.06 * strength * pulse)
++		"fade_in":
++			neutral["alpha"] = lerpf(1.0 - strength, 1.0, phase)
++		"fade_out":
++			neutral["alpha"] = lerpf(1.0, 1.0 - strength, phase)
++	return neutral
+diff --git a/check.ps1 b/check.ps1
+index cc78d44..451408e 100644
+--- a/check.ps1
++++ b/check.ps1
+@@ -95,6 +95,7 @@ Invoke-GodotCheck 'VN Studio asset registry' @('--headless', '--path', $projectP
+ Invoke-GodotCheck 'VN Studio staged image import safety' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_staged_image_smoke.gd', '--quit-after', '120') 'Raven VN Studio staged image import safety smoke passed'
+ Invoke-GodotCheck 'VN Studio orientation/templates/undo' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_orientation_smoke.gd', '--quit-after', '180') 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed'
+ Invoke-GodotCheck 'VN Studio stage-v2 sidecar/props' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_v2_smoke.gd', '--quit-after', '240') 'Raven VN Studio VNS5-04B sidecar/focal/prop/z-order safety smoke passed'
++Invoke-GodotCheck 'VN Studio micro-FX timeline' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_fx_smoke.gd', '--quit-after', '240') 'Raven VN Studio VNS5-05A micro-FX timeline safety smoke passed'
+ Invoke-GodotCheck 'VN Studio background-state preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_backgrounds_smoke.gd', '--quit-after', '120') 'Raven VN Studio background-state preview smoke passed'
+ Invoke-GodotCheck 'Approved character art integration' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_character_art_smoke.gd', '--quit-after', '240') 'Raven approved character art smoke passed'
+ Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
+diff --git a/data/raven/production/gap_work_packages.json b/data/raven/production/gap_work_packages.json
+index 322dd37..b0f61a6 100644
+--- a/data/raven/production/gap_work_packages.json
++++ b/data/raven/production/gap_work_packages.json
+@@ -407,6 +407,26 @@
+       "source": "User request 2026-10-31; addons/vn_studio/README.md",
+       "requiresHumanAcceptance": true
+     },
++    {
++      "id": "VNS5-05A",
++      "title": "VN Studio v5: scene-specific editor-only micro-FX timeline and safe review export",
++      "domain": "narrative",
++      "priority": "P0",
++      "size": "M",
++      "description": "Versioned per-scene stageFxPatches tied to existing Raven stage v1 and Stage v2 props. Deterministic visual preview of breath/blink/shake/pulse/fade with start/duration/repeat/intensity, target-validated scene cues, bounded local undo and source-SHA review export; do not change gameplay/runtime or fabricate sprite frames.",
++      "deliverable": "stage_fx_store.gd pure model, native director FX controls/play/scrub, Raven draft save/validate/export, tests in both runners, docs and status updates",
++      "acceptance": "Owner checks 0/1/2/3 actors, staged prop and background targets, start/duration/intensity/repeat, play/pause/scrub, undo/save/reopen; missing targets, duplicate IDs, unknown effects, NaN and >20s rejected; no-loss v1/v2 export, SHA-pinned no-overwrite review; no source/gameplay mutation; full Godot CI + 800/1024/1366 editor QA",
++      "status": "proposed",
++      "dependsOn": [
++        "VNS5-04B",
++        "VNS5-03"
++      ],
++      "graphicsDependencies": [
++        "GFX-06"
++      ],
++      "source": "Raven VN Studio v5 follow-up after merged PR #104; 2026-11-01",
++      "requiresHumanAcceptance": true
++    },
+     {
+       "id": "VNS5-04B",
+       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
+diff --git a/docs/production/VNS5_05A_MICRO_FX_RU.md b/docs/production/VNS5_05A_MICRO_FX_RU.md
+new file mode 100644
+index 0000000..33ec951
+--- /dev/null
++++ b/docs/production/VNS5_05A_MICRO_FX_RU.md
+@@ -0,0 +1,22 @@
++# VNS5-05A — сценный редактор микроанимаций VN Studio
++
++**Baseline:** RavenManor-Godot `main@7652a20676bce76e7aead065bdd025b8cee5154b` после PR #104 и #103. **Status:** implementation candidate; Godot CI и manual Editor QA не выполнены на этой ветке. Scope: P0 editor-only stage micro-FX timeline; runtime playback и line-level cue triggers остаются отдельной задачей VNS5-05B.
++
++## Контракт
++
++- Существующий `raven-vn-studio-draft-v1` расширен необязательным `stageFxPatches[sceneId]`. Старые черновики без этого поля валидны, автоматически не переписываются. Патч: `{format:"raven-vn-stage-fx-v1",schemaVersion:1,sceneId,cues:[...]}`.
++- Cue: `{id:"fx-0001",targetType:"background|actor|prop",targetId,effect,startMs,durationMs,repeat,intensity}`. Цели: `background`, текущие `RM-CHAR-*` или текущие `prop-####` из Stage v2; никаких произвольных путей или ресурсов.
++- Effects: `breathe`, `blink` (только геометрический proxy, не новый портрет), `shake`, `pulse`, `fade_in`, `fade_out`. `startMs` 0..15000, `durationMs` 120..4000, `repeat` 1..5, `intensity` 0..1; суммарный конец до 20000 ms; максимум 32 cues.
++- Семплирование `StageFx.sample(cue,elapsedMs)` **чистое**, независимо от FPS и истории кадров; каждый update возвращает scale/offset/alpha после сброса editor controls к исходной раскладке. 32 шага локального Undo; в глобальном Raven draft — обычный undo/redo snapshot.
++- Сохранение via `Store.set_stage_fx` с source SHA locks на staging/cast; old draft remains valid. Невозможно удалить v1 актёра или v2 prop, если на него ссылается FX. Патч v2 и FX не применяется к runtime автоматически.
++- `Store.export_fx_candidate` создаёт hash-based no-overwrite `user://raven_story_studio/fx/exports` JSON со stage v1 patches, v2 patches, FX, pinned source SHA, `runtimeApplied:false`. v1 stage и v2 stage exports **отклоняются** при FX, чтобы не терять данные тихо. Это НЕ публикация в production.
++
++## Проверки
++
++1. Full Linux `scripts/check.sh` / Windows `check.ps1`; отдельный `tests/raven/vn_studio_stage_fx_smoke.gd`. До CI честно считать код непроверенным в Godot.
++2. В Godot 4.7.2 проверить окна **800×640, 1024×640 и 1366×768**. Открыть сцену с 0/1/2/3 актёрами; выбрать фон, актёра, prop, добавить 1–3 cues; проверить параметры, timeline slider, Play/Pause/Reset, Undo, сохранение и повторное открытие редактора.
++3. Задать blink: визуальный proxy **не** меняет выражение лица и не создает кадры; убедиться, что проживание/зажмуривание не в игровой версии. Проверить пропуск сцен и смену sceneId, все истории Undo должны быть scene-scoped.
++4. Негативные проверки: duplicate fx ID, unknown actor/prop, NaN/Inf, start 15000 duration 4000 repeat 5, неизвестное поле, попытка удалить animated prop; stale source SHA; повторный export не перезаписывает файл.
++5. Проверить SHA `data/raven/production/vn_staging.json`, `season1_dialogue_catalog.json`, 62 approved portraits, runtime/UPDS до и после: **без изменений**. Реальные PNG/WebP assets, VFX keyframes/eye layers и runtime timeline integration не входят.
++
++**Rollback:** revert implementation PR; локальные draft `user://` сохраняются для ручного восстановления. При откате к старому плагину FX sidecar не следует автоматически терять или удалять.
+diff --git a/scripts/check.sh b/scripts/check.sh
+index eebce9b..80b7e26 100644
+--- a/scripts/check.sh
++++ b/scripts/check.sh
+@@ -66,6 +66,7 @@ run_check 'VN Studio asset registry' 'Raven VN Studio asset registry read-only s
+ run_check 'VN Studio staged image import safety' 'Raven VN Studio staged image import safety smoke passed' --script res://tests/raven/vn_studio_staged_image_smoke.gd --quit-after 120
+ run_check 'VN Studio orientation/templates/undo' 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed' --script res://tests/raven/vn_studio_stage_orientation_smoke.gd --quit-after 180
+ run_check 'VN Studio stage-v2 sidecar/props' 'Raven VN Studio VNS5-04B sidecar/focal/prop/z-order safety smoke passed' --script res://tests/raven/vn_studio_stage_v2_smoke.gd --quit-after 240
++run_check 'VN Studio micro-FX timeline' 'Raven VN Studio VNS5-05A micro-FX timeline safety smoke passed' --script res://tests/raven/vn_studio_stage_fx_smoke.gd --quit-after 240
+ run_check 'VN Studio background-state preview' 'Raven VN Studio background-state preview smoke passed' --script res://tests/raven/vn_studio_backgrounds_smoke.gd --quit-after 120
+ run_check 'Approved character art integration' 'Raven approved character art smoke passed' --script res://tests/raven/vn_character_art_smoke.gd --quit-after 240
+ run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
+diff --git a/tests/raven/vn_studio_stage_fx_smoke.gd b/tests/raven/vn_studio_stage_fx_smoke.gd
+new file mode 100644
+index 0000000..1708e11
+--- /dev/null
++++ b/tests/raven/vn_studio_stage_fx_smoke.gd
+@@ -0,0 +1,84 @@
++extends SceneTree
++## VNS5-05A: synthetic editor-only micro-FX + no-loss sidecar contract.
++const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
++const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
++const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const Designer = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
++
++func _initialize() -> void:
++	call_deferred("_run")
++
++func _run() -> void:
++	var root_path: String = ProjectSettings.globalize_path("res://")
++	var staging_path: String = root_path.path_join(Store.STAGING)
++	var source_path: String = root_path.path_join(Store.RELATIVE)
++	var staging_sha: String = FileAccess.get_sha256(staging_path)
++	var source_sha: String = FileAccess.get_sha256(source_path)
++	var project: Dictionary = Store.open_project(root_path)
++	assert(project.get("ok", false), str(project.get("error", "")))
++	var scene_id: String = str(project["shots"].keys()[0])
++	var draft: Dictionary = Store.fresh(project)
++	draft.erase("stageFxPatches") # existing saved v1/v2 Raven drafts stay valid
++	assert(Store.validate(project, draft).is_empty())
++	var stage: Dictionary = Store.effective_stage(project, draft, scene_id)
++	var v2: Dictionary = StageV2.fresh(scene_id)
++	var fx: Dictionary = StageFx.fresh(scene_id)
++	assert(StageFx.validate(stage, v2, fx).is_empty())
++	fx = StageFx.new_cue(fx, "background", "background")
++	fx["cues"][0]["effect"] = "pulse"
++	fx["cues"][0]["startMs"] = 250
++	fx["cues"][0]["durationMs"] = 500
++	fx["cues"][0]["repeat"] = 2
++	fx["cues"][0]["intensity"] = 0.125 + float(Time.get_ticks_usec() % 4000) / 100000.0
++	assert(StageFx.validate(stage, v2, fx).is_empty())
++	assert(StageFx.sample(fx["cues"][0], 0)["scale"] == Vector2.ONE)
++	assert(StageFx.sample(fx["cues"][0], 500)["scale"].x > 1.0)
++	assert(StageFx.sample(fx["cues"][0], 2000)["scale"] == Vector2.ONE)
++	assert(StageFx.sample(fx["cues"][0], 500) == StageFx.sample(fx["cues"][0], 500))
++	var invalid: Dictionary = fx.duplicate(true)
++	invalid["cues"].append(invalid["cues"][0].duplicate(true))
++	assert(not StageFx.validate(stage, v2, invalid).is_empty())
++	invalid = fx.duplicate(true)
++	invalid["cues"][0]["targetId"] = "RM-CHAR-NOPE"
++	assert(not StageFx.validate(stage, v2, invalid).is_empty())
++	invalid = fx.duplicate(true)
++	invalid["cues"][0]["durationMs"] = 90000
++	assert(not StageFx.validate(stage, v2, invalid).is_empty())
++	invalid = fx.duplicate(true)
++	invalid["cues"][0]["intensity"] = NAN
++	assert(not StageFx.validate(stage, v2, invalid).is_empty())
++	invalid = fx.duplicate(true)
++	invalid["cues"][0]["script"] = "res://secret"
++	assert(not StageFx.validate(stage, v2, invalid).is_empty())
++	assert(Store.set_stage_fx(project, draft, fx).is_empty())
++	assert(Store.validate(project, draft).is_empty())
++	assert(StageFx.effective(draft, scene_id) == fx)
++	assert(not Store.export_stage_candidate(project, draft).get("ok", false))
++	assert(not Store.export_v2_candidate(project, draft).get("ok", false))
++	var export: Dictionary = Store.export_fx_candidate(project, draft)
++	assert(export.get("ok", false), str(export.get("error", "")))
++	assert(not Store.export_fx_candidate(project, draft).get("ok", false), "FX review must be no-overwrite")
++	v2 = StageV2.new_prop(v2)
++	assert(Store.set_stage_v2(project, draft, v2).is_empty())
++	var with_prop: Dictionary = StageFx.new_cue(fx, "prop", "prop-0001")
++	assert(Store.set_stage_fx(project, draft, with_prop).is_empty())
++	assert(not Store.set_stage_v2(project, draft, StageV2.fresh(scene_id)).is_empty(), "Removing animated prop blocked")
++	assert(FileAccess.get_sha256(staging_path) == staging_sha)
++	assert(FileAccess.get_sha256(source_path) == source_sha)
++	var designer := Designer.new()
++	root.add_child(designer)
++	designer.set_scene(project, draft, scene_id)
++	assert(designer._fx_data["cues"].size() == 2)
++	designer._on_fx_stop()
++	designer._on_fx_add()
++	assert(designer._fx_data["cues"].size() == 3)
++	designer._on_fx_undo()
++	assert(designer._fx_data["cues"].size() == 2)
++	designer._on_fx_scrub(500)
++	assert(designer._bg_image.scale.x > 1.0)
++	designer._on_fx_stop()
++	designer.queue_free()
++	assert(FileAccess.get_sha256(staging_path) == staging_sha)
++	assert(FileAccess.get_sha256(source_path) == source_sha)
++	print("Raven VN Studio VNS5-05A micro-FX timeline safety smoke passed")
++	quit()
