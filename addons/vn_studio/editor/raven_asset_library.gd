@@ -19,7 +19,7 @@ var _b: Dictionary = {}
 var _compare_labels: Array[Label] = []
 var _compare_images: Array[TextureRect] = []
 var _staged_store: RefCounted
-var _stage_picker: EditorFileDialog
+var _stage_picker: FileDialog
 var _stage_panel: VBoxContainer
 var _stage_list: ItemList
 var _stage_preview: TextureRect
@@ -207,9 +207,9 @@ func _build_stage_ui() -> void:
 			"Удалить staged": button.pressed.connect(_remove_staged)
 			"Очистить ошибки": button.pressed.connect(_clear_stage_failures)
 			"Export review candidate": button.pressed.connect(_export_staged)
-	_stage_picker = EditorFileDialog.new()
-	_stage_picker.access = EditorFileDialog.ACCESS_FILESYSTEM
-	_stage_picker.file_mode = EditorFileDialog.FILE_MODE_OPEN_FILES
+	_stage_picker = FileDialog.new()
+	_stage_picker.access = FileDialog.ACCESS_FILESYSTEM
+	_stage_picker.file_mode = FileDialog.FILE_MODE_OPEN_FILES
 	_stage_picker.add_filter("*.png, *.jpg, *.jpeg, *.webp", "Raster images")
 	_stage_picker.files_selected.connect(_on_stage_files)
 	add_child(_stage_picker)
@@ -306,14 +306,17 @@ func _show_staged(index: int) -> void:
 func _on_stage_files(paths: PackedStringArray) -> void:
 	var outcomes: Array[Dictionary] = _staged_store.stage_files(paths)
 	var good: int = 0
+	var collisions: int = 0
 	var failed: Array[String] = []
 	for result in outcomes:
 		if result.get("ok", false):
 			good += 1
+			if result.get("filenameCollision", false):
+				collisions += 1
 		else:
 			failed.append(str(result.get("error", "Ошибка")))
 	_stage_failures = failed
-	_stage_message.text = "Добавлено: %d / %d. %s" % [good, paths.size(), "; ".join(failed)]
+	_stage_message.text = "Добавлено: %d / %d · совпадения имён с другими байтами: %d. %s" % [good, paths.size(), collisions, "; ".join(failed)]
 	_refresh_staged()
 
 
