@@ -5,10 +5,10 @@
   "entries": [
     {
       "id": "VNS5-03",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "Rebased implementation candidate after merged PR #97 against main 8313a109b708e0ae244f5516d9a80d952bcd508f. 62 accepted character art entries are now present. Local Godot 4.7.2, CI, PR and manual desktop QA NOT RUN; awaiting trusted implementation branch."
+      "evidence": "Implementation PR #99 (https://github.com/bezdredoff/RavenManor-Godot/pull/99) is OPEN/DRAFT from current main 8313a109 after merged PR #97 (62 owner-accepted character frames). GitHub file SHAs matched all 9 rebased source files. Initial PR-head Godot CI run 41344733408 failed at script parse: PackedByteArray.sha256_text() unsupported. Corrected using HashingContext in commit 217ddbdd; new head CI not yet verified. No Godot 4.7.2 local run, manual 800x640/1024x640/1366x768 Editor UI QA, Windows symlink/reparse QA or human feature acceptance yet. No new background art accepted; no runtime/res:// promotion."
     },
     {
       "id": "VNS5-02",
