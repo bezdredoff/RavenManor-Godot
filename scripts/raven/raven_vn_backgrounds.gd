@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 ## Candidate VN-only background registry. It never affects Raven save or map state.
 const AssetCatalog = preload("res://data/raven/production/vn_background_catalog.json")

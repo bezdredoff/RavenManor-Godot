@@ -37,3 +37,7 @@
 - Map collision, 65° game view, Match-3, campaign save and character reveal rules are unchanged. Passing CI is not mobile QA.
 - Delta ZIP is pinned to a specific main SHA. If main advances before upload to `incoming`, **repackage against the updated main**; never bypass stale-base validation.
 - Status source-of-truth `docs/STATUS.md` and `data/raven/production/production_progress.json` must be updated in the final review PR. The importer candidate is exempt from automatic governance but human review must still record `GFX-08-05/06/07` as `PR_review` or `in_progress`, not `accepted`.
+
+## Follow-up — VN Studio art-source integration (2026-11-01; PR candidate)
+
+`addons/vn_studio/editor/raven_stage_designer.gd` now resolves exact `(backgroundId, lighting, roomState)` using `scripts/raven/raven_vn_backgrounds.gd` rather than always displaying the old Hall pilot. Variant browser lists all canonical declared master combinations with imported/missing indicators; scenes and actor positions remain untouched by preview. Missing assets explicitly show ART PENDING. Add each future WebP and catalog record, run both catalog/gallery and editor stage smokes, and record source/provenance in this document; no further background-specific hardcoding in the editor. Visual QA and source/master alignment remain unapproved.

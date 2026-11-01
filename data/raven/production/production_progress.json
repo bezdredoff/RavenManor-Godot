@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-10-31",
+  "updated": "2026-11-01",
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
@@ -208,10 +208,31 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-03",
-      "status": "PR_review",
+      "status": "in_progress",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
-      "evidence": "Open PR #81 https://github.com/bezdredoff/RavenManor-Godot/pull/81. Full CI PASS on implementation head 3b0e95e2330c8109ac866c577f6a0f6992dd3789: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41240979721. Canonical 11 background masters/lighting/state, compact UPDS pose gallery, Raven actor scale, optional 390x844 logical px grid and selected dialogue overlay; synthetic stage test and browser suite passed. Desktop owner UI QA and missing background-state artwork pending; no runtime changes."
+      "updated": "2026-11-01",
+      "evidence": "PR #81 merged 2026-10-31 (VN stage browser/grid/dialogue). Follow-up authored PR in review adds exact catalog-backed stage previews and future-variant ART PENDING rules; full visual editor acceptance and shared VN runtime still pending."
+    },
+    {
+      "id": "GFX-08-05",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-01",
+      "evidence": "PR #82 merged 2026-11-01: two of eleven VN master families (Hall 4/Library 5 plates) imported as candidates. This task is NOT complete for all 11 master families. Preview integration proposed in follow-up editor PR; art/device acceptance pending."
+    },
+    {
+      "id": "GFX-08-06",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-01",
+      "evidence": "PR #82 merged: exact source filenames, derived WebP SHA-256 and source sizes recorded in vn_background_catalog.json and docs/production/VN_BG_HALL_LIBRARY_20261031.md. Original seed/reproducible prompts unavailable; 9 assets remain candidates, not approved."
+    },
+    {
+      "id": "GFX-08-07",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-01",
+      "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers."
     }
   ],
   "rules": [
