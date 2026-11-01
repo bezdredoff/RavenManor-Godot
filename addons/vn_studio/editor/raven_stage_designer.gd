@@ -3,6 +3,7 @@ extends VBoxContainer
 ## Godot-native, optional image-backed *editor* stage for canonical Raven Season 1.
 ## Uses the same approved character registry as the gameplay VN compositor.
 signal stage_modified(stage: Dictionary)
+signal stage_v2_modified(overlay: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
@@ -10,6 +11,8 @@ const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
 const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
+const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
+const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
 # Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
@@ -18,6 +21,27 @@ const GAME_PORTRAIT_FRACTION := Vector2(0.77, 0.73)
 
 var _project: Dictionary = {}
 var _stage_data: Dictionary = {}
+var _stage_v2: Dictionary = {}
+var _committed_v2: Dictionary = {}
+var _undo_v2: Array[Dictionary] = []
+var _staged_assets: RefCounted
+var _prop_list: ItemList
+var _prop_asset: OptionButton
+var _prop_state: OptionButton
+var _prop_x: SpinBox
+var _prop_y: SpinBox
+var _prop_z: SpinBox
+var _prop_scale: SpinBox
+var _actor_z: SpinBox
+var _focal_x: SpinBox
+var _focal_y: SpinBox
+var _remove_prop: Button
+var _undo_v2_button: Button
+var _prop_cards: Array[Button] = []
+var _selected_prop: int = -1
+var _dragging_prop: int = -1
+var _prop_grab_delta: Vector2 = Vector2.ZERO
+var _suppress_v2: bool = false
 var _selected_actor: int = -1
 var _dragging_actor: int = -1
 var _grab_delta: Vector2 = Vector2.ZERO
@@ -131,13 +155,13 @@ func _ready() -> void:
 	_orientation = OptionButton.new()
 	_orientation.add_item("Портрет · 390×844")
 	_orientation.add_item("Альбом · 844×390")
-	_orientation.tooltip_text = "Ориентация preview — editor-only; не меняет текущую схему VN staging v1"
+	_orientation.tooltip_text = "Ориентация сохраняется в локальном V2 draft; runtime stage v1 неизменен"
 	_orientation.item_selected.connect(_on_orientation)
 	options_row.add_child(_orientation)
 	_bg_fit = OptionButton.new()
 	_bg_fit.add_item("Фон: cover")
 	_bg_fit.add_item("Фон: fit")
-	_bg_fit.tooltip_text = "Только способ просмотра картинки, не новая генерация и не сохранённый crop"
+	_bg_fit.tooltip_text = "FitMode сохраняется в V2 draft; не меняет production фон/runtime"
 	_bg_fit.item_selected.connect(_on_background_fit)
 	options_row.add_child(_bg_fit)
 	_template_button = Button.new()
@@ -174,6 +198,67 @@ func _ready() -> void:
 	_portrait_scale.value = 0.55
 	_portrait_scale.value_changed.connect(_on_portrait_scale)
 	options_row.add_child(_portrait_scale)
+	var v2_row := HFlowContainer.new()
+	add_child(v2_row)
+	var focal_label := Label.new()
+	focal_label.text = "Focal X/Y"
+	v2_row.add_child(focal_label)
+	_focal_x = _numeric(v2_row, 0.0, 1.0, 0.01, 0.5)
+	_focal_y = _numeric(v2_row, 0.0, 1.0, 0.01, 0.5)
+	_focal_x.value_changed.connect(_on_focal_changed)
+	_focal_y.value_changed.connect(_on_focal_changed)
+	var actor_z_label := Label.new()
+	actor_z_label.text = "Слой персонажа"
+	v2_row.add_child(actor_z_label)
+	_actor_z = _numeric(v2_row, -10, 100, 1, 0)
+	_actor_z.value_changed.connect(_on_actor_z_changed)
+	var prop_toolbar := HFlowContainer.new()
+	add_child(prop_toolbar)
+	var add_prop := Button.new()
+	add_prop.text = "+ Prop (черновик)"
+	add_prop.pressed.connect(_on_add_prop)
+	prop_toolbar.add_child(add_prop)
+	_remove_prop = Button.new()
+	_remove_prop.text = "− Prop"
+	_remove_prop.pressed.connect(_on_remove_prop)
+	prop_toolbar.add_child(_remove_prop)
+	_undo_v2_button = Button.new()
+	_undo_v2_button.text = "↶ V2"
+	_undo_v2_button.pressed.connect(_on_undo_v2)
+	prop_toolbar.add_child(_undo_v2_button)
+	var refresh_assets := Button.new()
+	refresh_assets.text = "↻ Props"
+	refresh_assets.tooltip_text = "Перечитать локальный staging после импорта в Asset Library"
+	refresh_assets.pressed.connect(_on_refresh_prop_assets)
+	prop_toolbar.add_child(refresh_assets)
+	_prop_list = ItemList.new()
+	_prop_list.custom_minimum_size = Vector2(170, 55)
+	_prop_list.item_selected.connect(_on_prop_select)
+	prop_toolbar.add_child(_prop_list)
+	_prop_asset = OptionButton.new()
+	_prop_asset.custom_minimum_size.x = 180
+	_prop_asset.tooltip_text = "Только локально staged props, не утверждённые игровые ассеты"
+	_prop_asset.item_selected.connect(_on_prop_asset)
+	prop_toolbar.add_child(_prop_asset)
+	_prop_state = OptionButton.new()
+	for name in ["clean", "dirty", "broken", "restored", "new"]:
+		_prop_state.add_item(name)
+	_prop_state.item_selected.connect(_on_prop_state)
+	prop_toolbar.add_child(_prop_state)
+	var transforms := HFlowContainer.new()
+	add_child(transforms)
+	for label_text in ["Prop X", "Y", "Z", "Scale"]:
+		var name := Label.new()
+		name.text = label_text
+		transforms.add_child(name)
+	_prop_x = _numeric(transforms, 0, 1, 0.01, 0.5)
+	_prop_y = _numeric(transforms, 0, 1, 0.01, 0.5)
+	_prop_z = _numeric(transforms, -10, 100, 1, 20)
+	_prop_scale = _numeric(transforms, 0.1, 3, 0.05, 1)
+	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
+		spinner.value_changed.connect(_on_prop_transform)
+	_staged_assets = ImageStaging.new()
+	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
 	_thumbnail_strip = HFlowContainer.new()
 	_thumbnail_strip.size_flags_horizontal = SIZE_EXPAND_FILL
 	add_child(_thumbnail_strip)
@@ -205,6 +290,17 @@ func _ready() -> void:
 	add_child(_status)
 
 
+func _numeric(parent: Control, minimum: float, maximum: float, step: float, initial: float) -> SpinBox:
+	var spinner := SpinBox.new()
+	spinner.min_value = minimum
+	spinner.max_value = maximum
+	spinner.step = step
+	spinner.value = initial
+	spinner.custom_minimum_size.x = 72
+	parent.add_child(spinner)
+	return spinner
+
+
 func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 	_project = project
 	_selected_actor = -1
@@ -212,8 +308,11 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 		return
 	if str(_stage_data.get("sceneId", "")) != id:
 		_undo_stages.clear()
+		_undo_v2.clear()
 	_stage_data = Store.effective_stage(project, draft, id)
 	_committed_stage = _stage_data.duplicate(true)
+	_stage_v2 = StageV2.effective(draft, id)
+	_committed_v2 = _stage_v2.duplicate(true)
 	_reload()
 
 
@@ -249,6 +348,7 @@ func _reload() -> void:
 			_new_actor.add_item(str(candidate).trim_prefix("RM-CHAR-"))
 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
 	_remove.disabled = _selected_actor < 0
+	_reload_v2_controls()
 	_template_button.disabled = cast.is_empty()
 	_undo_button.disabled = _undo_stages.is_empty()
 	_suppress = false
@@ -319,6 +419,7 @@ func _draw_stage() -> void:
 		card.focus_mode = Control.FOCUS_ALL
 		card.gui_input.connect(_on_card_input.bind(index))
 		_canvas.add_child(card)
+		card.z_index = 10 + int(_stage_v2.get("actorZ", {}).get(str(actor["characterId"]), 0))
 		var resolved: Dictionary = Characters.for_actor(actor)
 		var picture: Texture2D = Characters.texture_for_entry(resolved.get("entry", {}))
 		if picture != null and not resolved.get("exact", false):
@@ -339,7 +440,12 @@ func _draw_stage() -> void:
 			display.size = _card_size
 			card.add_child(display)
 		_cards.append(card)
-	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
+	_draw_props()
+	_overlay.z_index = 150
+	_bg_image.z_index = -100
+	_placeholders.z_index = 149
+	_overlay.focal = Vector2(float(_stage_v2.get("focal", {}).get("x", 0.5)), float(_stage_v2.get("focal", {}).get("y", 0.5)))
+	_overlay.queue_redraw()
 	_layout_cards()
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
@@ -385,6 +491,7 @@ func _select_actor(index: int) -> void:
 	_selected_actor = index
 	_actor_pick.select(index)
 	_reload_poses()
+	_reload_v2_controls()
 	_remove.disabled = false
 
 
@@ -408,6 +515,7 @@ func _layout_cards() -> void:
 			if inner is TextureRect:
 				inner.size = _card_size
 		_cards[i].position = _position_for(_coordinates(i))
+	_layout_props()
 
 
 func _position_for(normalized: Vector2) -> Vector2:
@@ -456,6 +564,7 @@ func _on_actor_select(index: int) -> void:
 		return
 	_selected_actor = index
 	_reload_poses()
+	_reload_v2_controls()
 	_remove.disabled = false
 
 
@@ -541,6 +650,10 @@ func _commit() -> void:
 		_undo_stages.remove_at(0)
 	_committed_stage = _stage_data.duplicate(true)
 	stage_modified.emit(_stage_data.duplicate(true))
+	var trimmed: Dictionary = StageV2.trim_actor_z(_stage_data, _stage_v2)
+	if trimmed != _stage_v2:
+		_stage_v2 = trimmed
+		_apply_v2()
 	_reload()
 
 
@@ -566,22 +679,228 @@ func _on_template() -> void:
 
 
 func _on_orientation(index: int) -> void:
-	if index < 0:
+	if index < 0 or _suppress_v2:
 		return
 	_preview_orientation = StageLayout.LANDSCAPE if index == 1 else StageLayout.PORTRAIT
-	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
-	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
-	_overlay.queue_redraw()
-	_layout_cards()
+	_stage_v2["orientation"] = _preview_orientation
+	_apply_v2()
 
 
 func _on_background_fit(index: int) -> void:
-	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if index == 1 else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	if _suppress_v2 or index < 0:
+		return
+	_stage_v2["fitMode"] = "contain" if index == 1 else "cover"
+	_apply_v2()
 
 
 func _on_safe_toggle(value: bool) -> void:
 	_overlay.show_safe = value
 	_overlay.queue_redraw()
+
+
+func _reload_v2_controls() -> void:
+	_suppress_v2 = true
+	_preview_orientation = str(_stage_v2.get("orientation", "portrait"))
+	_orientation.select(1 if _preview_orientation == "landscape" else 0)
+	_bg_fit.select(1 if _stage_v2.get("fitMode", "cover") == "contain" else 0)
+	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if _stage_v2.get("fitMode", "cover") == "contain" else TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
+	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
+	_focal_x.value = float(_stage_v2.get("focal", {}).get("x", 0.5))
+	_focal_y.value = float(_stage_v2.get("focal", {}).get("y", 0.5))
+	_actor_z.editable = _selected_actor >= 0
+	if _selected_actor >= 0 and _selected_actor < _stage_data.get("cast", []).size():
+		_actor_z.value = int(_stage_v2.get("actorZ", {}).get(str(_stage_data["cast"][_selected_actor]["characterId"]), 0))
+	_prop_list.clear()
+	var props: Array = _stage_v2.get("props", [])
+	for prop: Dictionary in props:
+		_prop_list.add_item("%s · %s · z%d" % [prop["instanceId"], prop["state"], prop["z"]])
+	_selected_prop = mini(_selected_prop, props.size() - 1)
+	if _selected_prop >= 0:
+		_prop_list.select(_selected_prop)
+	_remove_prop.disabled = _selected_prop < 0
+	_prop_asset.clear()
+	_prop_asset.add_item("ART PENDING (без ассета)")
+	_prop_asset.set_item_metadata(0, "")
+	for item: Dictionary in _staged_assets.list_items():
+		if item.get("category") == "prop":
+			_prop_asset.add_item(str(item.get("displayName", item["id"])))
+			_prop_asset.set_item_metadata(_prop_asset.item_count - 1, item["id"])
+	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
+		spinner.editable = _selected_prop >= 0
+	_prop_state.disabled = _selected_prop < 0
+	_prop_asset.disabled = _selected_prop < 0
+	if _selected_prop >= 0:
+		var prop: Dictionary = props[_selected_prop]
+		_prop_x.value = float(prop["x"])
+		_prop_y.value = float(prop["y"])
+		_prop_z.value = int(prop["z"])
+		_prop_scale.value = float(prop["scale"])
+		for i in _prop_state.item_count:
+			if _prop_state.get_item_text(i) == prop["state"]:
+				_prop_state.select(i)
+		for i in _prop_asset.item_count:
+			if _prop_asset.get_item_metadata(i) == prop.get("assetId", ""):
+				_prop_asset.select(i)
+	_undo_v2_button.disabled = _undo_v2.is_empty()
+	_suppress_v2 = false
+
+
+func _apply_v2() -> void:
+	if _suppress_v2 or _stage_data.is_empty():
+		return
+	var error: String = StageV2.validate(_stage_data, _stage_v2)
+	if not error.is_empty():
+		_status.text = "V2 заблокировано: " + error
+		_stage_v2 = _committed_v2.duplicate(true)
+		_reload()
+		return
+	if _stage_v2 != _committed_v2:
+		_undo_v2.append(_committed_v2.duplicate(true))
+		if _undo_v2.size() > 32:
+			_undo_v2.remove_at(0)
+		_committed_v2 = _stage_v2.duplicate(true)
+		stage_v2_modified.emit(_committed_v2.duplicate(true))
+	_reload()
+
+
+func _on_undo_v2() -> void:
+	if _undo_v2.is_empty():
+		return
+	var previous: Dictionary = _undo_v2.pop_back()
+	if not StageV2.validate(_stage_data, previous).is_empty():
+		_undo_v2.clear()
+		_status.text = "История V2 не соответствует текущей сцене."
+		return
+	_stage_v2 = previous.duplicate(true)
+	_committed_v2 = previous.duplicate(true)
+	stage_v2_modified.emit(previous.duplicate(true))
+	_reload()
+
+
+func _on_focal_changed(_value: float) -> void:
+	if _suppress_v2:
+		return
+	_stage_v2["focal"] = {"x": _focal_x.value, "y": _focal_y.value}
+	_apply_v2()
+
+
+func _on_actor_z_changed(value: float) -> void:
+	if _suppress_v2 or _selected_actor < 0:
+		return
+	var id: String = str(_stage_data["cast"][_selected_actor]["characterId"])
+	_stage_v2["actorZ"][id] = int(value)
+	_apply_v2()
+
+
+func _on_refresh_prop_assets() -> void:
+	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
+	_reload_v2_controls()
+
+
+func _on_add_prop() -> void:
+	if _stage_v2.get("props", []).size() >= StageV2.MAX_PROPS:
+		return
+	_stage_v2 = StageV2.new_prop(_stage_v2)
+	_selected_prop = _stage_v2["props"].size() - 1
+	_apply_v2()
+
+
+func _on_remove_prop() -> void:
+	if _selected_prop < 0:
+		return
+	_stage_v2["props"].remove_at(_selected_prop)
+	_selected_prop = mini(_selected_prop, _stage_v2["props"].size() - 1)
+	_apply_v2()
+
+
+func _on_prop_select(index: int) -> void:
+	if index < 0 or _suppress_v2:
+		return
+	_selected_prop = index
+	_reload_v2_controls()
+
+
+func _on_prop_asset(index: int) -> void:
+	if _suppress_v2 or _selected_prop < 0 or index < 0:
+		return
+	_stage_v2["props"][_selected_prop]["assetId"] = str(_prop_asset.get_item_metadata(index))
+	_apply_v2()
+
+
+func _on_prop_state(index: int) -> void:
+	if _suppress_v2 or _selected_prop < 0 or index < 0:
+		return
+	_stage_v2["props"][_selected_prop]["state"] = _prop_state.get_item_text(index)
+	_apply_v2()
+
+
+func _on_prop_transform(_value: float) -> void:
+	if _suppress_v2 or _selected_prop < 0:
+		return
+	var prop: Dictionary = _stage_v2["props"][_selected_prop]
+	prop["x"] = _prop_x.value
+	prop["y"] = _prop_y.value
+	prop["z"] = int(_prop_z.value)
+	prop["scale"] = _prop_scale.value
+	_apply_v2()
+
+
+func _draw_props() -> void:
+	for card in _prop_cards:
+		if is_instance_valid(card):
+			card.queue_free()
+	_prop_cards.clear()
+	for index in _stage_v2.get("props", []).size():
+		var prop: Dictionary = _stage_v2["props"][index]
+		var card := Button.new()
+		card.flat = true
+		card.clip_contents = true
+		card.text = "ART PENDING\n" + str(prop["label"]) + "\n" + str(prop["state"])
+		card.tooltip_text = "%s / %s (staged, editor only)" % [prop["instanceId"], prop["assetId"]]
+		card.z_index = 10 + int(prop["z"])
+		card.gui_input.connect(_on_prop_card_input.bind(index))
+		_canvas.add_child(card)
+		_prop_cards.append(card)
+		var image: Image = _staged_assets.get_preview(str(prop.get("assetId", "")))
+		if image != null:
+			card.text = ""
+			var picture := TextureRect.new()
+			picture.texture = ImageTexture.create_from_image(image)
+			picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+			card.add_child(picture)
+
+
+func _layout_props() -> void:
+	for index in _prop_cards.size():
+		var prop: Dictionary = _stage_v2["props"][index]
+		var length: float = minf(_canvas.size.x, _canvas.size.y) * 0.16 * float(prop["scale"])
+		var dimension := Vector2(length, length)
+		_prop_cards[index].custom_minimum_size = dimension
+		_prop_cards[index].size = dimension
+		_prop_cards[index].position = Vector2(float(prop["x"]), float(prop["y"])) * (_canvas.size - dimension)
+
+
+func _on_prop_card_input(event: InputEvent, index: int) -> void:
+	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			_selected_prop = index
+			_dragging_prop = index
+			_prop_grab_delta = event.position
+			_reload_v2_controls()
+		elif _dragging_prop == index:
+			_dragging_prop = -1
+			_apply_v2()
+	elif event is InputEventMouseMotion and _dragging_prop == index and (event.button_mask & MOUSE_BUTTON_MASK_LEFT):
+		var card: Button = _prop_cards[index]
+		var pos: Vector2 = card.position + event.position - _prop_grab_delta
+		var area: Vector2 = (_canvas.size - card.size).max(Vector2.ONE)
+		_stage_v2["props"][index]["x"] = snappedf(clampf(pos.x / area.x, 0, 1), 0.001)
+		_stage_v2["props"][index]["y"] = snappedf(clampf(pos.y / area.y, 0, 1), 0.001)
+		card.position = Vector2(float(_stage_v2["props"][index]["x"]), float(_stage_v2["props"][index]["y"])) * area
 
 func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
 	_overlay.set_preview(next_speaker, text_value, id)

@@ -3,6 +3,7 @@ extends Control
 ## Editor-only overlay. 390x844 logical reference from project.godot; never exported to game saves.
 var reference_size: Vector2 = Vector2(390, 844)
 var show_safe: bool = false
+var focal: Vector2 = Vector2(0.5, 0.5)
 var show_grid: bool = false
 var show_vn: bool = false
 var speaker: String = ""
@@ -37,6 +38,10 @@ func _draw() -> void:
 		var margin: Vector2 = size * Vector2(0.05, 0.05)
 		draw_rect(Rect2(margin, size - margin * 2.0), Color(0.5, 0.91, 0.74, 0.68), false, 2.0)
 		draw_string(font, margin + Vector2(5, 14), "SAFE · editor guide", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.83, 1.0, 0.84))
+	# Persisted v2 focal is a guide, never a camera instruction to runtime.
+	var f: Vector2 = size * focal
+	draw_line(f - Vector2(9, 0), f + Vector2(9, 0), Color(0.98, 0.71, 0.33), 2)
+	draw_line(f - Vector2(0, 9), f + Vector2(0, 9), Color(0.98, 0.71, 0.33), 2)
 	if show_vn:
 		var h: float = size.y * 0.28
 		var top: float = size.y - h
