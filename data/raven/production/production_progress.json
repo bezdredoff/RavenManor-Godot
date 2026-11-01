@@ -8,13 +8,13 @@
       "status": "in_progress",
       "owner": "Codex",
       "updated": "2026-11-01",
-      "evidence": "Dependent branch code/vns5-02-asset-registry from VNS5-01 PR #93 head 0da7f4f. Read-only 20-background/4-character adapter and native library; targeted Godot negative/integrity smoke passed. Full CI/manual UI QA pending; no canonical source, draft or runtime mutation."
+      "evidence": "Corrected main-based branch code/vns5-02-asset-registry-main from b83c594 after PR #95 expanded the live catalog to 26 candidates. Adapter derives count from variantCount and validates 26 entries/4 character metadata records. Full CI/manual UI QA pending; no canonical source, draft or runtime mutation. Earlier PR #94 merged only into the closed VNS5-01 feature branch and did not reach main."
     },
     {
       "id": "VNS5-01",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-01",
-      "evidence": "PR #93 https://github.com/bezdredoff/RavenManor-Godot/pull/93. Branch from origin/main 11e87a9; four Raven workspaces and shared scene/line selection. Full Windows Godot 4.7.2 check.ps1 passed with isolated user data. CI/manual desktop QA pending; no v2 runtime or source mutation."
+      "evidence": "PR #93 merged to main at 89db6e9 on 2026-11-01; CI run 41333028998 passed. Four Raven workspaces and shared scene/line selection are merged. Manual desktop QA remains pending; no v2 runtime or source mutation."
     },
     {
       "id": "VNS5-00",

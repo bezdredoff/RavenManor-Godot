@@ -415,7 +415,7 @@
       "size": "M",
       "description": "Adapt actual Raven background variants and character metadata into a validated, searchable editor-only library without inventing assets or changing canonical catalogs.",
       "deliverable": "Read-only registry model, native library with category/status/orientation filters and A/B comparison, negative validation tests.",
-      "acceptance": "Exactly 20 background candidate records and 4 character metadata records from current main; 11 master groups, missing art and unregistered props explicit; duplicate ID, missing file and SHA drift detected; no source mutation.",
+      "acceptance": "All background candidate records from the live catalog (26 at baseline b83c594) and 4 character metadata records; 11 master groups, missing art and unregistered props explicit; duplicate ID, missing file and SHA drift detected; no source mutation.",
       "status": "proposed",
       "dependsOn": ["VNS5-01"],
       "graphicsDependencies": [],

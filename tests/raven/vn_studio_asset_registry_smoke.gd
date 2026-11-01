@@ -15,11 +15,14 @@ func _run() -> void:
 	var source_root: String = ProjectSettings.globalize_path("res://")
 	var background_path: String = source_root.path_join("data/raven/production/vn_background_catalog.json")
 	var original_sha: String = FileAccess.get_sha256(background_path)
+	var live_catalog: Dictionary = _read(source_root, Registry.BACKGROUNDS)
+	var expected_backgrounds: int = int(live_catalog.get("variantCount", -1))
+	assert(expected_backgrounds == live_catalog.get("entries", []).size())
 	var registry: Dictionary = Registry.open_project(source_root)
 	assert(registry.get("ok", false), str(registry.get("error", "")))
-	assert(registry["backgroundCount"] == 20 and registry["characterCount"] == 4)
+	assert(registry["backgroundCount"] == expected_backgrounds and registry["characterCount"] == 4)
 	assert(registry["propCount"] == 0 and registry["masterIds"].size() == 11)
-	assert(registry["records"].size() == 24)
+	assert(registry["records"].size() == expected_backgrounds + 4)
 	assert(registry["issues"].is_empty(), JSON.stringify(registry["issues"]))
 	var background_ids: Dictionary = {}
 	for record: Dictionary in registry["records"]:
@@ -30,7 +33,7 @@ func _run() -> void:
 		else:
 			assert(record["category"] == "character" and record["integrity"] == "art_unregistered")
 	var staging: Dictionary = _read(source_root, Registry.STAGING)
-	var catalog: Dictionary = _read(source_root, Registry.BACKGROUNDS)
+	var catalog: Dictionary = live_catalog
 	var cast: Dictionary = _read(source_root, Registry.CHARACTERS)
 	var duplicate: Dictionary = catalog.duplicate(true)
 	duplicate["entries"].append(duplicate["entries"][0].duplicate(true))
@@ -47,10 +50,10 @@ func _run() -> void:
 	assert(Registry.build(staging, escape, cast, source_root)["issues"].size() == 1)
 	var library := Library.new()
 	root.add_child(library)
-	assert(library._visible.size() == 24)
+	assert(library._visible.size() == expected_backgrounds + 4)
 	library._category.select(1)
 	library._refresh()
-	assert(library._visible.size() == 20)
+	assert(library._visible.size() == expected_backgrounds)
 	library._search.text = "BG-ROAD"
 	library._refresh()
 	assert(library._visible.size() == 1)
