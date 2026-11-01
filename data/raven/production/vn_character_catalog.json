@@ -90,7 +90,7 @@
         "generator": "Local ComfyUI / VNCCS + Qwen Image 2.1",
         "source": "RavenCast/FullBodyEmotions/Evelyn/Evelyn_neutral.png",
         "sourceSha256": "c60d74a920687e0f08711daf276661b3f73bfc1535e2aa9eceed7f679ce31349",
-        "sourceWorkflowSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceWorkflowSha256": null,
         "export": "lossless WebP; decoded RGBA exactly equals source PNG",
         "sha256": "d310b148ce1dc43e545d9c7e96a3c5eeac5b4e6339b7628335c49917758262fb"
       },
@@ -205,7 +205,7 @@
         "generator": "Local ComfyUI / VNCCS + Qwen Image 2.1",
         "source": "RavenCast/FullBodyEmotions/Ada/Ada_neutral.png",
         "sourceSha256": "4ac4cdf2d13a680f9f4b84fa63e558b4ef8db7d5b57cee856298e87ef45ed508",
-        "sourceWorkflowSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceWorkflowSha256": null,
         "export": "lossless WebP; decoded RGBA exactly equals source PNG",
         "sha256": "c34b8314ebc7796a161a5dfc7c18a767433458db0573a9861ac0b2ff1a2cf106"
       },
@@ -320,7 +320,7 @@
         "generator": "Local ComfyUI / VNCCS + Qwen Image 2.1",
         "source": "RavenCast/FullBodyEmotions/Lucas/Lucas_neutral.png",
         "sourceSha256": "fb3114676e16ebb070f31a148be0d7402abffcdd80bff66c314247dc7d8e3325",
-        "sourceWorkflowSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceWorkflowSha256": null,
         "export": "lossless WebP; decoded RGBA exactly equals source PNG",
         "sha256": "a4c6e16eaa42b4eb1309c2d6eab16026e4a84f6033678b14b41f7de6bddf64c5"
       },
@@ -504,7 +504,7 @@
         "generator": "Local ComfyUI / VNCCS + Qwen Image 2.1",
         "source": "RavenCast/FullBodyEmotions/Rowan/Rowan_neutral.png",
         "sourceSha256": "06e89dbef7f92f06fe8396da725cbb1d77e296e8b08fe74ef066c4f4ce528302",
-        "sourceWorkflowSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sourceWorkflowSha256": null,
         "export": "lossless WebP; decoded RGBA exactly equals source PNG",
         "sha256": "0bd67c2de3fb0e82ed1d9b4eb82f25fd08c6807254e877f217e0965128ecc239"
       },
