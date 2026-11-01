@@ -408,6 +408,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-04B",
+      "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Store orientation, contain/cover, normalized focal, staged-prop instance ID/state/position/scale/z and character z in versioned draft stageV2Patches; old v1 stage and game runtime unchanged. Prop references must be project-scoped staged asset IDs or explicit ART PENDING, never arbitrary paths. Separate read-only no-overwrite review export; no automatic promotion.",
+      "deliverable": "stage_v2_store.gd, Raven Story Store/View integration, StageDesigner prop controls & focal overlay, safety negative and serialization smoke tests, docs; follow-up runtime adapter/review gate separate.",
+      "acceptance": "Owner verifies portrait/landscape saved/reopened, contain/cover/focal, adding/removing props, staged prop image previews vs ART PENDING, clean/dirty/broken, actor and prop z-order and normalized prop drag/scale. Invalid instance IDs/path traversal/NaN/duplicate/reparse and source SHA drift blocked; v1 draft/source unchanged; v1 export refuses to silently drop v2. CI and manual 800/1024/1366 desktop QA; explicit review before migration/runtime.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-04A",
+        "VNS5-03"
+      ],
+      "graphicsDependencies": [],
+      "source": "VN Studio v5 2026-11-01 handoff docs 04_DATA_CONTRACTS/05_EXECUTION_PLAN and owner follow-up after PR #101",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04A",
       "title": "VN Studio v5: orientation-aware editor stage, actor templates and local undo",
       "domain": "narrative",
