@@ -408,6 +408,23 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-03",
+      "title": "VN Studio v5: staged raster image import and metadata editing",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Editor-only multi-file PNG/JPEG/WebP decode, SHA/dimensions/alpha, scoped versioned user:// staging, metadata drafts, duplicate/collision/path validation and separately reviewable no-overwrite candidate export. No res:// writes/promotion or VNS5-04 composition.",
+      "deliverable": "addons/vn_studio/model/staged_image_store.gd, native Asset Library import/editor controls, synthetic Godot safety smoke, rollback/QA docs.",
+      "acceptance": "Two portrait + two landscape images; valid PNG/JPEG/WebP; duplicate SHA and filename collision; unsafe path/SVG/fake bytes/oversize rejected; manifest reopened and source SHA drift blocked; no-overwrite candidate export requires provenance+license; canonical production content, original backgrounds and saves unchanged; visual desktop QA remains owner gate.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-02"
+      ],
+      "graphicsDependencies": [],
+      "source": "Raven VN Studio Godot Handoff v5 + VNS5_03_IMPLEMENTATION_BRIEF_RU, 2026-11-01",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-02",
       "title": "VN Studio v5: read-only Raven asset registry and library",
       "domain": "narrative",
@@ -417,7 +434,9 @@
       "deliverable": "Read-only registry model, native library with category/status/orientation filters and A/B comparison, negative validation tests.",
       "acceptance": "All background candidate records from the live catalog (26 at baseline b83c594) and 4 character metadata records; 11 master groups, missing art and unregistered props explicit; duplicate ID, missing file and SHA drift detected; no source mutation.",
       "status": "proposed",
-      "dependsOn": ["VNS5-01"],
+      "dependsOn": [
+        "VNS5-01"
+      ],
       "graphicsDependencies": [],
       "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 02",
       "requiresHumanAcceptance": true
@@ -432,7 +451,9 @@
       "deliverable": "Native Godot workspace shell, read-only contextual panes, sticky draft actions, layout persistence and UI smoke tests.",
       "acceptance": "Four workspaces retain selected scene/line; old Raven and UPDS controls remain accessible at narrow/short editor sizes; pane width persists in editor settings; no gameplay or save schema change.",
       "status": "proposed",
-      "dependsOn": ["VNS5-00"],
+      "dependsOn": [
+        "VNS5-00"
+      ],
       "graphicsDependencies": [],
       "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 01",
       "requiresHumanAcceptance": true
@@ -447,7 +468,11 @@
       "deliverable": "Read-only contract audit, synthetic negative tests and reviewable compatibility decision document.",
       "acceptance": "Exact Raven source counts and stable IDs; source hashes; old draft smoke; no production source or save mutation; independent donor runtime parity remains a separate gate.",
       "status": "proposed",
-      "dependsOn": ["RAVEN-VN-EDITOR-01", "RAVEN-VN-EDITOR-02", "RAVEN-VN-EDITOR-03"],
+      "dependsOn": [
+        "RAVEN-VN-EDITOR-01",
+        "RAVEN-VN-EDITOR-02",
+        "RAVEN-VN-EDITOR-03"
+      ],
       "graphicsDependencies": [],
       "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 00",
       "requiresHumanAcceptance": true
