@@ -91,6 +91,7 @@ Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path'
 
 Invoke-GodotCheck 'VN background catalog / gallery' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_background_gallery_smoke.gd', '--quit-after', '120') 'Raven VN background registry and 9 textures PASS'
 Invoke-GodotCheck 'VN Studio responsive layout' @('--headless', '--editor', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_layout_smoke.gd', '--quit-after', '120') 'Raven VN Studio responsive layout smoke passed'
+Invoke-GodotCheck 'VN Studio asset registry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_asset_registry_smoke.gd', '--quit-after', '120') 'Raven VN Studio asset registry read-only smoke passed'
 Invoke-GodotCheck 'VN Studio background-state preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_backgrounds_smoke.gd', '--quit-after', '120') 'Raven VN Studio background-state preview smoke passed'
 Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
 Invoke-GodotCheck 'Live Raven VN gameplay backgrounds' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_runtime_background_smoke.gd', '--quit-after', '240') 'Raven live VN background compositor passed'

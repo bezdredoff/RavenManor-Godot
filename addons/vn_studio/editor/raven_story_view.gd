@@ -3,7 +3,7 @@ extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
-const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
 const LOCALES := ["ru", "be", "en"]
 const PANE_SETTING := "vn_studio/raven_scene_pane_width"
 
@@ -40,6 +40,7 @@ var _undo_button: Button
 var _redo_button: Button
 var _workspace_tabs: TabContainer
 var _context_views: Array[RichTextLabel] = []
+var _asset_library: Control
 var _panel_split: HSplitContainer
 
 
@@ -219,7 +220,15 @@ func _build() -> void:
 	_preview.custom_minimum_size.y = 140
 	_preview.bbcode_enabled = false
 	stage_contents.add_child(_preview)
-	for title in ["Asset Library", "Story Map", "Animation"]:
+	var library_scroll := ScrollContainer.new()
+	library_scroll.name = "Asset Library"
+	library_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	library_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_workspace_tabs.add_child(library_scroll)
+	_asset_library = AssetLibrary.new()
+	_asset_library.custom_minimum_size.x = 230
+	library_scroll.add_child(_asset_library)
+	for title in ["Story Map", "Animation"]:
 		var context_scroll := ScrollContainer.new()
 		context_scroll.name = title
 		context_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -341,25 +350,18 @@ func selected_context() -> Dictionary:
 
 
 func _refresh_context() -> void:
-	if _context_views.size() != 3 or _project.is_empty():
+	if _context_views.size() != 2 or _project.is_empty():
 		return
 	var scene: Dictionary = _project["scenes"][_scene_idx]
 	var scene_id: String = str(scene["sceneId"])
-	var shot: Dictionary = Store.effective_stage(_project, _draft, scene_id)
-	var bg_id: String = str(shot.get("backgroundId", ""))
-	var lighting: String = str(shot.get("lighting", ""))
-	var room_state: String = str(shot.get("roomState", ""))
-	var background: Dictionary = VNBackgrounds.entry_for(bg_id, lighting, room_state)
-	_context_views[0].text = "Asset Library · %s\n\nФон: %s · %s · %s\n%s\n\nАктёры постановки: %d\nКаталог содержит %d реально зарегистрированных вариантов. Редактирование каталога — VNS5-02/03." % [
-		scene_id, bg_id, lighting, room_state,
-		str(background.get("path", "ART PENDING")), shot.get("cast", []).size(), VNBackgrounds.all_entries().size()]
+	_asset_library.set_scene_context(scene_id)
 	var trigger: Dictionary = _project["routes"].get(scene_id, {})
-	_context_views[1].text = "Story Map · %s\n\nТекущий trigger: %s\nПосле сцены: %s\n\nПереходы только для просмотра; редактирование графа — VNS5-06." % [
+	_context_views[0].text = "Story Map · %s\n\nТекущий trigger: %s\nПосле сцены: %s\n\nПереходы только для просмотра; редактирование графа — VNS5-06." % [
 		scene_id, JSON.stringify(trigger.get("gate", {})), str(trigger.get("postSceneAction", ""))]
 	var entry: Dictionary = _current_entry()
 	var line_id: String = str(entry.get("id", ""))
 	var cue: Dictionary = _project["cues"].get(line_id, {})
-	_context_views[2].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
+	_context_views[1].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
 		line_id, str(cue.get("poseId", "—")), str(cue.get("emotionId", "—")), str(cue.get("microOnEnter", "—"))]
 
 
