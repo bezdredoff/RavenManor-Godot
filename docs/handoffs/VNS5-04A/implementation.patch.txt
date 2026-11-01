@@ -1,0 +1,512 @@
+diff --git a/addons/vn_studio/model/stage_layout_tools.gd b/addons/vn_studio/model/stage_layout_tools.gd
+new file mode 100644
+--- /dev/null
++++ b/addons/vn_studio/model/stage_layout_tools.gd
+@@ -0,0 +1,60 @@
++@tool
++extends RefCounted
++## VNS5-04A: editor-only, pure orientation math and reversible arrangement presets.
++## Nothing here changes runtime portrait composition or the Raven save schema.
++const PORTRAIT := "portrait"
++const LANDSCAPE := "landscape"
++const PORTRAIT_SIZE := Vector2(390, 844)
++const LANDSCAPE_SIZE := Vector2(844, 390)
++
++
++static func reference_size(orientation: String) -> Vector2:
++	return LANDSCAPE_SIZE if orientation == LANDSCAPE else PORTRAIT_SIZE
++
++
++static func actor_size(view: Vector2, count: int) -> Vector2:
++	# A separate editor layout for horizontal VN shots. Portrait delegates to
++	# Raven's exact shared gameplay layout in the stage designer.
++	return view * Vector2(0.29 if count >= 3 else 0.36, 0.92)
++
++
++static func landscape_position(view: Vector2, count: int, coords: Vector2) -> Vector2:
++	var remaining: Vector2 = (view - actor_size(view, count)).max(Vector2.ZERO)
++	return Vector2(clampf(coords.x, 0.0, 1.0), clampf(coords.y, 0.0, 1.0)) * remaining
++
++
++static func landscape_normalized(view: Vector2, count: int, position: Vector2) -> Vector2:
++	var remaining: Vector2 = (view - actor_size(view, count)).max(Vector2.ONE)
++	return Vector2(clampf(position.x / remaining.x, 0.0, 1.0), clampf(position.y / remaining.y, 0.0, 1.0))
++
++
++static func template_points(count: int, orientation: String) -> Array:
++	# Values are normalized into the actor's allowed motion range, not pixels.
++	# A preset is applied only after the user clicks the explicit action.
++	if count < 1 or count > 3:
++		return []
++	if orientation == LANDSCAPE:
++		match count:
++			1: return [Vector2(0.5, 0.7)]
++			2: return [Vector2(0.17, 0.6), Vector2(0.83, 0.6)]
++			3: return [Vector2(0.03, 0.72), Vector2(0.5, 0.45), Vector2(0.97, 0.72)]
++	match count:
++		1: return [Vector2(0.5, 0.55)]
++		2: return [Vector2(0.12, 0.58), Vector2(0.88, 0.58)]
++		3: return [Vector2(0.03, 0.63), Vector2(0.5, 0.43), Vector2(0.97, 0.63)]
++	return []
++
++
++static func apply_template(original: Dictionary, orientation: String) -> Dictionary:
++	var result: Dictionary = original.duplicate(true)
++	var cast: Array = result.get("cast", [])
++	var points: Array = template_points(cast.size(), orientation)
++	if points.is_empty():
++		return result
++	for i in range(cast.size()):
++		# Stage v1 explicitly permits these three fields; keep IDs, images,
++		# emotions, costumes, source shots and all other keys untouched.
++		cast[i]["slot"] = "center" if cast.size() == 1 or (cast.size() == 3 and i == 1) else "left" if i == 0 else "right"
++		cast[i]["x"] = points[i].x
++		cast[i]["y"] = points[i].y
++	return result
+diff --git a/addons/vn_studio/editor/raven_stage_designer.gd b/addons/vn_studio/editor/raven_stage_designer.gd
+--- a/addons/vn_studio/editor/raven_stage_designer.gd
++++ b/addons/vn_studio/editor/raven_stage_designer.gd
+@@ -9,6 +9,7 @@
+ const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
+ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+ const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
++const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
+ const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
+ const REFERENCE_SIZE := Vector2(390, 844)
+ # Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
+@@ -36,6 +37,14 @@
+ var _placeholders: Label
+ var _cards: Array[Button] = []
+ var _overlay: Control
++var _orientation: OptionButton
++var _bg_fit: OptionButton
++var _safe_toggle: CheckBox
++var _template_button: Button
++var _undo_button: Button
++var _preview_orientation: String = "portrait"
++var _undo_stages: Array[Dictionary] = []
++var _committed_stage: Dictionary = {}
+ var _grid_toggle: CheckBox
+ var _vn_toggle: CheckBox
+ var _portrait_scale: HSlider
+@@ -119,6 +128,33 @@
+ 
+ 	var options_row := HFlowContainer.new()
+ 	add_child(options_row)
++	_orientation = OptionButton.new()
++	_orientation.add_item("Портрет · 390×844")
++	_orientation.add_item("Альбом · 844×390")
++	_orientation.tooltip_text = "Ориентация preview — editor-only; не меняет текущую схему VN staging v1"
++	_orientation.item_selected.connect(_on_orientation)
++	options_row.add_child(_orientation)
++	_bg_fit = OptionButton.new()
++	_bg_fit.add_item("Фон: cover")
++	_bg_fit.add_item("Фон: fit")
++	_bg_fit.tooltip_text = "Только способ просмотра картинки, не новая генерация и не сохранённый crop"
++	_bg_fit.item_selected.connect(_on_background_fit)
++	options_row.add_child(_bg_fit)
++	_template_button = Button.new()
++	_template_button.text = "Шаблон 1/2/3"
++	_template_button.tooltip_text = "Применить шаблон для текущего количества персонажей; изменяет черновик, поддерживает отмену"
++	_template_button.pressed.connect(_on_template)
++	options_row.add_child(_template_button)
++	_undo_button = Button.new()
++	_undo_button.text = "Отменить постановку"
++	_undo_button.tooltip_text = "Отмена последних изменений stage в этой сцене (до 32 шагов)"
++	_undo_button.pressed.connect(_on_undo)
++	_undo_button.disabled = true
++	options_row.add_child(_undo_button)
++	_safe_toggle = CheckBox.new()
++	_safe_toggle.text = "Safe area"
++	_safe_toggle.toggled.connect(_on_safe_toggle)
++	options_row.add_child(_safe_toggle)
+ 	_grid_toggle = CheckBox.new()
+ 	_grid_toggle.text = "Сетка (px)"
+ 	_grid_toggle.toggled.connect(_on_grid_toggle)
+@@ -174,7 +210,10 @@
+ 	_selected_actor = -1
+ 	if not bool(project.get("ok", false)):
+ 		return
++	if str(_stage_data.get("sceneId", "")) != id:
++		_undo_stages.clear()
+ 	_stage_data = Store.effective_stage(project, draft, id)
++	_committed_stage = _stage_data.duplicate(true)
+ 	_reload()
+ 
+ 
+@@ -210,6 +249,8 @@
+ 			_new_actor.add_item(str(candidate).trim_prefix("RM-CHAR-"))
+ 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
+ 	_remove.disabled = _selected_actor < 0
++	_template_button.disabled = cast.is_empty()
++	_undo_button.disabled = _undo_stages.is_empty()
+ 	_suppress = false
+ 	_draw_stage()
+ 
+@@ -300,8 +341,8 @@
+ 		_cards.append(card)
+ 	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
+ 	_layout_cards()
+-	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
+-		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size()]
++	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
++		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
+ 	if missing_expressions > 0:
+ 		_status.text += " Для %d персонажей точная эмоция в этой позе ещё не создана: показан нейтральный вариант." % missing_expressions
+ 
+@@ -359,7 +400,7 @@
+ 	_bg_image.size = _canvas.size
+ 	_placeholders.size = Vector2(_canvas.size.x, 28)
+ 	_overlay.size = _canvas.size
+-	_card_size = PortraitLayout.actor_size(_canvas.size, _cards.size())
++	_card_size = StageLayout.actor_size(_canvas.size, _cards.size()) if _preview_orientation == StageLayout.LANDSCAPE else PortraitLayout.actor_size(_canvas.size, _cards.size())
+ 	for i in range(_cards.size()):
+ 		_cards[i].custom_minimum_size = _card_size
+ 		_cards[i].size = _card_size
+@@ -370,10 +411,14 @@
+ 
+ 
+ func _position_for(normalized: Vector2) -> Vector2:
++	if _preview_orientation == StageLayout.LANDSCAPE:
++		return StageLayout.landscape_position(_canvas.size, _cards.size(), normalized)
+ 	return PortraitLayout.position_for(_canvas.size, _cards.size(), normalized)
+ 
+ 
+ func _normalize_position(position: Vector2) -> Vector2:
++	if _preview_orientation == StageLayout.LANDSCAPE:
++		return StageLayout.landscape_normalized(_canvas.size, _cards.size(), position)
+ 	return PortraitLayout.normalize_position(_canvas.size, _cards.size(), position)
+ 
+ 
+@@ -394,9 +439,10 @@
+ 		_stage_data["cast"][index]["x"] = snappedf(coords.x, 0.001)
+ 		_stage_data["cast"][index]["y"] = snappedf(coords.y, 0.001)
+ 		_cards[index].position = _position_for(coords)
+-		_status.text = "%s · x=%d px, y=%d px (390×844 reference)" % [
++		var reference: Vector2 = StageLayout.reference_size(_preview_orientation)
++		_status.text = "%s · x=%d px, y=%d px (%d×%d preview)" % [
+ 			str(_stage_data["cast"][index]["characterId"]),
+-			roundi(coords.x * REFERENCE_SIZE.x), roundi(coords.y * REFERENCE_SIZE.y)]
++			roundi(coords.x * reference.x), roundi(coords.y * reference.y), roundi(reference.x), roundi(reference.y)]
+ 
+ 
+ func _on_background(index: int) -> void:
+@@ -484,9 +530,58 @@
+ 	var error: String = Store.validate_stage(_project, _stage_data)
+ 	if not error.is_empty():
+ 		_status.text = "Постановка заблокирована: " + error
+-		return
++		_stage_data = _committed_stage.duplicate(true)
++		_reload()
++		return
++	if _stage_data == _committed_stage:
++		_reload()
++		return
++	_undo_stages.append(_committed_stage.duplicate(true))
++	if _undo_stages.size() > 32:
++		_undo_stages.remove_at(0)
++	_committed_stage = _stage_data.duplicate(true)
+ 	stage_modified.emit(_stage_data.duplicate(true))
+ 	_reload()
++
++
++func _on_undo() -> void:
++	if _undo_stages.is_empty():
++		return
++	var previous: Dictionary = _undo_stages.pop_back()
++	if not Store.validate_stage(_project, previous).is_empty():
++		_undo_stages.clear()
++		_status.text = "Undo остановлен: исходный проект изменился."
++		return
++	_stage_data = previous.duplicate(true)
++	_committed_stage = previous.duplicate(true)
++	stage_modified.emit(previous.duplicate(true))
++	_reload()
++
++
++func _on_template() -> void:
++	if _stage_data.is_empty() or _stage_data.get("cast", []).is_empty():
++		return
++	_stage_data = StageLayout.apply_template(_stage_data, _preview_orientation)
++	_commit()
++
++
++func _on_orientation(index: int) -> void:
++	if index < 0:
++		return
++	_preview_orientation = StageLayout.LANDSCAPE if index == 1 else StageLayout.PORTRAIT
++	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
++	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
++	_overlay.queue_redraw()
++	_layout_cards()
++
++
++func _on_background_fit(index: int) -> void:
++	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if index == 1 else TextureRect.STRETCH_KEEP_ASPECT_COVERED
++
++
++func _on_safe_toggle(value: bool) -> void:
++	_overlay.show_safe = value
++	_overlay.queue_redraw()
+ 
+ func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
+ 	_overlay.set_preview(next_speaker, text_value, id)
+diff --git a/addons/vn_studio/editor/raven_stage_overlay.gd b/addons/vn_studio/editor/raven_stage_overlay.gd
+--- a/addons/vn_studio/editor/raven_stage_overlay.gd
++++ b/addons/vn_studio/editor/raven_stage_overlay.gd
+@@ -1,7 +1,8 @@
+ @tool
+ extends Control
+ ## Editor-only overlay. 390x844 logical reference from project.godot; never exported to game saves.
+-const REFERENCE := Vector2(390, 844)
++var reference_size: Vector2 = Vector2(390, 844)
++var show_safe: bool = false
+ var show_grid: bool = false
+ var show_vn: bool = false
+ var speaker: String = ""
+@@ -23,15 +24,19 @@
+ 	var font: Font = ThemeDB.fallback_font
+ 	if show_grid:
+ 		var grid_color := Color(0.92, 0.90, 0.75, 0.29)
+-		for x in range(0, 391, 65):
+-			var px: float = size.x * float(x) / REFERENCE.x
++		for x in range(0, int(reference_size.x) + 1, 65):
++			var px: float = size.x * float(x) / reference_size.x
+ 			draw_line(Vector2(px, 0), Vector2(px, size.y), grid_color, 1.0)
+ 			draw_string(font, Vector2(px + 3, 14), str(x), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
+-		for y in range(0, 845, 100):
+-			var py: float = size.y * float(y) / REFERENCE.y
++		for y in range(0, int(reference_size.y) + 1, 65):
++			var py: float = size.y * float(y) / reference_size.y
+ 			draw_line(Vector2(0, py), Vector2(size.x, py), grid_color, 1.0)
+ 			draw_string(font, Vector2(3, py + 12), str(y), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
+-		draw_string(font, Vector2(7, size.y - 7), "390 x 844 logical px", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
++		draw_string(font, Vector2(7, size.y - 7), "%d x %d logical px" % [int(reference_size.x), int(reference_size.y)], HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
++	if show_safe:
++		var margin: Vector2 = size * Vector2(0.05, 0.05)
++		draw_rect(Rect2(margin, size - margin * 2.0), Color(0.5, 0.91, 0.74, 0.68), false, 2.0)
++		draw_string(font, margin + Vector2(5, 14), "SAFE · editor guide", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.83, 1.0, 0.84))
+ 	if show_vn:
+ 		var h: float = size.y * 0.28
+ 		var top: float = size.y - h
+diff --git a/tests/raven/vn_studio_stage_orientation_smoke.gd b/tests/raven/vn_studio_stage_orientation_smoke.gd
+new file mode 100644
+--- /dev/null
++++ b/tests/raven/vn_studio_stage_orientation_smoke.gd
+@@ -0,0 +1,93 @@
++extends SceneTree
++## VNS5-04A — headless, source-immutable native stage orientation/templates/undo smoke.
++const Layout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
++const Studio = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
++const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
++
++
++func _initialize() -> void:
++	call_deferred("_run")
++
++
++func _sample(count: int) -> Dictionary:
++	var cast: Array = []
++	for i in range(count):
++		cast.append({"characterId": "RM-CHAR-EXAMPLE-%d" % i, "slot": "center", "pose": "neutral", "emotion": "neutral", "x": 0.27, "y": 0.64, "assetId": "keep-%d" % i})
++	return {"sceneId": "RM-SYNTHETIC", "cast": cast, "visibleCount": count, "backgroundId": "BG-HALL"}
++
++
++func _run() -> void:
++	assert(Layout.reference_size("portrait") == Vector2(390, 844))
++	assert(Layout.reference_size("landscape") == Vector2(844, 390))
++	assert(Layout.reference_size("unknown") == Vector2(390, 844))
++	for orientation in ["portrait", "landscape"]:
++		for count in [1, 2, 3]:
++			var original: Dictionary = _sample(count)
++			var before: Dictionary = original.duplicate(true)
++			var next: Dictionary = Layout.apply_template(original, orientation)
++			assert(original == before, "Template must not mutate caller data")
++			assert(next["sceneId"] == before["sceneId"] and next["backgroundId"] == before["backgroundId"])
++			assert(next["cast"].size() == count and next["visibleCount"] == count)
++			assert(next["cast"][0]["assetId"] == before["cast"][0]["assetId"])
++			for actor: Dictionary in next["cast"]:
++				assert(float(actor["x"]) >= 0.0 and float(actor["x"]) <= 1.0)
++				assert(float(actor["y"]) >= 0.0 and float(actor["y"]) <= 1.0)
++		assert(Layout.template_points(0, orientation).is_empty())
++		assert(Layout.template_points(4, orientation).is_empty())
++	var view := Vector2(844, 390)
++	for count in [1, 2, 3]:
++		for x in [0.0, 0.15, 0.5, 0.85, 1.0]:
++			var original := Vector2(x, 0.7)
++			var pixels: Vector2 = Layout.landscape_position(view, count, original)
++			var restored: Vector2 = Layout.landscape_normalized(view, count, pixels)
++			assert(restored.distance_to(original) < 0.0001, "Normalized landscape coordinates must roundtrip")
++			assert(pixels.x >= 0 and pixels.y >= 0)
++			assert(pixels.x + Layout.actor_size(view, count).x <= view.x + 0.01)
++
++	var root_path: String = ProjectSettings.globalize_path("res://")
++	var production_path: String = root_path.path_join(Store.STAGING)
++	var original_sha: String = FileAccess.get_sha256(production_path)
++	var project: Dictionary = Store.open_project(root_path)
++	assert(project.get("ok", false), str(project.get("error", "")))
++	var scene_id: String = str(project["shots"].keys()[0])
++	var ui := Studio.new()
++	root.add_child(ui)
++	ui.set_scene(project, {}, scene_id)
++	assert(ui._canvas.custom_minimum_size == Vector2(390, 844))
++	ui._on_orientation(1)
++	assert(ui._preview_orientation == "landscape")
++	assert(ui._canvas.custom_minimum_size == Vector2(844, 390))
++	assert(ui._overlay.reference_size == Vector2(844, 390))
++	ui._on_background_fit(1)
++	assert(ui._bg_image.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
++	ui._on_safe_toggle(true)
++	assert(ui._overlay.show_safe)
++	ui._on_orientation(0)
++	assert(ui._canvas.custom_minimum_size == Vector2(390, 844))
++	assert(ui._stage_data == Store.effective_stage(project, {}, scene_id), "Preview mode must never modify source draft")
++	var spec: Dictionary = Store.stage_options(project)["actors"]
++	var ids: Array = spec.keys()
++	assert(ids.size() >= 2)
++	var stage: Dictionary = Store.effective_stage(project, {}, scene_id)
++	var two: Array = []
++	for i in [0, 1]:
++		var id: String = str(ids[i])
++		two.append({"characterId": id, "slot": "center", "pose": str(spec[id]["poses"][0]),
++			"emotion": str(spec[id]["emotions"][0]), "micro": "", "x": 0.5, "y": 0.5})
++	stage["cast"] = two
++	stage["visibleCount"] = 2
++	assert(Store.validate_stage(project, stage).is_empty(), "Synthetic pair must be legal stage-v1")
++	ui._stage_data = stage.duplicate(true)
++	ui._committed_stage = stage.duplicate(true)
++	ui._reload()
++	ui._on_template()
++	assert(ui._undo_stages.size() == 1)
++	assert(ui._stage_data != stage)
++	assert(Store.validate_stage(project, ui._stage_data).is_empty())
++	ui._on_undo()
++	assert(ui._stage_data == stage)
++	assert(ui._undo_stages.is_empty())
++	assert(FileAccess.get_sha256(production_path) == original_sha)
++	ui.queue_free()
++	print("Raven VN Studio VNS5-04A orientation/template/undo smoke passed")
++	quit()
+diff --git a/check.ps1 b/check.ps1
+--- a/check.ps1
++++ b/check.ps1
+@@ -93,6 +93,7 @@
+ Invoke-GodotCheck 'VN Studio responsive layout' @('--headless', '--editor', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_layout_smoke.gd', '--quit-after', '120') 'Raven VN Studio responsive layout smoke passed'
+ Invoke-GodotCheck 'VN Studio asset registry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_asset_registry_smoke.gd', '--quit-after', '120') 'Raven VN Studio asset registry read-only smoke passed'
+ Invoke-GodotCheck 'VN Studio staged image import safety' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_staged_image_smoke.gd', '--quit-after', '120') 'Raven VN Studio staged image import safety read-only smoke passed'
++Invoke-GodotCheck 'VN Studio orientation/templates/undo' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_orientation_smoke.gd', '--quit-after', '180') 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed'
+ Invoke-GodotCheck 'VN Studio background-state preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_backgrounds_smoke.gd', '--quit-after', '120') 'Raven VN Studio background-state preview smoke passed'
+ Invoke-GodotCheck 'Approved character art integration' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_character_art_smoke.gd', '--quit-after', '240') 'Raven approved character art smoke passed'
+ Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
+diff --git a/scripts/check.sh b/scripts/check.sh
+--- a/scripts/check.sh
++++ b/scripts/check.sh
+@@ -64,6 +64,7 @@
+ run_check 'VN Studio responsive layout' 'Raven VN Studio responsive layout smoke passed' --editor --script res://tests/raven/vn_studio_layout_smoke.gd --quit-after 120
+ run_check 'VN Studio asset registry' 'Raven VN Studio asset registry read-only smoke passed' --script res://tests/raven/vn_studio_asset_registry_smoke.gd --quit-after 120
+ run_check 'VN Studio staged image import safety' 'Raven VN Studio staged image import safety smoke passed' --script res://tests/raven/vn_studio_staged_image_smoke.gd --quit-after 120
++run_check 'VN Studio orientation/templates/undo' 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed' --script res://tests/raven/vn_studio_stage_orientation_smoke.gd --quit-after 180
+ run_check 'VN Studio background-state preview' 'Raven VN Studio background-state preview smoke passed' --script res://tests/raven/vn_studio_backgrounds_smoke.gd --quit-after 120
+ run_check 'Approved character art integration' 'Raven approved character art smoke passed' --script res://tests/raven/vn_character_art_smoke.gd --quit-after 240
+ run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
+diff --git a/docs/STATUS.md b/docs/STATUS.md
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -369,4 +369,11 @@
+ 
+ [VNS5-02 PR #96](https://github.com/bezdredoff/RavenManor-Godot/pull/96) **merged** at `0a94636e3a7af5aa897e39b7c82ece6b4e6e5943`; CI run `41338354945` passed. This corrects its obsolete `PR_review` progress entry, not its art/desktop acceptance. The live registry has 26 background candidates, 11 planned masters (10 represented families), 4 character metadata records and 0 registered props at that baseline. PR #97 subsequently added 62 owner-accepted character image records; all 26 backgrounds remain candidates. Rights for the earlier unapproved backgrounds remain `not_recorded`.
+ 
+-VNS5-03 adds an **editor-only** multi-file PNG/JPEG/WebP staging proposal under per-project `user://raven_vn_asset_staging/v1/<sha256-of-absolute-project-root>/`. Local metadata drafts and deterministic no-overwrite review candidates are separate from Raven source catalogs, runtime and saves. Export requires provenance and license. No `res://` writes, review promotion, VNS5-04 compositor, story topology or gameplay state changes are part of this task. **The implementation is open as Draft [PR #99](https://github.com/bezdredoff/RavenManor-Godot/pull/99), based on main `8313a109b708e0ae244f5516d9a80d952bcd508f` after PR #97. The first Godot CI run `41344733408` failed because PackedByteArray does not expose `sha256_text()`; commit `217ddbdd` switches to HashingContext. The corrected code head `b30c45d` passed Godot/Raven/Web CI in [run 41345093030](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41345093030); latest documentation-only head recheck and manual Godot Editor QA remain open. Nothing here is merged or feature-accepted.**
++VNS5-03 adds an **editor-only** multi-file PNG/JPEG/WebP staging proposal under per-project `user://raven_vn_asset_staging/v1/<sha256-of-absolute-project-root>/`. Local metadata drafts and deterministic no-overwrite review candidates are separate from Raven source catalogs, runtime and saves. Export requires provenance and license. No `res://` writes, review promotion, VNS5-04 compositor, story topology or gameplay state changes are part of this task. **Historical build evidence:** [PR #99](https://github.com/bezdredoff/RavenManor-Godot/pull/99) initially failed run `41344733408` because `PackedByteArray.sha256_text()` is unavailable, then used `HashingContext`; a subsequent headless UI failure was fixed by replacing `EditorFileDialog` with `FileDialog`. The final head passed [CI 41345448978](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41345448978) and PR #99 **merged** to main at `ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd`. Owner desktop QA remains open, so this is not feature-accepted.**
++
++
++## 2026-11-01 — VNS5-03 merged; VNS5-04A stage orientation/template handoff
++
++[VNS5-03 PR #99](https://github.com/bezdredoff/RavenManor-Godot/pull/99) merged to `main` at `ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd`; last-head Godot/Raven/Web CI [41345448978](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41345448978) passed. **Merged does not mean owner-accepted**: Windows Godot interactive UX, 800/1024/1366-wide views, import provenance and Windows reparse-point negatives still need explicit verification. PR #98 was a safe incoming handoff, not implementation and must not be merged.
++
++Next work item **VNS5-04A** is a narrowly scoped editor-only pilot: 390×844 portrait and 844×390 landscape preview, background fit/cover toggle, normalized actor positioning, explicit 1/2/3 arrangement presets, safe-area/grid/HUD guides and reversible editor-session Undo for stage draft changes. It is built against the existing Raven stage-v1 `cast` coordinates; it must not add unsupported keys into `vn_staging.json`, rewrite 28 scenes/280 lines, mutate `rm_vs_01_content.json`, existing saves, or alter the runtime portrait layout. Orientation, background fit and safe guides are **preview controls, not persisted as production scene orientation or focal settings**. VNS5-04B is pending schema agreement for scene orientation, focal, prop instances/z-order and project-wide undo/migration; do not claim those features shipped. This ZIP is a handoff proposal; GitHub implementation PR, Godot 4.7.2 CI and owner desktop QA are still pending.
+diff --git a/data/raven/production/production_progress.json b/data/raven/production/production_progress.json
+--- a/data/raven/production/production_progress.json
++++ b/data/raven/production/production_progress.json
+@@ -4,11 +4,18 @@
+   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
+   "entries": [
+     {
++      "id": "VNS5-04A",
++      "status": "in_progress",
++      "owner": "ChatGPT",
++      "updated": "2026-11-01",
++      "evidence": "Next scoped Godot Editor stage orientation/template pilot based on main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd. Offline source patch prepared; no Godot 4.7.2/local desktop QA or PR CI executed. Orientation/fit are preview-only (not persisted to stage v1); applying templates persists valid actor x/y in draft stagePatches, Undo is editor session-local. Props, z-order and focal anchor not implemented: require agreed stage-v2 schema in VNS5-04B. Incoming ZIP is handoff, not implementation PR, and must not be merged as accepted code."
++    },
++    {
+       "id": "VNS5-03",
+-      "status": "PR_review",
+-      "owner": "ChatGPT",
+-      "updated": "2026-11-01",
+-      "evidence": "Draft implementation PR #99 https://github.com/bezdredoff/RavenManor-Godot/pull/99 targets main 8313a109 after merged PR #97 (62 accepted character image records). Native staged PNG/JPEG/WebP import, metadata drafts, source catalog locks, duplicate/hash/path gates, local review export and focused Godot smoke committed. Initial CI run 41344733408 failed on PackedByteArray.sha256_text; later CI found EditorFileDialog not headless-safe. Both fixed in code commits 217ddbdd and b30c45d. Independent Godot/Raven/Web CI run 41345093030 passed on implementation head b30c45d; latest documentation-only head CI still required. No manual desktop 800x640/1024x640/1366x768 or Windows symlink/reparse QA performed; feature not accepted and PR not merged. Existing 26 background candidates untouched, owner-accepted 62 cast art retained."
++      "status": "merged",
++      "owner": "ChatGPT",
++      "updated": "2026-11-01",
++      "evidence": "PR #99 merged to main at ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd (2026-11-01). Final-head GitHub CI 41345448978 passed Godot/Raven/Web; import and metadata editing exist in native Raven Asset Library. Manual desktop 800x640/1024x640/1366x768, real-file and Windows reparse/symlink QA remain OPEN, so not accepted. All 26 background variants remain candidates; 62 accepted cast frames preserved. PR #98 was incoming patch transport and must be closed unmerged."
+     },
+     {
+       "id": "VNS5-02",
+diff --git a/data/raven/production/gap_work_packages.json b/data/raven/production/gap_work_packages.json
+--- a/data/raven/production/gap_work_packages.json
++++ b/data/raven/production/gap_work_packages.json
+@@ -408,6 +408,23 @@
+       "requiresHumanAcceptance": true
+     },
+     {
++      "id": "VNS5-04A",
++      "title": "VN Studio v5: orientation-aware editor stage, actor templates and local undo",
++      "domain": "narrative",
++      "priority": "P0",
++      "size": "M",
++      "description": "Editor-only 390×844 / 844×390 stage preview, fit/cover without fictional backgrounds, safe/grid/HUD overlays, 1/2/3 cast templates, normalized drag and limited scene-local Undo. Stage-v1 only: no orientation, props, focal or z-order fields written to canonical source. Does not replace the runtime portrait compositor.",
++      "deliverable": "stage_layout_tools.gd, Raven StageDesigner and overlay updates, focused Godot headless smoke, docs and progress; separate v2 schema follow-on VNS5-04B.",
++      "acceptance": "Owner checks two orientations, previews 1/2/3 cast with approved art, no clipping/giant portraits, selected background exact-state, template→save/reopen and local undo, fit/cover and grid/safe overlay; tests at 800×640, 1024×640, 1366×768. No source/runtime/save writes; missing landscape art marked candidate/placeholder.",
++      "status": "proposed",
++      "dependsOn": [
++        "VNS5-03"
++      ],
++      "graphicsDependencies": [],
++      "source": "Raven VN Studio v5 handoff docs/05_EXECUTION_PLAN.md PR 04; scoped safe pilot 2026-11-01",
++      "requiresHumanAcceptance": true
++    },
++    {
+       "id": "VNS5-03",
+       "title": "VN Studio v5: staged raster image import and metadata editing",
+       "domain": "narrative",
+diff --git a/docs/production/VNS5_04A_STAGE_EDITOR_HANDOFF_RU.md b/docs/production/VNS5_04A_STAGE_EDITOR_HANDOFF_RU.md
+new file mode 100644
+--- /dev/null
++++ b/docs/production/VNS5_04A_STAGE_EDITOR_HANDOFF_RU.md
+@@ -0,0 +1,27 @@
++# VNS5-04A — Stage Designer: ориентация, шаблоны и локальный Undo
++
++**База:** `bezdredoff/RavenManor-Godot@ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd` (PR #99 merged, CI #41345448978 passed). Следующий шаг по `Raven_VN_Studio_Godot_Handoff_v5`, PR 04, разделён на A/B, чтобы не ломать stage-v1.
++
++## Доступные функции этой части
++
++В `Godot → VN Studio → Raven Manor → Director → Постановка` добавляется переключатель **Портрет 390×844 / Альбом 844×390**, **Фон: cover/fit**, кнопка **Шаблон 1/2/3**, кнопка **Отменить постановку** и **Safe area**. Сетка и VN HUD повторяют пропорции текущего frame. `stage_layout_tools.gd` отделяет горизонтальные расчёты от уже общего с runtime `raven_vn_portrait_layout.gd` — portrait не изменяется.
++
++**Важные границы:** ориентация, fit/cover и guide overlays — **только параметры preview editor-session**; они не записываются в `vn_staging.json` и не притворяются независимым production landscape asset. Все зарегистрированные BG в основном portrait; cover обрезает их, fit оставляет поля; новая картина не генерируется. Preset применяется по явному нажатию и сохраняет только разрешённые `slot/x/y` для текущих 1–3 персонажей в существующий `stagePatches`; ID, pose, emotion, costume/assetId не меняются. Undo хранит не более 32 предыдущих stage-состояний **только пока редактируется эта сцена в текущей сессии Godot**. Это не проектный UndoRedoManager и не Redo.
++
++При переключении ориентации layout вычисляется на основе нормализованных координат; уже сохранённые `x/y` не переписываются. Отдельные landscape layout-шаблоны заданы как предустановки, а не принудительный пересчёт при каждом переключении. Кнопка шаблона может перезаписать пользовательские координаты **только после нажатия**, предыдущий снимок остаётся в Undo.
++
++## Не входит в VNS5-04A
++
++- Persisted scene orientation, отдельные настройки focal point/crop, foreground masks, z-index и добавление/drag arbitrary props в draft требуют расширения `Store.validate_stage`, версионированной схемы сцен v2 и ревью миграции. **VNS5-04B**.
++- Автоматическая материализация staged images из VNS5-03 в `res://` не производится.
++- Ни `raven_vn_game_view.gd`, ни игровые saves/rewards/прогрессия, ни UPDS don​​or, ни narrative/locale catalogs не изменяются.
++
++## Проверка
++
++CI: новый `tests/raven/vn_studio_stage_orientation_smoke.gd` проверяет размер canvas, 1/2/3 шаблоны, roundtrip горизонтальных координат, сохранение actor ID, menu cover/fit, editor-only guides, корректный `Store.validate_stage`, Undo и SHA неизменности production staging. Запускаться должен через `scripts/check.sh` и `check.ps1`. До импорта patch в реализационную ветку CI **не запускался**.
++
++Ручной Windows Godot 4.7.2: окна 800×640 / 1024×640 / 1366×768; Raven 1/2/3 персонажа; фон BG-HALL и ещё один вариант; выбрать оба aspect ratio, grid/safe/HUD; переключать fit/cover и проверить отсутствие растяжения; перетащить 2 персонажей, применить шаблон, отменить и сохранить/перезагрузить; затем переключить ориентацию и убедиться, что сохранённые x/y неизменны; проверить старый UPDS UI. Документировать скриншоты. До подтверждения считать PR_review, не accepted.
++
++## Доставка / rollback
++
++`incoming` ZIP содержит **только** документационный handoff patch и сопроводительные instructions, поскольку доверенный importer запрещает `addons/`, `check.ps1` и `scripts/check.sh`. После импортного candidate PR извлечь `implementation.patch.txt` в чистую ветку от зафиксированного `main`, проверить `git apply --check`, применить, получить отдельный **implementation PR**, дождаться полного CI **на последнем SHA**. Нельзя мержить handoff как реализацию. Rollback: revert implementation PR; stage-v1 production files никогда не были затронуты, а редакторные undo stack не являются сохранёнными игровыми данными.

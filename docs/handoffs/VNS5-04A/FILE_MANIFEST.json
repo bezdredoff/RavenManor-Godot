@@ -1,0 +1,80 @@
+{
+  "schema": "raven-vns5-04a-implementation-handoff-v1",
+  "baseSha": "ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd",
+  "taskId": "VNS5-04A",
+  "prerequisite": "VNS5-03 merged PR #99, final CI 41345448978",
+  "files": [
+    {
+      "path": "addons/vn_studio/model/stage_layout_tools.gd",
+      "bytes": 2542,
+      "sha256": "f2e0a2de3745a10513ac60b1b0dea012b836548a21c5da3a1a95fc6fe05a9f10",
+      "isNew": true
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_stage_designer.gd",
+      "bytes": 31292,
+      "sha256": "39c1291ad588b71fe50df354eae0076e68a479b1e56bbecbf0ac1c118af08e65",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_stage_overlay.gd",
+      "bytes": 2378,
+      "sha256": "9ca2fbdcbc54280e3cc7ef4b7d5083ce1400ad3620532b867cb167146339c1c6",
+      "isNew": false
+    },
+    {
+      "path": "tests/raven/vn_studio_stage_orientation_smoke.gd",
+      "bytes": 4451,
+      "sha256": "59229010abd1d8ad32171c309b82f384f39ccd3fca22ac803effe1b29ffa7eaf",
+      "isNew": true
+    },
+    {
+      "path": "check.ps1",
+      "bytes": 10272,
+      "sha256": "1b8af91ae39dd80da54da87925fc7bd2b5bb223c0efe6fc67096373d57e97920",
+      "isNew": false
+    },
+    {
+      "path": "scripts/check.sh",
+      "bytes": 7991,
+      "sha256": "50860fecef178d5c6fdec44fc4688f914433d9743dcbf9cb488dee8d956ddd8d",
+      "isNew": false
+    },
+    {
+      "path": "docs/STATUS.md",
+      "bytes": 71678,
+      "sha256": "c8ec7fd3503bed424432aa3cff77e69581cf7961bf525c04cd61c5aa57de9567",
+      "isNew": false
+    },
+    {
+      "path": "data/raven/production/production_progress.json",
+      "bytes": 27686,
+      "sha256": "f26820ad3052278f106bd32a3c9c18ba8f7868ee7f8392f83853238caa16561d",
+      "isNew": false
+    },
+    {
+      "path": "data/raven/production/gap_work_packages.json",
+      "bytes": 30314,
+      "sha256": "72a9393248cfca78d552b6e3e0e1f421abf7b081c55897ec44bdead1649cbb48",
+      "isNew": false
+    },
+    {
+      "path": "docs/production/VNS5_04A_STAGE_EDITOR_HANDOFF_RU.md",
+      "bytes": 5589,
+      "sha256": "24847672f3915a9d5622f7ddf33461c82e977c3f4afb626fc56d7e654e91326c",
+      "isNew": true
+    }
+  ],
+  "patchSha256": "4b65a83e726ebfdfee4a5d63613ca78189f9ec343a49a3d38d1a474942bedbc9",
+  "execution": "manual implementation PR only; not installed by incoming flow",
+  "localChecks": [
+    "git apply --check exact baseline PASS",
+    "git apply + byte-for-byte content PASS",
+    "JSON parses PASS"
+  ],
+  "notExecuted": [
+    "Godot 4.7.2 CI",
+    "Windows editor QA",
+    "real-device screenshots"
+  ]
+}
