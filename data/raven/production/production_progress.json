@@ -252,6 +252,27 @@
       "owner": "ChatGPT",
       "updated": "2026-11-01",
       "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers. Four apartment lighting/staging variations (day inhabited, rainy evening/night, day departure) prepared as raster candidates with explicit warning: luggage present but packed cardboard boxes not evident. Runtime/editor read from the same catalog; visual QA pending. BG-ROAD only one dusk/mist state; no false claims of separate lighting overlays. Actor safe-zone, image composition and final art QA pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY four semantic paired lighting/state PNG-generated plates; not formally aligned overlay layers; cross-state architecture/season continuity and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. "
+    },
+    {
+      "id": "GFX-06-02",
+      "status": "PR_review",
+      "owner": "Codex",
+      "updated": "2026-11-01",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Integration candidate publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending; not merged."
+    },
+    {
+      "id": "GFX-06-03",
+      "status": "PR_review",
+      "owner": "Codex",
+      "updated": "2026-11-01",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Integration candidate publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending; not merged."
+    },
+    {
+      "id": "GFX-06-06",
+      "status": "PR_review",
+      "owner": "Codex",
+      "updated": "2026-11-01",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Integration candidate publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending; not merged."
     }
   ],
   "rules": [

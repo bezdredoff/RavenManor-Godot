@@ -8,6 +8,7 @@ const STAGING := "data/raven/production/vn_staging.json"
 const ROUTES := "data/raven/production/map_narrative_routes.json"
 const CUES := "data/raven/production/line_performance_cues.json"
 const CAST := "data/raven/production/character_performance.json"
+const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
 
@@ -265,8 +266,11 @@ static func validate_stage(project: Dictionary, stage: Variant) -> String:
 		if item.get("slot") not in ["left", "center", "right"]:
 			return "Неизвестный слот постановки."
 		for key in item.keys():
-			if key not in ["characterId", "slot", "pose", "emotion", "micro", "x", "y"]:
+			if key not in ["characterId", "slot", "pose", "emotion", "micro", "x", "y", "assetId"]:
 				return "Недопустимое поле персонажа: " + str(key)
+		if item.has("assetId"):
+			if not item["assetId"] is String or Characters.for_actor(item, false).get("entry", {}).is_empty():
+				return "Изображение не соответствует персонажу, позе и эмоции."
 		for axis in ["x", "y"]:
 			if item.has(axis) and (not (item[axis] is float or item[axis] is int) or not is_finite(float(item[axis])) or float(item[axis]) < 0 or float(item[axis]) > 1):
 				return "Координаты должны быть нормализованы в диапазоне 0–1."
