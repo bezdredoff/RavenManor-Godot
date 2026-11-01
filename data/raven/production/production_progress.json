@@ -4,11 +4,18 @@
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
-      "id": "VNS5-04A",
-      "status": "PR_review",
+      "id": "VNS5-04B",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "Native implementation in Draft PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 from main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd after merged PR #99. Incoming handoff PR #100 is transport only; do not merge it as implementation. 10 source files uploaded with exact matching Git blob hashes. Godot/Raven/Web build CI run 41348044068 succeeded on code head 77529bce9892559629e4b98a4b404f0d755abb0b; last-head CI after documentation edits still required. Preview 390x844/844x390, fit/cover, safe/grid/HUD and reversible 1/2/3-actor templates + local Undo added; stage-v1 serialization, runtime, source art and save unchanged. Manual Godot 4.7.2 desktop visual QA at 800x640 / 1024x640 / 1366x768 and owner signoff pending, not accepted. Props/focal/z-order/schema-v2 remain separate VNS5-04B."
+      "evidence": "Stage-v2 editor sidecar proposal after merged #101, source main 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346. Separate optional stageV2Patches per scene in old raven-vn-studio-draft-v1 container, explicit no-overwrite user:// v2 review candidate. Orientation/fit/focal, actorZ, stable prop instanceIds, staged prop image preview or ART PENDING, normalized prop transforms, prop state; no runtime or production catalog writes. Offline patch/schema tests only; Godot 4.7.2, CI and manual editor QA NOT RUN. The incoming ZIP only transports implementation handoff, not active plugin code; implementation PR will require separate CI and owner review."
+    },
+    {
+      "id": "VNS5-04A",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-01",
+      "evidence": "PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 merged to main at 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346 (2026-11-01). Final-head Godot/Raven/Web CI run 41348331431 passed. Owner marked PR merged, but manual Godot Editor interactive acceptance at 800x640 / 1024x640 / 1366x768 is NOT recorded; do not mark accepted. Import VNS5-03 in PR #99 also merged, not manually accepted."
     },
     {
       "id": "VNS5-03",
