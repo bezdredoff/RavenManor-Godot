@@ -181,9 +181,9 @@ func _layout() -> void:
 		return
 	var w := maxf(1.0, size.x)
 	var h := maxf(1.0, size.y)
-	get_node("PendingArtBackground").size = Vector2(w, h)
+	(get_node("PendingArtBackground") as ColorRect).size = Vector2(w, h)
 	background.size = Vector2(w, h)
-	get_node("VNReadabilityShade").size = Vector2(w, h)
+	(get_node("VNReadabilityShade") as ColorRect).size = Vector2(w, h)
 	actor_layer.size = Vector2(w, h)
 	var multi: bool = actors.size() > 2
 	var actor_w := w * (0.60 if multi else 0.77)
