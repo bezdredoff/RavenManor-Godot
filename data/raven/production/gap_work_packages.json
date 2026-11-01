@@ -408,6 +408,26 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-05A",
+      "title": "VN Studio v5: scene-specific editor-only micro-FX timeline and safe review export",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Versioned per-scene stageFxPatches tied to existing Raven stage v1 and Stage v2 props. Deterministic visual preview of breath/blink/shake/pulse/fade with start/duration/repeat/intensity, target-validated scene cues, bounded local undo and source-SHA review export; do not change gameplay/runtime or fabricate sprite frames.",
+      "deliverable": "stage_fx_store.gd pure model, native director FX controls/play/scrub, Raven draft save/validate/export, tests in both runners, docs and status updates",
+      "acceptance": "Owner checks 0/1/2/3 actors, staged prop and background targets, start/duration/intensity/repeat, play/pause/scrub, undo/save/reopen; missing targets, duplicate IDs, unknown effects, NaN and >20s rejected; no-loss v1/v2 export, SHA-pinned no-overwrite review; no source/gameplay mutation; full Godot CI + 800/1024/1366 editor QA",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-04B",
+        "VNS5-03"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "source": "Raven VN Studio v5 follow-up after merged PR #104; 2026-11-01",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",

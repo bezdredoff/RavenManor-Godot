@@ -4,6 +4,7 @@ extends VBoxContainer
 ## Uses the same approved character registry as the gameplay VN compositor.
 signal stage_modified(stage: Dictionary)
 signal stage_v2_modified(overlay: Dictionary)
+signal stage_fx_modified(data: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
@@ -12,6 +13,7 @@ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
 const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
+const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
@@ -42,6 +44,24 @@ var _selected_prop: int = -1
 var _dragging_prop: int = -1
 var _prop_grab_delta: Vector2 = Vector2.ZERO
 var _suppress_v2: bool = false
+var _fx_data: Dictionary = {}
+var _fx_committed: Dictionary = {}
+var _fx_undo: Array[Dictionary] = []
+var _fx_selected: int = -1
+var _fx_suppress: bool = false
+var _fx_playing: bool = false
+var _fx_elapsed: float = 0.0
+var _fx_list: ItemList
+var _fx_target: OptionButton
+var _fx_kind: OptionButton
+var _fx_start: SpinBox
+var _fx_duration: SpinBox
+var _fx_repeat: SpinBox
+var _fx_intensity: SpinBox
+var _fx_scrub: HSlider
+var _fx_play: Button
+var _fx_remove: Button
+var _fx_undo_button: Button
 var _selected_actor: int = -1
 var _dragging_actor: int = -1
 var _grab_delta: Vector2 = Vector2.ZERO
@@ -257,6 +277,65 @@ func _ready() -> void:
 	_prop_scale = _numeric(transforms, 0.1, 3, 0.05, 1)
 	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
 		spinner.value_changed.connect(_on_prop_transform)
+	# VNS5-05A: editor-only scene-timed micro-FX. No gameplay or sprite authoring.
+	var fx_row := HFlowContainer.new()
+	add_child(fx_row)
+	var fx_title := Label.new()
+	fx_title.text = "Микроанимации (FX draft)"
+	fx_row.add_child(fx_title)
+	_fx_target = OptionButton.new()
+	_fx_target.custom_minimum_size.x = 135
+	fx_row.add_child(_fx_target)
+	var fx_add := Button.new()
+	fx_add.text = "+ FX"
+	fx_add.pressed.connect(_on_fx_add)
+	fx_row.add_child(fx_add)
+	_fx_remove = Button.new()
+	_fx_remove.text = "− FX"
+	_fx_remove.pressed.connect(_on_fx_remove)
+	fx_row.add_child(_fx_remove)
+	_fx_undo_button = Button.new()
+	_fx_undo_button.text = "↶ FX"
+	_fx_undo_button.pressed.connect(_on_fx_undo)
+	fx_row.add_child(_fx_undo_button)
+	_fx_list = ItemList.new()
+	_fx_list.custom_minimum_size = Vector2(230, 58)
+	_fx_list.item_selected.connect(_on_fx_select)
+	fx_row.add_child(_fx_list)
+	var fx_params := HFlowContainer.new()
+	add_child(fx_params)
+	_fx_kind = OptionButton.new()
+	for effect in StageFx.EFFECTS:
+		_fx_kind.add_item(effect)
+	_fx_kind.item_selected.connect(_on_fx_params)
+	fx_params.add_child(_fx_kind)
+	for label_text in ["Start ms", "Duration ms", "Repeat", "Strength"]:
+		var lbl := Label.new()
+		lbl.text = label_text
+		fx_params.add_child(lbl)
+	_fx_start = _numeric(fx_params, 0, 15000, 50, 0)
+	_fx_duration = _numeric(fx_params, 120, 4000, 20, 1400)
+	_fx_repeat = _numeric(fx_params, 1, 5, 1, 1)
+	_fx_intensity = _numeric(fx_params, 0, 1, 0.05, 0.35)
+	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
+		spinner.value_changed.connect(_on_fx_params)
+	var fx_playback := HFlowContainer.new()
+	add_child(fx_playback)
+	_fx_play = Button.new()
+	_fx_play.text = "▶ Play preview"
+	_fx_play.pressed.connect(_on_fx_play)
+	fx_playback.add_child(_fx_play)
+	var fx_stop := Button.new()
+	fx_stop.text = "■ Reset"
+	fx_stop.pressed.connect(_on_fx_stop)
+	fx_playback.add_child(fx_stop)
+	_fx_scrub = HSlider.new()
+	_fx_scrub.custom_minimum_size.x = 200
+	_fx_scrub.min_value = 0
+	_fx_scrub.max_value = StageFx.MAX_MS
+	_fx_scrub.step = 50
+	_fx_scrub.value_changed.connect(_on_fx_scrub)
+	fx_playback.add_child(_fx_scrub)
 	_staged_assets = ImageStaging.new()
 	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
 	_thumbnail_strip = HFlowContainer.new()
@@ -309,10 +388,17 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 	if str(_stage_data.get("sceneId", "")) != id:
 		_undo_stages.clear()
 		_undo_v2.clear()
+		_fx_undo.clear()
+		_fx_selected = -1
+		_fx_elapsed = 0.0
+		_fx_playing = false
+		_fx_scrub.value = 0
 	_stage_data = Store.effective_stage(project, draft, id)
 	_committed_stage = _stage_data.duplicate(true)
 	_stage_v2 = StageV2.effective(draft, id)
 	_committed_v2 = _stage_v2.duplicate(true)
+	_fx_data = StageFx.effective(draft, id)
+	_fx_committed = _fx_data.duplicate(true)
 	_reload()
 
 
@@ -349,6 +435,7 @@ func _reload() -> void:
 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
 	_remove.disabled = _selected_actor < 0
 	_reload_v2_controls()
+	_reload_fx_controls()
 	_template_button.disabled = cast.is_empty()
 	_undo_button.disabled = _undo_stages.is_empty()
 	_suppress = false
@@ -447,6 +534,7 @@ func _draw_stage() -> void:
 	_overlay.focal = Vector2(float(_stage_v2.get("focal", {}).get("x", 0.5)), float(_stage_v2.get("focal", {}).get("y", 0.5)))
 	_overlay.queue_redraw()
 	_layout_cards()
+	_apply_fx_preview(roundi(_fx_scrub.value))
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
 	if missing_expressions > 0:
@@ -645,6 +733,11 @@ func _commit() -> void:
 	if _stage_data == _committed_stage:
 		_reload()
 		return
+	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
+		_status.text = "FX ссылается на удаляемого персонажа. Сначала удалите событие."
+		_stage_data = _committed_stage.duplicate(true)
+		_reload()
+		return
 	_undo_stages.append(_committed_stage.duplicate(true))
 	if _undo_stages.size() > 32:
 		_undo_stages.remove_at(0)
@@ -752,6 +845,11 @@ func _apply_v2() -> void:
 	var error: String = StageV2.validate(_stage_data, _stage_v2)
 	if not error.is_empty():
 		_status.text = "V2 заблокировано: " + error
+		_stage_v2 = _committed_v2.duplicate(true)
+		_reload()
+		return
+	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
+		_status.text = "FX ссылается на удаляемый prop. Сначала удалите событие."
 		_stage_v2 = _committed_v2.duplicate(true)
 		_reload()
 		return
@@ -1104,3 +1202,175 @@ func _popup_background_browser() -> void:
 	_browser.popup_centered(Vector2i(
 		maxi(300, mini(710, roundi(viewport_size.x - 40.0))),
 		maxi(280, mini(475, roundi(viewport_size.y - 72.0)))))
+
+
+func _process(delta: float) -> void:
+	if not _fx_playing or _stage_data.is_empty():
+		return
+	_fx_elapsed += maxf(0.0, delta) * 1000.0
+	if _fx_elapsed >= StageFx.MAX_MS:
+		_fx_playing = false
+		_fx_elapsed = 0.0
+		_fx_play.text = "▶ Play preview"
+	_fx_scrub.value = snappedf(_fx_elapsed, 50)
+	_apply_fx_preview(roundi(_fx_scrub.value))
+
+
+func _reload_fx_controls() -> void:
+	_fx_suppress = true
+	_fx_target.clear()
+	for target in StageFx.target_options(_stage_data, _stage_v2):
+		_fx_target.add_item(str(target["label"]))
+		_fx_target.set_item_metadata(_fx_target.item_count - 1, target)
+	_fx_list.clear()
+	var cues: Array = _fx_data.get("cues", [])
+	for cue in cues:
+		_fx_list.add_item("%s · %s/%s · %s @ %dms" % [cue["id"], cue["targetType"], cue["targetId"], cue["effect"], cue["startMs"]])
+	_fx_selected = mini(_fx_selected, cues.size() - 1)
+	if _fx_selected >= 0:
+		_fx_list.select(_fx_selected)
+		var cue: Dictionary = cues[_fx_selected]
+		for index in range(_fx_kind.item_count):
+			if _fx_kind.get_item_text(index) == cue["effect"]:
+				_fx_kind.select(index)
+		_fx_start.value = int(cue["startMs"])
+		_fx_duration.value = int(cue["durationMs"])
+		_fx_repeat.value = int(cue["repeat"])
+		_fx_intensity.value = float(cue["intensity"])
+	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
+		spinner.editable = _fx_selected >= 0
+	_fx_kind.disabled = _fx_selected < 0
+	_fx_remove.disabled = _fx_selected < 0
+	_fx_undo_button.disabled = _fx_undo.is_empty()
+	_fx_suppress = false
+
+
+func _on_fx_add() -> void:
+	if _fx_target.selected < 0 or _fx_data.get("cues", []).size() >= StageFx.MAX_CUES:
+		return
+	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
+	_fx_data = StageFx.new_cue(_fx_data, str(target["type"]), str(target["id"]))
+	_fx_selected = _fx_data["cues"].size() - 1
+	_commit_fx()
+
+
+func _on_fx_remove() -> void:
+	if _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
+		return
+	_fx_data["cues"].remove_at(_fx_selected)
+	_fx_selected = mini(_fx_selected, _fx_data["cues"].size() - 1)
+	_commit_fx()
+
+
+func _on_fx_select(index: int) -> void:
+	if index < 0 or _fx_suppress:
+		return
+	_fx_selected = index
+	_reload_fx_controls()
+
+
+func _on_fx_params(_value: Variant) -> void:
+	if _fx_suppress or _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
+		return
+	var cue: Dictionary = _fx_data["cues"][_fx_selected]
+	cue["effect"] = _fx_kind.get_item_text(_fx_kind.selected)
+	cue["startMs"] = roundi(_fx_start.value)
+	cue["durationMs"] = roundi(_fx_duration.value)
+	cue["repeat"] = roundi(_fx_repeat.value)
+	cue["intensity"] = float(_fx_intensity.value)
+	_commit_fx()
+
+
+func _commit_fx() -> void:
+	var error: String = StageFx.validate(_stage_data, _stage_v2, _fx_data)
+	if not error.is_empty():
+		_status.text = "FX: " + error
+		_fx_data = _fx_committed.duplicate(true)
+		_reload_fx_controls()
+		return
+	if _fx_data != _fx_committed:
+		_fx_undo.append(_fx_committed.duplicate(true))
+		if _fx_undo.size() > 32:
+			_fx_undo.remove_at(0)
+		_fx_committed = _fx_data.duplicate(true)
+		stage_fx_modified.emit(_fx_committed.duplicate(true))
+	_reload_fx_controls()
+	_apply_fx_preview(roundi(_fx_scrub.value))
+
+
+func _on_fx_undo() -> void:
+	if _fx_undo.is_empty():
+		return
+	var previous: Dictionary = _fx_undo.pop_back()
+	if not StageFx.validate(_stage_data, _stage_v2, previous).is_empty():
+		_fx_undo.clear()
+		return
+	_fx_data = previous.duplicate(true)
+	_fx_committed = previous.duplicate(true)
+	_fx_selected = mini(_fx_selected, _fx_data.get("cues", []).size() - 1)
+	stage_fx_modified.emit(previous.duplicate(true))
+	_reload_fx_controls()
+	_apply_fx_preview(roundi(_fx_scrub.value))
+
+
+func _on_fx_play() -> void:
+	_fx_playing = not _fx_playing
+	_fx_play.text = "Ⅱ Pause" if _fx_playing else "▶ Play preview"
+	_fx_elapsed = _fx_scrub.value
+
+
+func _on_fx_stop() -> void:
+	_fx_playing = false
+	_fx_play.text = "▶ Play preview"
+	_fx_elapsed = 0.0
+	_fx_scrub.value = 0
+	_apply_fx_preview(-1)
+
+
+func _on_fx_scrub(value: float) -> void:
+	if not _fx_playing:
+		_fx_elapsed = value
+	_apply_fx_preview(roundi(value))
+
+
+func _apply_fx_preview(time_ms: int) -> void:
+	if _canvas == null or _stage_data.is_empty():
+		return
+	# Reset to the canonical editor layout *before* every deterministic sample.
+	# Never mutate stageV1, stageV2, staged binaries, or a gameplay state node.
+	_layout_cards()
+	_bg_image.modulate = Color.WHITE
+	_bg_image.scale = Vector2.ONE
+	for card in _cards:
+		if is_instance_valid(card):
+			card.modulate = Color.WHITE
+			card.scale = Vector2.ONE
+			card.pivot_offset = card.size * 0.5
+	for card in _prop_cards:
+		if is_instance_valid(card):
+			card.modulate = Color.WHITE
+			card.scale = Vector2.ONE
+			card.pivot_offset = card.size * 0.5
+	for cue in _fx_data.get("cues", []):
+		var control: Control = null
+		match str(cue.get("targetType", "")):
+			"background":
+				control = _bg_image
+			"actor":
+				for index in range(_cards.size()):
+					if str(_stage_data["cast"][index]["characterId"]) == cue.get("targetId", ""):
+						control = _cards[index]
+						break
+			"prop":
+				for index in range(_prop_cards.size()):
+					if str(_stage_v2["props"][index]["instanceId"]) == cue.get("targetId", ""):
+						control = _prop_cards[index]
+						break
+		if control == null:
+			continue
+		var sampled: Dictionary = StageFx.sample(cue, time_ms)
+		control.position += sampled["offset"]
+		control.scale *= sampled["scale"]
+		var color: Color = control.modulate
+		color.a *= float(sampled["alpha"])
+		control.modulate = color
