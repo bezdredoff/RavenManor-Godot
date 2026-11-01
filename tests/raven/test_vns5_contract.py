@@ -14,8 +14,12 @@ class ContractAuditTest(unittest.TestCase):
     def test_real_sources_are_structural_and_read_only(self):
         before = {name: (ROOT / "data/raven/production" / name).read_bytes() for name in SOURCES.values()}
         report = audit(ROOT)
+        # Backgrounds are an extensible catalogue. Read the exact source count
+        # rather than freezing the number of imported art candidates at v5 launch.
+        expected_backgrounds = len(json.loads(before[SOURCES["backgrounds"]])["entries"])
         self.assertEqual(report["counts"], {"scenes": 28, "lines": 280, "masters": 11,
-            "shots": 28, "backgroundCandidates": 20, "characters": 4, "cues": 280, "routes": 28})
+            "shots": 28, "backgroundCandidates": expected_backgrounds, "characters": 4,
+            "cues": 280, "routes": 28})
         self.assertTrue(all(not scene["transitions"] for scene in report["proposedSceneAdapters"]))
         self.assertEqual(before, {name: (ROOT / "data/raven/production" / name).read_bytes() for name in SOURCES.values()})
 
