@@ -1,0 +1,24 @@
+{
+  "parameters": {
+    "model": null,
+    "seed": null,
+    "sampler": null,
+    "export": {
+      "width": 1080,
+      "height": 1920,
+      "resample": "Lanczos",
+      "format": "RGB WebP",
+      "quality": 91,
+      "method": 6
+    }
+  },
+  "nodeSettings": {},
+  "requires": [
+    "ChatGPT image-generation session and approved visual references; internal sampling parameters unavailable"
+  ],
+  "notes": [
+    "Это иллюстрация VN, не фон карты с коллизиями.",
+    "Варианты освещения рисовались отдельно; попиксельное совпадение архитектуры не доказано.",
+    "Dark carved bed/nightstand on left, central Gothic window with burgundy curtains, wardrobe/vanity on right. Two livable day/night illustrations; covered/dirty variant has not been generated."
+  ]
+}

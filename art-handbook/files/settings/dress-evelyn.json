@@ -1,0 +1,157 @@
+{
+  "parameters": {
+    "steps": 25,
+    "cfg": 3,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "background_color": "Transparent",
+    "background_model_kind": "qi2",
+    "previous_background_color": "Blue",
+    "target_size": 2048,
+    "seed": 23,
+    "seed_mode": "fixed",
+    "lora_name": "",
+    "lora_strength": 1,
+    "background_color_source": "character",
+    "qi2_edit_prompt_enhancement_default": true
+  },
+  "nodeSettings": {
+    "ClothesDesigner.widget_data": {
+      "character": "Evelyn_CastDraft_20261031",
+      "costume": "Evelyn Everyday v1",
+      "activeTab": "generate",
+      "selected_preview_sprite": {
+        "character": "Evelyn_CastDraft_20261031",
+        "costume": "Naked",
+        "index": 0,
+        "count": 1
+      },
+      "costume_info": {
+        "top": "opaque cream medium-weight linen blouse, small collar, elbow-length sleeves, matte woven fabric",
+        "bottom": "plain dark burgundy knee-length A-line wool skirt, simple waistband, minimal folds, opaque matte fabric",
+        "shoes": "black matte leather ankle boots, low heel",
+        "head": "no hat",
+        "face": "no glasses"
+      },
+      "character_info": {
+        "name": "Evelyn_CastDraft_20261031",
+        "background_color": "Transparent",
+        "aesthetics": "bright diffuse daylight, soft even studio lighting,\nflat readable colors, restrained cel shading,\nmatte skin, minimal specular highlights,\nlow contrast, clean character-design presentation",
+        "nsfw": false,
+        "sex": "female",
+        "age": 28,
+        "race": "human",
+        "eyes": "light turquoise-green eyes",
+        "hair": "long chestnut-brown hair, soft straight bangs, two loose face-framing strands",
+        "face": "delicate adult face, narrow jaw, small nose, calm intelligent expression",
+        "body": "elegant elongated adult anime proportions, slender graceful silhouette, fine shoulders, long legs, delicate hands, balanced anatomy",
+        "skin_color": "pale warm skin",
+        "additional_details": "subtle gothic elegance, no tattoos, no piercings",
+        "seed": 0,
+        "lora_prompt": "",
+        "negative_prompt": "extra shadows, harsh shadows, dramatic lighting,\nstrong rim light, bloom, glow, glossy skin,\noily skin, wet skin, specular highlights,\nstrong gradients, deep midtones, high contrast,\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts",
+        "framing": "Full_body",
+        "style": "watercolor_anime_illustration",
+        "custom_style": "",
+        "breast_size": "medium breasts",
+        "style_prompt": "Style: Watercolor Anime Illustration.\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.",
+        "style_label": "Watercolor Anime Illustration",
+        "style_description": "A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…",
+        "style_reference": "traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.",
+        "secondary_style": {
+          "style": "none"
+        }
+      },
+      "gen_settings": {
+        "background_color": "Transparent",
+        "background_model_kind": "qi2",
+        "previous_background_color": "Blue",
+        "target_size": 2048,
+        "seed": 23,
+        "seed_mode": "fixed",
+        "lora_name": "",
+        "lora_strength": 1,
+        "background_color_source": "character"
+      },
+      "clone_sam_prompt": "clothes, boots, footwear, accessories,",
+      "character_ready": true
+    },
+    "VNCCS_ControlCenter.node_state": {
+      "output_slot_names": [],
+      "selected_models": {
+        "QI2:unet": "Qwen Image 2.1 INT8 ConvRot"
+      },
+      "selected_model": "Qwen Image 2.1 INT8 ConvRot",
+      "loras": [],
+      "selected_type": "unet",
+      "model_params": {
+        "steps": 25,
+        "cfg": 3,
+        "sampler": "euler",
+        "scheduler": "simple"
+      },
+      "active_kind": "QI2",
+      "selected_types_by_kind": {
+        "QI2": "unet"
+      },
+      "model_params_by_kind": {
+        "QI2": {
+          "steps": 25,
+          "cfg": 3,
+          "sampler": "euler",
+          "scheduler": "simple"
+        }
+      },
+      "qi2_cache": {
+        "device": "gpu",
+        "dtype": "int8"
+      }
+    },
+    "character_info": {
+      "name": "Evelyn_CastDraft_20261031",
+      "background_color": "Transparent",
+      "aesthetics": "bright diffuse daylight, soft even studio lighting,\nflat readable colors, restrained cel shading,\nmatte skin, minimal specular highlights,\nlow contrast, clean character-design presentation",
+      "nsfw": false,
+      "sex": "female",
+      "age": 28,
+      "race": "human",
+      "eyes": "light turquoise-green eyes",
+      "hair": "long chestnut-brown hair, soft straight bangs, two loose face-framing strands",
+      "face": "delicate adult face, narrow jaw, small nose, calm intelligent expression",
+      "body": "elegant elongated adult anime proportions, slender graceful silhouette, fine shoulders, long legs, delicate hands, balanced anatomy",
+      "skin_color": "pale warm skin",
+      "additional_details": "subtle gothic elegance, no tattoos, no piercings",
+      "seed": 0,
+      "lora_prompt": "",
+      "negative_prompt": "extra shadows, harsh shadows, dramatic lighting,\nstrong rim light, bloom, glow, glossy skin,\noily skin, wet skin, specular highlights,\nstrong gradients, deep midtones, high contrast,\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts",
+      "framing": "Full_body",
+      "style": "watercolor_anime_illustration",
+      "custom_style": "",
+      "breast_size": "medium breasts",
+      "style_prompt": "Style: Watercolor Anime Illustration.\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.",
+      "style_label": "Watercolor Anime Illustration",
+      "style_description": "A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…",
+      "style_reference": "traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.",
+      "secondary_style": {
+        "style": "none"
+      }
+    },
+    "costume_info": {
+      "top": "opaque cream medium-weight linen blouse, small collar, elbow-length sleeves, matte woven fabric",
+      "bottom": "plain dark burgundy knee-length A-line wool skirt, simple waistband, minimal folds, opaque matte fabric",
+      "shoes": "black matte leather ankle boots, low heel",
+      "head": "no hat",
+      "face": "no glasses"
+    }
+  },
+  "requires": [
+    "identity-evelyn",
+    "Existing VNCCS character/costume library; ClothesDesigner native RGBA",
+    "RavenCleanNativeAlpha (0.06 / 0.94)"
+  ],
+  "notes": [
+    "API взят из конечного PNG. UI восстановлен из сохранённой сессии и синхронизирован по полям Designer/Control Center.",
+    "В UI нужен Preview/Generate ClothesDesigner; полный Queue с Pose Studio — другой этап.",
+    "Перед запуском в библиотеке должны существовать персонаж, Naked/Original и выбранный костюм."
+  ]
+}

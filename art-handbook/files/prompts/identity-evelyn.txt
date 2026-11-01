@@ -1,0 +1,19 @@
+## character.style_prompt [verbatim_widget]
+Style: Watercolor Anime Illustration.
+A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.
+
+## character.aesthetics [verbatim_widget]
+bright diffuse daylight, soft even studio lighting,
+flat readable colors, restrained cel shading,
+matte skin, minimal specular highlights,
+low contrast, clean character-design presentation
+
+## character.negative_prompt [verbatim_widget]
+extra shadows, harsh shadows, dramatic lighting,
+strong rim light, bloom, glow, glossy skin,
+oily skin, wet skin, specular highlights,
+strong gradients, deep midtones, high contrast,
+photorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts
+
+## character.additional_details [verbatim_widget]
+subtle gothic elegance, no tattoos, no piercings

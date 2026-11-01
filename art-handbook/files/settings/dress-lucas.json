@@ -1,0 +1,19 @@
+{
+  "parameters": {
+    "qi2_edit_prompt_enhancement_default": true
+  },
+  "nodeSettings": {
+    "character_info": {},
+    "costume_info": {}
+  },
+  "requires": [
+    "identity-lucas",
+    "Existing VNCCS character/costume library; ClothesDesigner native RGBA",
+    "RavenCleanNativeAlpha (0.06 / 0.94)"
+  ],
+  "notes": [
+    "API взят из конечного PNG. UI восстановлен из сохранённой сессии и синхронизирован по полям Designer/Control Center.",
+    "В UI нужен Preview/Generate ClothesDesigner; полный Queue с Pose Studio — другой этап.",
+    "Перед запуском в библиотеке должны существовать персонаж, Naked/Original и выбранный костюм."
+  ]
+}

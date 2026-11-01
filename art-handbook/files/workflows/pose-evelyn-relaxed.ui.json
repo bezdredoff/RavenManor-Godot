@@ -1,0 +1,751 @@
+{
+  "id": "08d06c3e-da6d-416f-8bd5-3b65656b6a47",
+  "revision": 0,
+  "last_node_id": 817,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 758,
+      "type": "VNCCS_ControlCenter",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        630,
+        920
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "repo_id",
+          "name": "repo_id",
+          "type": "STRING",
+          "widget": {
+            "name": "repo_id"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "node_state",
+          "name": "node_state",
+          "type": "STRING",
+          "widget": {
+            "name": "node_state"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "pipe",
+          "name": "pipe",
+          "type": "VNCCS_PIPE",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VNCCS_ControlCenter",
+        "cnr_id": "vnccs",
+        "ver": "3.0.0"
+      },
+      "widgets_values": [
+        "MIUProject/VNCCS_v3.0",
+        "{\"output_slot_names\": [], \"selected_models\": {\"QI2:unet\": \"Qwen Image 2.1 INT8 ConvRot\"}, \"selected_model\": \"Qwen Image 2.1 INT8 ConvRot\", \"loras\": [], \"selected_type\": \"unet\", \"model_params\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}, \"active_kind\": \"QI2\", \"selected_types_by_kind\": {\"QI2\": \"unet\"}, \"model_params_by_kind\": {\"QI2\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}}, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}}",
+        "{}"
+      ],
+      "widgets_values_named": {
+        "repo_id": "MIUProject/VNCCS_v3.0",
+        "node_state": "{\"output_slot_names\": [], \"selected_models\": {\"QI2:unet\": \"Qwen Image 2.1 INT8 ConvRot\"}, \"selected_model\": \"Qwen Image 2.1 INT8 ConvRot\", \"loras\": [], \"selected_type\": \"unet\", \"model_params\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}, \"active_kind\": \"QI2\", \"selected_types_by_kind\": {\"QI2\": \"unet\"}, \"model_params_by_kind\": {\"QI2\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}}, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}}",
+        "cc_widget": "{}"
+      },
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 810,
+      "type": "LoadImage",
+      "pos": [
+        0,
+        600
+      ],
+      "size": [
+        330,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "RavenStoryPoses_Evelyn_approved_clothed_neutral.png",
+        "image"
+      ],
+      "widgets_values_named": {
+        "image": "RavenStoryPoses_Evelyn_approved_clothed_neutral.png",
+        "upload": "image"
+      }
+    },
+    {
+      "id": 812,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        780,
+        600
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "localized_name": "alpha",
+          "name": "alpha",
+          "type": "MASK",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "Restore native RGBA reference",
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      }
+    },
+    {
+      "id": 813,
+      "type": "PrimitiveString",
+      "pos": [
+        780,
+        900
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "STRING",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Isolated VNCCS pose output slot",
+      "properties": {
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        "D:\\AI\\RavenManor-GFX01-20261027\\output\\VNCCS\\Characters\\Evelyn_StoryPoseStudies_20261101\\Sheets\\Everyday PoseStudy relaxed\\neutral\\sheet_neutral"
+      ],
+      "widgets_values_named": {
+        "value": "D:\\AI\\RavenManor-GFX01-20261027\\output\\VNCCS\\Characters\\Evelyn_StoryPoseStudies_20261101\\Sheets\\Everyday PoseStudy relaxed\\neutral\\sheet_neutral"
+      }
+    },
+    {
+      "id": 728,
+      "type": "VNCCS_PoseStudio",
+      "pos": [
+        400,
+        0
+      ],
+      "size": [
+        1220,
+        920
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "pose_image",
+          "name": "pose_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "pose_data",
+          "name": "pose_data",
+          "type": "STRING",
+          "widget": {
+            "name": "pose_data"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "animation_image_batch",
+          "name": "animation_image_batch",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "animation_image_batch"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "images",
+          "localized_name": "images",
+          "name": "images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            3,
+            11
+          ]
+        },
+        {
+          "localized_name": "lighting_prompt",
+          "name": "lighting_prompt",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "title": "Evelyn / relaxed / ONE POSE",
+      "properties": {
+        "Node name for S&R": "VNCCS_PoseStudio",
+        "cnr_id": "vnccs-utils",
+        "ver": "94b34c4888fc24c526d43cec21b04c0253fbe599"
+      },
+      "widgets_values": [
+        "{\"schema_version\": 3, \"active_character_id\": \"character-1\", \"characters\": [{\"id\": \"character-1\", \"slot\": 0, \"name\": \"Main Character\", \"color\": \"#ffffff\", \"transform\": {\"x\": -0.04234141918805266, \"y\": 0.4604714876660604, \"z\": -0.38772097647257686, \"zoom\": 1.56}, \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"poses\": [{\"bones\": {\"pelvis\": [0.3550281570782371, -20.57833714660806, -5.127443322013752], \"spine_01\": [-13.948110155202473, 0.6780575681861917, -1.8619009749331878], \"spine_02\": [3.447167565775314, 2.9372148525296544, 0.5449503303431238], \"spine_03\": [11.42168833457665, -3.1728278304879787, 0.050930327525476556], \"thigh_l\": [-1.9866811675228915, -9.355823017981802, 14.924016339228716], \"thigh_r\": [-10.133632804292862, -17.99840859664447, 20.03878682303578], \"calf_l\": [2.5677405908820217, -0.2941643422706143, 0.8843633403966926], \"calf_r\": [0.781599207697478, 1.1672844399163789, -4.7309892057203005], \"clavicle_l\": [0.38384817221543494, 1.5478618959274035, 29.76043016582542], \"clavicle_r\": [2.088474519905714, -7.162915987552295, -18.709658604235255], \"foot_l\": [11.1886294331236, 39.35353291406782, -11.147542824703773], \"foot_r\": [27.882716456923763, 17.35163362448402, -1.2092383306615837], \"neck_01\": [28.83091878766723, 16.34522253701189, -7.163037563414473], \"upperarm_l\": [12.182481426578464, 33.85432545595674, -58.22434319578524], \"upperarm_r\": [-6.873932043555992, -13.689418396606662, 49.23072481586307], \"head\": [-23.307985978172255, -0.8318505724883107, 6.43488327781864], \"lowerarm_l\": [24.586660504460806, 8.783171865911392, -5.181826664203625], \"lowerarm_r\": [22.36703381909458, -5.796026658538288, 7.041528671986085], \"hand_l\": [5.304807381687585, 15.864425248008313, 38.11627025985993], \"hand_r\": [6.7489724495774235, -3.1504221808226007, -34.3616395352654], \"index_01_l\": [21.09191439828882, 5.918067263613394, -1.9634077081385235], \"index_01_r\": [14.250169729817118, -14.277207662975425, -25.38036431481318], \"index_02_l\": [-7.193121424542485, -3.073469071409524, 16.787743739097753], \"index_02_r\": [-7.390051481993289, 2.994070306369839, -18.80908368357838], \"index_03_l\": [-3.047660490880392, -9.045713014028033, 2.278308415638658], \"index_03_r\": [-2.704148095791787, 7.972873216532968, -2.0326885546843556], \"middle_01_l\": [13.882905872808898, 2.960337120396007, -30.22692284495185], \"middle_01_r\": [11.05261181241916, 0.00788372486632743, -8.57473686938654], \"middle_02_l\": [11.854737426846098, -3.421945262066906, -2.8180252160982926], \"middle_02_r\": [4.0342679894837, 6.901143371350249, -7.34161513843621], \"middle_03_l\": [-1.1732174125653674, -9.714386714874873, 3.1219892638526257], \"middle_03_r\": [-1.435745169983465, 12.760319701478675, -4.074993167969404], \"pinky_01_l\": [-6.803338157431939, 0.005218034138501731, 0.6939841233646794], \"pinky_01_r\": [-7.4925085256011, -8.238122216820061, 18.156363078879767], \"pinky_02_l\": [7.247643409367289, -4.994345480967249, 5.350997767561254], \"pinky_02_r\": [8.951961896388116, 8.239025363741515, -17.063774453677173], \"pinky_03_l\": [1.6754353057773015, -6.7238565992246775, 2.284472991341822], \"pinky_03_r\": [1.391761340409954, 5.666309461369446, -1.9089552267694536], \"ring_01_l\": [2.463670556580435, 2.242788424904139, -29.64818572142699], \"ring_01_r\": [3.079975363663154, 3.7374740983980863, 7.130619776371412], \"ring_02_l\": [26.59709968117445, 3.1580981786496904, -31.88509801979601], \"ring_02_r\": [6.9750335271071515, 10.193006961124542, -14.682410229059721], \"ring_03_l\": [0.037814840281169666, 0.4833535813005713, -0.17667210961704993], \"ring_03_r\": [-0.4378524517371535, 9.171304057900329, -3.3152764945587356], \"thumb_01_l\": [15.844522997158512, 17.430590419865094, 10.630121145843564], \"thumb_01_r\": [17.317083809169223, -16.134925590048272, -8.290866242309388], \"thumb_02_l\": [12.515584743474218, 2.5480559379026055, -6.084857839423576], \"thumb_02_r\": [11.91242128704026, 3.222347320026246, 14.370043586526391], \"thumb_03_l\": [-0.5162646640329832, -0.12126140403747321, -0.15459513500080482], \"thumb_03_r\": [-2.3139363821530057, 0.5319239622824559, 0.7005115295051169]}, \"bonePositions\": {\"Root\": [0, -8.162593841552734, -0.2602759301662445], \"pelvis\": [0, 7.361975371837616, 0.39708319306373596]}, \"modelRotation\": [0, 0, 0], \"ikEffectorPositions\": {\"pelvis\": [-0.04234141918805266, -0.7884933250895241, -0.17430164635249012], \"hand_l\": [3.893876903768656, -1.4983933767374236, 1.4907821921185842], \"hand_r\": [-3.8051274747411243, -0.8062064870976853, -0.17445359644011527], \"foot_l\": [3.896900583716022, -12.95880258695506, 1.676547650526226], \"foot_r\": [-0.5452717972920895, -12.781499384215325, 2.2255662490974006], \"head\": [0.9211267725083632, 6.813551507909084, 0.7727903016174094], \"upperarm_l\": [2.6533217844293584, 5.178078594125669, 0.4706035823696723], \"upperarm_r\": [-1.0796345530975768, 5.374857243458357, -1.1104833089469466]}, \"poleTargetPositions\": {\"leftArm\": [1.904059140706644, 0.9062238313065041, 0.4269299961270902], \"rightArm\": [-1.1696233557863702, 1.0339107636600289, -0.5081474923692445], \"leftLeg\": [1.0642190369300524, -3.992821587461512, 1.0148428443002442], \"rightLeg\": [-0.38531352260409213, -3.8529381724130354, 1.0173193210468399]}, \"hipBonePosition\": {\"hips\": [0, 7.361975371837616, 0.39708319306373596]}, \"cameraParams\": {\"offset_x\": -0.04234141918805266, \"offset_y\": 0.4604714876660604, \"zoom\": 1.56, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"}], \"animation\": null}], \"timeline\": {\"fps\": 12, \"duration\": 2, \"frameCount\": 24, \"currentFrame\": 0, \"loop\": true}, \"pose_prompts\": [\"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"], \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"export\": {\"view_width\": 1088, \"view_height\": 1920, \"cam_zoom\": 1.56, \"cam_offset_x\": -0.04234141918805266, \"cam_offset_y\": 0.4604714876660604, \"cam_yaw_deg\": 0, \"cam_pitch_deg\": 0, \"output_mode\": \"LIST\", \"grid_columns\": 6, \"bg_color\": [255, 255, 255], \"debugMode\": false, \"debugKeepLighting\": false, \"debugShowSAMHelper\": false, \"debugShowSAMMeshOverlay\": false, \"samApplyCamera\": false, \"keepOriginalLighting\": true, \"user_prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\", \"prompt_template\": \"Draw character from image2\\n<lighting>\\n<user_prompt>\", \"skin_type\": \"naked\", \"interface_mode\": \"manager\", \"manager_auto_analyze_proportions\": false, \"capture_image_size\": false, \"editor_mode\": \"image\", \"animation_image_batch\": false, \"hand_controls_v2\": true, \"directional_skydome_enabled\": false}, \"poses\": [{\"bones\": {\"pelvis\": [0.3550281570782371, -20.57833714660806, -5.127443322013752], \"spine_01\": [-13.948110155202473, 0.6780575681861917, -1.8619009749331878], \"spine_02\": [3.447167565775314, 2.9372148525296544, 0.5449503303431238], \"spine_03\": [11.42168833457665, -3.1728278304879787, 0.050930327525476556], \"thigh_l\": [-1.9866811675228915, -9.355823017981802, 14.924016339228716], \"thigh_r\": [-10.133632804292862, -17.99840859664447, 20.03878682303578], \"calf_l\": [2.5677405908820217, -0.2941643422706143, 0.8843633403966926], \"calf_r\": [0.781599207697478, 1.1672844399163789, -4.7309892057203005], \"clavicle_l\": [0.38384817221543494, 1.5478618959274035, 29.76043016582542], \"clavicle_r\": [2.088474519905714, -7.162915987552295, -18.709658604235255], \"foot_l\": [11.1886294331236, 39.35353291406782, -11.147542824703773], \"foot_r\": [27.882716456923763, 17.35163362448402, -1.2092383306615837], \"neck_01\": [28.83091878766723, 16.34522253701189, -7.163037563414473], \"upperarm_l\": [12.182481426578464, 33.85432545595674, -58.22434319578524], \"upperarm_r\": [-6.873932043555992, -13.689418396606662, 49.23072481586307], \"head\": [-23.307985978172255, -0.8318505724883107, 6.43488327781864], \"lowerarm_l\": [24.586660504460806, 8.783171865911392, -5.181826664203625], \"lowerarm_r\": [22.36703381909458, -5.796026658538288, 7.041528671986085], \"hand_l\": [5.304807381687585, 15.864425248008313, 38.11627025985993], \"hand_r\": [6.7489724495774235, -3.1504221808226007, -34.3616395352654], \"index_01_l\": [21.09191439828882, 5.918067263613394, -1.9634077081385235], \"index_01_r\": [14.250169729817118, -14.277207662975425, -25.38036431481318], \"index_02_l\": [-7.193121424542485, -3.073469071409524, 16.787743739097753], \"index_02_r\": [-7.390051481993289, 2.994070306369839, -18.80908368357838], \"index_03_l\": [-3.047660490880392, -9.045713014028033, 2.278308415638658], \"index_03_r\": [-2.704148095791787, 7.972873216532968, -2.0326885546843556], \"middle_01_l\": [13.882905872808898, 2.960337120396007, -30.22692284495185], \"middle_01_r\": [11.05261181241916, 0.00788372486632743, -8.57473686938654], \"middle_02_l\": [11.854737426846098, -3.421945262066906, -2.8180252160982926], \"middle_02_r\": [4.0342679894837, 6.901143371350249, -7.34161513843621], \"middle_03_l\": [-1.1732174125653674, -9.714386714874873, 3.1219892638526257], \"middle_03_r\": [-1.435745169983465, 12.760319701478675, -4.074993167969404], \"pinky_01_l\": [-6.803338157431939, 0.005218034138501731, 0.6939841233646794], \"pinky_01_r\": [-7.4925085256011, -8.238122216820061, 18.156363078879767], \"pinky_02_l\": [7.247643409367289, -4.994345480967249, 5.350997767561254], \"pinky_02_r\": [8.951961896388116, 8.239025363741515, -17.063774453677173], \"pinky_03_l\": [1.6754353057773015, -6.7238565992246775, 2.284472991341822], \"pinky_03_r\": [1.391761340409954, 5.666309461369446, -1.9089552267694536], \"ring_01_l\": [2.463670556580435, 2.242788424904139, -29.64818572142699], \"ring_01_r\": [3.079975363663154, 3.7374740983980863, 7.130619776371412], \"ring_02_l\": [26.59709968117445, 3.1580981786496904, -31.88509801979601], \"ring_02_r\": [6.9750335271071515, 10.193006961124542, -14.682410229059721], \"ring_03_l\": [0.037814840281169666, 0.4833535813005713, -0.17667210961704993], \"ring_03_r\": [-0.4378524517371535, 9.171304057900329, -3.3152764945587356], \"thumb_01_l\": [15.844522997158512, 17.430590419865094, 10.630121145843564], \"thumb_01_r\": [17.317083809169223, -16.134925590048272, -8.290866242309388], \"thumb_02_l\": [12.515584743474218, 2.5480559379026055, -6.084857839423576], \"thumb_02_r\": [11.91242128704026, 3.222347320026246, 14.370043586526391], \"thumb_03_l\": [-0.5162646640329832, -0.12126140403747321, -0.15459513500080482], \"thumb_03_r\": [-2.3139363821530057, 0.5319239622824559, 0.7005115295051169]}, \"bonePositions\": {\"Root\": [0, -8.162593841552734, -0.2602759301662445], \"pelvis\": [0, 7.361975371837616, 0.39708319306373596]}, \"modelRotation\": [0, 0, 0], \"ikEffectorPositions\": {\"pelvis\": [-0.04234141918805266, -0.7884933250895241, -0.17430164635249012], \"hand_l\": [3.893876903768656, -1.4983933767374236, 1.4907821921185842], \"hand_r\": [-3.8051274747411243, -0.8062064870976853, -0.17445359644011527], \"foot_l\": [3.896900583716022, -12.95880258695506, 1.676547650526226], \"foot_r\": [-0.5452717972920895, -12.781499384215325, 2.2255662490974006], \"head\": [0.9211267725083632, 6.813551507909084, 0.7727903016174094], \"upperarm_l\": [2.6533217844293584, 5.178078594125669, 0.4706035823696723], \"upperarm_r\": [-1.0796345530975768, 5.374857243458357, -1.1104833089469466]}, \"poleTargetPositions\": {\"leftArm\": [1.904059140706644, 0.9062238313065041, 0.4269299961270902], \"rightArm\": [-1.1696233557863702, 1.0339107636600289, -0.5081474923692445], \"leftLeg\": [1.0642190369300524, -3.992821587461512, 1.0148428443002442], \"rightLeg\": [-0.38531352260409213, -3.8529381724130354, 1.0173193210468399]}, \"hipBonePosition\": {\"hips\": [0, 7.361975371837616, 0.39708319306373596]}, \"cameraParams\": {\"offset_x\": -0.04234141918805266, \"offset_y\": 0.4604714876660604, \"zoom\": 1.56, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"}], \"lights\": [{\"type\": \"ambient\", \"color\": \"#000000\", \"intensity\": 0.5}, {\"type\": \"directional\", \"color\": \"#ffffff\", \"intensity\": 1, \"x\": -92.90202545475795, \"y\": 0, \"z\": 26.714380225787586}], \"activeTab\": 0, \"capture_id\": \"vnccs_capture_728\", \"lighting_prompts\": [\"Draw character from image2\\nA calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"], \"background_url\": null}",
+        false,
+        ""
+      ],
+      "widgets_values_named": {
+        "pose_data": "{\"schema_version\": 3, \"active_character_id\": \"character-1\", \"characters\": [{\"id\": \"character-1\", \"slot\": 0, \"name\": \"Main Character\", \"color\": \"#ffffff\", \"transform\": {\"x\": -0.04234141918805266, \"y\": 0.4604714876660604, \"z\": -0.38772097647257686, \"zoom\": 1.56}, \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"poses\": [{\"bones\": {\"pelvis\": [0.3550281570782371, -20.57833714660806, -5.127443322013752], \"spine_01\": [-13.948110155202473, 0.6780575681861917, -1.8619009749331878], \"spine_02\": [3.447167565775314, 2.9372148525296544, 0.5449503303431238], \"spine_03\": [11.42168833457665, -3.1728278304879787, 0.050930327525476556], \"thigh_l\": [-1.9866811675228915, -9.355823017981802, 14.924016339228716], \"thigh_r\": [-10.133632804292862, -17.99840859664447, 20.03878682303578], \"calf_l\": [2.5677405908820217, -0.2941643422706143, 0.8843633403966926], \"calf_r\": [0.781599207697478, 1.1672844399163789, -4.7309892057203005], \"clavicle_l\": [0.38384817221543494, 1.5478618959274035, 29.76043016582542], \"clavicle_r\": [2.088474519905714, -7.162915987552295, -18.709658604235255], \"foot_l\": [11.1886294331236, 39.35353291406782, -11.147542824703773], \"foot_r\": [27.882716456923763, 17.35163362448402, -1.2092383306615837], \"neck_01\": [28.83091878766723, 16.34522253701189, -7.163037563414473], \"upperarm_l\": [12.182481426578464, 33.85432545595674, -58.22434319578524], \"upperarm_r\": [-6.873932043555992, -13.689418396606662, 49.23072481586307], \"head\": [-23.307985978172255, -0.8318505724883107, 6.43488327781864], \"lowerarm_l\": [24.586660504460806, 8.783171865911392, -5.181826664203625], \"lowerarm_r\": [22.36703381909458, -5.796026658538288, 7.041528671986085], \"hand_l\": [5.304807381687585, 15.864425248008313, 38.11627025985993], \"hand_r\": [6.7489724495774235, -3.1504221808226007, -34.3616395352654], \"index_01_l\": [21.09191439828882, 5.918067263613394, -1.9634077081385235], \"index_01_r\": [14.250169729817118, -14.277207662975425, -25.38036431481318], \"index_02_l\": [-7.193121424542485, -3.073469071409524, 16.787743739097753], \"index_02_r\": [-7.390051481993289, 2.994070306369839, -18.80908368357838], \"index_03_l\": [-3.047660490880392, -9.045713014028033, 2.278308415638658], \"index_03_r\": [-2.704148095791787, 7.972873216532968, -2.0326885546843556], \"middle_01_l\": [13.882905872808898, 2.960337120396007, -30.22692284495185], \"middle_01_r\": [11.05261181241916, 0.00788372486632743, -8.57473686938654], \"middle_02_l\": [11.854737426846098, -3.421945262066906, -2.8180252160982926], \"middle_02_r\": [4.0342679894837, 6.901143371350249, -7.34161513843621], \"middle_03_l\": [-1.1732174125653674, -9.714386714874873, 3.1219892638526257], \"middle_03_r\": [-1.435745169983465, 12.760319701478675, -4.074993167969404], \"pinky_01_l\": [-6.803338157431939, 0.005218034138501731, 0.6939841233646794], \"pinky_01_r\": [-7.4925085256011, -8.238122216820061, 18.156363078879767], \"pinky_02_l\": [7.247643409367289, -4.994345480967249, 5.350997767561254], \"pinky_02_r\": [8.951961896388116, 8.239025363741515, -17.063774453677173], \"pinky_03_l\": [1.6754353057773015, -6.7238565992246775, 2.284472991341822], \"pinky_03_r\": [1.391761340409954, 5.666309461369446, -1.9089552267694536], \"ring_01_l\": [2.463670556580435, 2.242788424904139, -29.64818572142699], \"ring_01_r\": [3.079975363663154, 3.7374740983980863, 7.130619776371412], \"ring_02_l\": [26.59709968117445, 3.1580981786496904, -31.88509801979601], \"ring_02_r\": [6.9750335271071515, 10.193006961124542, -14.682410229059721], \"ring_03_l\": [0.037814840281169666, 0.4833535813005713, -0.17667210961704993], \"ring_03_r\": [-0.4378524517371535, 9.171304057900329, -3.3152764945587356], \"thumb_01_l\": [15.844522997158512, 17.430590419865094, 10.630121145843564], \"thumb_01_r\": [17.317083809169223, -16.134925590048272, -8.290866242309388], \"thumb_02_l\": [12.515584743474218, 2.5480559379026055, -6.084857839423576], \"thumb_02_r\": [11.91242128704026, 3.222347320026246, 14.370043586526391], \"thumb_03_l\": [-0.5162646640329832, -0.12126140403747321, -0.15459513500080482], \"thumb_03_r\": [-2.3139363821530057, 0.5319239622824559, 0.7005115295051169]}, \"bonePositions\": {\"Root\": [0, -8.162593841552734, -0.2602759301662445], \"pelvis\": [0, 7.361975371837616, 0.39708319306373596]}, \"modelRotation\": [0, 0, 0], \"ikEffectorPositions\": {\"pelvis\": [-0.04234141918805266, -0.7884933250895241, -0.17430164635249012], \"hand_l\": [3.893876903768656, -1.4983933767374236, 1.4907821921185842], \"hand_r\": [-3.8051274747411243, -0.8062064870976853, -0.17445359644011527], \"foot_l\": [3.896900583716022, -12.95880258695506, 1.676547650526226], \"foot_r\": [-0.5452717972920895, -12.781499384215325, 2.2255662490974006], \"head\": [0.9211267725083632, 6.813551507909084, 0.7727903016174094], \"upperarm_l\": [2.6533217844293584, 5.178078594125669, 0.4706035823696723], \"upperarm_r\": [-1.0796345530975768, 5.374857243458357, -1.1104833089469466]}, \"poleTargetPositions\": {\"leftArm\": [1.904059140706644, 0.9062238313065041, 0.4269299961270902], \"rightArm\": [-1.1696233557863702, 1.0339107636600289, -0.5081474923692445], \"leftLeg\": [1.0642190369300524, -3.992821587461512, 1.0148428443002442], \"rightLeg\": [-0.38531352260409213, -3.8529381724130354, 1.0173193210468399]}, \"hipBonePosition\": {\"hips\": [0, 7.361975371837616, 0.39708319306373596]}, \"cameraParams\": {\"offset_x\": -0.04234141918805266, \"offset_y\": 0.4604714876660604, \"zoom\": 1.56, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"}], \"animation\": null}], \"timeline\": {\"fps\": 12, \"duration\": 2, \"frameCount\": 24, \"currentFrame\": 0, \"loop\": true}, \"pose_prompts\": [\"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"], \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"export\": {\"view_width\": 1088, \"view_height\": 1920, \"cam_zoom\": 1.56, \"cam_offset_x\": -0.04234141918805266, \"cam_offset_y\": 0.4604714876660604, \"cam_yaw_deg\": 0, \"cam_pitch_deg\": 0, \"output_mode\": \"LIST\", \"grid_columns\": 6, \"bg_color\": [255, 255, 255], \"debugMode\": false, \"debugKeepLighting\": false, \"debugShowSAMHelper\": false, \"debugShowSAMMeshOverlay\": false, \"samApplyCamera\": false, \"keepOriginalLighting\": true, \"user_prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\", \"prompt_template\": \"Draw character from image2\\n<lighting>\\n<user_prompt>\", \"skin_type\": \"naked\", \"interface_mode\": \"manager\", \"manager_auto_analyze_proportions\": false, \"capture_image_size\": false, \"editor_mode\": \"image\", \"animation_image_batch\": false, \"hand_controls_v2\": true, \"directional_skydome_enabled\": false}, \"poses\": [{\"bones\": {\"pelvis\": [0.3550281570782371, -20.57833714660806, -5.127443322013752], \"spine_01\": [-13.948110155202473, 0.6780575681861917, -1.8619009749331878], \"spine_02\": [3.447167565775314, 2.9372148525296544, 0.5449503303431238], \"spine_03\": [11.42168833457665, -3.1728278304879787, 0.050930327525476556], \"thigh_l\": [-1.9866811675228915, -9.355823017981802, 14.924016339228716], \"thigh_r\": [-10.133632804292862, -17.99840859664447, 20.03878682303578], \"calf_l\": [2.5677405908820217, -0.2941643422706143, 0.8843633403966926], \"calf_r\": [0.781599207697478, 1.1672844399163789, -4.7309892057203005], \"clavicle_l\": [0.38384817221543494, 1.5478618959274035, 29.76043016582542], \"clavicle_r\": [2.088474519905714, -7.162915987552295, -18.709658604235255], \"foot_l\": [11.1886294331236, 39.35353291406782, -11.147542824703773], \"foot_r\": [27.882716456923763, 17.35163362448402, -1.2092383306615837], \"neck_01\": [28.83091878766723, 16.34522253701189, -7.163037563414473], \"upperarm_l\": [12.182481426578464, 33.85432545595674, -58.22434319578524], \"upperarm_r\": [-6.873932043555992, -13.689418396606662, 49.23072481586307], \"head\": [-23.307985978172255, -0.8318505724883107, 6.43488327781864], \"lowerarm_l\": [24.586660504460806, 8.783171865911392, -5.181826664203625], \"lowerarm_r\": [22.36703381909458, -5.796026658538288, 7.041528671986085], \"hand_l\": [5.304807381687585, 15.864425248008313, 38.11627025985993], \"hand_r\": [6.7489724495774235, -3.1504221808226007, -34.3616395352654], \"index_01_l\": [21.09191439828882, 5.918067263613394, -1.9634077081385235], \"index_01_r\": [14.250169729817118, -14.277207662975425, -25.38036431481318], \"index_02_l\": [-7.193121424542485, -3.073469071409524, 16.787743739097753], \"index_02_r\": [-7.390051481993289, 2.994070306369839, -18.80908368357838], \"index_03_l\": [-3.047660490880392, -9.045713014028033, 2.278308415638658], \"index_03_r\": [-2.704148095791787, 7.972873216532968, -2.0326885546843556], \"middle_01_l\": [13.882905872808898, 2.960337120396007, -30.22692284495185], \"middle_01_r\": [11.05261181241916, 0.00788372486632743, -8.57473686938654], \"middle_02_l\": [11.854737426846098, -3.421945262066906, -2.8180252160982926], \"middle_02_r\": [4.0342679894837, 6.901143371350249, -7.34161513843621], \"middle_03_l\": [-1.1732174125653674, -9.714386714874873, 3.1219892638526257], \"middle_03_r\": [-1.435745169983465, 12.760319701478675, -4.074993167969404], \"pinky_01_l\": [-6.803338157431939, 0.005218034138501731, 0.6939841233646794], \"pinky_01_r\": [-7.4925085256011, -8.238122216820061, 18.156363078879767], \"pinky_02_l\": [7.247643409367289, -4.994345480967249, 5.350997767561254], \"pinky_02_r\": [8.951961896388116, 8.239025363741515, -17.063774453677173], \"pinky_03_l\": [1.6754353057773015, -6.7238565992246775, 2.284472991341822], \"pinky_03_r\": [1.391761340409954, 5.666309461369446, -1.9089552267694536], \"ring_01_l\": [2.463670556580435, 2.242788424904139, -29.64818572142699], \"ring_01_r\": [3.079975363663154, 3.7374740983980863, 7.130619776371412], \"ring_02_l\": [26.59709968117445, 3.1580981786496904, -31.88509801979601], \"ring_02_r\": [6.9750335271071515, 10.193006961124542, -14.682410229059721], \"ring_03_l\": [0.037814840281169666, 0.4833535813005713, -0.17667210961704993], \"ring_03_r\": [-0.4378524517371535, 9.171304057900329, -3.3152764945587356], \"thumb_01_l\": [15.844522997158512, 17.430590419865094, 10.630121145843564], \"thumb_01_r\": [17.317083809169223, -16.134925590048272, -8.290866242309388], \"thumb_02_l\": [12.515584743474218, 2.5480559379026055, -6.084857839423576], \"thumb_02_r\": [11.91242128704026, 3.222347320026246, 14.370043586526391], \"thumb_03_l\": [-0.5162646640329832, -0.12126140403747321, -0.15459513500080482], \"thumb_03_r\": [-2.3139363821530057, 0.5319239622824559, 0.7005115295051169]}, \"bonePositions\": {\"Root\": [0, -8.162593841552734, -0.2602759301662445], \"pelvis\": [0, 7.361975371837616, 0.39708319306373596]}, \"modelRotation\": [0, 0, 0], \"ikEffectorPositions\": {\"pelvis\": [-0.04234141918805266, -0.7884933250895241, -0.17430164635249012], \"hand_l\": [3.893876903768656, -1.4983933767374236, 1.4907821921185842], \"hand_r\": [-3.8051274747411243, -0.8062064870976853, -0.17445359644011527], \"foot_l\": [3.896900583716022, -12.95880258695506, 1.676547650526226], \"foot_r\": [-0.5452717972920895, -12.781499384215325, 2.2255662490974006], \"head\": [0.9211267725083632, 6.813551507909084, 0.7727903016174094], \"upperarm_l\": [2.6533217844293584, 5.178078594125669, 0.4706035823696723], \"upperarm_r\": [-1.0796345530975768, 5.374857243458357, -1.1104833089469466]}, \"poleTargetPositions\": {\"leftArm\": [1.904059140706644, 0.9062238313065041, 0.4269299961270902], \"rightArm\": [-1.1696233557863702, 1.0339107636600289, -0.5081474923692445], \"leftLeg\": [1.0642190369300524, -3.992821587461512, 1.0148428443002442], \"rightLeg\": [-0.38531352260409213, -3.8529381724130354, 1.0173193210468399]}, \"hipBonePosition\": {\"hips\": [0, 7.361975371837616, 0.39708319306373596]}, \"cameraParams\": {\"offset_x\": -0.04234141918805266, \"offset_y\": 0.4604714876660604, \"zoom\": 1.56, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"A calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"}], \"lights\": [{\"type\": \"ambient\", \"color\": \"#000000\", \"intensity\": 0.5}, {\"type\": \"directional\", \"color\": \"#ffffff\", \"intensity\": 1, \"x\": -92.90202545475795, \"y\": 0, \"z\": 26.714380225787586}], \"activeTab\": 0, \"capture_id\": \"vnccs_capture_728\", \"lighting_prompts\": [\"Draw character from image2\\nA calm conversational standing pose with a small relaxed outward hand gesture. Neutral facial expression. Both hands empty.\"], \"background_url\": null}",
+        "animation_image_batch": false,
+        "pose_studio_ui": ""
+      },
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 751,
+      "type": "VNCCS_ClothesGenerator",
+      "pos": [
+        1250,
+        0
+      ],
+      "size": [
+        2110,
+        1270
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "poses",
+          "name": "poses",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "localized_name": "character",
+          "name": "character",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "localized_name": "pipe",
+          "name": "pipe",
+          "type": "VNCCS_PIPE",
+          "link": 5
+        },
+        {
+          "localized_name": "sheets_path",
+          "name": "sheets_path",
+          "shape": 7,
+          "type": "STRING",
+          "link": 6
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 7
+        },
+        {
+          "localized_name": "background",
+          "name": "background",
+          "type": "COMBO",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "widget_data",
+          "name": "widget_data",
+          "type": "STRING",
+          "widget": {
+            "name": "widget_data"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "sprites",
+          "name": "sprites",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        },
+        {
+          "localized_name": "faces",
+          "name": "faces",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "localized_name": "source_upscaled",
+          "name": "source_upscaled",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "localized_name": "pose_generation",
+          "name": "pose_generation",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        },
+        {
+          "localized_name": "upscaled",
+          "name": "upscaled",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "title": "Pose only / approved clothes reference",
+      "properties": {
+        "Node name for S&R": "VNCCS_ClothesGenerator",
+        "cnr_id": "vnccs",
+        "ver": "3.0.0"
+      },
+      "widgets_values": [
+        "",
+        "Alpha",
+        "{\"nsfw_enabled\": true, \"emotion_pairs\": [], \"common\": {\"target_size\": 1024}, \"pose_generation\": {\"target_size\": 2048, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"from_generator\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"pose_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"vae_decode\": {\"tile_size\": 512, \"overlap\": 64, \"temporal_size\": 64, \"temporal_overlap\": 8}, \"emotion_generation\": {\"task_batch_size\": 0, \"target_size\": 2048, \"face_denoise\": 0.55, \"use_sam\": true, \"bbox_model\": \"bbox/face_yolov8m.pt\", \"segm_model\": \"bbox/face_yolov8m.pt\", \"sam_model\": \"sam_vit_b_01ec64.pth\", \"sam_device_mode\": \"AUTO\", \"guide_size\": 1536, \"guide_size_for\": true, \"max_size\": 1536, \"inherit_pipe_sampler\": true, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"feather\": 5, \"noise_mask\": true, \"force_inpaint\": true, \"bbox_threshold\": 0.1, \"bbox_dilation\": 10, \"qi2_prompt_template\": \"Upscale face image.\\nMake character's face emotion {emotion}\\nChange only face. Keep original neck colour, clothes and hairs\\nkeep character's clothes\", \"bbox_crop_factor\": 3, \"sam_detection_hint\": \"center-1\", \"sam_dilation\": 25, \"sam_threshold\": 0.93, \"sam_bbox_expansion\": 0, \"sam_mask_hint_threshold\": 0.7, \"sam_mask_hint_use_negative\": \"False\", \"drop_size\": 10, \"cycle\": 1, \"inpaint_model\": false, \"noise_mask_feather\": 20, \"tiled_encode\": true, \"tiled_decode\": true, \"matte_expand_radius\": 8, \"matte_feather_radius\": 4, \"chroma_context\": 16}, \"remove_clothes\": {\"prompt\": \"Dress character: White underwear\", \"target_size\": 1024, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"White\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"remove_clothes_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"upscaler\": {\"mode\": \"seedvr\", \"model\": \"seedvr2_3b_fp8_e4m3fn.safetensors\", \"vae\": \"ema_vae_fp16.safetensors\", \"device\": \"cuda:0\", \"offload_device\": \"cpu\", \"seed\": 42, \"inherit_pipe_seed\": true, \"resolution\": 2048, \"max_resolution\": 3840, \"batch_size\": 1, \"uniform_batch_size\": false, \"color_correction\": \"lab\", \"temporal_overlap\": 0, \"prepend_frames\": 0, \"input_noise_scale\": 0, \"latent_noise_scale\": 0, \"blocks_to_swap\": 0, \"swap_io_components\": false, \"cache_dit\": false, \"attention_mode\": \"sdpa\", \"attention_mode_manual\": true, \"encode_tiled\": true, \"encode_tile_size\": 1024, \"encode_tile_overlap\": 128, \"decode_tiled\": true, \"decode_tile_size\": 1024, \"decode_tile_overlap\": 128, \"tile_debug\": \"false\", \"cache_vae\": false, \"enable_debug\": false}, \"bg_remove\": {\"preset\": \"Native\", \"use_sam3_details_recovery\": true, \"use_preset_values\": true, \"tolerance\": 0.5, \"softness\": 0.12, \"despill_strength\": 1, \"edge_width\": 3, \"matte_cleanup\": 0.1, \"foreground_recover\": 0.35, \"edge_decontaminate\": 0.75, \"edge_choke\": 0.08, \"matte_method\": \"guided_edge\", \"screen_mode\": \"from_background\", \"output_mode\": \"straight_rgba\", \"sam3_model\": \"\", \"sam3_segmentor\": \"image\", \"sam3_device\": \"auto\", \"sam3_precision\": \"bf16\", \"sam3_prompt\": \"face, clothes, accessories, hat, boots, eyes\", \"sam3_threshold\": 0.4, \"sam3_add_background\": \"none\", \"sam3_detection_limit\": -1, \"sam3_erode_radius\": 4, \"sam3_min_foreground_overlap\": 0.55, \"despill_kernel_size\": 3, \"despill_color\": \"black\"}, \"ui\": {\"selected_preview\": \"bg_remove\", \"user_selected_preview\": false, \"bg_remove_previous_preset\": \"balanced\", \"bg_remove_model_kind\": \"qi2\", \"resolution_model_kind\": \"qi2\", \"resolution_model_key\": \"[\\\"qi2\\\", \\\"unet\\\", \\\"Qwen Image 2.1 INT8 ConvRot\\\"]\", \"resolution_by_model\": {\"[\\\"qi2\\\",\\\"unet\\\",\\\"Qwen Image 2.1 INT8 ConvRot\\\"]\": {\"target_size\": 2048, \"updated_at\": 0}}, \"progress_scope\": \"b44d91e5-4ff4-42f3-b9f5-c9a86cf02871:c23a9ea6-7317-48d9-bea1-e208adf097f6:VNCCS_ClothesGenerator:751\"}, \"character_name\": \"Evelyn_StoryPoseStudies_20261101\", \"costume\": \"Everyday PoseStudy relaxed\", \"gender\": \"female\"}",
+        ""
+      ],
+      "widgets_values_named": {
+        "prompt": "",
+        "background": "Alpha",
+        "widget_data": "{\"nsfw_enabled\": true, \"emotion_pairs\": [], \"common\": {\"target_size\": 1024}, \"pose_generation\": {\"target_size\": 2048, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"from_generator\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"pose_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"vae_decode\": {\"tile_size\": 512, \"overlap\": 64, \"temporal_size\": 64, \"temporal_overlap\": 8}, \"emotion_generation\": {\"task_batch_size\": 0, \"target_size\": 2048, \"face_denoise\": 0.55, \"use_sam\": true, \"bbox_model\": \"bbox/face_yolov8m.pt\", \"segm_model\": \"bbox/face_yolov8m.pt\", \"sam_model\": \"sam_vit_b_01ec64.pth\", \"sam_device_mode\": \"AUTO\", \"guide_size\": 1536, \"guide_size_for\": true, \"max_size\": 1536, \"inherit_pipe_sampler\": true, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"feather\": 5, \"noise_mask\": true, \"force_inpaint\": true, \"bbox_threshold\": 0.1, \"bbox_dilation\": 10, \"qi2_prompt_template\": \"Upscale face image.\\nMake character's face emotion {emotion}\\nChange only face. Keep original neck colour, clothes and hairs\\nkeep character's clothes\", \"bbox_crop_factor\": 3, \"sam_detection_hint\": \"center-1\", \"sam_dilation\": 25, \"sam_threshold\": 0.93, \"sam_bbox_expansion\": 0, \"sam_mask_hint_threshold\": 0.7, \"sam_mask_hint_use_negative\": \"False\", \"drop_size\": 10, \"cycle\": 1, \"inpaint_model\": false, \"noise_mask_feather\": 20, \"tiled_encode\": true, \"tiled_decode\": true, \"matte_expand_radius\": 8, \"matte_feather_radius\": 4, \"chroma_context\": 16}, \"remove_clothes\": {\"prompt\": \"Dress character: White underwear\", \"target_size\": 1024, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"White\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"remove_clothes_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"upscaler\": {\"mode\": \"seedvr\", \"model\": \"seedvr2_3b_fp8_e4m3fn.safetensors\", \"vae\": \"ema_vae_fp16.safetensors\", \"device\": \"cuda:0\", \"offload_device\": \"cpu\", \"seed\": 42, \"inherit_pipe_seed\": true, \"resolution\": 2048, \"max_resolution\": 3840, \"batch_size\": 1, \"uniform_batch_size\": false, \"color_correction\": \"lab\", \"temporal_overlap\": 0, \"prepend_frames\": 0, \"input_noise_scale\": 0, \"latent_noise_scale\": 0, \"blocks_to_swap\": 0, \"swap_io_components\": false, \"cache_dit\": false, \"attention_mode\": \"sdpa\", \"attention_mode_manual\": true, \"encode_tiled\": true, \"encode_tile_size\": 1024, \"encode_tile_overlap\": 128, \"decode_tiled\": true, \"decode_tile_size\": 1024, \"decode_tile_overlap\": 128, \"tile_debug\": \"false\", \"cache_vae\": false, \"enable_debug\": false}, \"bg_remove\": {\"preset\": \"Native\", \"use_sam3_details_recovery\": true, \"use_preset_values\": true, \"tolerance\": 0.5, \"softness\": 0.12, \"despill_strength\": 1, \"edge_width\": 3, \"matte_cleanup\": 0.1, \"foreground_recover\": 0.35, \"edge_decontaminate\": 0.75, \"edge_choke\": 0.08, \"matte_method\": \"guided_edge\", \"screen_mode\": \"from_background\", \"output_mode\": \"straight_rgba\", \"sam3_model\": \"\", \"sam3_segmentor\": \"image\", \"sam3_device\": \"auto\", \"sam3_precision\": \"bf16\", \"sam3_prompt\": \"face, clothes, accessories, hat, boots, eyes\", \"sam3_threshold\": 0.4, \"sam3_add_background\": \"none\", \"sam3_detection_limit\": -1, \"sam3_erode_radius\": 4, \"sam3_min_foreground_overlap\": 0.55, \"despill_kernel_size\": 3, \"despill_color\": \"black\"}, \"ui\": {\"selected_preview\": \"bg_remove\", \"user_selected_preview\": false, \"bg_remove_previous_preset\": \"balanced\", \"bg_remove_model_kind\": \"qi2\", \"resolution_model_kind\": \"qi2\", \"resolution_model_key\": \"[\\\"qi2\\\", \\\"unet\\\", \\\"Qwen Image 2.1 INT8 ConvRot\\\"]\", \"resolution_by_model\": {\"[\\\"qi2\\\",\\\"unet\\\",\\\"Qwen Image 2.1 INT8 ConvRot\\\"]\": {\"target_size\": 2048, \"updated_at\": 0}}, \"progress_scope\": \"b44d91e5-4ff4-42f3-b9f5-c9a86cf02871:c23a9ea6-7317-48d9-bea1-e208adf097f6:VNCCS_ClothesGenerator:751\"}, \"character_name\": \"Evelyn_StoryPoseStudies_20261101\", \"costume\": \"Everyday PoseStudy relaxed\", \"gender\": \"female\"}",
+        "character_generator_ui": ""
+      },
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 814,
+      "type": "RavenCleanNativeAlpha",
+      "pos": [
+        1650,
+        0
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 8
+        },
+        {
+          "localized_name": "black_point",
+          "name": "black_point",
+          "type": "FLOAT",
+          "widget": {
+            "name": "black_point"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "white_point",
+          "name": "white_point",
+          "type": "FLOAT",
+          "widget": {
+            "name": "white_point"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RavenCleanNativeAlpha"
+      },
+      "widgets_values": [
+        0.06,
+        0.94
+      ],
+      "widgets_values_named": {
+        "black_point": 0.06,
+        "white_point": 0.94
+      }
+    },
+    {
+      "id": 815,
+      "type": "SaveImage",
+      "pos": [
+        2050,
+        0
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/relaxed/full_body/Evelyn_relaxed"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/relaxed/full_body/Evelyn_relaxed"
+      }
+    },
+    {
+      "id": 816,
+      "type": "SaveImage",
+      "pos": [
+        1650,
+        430
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/relaxed/raw_pose/pose"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/relaxed/raw_pose/pose"
+      }
+    },
+    {
+      "id": 817,
+      "type": "SaveImage",
+      "pos": [
+        800,
+        1150
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/relaxed/mannequin/pose"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/relaxed/mannequin/pose"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      810,
+      0,
+      812,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      810,
+      1,
+      812,
+      1,
+      "MASK"
+    ],
+    [
+      3,
+      728,
+      0,
+      751,
+      0,
+      "IMAGE"
+    ],
+    [
+      4,
+      812,
+      0,
+      751,
+      1,
+      "IMAGE"
+    ],
+    [
+      5,
+      758,
+      0,
+      751,
+      2,
+      "VNCCS_PIPE"
+    ],
+    [
+      6,
+      813,
+      0,
+      751,
+      3,
+      "STRING"
+    ],
+    [
+      7,
+      728,
+      1,
+      751,
+      4,
+      "STRING"
+    ],
+    [
+      8,
+      751,
+      0,
+      814,
+      0,
+      "IMAGE"
+    ],
+    [
+      9,
+      814,
+      0,
+      815,
+      0,
+      "IMAGE"
+    ],
+    [
+      10,
+      751,
+      3,
+      816,
+      0,
+      "IMAGE"
+    ],
+    [
+      11,
+      728,
+      0,
+      817,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "raven_task_ids": [
+      "GFX-06-01",
+      "GFX-06-02",
+      "GFX-06-06"
+    ],
+    "raven_pose_id": "relaxed",
+    "raven_source_sha256": "c60d74a920687e0f08711daf276661b3f73bfc1535e2aa9eceed7f679ce31349",
+    "raven_repo_sha": "76359351f260bd2b7719694f8410e5bfc62707b2",
+    "vnccs_workflow_id": "c23a9ea6-7317-48d9-bea1-e208adf097f6",
+    "ds": {
+      "scale": 0.18261834319526626,
+      "offset": [
+        573.3333333333335,
+        1800.3483191575538
+      ]
+    }
+  },
+  "version": 0.4
+}

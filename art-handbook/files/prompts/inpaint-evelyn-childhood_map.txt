@@ -1,0 +1,5 @@
+## Positive [verbatim]
+Edit the existing illustration locally around the hands. Add one small partly folded cream paper map, roughly postcard-sized while folded, held between both hands. Simple childlike pencil paths and a few room rectangles, faint fold creases, no readable labels, no magical markings. Adjust ONLY the fingers and hand contact needed to hold this object naturally. Exactly two hands, correct finger anatomy and correct object occlusion. Keep the same arms, cream opaque linen blouse, burgundy skirt, proportions, colours, soft anime illustration treatment and original light. Keep the object small relative to the hands. Preserve the original composition and transparent background. No other objects.
+
+## Negative [verbatim]
+extra hands, extra fingers, fused fingers, duplicate object, giant object, photorealistic object, glossy fabric, transparent clothing, readable text, watermark

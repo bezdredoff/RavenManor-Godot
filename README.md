@@ -4,6 +4,8 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 [Launch the interactive Prototype Lab](https://bezdredoff.github.io/RavenManor-Godot/)
 
+[Art Production Handbook](https://bezdredoff.github.io/RavenManor-Godot/art-handbook/) — image-to-workflow reference, recorded prompts/settings, system/model fingerprints, downloadable ComfyUI files and production history. Open `art-handbook/index.html` locally or read `art-handbook/files/AGENT_GUIDE.md` and the machine catalog. New documentation is published by the Pages workflow after its PR is merged.
+
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
 **Repository status (2026-10-26):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.2, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.

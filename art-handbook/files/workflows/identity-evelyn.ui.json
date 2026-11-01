@@ -1,0 +1,99 @@
+{
+  "last_node_id": 2,
+  "last_link_id": 1,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "CharacterCreatorV2",
+      "pos": [
+        80,
+        80
+      ],
+      "size": [
+        1020,
+        940
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "character",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "name": "sheets_path",
+          "type": "STRING",
+          "links": null
+        },
+        {
+          "name": "background",
+          "type": "*",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CharacterCreatorV2",
+        "cnr_id": "vnccs",
+        "ver": "04b2e9b58813626336f83807ccbb13a266240108"
+      },
+      "widgets_values": [
+        "{\"preview_valid\": false, \"sprite_preview_index\": 0, \"sprite_preview_count\": 0, \"character\": \"Evelyn_CastDraft_20261031\", \"prompt_modes\": {\"illustrious\": {\"style\": \"none\", \"aesthetics\": \"masterpiece, best quality\", \"negative_prompt\": \"bad quality, worst quality\"}, \"anima\": {\"style\": \"none\", \"aesthetics\": \"masterpiece, best quality, score_7, anime\", \"negative_prompt\": \"bad quality, worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, sepia\"}, \"qi2\": {\"style\": \"watercolor_anime_illustration\", \"aesthetics\": \"bright diffuse daylight, soft even studio lighting,\\nflat readable colors, restrained cel shading,\\nmatte skin, minimal specular highlights,\\nlow contrast, clean character-design presentation\", \"negative_prompt\": \"extra shadows, harsh shadows, dramatic lighting,\\nstrong rim light, bloom, glow, glossy skin,\\noily skin, wet skin, specular highlights,\\nstrong gradients, deep midtones, high contrast,\\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts\", \"custom_style\": \"\", \"style_prompt\": \"Style: Watercolor Anime Illustration.\\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.\", \"style_label\": \"Watercolor Anime Illustration\", \"style_description\": \"A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…\", \"style_reference\": \"traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.\", \"secondary_style\": {\"style\": \"none\"}}}, \"prompt_defaults_version\": 4, \"character_info\": {\"name\": \"Evelyn_CastDraft_20261031\", \"background_color\": \"White\", \"aesthetics\": \"bright diffuse daylight, soft even studio lighting,\\nflat readable colors, restrained cel shading,\\nmatte skin, minimal specular highlights,\\nlow contrast, clean character-design presentation\", \"nsfw\": false, \"sex\": \"female\", \"age\": 28, \"race\": \"human\", \"eyes\": \"light turquoise-green eyes\", \"hair\": \"long chestnut-brown hair, soft straight bangs, two loose face-framing strands\", \"face\": \"delicate adult face, narrow jaw, small nose, calm intelligent expression\", \"body\": \"elegant elongated adult anime proportions, slender graceful silhouette, fine shoulders, long legs, delicate hands, balanced anatomy\", \"skin_color\": \"pale warm skin\", \"additional_details\": \"subtle gothic elegance, no tattoos, no piercings\", \"seed\": 0, \"lora_prompt\": \"\", \"negative_prompt\": \"extra shadows, harsh shadows, dramatic lighting,\\nstrong rim light, bloom, glow, glossy skin,\\noily skin, wet skin, specular highlights,\\nstrong gradients, deep midtones, high contrast,\\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts\", \"framing\": \"Full_body\", \"style\": \"watercolor_anime_illustration\", \"custom_style\": \"\", \"breast_size\": \"medium breasts\", \"style_prompt\": \"Style: Watercolor Anime Illustration.\\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.\", \"style_label\": \"Watercolor Anime Illustration\", \"style_description\": \"A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…\", \"style_reference\": \"traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.\", \"secondary_style\": {\"style\": \"none\"}}, \"gen_settings\": {\"generation_mode\": \"qi2\", \"target_size\": 1024, \"background_model_kind\": \"qi2\", \"previous_background_color\": \"Green\", \"ckpt_name\": \"3d\\\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors\", \"sampler\": \"euler\", \"scheduler\": \"simple\", \"steps\": 25, \"cfg\": 3, \"seed\": 31, \"seed_mode\": \"fixed\", \"diffusion_model_name\": \"qwen_image_2.1_int8_convrot.safetensors\", \"clip_name\": \"qwen3vl_8b_int8_convrot.safetensors\", \"vae_name\": \"qwen_image_2.1_vae_bf16.safetensors\", \"mode_settings\": {\"illustrious\": {\"target_size\": 1024, \"ckpt_name\": \"3d\\\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors\", \"sampler\": \"euler\", \"scheduler\": \"normal\", \"steps\": 20, \"cfg\": 8, \"seed\": 0, \"seed_mode\": \"fixed\", \"turbo_previous_settings\": null, \"dmd_lora_name\": \"\", \"dmd_lora_strength\": 1, \"age_lora_name\": \"\", \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}, \"anima\": {\"diffusion_model_name\": \"\", \"clip_name\": \"qwen_3_06b_base.safetensors\", \"vae_name\": \"qwen_image_vae.safetensors\", \"target_size\": 1024, \"sampler\": \"er_sde\", \"scheduler\": \"simple\", \"steps\": 30, \"cfg\": 4, \"seed\": 0, \"seed_mode\": \"fixed\", \"turbo_enabled\": false, \"dmd_lora_name\": \"anima\\\\anima-turbo-lora-v0.1.safetensors\", \"dmd_lora_strength\": 1, \"turbo_previous_settings\": null, \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}, \"qi2\": {\"diffusion_model_name\": \"qwen_image_2.1_int8_convrot.safetensors\", \"clip_name\": \"qwen3vl_8b_int8_convrot.safetensors\", \"vae_name\": \"qwen_image_2.1_vae_bf16.safetensors\", \"target_size\": 1024, \"clip_type\": \"qwen_image\", \"sampler\": \"euler\", \"scheduler\": \"simple\", \"steps\": 25, \"cfg\": 3, \"seed\": 31, \"seed_mode\": \"fixed\", \"turbo_enabled\": false, \"dmd_lora_name\": \"\", \"dmd_lora_strength\": 1, \"turbo_previous_settings\": {\"steps\": 25, \"cfg\": 3}, \"qi2_overhaul_strength\": 0.5, \"qi2_prompt_enhancement\": false, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}, \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}}, \"anima_defaults_applied\": false, \"generation_defaults_version\": 6, \"dmd_lora_name\": \"\", \"dmd_lora_strength\": 1, \"age_lora_name\": \"\", \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}], \"turbo_previous_settings\": {\"steps\": 25, \"cfg\": 3}, \"clip_type\": \"qwen_image\", \"turbo_enabled\": false, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}, \"qi2_overhaul_strength\": 0.5, \"qi2_prompt_enhancement\": false}}",
+        ""
+      ],
+      "widgets_values_named": {
+        "widget_data": "{\"preview_valid\": true, \"sprite_preview_index\": 0, \"sprite_preview_count\": 0, \"character\": \"Evelyn_GFX01\", \"prompt_modes\": {\"illustrious\": {\"style\": \"none\", \"aesthetics\": \"masterpiece, best quality\", \"negative_prompt\": \"bad quality, worst quality\"}, \"anima\": {\"style\": \"none\", \"aesthetics\": \"masterpiece, best quality, score_7, anime\", \"negative_prompt\": \"bad quality, worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, sepia\"}, \"qi2\": {\"style\": \"watercolor_anime_illustration\", \"aesthetics\": \"bright diffuse daylight, soft even studio lighting,\\nflat readable colors, restrained cel shading,\\nmatte skin, minimal specular highlights,\\nlow contrast, clean character-design presentation\", \"negative_prompt\": \"extra shadows, harsh shadows, dramatic lighting,\\nstrong rim light, bloom, glow, glossy skin,\\noily skin, wet skin, specular highlights,\\nstrong gradients, deep midtones, high contrast,\\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts\", \"custom_style\": \"\", \"style_prompt\": \"Style: Watercolor Anime Illustration.\\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.\", \"style_label\": \"Watercolor Anime Illustration\", \"style_description\": \"A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…\", \"style_reference\": \"traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.\", \"secondary_style\": {\"style\": \"none\"}}}, \"prompt_defaults_version\": 4, \"character_info\": {\"name\": \"Evelyn_GFX01\", \"background_color\": \"Transparent\", \"aesthetics\": \"bright diffuse daylight, soft even studio lighting,\\nflat readable colors, restrained cel shading,\\nmatte skin, minimal specular highlights,\\nlow contrast, clean character-design presentation\", \"nsfw\": false, \"sex\": \"female\", \"age\": 18, \"race\": \"human\", \"eyes\": \"light turquoise-green eyes, clear iris color, consistent eye color\", \"hair\": \"long  bright chestnut-brown hair, soft straight bangs, two loose strands framing the face,  curvy, consistent hair silhouette\", \"face\": \"pale delicate face, narrow jaw, small nose, calm intelligent expression, consistent facial features\", \"body\": \" natural proportions\", \"skin_color\": \"pale warm skin\", \"additional_details\": \"subtle gothic elegance, no tattoos, no piercings\", \"seed\": 0, \"lora_prompt\": \"\", \"negative_prompt\": \"extra shadows, harsh shadows, dramatic lighting,\\nstrong rim light, bloom, glow, glossy skin,\\noily skin, wet skin, specular highlights,\\nstrong gradients, deep midtones, high contrast,\\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts\", \"framing\": \"Full_body\", \"style\": \"watercolor_anime_illustration\", \"custom_style\": \"\", \"breast_size\": \"medium breasts\", \"style_prompt\": \"Style: Watercolor Anime Illustration.\\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.\", \"style_label\": \"Watercolor Anime Illustration\", \"style_description\": \"A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…\", \"style_reference\": \"traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.\", \"secondary_style\": {\"style\": \"none\"}}, \"gen_settings\": {\"generation_mode\": \"qi2\", \"target_size\": 2048, \"background_model_kind\": \"qi2\", \"previous_background_color\": \"Green\", \"ckpt_name\": \"3d\\\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors\", \"sampler\": \"euler\", \"scheduler\": \"simple\", \"steps\": 6, \"cfg\": 1, \"seed\": 0, \"seed_mode\": \"fixed\", \"diffusion_model_name\": \"qwen_image_2.1_int8_convrot.safetensors\", \"clip_name\": \"qwen3vl_8b_int8_convrot.safetensors\", \"vae_name\": \"qwen_image_2.1_vae_bf16.safetensors\", \"mode_settings\": {\"illustrious\": {\"target_size\": 1024, \"ckpt_name\": \"3d\\\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors\", \"sampler\": \"euler\", \"scheduler\": \"normal\", \"steps\": 20, \"cfg\": 8, \"seed\": 0, \"seed_mode\": \"fixed\", \"turbo_previous_settings\": null, \"dmd_lora_name\": \"\", \"dmd_lora_strength\": 1, \"age_lora_name\": \"\", \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}, \"anima\": {\"diffusion_model_name\": \"\", \"clip_name\": \"qwen_3_06b_base.safetensors\", \"vae_name\": \"qwen_image_vae.safetensors\", \"target_size\": 1024, \"sampler\": \"er_sde\", \"scheduler\": \"simple\", \"steps\": 30, \"cfg\": 4, \"seed\": 0, \"seed_mode\": \"fixed\", \"turbo_enabled\": false, \"dmd_lora_name\": \"anima\\\\anima-turbo-lora-v0.1.safetensors\", \"dmd_lora_strength\": 1, \"turbo_previous_settings\": null, \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}, \"qi2\": {\"diffusion_model_name\": \"qwen_image_2.1_int8_convrot.safetensors\", \"clip_name\": \"qwen3vl_8b_int8_convrot.safetensors\", \"vae_name\": \"qwen_image_2.1_vae_bf16.safetensors\", \"target_size\": 2048, \"clip_type\": \"qwen_image\", \"sampler\": \"euler\", \"scheduler\": \"simple\", \"steps\": 6, \"cfg\": 1, \"seed\": 0, \"seed_mode\": \"fixed\", \"turbo_enabled\": true, \"dmd_lora_name\": \"QI2/Viggle/Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors\", \"dmd_lora_strength\": 1, \"turbo_previous_settings\": {\"steps\": 25, \"cfg\": 3}, \"qi2_overhaul_strength\": 0.5, \"qi2_prompt_enhancement\": false, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}, \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}]}}, \"anima_defaults_applied\": false, \"generation_defaults_version\": 6, \"dmd_lora_name\": \"QI2/Viggle/Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors\", \"dmd_lora_strength\": 1, \"age_lora_name\": \"\", \"lora_stack\": [{\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}, {\"name\": \"\", \"strength\": 1}], \"turbo_previous_settings\": {\"steps\": 25, \"cfg\": 3}, \"clip_type\": \"qwen_image\", \"turbo_enabled\": true, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}, \"qi2_overhaul_strength\": 0.5, \"qi2_prompt_enhancement\": false}}",
+        "ui": ""
+      },
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 2,
+      "type": "SaveImage",
+      "pos": [
+        650,
+        80
+      ],
+      "size": [
+        400,
+        600
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 1
+        }
+      ],
+      "outputs": [],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/SilhouetteV2/Evelyn"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      2,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

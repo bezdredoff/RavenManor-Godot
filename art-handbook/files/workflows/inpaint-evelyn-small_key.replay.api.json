@@ -1,0 +1,225 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "QwenImage21Cache",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "device": "gpu",
+      "dtype": "int8"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/41234dc24a09_RavenProp_Evelyn_small_source.png"
+    },
+    "is_changed": [
+      "41234dc24a0994b86e234baf44a5d135ea646ce89f753c0cddc9c11c724fdd55"
+    ]
+  },
+  "11": {
+    "class_type": "JoinImageWithAlpha",
+    "inputs": {
+      "image": [
+        "10",
+        0
+      ],
+      "alpha": [
+        "10",
+        1
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "image": [
+        "11",
+        0
+      ],
+      "width": 1024,
+      "height": 1024,
+      "x": 608,
+      "y": 800
+    }
+  },
+  "13": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/23c9c0b9a06e_RavenProp_small_mask.png"
+    },
+    "is_changed": [
+      "23c9c0b9a06e7f7331e29ba9719e45aec0c36555502e7e5c78c8670537fe602c"
+    ]
+  },
+  "14": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "13",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "20": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "Edit the existing illustration locally around the hands. Add one SMALL ordinary antique brass household key, about five centimetres long, a simple round bow and narrow bit. She delicately pinches the bow between thumb and index finger while the other hand supports underneath. Clearly a tiny key, not a giant key, no extra objects. Adjust ONLY the fingers and hand contact needed to hold this object naturally. Exactly two hands, correct finger anatomy and correct object occlusion. Keep the same arms, cream opaque linen blouse, burgundy skirt, proportions, colours, soft anime illustration treatment and original light. Keep the object small relative to the hands. Preserve the original composition and transparent background. No other objects.",
+      "negative_prompt": "extra hands, extra fingers, fused fingers, duplicate object, giant object, photorealistic object, glossy fabric, transparent clothing, readable text, watermark",
+      "resolution": 0,
+      "images.image_1": [
+        "12",
+        0
+      ]
+    }
+  },
+  "21": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "12",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "21",
+        0
+      ],
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "20",
+        1
+      ],
+      "latent_image": [
+        "22",
+        0
+      ],
+      "seed": 23,
+      "steps": 25,
+      "cfg": 3.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "RavenCleanNativeAlpha",
+    "inputs": {
+      "image": [
+        "24",
+        0
+      ],
+      "black_point": 0.06,
+      "white_point": 0.94
+    }
+  },
+  "30": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "11",
+        0
+      ],
+      "source": [
+        "25",
+        0
+      ],
+      "x": 608,
+      "y": 800,
+      "resize_source": false,
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-evelyn-small_key/31"
+    }
+  },
+  "32": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "25",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-evelyn-small_key/32"
+    }
+  }
+}

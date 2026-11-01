@@ -1,0 +1,751 @@
+{
+  "id": "0ac5e3a4-93e4-4768-a93d-83802d3b1743",
+  "revision": 0,
+  "last_node_id": 817,
+  "last_link_id": 11,
+  "nodes": [
+    {
+      "id": 758,
+      "type": "VNCCS_ControlCenter",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        630,
+        920
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "repo_id",
+          "name": "repo_id",
+          "type": "STRING",
+          "widget": {
+            "name": "repo_id"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "node_state",
+          "name": "node_state",
+          "type": "STRING",
+          "widget": {
+            "name": "node_state"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "pipe",
+          "name": "pipe",
+          "type": "VNCCS_PIPE",
+          "links": [
+            5
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VNCCS_ControlCenter",
+        "cnr_id": "vnccs",
+        "ver": "3.0.0"
+      },
+      "widgets_values": [
+        "MIUProject/VNCCS_v3.0",
+        "{\"output_slot_names\": [], \"selected_models\": {\"QI2:unet\": \"Qwen Image 2.1 INT8 ConvRot\"}, \"selected_model\": \"Qwen Image 2.1 INT8 ConvRot\", \"loras\": [], \"selected_type\": \"unet\", \"model_params\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}, \"active_kind\": \"QI2\", \"selected_types_by_kind\": {\"QI2\": \"unet\"}, \"model_params_by_kind\": {\"QI2\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}}, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}}",
+        "{}"
+      ],
+      "widgets_values_named": {
+        "repo_id": "MIUProject/VNCCS_v3.0",
+        "node_state": "{\"output_slot_names\": [], \"selected_models\": {\"QI2:unet\": \"Qwen Image 2.1 INT8 ConvRot\"}, \"selected_model\": \"Qwen Image 2.1 INT8 ConvRot\", \"loras\": [], \"selected_type\": \"unet\", \"model_params\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}, \"active_kind\": \"QI2\", \"selected_types_by_kind\": {\"QI2\": \"unet\"}, \"model_params_by_kind\": {\"QI2\": {\"steps\": 25, \"cfg\": 3, \"sampler\": \"euler\", \"scheduler\": \"simple\"}}, \"qi2_cache\": {\"device\": \"gpu\", \"dtype\": \"int8\"}}",
+        "cc_widget": "{}"
+      },
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 810,
+      "type": "LoadImage",
+      "pos": [
+        0,
+        600
+      ],
+      "size": [
+        330,
+        314
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "COMBO",
+          "widget": {
+            "name": "image"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "choose file to upload",
+          "name": "upload",
+          "type": "IMAGEUPLOAD",
+          "widget": {
+            "name": "upload"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            1
+          ]
+        },
+        {
+          "localized_name": "MASK",
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            2
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "RavenStoryPoses_Evelyn_approved_clothed_neutral.png",
+        "image"
+      ],
+      "widgets_values_named": {
+        "image": "RavenStoryPoses_Evelyn_approved_clothed_neutral.png",
+        "upload": "image"
+      }
+    },
+    {
+      "id": 812,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        780,
+        600
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 1
+        },
+        {
+          "localized_name": "alpha",
+          "name": "alpha",
+          "type": "MASK",
+          "link": 2
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4
+          ]
+        }
+      ],
+      "title": "Restore native RGBA reference",
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      }
+    },
+    {
+      "id": 813,
+      "type": "PrimitiveString",
+      "pos": [
+        780,
+        900
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "value",
+          "name": "value",
+          "type": "STRING",
+          "widget": {
+            "name": "value"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "STRING",
+          "name": "STRING",
+          "type": "STRING",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "title": "Isolated VNCCS pose output slot",
+      "properties": {
+        "Node name for S&R": "PrimitiveString"
+      },
+      "widgets_values": [
+        "D:\\AI\\RavenManor-GFX01-20261027\\output\\VNCCS\\Characters\\Evelyn_StoryPoseStudies_20261101\\Sheets\\Everyday PoseStudy investigate\\neutral\\sheet_neutral"
+      ],
+      "widgets_values_named": {
+        "value": "D:\\AI\\RavenManor-GFX01-20261027\\output\\VNCCS\\Characters\\Evelyn_StoryPoseStudies_20261101\\Sheets\\Everyday PoseStudy investigate\\neutral\\sheet_neutral"
+      }
+    },
+    {
+      "id": 728,
+      "type": "VNCCS_PoseStudio",
+      "pos": [
+        400,
+        0
+      ],
+      "size": [
+        1220,
+        920
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "pose_image",
+          "name": "pose_image",
+          "shape": 7,
+          "type": "IMAGE",
+          "link": null
+        },
+        {
+          "localized_name": "pose_data",
+          "name": "pose_data",
+          "type": "STRING",
+          "widget": {
+            "name": "pose_data"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "animation_image_batch",
+          "name": "animation_image_batch",
+          "shape": 7,
+          "type": "BOOLEAN",
+          "widget": {
+            "name": "animation_image_batch"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "label": "images",
+          "localized_name": "images",
+          "name": "images",
+          "shape": 6,
+          "type": "IMAGE",
+          "links": [
+            3,
+            11
+          ]
+        },
+        {
+          "localized_name": "lighting_prompt",
+          "name": "lighting_prompt",
+          "shape": 6,
+          "type": "STRING",
+          "links": [
+            7
+          ]
+        }
+      ],
+      "title": "Evelyn investigate v2 / down gaze + holding hands",
+      "properties": {
+        "Node name for S&R": "VNCCS_PoseStudio",
+        "cnr_id": "vnccs-utils",
+        "ver": "94b34c4888fc24c526d43cec21b04c0253fbe599"
+      },
+      "widgets_values": [
+        "{\"schema_version\": 3, \"active_character_id\": \"character-1\", \"characters\": [{\"id\": \"character-1\", \"slot\": 0, \"name\": \"Main Character\", \"color\": \"#ffffff\", \"transform\": {\"x\": -1.4818861166449118, \"y\": 0.31166117504648505, \"z\": -0.38772097647257686, \"zoom\": 1.5571588079558647}, \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"poses\": [{\"bones\": {\"pelvis\": [-1.9288398909780675, -59.28096835497583, -2.9881572553392703], \"spine_01\": [-9.927626882463882, 3.0525147835398676, -4.24111847338222], \"spine_02\": [6.429485196327905, 5.710934653146651, 0.36913260864730024], \"spine_03\": [0.9812836196903769, -0.4133774777604423, -0.01952821096095661], \"thigh_l\": [12.649948175363912, -4.021737837110876, 9.631566639665238], \"thigh_r\": [0.5484423948517552, -8.918557120678967, 7.94585959573768], \"calf_l\": [-3.930237689352789, -0.23880115685772552, -2.9480856186380473], \"calf_r\": [-6.426134908350806, 0.39208173327206125, 2.455675382396149], \"clavicle_l\": [1.2653658018832907, -11.735645086636335, 18.789517924022913], \"clavicle_r\": [5.788071598758422, -7.73587933508234, -22.917402379466626], \"foot_l\": [-6.891639690050196, 16.897006654406443, -6.702547262609744], \"foot_r\": [5.941587231666862, -2.8306334977759957, 6.449762263189386], \"neck_01\": [21.696951362741064, -14.30210805363571, 0.9106903183673005], \"upperarm_l\": [-9.416951199729612, 51.25181125054702, -43.482854042003346], \"upperarm_r\": [8.162312006926042, -16.580641451895875, 57.20141774949634], \"head\": [23, 16.778609537588547, -0.991633127539669], \"lowerarm_l\": [28.818222227856904, -17.93247637376584, -67.42418612448151], \"lowerarm_r\": [-16.975558580771626, 37.286628670125, 35.09120283052395], \"hand_l\": [10, 7.9929203616024616, 110], \"hand_r\": [10, 3.4155978636136872, -70], \"index_01_l\": [22.929200285245297, 2.743099226087804, -17.055709022184857], \"index_01_r\": [19.391482283620306, -4.953546553178154, 4.563219246998483], \"index_02_l\": [69.81696236693632, -1.0647579592204386, -53.502352229058864], \"index_02_r\": [8.82320329499771, 4.812372910514697, 16.848285343641543], \"index_03_l\": [15.86432279806966, 31.05129426810728, -13.818472520144853], \"index_03_r\": [1.9678798537235265, -5.256868251931961, 1.5699609808300452], \"middle_01_l\": [18.278272642069474, 3.219044897145434, -40.51169455798226], \"middle_01_r\": [10.734903169673608, -1.8767832793117378, 19.795285812530427], \"middle_02_l\": [75.16635317398985, 8.882889678165034, -56.52345619840332], \"middle_02_r\": [17.846180769857188, 2.4648012331196147, 20.05599370772736], \"middle_03_l\": [7.7421601876649495, 29.272436159609736, -12.189667830324852], \"middle_03_r\": [0.6123634368331424, -3.830797183683687, 1.2950814483765407], \"pinky_01_l\": [1.3320941279250378, 5.729072064131608, -10.362047344360645], \"pinky_01_r\": [-7.868494051567022, -5.594794453910444, 12.978875151763356], \"pinky_02_l\": [50.51674681759627, 3.7306996968056247, -70.42789514163817], \"pinky_02_r\": [10.891922627209551, -4.595936549494896, 20.257228012931805], \"pinky_03_l\": [-5.273483807643346, 41.572370342175354, -11.83557831614237], \"pinky_03_r\": [-1.6173911131899636, -7.849416274494189, 2.418423436196692], \"ring_01_l\": [8.740444654651787, 3.384933811832829, -29.50757357541384], \"ring_01_r\": [-8.318996634117603, 2.529352459362041, 13.497383994710653], \"ring_02_l\": [70.32954283669461, 2.9011446148580537, -67.86939364537152], \"ring_02_r\": [19.334283924350434, 0.08670350237065651, 28.324930086739155], \"ring_03_l\": [6.789046721148131, 32.34988886600212, -14.344656566905709], \"ring_03_r\": [0.6447525740705624, -6.562288269113752, 2.440360593425035], \"thumb_01_l\": [20.349663984599964, 13.685192374893976, 1.2039208365291694], \"thumb_01_r\": [10.239075984347128, -13.874309578912818, -1.5160103029350036], \"thumb_02_l\": [4.193883747706736, -1.4017857858139477, -9.345537347487301], \"thumb_02_r\": [-0.767052792240348, 0.6595386905195101, 6.585956082507451], \"thumb_03_l\": [16.915080421717985, 4.726632451283231, 4.434941284933978], \"thumb_03_r\": [-0.21882730244242132, 0.05157870978389895, 0.06541744132073829]}, \"bonePositions\": {\"Root\": [0, -8.160989761352539, -0.25958147644996643], \"pelvis\": [0, 8.326496958732605, 0.3792646825313568]}, \"modelRotation\": [0, 80, 0], \"ikEffectorPositions\": {\"pelvis\": [-1.2983516727642903, 0.5693821652269442, -0.35535890212709964], \"hand_l\": [1.6796522529016116, 2.0808675342119325, 2.171205526354182], \"hand_r\": [-1.9810228775657497, 2.3353193726808614, 2.3688810290229028], \"foot_l\": [1.3543680937019933, -11.468692832830516, -3.6343823364797117], \"foot_r\": [-1.6915161664827478, -11.849389610835454, 0.39908708692059336], \"head\": [-0.5329070107771986, 8.374497091347418, -0.5028538630666911], \"upperarm_l\": [1.0606130967732919, 6.253421830358527, -1.6639136170232984], \"upperarm_r\": [-2.754977455831539, 6.817008320945889, -0.24864367777856966]}, \"poleTargetPositions\": {\"leftArm\": [0.7185838580208648, 3.030537536894498, -0.25698525055320515], \"rightArm\": [-3.1812395638747493, 3.2363299838007467, -1.0311900420607527], \"leftLeg\": [-0.7602241472071487, -4.479309850568352, 0.9112846671266968], \"rightLeg\": [-2.217397467594067, -4.436989879614506, 0.4116807072310201]}, \"hipBonePosition\": {\"hips\": [0, 8.326496958732605, 0.3792646825313568]}, \"cameraParams\": {\"offset_x\": -1.4818861166449118, \"offset_y\": 0.31166117504648505, \"zoom\": 1.5571588079558647, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"}], \"animation\": null}], \"timeline\": {\"fps\": 12, \"duration\": 2, \"frameCount\": 24, \"currentFrame\": 0, \"loop\": true}, \"pose_prompts\": [\"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"], \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"export\": {\"view_width\": 1088, \"view_height\": 1920, \"cam_zoom\": 1.5571588079558647, \"cam_offset_x\": -1.4818861166449118, \"cam_offset_y\": 0.31166117504648505, \"cam_yaw_deg\": 0, \"cam_pitch_deg\": 0, \"output_mode\": \"LIST\", \"grid_columns\": 6, \"bg_color\": [255, 255, 255], \"debugMode\": false, \"debugKeepLighting\": false, \"debugShowSAMHelper\": false, \"debugShowSAMMeshOverlay\": false, \"samApplyCamera\": false, \"keepOriginalLighting\": true, \"user_prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\", \"prompt_template\": \"Draw character from image2\\n<lighting>\\n<user_prompt>\", \"skin_type\": \"naked\", \"interface_mode\": \"manager\", \"manager_auto_analyze_proportions\": false, \"capture_image_size\": false, \"editor_mode\": \"image\", \"animation_image_batch\": false, \"hand_controls_v2\": true, \"directional_skydome_enabled\": false}, \"poses\": [{\"bones\": {\"pelvis\": [-1.9288398909780675, -59.28096835497583, -2.9881572553392703], \"spine_01\": [-9.927626882463882, 3.0525147835398676, -4.24111847338222], \"spine_02\": [6.429485196327905, 5.710934653146651, 0.36913260864730024], \"spine_03\": [0.9812836196903769, -0.4133774777604423, -0.01952821096095661], \"thigh_l\": [12.649948175363912, -4.021737837110876, 9.631566639665238], \"thigh_r\": [0.5484423948517552, -8.918557120678967, 7.94585959573768], \"calf_l\": [-3.930237689352789, -0.23880115685772552, -2.9480856186380473], \"calf_r\": [-6.426134908350806, 0.39208173327206125, 2.455675382396149], \"clavicle_l\": [1.2653658018832907, -11.735645086636335, 18.789517924022913], \"clavicle_r\": [5.788071598758422, -7.73587933508234, -22.917402379466626], \"foot_l\": [-6.891639690050196, 16.897006654406443, -6.702547262609744], \"foot_r\": [5.941587231666862, -2.8306334977759957, 6.449762263189386], \"neck_01\": [21.696951362741064, -14.30210805363571, 0.9106903183673005], \"upperarm_l\": [-9.416951199729612, 51.25181125054702, -43.482854042003346], \"upperarm_r\": [8.162312006926042, -16.580641451895875, 57.20141774949634], \"head\": [23, 16.778609537588547, -0.991633127539669], \"lowerarm_l\": [28.818222227856904, -17.93247637376584, -67.42418612448151], \"lowerarm_r\": [-16.975558580771626, 37.286628670125, 35.09120283052395], \"hand_l\": [10, 7.9929203616024616, 110], \"hand_r\": [10, 3.4155978636136872, -70], \"index_01_l\": [22.929200285245297, 2.743099226087804, -17.055709022184857], \"index_01_r\": [19.391482283620306, -4.953546553178154, 4.563219246998483], \"index_02_l\": [69.81696236693632, -1.0647579592204386, -53.502352229058864], \"index_02_r\": [8.82320329499771, 4.812372910514697, 16.848285343641543], \"index_03_l\": [15.86432279806966, 31.05129426810728, -13.818472520144853], \"index_03_r\": [1.9678798537235265, -5.256868251931961, 1.5699609808300452], \"middle_01_l\": [18.278272642069474, 3.219044897145434, -40.51169455798226], \"middle_01_r\": [10.734903169673608, -1.8767832793117378, 19.795285812530427], \"middle_02_l\": [75.16635317398985, 8.882889678165034, -56.52345619840332], \"middle_02_r\": [17.846180769857188, 2.4648012331196147, 20.05599370772736], \"middle_03_l\": [7.7421601876649495, 29.272436159609736, -12.189667830324852], \"middle_03_r\": [0.6123634368331424, -3.830797183683687, 1.2950814483765407], \"pinky_01_l\": [1.3320941279250378, 5.729072064131608, -10.362047344360645], \"pinky_01_r\": [-7.868494051567022, -5.594794453910444, 12.978875151763356], \"pinky_02_l\": [50.51674681759627, 3.7306996968056247, -70.42789514163817], \"pinky_02_r\": [10.891922627209551, -4.595936549494896, 20.257228012931805], \"pinky_03_l\": [-5.273483807643346, 41.572370342175354, -11.83557831614237], \"pinky_03_r\": [-1.6173911131899636, -7.849416274494189, 2.418423436196692], \"ring_01_l\": [8.740444654651787, 3.384933811832829, -29.50757357541384], \"ring_01_r\": [-8.318996634117603, 2.529352459362041, 13.497383994710653], \"ring_02_l\": [70.32954283669461, 2.9011446148580537, -67.86939364537152], \"ring_02_r\": [19.334283924350434, 0.08670350237065651, 28.324930086739155], \"ring_03_l\": [6.789046721148131, 32.34988886600212, -14.344656566905709], \"ring_03_r\": [0.6447525740705624, -6.562288269113752, 2.440360593425035], \"thumb_01_l\": [20.349663984599964, 13.685192374893976, 1.2039208365291694], \"thumb_01_r\": [10.239075984347128, -13.874309578912818, -1.5160103029350036], \"thumb_02_l\": [4.193883747706736, -1.4017857858139477, -9.345537347487301], \"thumb_02_r\": [-0.767052792240348, 0.6595386905195101, 6.585956082507451], \"thumb_03_l\": [16.915080421717985, 4.726632451283231, 4.434941284933978], \"thumb_03_r\": [-0.21882730244242132, 0.05157870978389895, 0.06541744132073829]}, \"bonePositions\": {\"Root\": [0, -8.160989761352539, -0.25958147644996643], \"pelvis\": [0, 8.326496958732605, 0.3792646825313568]}, \"modelRotation\": [0, 80, 0], \"ikEffectorPositions\": {\"pelvis\": [-1.2983516727642903, 0.5693821652269442, -0.35535890212709964], \"hand_l\": [1.6796522529016116, 2.0808675342119325, 2.171205526354182], \"hand_r\": [-1.9810228775657497, 2.3353193726808614, 2.3688810290229028], \"foot_l\": [1.3543680937019933, -11.468692832830516, -3.6343823364797117], \"foot_r\": [-1.6915161664827478, -11.849389610835454, 0.39908708692059336], \"head\": [-0.5329070107771986, 8.374497091347418, -0.5028538630666911], \"upperarm_l\": [1.0606130967732919, 6.253421830358527, -1.6639136170232984], \"upperarm_r\": [-2.754977455831539, 6.817008320945889, -0.24864367777856966]}, \"poleTargetPositions\": {\"leftArm\": [0.7185838580208648, 3.030537536894498, -0.25698525055320515], \"rightArm\": [-3.1812395638747493, 3.2363299838007467, -1.0311900420607527], \"leftLeg\": [-0.7602241472071487, -4.479309850568352, 0.9112846671266968], \"rightLeg\": [-2.217397467594067, -4.436989879614506, 0.4116807072310201]}, \"hipBonePosition\": {\"hips\": [0, 8.326496958732605, 0.3792646825313568]}, \"cameraParams\": {\"offset_x\": -1.4818861166449118, \"offset_y\": 0.31166117504648505, \"zoom\": 1.5571588079558647, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"}], \"lights\": [{\"type\": \"ambient\", \"color\": \"#000000\", \"intensity\": 0.5}, {\"type\": \"directional\", \"color\": \"#ffffff\", \"intensity\": 1, \"x\": -92.90202545475795, \"y\": 0, \"z\": 26.714380225787586}], \"activeTab\": 0, \"capture_id\": \"vnccs_capture_728\", \"lighting_prompts\": [\"Draw character from image2\\nThree-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"], \"background_url\": null}",
+        false,
+        ""
+      ],
+      "widgets_values_named": {
+        "pose_data": "{\"schema_version\": 3, \"active_character_id\": \"character-1\", \"characters\": [{\"id\": \"character-1\", \"slot\": 0, \"name\": \"Main Character\", \"color\": \"#ffffff\", \"transform\": {\"x\": -1.4818861166449118, \"y\": 0.31166117504648505, \"z\": -0.38772097647257686, \"zoom\": 1.5571588079558647}, \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"poses\": [{\"bones\": {\"pelvis\": [-1.9288398909780675, -59.28096835497583, -2.9881572553392703], \"spine_01\": [-9.927626882463882, 3.0525147835398676, -4.24111847338222], \"spine_02\": [6.429485196327905, 5.710934653146651, 0.36913260864730024], \"spine_03\": [0.9812836196903769, -0.4133774777604423, -0.01952821096095661], \"thigh_l\": [12.649948175363912, -4.021737837110876, 9.631566639665238], \"thigh_r\": [0.5484423948517552, -8.918557120678967, 7.94585959573768], \"calf_l\": [-3.930237689352789, -0.23880115685772552, -2.9480856186380473], \"calf_r\": [-6.426134908350806, 0.39208173327206125, 2.455675382396149], \"clavicle_l\": [1.2653658018832907, -11.735645086636335, 18.789517924022913], \"clavicle_r\": [5.788071598758422, -7.73587933508234, -22.917402379466626], \"foot_l\": [-6.891639690050196, 16.897006654406443, -6.702547262609744], \"foot_r\": [5.941587231666862, -2.8306334977759957, 6.449762263189386], \"neck_01\": [21.696951362741064, -14.30210805363571, 0.9106903183673005], \"upperarm_l\": [-9.416951199729612, 51.25181125054702, -43.482854042003346], \"upperarm_r\": [8.162312006926042, -16.580641451895875, 57.20141774949634], \"head\": [23, 16.778609537588547, -0.991633127539669], \"lowerarm_l\": [28.818222227856904, -17.93247637376584, -67.42418612448151], \"lowerarm_r\": [-16.975558580771626, 37.286628670125, 35.09120283052395], \"hand_l\": [10, 7.9929203616024616, 110], \"hand_r\": [10, 3.4155978636136872, -70], \"index_01_l\": [22.929200285245297, 2.743099226087804, -17.055709022184857], \"index_01_r\": [19.391482283620306, -4.953546553178154, 4.563219246998483], \"index_02_l\": [69.81696236693632, -1.0647579592204386, -53.502352229058864], \"index_02_r\": [8.82320329499771, 4.812372910514697, 16.848285343641543], \"index_03_l\": [15.86432279806966, 31.05129426810728, -13.818472520144853], \"index_03_r\": [1.9678798537235265, -5.256868251931961, 1.5699609808300452], \"middle_01_l\": [18.278272642069474, 3.219044897145434, -40.51169455798226], \"middle_01_r\": [10.734903169673608, -1.8767832793117378, 19.795285812530427], \"middle_02_l\": [75.16635317398985, 8.882889678165034, -56.52345619840332], \"middle_02_r\": [17.846180769857188, 2.4648012331196147, 20.05599370772736], \"middle_03_l\": [7.7421601876649495, 29.272436159609736, -12.189667830324852], \"middle_03_r\": [0.6123634368331424, -3.830797183683687, 1.2950814483765407], \"pinky_01_l\": [1.3320941279250378, 5.729072064131608, -10.362047344360645], \"pinky_01_r\": [-7.868494051567022, -5.594794453910444, 12.978875151763356], \"pinky_02_l\": [50.51674681759627, 3.7306996968056247, -70.42789514163817], \"pinky_02_r\": [10.891922627209551, -4.595936549494896, 20.257228012931805], \"pinky_03_l\": [-5.273483807643346, 41.572370342175354, -11.83557831614237], \"pinky_03_r\": [-1.6173911131899636, -7.849416274494189, 2.418423436196692], \"ring_01_l\": [8.740444654651787, 3.384933811832829, -29.50757357541384], \"ring_01_r\": [-8.318996634117603, 2.529352459362041, 13.497383994710653], \"ring_02_l\": [70.32954283669461, 2.9011446148580537, -67.86939364537152], \"ring_02_r\": [19.334283924350434, 0.08670350237065651, 28.324930086739155], \"ring_03_l\": [6.789046721148131, 32.34988886600212, -14.344656566905709], \"ring_03_r\": [0.6447525740705624, -6.562288269113752, 2.440360593425035], \"thumb_01_l\": [20.349663984599964, 13.685192374893976, 1.2039208365291694], \"thumb_01_r\": [10.239075984347128, -13.874309578912818, -1.5160103029350036], \"thumb_02_l\": [4.193883747706736, -1.4017857858139477, -9.345537347487301], \"thumb_02_r\": [-0.767052792240348, 0.6595386905195101, 6.585956082507451], \"thumb_03_l\": [16.915080421717985, 4.726632451283231, 4.434941284933978], \"thumb_03_r\": [-0.21882730244242132, 0.05157870978389895, 0.06541744132073829]}, \"bonePositions\": {\"Root\": [0, -8.160989761352539, -0.25958147644996643], \"pelvis\": [0, 8.326496958732605, 0.3792646825313568]}, \"modelRotation\": [0, 80, 0], \"ikEffectorPositions\": {\"pelvis\": [-1.2983516727642903, 0.5693821652269442, -0.35535890212709964], \"hand_l\": [1.6796522529016116, 2.0808675342119325, 2.171205526354182], \"hand_r\": [-1.9810228775657497, 2.3353193726808614, 2.3688810290229028], \"foot_l\": [1.3543680937019933, -11.468692832830516, -3.6343823364797117], \"foot_r\": [-1.6915161664827478, -11.849389610835454, 0.39908708692059336], \"head\": [-0.5329070107771986, 8.374497091347418, -0.5028538630666911], \"upperarm_l\": [1.0606130967732919, 6.253421830358527, -1.6639136170232984], \"upperarm_r\": [-2.754977455831539, 6.817008320945889, -0.24864367777856966]}, \"poleTargetPositions\": {\"leftArm\": [0.7185838580208648, 3.030537536894498, -0.25698525055320515], \"rightArm\": [-3.1812395638747493, 3.2363299838007467, -1.0311900420607527], \"leftLeg\": [-0.7602241472071487, -4.479309850568352, 0.9112846671266968], \"rightLeg\": [-2.217397467594067, -4.436989879614506, 0.4116807072310201]}, \"hipBonePosition\": {\"hips\": [0, 8.326496958732605, 0.3792646825313568]}, \"cameraParams\": {\"offset_x\": -1.4818861166449118, \"offset_y\": 0.31166117504648505, \"zoom\": 1.5571588079558647, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"}], \"animation\": null}], \"timeline\": {\"fps\": 12, \"duration\": 2, \"frameCount\": 24, \"currentFrame\": 0, \"loop\": true}, \"pose_prompts\": [\"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"], \"mesh\": {\"age\": 20, \"gender\": 0, \"weight\": 0.5, \"muscle\": 0.5, \"height\": 0.85, \"breast_size\": 0.5, \"firmness\": 0.5, \"show_genitals\": false, \"penis_len\": 0.5, \"penis_circ\": 0.5, \"penis_test\": 0.5, \"head_size\": 1.2, \"arm_size\": 1, \"hand_size\": 1, \"foot_size\": 1, \"shoulder_l_length\": 0.5, \"shoulder_r_length\": 0.5, \"hip_l_length\": 0.5, \"hip_r_length\": 0.5, \"upper_arm_l_length\": 0.5, \"upper_arm_r_length\": 0.5, \"forearm_l_length\": 0.5, \"forearm_r_length\": 0.5, \"thigh_l_length\": 0.5, \"thigh_r_length\": 0.5, \"shin_l_length\": 0.5, \"shin_r_length\": 0.5, \"spine_length\": 0.5}, \"export\": {\"view_width\": 1088, \"view_height\": 1920, \"cam_zoom\": 1.5571588079558647, \"cam_offset_x\": -1.4818861166449118, \"cam_offset_y\": 0.31166117504648505, \"cam_yaw_deg\": 0, \"cam_pitch_deg\": 0, \"output_mode\": \"LIST\", \"grid_columns\": 6, \"bg_color\": [255, 255, 255], \"debugMode\": false, \"debugKeepLighting\": false, \"debugShowSAMHelper\": false, \"debugShowSAMMeshOverlay\": false, \"samApplyCamera\": false, \"keepOriginalLighting\": true, \"user_prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\", \"prompt_template\": \"Draw character from image2\\n<lighting>\\n<user_prompt>\", \"skin_type\": \"naked\", \"interface_mode\": \"manager\", \"manager_auto_analyze_proportions\": false, \"capture_image_size\": false, \"editor_mode\": \"image\", \"animation_image_batch\": false, \"hand_controls_v2\": true, \"directional_skydome_enabled\": false}, \"poses\": [{\"bones\": {\"pelvis\": [-1.9288398909780675, -59.28096835497583, -2.9881572553392703], \"spine_01\": [-9.927626882463882, 3.0525147835398676, -4.24111847338222], \"spine_02\": [6.429485196327905, 5.710934653146651, 0.36913260864730024], \"spine_03\": [0.9812836196903769, -0.4133774777604423, -0.01952821096095661], \"thigh_l\": [12.649948175363912, -4.021737837110876, 9.631566639665238], \"thigh_r\": [0.5484423948517552, -8.918557120678967, 7.94585959573768], \"calf_l\": [-3.930237689352789, -0.23880115685772552, -2.9480856186380473], \"calf_r\": [-6.426134908350806, 0.39208173327206125, 2.455675382396149], \"clavicle_l\": [1.2653658018832907, -11.735645086636335, 18.789517924022913], \"clavicle_r\": [5.788071598758422, -7.73587933508234, -22.917402379466626], \"foot_l\": [-6.891639690050196, 16.897006654406443, -6.702547262609744], \"foot_r\": [5.941587231666862, -2.8306334977759957, 6.449762263189386], \"neck_01\": [21.696951362741064, -14.30210805363571, 0.9106903183673005], \"upperarm_l\": [-9.416951199729612, 51.25181125054702, -43.482854042003346], \"upperarm_r\": [8.162312006926042, -16.580641451895875, 57.20141774949634], \"head\": [23, 16.778609537588547, -0.991633127539669], \"lowerarm_l\": [28.818222227856904, -17.93247637376584, -67.42418612448151], \"lowerarm_r\": [-16.975558580771626, 37.286628670125, 35.09120283052395], \"hand_l\": [10, 7.9929203616024616, 110], \"hand_r\": [10, 3.4155978636136872, -70], \"index_01_l\": [22.929200285245297, 2.743099226087804, -17.055709022184857], \"index_01_r\": [19.391482283620306, -4.953546553178154, 4.563219246998483], \"index_02_l\": [69.81696236693632, -1.0647579592204386, -53.502352229058864], \"index_02_r\": [8.82320329499771, 4.812372910514697, 16.848285343641543], \"index_03_l\": [15.86432279806966, 31.05129426810728, -13.818472520144853], \"index_03_r\": [1.9678798537235265, -5.256868251931961, 1.5699609808300452], \"middle_01_l\": [18.278272642069474, 3.219044897145434, -40.51169455798226], \"middle_01_r\": [10.734903169673608, -1.8767832793117378, 19.795285812530427], \"middle_02_l\": [75.16635317398985, 8.882889678165034, -56.52345619840332], \"middle_02_r\": [17.846180769857188, 2.4648012331196147, 20.05599370772736], \"middle_03_l\": [7.7421601876649495, 29.272436159609736, -12.189667830324852], \"middle_03_r\": [0.6123634368331424, -3.830797183683687, 1.2950814483765407], \"pinky_01_l\": [1.3320941279250378, 5.729072064131608, -10.362047344360645], \"pinky_01_r\": [-7.868494051567022, -5.594794453910444, 12.978875151763356], \"pinky_02_l\": [50.51674681759627, 3.7306996968056247, -70.42789514163817], \"pinky_02_r\": [10.891922627209551, -4.595936549494896, 20.257228012931805], \"pinky_03_l\": [-5.273483807643346, 41.572370342175354, -11.83557831614237], \"pinky_03_r\": [-1.6173911131899636, -7.849416274494189, 2.418423436196692], \"ring_01_l\": [8.740444654651787, 3.384933811832829, -29.50757357541384], \"ring_01_r\": [-8.318996634117603, 2.529352459362041, 13.497383994710653], \"ring_02_l\": [70.32954283669461, 2.9011446148580537, -67.86939364537152], \"ring_02_r\": [19.334283924350434, 0.08670350237065651, 28.324930086739155], \"ring_03_l\": [6.789046721148131, 32.34988886600212, -14.344656566905709], \"ring_03_r\": [0.6447525740705624, -6.562288269113752, 2.440360593425035], \"thumb_01_l\": [20.349663984599964, 13.685192374893976, 1.2039208365291694], \"thumb_01_r\": [10.239075984347128, -13.874309578912818, -1.5160103029350036], \"thumb_02_l\": [4.193883747706736, -1.4017857858139477, -9.345537347487301], \"thumb_02_r\": [-0.767052792240348, 0.6595386905195101, 6.585956082507451], \"thumb_03_l\": [16.915080421717985, 4.726632451283231, 4.434941284933978], \"thumb_03_r\": [-0.21882730244242132, 0.05157870978389895, 0.06541744132073829]}, \"bonePositions\": {\"Root\": [0, -8.160989761352539, -0.25958147644996643], \"pelvis\": [0, 8.326496958732605, 0.3792646825313568]}, \"modelRotation\": [0, 80, 0], \"ikEffectorPositions\": {\"pelvis\": [-1.2983516727642903, 0.5693821652269442, -0.35535890212709964], \"hand_l\": [1.6796522529016116, 2.0808675342119325, 2.171205526354182], \"hand_r\": [-1.9810228775657497, 2.3353193726808614, 2.3688810290229028], \"foot_l\": [1.3543680937019933, -11.468692832830516, -3.6343823364797117], \"foot_r\": [-1.6915161664827478, -11.849389610835454, 0.39908708692059336], \"head\": [-0.5329070107771986, 8.374497091347418, -0.5028538630666911], \"upperarm_l\": [1.0606130967732919, 6.253421830358527, -1.6639136170232984], \"upperarm_r\": [-2.754977455831539, 6.817008320945889, -0.24864367777856966]}, \"poleTargetPositions\": {\"leftArm\": [0.7185838580208648, 3.030537536894498, -0.25698525055320515], \"rightArm\": [-3.1812395638747493, 3.2363299838007467, -1.0311900420607527], \"leftLeg\": [-0.7602241472071487, -4.479309850568352, 0.9112846671266968], \"rightLeg\": [-2.217397467594067, -4.436989879614506, 0.4116807072310201]}, \"hipBonePosition\": {\"hips\": [0, 8.326496958732605, 0.3792646825313568]}, \"cameraParams\": {\"offset_x\": -1.4818861166449118, \"offset_y\": 0.31166117504648505, \"zoom\": 1.5571588079558647, \"yaw_deg\": 0, \"pitch_deg\": 0}, \"prompt\": \"Three-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"}], \"lights\": [{\"type\": \"ambient\", \"color\": \"#000000\", \"intensity\": 0.5}, {\"type\": \"directional\", \"color\": \"#ffffff\", \"intensity\": 1, \"x\": -92.90202545475795, \"y\": 0, \"z\": 26.714380225787586}], \"activeTab\": 0, \"capture_id\": \"vnccs_capture_728\", \"lighting_prompts\": [\"Draw character from image2\\nThree-quarter view. Her chin is lowered toward her chest and BOTH EYES LOOK DOWN at the empty space between her hands, pupils directed downward, not looking at the viewer. Her hands are held in front of her waist, wrists straight and gently rotated inward, palms facing each other and slightly upward, relaxed gently curved fingers ready to cradle a small object. Empty hands, no object. Preserve her identity, hair, existing clothes and original illustration style.\"], \"background_url\": null}",
+        "animation_image_batch": false,
+        "pose_studio_ui": ""
+      },
+      "color": "#323",
+      "bgcolor": "#535"
+    },
+    {
+      "id": 751,
+      "type": "VNCCS_ClothesGenerator",
+      "pos": [
+        1250,
+        0
+      ],
+      "size": [
+        2110,
+        1270
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "poses",
+          "name": "poses",
+          "type": "IMAGE",
+          "link": 3
+        },
+        {
+          "localized_name": "character",
+          "name": "character",
+          "type": "IMAGE",
+          "link": 4
+        },
+        {
+          "localized_name": "pipe",
+          "name": "pipe",
+          "type": "VNCCS_PIPE",
+          "link": 5
+        },
+        {
+          "localized_name": "sheets_path",
+          "name": "sheets_path",
+          "shape": 7,
+          "type": "STRING",
+          "link": 6
+        },
+        {
+          "localized_name": "prompt",
+          "name": "prompt",
+          "type": "STRING",
+          "widget": {
+            "name": "prompt"
+          },
+          "link": 7
+        },
+        {
+          "localized_name": "background",
+          "name": "background",
+          "type": "COMBO",
+          "widget": {
+            "name": "background"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "widget_data",
+          "name": "widget_data",
+          "type": "STRING",
+          "widget": {
+            "name": "widget_data"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "sprites",
+          "name": "sprites",
+          "type": "IMAGE",
+          "links": [
+            8
+          ]
+        },
+        {
+          "localized_name": "faces",
+          "name": "faces",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "localized_name": "source_upscaled",
+          "name": "source_upscaled",
+          "type": "IMAGE",
+          "links": []
+        },
+        {
+          "localized_name": "pose_generation",
+          "name": "pose_generation",
+          "type": "IMAGE",
+          "links": [
+            10
+          ]
+        },
+        {
+          "localized_name": "upscaled",
+          "name": "upscaled",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "title": "Pose only / approved clothes reference",
+      "properties": {
+        "Node name for S&R": "VNCCS_ClothesGenerator",
+        "cnr_id": "vnccs",
+        "ver": "3.0.0"
+      },
+      "widgets_values": [
+        "",
+        "Alpha",
+        "{\"nsfw_enabled\": true, \"emotion_pairs\": [], \"common\": {\"target_size\": 1024}, \"pose_generation\": {\"target_size\": 2048, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"from_generator\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"pose_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"vae_decode\": {\"tile_size\": 512, \"overlap\": 64, \"temporal_size\": 64, \"temporal_overlap\": 8}, \"emotion_generation\": {\"task_batch_size\": 0, \"target_size\": 2048, \"face_denoise\": 0.55, \"use_sam\": true, \"bbox_model\": \"bbox/face_yolov8m.pt\", \"segm_model\": \"bbox/face_yolov8m.pt\", \"sam_model\": \"sam_vit_b_01ec64.pth\", \"sam_device_mode\": \"AUTO\", \"guide_size\": 1536, \"guide_size_for\": true, \"max_size\": 1536, \"inherit_pipe_sampler\": true, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"feather\": 5, \"noise_mask\": true, \"force_inpaint\": true, \"bbox_threshold\": 0.1, \"bbox_dilation\": 10, \"qi2_prompt_template\": \"Upscale face image.\\nMake character's face emotion {emotion}\\nChange only face. Keep original neck colour, clothes and hairs\\nkeep character's clothes\", \"bbox_crop_factor\": 3, \"sam_detection_hint\": \"center-1\", \"sam_dilation\": 25, \"sam_threshold\": 0.93, \"sam_bbox_expansion\": 0, \"sam_mask_hint_threshold\": 0.7, \"sam_mask_hint_use_negative\": \"False\", \"drop_size\": 10, \"cycle\": 1, \"inpaint_model\": false, \"noise_mask_feather\": 20, \"tiled_encode\": true, \"tiled_decode\": true, \"matte_expand_radius\": 8, \"matte_feather_radius\": 4, \"chroma_context\": 16}, \"remove_clothes\": {\"prompt\": \"Dress character: White underwear\", \"target_size\": 1024, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"White\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"remove_clothes_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"upscaler\": {\"mode\": \"seedvr\", \"model\": \"seedvr2_3b_fp8_e4m3fn.safetensors\", \"vae\": \"ema_vae_fp16.safetensors\", \"device\": \"cuda:0\", \"offload_device\": \"cpu\", \"seed\": 42, \"inherit_pipe_seed\": true, \"resolution\": 2048, \"max_resolution\": 3840, \"batch_size\": 1, \"uniform_batch_size\": false, \"color_correction\": \"lab\", \"temporal_overlap\": 0, \"prepend_frames\": 0, \"input_noise_scale\": 0, \"latent_noise_scale\": 0, \"blocks_to_swap\": 0, \"swap_io_components\": false, \"cache_dit\": false, \"attention_mode\": \"sdpa\", \"attention_mode_manual\": true, \"encode_tiled\": true, \"encode_tile_size\": 1024, \"encode_tile_overlap\": 128, \"decode_tiled\": true, \"decode_tile_size\": 1024, \"decode_tile_overlap\": 128, \"tile_debug\": \"false\", \"cache_vae\": false, \"enable_debug\": false}, \"bg_remove\": {\"preset\": \"Native\", \"use_sam3_details_recovery\": true, \"use_preset_values\": true, \"tolerance\": 0.5, \"softness\": 0.12, \"despill_strength\": 1, \"edge_width\": 3, \"matte_cleanup\": 0.1, \"foreground_recover\": 0.35, \"edge_decontaminate\": 0.75, \"edge_choke\": 0.08, \"matte_method\": \"guided_edge\", \"screen_mode\": \"from_background\", \"output_mode\": \"straight_rgba\", \"sam3_model\": \"\", \"sam3_segmentor\": \"image\", \"sam3_device\": \"auto\", \"sam3_precision\": \"bf16\", \"sam3_prompt\": \"face, clothes, accessories, hat, boots, eyes\", \"sam3_threshold\": 0.4, \"sam3_add_background\": \"none\", \"sam3_detection_limit\": -1, \"sam3_erode_radius\": 4, \"sam3_min_foreground_overlap\": 0.55, \"despill_kernel_size\": 3, \"despill_color\": \"black\"}, \"ui\": {\"selected_preview\": \"pose_generation\", \"user_selected_preview\": false, \"bg_remove_previous_preset\": \"balanced\", \"bg_remove_model_kind\": \"qi2\", \"resolution_model_kind\": \"qi2\", \"resolution_model_key\": \"[\\\"qi2\\\", \\\"unet\\\", \\\"Qwen Image 2.1 INT8 ConvRot\\\"]\", \"resolution_by_model\": {\"[\\\"qi2\\\",\\\"unet\\\",\\\"Qwen Image 2.1 INT8 ConvRot\\\"]\": {\"target_size\": 2048, \"updated_at\": 0}}, \"progress_scope\": \"b44d91e5-4ff4-42f3-b9f5-c9a86cf02871:7856f6fe-ac50-4f6c-892c-e1c6f9d52b40:VNCCS_ClothesGenerator:751\"}, \"character_name\": \"Evelyn_StoryPoseStudies_20261101\", \"costume\": \"Everyday PoseStudy investigate\", \"gender\": \"female\"}",
+        ""
+      ],
+      "widgets_values_named": {
+        "prompt": "",
+        "background": "Alpha",
+        "widget_data": "{\"nsfw_enabled\": true, \"emotion_pairs\": [], \"common\": {\"target_size\": 1024}, \"pose_generation\": {\"target_size\": 2048, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"from_generator\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"pose_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"vae_decode\": {\"tile_size\": 512, \"overlap\": 64, \"temporal_size\": 64, \"temporal_overlap\": 8}, \"emotion_generation\": {\"task_batch_size\": 0, \"target_size\": 2048, \"face_denoise\": 0.55, \"use_sam\": true, \"bbox_model\": \"bbox/face_yolov8m.pt\", \"segm_model\": \"bbox/face_yolov8m.pt\", \"sam_model\": \"sam_vit_b_01ec64.pth\", \"sam_device_mode\": \"AUTO\", \"guide_size\": 1536, \"guide_size_for\": true, \"max_size\": 1536, \"inherit_pipe_sampler\": true, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"feather\": 5, \"noise_mask\": true, \"force_inpaint\": true, \"bbox_threshold\": 0.1, \"bbox_dilation\": 10, \"qi2_prompt_template\": \"Upscale face image.\\nMake character's face emotion {emotion}\\nChange only face. Keep original neck colour, clothes and hairs\\nkeep character's clothes\", \"bbox_crop_factor\": 3, \"sam_detection_hint\": \"center-1\", \"sam_dilation\": 25, \"sam_threshold\": 0.93, \"sam_bbox_expansion\": 0, \"sam_mask_hint_threshold\": 0.7, \"sam_mask_hint_use_negative\": \"False\", \"drop_size\": 10, \"cycle\": 1, \"inpaint_model\": false, \"noise_mask_feather\": 20, \"tiled_encode\": true, \"tiled_decode\": true, \"matte_expand_radius\": 8, \"matte_feather_radius\": 4, \"chroma_context\": 16}, \"remove_clothes\": {\"prompt\": \"Dress character: White underwear\", \"target_size\": 1024, \"upscale_method\": \"lanczos\", \"crop_method\": \"disabled\", \"image1_name\": \"image 1\", \"image2_name\": \"image 2\", \"image3_name\": \"image 3\", \"weight1\": 1, \"weight2\": 1, \"weight3\": 1, \"vl_size\": 384, \"background_color\": \"White\", \"latent_image_index\": 1, \"instruction\": \"Describe the character and their key features (body shape, physical characteristics, clothing, items, accessories). Then explain how the user's text instruction should alter or modify the character. Generate a new image that meets the user's requirements while maintaining consistency with the original character where appropriate.\"}, \"remove_clothes_sampler\": {\"inherit_pipe\": true, \"seed\": 0, \"steps\": 20, \"cfg\": 1, \"sampler_name\": \"euler\", \"scheduler\": \"simple\", \"denoise\": 1}, \"upscaler\": {\"mode\": \"seedvr\", \"model\": \"seedvr2_3b_fp8_e4m3fn.safetensors\", \"vae\": \"ema_vae_fp16.safetensors\", \"device\": \"cuda:0\", \"offload_device\": \"cpu\", \"seed\": 42, \"inherit_pipe_seed\": true, \"resolution\": 2048, \"max_resolution\": 3840, \"batch_size\": 1, \"uniform_batch_size\": false, \"color_correction\": \"lab\", \"temporal_overlap\": 0, \"prepend_frames\": 0, \"input_noise_scale\": 0, \"latent_noise_scale\": 0, \"blocks_to_swap\": 0, \"swap_io_components\": false, \"cache_dit\": false, \"attention_mode\": \"sdpa\", \"attention_mode_manual\": true, \"encode_tiled\": true, \"encode_tile_size\": 1024, \"encode_tile_overlap\": 128, \"decode_tiled\": true, \"decode_tile_size\": 1024, \"decode_tile_overlap\": 128, \"tile_debug\": \"false\", \"cache_vae\": false, \"enable_debug\": false}, \"bg_remove\": {\"preset\": \"Native\", \"use_sam3_details_recovery\": true, \"use_preset_values\": true, \"tolerance\": 0.5, \"softness\": 0.12, \"despill_strength\": 1, \"edge_width\": 3, \"matte_cleanup\": 0.1, \"foreground_recover\": 0.35, \"edge_decontaminate\": 0.75, \"edge_choke\": 0.08, \"matte_method\": \"guided_edge\", \"screen_mode\": \"from_background\", \"output_mode\": \"straight_rgba\", \"sam3_model\": \"\", \"sam3_segmentor\": \"image\", \"sam3_device\": \"auto\", \"sam3_precision\": \"bf16\", \"sam3_prompt\": \"face, clothes, accessories, hat, boots, eyes\", \"sam3_threshold\": 0.4, \"sam3_add_background\": \"none\", \"sam3_detection_limit\": -1, \"sam3_erode_radius\": 4, \"sam3_min_foreground_overlap\": 0.55, \"despill_kernel_size\": 3, \"despill_color\": \"black\"}, \"ui\": {\"selected_preview\": \"pose_generation\", \"user_selected_preview\": false, \"bg_remove_previous_preset\": \"balanced\", \"bg_remove_model_kind\": \"qi2\", \"resolution_model_kind\": \"qi2\", \"resolution_model_key\": \"[\\\"qi2\\\", \\\"unet\\\", \\\"Qwen Image 2.1 INT8 ConvRot\\\"]\", \"resolution_by_model\": {\"[\\\"qi2\\\",\\\"unet\\\",\\\"Qwen Image 2.1 INT8 ConvRot\\\"]\": {\"target_size\": 2048, \"updated_at\": 0}}, \"progress_scope\": \"b44d91e5-4ff4-42f3-b9f5-c9a86cf02871:7856f6fe-ac50-4f6c-892c-e1c6f9d52b40:VNCCS_ClothesGenerator:751\"}, \"character_name\": \"Evelyn_StoryPoseStudies_20261101\", \"costume\": \"Everyday PoseStudy investigate\", \"gender\": \"female\"}",
+        "character_generator_ui": ""
+      },
+      "color": "#223",
+      "bgcolor": "#335"
+    },
+    {
+      "id": 814,
+      "type": "RavenCleanNativeAlpha",
+      "pos": [
+        1650,
+        0
+      ],
+      "size": [
+        330,
+        110
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "image",
+          "name": "image",
+          "type": "IMAGE",
+          "link": 8
+        },
+        {
+          "localized_name": "black_point",
+          "name": "black_point",
+          "type": "FLOAT",
+          "widget": {
+            "name": "black_point"
+          },
+          "link": null
+        },
+        {
+          "localized_name": "white_point",
+          "name": "white_point",
+          "type": "FLOAT",
+          "widget": {
+            "name": "white_point"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "IMAGE",
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RavenCleanNativeAlpha"
+      },
+      "widgets_values": [
+        0.06,
+        0.94
+      ],
+      "widgets_values_named": {
+        "black_point": 0.06,
+        "white_point": 0.94
+      }
+    },
+    {
+      "id": 815,
+      "type": "SaveImage",
+      "pos": [
+        2050,
+        0
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 9
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/investigate_v2/full_body/Evelyn_investigate"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/investigate_v2/full_body/Evelyn_investigate"
+      }
+    },
+    {
+      "id": 816,
+      "type": "SaveImage",
+      "pos": [
+        1650,
+        430
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 10
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/investigate_v2/raw_pose/pose"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/investigate_v2/raw_pose/pose"
+      }
+    },
+    {
+      "id": 817,
+      "type": "SaveImage",
+      "pos": [
+        800,
+        1150
+      ],
+      "size": [
+        330,
+        270
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "link": 11
+        },
+        {
+          "localized_name": "filename_prefix",
+          "name": "filename_prefix",
+          "type": "STRING",
+          "widget": {
+            "name": "filename_prefix"
+          },
+          "link": null
+        }
+      ],
+      "outputs": [
+        {
+          "localized_name": "images",
+          "name": "images",
+          "type": "IMAGE",
+          "links": null
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/StoryPoses/Evelyn/investigate_v2/mannequin/pose"
+      ],
+      "widgets_values_named": {
+        "filename_prefix": "RavenCast/StoryPoses/Evelyn/investigate_v2/mannequin/pose"
+      }
+    }
+  ],
+  "links": [
+    [
+      1,
+      810,
+      0,
+      812,
+      0,
+      "IMAGE"
+    ],
+    [
+      2,
+      810,
+      1,
+      812,
+      1,
+      "MASK"
+    ],
+    [
+      3,
+      728,
+      0,
+      751,
+      0,
+      "IMAGE"
+    ],
+    [
+      4,
+      812,
+      0,
+      751,
+      1,
+      "IMAGE"
+    ],
+    [
+      5,
+      758,
+      0,
+      751,
+      2,
+      "VNCCS_PIPE"
+    ],
+    [
+      6,
+      813,
+      0,
+      751,
+      3,
+      "STRING"
+    ],
+    [
+      7,
+      728,
+      1,
+      751,
+      4,
+      "STRING"
+    ],
+    [
+      8,
+      751,
+      0,
+      814,
+      0,
+      "IMAGE"
+    ],
+    [
+      9,
+      814,
+      0,
+      815,
+      0,
+      "IMAGE"
+    ],
+    [
+      10,
+      751,
+      3,
+      816,
+      0,
+      "IMAGE"
+    ],
+    [
+      11,
+      728,
+      0,
+      817,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "raven_task_ids": [
+      "GFX-06-01",
+      "GFX-06-02",
+      "GFX-06-06"
+    ],
+    "raven_pose_id": "investigate",
+    "raven_source_sha256": "c60d74a920687e0f08711daf276661b3f73bfc1535e2aa9eceed7f679ce31349",
+    "raven_repo_sha": "76359351f260bd2b7719694f8410e5bfc62707b2",
+    "vnccs_workflow_id": "7856f6fe-ac50-4f6c-892c-e1c6f9d52b40",
+    "ds": {
+      "scale": 0.18261834319526626,
+      "offset": [
+        573.3333333333335,
+        1800.3483191575538
+      ]
+    }
+  },
+  "version": 0.4
+}

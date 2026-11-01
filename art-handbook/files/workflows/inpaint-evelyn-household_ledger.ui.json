@@ -1,0 +1,944 @@
+{
+  "last_node_id": 32,
+  "last_link_id": 24,
+  "nodes": [
+    {
+      "id": 1,
+      "type": "UNETLoader",
+      "pos": [
+        0,
+        0
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 0,
+      "mode": 0,
+      "flags": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            1
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "UNETLoader"
+      },
+      "widgets_values": [
+        "qwen_image_2.1_int8_convrot.safetensors",
+        "default"
+      ]
+    },
+    {
+      "id": 2,
+      "type": "CLIPLoader",
+      "pos": [
+        390,
+        0
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 1,
+      "mode": 0,
+      "flags": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "CLIP",
+          "type": "CLIP",
+          "links": [
+            6
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "CLIPLoader"
+      },
+      "widgets_values": [
+        "qwen3vl_8b_int8_convrot.safetensors",
+        "qwen_image",
+        "default"
+      ]
+    },
+    {
+      "id": 3,
+      "type": "VAELoader",
+      "pos": [
+        780,
+        0
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 2,
+      "mode": 0,
+      "flags": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "VAE",
+          "type": "VAE",
+          "links": [
+            7,
+            10,
+            18
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAELoader"
+      },
+      "widgets_values": [
+        "qwen_image_2.1_vae_bf16.safetensors"
+      ]
+    },
+    {
+      "id": 4,
+      "type": "QwenImage21Cache",
+      "pos": [
+        1170,
+        0
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 3,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 1
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            13
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "QwenImage21Cache"
+      },
+      "widgets_values": [
+        "gpu",
+        "int8"
+      ]
+    },
+    {
+      "id": 10,
+      "type": "LoadImage",
+      "pos": [
+        1560,
+        0
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 4,
+      "mode": 0,
+      "flags": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            2
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            3
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "RavenProp_Evelyn_wide_source.png",
+        "image"
+      ]
+    },
+    {
+      "id": 11,
+      "type": "JoinImageWithAlpha",
+      "pos": [
+        0,
+        370
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 5,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 2
+        },
+        {
+          "name": "alpha",
+          "type": "MASK",
+          "link": 3
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            4,
+            20
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "JoinImageWithAlpha"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 12,
+      "type": "ImageCrop",
+      "pos": [
+        390,
+        370
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 6,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 4
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            8,
+            9
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCrop"
+      },
+      "widgets_values": [
+        1024,
+        1024,
+        608,
+        800
+      ]
+    },
+    {
+      "id": 13,
+      "type": "LoadImage",
+      "pos": [
+        780,
+        370
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 7,
+      "mode": 0,
+      "flags": {},
+      "inputs": [],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            5
+          ]
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "RavenProp_wide_mask.png",
+        "image"
+      ]
+    },
+    {
+      "id": 14,
+      "type": "ImageToMask",
+      "pos": [
+        1170,
+        370
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 8,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 5
+        }
+      ],
+      "outputs": [
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": [
+            12,
+            22
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageToMask"
+      },
+      "widgets_values": [
+        "red"
+      ]
+    },
+    {
+      "id": 20,
+      "type": "TextEncodeQwenImage21",
+      "pos": [
+        1560,
+        370
+      ],
+      "size": [
+        600,
+        420
+      ],
+      "order": 9,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "clip",
+          "type": "CLIP",
+          "link": 6
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 7
+        },
+        {
+          "name": "images.image_1",
+          "type": "IMAGE",
+          "link": 8
+        }
+      ],
+      "outputs": [
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "links": [
+            14
+          ]
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "links": [
+            15
+          ]
+        },
+        {
+          "name": "latent",
+          "type": "LATENT",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "TextEncodeQwenImage21"
+      },
+      "widgets_values": [
+        "Edit only the hands and add ONE ordinary slim clothbound household ledger held open naturally at waist height. The open book is a shallow V, about 110 degrees, with TWO clean facing cream rectangular pages of equal size in one coherent perspective. Both pages meet continuously in a narrow central gutter along a single straight spine. Each page has only a broad gentle bend into the gutter. The page block is THIN, only a few millimetres thick, compressed and aligned flush with the cover, not a fan. The two top edges and two bottom edges follow the same perspective and page dimensions. Simple matte tan-brown cloth cover. Very faint ruled lines, no readable writing. Both hands support the lower outer cover corners naturally. Preserve the existing arms, cream linen blouse, burgundy skirt, original anime illustration style and lighting. Transparent background.",
+        "fanned pages, floating pages, loose sheets, separate upright sheet, accordion pages, wavy paper, torn paper, thick page stack, wooden pages, distorted book, multiple spines, impossible perspective, mismatched page sizes, duplicated book, extra hands, extra fingers, fused fingers, transparent clothes, photorealism, readable text, watermark",
+        0
+      ],
+      "title": "Ledger v2 / continuous natural facing pages"
+    },
+    {
+      "id": 21,
+      "type": "VAEEncode",
+      "pos": [
+        0,
+        740
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 10,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "pixels",
+          "type": "IMAGE",
+          "link": 9
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 10
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            11
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEEncode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 22,
+      "type": "SetLatentNoiseMask",
+      "pos": [
+        390,
+        740
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 11,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 11
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 12
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            16
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SetLatentNoiseMask"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 23,
+      "type": "KSampler",
+      "pos": [
+        780,
+        740
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 12,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 13
+        },
+        {
+          "name": "positive",
+          "type": "CONDITIONING",
+          "link": 14
+        },
+        {
+          "name": "negative",
+          "type": "CONDITIONING",
+          "link": 15
+        },
+        {
+          "name": "latent_image",
+          "type": "LATENT",
+          "link": 16
+        }
+      ],
+      "outputs": [
+        {
+          "name": "LATENT",
+          "type": "LATENT",
+          "links": [
+            17
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "KSampler"
+      },
+      "widgets_values": [
+        41,
+        "fixed",
+        25,
+        3.0,
+        "euler",
+        "simple",
+        1.0
+      ]
+    },
+    {
+      "id": 24,
+      "type": "VAEDecode",
+      "pos": [
+        1170,
+        740
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 13,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "samples",
+          "type": "LATENT",
+          "link": 17
+        },
+        {
+          "name": "vae",
+          "type": "VAE",
+          "link": 18
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            19
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "VAEDecode"
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 25,
+      "type": "RavenCleanNativeAlpha",
+      "pos": [
+        1560,
+        740
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 14,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 19
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            21,
+            24
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "RavenCleanNativeAlpha"
+      },
+      "widgets_values": [
+        0.06,
+        0.94
+      ]
+    },
+    {
+      "id": 30,
+      "type": "ImageCompositeMasked",
+      "pos": [
+        0,
+        1110
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 15,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "destination",
+          "type": "IMAGE",
+          "link": 20
+        },
+        {
+          "name": "source",
+          "type": "IMAGE",
+          "link": 21
+        },
+        {
+          "name": "mask",
+          "type": "MASK",
+          "link": 22
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            23
+          ]
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageCompositeMasked"
+      },
+      "widgets_values": [
+        608,
+        800,
+        false
+      ],
+      "title": "Paste hands ONLY; original figure outside mask"
+    },
+    {
+      "id": 31,
+      "type": "SaveImage",
+      "pos": [
+        390,
+        1110
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 16,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 23
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/Props/Evelyn/household_ledger_v2/full_body/Evelyn_household_ledger_v2"
+      ]
+    },
+    {
+      "id": 32,
+      "type": "SaveImage",
+      "pos": [
+        780,
+        1110
+      ],
+      "size": [
+        360,
+        260
+      ],
+      "order": 17,
+      "mode": 0,
+      "flags": {},
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 24
+        }
+      ],
+      "outputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "links": []
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "SaveImage"
+      },
+      "widgets_values": [
+        "RavenCast/Props/Evelyn/household_ledger_v2/crop/edited_hands"
+      ]
+    }
+  ],
+  "links": [
+    [
+      1,
+      1,
+      0,
+      4,
+      0,
+      "MODEL"
+    ],
+    [
+      2,
+      10,
+      0,
+      11,
+      0,
+      "IMAGE"
+    ],
+    [
+      3,
+      10,
+      1,
+      11,
+      1,
+      "MASK"
+    ],
+    [
+      4,
+      11,
+      0,
+      12,
+      0,
+      "IMAGE"
+    ],
+    [
+      5,
+      13,
+      0,
+      14,
+      0,
+      "IMAGE"
+    ],
+    [
+      6,
+      2,
+      0,
+      20,
+      0,
+      "CLIP"
+    ],
+    [
+      7,
+      3,
+      0,
+      20,
+      1,
+      "VAE"
+    ],
+    [
+      8,
+      12,
+      0,
+      20,
+      2,
+      "IMAGE"
+    ],
+    [
+      9,
+      12,
+      0,
+      21,
+      0,
+      "IMAGE"
+    ],
+    [
+      10,
+      3,
+      0,
+      21,
+      1,
+      "VAE"
+    ],
+    [
+      11,
+      21,
+      0,
+      22,
+      0,
+      "LATENT"
+    ],
+    [
+      12,
+      14,
+      0,
+      22,
+      1,
+      "MASK"
+    ],
+    [
+      13,
+      4,
+      0,
+      23,
+      0,
+      "MODEL"
+    ],
+    [
+      14,
+      20,
+      0,
+      23,
+      1,
+      "CONDITIONING"
+    ],
+    [
+      15,
+      20,
+      1,
+      23,
+      2,
+      "CONDITIONING"
+    ],
+    [
+      16,
+      22,
+      0,
+      23,
+      3,
+      "LATENT"
+    ],
+    [
+      17,
+      23,
+      0,
+      24,
+      0,
+      "LATENT"
+    ],
+    [
+      18,
+      3,
+      0,
+      24,
+      1,
+      "VAE"
+    ],
+    [
+      19,
+      24,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      20,
+      11,
+      0,
+      30,
+      0,
+      "IMAGE"
+    ],
+    [
+      21,
+      25,
+      0,
+      30,
+      1,
+      "IMAGE"
+    ],
+    [
+      22,
+      14,
+      0,
+      30,
+      2,
+      "MASK"
+    ],
+    [
+      23,
+      30,
+      0,
+      31,
+      0,
+      "IMAGE"
+    ],
+    [
+      24,
+      25,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "raven_task": "GFX-06-06",
+    "raven_prop_key": "household_ledger_v2",
+    "crop": [
+      608,
+      800,
+      1024,
+      1024
+    ]
+  },
+  "version": 0.4
+}

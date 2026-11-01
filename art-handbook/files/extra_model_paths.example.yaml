@@ -1,0 +1,18 @@
+raven_shared_models:
+  base_path: D:/AI/ComfyUI-Desktop
+  checkpoints: models/checkpoints
+  diffusion_models: models/diffusion_models
+  unet: models/unet
+  clip: models/clip
+  text_encoders: models/text_encoders
+  vae: models/vae
+  loras: models/loras
+  controlnet: models/controlnet
+  clip_vision: models/clip_vision
+  ipadapter: models/ipadapter
+  embeddings: models/embeddings
+  upscale_models: models/upscale_models
+  style_models: models/style_models
+  inpaint: models/inpaint
+  RMBG: models/RMBG
+  background_removal: models/background_removal

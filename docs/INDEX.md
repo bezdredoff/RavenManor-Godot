@@ -1,5 +1,8 @@
 # Documentation map and authority
 
+- `../art-handbook/index.html`: interactive art-production handbook; image-to-recipe links, exact saved ComfyUI settings/prompts, downloads, system/model snapshot and experiment history.
+- `../art-handbook/files/AGENT_GUIDE.md`: human/AI reproduction and evidence rules; companion machine catalog is `../art-handbook/catalog.json`.
+
 - `../AGENTS.md`: instructions for Codex and contributors.
 - `DECISIONS.md`: *current product-owner overrides* of historical stage documents.
 - `PROJECT_CONTEXT.md`: current project snapshot.

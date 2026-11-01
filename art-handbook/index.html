@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Raven Manor — справочник производства арта</title>
+  <meta name="description" content="Изображения, проверенные ComfyUI/VNCCS-рецепты, prompts, параметры и история производства Raven Manor.">
+  <link rel="stylesheet" href="style.css"><script defer src="data.js"></script><script defer src="app.js"></script>
+</head>
+<body>
+<a class="skip" href="#main">К содержимому</a>
+<aside class="sidebar">
+  <a class="brand" href="#overview"><span class="brand-mark">R<span>m</span></span><span>RAVEN MANOR<small>ART PRODUCTION HANDBOOK</small></span></a>
+  <p class="edition">Рабочий снимок · 01.11.2026</p>
+  <nav aria-label="Разделы справочника">
+    <a href="#overview">01 <span>Как устроен процесс</span></a>
+    <a href="#recipes">02 <span>Рабочие рецепты</span></a>
+    <a href="#gallery">03 <span>Каталог изображений</span></a>
+    <a href="#system">04 <span>Система и модели</span></a>
+    <a href="#journey">05 <span>Как мы к этому пришли</span></a>
+    <a href="#agent">06 <span>Для AI-агента</span></a>
+  </nav>
+  <div class="sidebar-bottom"><span class="dot"></span> Основано на сохранённых файлах<p>Настройки запуска, выводы исследования и неизвестные данные отмечены отдельно.</p><a href="../">← Raven Manor</a> · <a href="../dashboard/">Дашборд</a></div>
+</aside>
+<main id="main">
+  <header id="overview" class="hero">
+    <p class="eyebrow">ПРОИЗВОДСТВЕННЫЙ АРХИВ / RAVEN MANOR</p>
+    <h1>От первого превью<br>до игрового кадра<span>.</span></h1>
+    <p class="lead">Что сработало, с какими настройками и как это повторить. Каждый результат связан с рецептом, исходными файлами и границами воспроизводимости.</p>
+    <div class="hero-actions"><a class="primary" href="#recipes">Открыть рецепты ↗</a><a class="secondary" href="catalog.json" download>JSON для агента ↓</a><a class="text-link" href="downloads/workflow-pack.zip" download>Все флоу и входы · ZIP ↓</a></div>
+    <div class="stats" id="stats" aria-live="polite"></div>
+  </header>
+  <section class="section overview-body">
+    <div class="section-heading"><p class="eyebrow">ОДИН ПРОЦЕСС · НЕСКОЛЬКО РАЗНЫХ РЕЦЕПТОВ</p><h2>Сначала идентичность.<br>Затем одежда, эмоции и действие.</h2></div>
+    <div class="flow" id="flow"></div>
+    <div class="note"><strong>С чего начать</strong><p>Для нового персонажа идите слева направо. Для правки предмета откройте уже принятый кадр и его inpaint-рецепт. У фонов отдельный путь через ChatGPT; неизвестные параметры не заменены догадками.</p></div>
+    <div class="facts-grid" id="important"></div>
+  </section>
+  <section id="recipes" class="section">
+    <div class="section-heading"><p class="eyebrow">ПРОВЕРЕННЫЕ ПУТИ И АРХИВ</p><h2>Рецепты производства</h2><p>Откройте карточку: параметры, полные prompts, входы, маски, API и UI-флоу находятся вместе.</p></div>
+    <div class="tabs" id="stage-tabs" aria-label="Этапы производства"></div>
+    <div id="recipe-list" class="recipe-grid"></div>
+  </section>
+  <section id="gallery" class="section gallery-section">
+    <div class="section-heading"><p class="eyebrow">ИЗОБРАЖЕНИЕ → ИСТОЧНИК → ФЛОУ</p><h2>Каталог результатов</h2><p>По умолчанию — основной VN-набор. Архив не означает художественного утверждения.</p></div>
+    <form class="filters" id="filters" role="search">
+      <label class="search-label">Поиск<input id="search" type="search" placeholder="Персонаж, предмет, ID, prompt…" autocomplete="off"></label>
+      <label>Тип<select id="kind"><option value="">Все типы</option><option value="character">Персонажи</option><option value="background">VN-фоны</option><option value="archive">Ранние пилоты</option><option value="wall_candidate">Кандидаты стен</option><option value="technical">Технические заглушки</option></select></label>
+      <label>Семейство<select id="group"><option value="">Все</option></select></label>
+      <label>Статус<select id="status"><option value="">Все статусы</option><option value="accepted">Принято</option><option value="candidate">Кандидат</option><option value="pending_review">Ожидает ревью</option><option value="superseded">Заменено</option><option value="concept_only">Концепт</option><option value="technical_placeholder">Заглушка</option></select></label>
+      <label class="check"><input id="archive" type="checkbox"> Включить архив</label>
+      <button class="quiet" type="reset">Сбросить</button>
+    </form>
+    <div class="result-line"><span id="result-count" aria-live="polite"></span><span>Превью оптимизированы; оригиналы сохраняют исходное разрешение.</span></div>
+    <div class="asset-grid" id="asset-grid"></div><p id="empty" class="empty" hidden>Ничего не найдено. Попробуйте другой фильтр.</p>
+  </section>
+  <section id="system" class="section">
+    <div class="section-heading"><p class="eyebrow">ЗАФИКСИРОВАННАЯ СРЕДА, НЕ «LATEST»</p><h2>Система, ComfyUI и модели</h2><p>Снимок установленной среды на момент документирования. Он не выдаётся за исторический lockfile каждого запуска.</p></div>
+    <div id="system-summary" class="system-grid"></div>
+    <details class="wide-details"><summary>Версии пакетов, commits и fingerprints custom nodes</summary><div id="node-versions"></div><a href="files/environment.json" download>Полный environment.json ↓</a></details>
+    <h3>Файлы моделей</h3><p class="muted">Весá не входят в книгу. Сверяйте имя, размер и SHA-256; набор зависит от выбранного рецепта.</p>
+    <div class="table-scroll"><table><thead><tr><th>Модель / файл</th><th>Размер</th><th>Путь в models / SHA-256</th></tr></thead><tbody id="models"></tbody></table></div>
+    <div class="download-row"><a href="files/extra_model_paths.example.yaml" download>extra_model_paths.yaml ↓</a><a href="files/settings/control_center_qi2_entries.json" download>QI2 entries Control Center ↓</a><a href="files/custom_nodes/raven_pose_export/__init__.py" download>Локальные Raven nodes ↓</a></div>
+  </section>
+  <section id="journey" class="section">
+    <div class="section-heading"><p class="eyebrow">КОРОТКАЯ ИСТОРИЯ ИССЛЕДОВАНИЯ</p><h2>Ошибки, решения<br>и оставшиеся вопросы</h2><p>Здесь зафиксированы выводы, а не только удачные картинки. Гипотезы отделены от установленных причин.</p></div>
+    <ol id="timeline" class="timeline"></ol>
+  </section>
+  <section id="agent" class="section agent-section">
+    <p class="eyebrow">ЧЕЛОВЕКУ И AI-АГЕНТУ</p><h2>Продолжить работу<br>без потери контекста.</h2>
+    <p>Читайте машинный каталог, сверяйте hashes и открывайте рецепт конкретного изображения. Новый вариант остаётся кандидатом до принятия владельцем.</p>
+    <div class="hero-actions"><a class="primary" href="files/AGENT_GUIDE.md">Пошаговый регламент ↗</a><a class="secondary" href="catalog.json" download>Машинный каталог ↓</a><a class="text-link" href="downloads/workflow-pack.zip" download>Пакет флоу ↓</a></div>
+    <pre class="agent-code">python art-handbook/files/scripts/run_replay.py \
+  --recipe inpaint-rowan-point_route</pre><p class="muted">По умолчанию — offline preflight. GPU не запускается. Для реального запуска нужны зависимости, скопированные входы и явный флаг --submit.</p>
+    <div class="note"><strong>Что ещё не создано</strong><p>Моргание, рот, промежуточные кадры микроанимаций и чиби-набор карты. Наличие основного спрайта не означает наличие всех сочетаний позы, эмоции и предмета.</p></div>
+    <div id="additional-pipelines" class="download-row"></div>
+  </section>
+  <footer><strong>Raven Manor · Production knowledge</strong><span id="baseline"></span><a href="#overview">К началу ↑</a></footer>
+</main>
+<dialog id="detail" aria-labelledby="detail-title"><button class="dialog-close" type="button" aria-label="Закрыть">×</button><div id="detail-body"></div></dialog>
+<div role="status" id="toast" class="toast" hidden></div>
+</body></html>
