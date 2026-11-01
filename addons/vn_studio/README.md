@@ -1,5 +1,11 @@
 # VN Studio — native Godot EditorPlugin
 
+## VNS5-04B — локальный editor-only v2 sidecar (implementation handoff)
+
+Теперь `Режиссёр → Постановка` хранит ориентацию 390×844/844×390 и fit/cover в **локальном** `stageV2Patches[sceneId]`, а не в каноническом `vn_staging.json`. Редактор также запоминает нормализованный focal (ориентир в preview, не runtime pan), z текущих актёров и независимые prop instances (ID, state, X/Y, Z, Scale, staged image / ART PENDING). Существующие v1 stage/line edits остаются совместимы с ранее сохранёнными черновиками. Новые V2 правки поддерживают отдельный Undo, source-SHA locks и строгую проверку schema/ID/path/range.
+
+`Экспорт V2 review` создаёт отдельный `user://` JSON с SHA исходников и список staged prop references/ART PENDING. Если V2 изменения есть, старый экспорт stage-v1 отклоняется, чтобы данные не потерялись молча. Ни один проп/кадр автоматически не публикуется в production, игровой runtime не читает V2. Подробный контракт и ручной QA: `docs/production/VNS5_04B_STAGE_V2_RU.md`. CI/Godot Editor QA и owner approval обязательны; incoming ZIP не является implementation PR.
+
 ## VNS5-04A — ориентация и шаблоны постановки (Draft PR #101)
 
 В рабочем пространстве `Raven Manor → Director → Постановка` можно переключать **редакторский preview** между 390×844 (портрет) и 844×390 (альбом), выбирать `Фон: cover / fit`, включать сетку, безопасную зону и VN UI overlay. Кнопка `Шаблон 1/2/3` сознательно расставляет уже выбранных персонажей по нормализованным координатам `x/y` без смены `assetId`, позы, эмоции и исходного фона. `Отменить постановку` восстанавливает до 32 последних валидных изменений текущей сцены; переход к другой сцене сбрасывает локальную историю. Только разрешённые stage-v1 поля сохраняются в существующие Raven draft stagePatches.
