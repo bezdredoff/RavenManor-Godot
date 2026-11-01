@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "candidate_preview_not_art_approved",
   "targetCanvas": "1080x1920",
-  "variantCount": 20,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending. Bedroom day/night livable variants come from two separately generated candidate masters with closely matched room composition, not exact pixel-registered light grades. Covered/untidy bedroom remains ART PENDING; no pretend cleaning state. On-device QA pending.",
+  "variantCount": 26,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending. Bedroom day/night livable variants come from two separately generated candidate masters with closely matched room composition, not exact pixel-registered light grades. Covered/untidy bedroom remains ART PENDING; no pretend cleaning state. On-device QA pending. Six scene-backed candidate plates added for the Bath (wet unsafe), Kitchen (day power off/evening partial lighting), Garden (unsafe path), and Conservatory (day/dusk partially safe). Kitchen and Conservatory day/evening are independently generated variants with closely matching camera and props, not lossless pixel-locked lighting grades. No future-only states or corridor plates. Manual phone/Godot and actor-compositing QA remain pending.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -344,6 +344,108 @@
       ],
       "status": "candidate",
       "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672"
+    },
+    {
+      "id": "BG-BATH-VIGNETTE:day:wet_unsafe",
+      "backgroundId": "BG-BATH-VIGNETTE",
+      "lighting": "day",
+      "roomState": "wet_unsafe",
+      "path": "res://assets/raven/vn_backgrounds/bath_vignette/day_wet_unsafe.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "e690d9bf3184e9ce4e04fafd9d0b9efc7b1365c2be8f2f0fab181d3ec5adb0da",
+      "sourceImage": "gothic_manor_bathroom_leak.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+    },
+    {
+      "id": "BG-KITCHEN:day:power_off",
+      "backgroundId": "BG-KITCHEN",
+      "lighting": "day",
+      "roomState": "power_off",
+      "path": "res://assets/raven/vn_backgrounds/kitchen/day_power_off.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "20703b3e8ab43a641cacec813f2ea6c7cf184e648544373d73e372989fbb79c1",
+      "sourceImage": "raven_manor_s_sunlit_victorian_kitchen.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+    },
+    {
+      "id": "BG-KITCHEN:evening:partial_lighting",
+      "backgroundId": "BG-KITCHEN",
+      "lighting": "evening",
+      "roomState": "partial_lighting",
+      "path": "res://assets/raven/vn_backgrounds/kitchen/evening_partial_lighting.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "4f0f865f41fd7cd259f2d64d33fe1472167db39f7ff08be0cf65a81babbf575d",
+      "sourceImage": "victorian_kitchen_at_blue_hour_dusk.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+    },
+    {
+      "id": "BG-GARDEN:day:unsafe_path",
+      "backgroundId": "BG-GARDEN",
+      "lighting": "day",
+      "roomState": "unsafe_path",
+      "path": "res://assets/raven/vn_backgrounds/garden/day_unsafe_path.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "a3731cd262b5e220d516a6e19a84c575b8f521a7fd37d4ffe6e289bf3d5f2b5f",
+      "sourceImage": "overgrown_gothic_manor_garden.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+    },
+    {
+      "id": "BG-CONSERVATORY:day:partially_safe",
+      "backgroundId": "BG-CONSERVATORY",
+      "lighting": "day",
+      "roomState": "partially_safe",
+      "path": "res://assets/raven/vn_backgrounds/conservatory/day_partially_safe.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2cbef19775aa99db3eaa49a744919fc24e604e64ab8a41a5ed7910f1528e5fd7",
+      "sourceImage": "gothic_conservatory_in_sunlit_bloom.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+    },
+    {
+      "id": "BG-CONSERVATORY:dusk:partially_safe",
+      "backgroundId": "BG-CONSERVATORY",
+      "lighting": "dusk",
+      "roomState": "partially_safe",
+      "path": "res://assets/raven/vn_backgrounds/conservatory/dusk_partially_safe.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "022e29fc6ae674cbc4eb3241e59522808dde9ae3862fefee41346b175f10f775",
+      "sourceImage": "raven_manor_conservatory_at_dusk.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
     }
   ]
 }

@@ -5,7 +5,7 @@ const Gallery = preload("res://scenes/raven/vn_background_gallery.tscn")
 
 func _initialize() -> void:
 	var entries: Array = Resolver.all_entries()
-	assert(entries.size() >= 20, "Nine Hall/Library, four Apartment, one Road, four Entry and two Bedroom candidates expected")
+	assert(entries.size() == 26, "All 26 stage-backed and optional already approved backgrounds expected")
 	assert(Gallery != null)
 	var ids := {}
 	for entry: Dictionary in entries:
@@ -16,7 +16,7 @@ func _initialize() -> void:
 		var texture: Texture2D = Resolver.texture_for(str(entry["backgroundId"]), str(entry["lighting"]), str(entry["roomState"]))
 		assert(texture != null, "Missing background asset: " + id)
 		assert(texture.get_width() == 1080 and texture.get_height() == 1920, id)
-		if str(entry.get("backgroundId", "")) in ["BG-APARTMENT", "BG-ROAD", "BG-ENTRY", "BG-BEDROOM"]:
+		if str(entry.get("backgroundId", "")) in ["BG-APARTMENT", "BG-ROAD", "BG-ENTRY", "BG-BEDROOM", "BG-BATH-VIGNETTE", "BG-KITCHEN", "BG-GARDEN", "BG-CONSERVATORY"]:
 			var asset_path: String = str(entry.get("path", ""))
 			assert(FileAccess.file_exists(asset_path), "Missing VN background source file: " + asset_path)
 			assert(FileAccess.get_sha256(asset_path) == str(entry.get("sha256", "")),
@@ -48,7 +48,13 @@ func _initialize() -> void:
 		"BG-ENTRY:dusk:overgrown",
 		"BG-ENTRY:day:overgrown",
 		"BG-BEDROOM:day:livable",
-		"BG-BEDROOM:night:livable"
+		"BG-BEDROOM:night:livable",
+		"BG-BATH-VIGNETTE:day:wet_unsafe",
+		"BG-KITCHEN:day:power_off",
+		"BG-KITCHEN:evening:partial_lighting",
+		"BG-GARDEN:day:unsafe_path",
+		"BG-CONSERVATORY:day:partially_safe",
+		"BG-CONSERVATORY:dusk:partially_safe"
 	]:
 		assert(ids.has(required), "Missing imported art: " + required)
 	assert(str(Resolver.entry_for_scene("RM-BEAT-00-02").get("id", "")) == "BG-ROAD:dusk:mist", "Prologue road must use the imported dusk/mist plate")
@@ -62,5 +68,22 @@ func _initialize() -> void:
 	assert(Resolver.texture_for_scene("RM-BEAT-01-02") != null, "Bedroom daytime scene texture missing")
 	assert(Resolver.texture_for_scene("RM-BEAT-06-03") != null, "Bedroom nighttime scene texture missing")
 	assert(Resolver.entry_for("BG-BEDROOM", "day", "covered").is_empty(), "Covered bedroom state not drawn: must remain ART PENDING")
+	# New six scene-authorized assets must resolve from exact shared studio staging.
+	var story_plates := {
+		"RM-BEAT-01-03": "BG-BATH-VIGNETTE:day:wet_unsafe",
+		"RM-BEAT-02-03": "BG-KITCHEN:day:power_off",
+		"RM-BEAT-02-04": "BG-KITCHEN:evening:partial_lighting",
+		"RM-BEAT-04-01": "BG-GARDEN:day:unsafe_path",
+		"RM-BEAT-04-02": "BG-CONSERVATORY:day:partially_safe",
+		"RM-BEAT-04-03": "BG-CONSERVATORY:day:partially_safe",
+		"RM-BEAT-04-04": "BG-CONSERVATORY:dusk:partially_safe",
+	}
+	for scene_id: String in story_plates:
+		assert(str(Resolver.entry_for_scene(scene_id).get("id", "")) == str(story_plates[scene_id]),
+			"Wrong stage art for " + scene_id)
+		assert(Resolver.texture_for_scene(scene_id) != null, "Unloaded gameplay art for " + scene_id)
+	assert(Resolver.entry_for("BG-BATH-VIGNETTE", "day", "specialist_fixed").is_empty())
+	assert(Resolver.entry_for("BG-GARDEN", "dusk", "after_storm").is_empty())
+	assert(Resolver.entry_for("BG-CONSERVATORY", "storm", "storm_damage").is_empty())
 	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral)" % entries.size())
 	quit()
