@@ -1,6 +1,12 @@
-# VN Studio — Godot legacy authoring (VN-EDITOR-03)
+# VN Studio — native Godot EditorPlugin
 
-**Status:** proposed native editor draft-authoring pilot, not a converter or runtime renderer. Requires Godot 4.7.2 desktop editor. UPDS-godot source files are **read-only**.
+## VNS5-01 — Raven workspace shell
+
+`VN Studio → Raven Manor` has four native workspaces: **Director** (the existing Dialogue and Stage editors), **Asset Library** (current scene background/cast inspection), **Story Map** (current route trigger inspection), and **Animation** (current line cue inspection). The same selected scene and line drive all four; the last three are read-only until their later authoring PRs. Save, candidate export, status and output path stay reachable while the central view scrolls. Dragging the scene divider stores its width in Godot Editor Settings under `vn_studio/raven_scene_pane_width`; no project file, draft or game save stores UI layout. Existing UPDS tabs remain separate and unchanged.
+
+VNS5-01 does not allocate stable asset instance IDs or activate v2 transitions/clips. The shared selection exposes an empty `assetInstanceId` until the stage model defines one. Verify in Godot at 800×640, 1024×640 and 1366×768: switch all four tabs after choosing another scene/line, scroll Director to its lower tools, drag the scene divider, restart the editor, and check UPDS tabs still restore. Headless layout smoke covers structure/selection and existing VN Studio regressions; desktop visual acceptance remains manual.
+
+**Status:** native editor draft authoring and read-only legacy inspection, not a replacement runtime renderer. Requires Godot 4.7.2 desktop editor. UPDS-godot source files are **read-only**.
 
 
 ## RAVEN-VN-EDITOR-03 — удобный просмотр сцен и состояний

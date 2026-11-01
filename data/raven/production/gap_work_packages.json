@@ -408,6 +408,21 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-01",
+      "title": "VN Studio v5: Raven workspace shell and shared selection",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Restructure the existing Raven EditorPlugin view into four navigable workspaces with one scene/line selection and responsive editor panels.",
+      "deliverable": "Native Godot workspace shell, read-only contextual panes, sticky draft actions, layout persistence and UI smoke tests.",
+      "acceptance": "Four workspaces retain selected scene/line; old Raven and UPDS controls remain accessible at narrow/short editor sizes; pane width persists in editor settings; no gameplay or save schema change.",
+      "status": "proposed",
+      "dependsOn": ["VNS5-00"],
+      "graphicsDependencies": [],
+      "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 01",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-00",
       "title": "VN Studio v5: baseline and read-only contract audit",
       "domain": "narrative",
