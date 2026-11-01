@@ -1,0 +1,497 @@
+[
+  {
+    "name": "assets/bg-apartment-four-variants",
+    "sha": "fa99c1db308b09a92b339754ac4aa8e32769b15f",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-40538610191",
+    "sha": "1ea7dd9ec4560694a5fd0906176ea58f303544a8",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-40544933737",
+    "sha": "790838b09ad061887fe9ca6131f75822614cccf9",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-40554280539",
+    "sha": "2ad7643762f7a295d35e97259021ee5d416e7b5e",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41301500782",
+    "sha": "bc13bd8fc15455b1772ce3f9431c56f04ceeae3b",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41318976187",
+    "sha": "930236c4d1130a48d44f46a4e765ae97a93d88d4",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41323596431",
+    "sha": "1e4a51969723f9b11ecc34f438aed13323817425",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41327920229",
+    "sha": "455bd2dfad729bcce945013756eabf140cd0aa4f",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41337230601",
+    "sha": "c570ed1df6598c7ca25bdab3dd7bbacb3ff7f9b8",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41344119317",
+    "sha": "4e1336c29cf37b423765373693fcdcaf71403575",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41347601900",
+    "sha": "2f650deb727ab0ec1e690d187c8d17dc418dc536",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41350593448",
+    "sha": "545373150f8aa9eb705d6d9ff7522752a70ce8c2",
+    "protected": false
+  },
+  {
+    "name": "candidate/mobile-41354659076",
+    "sha": "e7895a32ef6363617a45b9376907d0d4b2aa8a19",
+    "protected": false
+  },
+  {
+    "name": "cleanup/remove-rejected-watercolor-pilot",
+    "sha": "3771c3369284ac0366bd1e978c960af2cd984523",
+    "protected": false
+  },
+  {
+    "name": "code/code-02-upds-match3-interactive-board",
+    "sha": "e84c25b360a51834f5efc00f69015db6d227d825",
+    "protected": false
+  },
+  {
+    "name": "code/code-02a-upds-match3-visual-primitives",
+    "sha": "cdaa69951a8ea1bc87291c8510d1cf3420342969",
+    "protected": false
+  },
+  {
+    "name": "code/code-02b-match3-help-blockers-results",
+    "sha": "9ac8ce05c0437c45d3c31e97fcaea7010b8a7801",
+    "protected": false
+  },
+  {
+    "name": "code/code-02c-special-impact-segment-motion",
+    "sha": "a5ac96073d7b2f8bbb63b4a2ec6d5403aca08e0e",
+    "protected": false
+  },
+  {
+    "name": "code/code-02d-mobile-hud-governance",
+    "sha": "65c072e6eeb2973cb70ddfb1b070c8e4f9c78997",
+    "protected": false
+  },
+  {
+    "name": "code/raven-vn-stage-preview-controls",
+    "sha": "0d208d4b822360a084cec619cd00c3d3b42d14b4",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-01-upds-audit",
+    "sha": "1e12a664bf5ddc45607bc69a31fec39f6841070e",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-02-native-legacy-viewer",
+    "sha": "30d15c7968b7f56d7e42cc6b0a4db6b4eb300c00",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-03-draft-authoring",
+    "sha": "30e374a2d908d7e37bcc547751409e61607b243e",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-04-character-library",
+    "sha": "ba639d4c8ced47dc0beb54790b27322e4ca6d68b",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-05-story-graph",
+    "sha": "a2d68b2c0671ec6a2a0c4a5357246948610b11f7",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-06-conversion-dry-run",
+    "sha": "fc3a89724f738ea0f6f7f6db2c704d7040985af8",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-06b-save-position-parity",
+    "sha": "d5f4bf2addfd3c5cbe5d3b7155b7c570802ee73e",
+    "protected": false
+  },
+  {
+    "name": "code/vn-editor-06c-transition-parity",
+    "sha": "b686e2aebf0218cb58d4e5deac35feb69e7880bf",
+    "protected": false
+  },
+  {
+    "name": "code/vn-runtime-shared-background-compositor",
+    "sha": "0963085e27b6c36d3ede97a822cc369a67e99423",
+    "protected": false
+  },
+  {
+    "name": "code/vn-studio-catalog-background-preview",
+    "sha": "6e61c77cd5f20c0b12d000a5833378f5a77444b6",
+    "protected": false
+  },
+  {
+    "name": "code/vn-studio-raven-authoring",
+    "sha": "86eccf10b4063b342d26c135f27f6d8237bcc245",
+    "protected": false
+  },
+  {
+    "name": "code/vn-studio-raven-stage-designer",
+    "sha": "f89e057a222960520238fc5d62facf40c2190974",
+    "protected": false
+  },
+  {
+    "name": "code/vn-studio-stage-main-integration",
+    "sha": "2c63e205b051415b2125421b533adec8aafe66d5",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-00-contract-baseline",
+    "sha": "de1b00a565e5cc5716d8efba76774c6b1c799abd",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-01-workspace-shell",
+    "sha": "0aad5f8e783630dcf70dedd765439b47f976981b",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-02-asset-registry",
+    "sha": "14ba2f30005e9591a860aa9b935422ca2863d929",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-02-asset-registry-main",
+    "sha": "9e8cd44e657e3e9f36fc42a4b77d244d45d81fdd",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-03-staged-image-import",
+    "sha": "6383785f7105e67c6d42135bbe45fb97e3b2fd77",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-04a-stage-preview",
+    "sha": "793cd7a723c9b5dccfc4f045d9526632ceb14f00",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-04b-stage-v2",
+    "sha": "d5e0c3c55c26e9b0c93d51171350081301ac7ea7",
+    "protected": false
+  },
+  {
+    "name": "code/vns5-05a-stage-fx-timeline",
+    "sha": "cda99aee46d1b106e9bb0351e1e77ab2ba955de2",
+    "protected": false
+  },
+  {
+    "name": "codex/debug-preview",
+    "sha": "f556a264cf51146f8ad431d5f00e429150578fb6",
+    "protected": false
+  },
+  {
+    "name": "codex/prototype-lab-pages",
+    "sha": "77b733cae115f9d3afd47e393f51315bd08db113",
+    "protected": false
+  },
+  {
+    "name": "codex/reconcile-project-status",
+    "sha": "122c67b35c3dcbd9874281094de669617b0abb22",
+    "protected": false
+  },
+  {
+    "name": "codex/rm-hub-001-pr1-foundation",
+    "sha": "bae7f36a1853c8880f884ab41b3dec5b6ea62ff5",
+    "protected": false
+  },
+  {
+    "name": "codex/rm-hub-001-pr2-navigation",
+    "sha": "d76e15a302f10deb550629188a1722300d4ea50f",
+    "protected": false
+  },
+  {
+    "name": "codex/rm-vs-01-integration",
+    "sha": "f5b1fe55a185de2cea164f743afa1ef16d4eee94",
+    "protected": false
+  },
+  {
+    "name": "design/hall-approval-sheet-v01",
+    "sha": "246493a4d3345affe15ecc51c7dd32df8a89d50f",
+    "protected": false
+  },
+  {
+    "name": "design/season1-continuous-map-feasibility",
+    "sha": "646beaaf6b7d2411f06e059acd7baf2585500efc",
+    "protected": false
+  },
+  {
+    "name": "docs/mob-automation-acceptance-evidence-20261027",
+    "sha": "00f7f55f788c6ac61bd20050bd5728a865a65c71",
+    "protected": false
+  },
+  {
+    "name": "docs/mob04-phone-upload-evidence-20261027",
+    "sha": "d7fc1c3ed85c7b015481217068f01d23d49f03a4",
+    "protected": false
+  },
+  {
+    "name": "docs/reconcile-roadmaps-after-code02a-mob04",
+    "sha": "033f29f0b03783b0d46a178cdac259ca034c5c71",
+    "protected": false
+  },
+  {
+    "name": "docs/reconcile-room-pipeline-2026-10-25",
+    "sha": "fc75255a1293797b257a378c1cb7d6de6985ef96",
+    "protected": false
+  },
+  {
+    "name": "docs/vn-editor-spec-upds-migration-20261031",
+    "sha": "1fb2673ee10880318d227cf29471bf257d711e36",
+    "protected": false
+  },
+  {
+    "name": "feat/blender-wall-kit",
+    "sha": "06df69c9295e6a7dbaeb109a5c99524b2ca33a01",
+    "protected": false
+  },
+  {
+    "name": "feat/comfyui-wall-production",
+    "sha": "13edbcddff4d76185ee143d7b0ee9ea6de53da9f",
+    "protected": false
+  },
+  {
+    "name": "feat/full-season1-map-greybox",
+    "sha": "69c2f40ae03a9d6c3e6c58fa8698bd2c44a3e105",
+    "protected": false
+  },
+  {
+    "name": "feat/hall-calibration-occlusion-footprints",
+    "sha": "800b6990de7521d0013513f51dda9422cb6912aa",
+    "protected": false
+  },
+  {
+    "name": "feat/hall-calibration-ui-review",
+    "sha": "3c89ed8237bcc4eacf032d3e070ba55bc81fb600",
+    "protected": false
+  },
+  {
+    "name": "feat/hall-generated-art-oct2026",
+    "sha": "3112ad1d25731bbd61891b3d5361a2235dd040d0",
+    "protected": false
+  },
+  {
+    "name": "feat/hall-import-live-map-overlay",
+    "sha": "e8c2f765bd285b6f73136edb8504641664fd9d20",
+    "protected": false
+  },
+  {
+    "name": "feat/hall-sprite-depth-parity",
+    "sha": "7d7799b62ae525862b1f2e327b4e75772f916baf",
+    "protected": false
+  },
+  {
+    "name": "feat/map-camera-55-art-pilot",
+    "sha": "d512489c69712e5ed4c94eae2091e40028bef1ca",
+    "protected": false
+  },
+  {
+    "name": "feat/map-onoe-orthogonal-paths",
+    "sha": "38b9c83fd1c02042f92abbd8f67076d0b518fb45",
+    "protected": false
+  },
+  {
+    "name": "feat/mobile-hub-65-framing",
+    "sha": "657acb7ac87019a9a54c5c5557be1c0cf3726ca7",
+    "protected": false
+  },
+  {
+    "name": "feat/mobile-room-builder-pwa",
+    "sha": "39d94386e7be8a4ce0a2d71651630c27168f5d5f",
+    "protected": false
+  },
+  {
+    "name": "feat/original-hall-layout-mirror",
+    "sha": "f2311b73f63f6e1611b170f806dcceb237ec0e91",
+    "protected": false
+  },
+  {
+    "name": "feat/room-builder-character-assets-collapsible-panels",
+    "sha": "7d82989dd42828109262571d219e2f8767ef3d2e",
+    "protected": false
+  },
+  {
+    "name": "feat/room-builder-game-scene-import-v2",
+    "sha": "f17f5a93ca6d2b5079790831185f9781e564d4b3",
+    "protected": false
+  },
+  {
+    "name": "feat/room-builder-game-view-65",
+    "sha": "890120fcf74b2c87d889131945efd6eb8b00b5f0",
+    "protected": false
+  },
+  {
+    "name": "feat/room-builder-volumetric",
+    "sha": "a03b4fdb6a8a518b602793e2fe290bb67b26eae0",
+    "protected": false
+  },
+  {
+    "name": "feat/room-production-catalog-v02",
+    "sha": "286cc131939f43d9101c6d0f2485d069b8cda230",
+    "protected": false
+  },
+  {
+    "name": "feat/wall-tileset-prototype",
+    "sha": "9fa0854a8df0c9491f44343148eee62c2b74a2f4",
+    "protected": false
+  },
+  {
+    "name": "feature/mobile-preview-artifact-and-handoff",
+    "sha": "98194710463c079837386d5b8bc6af161bd5cb20",
+    "protected": false
+  },
+  {
+    "name": "feature/mobile-zip-import-candidate-preview",
+    "sha": "48f350ebbf939bd040a42cd6e286056ca43a3f93",
+    "protected": false
+  },
+  {
+    "name": "feature/vn-hall-tea-pilot",
+    "sha": "c7b2ca9d0d0c4a78f6cc80cf36f985d1fc833a4a",
+    "protected": false
+  },
+  {
+    "name": "feature/vn-watercolor-pilot",
+    "sha": "c751eb03bf2cc0e53a013a4f8e1eb9a196af9437",
+    "protected": false
+  },
+  {
+    "name": "feature/vn-watercolor-pilot-rebased",
+    "sha": "ddcf2f1a70cc79b6ebbb13df669b7e40e2cc3027",
+    "protected": false
+  },
+  {
+    "name": "fix/code02-input-help-parity-recovery",
+    "sha": "218f90ba5d371e7ee4b8ff75226759eb9003a9b6",
+    "protected": false
+  },
+  {
+    "name": "fix/code02-input-hint-help-parity",
+    "sha": "84d3be5946dc15c9b66558e8bf2b0164e6c865a2",
+    "protected": false
+  },
+  {
+    "name": "fix/match3-qa-entry-content-preview-parity",
+    "sha": "120683038853c9863ba1b5db31b125b3209e6006",
+    "protected": false
+  },
+  {
+    "name": "fix/room-builder-catalog-finalization",
+    "sha": "ddb6495a143c6484e1accb5a6483710bafb92f81",
+    "protected": false
+  },
+  {
+    "name": "fix/room-builder-hall-assets-actor-v041",
+    "sha": "fdc84b2c1b80bdcd95f6c04695f11f7e4b9943ba",
+    "protected": false
+  },
+  {
+    "name": "fix/room-builder-pages-fallback",
+    "sha": "b372c3e56148e765255dde18a30a89c9a14b9779",
+    "protected": false
+  },
+  {
+    "name": "fix/room-builder-show-entire-inventory",
+    "sha": "1128ac6f7fef02d7a55561d37f3bad30a7cc1bc7",
+    "protected": false
+  },
+  {
+    "name": "fix/vn-studio-responsive-layout",
+    "sha": "ac4173060120c544850b9a2201d300fb5c4cef60",
+    "protected": false
+  },
+  {
+    "name": "fix/vn-studio-scrolling-and-portrait-scale",
+    "sha": "17702a074fe14f4f7f45cb06a65df73a554354da",
+    "protected": false
+  },
+  {
+    "name": "fix/vn-studio-visible-imported-backgrounds",
+    "sha": "c2fb908e38cef3e75a32a0a96ddf5fecd6a1b9a4",
+    "protected": false
+  },
+  {
+    "name": "gfx/art-workflow-handbook",
+    "sha": "59a60e56d011f0226b0367923ce31d70f3c5c9a9",
+    "protected": false
+  },
+  {
+    "name": "gfx/character-art-integration",
+    "sha": "13cfe6dcc4feeb26fccb741a7f5097ada24fa24e",
+    "protected": false
+  },
+  {
+    "name": "incoming",
+    "sha": "c2401a3ab885663d240f3780dec880ed25999533",
+    "protected": false
+  },
+  {
+    "name": "main",
+    "sha": "25c30c7752d44a84d17fe03dcc70fb338186f8cf",
+    "protected": false
+  },
+  {
+    "name": "narrative/deepseek-prologue-tile-pool",
+    "sha": "8ea9606edd7b45438b1c700b6b5e6f144bec210d",
+    "protected": false
+  },
+  {
+    "name": "narrative/season1-full-play-revision",
+    "sha": "01c35c4e203ee2feaddfe04faf6323ae97d995ad",
+    "protected": false
+  },
+  {
+    "name": "narrative/season1-gameplay-sync",
+    "sha": "740b5d7b3aba10ef15f01df79e9f20929ce3ddf0",
+    "protected": false
+  },
+  {
+    "name": "planning/code-production-roadmap-upds-20261027",
+    "sha": "14c88077c71c94b8d341a76b24489663a88a9811",
+    "protected": false
+  },
+  {
+    "name": "process/unified-agents-dashboard-mobile-handoff",
+    "sha": "6b02d5d9492832fb86195ab24971007e3b653ee4",
+    "protected": false
+  },
+  {
+    "name": "production/season1-narrative-asset-localization-contract",
+    "sha": "89f1833b9e973ca9d4750a4f918c206b3551d23f",
+    "protected": false
+  },
+  {
+    "name": "refactor/upds-core-reuse-phase1",
+    "sha": "2f314245179870a2e2ddaa276a1ad13b5d8bfcb8",
+    "protected": false
+  }
+]
