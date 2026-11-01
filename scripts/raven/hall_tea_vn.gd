@@ -9,7 +9,7 @@ const Paging = preload("res://scripts/shared/upds/dialogue_paging.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
-const BG = preload("res://assets/raven/vn_pilot/hall_morning.webp")
+const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const EVELYN = preload("res://assets/raven/vn_pilot/evelyn_relaxed.webp")
 const ADA = preload("res://assets/raven/vn_pilot/ada_offer_tea.webp")
 const BACK_TO_MAP := "res://scenes/raven/manor_greybox.tscn"
@@ -53,7 +53,7 @@ func _ready() -> void:
 
 func _build_ui() -> void:
 	background = TextureRect.new()
-	background.texture = BG
+	background.texture = VNBackgrounds.texture_for_scene(SceneId)
 	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	background.mouse_filter = Control.MOUSE_FILTER_IGNORE
