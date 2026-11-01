@@ -211,7 +211,7 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "PR #81 merged 2026-10-31 (VN stage browser/grid/dialogue). Follow-up authored PR in review adds exact catalog-backed stage previews and future-variant ART PENDING rules; full visual editor acceptance and shared VN runtime still pending."
+      "evidence": "PR #81 merged 2026-10-31 (VN stage browser/grid/dialogue). Follow-up authored PR in review adds exact catalog-backed stage previews and future-variant ART PENDING rules; full visual editor acceptance and shared VN runtime still pending. Follow-up PR (candidate) adds an imported-only discovery browser after user reported no visible assets: startup scene is BG-APARTMENT (not yet drawn), so stage initially shows ART PENDING. Manual editor QA and local checkout synchronization remain open."
     },
     {
       "id": "GFX-08-05",

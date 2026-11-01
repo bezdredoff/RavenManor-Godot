@@ -41,6 +41,18 @@ func _run() -> void:
 
 	var options: Array[Dictionary] = designer._catalog_browser_options()
 	assert(options.size() > Resolver.all_entries().size())
+	var available: Array[Dictionary] = designer._available_browser_options()
+	assert(available.size() == Resolver.all_entries().size(), "All currently imported backgrounds should appear without any missing states")
+	assert(designer._browse_background.text.contains("9"), "Imported catalogue count should be visible in the stage designer")
+	designer._on_browse_imported()
+	assert(designer._browser_list.item_count == available.size())
+	assert(designer._browser_description.text.contains("ART CANDIDATE"))
+	designer._browser.hide()
+	var has_library_storm := false
+	for item: Dictionary in available:
+		if item["backgroundId"] == "BG-LIBRARY" and item["lighting"] == "night" and item["roomState"] == "storm_leak":
+			has_library_storm = true
+	assert(has_library_storm, "Library storm needs to be discoverable among available images")
 	var selected: Dictionary = {}
 	var missing: Dictionary = {}
 	for option: Dictionary in options:
@@ -50,6 +62,9 @@ func _run() -> void:
 			missing = option
 	assert(not selected.is_empty() and not missing.is_empty())
 	assert(Resolver.entry_for("BG-CORRIDOR", "day", "blocked").is_empty())
+	designer._on_browse()
+	assert(designer._browser_list.item_count == options.size())
+	designer._browser.hide()
 
 	var original_scene_id: String = str(designer._stage_data["sceneId"])
 	var original_cast: Array = designer._stage_data["cast"].duplicate(true)
