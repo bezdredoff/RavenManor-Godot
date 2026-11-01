@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "candidate_preview_not_art_approved",
   "targetCanvas": "1080x1920",
-  "variantCount": 13,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending.",
+  "variantCount": 14,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -225,6 +225,23 @@
       ],
       "status": "candidate",
       "sourceType": "ChatGPT standalone image 2026-11-01; has travel suitcase but packed boxes not clearly depicted"
+    },
+    {
+      "id": "BG-ROAD:dusk:mist",
+      "backgroundId": "BG-ROAD",
+      "lighting": "dusk",
+      "roomState": "mist",
+      "path": "res://assets/raven/vn_backgrounds/road/dusk_mist.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "0974ce910537c338a52ffa33ecc072238f734e71d7073ac3ed892b2cc972ada1",
+      "sourceImage": "autumn_twilight_approach_to_raven_manor.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT independent portrait image 2026-11-01, Lanczos-resized to 1080x1920; user approved visible style/format"
     }
   ]
 }
