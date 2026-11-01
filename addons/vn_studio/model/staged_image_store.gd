@@ -20,7 +20,7 @@ func open_project(root_path: String) -> Dictionary:
 	project_root = root_path.simplify_path()
 	if not project_root.is_absolute_path() or not DirAccess.dir_exists_absolute(project_root):
 		return _fail("Недопустимый корень проекта.")
-	var fingerprint: String = project_root.to_utf8_buffer().sha256_text()
+	var fingerprint: String = project_root.sha256_text()
 	folder = "%s/%s" % [STAGING_BASE, fingerprint]
 	var locks: Dictionary = _current_locks()
 	if locks.size() != CATALOGS.size():
@@ -98,7 +98,7 @@ func stage_file(source_path: String) -> Dictionary:
 		"webp": err = image.load_webp_from_buffer(bytes)
 	if err != OK or image.is_empty() or image.get_width() <= 0 or image.get_height() <= 0:
 		return {"ok": false, "error": "Изображение не декодируется как %s." % ext}
-	var sha: String = bytes.sha256_text()
+	var sha: String = _sha256_bytes(bytes)
 	for old in manifest["items"]:
 		if old["sha256"] == sha:
 			return {"ok": false, "duplicate": true, "existingId": old["id"],
@@ -212,7 +212,7 @@ func export_review_candidate() -> Dictionary:
 	payload["status"] = "review_only_not_approved"
 	payload["sourceStagingFormat"] = FORMAT
 	var json: String = JSON.stringify(payload, "\t", true) + "\n"
-	var candidate: String = "exports/review-" + json.to_utf8_buffer().sha256_text()
+	var candidate: String = "exports/review-" + json.sha256_text()
 	if not _safe(candidate, false) or not _ensure_dirs():
 		return {"ok": false, "error": "Export root небезопасен."}
 	var absolute: String = ProjectSettings.globalize_path(folder.path_join(candidate))
@@ -357,6 +357,15 @@ static func _magic_ok(bytes: PackedByteArray, extension: String) -> bool:
 	return bytes.size() >= 12 and bytes.slice(0, 4) == "RIFF".to_ascii_buffer() and bytes.slice(8, 12) == "WEBP".to_ascii_buffer()
 
 
+static func _sha256_bytes(bytes: PackedByteArray) -> String:
+	var hashing := HashingContext.new()
+	if hashing.start(HashingContext.HASH_SHA256) != OK:
+		return ""
+	if hashing.update(bytes) != OK:
+		return ""
+	return hashing.finish().hex_encode()
+
+
 static func _orientation(width: int, height: int) -> String:
 	return "portrait" if height > width else "landscape" if width > height else "square"
 
@@ -406,7 +415,7 @@ func _write_new(rel: String, bytes: PackedByteArray) -> Dictionary:
 	file.store_buffer(bytes)
 	file.flush()
 	file.close()
-	if FileAccess.get_sha256(tmp) != bytes.sha256_text() or FileAccess.file_exists(dst) or DirAccess.rename_absolute(tmp, dst) != OK:
+	if FileAccess.get_sha256(tmp) != _sha256_bytes(bytes) or FileAccess.file_exists(dst) or DirAccess.rename_absolute(tmp, dst) != OK:
 		DirAccess.remove_absolute(tmp)
 		return {"ok": false, "error": "SHA/temp rename failed."}
 	return {"ok": true}
@@ -427,7 +436,7 @@ func _save_manifest() -> Dictionary:
 	f.store_buffer(payload)
 	f.flush()
 	f.close()
-	if FileAccess.get_sha256(tmp) != payload.sha256_text():
+	if FileAccess.get_sha256(tmp) != _sha256_bytes(payload):
 		return {"ok": false, "error": "Manifest SHA mismatch; temp оставлен для recovery."}
 	var had_old: bool = FileAccess.file_exists(dst)
 	if had_old and DirAccess.rename_absolute(dst, bak) != OK:
