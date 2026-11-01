@@ -5,10 +5,10 @@
   "entries": [
     {
       "id": "VNS5-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "Codex",
       "updated": "2026-11-01",
-      "evidence": "Corrected main-based branch code/vns5-02-asset-registry-main from b83c594 after PR #95 expanded the live catalog to 26 candidates. Adapter derives count from variantCount and validates 26 entries/4 character metadata records. Full CI/manual UI QA pending; no canonical source, draft or runtime mutation. Earlier PR #94 merged only into the closed VNS5-01 feature branch and did not reach main."
+      "evidence": "PR #96 https://github.com/bezdredoff/RavenManor-Godot/pull/96 targets main b83c594 after PR #95 expanded the live catalog to 26 candidates. Adapter derives count from variantCount and validates 26 entries/4 character metadata records. Full Windows Godot 4.7.2 checks passed; CI/manual UI QA pending. Earlier PR #94 merged only into the closed VNS5-01 feature branch and did not reach main."
     },
     {
       "id": "VNS5-01",
