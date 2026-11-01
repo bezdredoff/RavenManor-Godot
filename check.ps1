@@ -87,7 +87,7 @@ Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $pro
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
 
 Invoke-GodotCheck 'VN background catalog / gallery' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_background_gallery_smoke.gd', '--quit-after', '120') 'Raven VN background registry and 9 textures PASS'
-Invoke-GodotCheck 'VN Studio responsive layout' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_layout_smoke.gd', '--quit-after', '120') 'Raven VN Studio responsive layout smoke passed'
+Invoke-GodotCheck 'VN Studio responsive layout' @('--headless', '--editor', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_layout_smoke.gd', '--quit-after', '120') 'Raven VN Studio responsive layout smoke passed'
 Invoke-GodotCheck 'VN Studio background-state preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_backgrounds_smoke.gd', '--quit-after', '120') 'Raven VN Studio background-state preview smoke passed'
 Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
 Invoke-GodotCheck 'Hall VN runtime UI smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_ui_smoke.gd', '--quit-after', '240') 'Raven Manor Hall VN UI runtime smoke passed'
