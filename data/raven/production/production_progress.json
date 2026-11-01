@@ -4,11 +4,18 @@
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
-      "id": "VNS5-03",
-      "status": "PR_review",
+      "id": "VNS5-04A",
+      "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "Draft implementation PR #99 https://github.com/bezdredoff/RavenManor-Godot/pull/99 targets main 8313a109 after merged PR #97 (62 accepted character image records). Native staged PNG/JPEG/WebP import, metadata drafts, source catalog locks, duplicate/hash/path gates, local review export and focused Godot smoke committed. Initial CI run 41344733408 failed on PackedByteArray.sha256_text; later CI found EditorFileDialog not headless-safe. Both fixed in code commits 217ddbdd and b30c45d. Independent Godot/Raven/Web CI run 41345093030 passed on implementation head b30c45d; latest documentation-only head CI still required. No manual desktop 800x640/1024x640/1366x768 or Windows symlink/reparse QA performed; feature not accepted and PR not merged. Existing 26 background candidates untouched, owner-accepted 62 cast art retained."
+      "evidence": "Next scoped Godot Editor stage orientation/template pilot based on main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd. Offline source patch prepared; no Godot 4.7.2/local desktop QA or PR CI executed. Orientation/fit are preview-only (not persisted to stage v1); applying templates persists valid actor x/y in draft stagePatches, Undo is editor session-local. Props, z-order and focal anchor not implemented: require agreed stage-v2 schema in VNS5-04B. Incoming ZIP is handoff, not implementation PR, and must not be merged as accepted code."
+    },
+    {
+      "id": "VNS5-03",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-01",
+      "evidence": "PR #99 merged to main at ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd (2026-11-01). Final-head GitHub CI 41345448978 passed Godot/Raven/Web; import and metadata editing exist in native Raven Asset Library. Manual desktop 800x640/1024x640/1366x768, real-file and Windows reparse/symlink QA remain OPEN, so not accepted. All 26 background variants remain candidates; 62 accepted cast frames preserved. PR #98 was incoming patch transport and must be closed unmerged."
     },
     {
       "id": "VNS5-02",
