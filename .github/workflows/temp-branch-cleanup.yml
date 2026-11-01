@@ -1,0 +1,31 @@
+name: Temporary branch cleanup audit
+
+on:
+  push:
+    branches: [incoming]
+    paths:
+      - '.github/workflows/temp-branch-cleanup.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Inventory remote branch refs before cleanup
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          gh api --paginate "repos/${GITHUB_REPOSITORY}/branches?per_page=100" | jq -s 'add | map({name, sha: .commit.sha, protected}) | sort_by(.name)' > "$RUNNER_TEMP/raven-branches-before-cleanup.json"
+          jq -e 'any(.[]; .name == "main") and any(.[]; .name == "incoming")' "$RUNNER_TEMP/raven-branches-before-cleanup.json" > /dev/null
+          echo "Branch count: $(jq length "$RUNNER_TEMP/raven-branches-before-cleanup.json")"
+          jq -r '.[] | [.name, .sha, (.protected | tostring)] | @tsv' "$RUNNER_TEMP/raven-branches-before-cleanup.json"
+      - name: Archive inventory for recoverability
+        uses: actions/upload-artifact@v4
+        with:
+          name: raven-branch-heads-before-cleanup
+          path: ${{ runner.temp }}/raven-branches-before-cleanup.json
+          retention-days: 90
