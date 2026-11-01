@@ -8,7 +8,7 @@
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "Implementation PR #99 (https://github.com/bezdredoff/RavenManor-Godot/pull/99) is OPEN/DRAFT from current main 8313a109 after merged PR #97 (62 owner-accepted character frames). GitHub file SHAs matched all 9 rebased source files. Initial PR-head Godot CI run 41344733408 failed at script parse: PackedByteArray.sha256_text() unsupported. Corrected using HashingContext in commit 217ddbdd; new head CI not yet verified. No Godot 4.7.2 local run, manual 800x640/1024x640/1366x768 Editor UI QA, Windows symlink/reparse QA or human feature acceptance yet. No new background art accepted; no runtime/res:// promotion."
+      "evidence": "Draft implementation PR #99 https://github.com/bezdredoff/RavenManor-Godot/pull/99 targets main 8313a109 after merged PR #97 (62 accepted character image records). Native staged PNG/JPEG/WebP import, metadata drafts, source catalog locks, duplicate/hash/path gates, local review export and focused Godot smoke committed. Initial CI run 41344733408 failed on PackedByteArray.sha256_text; later CI found EditorFileDialog not headless-safe. Both fixed in code commits 217ddbdd and b30c45d. Independent Godot/Raven/Web CI run 41345093030 passed on implementation head b30c45d; latest documentation-only head CI still required. No manual desktop 800x640/1024x640/1366x768 or Windows symlink/reparse QA performed; feature not accepted and PR not merged. Existing 26 background candidates untouched, owner-accepted 62 cast art retained."
     },
     {
       "id": "VNS5-02",
