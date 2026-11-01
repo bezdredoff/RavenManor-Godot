@@ -45,7 +45,7 @@ func _initialize() -> void:
 		assert(texture.get_width() == 1080 and texture.get_height() == 1920, str(variant["id"]))
 	assert(VNBackgrounds.entry_for_scene(beat_id).get("id") == "BG-HALL:day:habitable")
 	assert(VNBackgrounds.entry_for_scene("RM-BEAT-05-02").get("id") == "BG-LIBRARY:night:storm_leak")
-	assert(VNBackgrounds.entry_for_scene("RM-BEAT-00-01").is_empty())
+	assert(str(VNBackgrounds.entry_for_scene("RM-BEAT-00-01").get("id", "")) == "BG-APARTMENT:day:packed_boxes")
 
 	var state := Snapshot.fresh()
 	var graph := Graph.new()

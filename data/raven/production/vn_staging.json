@@ -7,17 +7,22 @@
     {
       "id": "BG-APARTMENT",
       "mapRoomId": null,
-      "description": "Evelyn rented apartment; prologue insert",
+      "description": "Evelyn's rented apartment/prologue reading room; day, evening rain, night rain and departure study states. Four candidate art plates; no gameplay/move changes.",
       "landmarks": [
-        "room",
-        "table",
-        "inheritance envelope"
+        "arched city window",
+        "sofa and round coffee table",
+        "desk and lamp",
+        "travel luggage / inheritance envelope"
       ],
       "lightingVariants": [
-        "day"
+        "day",
+        "evening",
+        "night"
       ],
       "stateLayers": [
-        "packed_boxes"
+        "packed_boxes",
+        "inhabited",
+        "rainy"
       ],
       "scope": "prologue_only"
     },

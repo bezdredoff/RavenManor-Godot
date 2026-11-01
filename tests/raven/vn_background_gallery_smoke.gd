@@ -31,6 +31,14 @@ func _initialize() -> void:
 		assert(ids.has(required), "Baseline asset missing: " + required)
 	assert(str(Resolver.entry_for_scene("RM-BEAT-02-01").get("id", "")) == "BG-HALL:day:habitable")
 	assert(str(Resolver.entry_for_scene("RM-BEAT-05-02").get("id", "")) == "BG-LIBRARY:night:storm_leak")
-	assert(Resolver.entry_for_scene("RM-BEAT-00-01").is_empty())
+	assert(str(Resolver.entry_for_scene("RM-BEAT-00-01").get("id", "")) == "BG-APARTMENT:day:packed_boxes")
+	for required in [
+		"BG-APARTMENT:day:inhabited",
+		"BG-APARTMENT:evening:rainy",
+		"BG-APARTMENT:night:rainy",
+		"BG-APARTMENT:day:packed_boxes"
+	]:
+		assert(ids.has(required), "Apartment asset missing: " + required)
+	assert(entries.size() >= 13, "Four additional Apartment plates must be integrated")
 	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral)" % entries.size())
 	quit()

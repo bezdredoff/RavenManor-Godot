@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "candidate_preview_not_art_approved",
   "targetCanvas": "1080x1920",
-  "variantCount": 9,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement.",
+  "variantCount": 13,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -157,6 +157,74 @@
       ],
       "status": "candidate",
       "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-APARTMENT:day:inhabited",
+      "backgroundId": "BG-APARTMENT",
+      "lighting": "day",
+      "roomState": "inhabited",
+      "path": "res://assets/raven/vn_backgrounds/apartment/day_inhabited.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "bfac52b190c756e2b1177f1ec8790ef0b9902504d1cfa8aed6201000e15b3de6",
+      "sourceImage": "raven_manor_daylight_study.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+    },
+    {
+      "id": "BG-APARTMENT:evening:rainy",
+      "backgroundId": "BG-APARTMENT",
+      "lighting": "evening",
+      "roomState": "rainy",
+      "path": "res://assets/raven/vn_backgrounds/apartment/evening_rainy.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "732227245de9ffd0cce75958d8051f2a7a716a6c3eb378f14273d48a15cd45c1",
+      "sourceImage": "rainy_evening_apartment_study.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+    },
+    {
+      "id": "BG-APARTMENT:night:rainy",
+      "backgroundId": "BG-APARTMENT",
+      "lighting": "night",
+      "roomState": "rainy",
+      "path": "res://assets/raven/vn_backgrounds/apartment/night_rainy.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "626b2efce54056df0c10ee857e48a701731f9c61da8bd6c5a8ed6d8cd714432c",
+      "sourceImage": "rainy_midnight_study_at_raven_manor.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+    },
+    {
+      "id": "BG-APARTMENT:day:packed_boxes",
+      "backgroundId": "BG-APARTMENT",
+      "lighting": "day",
+      "roomState": "packed_boxes",
+      "path": "res://assets/raven/vn_backgrounds/apartment/day_packed_boxes.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "d8b67bc125578a44905bc3b482451937d2ceb8e6c13c3777a025fd0b96acf6d9",
+      "sourceImage": "raven_manor_morning_departure.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT standalone image 2026-11-01; has travel suitcase but packed boxes not clearly depicted"
     }
   ]
 }
