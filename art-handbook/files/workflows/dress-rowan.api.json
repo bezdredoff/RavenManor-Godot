@@ -1,0 +1,49 @@
+{
+  "1": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "Rowan_clothes_v2.png"
+    },
+    "is_changed": [
+      "35f7baea4e6eeb437b5dd06f64c131cc3b35f1293cefd24ee05608a27dc1f687"
+    ]
+  },
+  "2": {
+    "class_type": "BiRefNetRMBG",
+    "inputs": {
+      "image": [
+        "1",
+        0
+      ],
+      "model": "BiRefNet-general",
+      "sensitivity": 1.0,
+      "mask_blur": 0,
+      "mask_offset": 0,
+      "invert_output": false,
+      "refine_foreground": false,
+      "background": "Alpha",
+      "background_color": "#222222"
+    }
+  },
+  "3": {
+    "class_type": "RavenCleanNativeAlpha",
+    "inputs": {
+      "image": [
+        "2",
+        0
+      ],
+      "black_point": 0.06,
+      "white_point": 0.94
+    }
+  },
+  "4": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "3",
+        0
+      ],
+      "filename_prefix": "RavenCast/ClothesV2_Clean/Rowan_segmented"
+    }
+  }
+}

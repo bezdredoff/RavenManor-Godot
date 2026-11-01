@@ -1,0 +1,225 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "QwenImage21Cache",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "device": "gpu",
+      "dtype": "int8"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/fb3114676e16_RavenLucas_approved_neutral.png"
+    },
+    "is_changed": [
+      "fb3114676e16ebb070f31a148be0d7402abffcdd80bff66c314247dc7d8e3325"
+    ]
+  },
+  "11": {
+    "class_type": "JoinImageWithAlpha",
+    "inputs": {
+      "image": [
+        "10",
+        0
+      ],
+      "alpha": [
+        "10",
+        1
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "image": [
+        "11",
+        0
+      ],
+      "width": 1088,
+      "height": 1408,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "13": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/75a1157156b3_RavenLucas_mask_cost_sheet.png"
+    },
+    "is_changed": [
+      "75a1157156b3a8e5914edd2296e6812a52026c718a3ac44f06b48b629a6e2d48"
+    ]
+  },
+  "14": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "13",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "20": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "Keep the reference framing, head position, neck, collar, tie knot and central torso at EXACTLY the original image coordinates. No reframing, no rescaling, no second collar or duplicate body. Only the arms/hands and requested prop move. Edit this existing character illustration locally. Change only arms, hands and immediate prop contact to this action: Show one modest portrait-oriented cream restoration cost sheet at waist level, supported by the left hand. His right index finger points to one row on the sheet. A faint simple table of aligned expense columns, no readable words or amounts, no glowing symbols. Thin paper, correct perspective and finger contact. Keep his EXACT existing elegant slim proportions, charcoal matte wool two-button suit, ivory shirt and muted burgundy tie. Preserve the original face, rectangular eyeglasses, hair, colour palette, soft anime illustration treatment and original light. Exactly two arms and two hands, plausible anatomy, correct finger-object overlap. Preserve original framing and transparent background.",
+      "negative_prompt": "extra hands, extra arms, extra fingers, fused fingers, duplicate object, floating paper, fanned pages, giant folder, changed glasses, changed face, vampire fangs, red glowing eyes, supernatural effects, glossy suit, photorealism, watermark, readable text",
+      "resolution": 0,
+      "images.image_1": [
+        "12",
+        0
+      ]
+    }
+  },
+  "21": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "12",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "21",
+        0
+      ],
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "20",
+        1
+      ],
+      "latent_image": [
+        "22",
+        0
+      ],
+      "seed": 23,
+      "steps": 25,
+      "cfg": 3.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "RavenCleanNativeAlpha",
+    "inputs": {
+      "image": [
+        "24",
+        0
+      ],
+      "black_point": 0.06,
+      "white_point": 0.94
+    }
+  },
+  "30": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "11",
+        0
+      ],
+      "source": [
+        "25",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-lucas-cost_sheet/31"
+    }
+  },
+  "32": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "25",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-lucas-cost_sheet/32"
+    }
+  }
+}

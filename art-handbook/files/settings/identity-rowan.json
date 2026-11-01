@@ -1,0 +1,292 @@
+{
+  "parameters": {
+    "generation_mode": "qi2",
+    "steps": 25,
+    "cfg": 3,
+    "seed": 31,
+    "sampler": "euler",
+    "scheduler": "simple",
+    "target_size": 1024,
+    "turbo_enabled": false,
+    "qi2_prompt_enhancement": false
+  },
+  "nodeSettings": {
+    "CharacterCreatorV2.widget_data": {
+      "preview_valid": false,
+      "sprite_preview_index": 0,
+      "sprite_preview_count": 0,
+      "character": "Rowan_CastDraft_20261031",
+      "prompt_modes": {
+        "illustrious": {
+          "style": "none",
+          "aesthetics": "masterpiece, best quality",
+          "negative_prompt": "bad quality, worst quality"
+        },
+        "anima": {
+          "style": "none",
+          "aesthetics": "masterpiece, best quality, score_7, anime",
+          "negative_prompt": "bad quality, worst quality, low quality, score_1, score_2, score_3, blurry, jpeg artifacts, sepia"
+        },
+        "qi2": {
+          "style": "watercolor_anime_illustration",
+          "aesthetics": "bright diffuse daylight, soft even studio lighting,\nflat readable colors, restrained cel shading,\nmatte skin, minimal specular highlights,\nlow contrast, clean character-design presentation",
+          "negative_prompt": "extra shadows, harsh shadows, dramatic lighting,\nstrong rim light, bloom, glow, glossy skin,\noily skin, wet skin, specular highlights,\nstrong gradients, deep midtones, high contrast,\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts",
+          "custom_style": "",
+          "style_prompt": "Style: Watercolor Anime Illustration.\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.",
+          "style_label": "Watercolor Anime Illustration",
+          "style_description": "A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…",
+          "style_reference": "traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.",
+          "secondary_style": {
+            "style": "none"
+          }
+        }
+      },
+      "prompt_defaults_version": 4,
+      "character_info": {
+        "name": "Rowan_CastDraft_20261031",
+        "background_color": "White",
+        "aesthetics": "bright diffuse daylight, soft even studio lighting,\nflat readable colors, restrained cel shading,\nmatte skin, minimal specular highlights,\nlow contrast, clean character-design presentation",
+        "nsfw": false,
+        "sex": "male",
+        "age": 30,
+        "race": "human",
+        "eyes": "hazel eyes",
+        "hair": "short slightly tousled auburn-brown hair",
+        "face": "friendly adult male face, defined but fine features, subtle short stubble",
+        "body": "lean wiry athletic man, elongated balanced anime proportions, moderately broad shoulders, slim waist, natural working strength, graceful relaxed posture, well-proportioned hands",
+        "skin_color": "pale warm skin",
+        "additional_details": "friendly grounded expression, ordinary human appearance, no wolf ears, fur or claws",
+        "seed": 0,
+        "lora_prompt": "",
+        "negative_prompt": "extra shadows, harsh shadows, dramatic lighting,\nstrong rim light, bloom, glow, glossy skin,\noily skin, wet skin, specular highlights,\nstrong gradients, deep midtones, high contrast,\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts",
+        "framing": "Full_body",
+        "style": "watercolor_anime_illustration",
+        "custom_style": "",
+        "breast_size": "",
+        "style_prompt": "Style: Watercolor Anime Illustration.\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.",
+        "style_label": "Watercolor Anime Illustration",
+        "style_description": "A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…",
+        "style_reference": "traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.",
+        "secondary_style": {
+          "style": "none"
+        }
+      },
+      "gen_settings": {
+        "generation_mode": "qi2",
+        "target_size": 1024,
+        "background_model_kind": "qi2",
+        "previous_background_color": "Green",
+        "ckpt_name": "3d\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors",
+        "sampler": "euler",
+        "scheduler": "simple",
+        "steps": 25,
+        "cfg": 3,
+        "seed": 31,
+        "seed_mode": "fixed",
+        "diffusion_model_name": "qwen_image_2.1_int8_convrot.safetensors",
+        "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+        "vae_name": "qwen_image_2.1_vae_bf16.safetensors",
+        "mode_settings": {
+          "illustrious": {
+            "target_size": 1024,
+            "ckpt_name": "3d\\hunyuan3d-dit-v2-mv-turbo_fp16.safetensors",
+            "sampler": "euler",
+            "scheduler": "normal",
+            "steps": 20,
+            "cfg": 8,
+            "seed": 0,
+            "seed_mode": "fixed",
+            "turbo_previous_settings": null,
+            "dmd_lora_name": "",
+            "dmd_lora_strength": 1,
+            "age_lora_name": "",
+            "lora_stack": [
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              }
+            ]
+          },
+          "anima": {
+            "diffusion_model_name": "",
+            "clip_name": "qwen_3_06b_base.safetensors",
+            "vae_name": "qwen_image_vae.safetensors",
+            "target_size": 1024,
+            "sampler": "er_sde",
+            "scheduler": "simple",
+            "steps": 30,
+            "cfg": 4,
+            "seed": 0,
+            "seed_mode": "fixed",
+            "turbo_enabled": false,
+            "dmd_lora_name": "anima\\anima-turbo-lora-v0.1.safetensors",
+            "dmd_lora_strength": 1,
+            "turbo_previous_settings": null,
+            "lora_stack": [
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              }
+            ]
+          },
+          "qi2": {
+            "diffusion_model_name": "qwen_image_2.1_int8_convrot.safetensors",
+            "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+            "vae_name": "qwen_image_2.1_vae_bf16.safetensors",
+            "target_size": 1024,
+            "clip_type": "qwen_image",
+            "sampler": "euler",
+            "scheduler": "simple",
+            "steps": 25,
+            "cfg": 3,
+            "seed": 31,
+            "seed_mode": "fixed",
+            "turbo_enabled": false,
+            "dmd_lora_name": "",
+            "dmd_lora_strength": 1,
+            "turbo_previous_settings": {
+              "steps": 25,
+              "cfg": 3
+            },
+            "qi2_overhaul_strength": 0.5,
+            "qi2_prompt_enhancement": false,
+            "qi2_cache": {
+              "device": "gpu",
+              "dtype": "int8"
+            },
+            "lora_stack": [
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              },
+              {
+                "name": "",
+                "strength": 1
+              }
+            ]
+          }
+        },
+        "anima_defaults_applied": false,
+        "generation_defaults_version": 6,
+        "dmd_lora_name": "",
+        "dmd_lora_strength": 1,
+        "age_lora_name": "",
+        "lora_stack": [
+          {
+            "name": "",
+            "strength": 1
+          },
+          {
+            "name": "",
+            "strength": 1
+          },
+          {
+            "name": "",
+            "strength": 1
+          },
+          {
+            "name": "",
+            "strength": 1
+          },
+          {
+            "name": "",
+            "strength": 1
+          }
+        ],
+        "turbo_previous_settings": {
+          "steps": 25,
+          "cfg": 3
+        },
+        "clip_type": "qwen_image",
+        "turbo_enabled": false,
+        "qi2_cache": {
+          "device": "gpu",
+          "dtype": "int8"
+        },
+        "qi2_overhaul_strength": 0.5,
+        "qi2_prompt_enhancement": false
+      }
+    },
+    "character_info": {
+      "name": "Rowan_CastDraft_20261031",
+      "background_color": "White",
+      "aesthetics": "bright diffuse daylight, soft even studio lighting,\nflat readable colors, restrained cel shading,\nmatte skin, minimal specular highlights,\nlow contrast, clean character-design presentation",
+      "nsfw": false,
+      "sex": "male",
+      "age": 30,
+      "race": "human",
+      "eyes": "hazel eyes",
+      "hair": "short slightly tousled auburn-brown hair",
+      "face": "friendly adult male face, defined but fine features, subtle short stubble",
+      "body": "lean wiry athletic man, elongated balanced anime proportions, moderately broad shoulders, slim waist, natural working strength, graceful relaxed posture, well-proportioned hands",
+      "skin_color": "pale warm skin",
+      "additional_details": "friendly grounded expression, ordinary human appearance, no wolf ears, fur or claws",
+      "seed": 0,
+      "lora_prompt": "",
+      "negative_prompt": "extra shadows, harsh shadows, dramatic lighting,\nstrong rim light, bloom, glow, glossy skin,\noily skin, wet skin, specular highlights,\nstrong gradients, deep midtones, high contrast,\nphotorealistic skin rendering, cinematic lighting, bad quality, worst quality, low quality, blurry, jpeg artifacts",
+      "framing": "Full_body",
+      "style": "watercolor_anime_illustration",
+      "custom_style": "",
+      "breast_size": "",
+      "style_prompt": "Style: Watercolor Anime Illustration.\nA soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal layering achieved through patient, unhurried wash-building rather than opaque coverage, a hushed, dreamlike stillness carried through soft directional light, and a poetic, wistful character-illustration finish that feels equally hand-painted and anime-refined. Influenced by: traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method. Apply this visual treatment only; preserve all specified character details, proportions, eye colors, clothing, accessories and the separately supplied composition.",
+      "style_label": "Watercolor Anime Illustration",
+      "style_description": "A soft, luminous illustration style built on delicate translucent washes blending seamlessly with clean anime-adjacent linework, gentle bleeding and diffusion at the edges lending each plane a tender, organic softness, restrained tonal…",
+      "style_reference": "traditional watercolor-and-wash technique, contemporary anime-illustration tradition, gentle wash-blending practice, semi-realistic character-art method.",
+      "secondary_style": {
+        "style": "none"
+      }
+    }
+  },
+  "requires": [
+    "Qwen Image 2.1 base / Qwen3VL / QI2 VAE",
+    "CharacterCreatorV2; VNCCS library writable in an isolated namespace"
+  ],
+  "notes": [
+    "Служебная базовая фигура без финального костюма; не публикуется как игровой спрайт.",
+    "Сначала создайте отдельное пространство имён персонажа, затем костюм. Не перезаписывайте принятую библиотеку."
+  ]
+}

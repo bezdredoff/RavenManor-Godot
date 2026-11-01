@@ -13,6 +13,7 @@ logs/
 coverage/
 test-results/
 build/
+art-handbook/downloads/
 dist/
 exports/
 *.pck

@@ -1,0 +1,22 @@
+{
+  "parameters": {
+    "steps": 12,
+    "sampler": "euler",
+    "guider": "BasicGuider",
+    "seed": "per job",
+    "size": [
+      1024,
+      1024
+    ],
+    "matting": "BiRefNet_toonout"
+  },
+  "nodeSettings": {},
+  "requires": [
+    "Missing local input: RavenManorWallKit/guide.png",
+    "Missing local input: RavenManorWallKit/hall_style_reference.png"
+  ],
+  "notes": [
+    "Не приняты и не включены в игру как production-арт.",
+    "Все 52 prompt/seed взяты из manifest, результаты сверены с review SHA; не выбирать случайный последний _0000N_.png."
+  ]
+}

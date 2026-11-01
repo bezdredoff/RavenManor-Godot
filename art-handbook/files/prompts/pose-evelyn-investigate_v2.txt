@@ -1,0 +1,11 @@
+## Pose edit prefix [pinned_source_code]
+Replace the pose of <image 2> with the pose of <image 1>. Keep the character of <image 2>. 
+
+## Pose request [verbatim]
+[
+  "728",
+  1
+]
+
+## Effective negative [pinned_source_code]
+

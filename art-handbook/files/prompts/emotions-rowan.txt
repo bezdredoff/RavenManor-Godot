@@ -1,0 +1,20 @@
+## QI2 face template [verbatim_template]
+Upscale face image.
+Make character's face emotion {emotion}
+Change only face. Keep original neck colour, clothes and hairs
+keep character's clothes
+
+## rm-concerned [authored_runner_literal]
+The character has a concerned attentive expression, gently furrowed brows, slightly tense lips. Change only facial expression; preserve facial identity and original skin colour.
+
+## rm-focused [authored_runner_literal]
+The character has a focused concentrated expression, slightly narrowed attentive eyes, closed mouth. Change only facial expression; preserve facial identity and original skin colour.
+
+## rm-friendly [authored_runner_literal]
+The character has a friendly natural smile, warm attentive eyes. Change only facial expression; preserve facial identity and original skin colour.
+
+## rm-nostalgic [authored_runner_literal]
+The character has a wistful nostalgic expression, gentle faint smile, thoughtful softened gaze. Change only facial expression; preserve facial identity and original skin colour.
+
+## rm-wry [authored_runner_literal]
+The character has a wry asymmetrical half-smile, subtle raised eyebrow. Change only facial expression; preserve facial identity and original skin colour.

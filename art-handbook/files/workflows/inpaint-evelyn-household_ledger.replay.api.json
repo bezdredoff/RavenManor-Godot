@@ -1,0 +1,225 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "QwenImage21Cache",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "device": "gpu",
+      "dtype": "int8"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/fab8eaf514e5_RavenProp_Evelyn_wide_source.png"
+    },
+    "is_changed": [
+      "fab8eaf514e5348668ed59e9a6aa435670a1d7bc88af402d23bec92aabc75d4f"
+    ]
+  },
+  "11": {
+    "class_type": "JoinImageWithAlpha",
+    "inputs": {
+      "image": [
+        "10",
+        0
+      ],
+      "alpha": [
+        "10",
+        1
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "image": [
+        "11",
+        0
+      ],
+      "width": 1024,
+      "height": 1024,
+      "x": 608,
+      "y": 800
+    }
+  },
+  "13": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenHandbook/bdf6c112a74d_RavenProp_wide_mask.png"
+    },
+    "is_changed": [
+      "bdf6c112a74d614969e0c7b77d8d3469c676421b1982d1ef3b25d02a314f790e"
+    ]
+  },
+  "14": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "13",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "20": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "Edit only the hands and add ONE ordinary slim clothbound household ledger held open naturally at waist height. The open book is a shallow V, about 110 degrees, with TWO clean facing cream rectangular pages of equal size in one coherent perspective. Both pages meet continuously in a narrow central gutter along a single straight spine. Each page has only a broad gentle bend into the gutter. The page block is THIN, only a few millimetres thick, compressed and aligned flush with the cover, not a fan. The two top edges and two bottom edges follow the same perspective and page dimensions. Simple matte tan-brown cloth cover. Very faint ruled lines, no readable writing. Both hands support the lower outer cover corners naturally. Preserve the existing arms, cream linen blouse, burgundy skirt, original anime illustration style and lighting. Transparent background.",
+      "negative_prompt": "fanned pages, floating pages, loose sheets, separate upright sheet, accordion pages, wavy paper, torn paper, thick page stack, wooden pages, distorted book, multiple spines, impossible perspective, mismatched page sizes, duplicated book, extra hands, extra fingers, fused fingers, transparent clothes, photorealism, readable text, watermark",
+      "resolution": 0,
+      "images.image_1": [
+        "12",
+        0
+      ]
+    }
+  },
+  "21": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "12",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "21",
+        0
+      ],
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "20",
+        1
+      ],
+      "latent_image": [
+        "22",
+        0
+      ],
+      "seed": 41,
+      "steps": 25,
+      "cfg": 3.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "RavenCleanNativeAlpha",
+    "inputs": {
+      "image": [
+        "24",
+        0
+      ],
+      "black_point": 0.06,
+      "white_point": 0.94
+    }
+  },
+  "30": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "11",
+        0
+      ],
+      "source": [
+        "25",
+        0
+      ],
+      "x": 608,
+      "y": 800,
+      "resize_source": false,
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-evelyn-household_ledger/31"
+    }
+  },
+  "32": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "25",
+        0
+      ],
+      "filename_prefix": "HandbookReplay/inpaint-evelyn-household_ledger/32"
+    }
+  }
+}

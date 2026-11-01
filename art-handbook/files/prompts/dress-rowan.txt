@@ -1,0 +1,10 @@
+## Clothes prompt BEFORE optional rewriter [deterministic_from_pinned_source]
+Dress the character:
+
+Transparent background with alpha channel.
+
+## Clothes effective negative [pinned_source_code]
+bad quality, worst quality, (naked, nude, nipple, penis, vagina:2.0)
+
+## Rewriter output [unavailable]
+null

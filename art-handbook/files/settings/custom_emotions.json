@@ -1,0 +1,92 @@
+[
+  {
+    "name": "rm-amused",
+    "description": "subtly amused expression, small restrained smile",
+    "natural_prompt": "The character has a subtly amused expression, small restrained smile. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-concerned",
+    "description": "concerned attentive expression, gently furrowed brows, slightly tense lips",
+    "natural_prompt": "The character has a concerned attentive expression, gently furrowed brows, slightly tense lips. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-curious",
+    "description": "curious attentive expression, slightly raised brows, interested eyes",
+    "natural_prompt": "The character has a curious attentive expression, slightly raised brows, interested eyes. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-determined",
+    "description": "determined expression, focused eyes, firm closed mouth",
+    "natural_prompt": "The character has a determined expression, focused eyes, firm closed mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-dry-amused",
+    "description": "dry amused expression, subtle knowing half-smile, one eyebrow slightly raised",
+    "natural_prompt": "The character has a dry amused expression, subtle knowing half-smile, one eyebrow slightly raised. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-focused",
+    "description": "focused concentrated expression, slightly narrowed attentive eyes, closed mouth",
+    "natural_prompt": "The character has a focused concentrated expression, slightly narrowed attentive eyes, closed mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-friendly",
+    "description": "friendly natural smile, warm attentive eyes",
+    "natural_prompt": "The character has a friendly natural smile, warm attentive eyes. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-nostalgic",
+    "description": "wistful nostalgic expression, gentle faint smile, thoughtful softened gaze",
+    "natural_prompt": "The character has a wistful nostalgic expression, gentle faint smile, thoughtful softened gaze. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-polite-smile",
+    "description": "small courteous polite smile, reserved eyes",
+    "natural_prompt": "The character has a small courteous polite smile, reserved eyes. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-professional",
+    "description": "composed professional expression, attentive steady eyes, relaxed closed mouth",
+    "natural_prompt": "The character has a composed professional expression, attentive steady eyes, relaxed closed mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-regretful",
+    "description": "regretful expression, lowered gaze, inner brows raised, faint downturned mouth",
+    "natural_prompt": "The character has a regretful expression, lowered gaze, inner brows raised, faint downturned mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-reserved-worry",
+    "description": "restrained worried expression, slight brow tension, pressed lips",
+    "natural_prompt": "The character has a restrained worried expression, slight brow tension, pressed lips. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-serious",
+    "description": "serious expression, steady eyes, firm relaxed mouth",
+    "natural_prompt": "The character has a serious expression, steady eyes, firm relaxed mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-skeptical",
+    "description": "skeptical expression, one eyebrow subtly raised, slightly narrowed eyes, closed mouth",
+    "natural_prompt": "The character has a skeptical expression, one eyebrow subtly raised, slightly narrowed eyes, closed mouth. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-stern",
+    "description": "stern serious expression, slightly lowered brows, firm lips",
+    "natural_prompt": "The character has a stern serious expression, slightly lowered brows, firm lips. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-warm",
+    "description": "warm gentle smile and softened eyes",
+    "natural_prompt": "The character has a warm gentle smile and softened eyes. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-worried",
+    "description": "worried expression, inner eyebrows gently raised and drawn together, tense lips",
+    "natural_prompt": "The character has a worried expression, inner eyebrows gently raised and drawn together, tense lips. Change only facial expression; preserve facial identity and original skin colour."
+  },
+  {
+    "name": "rm-wry",
+    "description": "wry asymmetrical half-smile, subtle raised eyebrow",
+    "natural_prompt": "The character has a wry asymmetrical half-smile, subtle raised eyebrow. Change only facial expression; preserve facial identity and original skin colour."
+  }
+]

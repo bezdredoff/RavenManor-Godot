@@ -1,0 +1,92 @@
+{
+  "models": [
+    {
+      "name": "Qwen Image 2.1 INT8 ConvRot",
+      "type": "unet",
+      "hf_repo": "Comfy-Org/Qwen-Image-2.1",
+      "hf_path": "diffusion_models/qwen_image_2.1_int8_convrot.safetensors",
+      "local_path": "models/diffusion_models/qwen_image_2.1_int8_convrot.safetensors",
+      "version": "1.0",
+      "description": "Qwen Image 2.1 INT8 ConvRot diffusion model.",
+      "kind": "QI2"
+    },
+    {
+      "name": "Qwen Image 2.1 Turbo INT8 ConvRot",
+      "type": "unet",
+      "hf_repo": "Comfy-Org/Qwen-Image-2.1",
+      "hf_path": "diffusion_models/qwen_image_2.1_turbo_int8_convrot.safetensors",
+      "local_path": "models/diffusion_models/qwen_image_2.1_turbo_int8_convrot.safetensors",
+      "version": "1.0",
+      "description": "Qwen Image 2.1 Turbo INT8 ConvRot diffusion model. Uses standard sampling with 8 steps and CFG 1.",
+      "kind": "QI2"
+    }
+  ],
+  "clip": [
+    {
+      "name": "QI2 Qwen3-VL 8B Text Encoder",
+      "type": "TextEncoder",
+      "clip_type": "qwen_image",
+      "hf_repo": "Comfy-Org/Qwen-Image-2.1",
+      "hf_path": "text_encoders/qwen3vl_8b_int8_convrot.safetensors",
+      "local_path": "models/text_encoders/qwen3vl_8b_int8_convrot.safetensors",
+      "version": "1.0",
+      "description": "Qwen3-VL 8B text encoder.",
+      "kind": "QI2"
+    }
+  ],
+  "vae": [
+    {
+      "name": "QI2 VAE",
+      "type": "VAE",
+      "hf_repo": "Comfy-Org/Qwen-Image-2.1",
+      "hf_path": "vae/qwen_image_2.1_vae_bf16.safetensors",
+      "local_path": "models/vae/qwen_image_2.1_vae_bf16.safetensors",
+      "version": "1.0",
+      "description": "Qwen Image 2.1 VAE.",
+      "kind": "QI2"
+    }
+  ],
+  "lora": [
+    {
+      "name": "VNCCS Pose Studio QI2",
+      "type": "Helper",
+      "hf_repo": "MIUProject/VNCCS_v3.0",
+      "hf_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_PoseStudioV2.safetensors",
+      "local_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_PoseStudioV2.safetensors",
+      "version": "2.0",
+      "description": "Pose Studio LoRA for Qwen Image 2.1.",
+      "kind": "QI2"
+    },
+    {
+      "name": "VNCCS Overhaul QI2",
+      "type": "Helper",
+      "hf_repo": "MIUProject/VNCCS_v3.0",
+      "hf_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_AnimeOverhaulV2.1.safetensors",
+      "local_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_AnimeOverhaulV2.1.safetensors",
+      "version": "2.1",
+      "description": "Overhaul for Character Creator",
+      "kind": "QI2"
+    },
+    {
+      "name": "VNCCS Clothes Core QI2",
+      "hf_repo": "MIUProject/VNCCS_v3.0",
+      "hf_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_ClothesCoreV2.6.safetensors",
+      "local_path": "models/loras/QI2.1/VNCCS/VNCCS_QI2_ClothesCoreV2.6.safetensors",
+      "version": "2.6",
+      "description": "QI2 LoRA for clothing consistency.",
+      "type": "Helper",
+      "kind": "QI2"
+    },
+    {
+      "name": "Qwen Image 2.1 Viggle Turbo",
+      "type": "TurboLora",
+      "hf_repo": "Viggle/Qwen-Image-2.1-viggle-turbo",
+      "hf_path": "Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
+      "local_path": "models/loras/QI2/Viggle/Qwen-Image-2.1-viggle-turbo-v0.2.1-6step-lora-r128.safetensors",
+      "version": "0.2.1",
+      "description": "Six-step Viggle Turbo LoRA for Qwen Image 2.1; runtime adapter and sigma shift are provided by VNCCS.",
+      "kind": "QI2"
+    }
+  ],
+  "other": []
+}

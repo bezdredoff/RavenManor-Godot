@@ -1,0 +1,28 @@
+{
+  "parameters": {
+    "crop": {
+      "x": 32,
+      "y": 352,
+      "width": 1024,
+      "height": 1024
+    },
+    "seed": 41,
+    "steps": 25,
+    "cfg": 3.0,
+    "sampler_name": "euler",
+    "scheduler": "simple",
+    "denoise": 1.0
+  },
+  "nodeSettings": {},
+  "requires": [
+    "Qwen Image 2.1 / Qwen3VL / VAE; no additional LoRA",
+    "RavenCleanNativeAlpha; source RGBA and exact grayscale mask",
+    "Pixel restoration outside mask before final export"
+  ],
+  "notes": [
+    "Сохранённые API/UI берутся из принятого PNG, а не из более раннего кандидата.",
+    "После SaveImage восстановить пиксели вне маски скриптом restore_protected_pixels.py: это часть сработавшего флоу.",
+    "LoadImage MASK уже инвертирован; JoinImageWithAlpha сам инвертирует MASK. Дополнительный InvertMask ломает альфу.",
+    "Replay UI и Replay API используют одинаковые пути RavenHandbook/ и выходы HandbookReplay/. PNG/маски из inputs сначала скопировать в ComfyUI/input/RavenHandbook/."
+  ]
+}

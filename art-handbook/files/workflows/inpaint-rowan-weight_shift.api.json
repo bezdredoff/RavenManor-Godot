@@ -1,0 +1,225 @@
+{
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "qwen_image_2.1_int8_convrot.safetensors",
+      "weight_dtype": "default"
+    }
+  },
+  "2": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_8b_int8_convrot.safetensors",
+      "type": "qwen_image",
+      "device": "default"
+    }
+  },
+  "3": {
+    "class_type": "VAELoader",
+    "inputs": {
+      "vae_name": "qwen_image_2.1_vae_bf16.safetensors"
+    }
+  },
+  "4": {
+    "class_type": "QwenImage21Cache",
+    "inputs": {
+      "model": [
+        "1",
+        0
+      ],
+      "device": "gpu",
+      "dtype": "int8"
+    }
+  },
+  "10": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenRowan_approved_neutral.png"
+    },
+    "is_changed": [
+      "06e89dbef7f92f06fe8396da725cbb1d77e296e8b08fe74ef066c4f4ce528302"
+    ]
+  },
+  "11": {
+    "class_type": "JoinImageWithAlpha",
+    "inputs": {
+      "image": [
+        "10",
+        0
+      ],
+      "alpha": [
+        "10",
+        1
+      ]
+    }
+  },
+  "12": {
+    "class_type": "ImageCrop",
+    "inputs": {
+      "image": [
+        "11",
+        0
+      ],
+      "width": 1088,
+      "height": 1920,
+      "x": 0,
+      "y": 0
+    }
+  },
+  "13": {
+    "class_type": "LoadImage",
+    "inputs": {
+      "image": "RavenRowan_mask_weight_shift_v2.png"
+    },
+    "is_changed": [
+      "81b17c9a42ac23e7d99f19cbeb8220ea6d58c6e205ad19487774eafffdde44db"
+    ]
+  },
+  "14": {
+    "class_type": "ImageToMask",
+    "inputs": {
+      "image": [
+        "13",
+        0
+      ],
+      "channel": "red"
+    }
+  },
+  "20": {
+    "class_type": "TextEncodeQwenImage21",
+    "inputs": {
+      "clip": [
+        "2",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ],
+      "prompt": "The reference shows the COMPLETE full-height person, head to boots. Preserve the EXACT FULL-BODY SCALE and ground level. Do not shorten the body, do not redraw boots inside the torso. Keep reference framing, head position, neck, shirt collar and central upper torso at EXACTLY their original image coordinates. No reframing, rescaling, duplicate collar or second body. Edit only the requested gesture and its immediate surroundings. Make a small relaxed weight shift onto his left leg, relaxing the right knee and moving the right boot only slightly inward. Both boots remain planted on the ground, no crossed legs, no walking stride. Arms rest calmly at his sides, no objects. Keep the head, neck and upper chest at the original coordinates; only hips, trouser folds and legs shift subtly. Preserve the approved elegant lean gardener, tousled ginger hair, short stubble, warm eyes, ivory opaque matte linen shirt with rolled sleeves, olive canvas utility vest with original pockets, brown work trousers and brown lace-up work boots. Preserve original soft watercolor anime illustration, colour palette, light and face. Two arms, two hands, plausible fingers and finger-object contact. Transparent background, no scenery.",
+      "negative_prompt": "extra arms, extra hands, extra fingers, fused fingers, clipped arm, duplicate body, shifted collar, shiny clothing, transparent clothing, green background, photorealism, watermark, readable text, wolf ears, tail, fangs, claws, animal features, supernatural effects",
+      "resolution": 0,
+      "images.image_1": [
+        "12",
+        0
+      ]
+    }
+  },
+  "21": {
+    "class_type": "VAEEncode",
+    "inputs": {
+      "pixels": [
+        "12",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "22": {
+    "class_type": "SetLatentNoiseMask",
+    "inputs": {
+      "samples": [
+        "21",
+        0
+      ],
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "23": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": [
+        "4",
+        0
+      ],
+      "positive": [
+        "20",
+        0
+      ],
+      "negative": [
+        "20",
+        1
+      ],
+      "latent_image": [
+        "22",
+        0
+      ],
+      "seed": 23,
+      "steps": 25,
+      "cfg": 3.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "24": {
+    "class_type": "VAEDecode",
+    "inputs": {
+      "samples": [
+        "23",
+        0
+      ],
+      "vae": [
+        "3",
+        0
+      ]
+    }
+  },
+  "25": {
+    "class_type": "RavenCleanNativeAlpha",
+    "inputs": {
+      "image": [
+        "24",
+        0
+      ],
+      "black_point": 0.06,
+      "white_point": 0.94
+    }
+  },
+  "30": {
+    "class_type": "ImageCompositeMasked",
+    "inputs": {
+      "destination": [
+        "11",
+        0
+      ],
+      "source": [
+        "25",
+        0
+      ],
+      "x": 0,
+      "y": 0,
+      "resize_source": false,
+      "mask": [
+        "14",
+        0
+      ]
+    }
+  },
+  "31": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "30",
+        0
+      ],
+      "filename_prefix": "RavenCast/RowanPerformance/weight_shift_v2/full_body/Rowan_weight_shift_v2"
+    }
+  },
+  "32": {
+    "class_type": "SaveImage",
+    "inputs": {
+      "images": [
+        "25",
+        0
+      ],
+      "filename_prefix": "RavenCast/RowanPerformance/weight_shift_v2/crop/gesture"
+    }
+  }
+}

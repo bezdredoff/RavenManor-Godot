@@ -115,6 +115,26 @@ jobs:
           test -f build/web/index.wasm
           test -f build/web/index.pck
 
+      - name: Validate and bundle art production handbook
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m pip install --quiet numpy
+          python3 scripts/raven/tools/build_art_handbook.py --check
+          python3 -m unittest scripts/raven/tools/test_art_handbook.py
+          node --check art-handbook/app.js
+          node --check art-handbook/data.js
+          python3 scripts/raven/tools/build_art_handbook.py --bundle-to build/web/art-handbook
+          BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
+          test -n "$BROWSER"
+          python3 -m http.server 4175 --bind 127.0.0.1 > /tmp/art-handbook-server.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" 2>/dev/null || true' EXIT
+          sleep 2
+          timeout 50 "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run --user-data-dir="/tmp/art-handbook-$GITHUB_RUN_ID" --virtual-time-budget=20000 --dump-dom http://127.0.0.1:4175/art-handbook/tests/browser_smoke.html > /tmp/art-handbook-smoke.html 2>/tmp/art-handbook-chrome.log
+          grep -q 'data-result="pass"' /tmp/art-handbook-smoke.html || { cat /tmp/art-handbook-smoke.html; cat /tmp/art-handbook-chrome.log; exit 1; }
+          test -s build/web/art-handbook/downloads/workflow-pack.zip
+
       - name: Bundle standalone Room Builder PWA
         run: |
           mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference/sprites build/web/builder/reference/wall_tileset
