@@ -5,10 +5,10 @@
   "entries": [
     {
       "id": "VNS5-02",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "Codex",
       "updated": "2026-11-01",
-      "evidence": "Dependent branch code/vns5-02-asset-registry from VNS5-01 PR #93 head 0da7f4f. Read-only 20-background/4-character adapter and native library; targeted Godot negative/integrity smoke passed. Full CI/manual UI QA pending; no canonical source, draft or runtime mutation."
+      "evidence": "PR #94 https://github.com/bezdredoff/RavenManor-Godot/pull/94 targets open VNS5-01 PR #93 branch. Read-only 20-background/4-character adapter and native library; full Windows Godot 4.7.2 check.ps1, code plan/dashboard and governance passed. CI/manual UI QA pending; no canonical source, draft or runtime mutation."
     },
     {
       "id": "VNS5-01",
