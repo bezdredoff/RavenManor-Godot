@@ -138,8 +138,8 @@
       "id": "MOB-04",
       "owner": "ChatGPT",
       "status": "in_progress",
-      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented.",
-      "updated": "2026-10-27"
+      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented. 2026-11-01: Follow-up implementation candidate adds auto cleanup of incoming ZIP for success/failure using always() after validate/candidate/CI, with per-job write token, immutable triggering SHA + content-SHA race guards, manual dispatch scoped to requested ZIP, Node regression tests. See docs/production/MOB04_AUTO_ZIP_CLEANUP_RU.md. Actual live success/failure cleanup acceptance and remaining device/phone review still require independent evidence; do not mark task accepted.",
+      "updated": "2026-11-01"
     },
     {
       "id": "CODE-02-01",
