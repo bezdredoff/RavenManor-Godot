@@ -11,8 +11,11 @@ const ACTOR_PILOT := {
 	"RM-CHAR-EVELYN": "res://assets/raven/vn_pilot/evelyn_relaxed.webp",
 	"RM-CHAR-ADA": "res://assets/raven/vn_pilot/ada_offer_tea.webp"
 }
-const CARD_SIZE := Vector2(114, 176)
+const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
+# Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
+# Do not multiply these sizes by an editor thumbnail slider.
+const GAME_PORTRAIT_FRACTION := Vector2(0.77, 0.73)
 const MARGIN := 8.0
 
 var _project: Dictionary = {}
@@ -38,7 +41,9 @@ var _overlay: Control
 var _grid_toggle: CheckBox
 var _vn_toggle: CheckBox
 var _portrait_scale: HSlider
-var _card_size: Vector2 = CARD_SIZE * 0.55
+var _thumbnail_strip: HFlowContainer
+var _thumbnail_size: Vector2 = CARD_SIZE * 0.55
+var _card_size: Vector2 = Vector2(REFERENCE_SIZE.x * GAME_PORTRAIT_FRACTION.x, REFERENCE_SIZE.y * GAME_PORTRAIT_FRACTION.y)
 var _browser: ConfirmationDialog
 var _browser_list: ItemList
 var _browser_image: TextureRect
@@ -120,7 +125,7 @@ func _ready() -> void:
 	_vn_toggle.toggled.connect(_on_vn_toggle)
 	options_row.add_child(_vn_toggle)
 	var scale_caption := Label.new()
-	scale_caption.text = "Размер"
+	scale_caption.text = "Миниатюры"
 	options_row.add_child(scale_caption)
 	_portrait_scale = HSlider.new()
 	_portrait_scale.custom_minimum_size.x = 100
@@ -130,9 +135,14 @@ func _ready() -> void:
 	_portrait_scale.value = 0.55
 	_portrait_scale.value_changed.connect(_on_portrait_scale)
 	options_row.add_child(_portrait_scale)
+	_thumbnail_strip = HFlowContainer.new()
+	_thumbnail_strip.size_flags_horizontal = SIZE_EXPAND_FILL
+	add_child(_thumbnail_strip)
 	_canvas = Panel.new()
-	_canvas.custom_minimum_size = Vector2(345, 480)
-	_canvas.size_flags_horizontal = SIZE_EXPAND_FILL
+	# The preview is a 390x844 logical game frame, never shrunk to thumbnail
+	# proportions. On smaller panes the parent ScrollContainer scrolls it.
+	_canvas.custom_minimum_size = REFERENCE_SIZE
+	_canvas.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_canvas.clip_contents = true
 	_canvas.resized.connect(_layout_cards)
 	add_child(_canvas)
@@ -227,6 +237,7 @@ func _draw_stage() -> void:
 		_canvas.remove_child(card)
 		card.queue_free()
 	_cards.clear()
+	_draw_actor_thumbnails()
 	var bg_id: String = str(_stage_data.get("backgroundId", ""))
 	var light: String = str(_stage_data.get("lighting", ""))
 	var state: String = str(_stage_data.get("roomState", ""))
@@ -244,26 +255,70 @@ func _draw_stage() -> void:
 		card.custom_minimum_size = _card_size
 		card.size = _card_size
 		card.clip_contents = true
-		card.text = str(actor["characterId"]).trim_prefix("RM-CHAR-") + "\n" + str(actor.get("emotion", ""))
+		card.flat = true
+		card.tooltip_text = "%s · %s · перетащить на сцене" % [actor["characterId"], actor.get("emotion", "")]
+		card.text = "ART PENDING: " + str(actor["characterId"]).trim_prefix("RM-CHAR-")
 		card.alignment = HORIZONTAL_ALIGNMENT_CENTER
 		card.focus_mode = Control.FOCUS_ALL
 		card.gui_input.connect(_on_card_input.bind(index))
 		_canvas.add_child(card)
 		var picture: Texture2D = _texture(str(ACTOR_PILOT.get(str(actor["characterId"]), "")))
 		if picture != null:
+			# Full game-sized portrait, not a compact tool/gallery thumbnail.
+			card.text = ""
 			var display := TextureRect.new()
 			display.texture = picture
 			display.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
-			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT
+			display.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
 			display.mouse_filter = Control.MOUSE_FILTER_IGNORE
-			display.position = Vector2(3, 3)
-			display.size = Vector2(_card_size.x - 6, _card_size.y - 28)
+			display.position = Vector2.ZERO
+			display.size = _card_size
 			card.add_child(display)
 		_cards.append(card)
 	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size()]
+
+
+## Thumbnails only live in the tool row and never modify the stage dimensions
+## or normalized coordinates exported to the story.
+func _draw_actor_thumbnails() -> void:
+	if _thumbnail_strip == null:
+		return
+	for child in _thumbnail_strip.get_children():
+		_thumbnail_strip.remove_child(child)
+		child.queue_free()
+	for index in range(_stage_data.get("cast", []).size()):
+		var actor: Dictionary = _stage_data["cast"][index]
+		var thumb := Button.new()
+		thumb.custom_minimum_size = _thumbnail_size
+		thumb.size = _thumbnail_size
+		thumb.clip_contents = true
+		thumb.tooltip_text = "Выбрать %s (%s)" % [actor["characterId"], actor.get("emotion", "")]
+		thumb.text = str(actor["characterId"]).trim_prefix("RM-CHAR-")
+		thumb.pressed.connect(_select_actor.bind(index))
+		_thumbnail_strip.add_child(thumb)
+		var picture: Texture2D = _texture(str(ACTOR_PILOT.get(str(actor["characterId"]), "")))
+		if picture != null:
+			thumb.text = ""
+			var preview := TextureRect.new()
+			preview.texture = picture
+			preview.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+			preview.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+			preview.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			preview.position = Vector2.ZERO
+			preview.size = _thumbnail_size
+			thumb.add_child(preview)
+
+
+func _select_actor(index: int) -> void:
+	if index < 0 or index >= _stage_data.get("cast", []).size():
+		return
+	_selected_actor = index
+	_actor_pick.select(index)
+	_reload_poses()
+	_remove.disabled = false
 
 
 func _texture(path: String) -> Texture2D:
@@ -290,7 +345,13 @@ func _layout_cards() -> void:
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	_overlay.size = _canvas.size
+	_card_size = Vector2(_canvas.size.x * GAME_PORTRAIT_FRACTION.x, _canvas.size.y * GAME_PORTRAIT_FRACTION.y)
 	for i in range(_cards.size()):
+		_cards[i].custom_minimum_size = _card_size
+		_cards[i].size = _card_size
+		for inner in _cards[i].get_children():
+			if inner is TextureRect:
+				inner.size = _card_size
 		_cards[i].position = _position_for(_coordinates(i))
 
 
@@ -465,8 +526,9 @@ func _on_vn_toggle(value: bool) -> void:
 
 
 func _on_portrait_scale(value: float) -> void:
-	_card_size = CARD_SIZE * value
-	_draw_stage()
+	# Only the tools change size. Actor stage scale matches the live VN.
+	_thumbnail_size = CARD_SIZE * value
+	_draw_actor_thumbnails()
 
 
 func _build_background_browser() -> void:

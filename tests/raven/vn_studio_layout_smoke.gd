@@ -21,8 +21,11 @@ func _run() -> void:
 	assert(not studio._status.visible)
 	assert(studio._raven_story_view is Raven)
 	var raven: Control = studio._raven_story_view
+	assert(raven._workspace_scroll != null, "All Raven controls should be vertically scrollable")
+	assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
+	assert(raven._dialogue_scroll != null, "Dialogue controls should be vertically scrollable")
 	assert(raven._stage_scroll != null)
-	assert(raven._stage_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED)
+	assert(raven._stage_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	assert(raven._stage_designer.get_parent().get_parent() == raven._stage_scroll)
 	assert(raven._scene_panel.visible and raven._line_panel.visible)
 	raven._scene_panel.visible = false
