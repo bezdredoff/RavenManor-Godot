@@ -31,6 +31,7 @@ var _save: Button
 var _export: Button
 var _export_stage: Button
 var _export_stage_v2: Button
+var _export_fx: Button
 var _stage_designer: Control
 var _scene_panel: Control
 var _line_panel: Control
@@ -97,6 +98,11 @@ func _build() -> void:
 	_export_stage_v2.tooltip_text = "Сохранить отдельный JSON-кандидат ориентации/props/layers в user://"
 	_export_stage_v2.pressed.connect(_export_stage_v2_candidate)
 	toolbar.add_child(_export_stage_v2)
+	_export_fx = Button.new()
+	_export_fx.text = "Экспорт FX review"
+	_export_fx.tooltip_text = "Локальный кандидат анимаций и постановки, не runtime"
+	_export_fx.pressed.connect(_export_fx_candidate)
+	toolbar.add_child(_export_fx)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -218,6 +224,7 @@ func _build() -> void:
 	_stage_designer = StageDesigner.new()
 	_stage_designer.stage_modified.connect(_on_stage_modified)
 	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
+	_stage_designer.stage_fx_modified.connect(_on_stage_fx_modified)
 	stage_contents.add_child(_stage_designer)
 	var visual_label := Label.new()
 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
@@ -457,8 +464,9 @@ func _update_diff() -> void:
 func _refresh_buttons() -> void:
 	_save.disabled = _blocked or _project.is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty()
-	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty()
+	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
+	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
+	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty()
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
 
@@ -529,6 +537,39 @@ func _on_stage_v2_modified(overlay: Dictionary) -> void:
 	_dirty = true
 	_update_diff()
 	_refresh_buttons()
+
+
+func _on_stage_fx_modified(data: Dictionary) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var id: String = str(data.get("sceneId", ""))
+	if _draft.get("stageFxPatches", {}).get(id, {}) == data:
+		return
+	var snapshot: Dictionary = _draft.duplicate(true)
+	var error: String = Store.set_stage_fx(_project, _draft, data)
+	if not error.is_empty():
+		_status.text = "FX не сохранено: " + error
+		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		return
+	_undo.append(snapshot)
+	_redo.clear()
+	_dirty = true
+	_update_diff()
+	_refresh_buttons()
+
+
+func _export_fx_candidate() -> void:
+	if _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните локальный черновик, затем экспортируйте FX."
+		return
+	var result: Dictionary = Store.export_fx_candidate(_project, _draft)
+	if result.get("ok", false):
+		_status.text = "Создан отдельный FX review candidate (только редактор)."
+		_path.text = str(result["path"])
+	else:
+		_status.text = "FX export заблокирован: " + str(result.get("error", ""))
 
 
 func _export_stage_v2_candidate() -> void:
