@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "candidate_preview_not_art_approved",
   "targetCanvas": "1080x1920",
-  "variantCount": 18,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending.",
+  "variantCount": 20,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending. Bedroom day/night livable variants come from two separately generated candidate masters with closely matched room composition, not exact pixel-registered light grades. Covered/untidy bedroom remains ART PENDING; no pretend cleaning state. On-device QA pending.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -310,6 +310,40 @@
       ],
       "status": "candidate",
       "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+    },
+    {
+      "id": "BG-BEDROOM:day:livable",
+      "backgroundId": "BG-BEDROOM",
+      "lighting": "day",
+      "roomState": "livable",
+      "path": "res://assets/raven/vn_backgrounds/bedroom/day_livable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "a69b4aa0a8e470f005ad38235a554dadab5094bfef2867f02e755aa2f2530d2a",
+      "sourceImage": "BG-BEDROOM_day_livable_source.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672"
+    },
+    {
+      "id": "BG-BEDROOM:night:livable",
+      "backgroundId": "BG-BEDROOM",
+      "lighting": "night",
+      "roomState": "livable",
+      "path": "res://assets/raven/vn_backgrounds/bedroom/night_livable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "432e747b46468c3f533459a02c483cdb3ecf662f2d92462ed793ac696beee035",
+      "sourceImage": "raven_manor_bedroom_under_moonlight.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672"
     }
   ]
 }
