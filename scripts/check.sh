@@ -64,6 +64,7 @@ run_check 'VN background catalog / gallery' 'Raven VN background registry and 9 
 run_check 'VN Studio responsive layout' 'Raven VN Studio responsive layout smoke passed' --editor --script res://tests/raven/vn_studio_layout_smoke.gd --quit-after 120
 run_check 'VN Studio asset registry' 'Raven VN Studio asset registry read-only smoke passed' --script res://tests/raven/vn_studio_asset_registry_smoke.gd --quit-after 120
 run_check 'VN Studio staged image import safety' 'Raven VN Studio staged image import safety smoke passed' --script res://tests/raven/vn_studio_staged_image_smoke.gd --quit-after 120
+run_check 'VN Studio orientation/templates/undo' 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed' --script res://tests/raven/vn_studio_stage_orientation_smoke.gd --quit-after 180
 run_check 'VN Studio background-state preview' 'Raven VN Studio background-state preview smoke passed' --script res://tests/raven/vn_studio_backgrounds_smoke.gd --quit-after 120
 run_check 'Approved character art integration' 'Raven approved character art smoke passed' --script res://tests/raven/vn_character_art_smoke.gd --quit-after 240
 run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120

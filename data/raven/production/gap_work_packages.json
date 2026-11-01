@@ -408,6 +408,23 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-04A",
+      "title": "VN Studio v5: orientation-aware editor stage, actor templates and local undo",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Editor-only 390×844 / 844×390 stage preview, fit/cover without fictional backgrounds, safe/grid/HUD overlays, 1/2/3 cast templates, normalized drag and limited scene-local Undo. Stage-v1 only: no orientation, props, focal or z-order fields written to canonical source. Does not replace the runtime portrait compositor.",
+      "deliverable": "stage_layout_tools.gd, Raven StageDesigner and overlay updates, focused Godot headless smoke, docs and progress; separate v2 schema follow-on VNS5-04B.",
+      "acceptance": "Owner checks two orientations, previews 1/2/3 cast with approved art, no clipping/giant portraits, selected background exact-state, template→save/reopen and local undo, fit/cover and grid/safe overlay; tests at 800×640, 1024×640, 1366×768. No source/runtime/save writes; missing landscape art marked candidate/placeholder.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-03"
+      ],
+      "graphicsDependencies": [],
+      "source": "Raven VN Studio v5 handoff docs/05_EXECUTION_PLAN.md PR 04; scoped safe pilot 2026-11-01",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-03",
       "title": "VN Studio v5: staged raster image import and metadata editing",
       "domain": "narrative",

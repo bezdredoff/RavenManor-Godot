@@ -1,5 +1,12 @@
 # VN Studio — native Godot EditorPlugin
 
+## VNS5-04A — ориентация и шаблоны постановки (Draft PR #101)
+
+В рабочем пространстве `Raven Manor → Director → Постановка` можно переключать **редакторский preview** между 390×844 (портрет) и 844×390 (альбом), выбирать `Фон: cover / fit`, включать сетку, безопасную зону и VN UI overlay. Кнопка `Шаблон 1/2/3` сознательно расставляет уже выбранных персонажей по нормализованным координатам `x/y` без смены `assetId`, позы, эмоции и исходного фона. `Отменить постановку` восстанавливает до 32 последних валидных изменений текущей сцены; переход к другой сцене сбрасывает локальную историю. Только разрешённые stage-v1 поля сохраняются в существующие Raven draft stagePatches.
+
+**Не распространять editor preview на runtime:** ориентация, fit/cover и направляющие не сериализуются в текущий `vn_staging.json` и не меняют игровой портретный compositor. Props/z-order/focal point и постоянная ориентация сцены требуют отдельной схемы VNS5-04B. `tests/raven/vn_studio_stage_orientation_smoke.gd` проверяет математику, шаблоны, Undo и отсутствие записи в production staging. CI run [41348044068](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41348044068) прошёл на implementation head; ручной QA в Godot Editor (800×640 / 1024×640 / 1366×768), последний PR-head CI и review остаются отдельными gate. Ничего не считается принятым до проверки владельцем.
+
+
 ## VNS5-03 — локальный безопасный импорт (implementation candidate)
 
 `Raven Manor → Asset Library → Локальный импорт` раскрывает editor-only controls: multi-file `FileDialog` (editor/headless compatible) for PNG/JPEG/WebP, image list, preview, image SHA256/size/alpha/orientation, category (background/character/prop), group ID, display name, lighting/state, pose/emotion/costume and source/rights notes. An editable **displayName does not change** the content-addressed `asset-<sha256>` ID. Category/group are metadata only; character pose/emotion is never evidence of an image being produced. Existing read-only catalog filters/A–B comparison remain separate.
