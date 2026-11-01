@@ -10,12 +10,14 @@ const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
+const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 
 var store := Store.new()
 var state := Snapshot.fresh()
 var step: Dictionary = {}
 var match_game: RefCounted
 var vn_player: RefCounted
+var vn_view: Control
 var selected := -1
 var event_serial := 0
 var content: Dictionary
@@ -90,10 +92,9 @@ func _render_vn() -> void:
 	var config: Dictionary = content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
 	if vn_player == null or vn_player.scene.get("beatId", "") != config.beatId:
 		vn_player = VN.new(); vn_player.open(config)
-	body.add_child(_paragraph("[%s] %s" % [config.beatId, vn_player.current_speaker()]))
-	var dialogue := _paragraph(vn_player.current_line()); dialogue.custom_minimum_size.y = 150; dialogue.add_theme_color_override("font_color", Color("eee4d2")); body.add_child(dialogue)
-	body.add_child(_paragraph("Реплика " + vn_player.progress_text()))
-	_add_button(body, "ДАЛЕЕ", _advance_vn)
+	vn_view = VNGameView.new()
+	body.add_child(vn_view)
+	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn)
 
 
 func _render_match3() -> void:
