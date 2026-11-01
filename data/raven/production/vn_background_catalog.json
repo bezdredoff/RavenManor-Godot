@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "status": "candidate_preview_not_art_approved",
   "targetCanvas": "1080x1920",
-  "variantCount": 14,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending.",
+  "variantCount": 18,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -242,6 +242,74 @@
       ],
       "status": "candidate",
       "sourceType": "ChatGPT independent portrait image 2026-11-01, Lanczos-resized to 1080x1920; user approved visible style/format"
+    },
+    {
+      "id": "BG-ENTRY:dusk:approachable",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "dusk",
+      "roomState": "approachable",
+      "path": "res://assets/raven/vn_backgrounds/entry/dusk_approachable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "727db24acd782bc3e73798439c4b2513899a2fe9d107de76b2b79b3ba646c4af",
+      "sourceImage": "raven_manor_at_twilight.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+    },
+    {
+      "id": "BG-ENTRY:day:approachable",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "day",
+      "roomState": "approachable",
+      "path": "res://assets/raven/vn_backgrounds/entry/day_approachable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "4e97252d73f71b5bae00f9adc36b43374ccf9fb60098516a1afa8af32f89112c",
+      "sourceImage": "welcoming_raven_manor_in_spring.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+    },
+    {
+      "id": "BG-ENTRY:dusk:overgrown",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "dusk",
+      "roomState": "overgrown",
+      "path": "res://assets/raven/vn_backgrounds/entry/dusk_overgrown.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "fd7d28661c069037d5ac22576152846d9ab2ec57072daf252e7773ae9bfab8c8",
+      "sourceImage": "overgrown_manor_at_dusk.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+    },
+    {
+      "id": "BG-ENTRY:day:overgrown",
+      "backgroundId": "BG-ENTRY",
+      "lighting": "day",
+      "roomState": "overgrown",
+      "path": "res://assets/raven/vn_backgrounds/entry/day_overgrown.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "192dff481ade54600c24456226daaef66da99e0936277144cea6535bbac34cb0",
+      "sourceImage": "overgrown_raven_manor_in_daylight.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
     }
   ]
 }
