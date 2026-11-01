@@ -4,6 +4,13 @@
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
+      "id": "VNS5-02",
+      "status": "in_progress",
+      "owner": "Codex",
+      "updated": "2026-11-01",
+      "evidence": "Dependent branch code/vns5-02-asset-registry from VNS5-01 PR #93 head 0da7f4f. Read-only 20-background/4-character adapter and native library; targeted Godot negative/integrity smoke passed. Full CI/manual UI QA pending; no canonical source, draft or runtime mutation."
+    },
+    {
       "id": "VNS5-01",
       "status": "PR_review",
       "owner": "Codex",
