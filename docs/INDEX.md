@@ -21,6 +21,7 @@
 - `UPDS_VN_CORPUS_AUDIT.md`: pinned UPDS-godot VN 45-scene inventory, reader oracle, migration risks, privacy and next-gate evidence.
 - `../addons/vn_studio/README.md`: native Godot VN Studio Legacy Viewer setup, read-only privacy contract, known limits and manual QA.
 - `VN_STUDIO_EDITOR_SPEC.md`: proposed native Godot VN Studio EditorPlugin, UPDS-godot legacy inspection/controlled conversion, parity gates and CODE-03 work packages.
+- `production/VN_STUDIO_V5_CONTRACT_PROPOSAL.md`: VNS5-00 source baseline, read-only v2 adapter decision and pending format gates.
 - `process/VN_STUDIO_AGENT_GUIDE_RU.md`: future human/AI editing and migration runbook (proposal, not implemented plugin).
 - `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
 - `../data/raven/production/code_work_packages.json`: машинный бэклог с P0/P1/P2, оценками S–XL, зависимостями и связями с GFX-этапами.

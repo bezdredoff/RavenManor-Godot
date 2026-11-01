@@ -4,6 +4,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $projectPath = $PSScriptRoot
+py -m unittest discover -s "$projectPath/tests/raven" -p test_vns5_contract.py
+if ($LASTEXITCODE -ne 0) { throw 'VNS5 contract audit failed.' }
 
 function Invoke-GodotCheck {
 	param([string]$Stage, [string[]]$Arguments, [string]$ExpectedOutput = '')
@@ -14,6 +16,7 @@ function Invoke-GodotCheck {
 			-RedirectStandardOutput $stdoutPath -RedirectStandardError $stderrPath
 		$stdout = Get-Content -LiteralPath $stdoutPath -Raw
 		$stderr = Get-Content -LiteralPath $stderrPath -Raw
+		if ($null -eq $stderr) { $stderr = '' }
 		if ($process.ExitCode -ne 0 -or $stderr -match 'SCRIPT ERROR:' -or $stderr.Contains('res://addons/vn_studio/res:') -or $stderr.Contains('Failed loading resource: res://addons/vn_studio/')) {
 			throw "$Stage failed.`n$stdout`n$stderr"
 		}
