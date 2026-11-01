@@ -1,5 +1,11 @@
 # VN Studio — native Godot EditorPlugin
 
+## VNS5-05A — editor-only сценный таймлайн микроанимаций (implementation candidate)
+
+`Raven Manor → Director → Постановка → Микроанимации (FX draft)` предлагает отдельный список FX-событий на уровне сцены. Цель выбирается **только из текущей сцены** (фон, один из 1–3 актёров, существующий prop instance). Доступны `breathe`, `blink`, `shake`, `pulse`, `fade_in` и `fade_out`; задаются `startMs` (0–15000), `durationMs` (120–4000), `repeat` (1–5), `intensity` (0–1). Не более 32 событий и 20 секунд на сцену. Встроенный ползунок времени и Play/Pause показывают deterministic editor proxy (blink — краткое вертикальное сжатие, а не новая нарисованная эмоция), FX Undo ограничен 32 шагами. Меняется только отрисовка редактора, не байты изображений.
+
+События сохраняются отдельно в `raven-vn-studio-draft-v1.stageFxPatches[sceneId]`, тип `raven-vn-stage-fx-v1`; старые черновики без FX остаются валидны. Цели проверяются против существующих stage-v1 актёров и stage-v2 props; удаление используемой цели блокируется. В `Экспорт FX review` входят текущие stage v1/v2 patches, FX cues и SHA исходников; результат пишется по hash-based имени в `user://raven_story_studio/fx/exports`, **никогда не перезаписывается**. Отдельные v1/v2 exports откажутся от FX, а не потеряют таймлайн. Эффекты **не исполняются в игровом VN**, не добавляют sprites/keyframes, не мигрируют `vn_staging.json`, не меняют `res://`, save или UPDS. Animation compositor, line-specific triggers, art assets и production promotion — отдельный gate. Подробные проверки: `docs/production/VNS5_05A_MICRO_FX_RU.md` и `tests/raven/vn_studio_stage_fx_smoke.gd`. Godot CI и ручная QA обязательны; без них не считать задачу принятой.
+
 ## VNS5-04B — локальный editor-only v2 sidecar (Draft PR #104)
 
 Теперь `Режиссёр → Постановка` хранит ориентацию 390×844/844×390 и fit/cover в **локальном** `stageV2Patches[sceneId]`, а не в каноническом `vn_staging.json`. Редактор также запоминает нормализованный focal (ориентир в preview, не runtime pan), z текущих актёров и независимые prop instances (ID, state, X/Y, Z, Scale, staged image / ART PENDING). Существующие v1 stage/line edits остаются совместимы с ранее сохранёнными черновиками. Новые V2 правки поддерживают отдельный Undo, source-SHA locks и строгую проверку schema/ID/path/range.
