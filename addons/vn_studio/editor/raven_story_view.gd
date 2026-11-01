@@ -3,7 +3,9 @@ extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
+const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const LOCALES := ["ru", "be", "en"]
+const PANE_SETTING := "vn_studio/raven_scene_pane_width"
 
 var _project: Dictionary = {}
 var _draft: Dictionary = {}
@@ -36,6 +38,9 @@ var _workspace_scroll: ScrollContainer
 var _dialogue_scroll: ScrollContainer
 var _undo_button: Button
 var _redo_button: Button
+var _workspace_tabs: TabContainer
+var _context_views: Array[RichTextLabel] = []
+var _panel_split: HSplitContainer
 
 
 func _ready() -> void:
@@ -46,6 +51,12 @@ func _ready() -> void:
 
 
 func _build() -> void:
+	var sticky := HFlowContainer.new()
+	add_child(sticky)
+	var sticky_title := Label.new()
+	sticky_title.text = "VN Studio · Raven Manor"
+	sticky_title.size_flags_horizontal = SIZE_EXPAND_FILL
+	sticky.add_child(sticky_title)
 	# The whole Raven workspace remains vertically reachable in shorter Godot
 	# windows, including heading, toolbar, scene panels and export path.
 	_workspace_scroll = ScrollContainer.new()
@@ -62,8 +73,7 @@ func _build() -> void:
 	heading.add_theme_font_size_override("font_size", 17)
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(heading)
-	var toolbar := HFlowContainer.new()
-	body.add_child(toolbar)
+	var toolbar := sticky
 	var reload := Button.new()
 	reload.text = "Перечитать проект"
 	reload.pressed.connect(open_raven)
@@ -112,8 +122,9 @@ func _build() -> void:
 	toolbar.add_child(lines_toggle)
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	body.add_child(_status)
+	add_child(_status)
 	var panel := HSplitContainer.new()
+	_panel_split = panel
 	panel.size_flags_vertical = SIZE_EXPAND_FILL
 	panel.size_flags_horizontal = SIZE_EXPAND_FILL
 	body.add_child(panel)
@@ -121,6 +132,11 @@ func _build() -> void:
 	_scene_panel = left
 	left.custom_minimum_size.x = 150
 	panel.add_child(left)
+	if Engine.is_editor_hint():
+		var settings := EditorInterface.get_editor_settings()
+		if settings.has_setting(PANE_SETTING):
+			panel.split_offset = clampi(int(settings.get_setting(PANE_SETTING)), 120, 420)
+	panel.dragged.connect(_on_pane_dragged)
 	_scenes = ItemList.new()
 	_scenes.size_flags_vertical = SIZE_EXPAND_FILL
 	_scenes.item_selected.connect(_on_scene)
@@ -144,10 +160,18 @@ func _build() -> void:
 	_line_info = Label.new()
 	_line_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	editor.add_child(_line_info)
+	_workspace_tabs = TabContainer.new()
+	_workspace_tabs.size_flags_vertical = SIZE_EXPAND_FILL
+	_workspace_tabs.size_flags_horizontal = SIZE_EXPAND_FILL
+	editor.add_child(_workspace_tabs)
+	var director := VBoxContainer.new()
+	director.name = "Director"
+	director.size_flags_vertical = SIZE_EXPAND_FILL
+	_workspace_tabs.add_child(director)
 	var workspace := TabContainer.new()
 	workspace.size_flags_vertical = SIZE_EXPAND_FILL
 	workspace.size_flags_horizontal = SIZE_EXPAND_FILL
-	editor.add_child(workspace)
+	director.add_child(workspace)
 	var dialogue_column := VBoxContainer.new()
 	dialogue_column.name = "Диалог"
 	dialogue_column.size_flags_vertical = SIZE_EXPAND_FILL
@@ -195,10 +219,27 @@ func _build() -> void:
 	_preview.custom_minimum_size.y = 140
 	_preview.bbcode_enabled = false
 	stage_contents.add_child(_preview)
+	for title in ["Asset Library", "Story Map", "Animation"]:
+		var context_scroll := ScrollContainer.new()
+		context_scroll.name = title
+		context_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+		context_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+		_workspace_tabs.add_child(context_scroll)
+		var context := RichTextLabel.new()
+		context.custom_minimum_size = Vector2(230, 350)
+		context.size_flags_horizontal = SIZE_EXPAND_FILL
+		context.fit_content = true
+		context_scroll.add_child(context)
+		_context_views.append(context)
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
-	body.add_child(_path)
+	add_child(_path)
+
+
+func _on_pane_dragged(offset: int) -> void:
+	if Engine.is_editor_hint():
+		EditorInterface.get_editor_settings().set_setting(PANE_SETTING, clampi(offset, 120, 420))
 
 
 func open_raven() -> void:
@@ -257,6 +298,7 @@ func _scene_switch() -> void:
 	_line_render()
 	_stage_designer.set_scene(_project, _draft, id)
 	_refresh_preview()
+	_refresh_context()
 
 
 func _current_entry() -> Dictionary:
@@ -288,6 +330,37 @@ func _line_render() -> void:
 			str(cue.get("poseId", "")), str(cue.get("emotionId", "")), str(cue.get("microOnEnter", "—"))]
 	_update_diff()
 	_sync_dialogue_preview()
+	_refresh_context()
+
+
+func selected_context() -> Dictionary:
+	var entry: Dictionary = _current_entry()
+	return {"sceneId": str(entry.get("sceneId", "")) if not entry.is_empty() else "",
+		"lineId": str(entry.get("id", "")) if not entry.is_empty() else "",
+		"assetInstanceId": ""}
+
+
+func _refresh_context() -> void:
+	if _context_views.size() != 3 or _project.is_empty():
+		return
+	var scene: Dictionary = _project["scenes"][_scene_idx]
+	var scene_id: String = str(scene["sceneId"])
+	var shot: Dictionary = Store.effective_stage(_project, _draft, scene_id)
+	var bg_id: String = str(shot.get("backgroundId", ""))
+	var lighting: String = str(shot.get("lighting", ""))
+	var room_state: String = str(shot.get("roomState", ""))
+	var background: Dictionary = VNBackgrounds.entry_for(bg_id, lighting, room_state)
+	_context_views[0].text = "Asset Library · %s\n\nФон: %s · %s · %s\n%s\n\nАктёры постановки: %d\nКаталог содержит %d реально зарегистрированных вариантов. Редактирование каталога — VNS5-02/03." % [
+		scene_id, bg_id, lighting, room_state,
+		str(background.get("path", "ART PENDING")), shot.get("cast", []).size(), VNBackgrounds.all_entries().size()]
+	var trigger: Dictionary = _project["routes"].get(scene_id, {})
+	_context_views[1].text = "Story Map · %s\n\nТекущий trigger: %s\nПосле сцены: %s\n\nПереходы только для просмотра; редактирование графа — VNS5-06." % [
+		scene_id, JSON.stringify(trigger.get("gate", {})), str(trigger.get("postSceneAction", ""))]
+	var entry: Dictionary = _current_entry()
+	var line_id: String = str(entry.get("id", ""))
+	var cue: Dictionary = _project["cues"].get(line_id, {})
+	_context_views[2].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
+		line_id, str(cue.get("poseId", "—")), str(cue.get("emotionId", "—")), str(cue.get("microOnEnter", "—"))]
 
 
 func _refresh_preview() -> void:
@@ -422,6 +495,7 @@ func _on_stage_modified(stage: Dictionary) -> void:
 	_redo.clear()
 	_dirty = true
 	_refresh_preview()
+	_refresh_context()
 	_update_diff()
 	_refresh_buttons()
 

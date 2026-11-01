@@ -28,6 +28,28 @@ func _run() -> void:
 	assert(raven._stage_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	assert(raven._stage_designer.get_parent().get_parent() == raven._stage_scroll)
 	assert(raven._scene_panel.visible and raven._line_panel.visible)
+	assert(raven._workspace_tabs.get_tab_count() == 4)
+	for width in [800, 1024, 1366]:
+		studio.size = Vector2(width, 640)
+		await process_frame
+		assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
+	for tab_index in range(4):
+		raven._workspace_tabs.current_tab = tab_index
+		assert(raven.selected_context()["sceneId"] == "RM-BEAT-00-01")
+	assert(raven._context_views[0].text.contains("Asset Library"))
+	assert(raven._context_views[1].text.contains("Story Map"))
+	assert(raven._context_views[2].text.contains("Animation"))
+	raven._on_scene(1)
+	var selected: Dictionary = raven.selected_context()
+	assert(selected["sceneId"] == "RM-BEAT-00-02")
+	assert(raven._context_views[1].text.contains(selected["sceneId"]))
+	raven._on_line(1)
+	assert(raven._context_views[2].text.contains(raven.selected_context()["lineId"]))
+	assert(raven._save.get_parent() != raven._workspace_scroll)
+	assert(raven._path.get_parent() != raven._workspace_scroll)
+	if Engine.is_editor_hint():
+		raven._on_pane_dragged(260)
+		assert(int(EditorInterface.get_editor_settings().get_setting(raven.PANE_SETTING)) == 260)
 	raven._scene_panel.visible = false
 	raven._line_panel.visible = false
 	assert(not raven._scene_panel.visible and not raven._line_panel.visible)
