@@ -10,6 +10,7 @@ const CUES := "data/raven/production/line_performance_cues.json"
 const CAST := "data/raven/production/character_performance.json"
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
+const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
@@ -91,7 +92,7 @@ static func fresh(project: Dictionary) -> Dictionary:
 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
 		"stageSourceSha256": str(project.get("stagingSha", "")),
 		"castSourceSha256": str(project.get("castSha", "")),
-		"patches": {}, "stagePatches": {}, "stageV2Patches": {}}
+		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {}}
 
 
 static func load_draft(project: Dictionary) -> Dictionary:
@@ -143,6 +144,22 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 			var v2_error: String = StageV2.validate(source_stage, v2_patches[scene_id])
 			if not v2_error.is_empty():
 				return "%s: %s" % [scene_id, v2_error]
+	var fx_patches: Variant = draft.get("stageFxPatches", {})
+	if not fx_patches is Dictionary:
+		return "Повреждённый FX-таймлайн."
+	if not fx_patches.is_empty():
+		if draft.get("stageSourceSha256", "") != project.get("stagingSha", "") or draft.get("castSourceSha256", "") != project.get("castSha", ""):
+			return "FX-черновик привязан к устаревшей постановке/касту."
+		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
+			return "FX: источники постановки изменились на диске."
+		for scene_id in fx_patches:
+			if not project["shots"].has(scene_id):
+				return "Неизвестный sceneId FX."
+			var fx_stage: Dictionary = effective_stage(project, draft, str(scene_id))
+			var fx_v2: Dictionary = StageV2.effective(draft, str(scene_id))
+			var fx_error: String = StageFx.validate(fx_stage, fx_v2, fx_patches[scene_id])
+			if not fx_error.is_empty():
+				return "%s: %s" % [scene_id, fx_error]
 	var patches: Variant = draft.get("patches", {})
 	if not patches is Dictionary:
 		return "Повреждённый набор правок."
@@ -298,12 +315,18 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
 	var error: String = validate_stage(project, stage)
 	if not error.is_empty():
 		return error
+	var scene_id: String = str(stage.get("sceneId", ""))
+	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
+	if fx is Dictionary and not fx.is_empty():
+		var overlay: Dictionary = StageV2.trim_actor_z(stage, StageV2.effective(draft, scene_id))
+		var fx_error: String = StageFx.validate(stage, overlay, fx)
+		if not fx_error.is_empty():
+			return "Нельзя удалить цель FX: " + fx_error
 	draft["stageSourceSha256"] = str(project["stagingSha"])
 	draft["castSourceSha256"] = str(project["castSha"])
 	if not draft.has("stagePatches"):
 		draft["stagePatches"] = {}
-	draft["stagePatches"][str(stage["sceneId"])] = stage.duplicate(true)
-	var scene_id: String = str(stage["sceneId"])
+	draft["stagePatches"][scene_id] = stage.duplicate(true)
 	if draft.get("stageV2Patches", {}).has(scene_id):
 		draft["stageV2Patches"][scene_id] = StageV2.trim_actor_z(stage, draft["stageV2Patches"][scene_id])
 	return ""
@@ -317,6 +340,11 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
 	var error: String = StageV2.validate(stage, overlay)
 	if not error.is_empty():
 		return error
+	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
+	if fx is Dictionary and not fx.is_empty():
+		var fx_error: String = StageFx.validate(stage, overlay, fx)
+		if not fx_error.is_empty():
+			return "Нельзя удалить prop, использующийся в FX: " + fx_error
 	draft["stageSourceSha256"] = str(project["stagingSha"])
 	draft["castSourceSha256"] = str(project["castSha"])
 	if not draft.has("stageV2Patches"):
@@ -326,6 +354,8 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
 
 
 static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("stageFxPatches", {}).is_empty():
+		return {"ok": false, "error": "FX события требуют отдельный FX review export; v2 экспорт потеряет таймлайн."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -366,6 +396,44 @@ static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dicti
 	return _write_new(path, payload, false)
 
 
+static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionary) -> String:
+	var scene_id: String = str(data.get("sceneId", ""))
+	if not project.get("shots", {}).has(scene_id):
+		return "FX содержит неизвестный sceneId."
+	var stage: Dictionary = effective_stage(project, draft, scene_id)
+	var overlay: Dictionary = StageV2.effective(draft, scene_id)
+	var error: String = StageFx.validate(stage, overlay, data)
+	if not error.is_empty():
+		return error
+	draft["stageSourceSha256"] = str(project["stagingSha"])
+	draft["castSourceSha256"] = str(project["castSha"])
+	if not draft.has("stageFxPatches"):
+		draft["stageFxPatches"] = {}
+	draft["stageFxPatches"][scene_id] = data.duplicate(true)
+	return ""
+
+
+static func export_fx_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var error: String = validate(project, draft)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	var fx_patches: Dictionary = draft.get("stageFxPatches", {})
+	if fx_patches.is_empty():
+		return {"ok": false, "error": "Нет FX событий для review."}
+	var output: Dictionary = {"format": "raven-stage-fx-review-candidate", "schemaVersion": 1,
+		"sourceSha256": project["sha"], "stageSourceSha256": project["stagingSha"],
+		"castSourceSha256": project["castSha"],
+		"stageV1Patches": draft.get("stagePatches", {}).duplicate(true),
+		"stageV2Patches": draft.get("stageV2Patches", {}).duplicate(true),
+		"stageFxPatches": fx_patches.duplicate(true),
+		"runtimeApplied": false, "requiresHumanReview": true,
+		"fxPreviewOnly": true}
+	var payload: String = JSON.stringify(output, "\t") + "\n"
+	var target: String = ProjectSettings.globalize_path("user://raven_story_studio/fx/exports").path_join(
+		"raven-stage-fx-" + payload.sha256_text().substr(0, 24) + ".json")
+	return _write_new(target, payload, false)
+
+
 static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dictionary:
 	var data: Dictionary = project["stagingData"].duplicate(true)
 	var patches: Dictionary = draft.get("stagePatches", {})
@@ -377,6 +445,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
 
 
 static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("stageFxPatches", {}).is_empty():
+		return {"ok": false, "error": "Есть FX таймлайн. Используйте FX review export для сохранения событий."}
 	if not draft.get("stageV2Patches", {}).is_empty():
 		return {"ok": false, "error": "Есть stage-v2 данные. Используйте отдельный V2 review export: v1 исключит слои/props."}
 	var error: String = validate(project, draft)
