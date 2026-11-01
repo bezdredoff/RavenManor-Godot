@@ -1,0 +1,99 @@
+{
+  "schema": "raven-vns5-04b-implementation-handoff-v1",
+  "baseSha": "6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346",
+  "taskId": "VNS5-04B",
+  "prerequisite": "VNS5-04A merged PR #101, Godot CI 41348331431",
+  "files": [
+    {
+      "path": "addons/vn_studio/model/stage_v2_store.gd",
+      "bytes": 5812,
+      "sha256": "591e4af45a3b1c56a87f8006a036c0b493df94727bd3bec7131c2db480831f9c",
+      "isNew": true
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_story_store.gd",
+      "bytes": 23292,
+      "sha256": "c16c53954b96b700395f6ce713218be9681b29530f1de84b54b78580886446c1",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_story_view.gd",
+      "bytes": 22757,
+      "sha256": "048e0abe9f29a1ac287f25a6507d31dcac9f2b92610a1847cab45f8ec68d5f62",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_stage_designer.gd",
+      "bytes": 43062,
+      "sha256": "e9d180189ea0536d35571726e63853762e2b33657495b385d9ac4e0fc80e369c",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/editor/raven_stage_overlay.gd",
+      "bytes": 2675,
+      "sha256": "e11074ced5e5b8e98e73eb44a425a3dd3b7de5979fbdac59acbf92d4fc4fa38e",
+      "isNew": false
+    },
+    {
+      "path": "addons/vn_studio/README.md",
+      "bytes": 60462,
+      "sha256": "0428b750eec9342ca1f975b76529e9e6fc532a9b3116f513336124c3fb797974",
+      "isNew": false
+    },
+    {
+      "path": "tests/raven/vn_studio_stage_v2_smoke.gd",
+      "bytes": 4158,
+      "sha256": "5b161d3da8d82f6cb293963d876856671cf3f8a531f36586d077accaba8ee478",
+      "isNew": true
+    },
+    {
+      "path": "check.ps1",
+      "bytes": 10523,
+      "sha256": "10f754af2cb922a3ee244a6a198270f837069dcb8dd003ae74a3ff66fb087ace",
+      "isNew": false
+    },
+    {
+      "path": "scripts/check.sh",
+      "bytes": 8182,
+      "sha256": "97e4bd897b7888f4834f9e9a4e9497008a177742b3f0b592b9eee940337e5c39",
+      "isNew": false
+    },
+    {
+      "path": "docs/STATUS.md",
+      "bytes": 73848,
+      "sha256": "ca1b6a5587f033d0a5c51250eda375a7ebd1375c0b905b84694ec25f150e6283",
+      "isNew": false
+    },
+    {
+      "path": "data/raven/production/production_progress.json",
+      "bytes": 28327,
+      "sha256": "89ea3073ece60f14fcab4daba0c9921829be6e09bb12eae3bcde05a254863392",
+      "isNew": false
+    },
+    {
+      "path": "data/raven/production/gap_work_packages.json",
+      "bytes": 31911,
+      "sha256": "5923860aa318ac082cea50e557c2ce41b36a4b0448c83cbf066dad6095b5c35d",
+      "isNew": false
+    },
+    {
+      "path": "docs/production/VNS5_04B_STAGE_V2_RU.md",
+      "bytes": 4910,
+      "sha256": "4bb1a29550f411d85fd297bca6e01a7ff167fc6833b4edfc7167fcb6f3cdd06c",
+      "isNew": true
+    }
+  ],
+  "patchSha256": "3d8456dce014890b85b3808de51c8053e28a33c6c45c37d810de7539c4663e3c",
+  "execution": "implementation PR required; incoming ZIP installs docs/handoffs only",
+  "localChecks": [
+    "exact Git blob base for all modified existing files",
+    "git apply --check and byte-for-byte verify",
+    "JSON parse and git diff --check",
+    "raven-delta-v1 paths and frozen main SHA"
+  ],
+  "notExecuted": [
+    "Godot 4.7.2 compilation/full CI",
+    "Windows desktop UI QA",
+    "owner acceptance"
+  ]
+}

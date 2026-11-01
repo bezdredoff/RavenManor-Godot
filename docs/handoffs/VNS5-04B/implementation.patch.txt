@@ -1,0 +1,1065 @@
+diff --git a/addons/vn_studio/README.md b/addons/vn_studio/README.md
+index 125c369..db03085 100644
+--- a/addons/vn_studio/README.md
++++ b/addons/vn_studio/README.md
+@@ -1,5 +1,11 @@
+ # VN Studio — native Godot EditorPlugin
+ 
++## VNS5-04B — локальный editor-only v2 sidecar (implementation handoff)
++
++Теперь `Режиссёр → Постановка` хранит ориентацию 390×844/844×390 и fit/cover в **локальном** `stageV2Patches[sceneId]`, а не в каноническом `vn_staging.json`. Редактор также запоминает нормализованный focal (ориентир в preview, не runtime pan), z текущих актёров и независимые prop instances (ID, state, X/Y, Z, Scale, staged image / ART PENDING). Существующие v1 stage/line edits остаются совместимы с ранее сохранёнными черновиками. Новые V2 правки поддерживают отдельный Undo, source-SHA locks и строгую проверку schema/ID/path/range.
++
++`Экспорт V2 review` создаёт отдельный `user://` JSON с SHA исходников и список staged prop references/ART PENDING. Если V2 изменения есть, старый экспорт stage-v1 отклоняется, чтобы данные не потерялись молча. Ни один проп/кадр автоматически не публикуется в production, игровой runtime не читает V2. Подробный контракт и ручной QA: `docs/production/VNS5_04B_STAGE_V2_RU.md`. CI/Godot Editor QA и owner approval обязательны; incoming ZIP не является implementation PR.
++
+ ## VNS5-04A — ориентация и шаблоны постановки (Draft PR #101)
+ 
+ В рабочем пространстве `Raven Manor → Director → Постановка` можно переключать **редакторский preview** между 390×844 (портрет) и 844×390 (альбом), выбирать `Фон: cover / fit`, включать сетку, безопасную зону и VN UI overlay. Кнопка `Шаблон 1/2/3` сознательно расставляет уже выбранных персонажей по нормализованным координатам `x/y` без смены `assetId`, позы, эмоции и исходного фона. `Отменить постановку` восстанавливает до 32 последних валидных изменений текущей сцены; переход к другой сцене сбрасывает локальную историю. Только разрешённые stage-v1 поля сохраняются в существующие Raven draft stagePatches.
+diff --git a/addons/vn_studio/editor/raven_stage_designer.gd b/addons/vn_studio/editor/raven_stage_designer.gd
+index 3b9038d..33fe8a4 100644
+--- a/addons/vn_studio/editor/raven_stage_designer.gd
++++ b/addons/vn_studio/editor/raven_stage_designer.gd
+@@ -3,6 +3,7 @@ extends VBoxContainer
+ ## Godot-native, optional image-backed *editor* stage for canonical Raven Season 1.
+ ## Uses the same approved character registry as the gameplay VN compositor.
+ signal stage_modified(stage: Dictionary)
++signal stage_v2_modified(overlay: Dictionary)
+ 
+ const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+ const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+@@ -10,6 +11,8 @@ const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.
+ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+ const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
+ const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
++const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
+ const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
+ const REFERENCE_SIZE := Vector2(390, 844)
+ # Hall Tea's current live VN pilot renders portraits at 77% width / 73% height.
+@@ -18,6 +21,27 @@ const GAME_PORTRAIT_FRACTION := Vector2(0.77, 0.73)
+ 
+ var _project: Dictionary = {}
+ var _stage_data: Dictionary = {}
++var _stage_v2: Dictionary = {}
++var _committed_v2: Dictionary = {}
++var _undo_v2: Array[Dictionary] = []
++var _staged_assets: RefCounted
++var _prop_list: ItemList
++var _prop_asset: OptionButton
++var _prop_state: OptionButton
++var _prop_x: SpinBox
++var _prop_y: SpinBox
++var _prop_z: SpinBox
++var _prop_scale: SpinBox
++var _actor_z: SpinBox
++var _focal_x: SpinBox
++var _focal_y: SpinBox
++var _remove_prop: Button
++var _undo_v2_button: Button
++var _prop_cards: Array[Button] = []
++var _selected_prop: int = -1
++var _dragging_prop: int = -1
++var _prop_grab_delta: Vector2 = Vector2.ZERO
++var _suppress_v2: bool = false
+ var _selected_actor: int = -1
+ var _dragging_actor: int = -1
+ var _grab_delta: Vector2 = Vector2.ZERO
+@@ -131,13 +155,13 @@ func _ready() -> void:
+ 	_orientation = OptionButton.new()
+ 	_orientation.add_item("Портрет · 390×844")
+ 	_orientation.add_item("Альбом · 844×390")
+-	_orientation.tooltip_text = "Ориентация preview — editor-only; не меняет текущую схему VN staging v1"
++	_orientation.tooltip_text = "Ориентация сохраняется в локальном V2 draft; runtime stage v1 неизменен"
+ 	_orientation.item_selected.connect(_on_orientation)
+ 	options_row.add_child(_orientation)
+ 	_bg_fit = OptionButton.new()
+ 	_bg_fit.add_item("Фон: cover")
+ 	_bg_fit.add_item("Фон: fit")
+-	_bg_fit.tooltip_text = "Только способ просмотра картинки, не новая генерация и не сохранённый crop"
++	_bg_fit.tooltip_text = "FitMode сохраняется в V2 draft; не меняет production фон/runtime"
+ 	_bg_fit.item_selected.connect(_on_background_fit)
+ 	options_row.add_child(_bg_fit)
+ 	_template_button = Button.new()
+@@ -174,6 +198,67 @@ func _ready() -> void:
+ 	_portrait_scale.value = 0.55
+ 	_portrait_scale.value_changed.connect(_on_portrait_scale)
+ 	options_row.add_child(_portrait_scale)
++	var v2_row := HFlowContainer.new()
++	add_child(v2_row)
++	var focal_label := Label.new()
++	focal_label.text = "Focal X/Y"
++	v2_row.add_child(focal_label)
++	_focal_x = _numeric(v2_row, 0.0, 1.0, 0.01, 0.5)
++	_focal_y = _numeric(v2_row, 0.0, 1.0, 0.01, 0.5)
++	_focal_x.value_changed.connect(_on_focal_changed)
++	_focal_y.value_changed.connect(_on_focal_changed)
++	var actor_z_label := Label.new()
++	actor_z_label.text = "Слой персонажа"
++	v2_row.add_child(actor_z_label)
++	_actor_z = _numeric(v2_row, -10, 100, 1, 0)
++	_actor_z.value_changed.connect(_on_actor_z_changed)
++	var prop_toolbar := HFlowContainer.new()
++	add_child(prop_toolbar)
++	var add_prop := Button.new()
++	add_prop.text = "+ Prop (черновик)"
++	add_prop.pressed.connect(_on_add_prop)
++	prop_toolbar.add_child(add_prop)
++	_remove_prop = Button.new()
++	_remove_prop.text = "− Prop"
++	_remove_prop.pressed.connect(_on_remove_prop)
++	prop_toolbar.add_child(_remove_prop)
++	_undo_v2_button = Button.new()
++	_undo_v2_button.text = "↶ V2"
++	_undo_v2_button.pressed.connect(_on_undo_v2)
++	prop_toolbar.add_child(_undo_v2_button)
++	var refresh_assets := Button.new()
++	refresh_assets.text = "↻ Props"
++	refresh_assets.tooltip_text = "Перечитать локальный staging после импорта в Asset Library"
++	refresh_assets.pressed.connect(_on_refresh_prop_assets)
++	prop_toolbar.add_child(refresh_assets)
++	_prop_list = ItemList.new()
++	_prop_list.custom_minimum_size = Vector2(170, 55)
++	_prop_list.item_selected.connect(_on_prop_select)
++	prop_toolbar.add_child(_prop_list)
++	_prop_asset = OptionButton.new()
++	_prop_asset.custom_minimum_size.x = 180
++	_prop_asset.tooltip_text = "Только локально staged props, не утверждённые игровые ассеты"
++	_prop_asset.item_selected.connect(_on_prop_asset)
++	prop_toolbar.add_child(_prop_asset)
++	_prop_state = OptionButton.new()
++	for name in ["clean", "dirty", "broken", "restored", "new"]:
++		_prop_state.add_item(name)
++	_prop_state.item_selected.connect(_on_prop_state)
++	prop_toolbar.add_child(_prop_state)
++	var transforms := HFlowContainer.new()
++	add_child(transforms)
++	for label_text in ["Prop X", "Y", "Z", "Scale"]:
++		var name := Label.new()
++		name.text = label_text
++		transforms.add_child(name)
++	_prop_x = _numeric(transforms, 0, 1, 0.01, 0.5)
++	_prop_y = _numeric(transforms, 0, 1, 0.01, 0.5)
++	_prop_z = _numeric(transforms, -10, 100, 1, 20)
++	_prop_scale = _numeric(transforms, 0.1, 3, 0.05, 1)
++	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
++		spinner.value_changed.connect(_on_prop_transform)
++	_staged_assets = ImageStaging.new()
++	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
+ 	_thumbnail_strip = HFlowContainer.new()
+ 	_thumbnail_strip.size_flags_horizontal = SIZE_EXPAND_FILL
+ 	add_child(_thumbnail_strip)
+@@ -205,6 +290,17 @@ func _ready() -> void:
+ 	add_child(_status)
+ 
+ 
++func _numeric(parent: Control, minimum: float, maximum: float, step: float, initial: float) -> SpinBox:
++	var spinner := SpinBox.new()
++	spinner.min_value = minimum
++	spinner.max_value = maximum
++	spinner.step = step
++	spinner.value = initial
++	spinner.custom_minimum_size.x = 72
++	parent.add_child(spinner)
++	return spinner
++
++
+ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
+ 	_project = project
+ 	_selected_actor = -1
+@@ -212,8 +308,11 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
+ 		return
+ 	if str(_stage_data.get("sceneId", "")) != id:
+ 		_undo_stages.clear()
++		_undo_v2.clear()
+ 	_stage_data = Store.effective_stage(project, draft, id)
+ 	_committed_stage = _stage_data.duplicate(true)
++	_stage_v2 = StageV2.effective(draft, id)
++	_committed_v2 = _stage_v2.duplicate(true)
+ 	_reload()
+ 
+ 
+@@ -249,6 +348,7 @@ func _reload() -> void:
+ 			_new_actor.add_item(str(candidate).trim_prefix("RM-CHAR-"))
+ 	_add.disabled = cast.size() >= 3 or _new_actor.item_count == 0
+ 	_remove.disabled = _selected_actor < 0
++	_reload_v2_controls()
+ 	_template_button.disabled = cast.is_empty()
+ 	_undo_button.disabled = _undo_stages.is_empty()
+ 	_suppress = false
+@@ -319,6 +419,7 @@ func _draw_stage() -> void:
+ 		card.focus_mode = Control.FOCUS_ALL
+ 		card.gui_input.connect(_on_card_input.bind(index))
+ 		_canvas.add_child(card)
++		card.z_index = 10 + int(_stage_v2.get("actorZ", {}).get(str(actor["characterId"]), 0))
+ 		var resolved: Dictionary = Characters.for_actor(actor)
+ 		var picture: Texture2D = Characters.texture_for_entry(resolved.get("entry", {}))
+ 		if picture != null and not resolved.get("exact", false):
+@@ -339,7 +440,12 @@ func _draw_stage() -> void:
+ 			display.size = _card_size
+ 			card.add_child(display)
+ 		_cards.append(card)
+-	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
++	_draw_props()
++	_overlay.z_index = 150
++	_bg_image.z_index = -100
++	_placeholders.z_index = 149
++	_overlay.focal = Vector2(float(_stage_v2.get("focal", {}).get("x", 0.5)), float(_stage_v2.get("focal", {}).get("y", 0.5)))
++	_overlay.queue_redraw()
+ 	_layout_cards()
+ 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
+ 		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
+@@ -385,6 +491,7 @@ func _select_actor(index: int) -> void:
+ 	_selected_actor = index
+ 	_actor_pick.select(index)
+ 	_reload_poses()
++	_reload_v2_controls()
+ 	_remove.disabled = false
+ 
+ 
+@@ -408,6 +515,7 @@ func _layout_cards() -> void:
+ 			if inner is TextureRect:
+ 				inner.size = _card_size
+ 		_cards[i].position = _position_for(_coordinates(i))
++	_layout_props()
+ 
+ 
+ func _position_for(normalized: Vector2) -> Vector2:
+@@ -456,6 +564,7 @@ func _on_actor_select(index: int) -> void:
+ 		return
+ 	_selected_actor = index
+ 	_reload_poses()
++	_reload_v2_controls()
+ 	_remove.disabled = false
+ 
+ 
+@@ -541,6 +650,10 @@ func _commit() -> void:
+ 		_undo_stages.remove_at(0)
+ 	_committed_stage = _stage_data.duplicate(true)
+ 	stage_modified.emit(_stage_data.duplicate(true))
++	var trimmed: Dictionary = StageV2.trim_actor_z(_stage_data, _stage_v2)
++	if trimmed != _stage_v2:
++		_stage_v2 = trimmed
++		_apply_v2()
+ 	_reload()
+ 
+ 
+@@ -566,23 +679,229 @@ func _on_template() -> void:
+ 
+ 
+ func _on_orientation(index: int) -> void:
+-	if index < 0:
++	if index < 0 or _suppress_v2:
+ 		return
+ 	_preview_orientation = StageLayout.LANDSCAPE if index == 1 else StageLayout.PORTRAIT
+-	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
+-	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
+-	_overlay.queue_redraw()
+-	_layout_cards()
++	_stage_v2["orientation"] = _preview_orientation
++	_apply_v2()
+ 
+ 
+ func _on_background_fit(index: int) -> void:
+-	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if index == 1 else TextureRect.STRETCH_KEEP_ASPECT_COVERED
++	if _suppress_v2 or index < 0:
++		return
++	_stage_v2["fitMode"] = "contain" if index == 1 else "cover"
++	_apply_v2()
+ 
+ 
+ func _on_safe_toggle(value: bool) -> void:
+ 	_overlay.show_safe = value
+ 	_overlay.queue_redraw()
+ 
++
++func _reload_v2_controls() -> void:
++	_suppress_v2 = true
++	_preview_orientation = str(_stage_v2.get("orientation", "portrait"))
++	_orientation.select(1 if _preview_orientation == "landscape" else 0)
++	_bg_fit.select(1 if _stage_v2.get("fitMode", "cover") == "contain" else 0)
++	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if _stage_v2.get("fitMode", "cover") == "contain" else TextureRect.STRETCH_KEEP_ASPECT_COVERED
++	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
++	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
++	_focal_x.value = float(_stage_v2.get("focal", {}).get("x", 0.5))
++	_focal_y.value = float(_stage_v2.get("focal", {}).get("y", 0.5))
++	_actor_z.editable = _selected_actor >= 0
++	if _selected_actor >= 0 and _selected_actor < _stage_data.get("cast", []).size():
++		_actor_z.value = int(_stage_v2.get("actorZ", {}).get(str(_stage_data["cast"][_selected_actor]["characterId"]), 0))
++	_prop_list.clear()
++	var props: Array = _stage_v2.get("props", [])
++	for prop: Dictionary in props:
++		_prop_list.add_item("%s · %s · z%d" % [prop["instanceId"], prop["state"], prop["z"]])
++	_selected_prop = mini(_selected_prop, props.size() - 1)
++	if _selected_prop >= 0:
++		_prop_list.select(_selected_prop)
++	_remove_prop.disabled = _selected_prop < 0
++	_prop_asset.clear()
++	_prop_asset.add_item("ART PENDING (без ассета)")
++	_prop_asset.set_item_metadata(0, "")
++	for item: Dictionary in _staged_assets.list_items():
++		if item.get("category") == "prop":
++			_prop_asset.add_item(str(item.get("displayName", item["id"])))
++			_prop_asset.set_item_metadata(_prop_asset.item_count - 1, item["id"])
++	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
++		spinner.editable = _selected_prop >= 0
++	_prop_state.disabled = _selected_prop < 0
++	_prop_asset.disabled = _selected_prop < 0
++	if _selected_prop >= 0:
++		var prop: Dictionary = props[_selected_prop]
++		_prop_x.value = float(prop["x"])
++		_prop_y.value = float(prop["y"])
++		_prop_z.value = int(prop["z"])
++		_prop_scale.value = float(prop["scale"])
++		for i in _prop_state.item_count:
++			if _prop_state.get_item_text(i) == prop["state"]:
++				_prop_state.select(i)
++		for i in _prop_asset.item_count:
++			if _prop_asset.get_item_metadata(i) == prop.get("assetId", ""):
++				_prop_asset.select(i)
++	_undo_v2_button.disabled = _undo_v2.is_empty()
++	_suppress_v2 = false
++
++
++func _apply_v2() -> void:
++	if _suppress_v2 or _stage_data.is_empty():
++		return
++	var error: String = StageV2.validate(_stage_data, _stage_v2)
++	if not error.is_empty():
++		_status.text = "V2 заблокировано: " + error
++		_stage_v2 = _committed_v2.duplicate(true)
++		_reload()
++		return
++	if _stage_v2 != _committed_v2:
++		_undo_v2.append(_committed_v2.duplicate(true))
++		if _undo_v2.size() > 32:
++			_undo_v2.remove_at(0)
++		_committed_v2 = _stage_v2.duplicate(true)
++		stage_v2_modified.emit(_committed_v2.duplicate(true))
++	_reload()
++
++
++func _on_undo_v2() -> void:
++	if _undo_v2.is_empty():
++		return
++	var previous: Dictionary = _undo_v2.pop_back()
++	if not StageV2.validate(_stage_data, previous).is_empty():
++		_undo_v2.clear()
++		_status.text = "История V2 не соответствует текущей сцене."
++		return
++	_stage_v2 = previous.duplicate(true)
++	_committed_v2 = previous.duplicate(true)
++	stage_v2_modified.emit(previous.duplicate(true))
++	_reload()
++
++
++func _on_focal_changed(_value: float) -> void:
++	if _suppress_v2:
++		return
++	_stage_v2["focal"] = {"x": _focal_x.value, "y": _focal_y.value}
++	_apply_v2()
++
++
++func _on_actor_z_changed(value: float) -> void:
++	if _suppress_v2 or _selected_actor < 0:
++		return
++	var id: String = str(_stage_data["cast"][_selected_actor]["characterId"])
++	_stage_v2["actorZ"][id] = int(value)
++	_apply_v2()
++
++
++func _on_refresh_prop_assets() -> void:
++	_staged_assets.open_project(ProjectSettings.globalize_path("res://"))
++	_reload_v2_controls()
++
++
++func _on_add_prop() -> void:
++	if _stage_v2.get("props", []).size() >= StageV2.MAX_PROPS:
++		return
++	_stage_v2 = StageV2.new_prop(_stage_v2)
++	_selected_prop = _stage_v2["props"].size() - 1
++	_apply_v2()
++
++
++func _on_remove_prop() -> void:
++	if _selected_prop < 0:
++		return
++	_stage_v2["props"].remove_at(_selected_prop)
++	_selected_prop = mini(_selected_prop, _stage_v2["props"].size() - 1)
++	_apply_v2()
++
++
++func _on_prop_select(index: int) -> void:
++	if index < 0 or _suppress_v2:
++		return
++	_selected_prop = index
++	_reload_v2_controls()
++
++
++func _on_prop_asset(index: int) -> void:
++	if _suppress_v2 or _selected_prop < 0 or index < 0:
++		return
++	_stage_v2["props"][_selected_prop]["assetId"] = str(_prop_asset.get_item_metadata(index))
++	_apply_v2()
++
++
++func _on_prop_state(index: int) -> void:
++	if _suppress_v2 or _selected_prop < 0 or index < 0:
++		return
++	_stage_v2["props"][_selected_prop]["state"] = _prop_state.get_item_text(index)
++	_apply_v2()
++
++
++func _on_prop_transform(_value: float) -> void:
++	if _suppress_v2 or _selected_prop < 0:
++		return
++	var prop: Dictionary = _stage_v2["props"][_selected_prop]
++	prop["x"] = _prop_x.value
++	prop["y"] = _prop_y.value
++	prop["z"] = int(_prop_z.value)
++	prop["scale"] = _prop_scale.value
++	_apply_v2()
++
++
++func _draw_props() -> void:
++	for card in _prop_cards:
++		if is_instance_valid(card):
++			card.queue_free()
++	_prop_cards.clear()
++	for index in _stage_v2.get("props", []).size():
++		var prop: Dictionary = _stage_v2["props"][index]
++		var card := Button.new()
++		card.flat = true
++		card.clip_contents = true
++		card.text = "ART PENDING\n" + str(prop["label"]) + "\n" + str(prop["state"])
++		card.tooltip_text = "%s / %s (staged, editor only)" % [prop["instanceId"], prop["assetId"]]
++		card.z_index = 10 + int(prop["z"])
++		card.gui_input.connect(_on_prop_card_input.bind(index))
++		_canvas.add_child(card)
++		_prop_cards.append(card)
++		var image: Image = _staged_assets.get_preview(str(prop.get("assetId", "")))
++		if image != null:
++			card.text = ""
++			var picture := TextureRect.new()
++			picture.texture = ImageTexture.create_from_image(image)
++			picture.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
++			picture.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
++			picture.mouse_filter = Control.MOUSE_FILTER_IGNORE
++			picture.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
++			card.add_child(picture)
++
++
++func _layout_props() -> void:
++	for index in _prop_cards.size():
++		var prop: Dictionary = _stage_v2["props"][index]
++		var length: float = minf(_canvas.size.x, _canvas.size.y) * 0.16 * float(prop["scale"])
++		var dimension := Vector2(length, length)
++		_prop_cards[index].custom_minimum_size = dimension
++		_prop_cards[index].size = dimension
++		_prop_cards[index].position = Vector2(float(prop["x"]), float(prop["y"])) * (_canvas.size - dimension)
++
++
++func _on_prop_card_input(event: InputEvent, index: int) -> void:
++	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
++		if event.pressed:
++			_selected_prop = index
++			_dragging_prop = index
++			_prop_grab_delta = event.position
++			_reload_v2_controls()
++		elif _dragging_prop == index:
++			_dragging_prop = -1
++			_apply_v2()
++	elif event is InputEventMouseMotion and _dragging_prop == index and (event.button_mask & MOUSE_BUTTON_MASK_LEFT):
++		var card: Button = _prop_cards[index]
++		var pos: Vector2 = card.position + event.position - _prop_grab_delta
++		var area: Vector2 = (_canvas.size - card.size).max(Vector2.ONE)
++		_stage_v2["props"][index]["x"] = snappedf(clampf(pos.x / area.x, 0, 1), 0.001)
++		_stage_v2["props"][index]["y"] = snappedf(clampf(pos.y / area.y, 0, 1), 0.001)
++		card.position = Vector2(float(_stage_v2["props"][index]["x"]), float(_stage_v2["props"][index]["y"])) * area
++
+ func set_dialogue_preview(next_speaker: String, text_value: String, id: String) -> void:
+ 	_overlay.set_preview(next_speaker, text_value, id)
+ 
+diff --git a/addons/vn_studio/editor/raven_stage_overlay.gd b/addons/vn_studio/editor/raven_stage_overlay.gd
+index 741e1ef..922ca57 100644
+--- a/addons/vn_studio/editor/raven_stage_overlay.gd
++++ b/addons/vn_studio/editor/raven_stage_overlay.gd
+@@ -3,6 +3,7 @@ extends Control
+ ## Editor-only overlay. 390x844 logical reference from project.godot; never exported to game saves.
+ var reference_size: Vector2 = Vector2(390, 844)
+ var show_safe: bool = false
++var focal: Vector2 = Vector2(0.5, 0.5)
+ var show_grid: bool = false
+ var show_vn: bool = false
+ var speaker: String = ""
+@@ -37,6 +38,10 @@ func _draw() -> void:
+ 		var margin: Vector2 = size * Vector2(0.05, 0.05)
+ 		draw_rect(Rect2(margin, size - margin * 2.0), Color(0.5, 0.91, 0.74, 0.68), false, 2.0)
+ 		draw_string(font, margin + Vector2(5, 14), "SAFE · editor guide", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.83, 1.0, 0.84))
++	# Persisted v2 focal is a guide, never a camera instruction to runtime.
++	var f: Vector2 = size * focal
++	draw_line(f - Vector2(9, 0), f + Vector2(9, 0), Color(0.98, 0.71, 0.33), 2)
++	draw_line(f - Vector2(0, 9), f + Vector2(0, 9), Color(0.98, 0.71, 0.33), 2)
+ 	if show_vn:
+ 		var h: float = size.y * 0.28
+ 		var top: float = size.y - h
+diff --git a/addons/vn_studio/editor/raven_story_store.gd b/addons/vn_studio/editor/raven_story_store.gd
+index 4fefa34..5c7c957 100644
+--- a/addons/vn_studio/editor/raven_story_store.gd
++++ b/addons/vn_studio/editor/raven_story_store.gd
+@@ -9,6 +9,8 @@ const ROUTES := "data/raven/production/map_narrative_routes.json"
+ const CUES := "data/raven/production/line_performance_cues.json"
+ const CAST := "data/raven/production/character_performance.json"
+ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
++const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
+ const FORMAT := "raven-vn-studio-draft-v1"
+ const LANGUAGES := ["ru", "be", "en"]
+ 
+@@ -89,7 +91,7 @@ static func fresh(project: Dictionary) -> Dictionary:
+ 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
+ 		"stageSourceSha256": str(project.get("stagingSha", "")),
+ 		"castSourceSha256": str(project.get("castSha", "")),
+-		"patches": {}, "stagePatches": {}}
++		"patches": {}, "stagePatches": {}, "stageV2Patches": {}}
+ 
+ 
+ static func load_draft(project: Dictionary) -> Dictionary:
+@@ -126,6 +128,21 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
+ 			var stage_error: String = validate_stage(project, stage_patches[stage_id])
+ 			if not stage_error.is_empty():
+ 				return "%s: %s" % [stage_id, stage_error]
++	var v2_patches: Variant = draft.get("stageV2Patches", {})
++	if not v2_patches is Dictionary:
++		return "Повреждённый список изменений v2-постановки."
++	if not v2_patches.is_empty():
++		if draft.get("stageSourceSha256", "") != project.get("stagingSha", "") or draft.get("castSourceSha256", "") != project.get("castSha", ""):
++			return "V2-черновик привязан к старой постановке/касту; автоматическая миграция запрещена."
++		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
++			return "Исходная постановка изменилась на диске; проверьте SHA вручную."
++		for scene_id in v2_patches:
++			if not project["shots"].has(scene_id):
++				return "V2-черновик ссылается на неизвестную сцену."
++			var source_stage: Dictionary = effective_stage(project, draft, str(scene_id))
++			var v2_error: String = StageV2.validate(source_stage, v2_patches[scene_id])
++			if not v2_error.is_empty():
++				return "%s: %s" % [scene_id, v2_error]
+ 	var patches: Variant = draft.get("patches", {})
+ 	if not patches is Dictionary:
+ 		return "Повреждённый набор правок."
+@@ -286,9 +303,69 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
+ 	if not draft.has("stagePatches"):
+ 		draft["stagePatches"] = {}
+ 	draft["stagePatches"][str(stage["sceneId"])] = stage.duplicate(true)
++	var scene_id: String = str(stage["sceneId"])
++	if draft.get("stageV2Patches", {}).has(scene_id):
++		draft["stageV2Patches"][scene_id] = StageV2.trim_actor_z(stage, draft["stageV2Patches"][scene_id])
++	return ""
++
++
++static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictionary) -> String:
++	var scene_id: String = str(overlay.get("sceneId", ""))
++	if not project.get("shots", {}).has(scene_id):
++		return "V2-постановка ссылается на неизвестную сцену."
++	var stage: Dictionary = effective_stage(project, draft, scene_id)
++	var error: String = StageV2.validate(stage, overlay)
++	if not error.is_empty():
++		return error
++	draft["stageSourceSha256"] = str(project["stagingSha"])
++	draft["castSourceSha256"] = str(project["castSha"])
++	if not draft.has("stageV2Patches"):
++		draft["stageV2Patches"] = {}
++	draft["stageV2Patches"][scene_id] = overlay.duplicate(true)
+ 	return ""
+ 
+ 
++static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
++	var error: String = validate(project, draft)
++	if not error.is_empty():
++		return {"ok": false, "error": error}
++	var patches: Dictionary = draft.get("stageV2Patches", {})
++	if patches.is_empty():
++		return {"ok": false, "error": "V2-изменения постановки отсутствуют."}
++	var asset_store := ImageStaging.new()
++	var asset_result: Dictionary = asset_store.open_project(str(project["root"]))
++	var item_by_id: Dictionary = {}
++	if asset_result.get("ok", false):
++		for item: Dictionary in asset_store.list_items():
++			item_by_id[str(item.get("id", ""))] = item
++	var pending: Array[String] = []
++	var used_assets: Dictionary = {}
++	for scene_id in patches:
++		for prop: Dictionary in patches[scene_id].get("props", []):
++			var asset_id: String = str(prop.get("assetId", ""))
++			if asset_id.is_empty():
++				pending.append("%s/%s: ART PENDING" % [scene_id, prop["instanceId"]])
++				continue
++			if not asset_result.get("ok", false) or not item_by_id.has(asset_id):
++				return {"ok": false, "error": "Staged prop отсутствует или source SHA изменился: " + asset_id}
++			if item_by_id[asset_id].get("category") != "prop":
++				return {"ok": false, "error": "Asset не относится к prop: " + asset_id}
++			used_assets[asset_id] = {"sha256": item_by_id[asset_id]["sha256"],
++				"provenance": item_by_id[asset_id].get("provenance", ""),
++				"license": item_by_id[asset_id].get("license", ""),
++				"approval": "unreviewed_staged_asset"}
++	var output: Dictionary = {"format": "raven-stage-v2-review-candidate", "schemaVersion": 1,
++		"sourceSha256": project["sha"], "stageSourceSha256": project["stagingSha"],
++		"castSourceSha256": project["castSha"], "stageV1Patches": draft.get("stagePatches", {}).duplicate(true),
++		"stageV2Patches": patches.duplicate(true), "stagedPropReferences": used_assets,
++		"artPending": pending, "runtimeApplied": false, "requiresHumanReview": true}
++	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/v2/exports")
++	var payload: String = JSON.stringify(output, "	") + "
++"
++	var path: String = folder.path_join("raven-stage-v2-" + payload.sha256_text().substr(0, 24) + ".json")
++	return _write_new(path, payload, false)
++
++
+ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dictionary:
+ 	var data: Dictionary = project["stagingData"].duplicate(true)
+ 	var patches: Dictionary = draft.get("stagePatches", {})
+@@ -300,6 +377,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
+ 
+ 
+ static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
++	if not draft.get("stageV2Patches", {}).is_empty():
++		return {"ok": false, "error": "Есть stage-v2 данные. Используйте отдельный V2 review export: v1 исключит слои/props."}
+ 	var error: String = validate(project, draft)
+ 	if not error.is_empty():
+ 		return {"ok": false, "error": error}
+diff --git a/addons/vn_studio/editor/raven_story_view.gd b/addons/vn_studio/editor/raven_story_view.gd
+index 2dbb1d5..bb7c00d 100644
+--- a/addons/vn_studio/editor/raven_story_view.gd
++++ b/addons/vn_studio/editor/raven_story_view.gd
+@@ -30,6 +30,7 @@ var _path: LineEdit
+ var _save: Button
+ var _export: Button
+ var _export_stage: Button
++var _export_stage_v2: Button
+ var _stage_designer: Control
+ var _scene_panel: Control
+ var _line_panel: Control
+@@ -91,6 +92,11 @@ func _build() -> void:
+ 	_export_stage.text = "Экспорт постановки JSON"
+ 	_export_stage.pressed.connect(_export_stage_candidate)
+ 	toolbar.add_child(_export_stage)
++	_export_stage_v2 = Button.new()
++	_export_stage_v2.text = "Экспорт V2 review"
++	_export_stage_v2.tooltip_text = "Сохранить отдельный JSON-кандидат ориентации/props/layers в user://"
++	_export_stage_v2.pressed.connect(_export_stage_v2_candidate)
++	toolbar.add_child(_export_stage_v2)
+ 	_undo_button = Button.new()
+ 	_undo_button.text = "↶"
+ 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
+@@ -211,6 +217,7 @@ func _build() -> void:
+ 	_stage_scroll.add_child(stage_contents)
+ 	_stage_designer = StageDesigner.new()
+ 	_stage_designer.stage_modified.connect(_on_stage_modified)
++	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
+ 	stage_contents.add_child(_stage_designer)
+ 	var visual_label := Label.new()
+ 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
+@@ -442,14 +449,16 @@ func _on_redo() -> void:
+ 
+ 
+ func _update_diff() -> void:
+-	_diff.text = "%d изменённых переводов, %d сцен постановки · %s" % [
+-		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), "есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
++	_diff.text = "%d изменённых переводов, %d сцен v1, %d сцен v2 · %s" % [
++		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), _draft.get("stageV2Patches", {}).size(),
++		"есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
+ 
+ 
+ func _refresh_buttons() -> void:
+ 	_save.disabled = _blocked or _project.is_empty()
+ 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
+-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty()
++	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty()
++	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty()
+ 	_undo_button.disabled = _blocked or _undo.is_empty()
+ 	_redo_button.disabled = _blocked or _redo.is_empty()
+ 
+@@ -502,6 +511,40 @@ func _on_stage_modified(stage: Dictionary) -> void:
+ 	_refresh_buttons()
+ 
+ 
++func _on_stage_v2_modified(overlay: Dictionary) -> void:
++	if _blocked or _project.is_empty():
++		return
++	var id: String = str(overlay.get("sceneId", ""))
++	var before: Dictionary = _draft.get("stageV2Patches", {}).get(id, {})
++	if before == overlay:
++		return
++	var snapshot: Dictionary = _draft.duplicate(true)
++	var error: String = Store.set_stage_v2(_project, _draft, overlay)
++	if not error.is_empty():
++		_status.text = "V2-постановка не сохранена: " + error
++		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
++		return
++	_undo.append(snapshot)
++	_redo.clear()
++	_dirty = true
++	_update_diff()
++	_refresh_buttons()
++
++
++func _export_stage_v2_candidate() -> void:
++	if _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty():
++		return
++	if _dirty:
++		_status.text = "Сначала сохраните Raven-черновик, затем экспортируйте V2 review."
++		return
++	var result: Dictionary = Store.export_v2_candidate(_project, _draft)
++	if result.get("ok", false):
++		_status.text = "Создан локальный V2 review candidate (не runtime, не production)."
++		_path.text = str(result["path"])
++	else:
++		_status.text = "V2 review export заблокирован: " + str(result.get("error", ""))
++
++
+ func _export_stage_candidate() -> void:
+ 	if _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty():
+ 		return
+diff --git a/addons/vn_studio/model/stage_v2_store.gd b/addons/vn_studio/model/stage_v2_store.gd
+new file mode 100644
+index 0000000..6488442
+--- /dev/null
++++ b/addons/vn_studio/model/stage_v2_store.gd
+@@ -0,0 +1,128 @@
++@tool
++extends RefCounted
++## VNS5-04B: editor-only stage overlay. The existing Raven stage-v1 and runtime
++## remain authoritative; no automatic migration/promotion to res://.
++const FORMAT := "raven-vn-stage-overlay-v2"
++const ORIENTATIONS := ["portrait", "landscape"]
++const FIT_MODES := ["cover", "contain"]
++const MAX_PROPS := 24
++const ALLOWED := ["format", "schemaVersion", "sceneId", "orientation", "fitMode", "focal", "actorZ", "props"]
++const PROP_FIELDS := ["instanceId", "assetId", "state", "x", "y", "z", "scale", "pivot", "label"]
++
++
++static func fresh(scene_id: String) -> Dictionary:
++	return {"format": FORMAT, "schemaVersion": 2, "sceneId": scene_id,
++		"orientation": "portrait", "fitMode": "cover", "focal": {"x": 0.5, "y": 0.5},
++		"actorZ": {}, "props": []}
++
++
++static func effective(draft: Dictionary, scene_id: String) -> Dictionary:
++	var record: Variant = draft.get("stageV2Patches", {}).get(scene_id, {})
++	return record.duplicate(true) if record is Dictionary and not record.is_empty() else fresh(scene_id)
++
++
++static func _number(value: Variant, minimum: float, maximum: float) -> bool:
++	return (value is int or value is float) and is_finite(float(value)) \
++		and float(value) >= minimum and float(value) <= maximum
++
++
++static func _token(value: Variant, maximum: int) -> bool:
++	if not value is String or value.is_empty() or value.length() > maximum:
++		return false
++	for i in value.length():
++		var c: String = value.substr(i, 1)
++		if not ("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_-".contains(c)):
++			return false
++	return true
++
++
++static func _asset(value: Variant) -> bool:
++	if value == "": # A prop placeholder is NOT an approved or published asset.
++		return true
++	if not value is String or not value.begins_with("asset-") or value.length() != 70:
++		return false
++	for i in range(6, 70):
++		if not "0123456789abcdef".contains(value.substr(i, 1)):
++			return false
++	return true
++
++
++static func validate(stage: Dictionary, overlay: Variant) -> String:
++	if not overlay is Dictionary:
++		return "V2-слой должен быть объектом."
++	for key in overlay.keys():
++		if not ALLOWED.has(key):
++			return "Недопустимое поле v2: " + str(key)
++	if overlay.get("format") != FORMAT or overlay.get("schemaVersion") != 2 or overlay.get("sceneId") != stage.get("sceneId"):
++		return "Несовместимая версия или sceneId stage-v2."
++	if overlay.get("orientation") not in ORIENTATIONS or overlay.get("fitMode") not in FIT_MODES:
++		return "Неверная ориентация или fitMode."
++	var focal: Variant = overlay.get("focal", {})
++	if not focal is Dictionary or focal.size() != 2 or not focal.has("x") or not focal.has("y") \
++			or not _number(focal["x"], 0, 1) or not _number(focal["y"], 0, 1):
++		return "Focal должен содержать только нормализованные x/y."
++	var actor_z: Variant = overlay.get("actorZ", {})
++	if not actor_z is Dictionary:
++		return "Неверный actorZ."
++	var cast_ids: Dictionary = {}
++	for actor in stage.get("cast", []):
++		if not actor is Dictionary:
++			return "Повреждённая stage-v1 постановка."
++		cast_ids[str(actor.get("characterId", ""))] = true
++	for character_id in actor_z:
++		if not cast_ids.has(character_id) or not _number(actor_z[character_id], -10, 100) or not actor_z[character_id] is int:
++			return "Actor z-order содержит отсутствующего персонажа или неверный z."
++	var props: Variant = overlay.get("props", [])
++	if not props is Array or props.size() > MAX_PROPS:
++		return "Не более 24 props в одном кадре."
++	var ids: Dictionary = {}
++	for prop in props:
++		if not prop is Dictionary:
++			return "Некорректный экземпляр prop."
++		for key in prop.keys():
++			if not PROP_FIELDS.has(key):
++				return "Запрещённое поле prop: " + str(key)
++		var id: Variant = prop.get("instanceId", "")
++		if not _token(id, 48) or not str(id).begins_with("prop-") or ids.has(id):
++			return "Отсутствующий, повторный или неверный prop instanceId."
++		ids[id] = true
++		if not _asset(prop.get("assetId", "")):
++			return "Prop assetId должен быть staged SHA-256 ID или пустым ART PENDING."
++		if not _token(prop.get("state", ""), 32) or not _token(prop.get("label", ""), 48):
++			return "Недопустимое состояние/метка prop."
++		if prop.get("pivot", "") != "center" or not _number(prop.get("x"), 0, 1) or not _number(prop.get("y"), 0, 1) \
++				or not _number(prop.get("scale"), 0.1, 3) or not _number(prop.get("z"), -10, 100) or not prop.get("z") is int:
++			return "Недопустимые нормализованные координаты/scale/z/pivot prop."
++	return ""
++
++
++static func trim_actor_z(stage: Dictionary, overlay: Dictionary) -> Dictionary:
++	var next: Dictionary = overlay.duplicate(true)
++	var known: Dictionary = {}
++	for actor in stage.get("cast", []):
++		known[str(actor.get("characterId", ""))] = true
++	for key in next.get("actorZ", {}).keys():
++		if not known.has(key):
++			next["actorZ"].erase(key)
++	return next
++
++
++static func new_prop(overlay: Dictionary) -> Dictionary:
++	var next: Dictionary = overlay.duplicate(true)
++	var occupied: Dictionary = {}
++	for prop in next.get("props", []):
++		occupied[str(prop.get("instanceId", ""))] = true
++	var index: int = 1
++	while occupied.has("prop-%04d" % index):
++		index += 1
++	var id: String = "prop-%04d" % index
++	next["props"].append({"instanceId": id, "assetId": "", "state": "clean",
++		"x": 0.5, "y": 0.5, "z": 20, "scale": 1.0, "pivot": "center", "label": "Prop_%d" % index})
++	return next
++
++
++static func has_pending_art(overlay: Dictionary) -> bool:
++	for prop in overlay.get("props", []):
++		if str(prop.get("assetId", "")).is_empty():
++			return true
++	return false
+diff --git a/check.ps1 b/check.ps1
+index 99de42a..7790eb7 100644
+--- a/check.ps1
++++ b/check.ps1
+@@ -94,6 +94,7 @@ Invoke-GodotCheck 'VN Studio responsive layout' @('--headless', '--editor', '--p
+ Invoke-GodotCheck 'VN Studio asset registry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_asset_registry_smoke.gd', '--quit-after', '120') 'Raven VN Studio asset registry read-only smoke passed'
+ Invoke-GodotCheck 'VN Studio staged image import safety' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_staged_image_smoke.gd', '--quit-after', '120') 'Raven VN Studio staged image import safety read-only smoke passed'
+ Invoke-GodotCheck 'VN Studio orientation/templates/undo' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_orientation_smoke.gd', '--quit-after', '180') 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed'
++Invoke-GodotCheck 'VN Studio stage-v2 sidecar/props' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_stage_v2_smoke.gd', '--quit-after', '240') 'Raven VN Studio VNS5-04B sidecar/focal/prop/z-order safety smoke passed'
+ Invoke-GodotCheck 'VN Studio background-state preview' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_studio_backgrounds_smoke.gd', '--quit-after', '120') 'Raven VN Studio background-state preview smoke passed'
+ Invoke-GodotCheck 'Approved character art integration' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_character_art_smoke.gd', '--quit-after', '240') 'Raven approved character art smoke passed'
+ Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_smoke.gd', '--quit-after', '120') 'Raven Manor Hall tea VN pilot smoke passed'
+diff --git a/data/raven/production/gap_work_packages.json b/data/raven/production/gap_work_packages.json
+index 1a79b61..322dd37 100644
+--- a/data/raven/production/gap_work_packages.json
++++ b/data/raven/production/gap_work_packages.json
+@@ -407,6 +407,24 @@
+       "source": "User request 2026-10-31; addons/vn_studio/README.md",
+       "requiresHumanAcceptance": true
+     },
++    {
++      "id": "VNS5-04B",
++      "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
++      "domain": "narrative",
++      "priority": "P0",
++      "size": "L",
++      "description": "Store orientation, contain/cover, normalized focal, staged-prop instance ID/state/position/scale/z and character z in versioned draft stageV2Patches; old v1 stage and game runtime unchanged. Prop references must be project-scoped staged asset IDs or explicit ART PENDING, never arbitrary paths. Separate read-only no-overwrite review export; no automatic promotion.",
++      "deliverable": "stage_v2_store.gd, Raven Story Store/View integration, StageDesigner prop controls & focal overlay, safety negative and serialization smoke tests, docs; follow-up runtime adapter/review gate separate.",
++      "acceptance": "Owner verifies portrait/landscape saved/reopened, contain/cover/focal, adding/removing props, staged prop image previews vs ART PENDING, clean/dirty/broken, actor and prop z-order and normalized prop drag/scale. Invalid instance IDs/path traversal/NaN/duplicate/reparse and source SHA drift blocked; v1 draft/source unchanged; v1 export refuses to silently drop v2. CI and manual 800/1024/1366 desktop QA; explicit review before migration/runtime.",
++      "status": "proposed",
++      "dependsOn": [
++        "VNS5-04A",
++        "VNS5-03"
++      ],
++      "graphicsDependencies": [],
++      "source": "VN Studio v5 2026-11-01 handoff docs 04_DATA_CONTRACTS/05_EXECUTION_PLAN and owner follow-up after PR #101",
++      "requiresHumanAcceptance": true
++    },
+     {
+       "id": "VNS5-04A",
+       "title": "VN Studio v5: orientation-aware editor stage, actor templates and local undo",
+diff --git a/data/raven/production/production_progress.json b/data/raven/production/production_progress.json
+index 70976e9..aab45c7 100644
+--- a/data/raven/production/production_progress.json
++++ b/data/raven/production/production_progress.json
+@@ -3,12 +3,19 @@
+   "updated": "2026-11-01",
+   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
+   "entries": [
++    {
++      "id": "VNS5-04B",
++      "status": "in_progress",
++      "owner": "ChatGPT",
++      "updated": "2026-11-01",
++      "evidence": "Stage-v2 editor sidecar proposal after merged #101, source main 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346. Separate optional stageV2Patches per scene in old raven-vn-studio-draft-v1 container, explicit no-overwrite user:// v2 review candidate. Orientation/fit/focal, actorZ, stable prop instanceIds, staged prop image preview or ART PENDING, normalized prop transforms, prop state; no runtime or production catalog writes. Offline patch/schema tests only; Godot 4.7.2, CI and manual editor QA NOT RUN. The incoming ZIP only transports implementation handoff, not active plugin code; implementation PR will require separate CI and owner review."
++    },
+     {
+       "id": "VNS5-04A",
+-      "status": "PR_review",
++      "status": "merged",
+       "owner": "ChatGPT",
+       "updated": "2026-11-01",
+-      "evidence": "Native implementation in Draft PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 from main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd after merged PR #99. Incoming handoff PR #100 is transport only; do not merge it as implementation. 10 source files uploaded with exact matching Git blob hashes. Godot/Raven/Web build CI run 41348044068 succeeded on code head 77529bce9892559629e4b98a4b404f0d755abb0b; last-head CI after documentation edits still required. Preview 390x844/844x390, fit/cover, safe/grid/HUD and reversible 1/2/3-actor templates + local Undo added; stage-v1 serialization, runtime, source art and save unchanged. Manual Godot 4.7.2 desktop visual QA at 800x640 / 1024x640 / 1366x768 and owner signoff pending, not accepted. Props/focal/z-order/schema-v2 remain separate VNS5-04B."
++      "evidence": "PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 merged to main at 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346 (2026-11-01). Final-head Godot/Raven/Web CI run 41348331431 passed. Owner marked PR merged, but manual Godot Editor interactive acceptance at 800x640 / 1024x640 / 1366x768 is NOT recorded; do not mark accepted. Import VNS5-03 in PR #99 also merged, not manually accepted."
+     },
+     {
+       "id": "VNS5-03",
+diff --git a/docs/STATUS.md b/docs/STATUS.md
+index 78b574f..7e7bc64 100644
+--- a/docs/STATUS.md
++++ b/docs/STATUS.md
+@@ -377,3 +377,12 @@ VNS5-03 adds an **editor-only** multi-file PNG/JPEG/WebP staging proposal under
+ [VNS5-03 PR #99](https://github.com/bezdredoff/RavenManor-Godot/pull/99) merged to `main` at `ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd`; last-head Godot/Raven/Web CI [41345448978](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41345448978) passed. **Merged does not mean owner-accepted**: Windows Godot interactive UX, 800/1024/1366-wide views, import provenance and Windows reparse-point negatives still need explicit verification. PR #98 was a safe incoming handoff, not implementation and must not be merged.
+ 
+ Next work item **VNS5-04A** is a narrowly scoped editor-only pilot: 390×844 portrait and 844×390 landscape preview, background fit/cover toggle, normalized actor positioning, explicit 1/2/3 arrangement presets, safe-area/grid/HUD guides and reversible editor-session Undo for stage draft changes. It is built against the existing Raven stage-v1 `cast` coordinates; it must not add unsupported keys into `vn_staging.json`, rewrite 28 scenes/280 lines, mutate `rm_vs_01_content.json`, existing saves, or alter the runtime portrait layout. Orientation, background fit and safe guides are **preview controls, not persisted as production scene orientation or focal settings**. VNS5-04B is pending schema agreement for scene orientation, focal, prop instances/z-order and project-wide undo/migration; do not claim those features shipped. Incoming handoff [PR #100](https://github.com/bezdredoff/RavenManor-Godot/pull/100) created the transport patch only. Native implementation is open as Draft [PR #101](https://github.com/bezdredoff/RavenManor-Godot/pull/101) and its code head `77529bc` passed the Godot/Raven/Web workflow [41348044068](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41348044068). Final-head documentation CI and owner manual Godot Editor QA remain outstanding, so the task is `PR_review`, not accepted or merged.
++
++
++## 2026-11-01 — VNS5-04A merged, VNS5-04B stage-v2 editor sidecar candidate
++
++[VNS5-04A PR #101](https://github.com/bezdredoff/RavenManor-Godot/pull/101) merged into main at `6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346`; final-head CI [41348331431](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41348331431) passed. The incoming ZIP PR #100 was a transport-only handoff and was closed without merge. **Merged is not owner-accepted**: Godot Editor viewport/interaction QA for PR #101 and staged image import #99 remain unrecorded.
++
++VNS5-04B implements a separate **editor-only** stage-v2 overlay (`stageV2Patches`) inside the existing local v1 Raven draft. Existing production `vn_staging.json` remains stage-v1 and runtime-authoritative: no mutation of 28 scenes, 280 lines, saved games, UPDS or canon catalogs. Overlay persists per-scene orientation (`portrait`/`landscape`), background fit (`cover`/`contain`), normalized focal point, cast z-index and independent prop instances (stable IDs, normalized positions, scale, state/z, optional project-staged binary ID or explicit **ART PENDING** placeholder). Old v1 drafts load unchanged. V1 stage candidate export blocks when v2 sidecar exists, to prevent silently discarding props/focal/landscape; dedicated no-overwrite V2 review export under `user://` does not promote assets or write into res://. Approval of new schema/runtime is a separate decision.
++
++**Status:** offline implementation handoff only, not merged nor CI/device verified. Godot 4.7.2 compile and focused smoke, full PR CI, desktop 800×640/1024×640/1366×768 checks, stale locks/reparse negative cases and owner review are required. If any fail, revise in a separate implementation PR. Do not merge the incoming handoff as plugin delivery.
+diff --git a/docs/production/VNS5_04B_STAGE_V2_RU.md b/docs/production/VNS5_04B_STAGE_V2_RU.md
+new file mode 100644
+index 0000000..aa37851
+--- /dev/null
++++ b/docs/production/VNS5_04B_STAGE_V2_RU.md
+@@ -0,0 +1,25 @@
++# VNS5-04B — локальная схема постановки v2
++
++**Baseline:** `main@6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346`, PR #101 merged. **Status:** implementation candidate, not merged/accepted. The incoming ZIP transports the implementation patch for a separate reviewed GitHub PR; incoming PR is not the deliverable.
++
++## Контракт
++
++Существующий `raven-vn-studio-draft-v1` и `stagePatches` сохраняются без миграции и без изменения `vn_staging.json`. Необязательный `stageV2Patches[sceneId]` содержит собственные `format=raven-vn-stage-overlay-v2`, `schemaVersion=2`, `sceneId`, `orientation=portrait|landscape`, `fitMode=cover|contain`, `focal={x,y}`, `actorZ` (ID только текущего cast), массив `props` (не более 24). У props стабильный `instanceId=prop-0001`, `assetId=""` для явного **ART PENDING** либо `asset-<sha256>` из локального import staging, `state`, `label`, `x/y∈[0,1]`, `z=-10..100`, `scale=0.1..3`, `pivot=center`.
++
++Это **editor-only sidecar**: gameplay VN, Hall Tea, Room Builder, saved progress, season1 narrative, 28 scene IDs и 280 реплик не меняются. Принятые изображения персонажей и production background plates остаются исходными. Редактор отображает staged prop только после проверки при открытии локального `StagedImageStore`; он не становится approved asset или частью бинарников игры. Для ещё не созданных prop states явно используется placeholder.
++
++## UX
++
++В `Raven Manor → Director → Постановка` ориентация и `fit/cover` теперь записываются в V2 draft и восстанавливаются после перезапуска. `Focal X/Y` показывает визуальный крестик без смещения runtime-камеры. Можно задать z выбранного актёра, добавить до 24 экземпляров prop, сменить состояние (`clean`, `dirty`, `broken`, `restored`, `new`), asset, x/y, z, scale, удалить prop, перетянуть на сцене и отменить V2 изменение. Существующая stage-v1 расстановка персонажей остаётся отдельной, а 04A шаблоны сохранены.
++
++Верхняя кнопка `Экспорт V2 review` пишет hash-named JSON **только в** `user://raven_story_studio/v2/exports` с pinning SHA исходного сюжета, staging и cast, V1 patches, V2 sidecar, staged prop hashes/provenance/license и списком ART PENDING. Повторный экспорт того же содержимого блокируется (no overwrite). Старый v1 stage export блокируется при наличии V2 patches, чтобы не отбрасывать ориентацию/props молча. Никакой автоматической записи в `res://`, promotion или runtime adapter нет.
++
++## Проверки и ограничения
++
++- Старые локальные черновики без `stageV2Patches` должны открываться без миграции; для новых полей действует strict schema; запрет неизвестных полей, duplicate instanceId, path-like assetId, NaN/Inf, неправильного focal/z/state, stale source SHA, unknown actor ID.
++- Staged prop при review export должен существовать с корректной категорией `prop` и source locks; отсутствие binary или drift блокирует экспорт.
++- Проверить Godot 4.7.2 Editor при 800×640, 1024×640, 1366×768. Добавить 1–3 cast, prop placeholder, staged prop, изменить ориентацию/fit/focal/state/z/scale, drag, undo, save/reopen, экспорт и повторный no-overwrite.
++- Прогнать `vn_studio_stage_v2_smoke.gd`, старые smoke/regression `check.sh`/`check.ps1`, PR Godot CI/Web export. Сравнить SHA `vn_staging.json` и `season1_dialogue_catalog.json` до/после.
++- Границы: focal — пока только **визуальный ориентир**, не pan/crop трансформация; перенос V2 в runtime, time clips/animation, полноценный production prop registry и approved state variants требуют отдельных PR, review и owner approval.
++
++**Отмена:** revert implementation PR; локальные user:// черновики остаются доступны для ручного восстановления, canonical source unaffected.
+diff --git a/scripts/check.sh b/scripts/check.sh
+index 7615f1d..eebce9b 100644
+--- a/scripts/check.sh
++++ b/scripts/check.sh
+@@ -65,6 +65,7 @@ run_check 'VN Studio responsive layout' 'Raven VN Studio responsive layout smoke
+ run_check 'VN Studio asset registry' 'Raven VN Studio asset registry read-only smoke passed' --script res://tests/raven/vn_studio_asset_registry_smoke.gd --quit-after 120
+ run_check 'VN Studio staged image import safety' 'Raven VN Studio staged image import safety smoke passed' --script res://tests/raven/vn_studio_staged_image_smoke.gd --quit-after 120
+ run_check 'VN Studio orientation/templates/undo' 'Raven VN Studio VNS5-04A orientation/template/undo smoke passed' --script res://tests/raven/vn_studio_stage_orientation_smoke.gd --quit-after 180
++run_check 'VN Studio stage-v2 sidecar/props' 'Raven VN Studio VNS5-04B sidecar/focal/prop/z-order safety smoke passed' --script res://tests/raven/vn_studio_stage_v2_smoke.gd --quit-after 240
+ run_check 'VN Studio background-state preview' 'Raven VN Studio background-state preview smoke passed' --script res://tests/raven/vn_studio_backgrounds_smoke.gd --quit-after 120
+ run_check 'Approved character art integration' 'Raven approved character art smoke passed' --script res://tests/raven/vn_character_art_smoke.gd --quit-after 240
+ run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
+diff --git a/tests/raven/vn_studio_stage_v2_smoke.gd b/tests/raven/vn_studio_stage_v2_smoke.gd
+new file mode 100644
+index 0000000..d1ff8a5
+--- /dev/null
++++ b/tests/raven/vn_studio_stage_v2_smoke.gd
+@@ -0,0 +1,79 @@
++extends SceneTree
++## VNS5-04B: stage-v2 editor-sidecar, props, focal/z, old draft and no source mutation.
++const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
++const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
++const Designer = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
++
++func _initialize() -> void:
++	call_deferred("_run")
++
++
++func _run() -> void:
++	var root_path: String = ProjectSettings.globalize_path("res://")
++	var staging_path: String = root_path.path_join(Store.STAGING)
++	var source_path: String = root_path.path_join(Store.RELATIVE)
++	var staging_sha: String = FileAccess.get_sha256(staging_path)
++	var source_sha: String = FileAccess.get_sha256(source_path)
++	var project: Dictionary = Store.open_project(root_path)
++	assert(project.get("ok", false), str(project.get("error", "")))
++	var scene: String = str(project["shots"].keys()[0])
++	var old_draft: Dictionary = Store.fresh(project)
++	old_draft.erase("stageV2Patches") # backward-compatible with existing saved v1 drafts
++	assert(Store.validate(project, old_draft).is_empty())
++	var original: Dictionary = Store.effective_stage(project, old_draft, scene)
++	var stage: Dictionary = StageV2.fresh(scene)
++	assert(StageV2.validate(original, stage).is_empty())
++	stage["orientation"] = "landscape"
++	stage["fitMode"] = "contain"
++	stage["focal"] = {"x": 0.13, "y": 0.81}
++	stage = StageV2.new_prop(stage)
++	# Unique synthetic review ID makes repeat local QA safe without deleting user data.
++	stage["props"][0]["label"] = "Smoke_" + str(Time.get_ticks_usec())
++	assert(StageV2.validate(original, stage).is_empty())
++	assert(StageV2.has_pending_art(stage))
++	assert(stage["props"][0]["instanceId"] == "prop-0001")
++	var second: Dictionary = StageV2.new_prop(stage)
++	assert(second["props"][1]["instanceId"] == "prop-0002")
++	assert(stage["props"].size() == 1, "Copy-on-write prop creation required")
++	var bad: Dictionary = stage.duplicate(true)
++	bad["props"].append(bad["props"][0].duplicate(true))
++	assert(not StageV2.validate(original, bad).is_empty(), "Duplicate instance IDs blocked")
++	bad = stage.duplicate(true)
++	bad["props"][0]["x"] = 1.2
++	assert(not StageV2.validate(original, bad).is_empty(), "Out-of-range coordinates blocked")
++	bad = stage.duplicate(true)
++	bad["props"][0]["assetId"] = "res://private/unsafe.webp"
++	assert(not StageV2.validate(original, bad).is_empty(), "Filesystem paths forbidden")
++	bad = stage.duplicate(true)
++	bad["focal"]["x"] = NAN
++	assert(not StageV2.validate(original, bad).is_empty(), "NaN blocked")
++	bad = stage.duplicate(true)
++	bad["runtimeApproved"] = true
++	assert(not StageV2.validate(original, bad).is_empty(), "Unknown v2 fields blocked")
++	var draft: Dictionary = Store.fresh(project)
++	assert(Store.set_stage_v2(project, draft, stage).is_empty())
++	assert(Store.validate(project, draft).is_empty())
++	assert(Store.effective_stage(project, draft, scene) == original, "V2 must not modify v1 source")
++	assert(StageV2.effective(draft, scene) == stage)
++	assert(not Store.export_stage_candidate(project, draft).get("ok", false), "Legacy export must not silently drop v2")
++	var review: Dictionary = Store.export_v2_candidate(project, draft)
++	assert(review.get("ok", false), str(review.get("error", "")))
++	assert(not Store.export_v2_candidate(project, draft).get("ok", false), "No-overwrite review export")
++	assert(FileAccess.get_sha256(staging_path) == staging_sha)
++	assert(FileAccess.get_sha256(source_path) == source_sha)
++	var gui := Designer.new()
++	root.add_child(gui)
++	gui.set_scene(project, draft, scene)
++	assert(gui._stage_v2["orientation"] == "landscape")
++	assert(gui._canvas.custom_minimum_size == Vector2(844, 390))
++	assert(gui._bg_image.stretch_mode == TextureRect.STRETCH_KEEP_ASPECT_CENTERED)
++	assert(gui._overlay.focal.distance_to(Vector2(0.13, 0.81)) < 0.01)
++	gui._on_add_prop()
++	assert(gui._stage_v2["props"].size() == 2)
++	gui._on_undo_v2()
++	assert(gui._stage_v2["props"].size() == 1)
++	gui.queue_free()
++	assert(FileAccess.get_sha256(staging_path) == staging_sha)
++	assert(FileAccess.get_sha256(source_path) == source_sha)
++	print("Raven VN Studio VNS5-04B sidecar/focal/prop/z-order safety smoke passed")
++	quit()
