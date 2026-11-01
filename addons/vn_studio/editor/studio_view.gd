@@ -63,6 +63,9 @@ var _story_graph_view: Control
 var _stage_tabs: TabContainer
 var _migration_review: Control
 var _raven_story_view: Control
+var _legacy_toolbar: Control
+var _legacy_scenes_panel: Control
+var _legacy_details_panel: Control
 
 
 func _init() -> void:
@@ -75,6 +78,7 @@ func _init() -> void:
 func _ready() -> void:
 	_make_ui()
 	_stage_tabs.current_tab = 3 # Raven Manor is the project-owned starting workspace.
+	_on_workspace_changed(_stage_tabs.current_tab)
 
 
 func open_source(folder: String) -> bool:
@@ -111,7 +115,8 @@ func _make_ui() -> void:
 	outer.size_flags_vertical = SIZE_EXPAND_FILL
 	add_child(outer)
 
-	var toolbar := HBoxContainer.new()
+	var toolbar := HFlowContainer.new()
+	_legacy_toolbar = toolbar
 	outer.add_child(toolbar)
 	var caption := Label.new()
 	caption.text = "VN Studio · Draft Authoring"
@@ -154,6 +159,7 @@ func _make_ui() -> void:
 	outer.add_child(horizontal)
 
 	var scenes_panel := VBoxContainer.new()
+	_legacy_scenes_panel = scenes_panel
 	scenes_panel.custom_minimum_size = Vector2(230, 0)
 	horizontal.add_child(scenes_panel)
 	var scenes_label := Label.new()
@@ -253,6 +259,7 @@ func _make_ui() -> void:
 	_stage_tabs.add_child(_raven_story_view)
 
 	var details_panel := VBoxContainer.new()
+	_legacy_details_panel = details_panel
 	details_panel.custom_minimum_size = Vector2(310, 0)
 	working.add_child(details_panel)
 	var tabs := TabContainer.new()
@@ -330,6 +337,19 @@ func _make_ui() -> void:
 	_choose_folder.title = "Выберите корневую папку отдельного UPDS-godot"
 	_choose_folder.dir_selected.connect(_on_folder_chosen)
 	add_child(_choose_folder)
+	_stage_tabs.tab_changed.connect(_on_workspace_changed)
+
+
+## Raven owns its own scene/line navigator; the legacy UPDS sidebars
+## otherwise consume most of the available width even when not in use.
+func _on_workspace_changed(index: int) -> void:
+	if _stage_tabs == null or _raven_story_view == null:
+		return
+	var raven_active: bool = _stage_tabs.get_tab_control(index) == _raven_story_view
+	_legacy_toolbar.visible = not raven_active
+	_status.visible = not raven_active
+	_legacy_scenes_panel.visible = not raven_active
+	_legacy_details_panel.visible = not raven_active
 
 
 func _on_choose_folder() -> void:

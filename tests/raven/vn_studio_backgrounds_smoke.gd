@@ -15,6 +15,11 @@ func _run() -> void:
 	var draft: Dictionary = Store.fresh(project)
 	var designer := Designer.new()
 	root.add_child(designer)
+	# Toolbars wrap on smaller embedded stage widths, not fixed HBoxes.
+	assert(designer.get_child(0) is HFlowContainer)
+	assert(designer.get_child(1) is HFlowContainer)
+	assert(designer.get_child(2) is HFlowContainer)
+	assert(designer.get_child(3) is HFlowContainer)
 
 	designer.set_scene(project, draft, "RM-BEAT-03-01")
 	assert(designer._stage_data["backgroundId"] == "BG-LIBRARY")

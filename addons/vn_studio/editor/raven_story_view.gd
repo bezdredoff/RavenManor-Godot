@@ -29,6 +29,9 @@ var _save: Button
 var _export: Button
 var _export_stage: Button
 var _stage_designer: Control
+var _scene_panel: Control
+var _line_panel: Control
+var _stage_scroll: ScrollContainer
 var _undo_button: Button
 var _redo_button: Button
 
@@ -44,8 +47,9 @@ func _build() -> void:
 	var heading := Label.new()
 	heading.text = "Raven Manor · собственный сценарий (28 сцен / 280 реплик)"
 	heading.add_theme_font_size_override("font_size", 17)
+	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(heading)
-	var toolbar := HBoxContainer.new()
+	var toolbar := HFlowContainer.new()
 	add_child(toolbar)
 	var reload := Button.new()
 	reload.text = "Перечитать проект"
@@ -77,6 +81,22 @@ func _build() -> void:
 		_locale.add_item(name)
 	_locale.item_selected.connect(_on_locale)
 	toolbar.add_child(_locale)
+	var scene_toggle := Button.new()
+	scene_toggle.text = "Скрыть сцены"
+	scene_toggle.tooltip_text = "Освободить место для редактора. Повторное нажатие возвращает список."
+	scene_toggle.pressed.connect(func():
+		_scene_panel.visible = not _scene_panel.visible
+		scene_toggle.text = "Скрыть сцены" if _scene_panel.visible else "Показать сцены"
+	)
+	toolbar.add_child(scene_toggle)
+	var lines_toggle := Button.new()
+	lines_toggle.text = "Скрыть реплики"
+	lines_toggle.tooltip_text = "Освободить место для постановки. Повторное нажатие возвращает список."
+	lines_toggle.pressed.connect(func():
+		_line_panel.visible = not _line_panel.visible
+		lines_toggle.text = "Скрыть реплики" if _line_panel.visible else "Показать реплики"
+	)
+	toolbar.add_child(lines_toggle)
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
@@ -85,6 +105,7 @@ func _build() -> void:
 	panel.size_flags_horizontal = SIZE_EXPAND_FILL
 	add_child(panel)
 	var left := VBoxContainer.new()
+	_scene_panel = left
 	left.custom_minimum_size.x = 150
 	panel.add_child(left)
 	_scenes = ItemList.new()
@@ -92,6 +113,7 @@ func _build() -> void:
 	_scenes.item_selected.connect(_on_scene)
 	left.add_child(_scenes)
 	var middle := VBoxContainer.new()
+	_line_panel = middle
 	middle.custom_minimum_size.x = 195
 	middle.size_flags_horizontal = SIZE_EXPAND_FILL
 	panel.add_child(middle)
@@ -131,17 +153,27 @@ func _build() -> void:
 	visual_column.name = "Постановка"
 	visual_column.size_flags_vertical = SIZE_EXPAND_FILL
 	workspace.add_child(visual_column)
+	# Tall art and multiple tool rows need vertical scrolling rather than
+	# clipping the asset controls and dialogue preview below the viewport.
+	_stage_scroll = ScrollContainer.new()
+	_stage_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_stage_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_stage_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	visual_column.add_child(_stage_scroll)
+	var stage_contents := VBoxContainer.new()
+	stage_contents.size_flags_horizontal = SIZE_EXPAND_FILL
+	_stage_scroll.add_child(stage_contents)
 	_stage_designer = StageDesigner.new()
 	_stage_designer.stage_modified.connect(_on_stage_modified)
-	visual_column.add_child(_stage_designer)
+	stage_contents.add_child(_stage_designer)
 	var visual_label := Label.new()
-	visual_label.text = "Пилотные изображения при наличии; остальное — placeholder. Не игровой runtime."
-	visual_column.add_child(visual_label)
+	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
+	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	stage_contents.add_child(visual_label)
 	_preview = RichTextLabel.new()
 	_preview.custom_minimum_size.y = 140
-	_preview.size_flags_vertical = SIZE_EXPAND_FILL
 	_preview.bbcode_enabled = false
-	visual_column.add_child(_preview)
+	stage_contents.add_child(_preview)
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
