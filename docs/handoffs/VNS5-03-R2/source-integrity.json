@@ -1,0 +1,42 @@
+{
+  "referenceMainSha": "8313a109b708e0ae244f5516d9a80d952bcd508f",
+  "referencePR": 97,
+  "merged": true,
+  "scope": "VNS5-03 editor only",
+  "liveBaselineBlobSHA256": "Git blob SHAs listed for direct comparison",
+  "baselineGitBlobs": {
+    "addons/vn_studio/model/staged_image_store.gd": null,
+    "addons/vn_studio/editor/raven_asset_library.gd": "5ce390002f8411fe970f1dd815aaa797d18b3119",
+    "tests/raven/vn_studio_staged_image_smoke.gd": null,
+    "addons/vn_studio/README.md": "4ba97688efe6b7b46ab2d1a83851e067439f8550",
+    "docs/STATUS.md": "035d26b1d677da0533ace63ae99c9a2ef2ea5975",
+    "data/raven/production/gap_work_packages.json": "0391bef052566effbfd18b3fd6a5c0665d99fb3e",
+    "data/raven/production/production_progress.json": "095bef3b0de1a574790992cd7713f57c96415990",
+    "scripts/check.sh": "cff363d6b6b1bbbd296046c68549507e2de1924f",
+    "check.ps1": "491a3ad3ec0cc9ba3bc81f2628f60540b4445135"
+  },
+  "targetSha256": {
+    "addons/vn_studio/model/staged_image_store.gd": "6fe97f491e396152fdbeaa7e0b4902d075e59ced061801fb34751a2739a82fff",
+    "addons/vn_studio/editor/raven_asset_library.gd": "bf1c6fd61c4dbb685ba3a4bea276fdb3f82af896d4ce1a7654aac3bbcec038e4",
+    "tests/raven/vn_studio_staged_image_smoke.gd": "882a44bd34fcf349ab9e0fc68982561b0346a839f4d687e3938203b496bc37f4",
+    "addons/vn_studio/README.md": "d9261cdbbdc2ad7af6eac59cd00fcb476b4dca5c8c764df381222d997657564e",
+    "docs/STATUS.md": "499ed0ddf678e398c613c35a5e3fb1ebaa488da91a10bd63abf40fec7e9a81d0",
+    "data/raven/production/gap_work_packages.json": "7a6987494e64739be83ebeb6ecb9cf40c8c2430df421543a2487c2cc0d44e12e",
+    "data/raven/production/production_progress.json": "412a2ee130efd522514eee8b5dcae5e98d2b59e0c4cfe68e10440d5198104a21",
+    "scripts/check.sh": "16db55d978ac9b6af329e64f8e067e912273837e6d2390dc87105ce17a5b3a81",
+    "check.ps1": "0bff929c7a3fb7b487386e4f6729111cbe53dcde1b13cd2dd1d703cecf6e1a49"
+  },
+  "patchSha256": "54acafc499e826b7eb11cd6c237cf36894d0ea3f9ff324092b49a0db9dbecc8c",
+  "touchedPaths": [
+    "addons/vn_studio/model/staged_image_store.gd",
+    "addons/vn_studio/editor/raven_asset_library.gd",
+    "tests/raven/vn_studio_staged_image_smoke.gd",
+    "addons/vn_studio/README.md",
+    "docs/STATUS.md",
+    "data/raven/production/gap_work_packages.json",
+    "data/raven/production/production_progress.json",
+    "scripts/check.sh",
+    "check.ps1"
+  ],
+  "acceptance": "implementation candidate only; no Godot execution or CI run"
+}
