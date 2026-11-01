@@ -7,6 +7,8 @@ const Copy = preload("res://scripts/raven/raven_production_localization.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const HallTeaScene = preload("res://scenes/raven/hall_tea_vn.tscn")
+const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+const BackgroundGallery = preload("res://scenes/raven/vn_background_gallery.tscn")
 
 
 func _initialize() -> void:
@@ -26,7 +28,7 @@ func _initialize() -> void:
 	assert(Copy.line_text(lines[0].id, "ru").begins_with("Вчера мне казалось"))
 	assert(Copy.line_text(lines[0].id, "en").begins_with("Yesterday"))
 	assert(Copy.popup_text("RM-POP-TEA-TABLE", "be").length() > 8)
-	assert(HallTeaScene != null)
+	assert(HallTeaScene != null and BackgroundGallery != null)
 
 	var art := [
 		load("res://assets/raven/vn_pilot/hall_morning.webp") as Texture2D,
@@ -35,6 +37,15 @@ func _initialize() -> void:
 	]
 	for texture: Texture2D in art:
 		assert(texture != null and texture.get_width() >= 300 and texture.get_height() >= 450)
+	var variants: Array = VNBackgrounds.all_entries()
+	assert(variants.size() == 9, "Four Hall + five Library candidate plates")
+	for variant: Dictionary in variants:
+		var texture: Texture2D = VNBackgrounds.texture_for(str(variant["backgroundId"]), str(variant["lighting"]), str(variant["roomState"]))
+		assert(texture != null, "VN background missing: " + str(variant["id"]))
+		assert(texture.get_width() == 1080 and texture.get_height() == 1920, str(variant["id"]))
+	assert(VNBackgrounds.entry_for_scene(beat_id).get("id") == "BG-HALL:day:habitable")
+	assert(VNBackgrounds.entry_for_scene("RM-BEAT-05-02").get("id") == "BG-LIBRARY:night:storm_leak")
+	assert(VNBackgrounds.entry_for_scene("RM-BEAT-00-01").is_empty())
 
 	var state := Snapshot.fresh()
 	var graph := Graph.new()
@@ -51,5 +62,5 @@ func _initialize() -> void:
 	assert(replay.state.storyBeatsSeen.count(beat_id) == 1)
 	assert(replay.state.workPoints == state.workPoints)
 	assert(replay.state.completedRestorations == state.completedRestorations)
-	print("Raven Manor Hall tea VN pilot smoke passed (art, RU/BE/EN, navigation, save-safe replay).")
+	print("Raven Manor Hall tea VN pilot smoke passed (9 backgrounds, RU/BE/EN, navigation, save-safe replay).")
 	quit()
