@@ -7,7 +7,7 @@ on:
       - '.github/workflows/temp-branch-cleanup.yml'
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   inventory:
@@ -23,7 +23,22 @@ jobs:
           jq -e 'any(.[]; .name == "main") and any(.[]; .name == "incoming")' "$RUNNER_TEMP/raven-branches-before-cleanup.json" > /dev/null
           echo "Branch count: $(jq length "$RUNNER_TEMP/raven-branches-before-cleanup.json")"
           jq -r '.[] | [.name, .sha, (.protected | tostring)] | @tsv' "$RUNNER_TEMP/raven-branches-before-cleanup.json"
-      - name: Archive inventory for recoverability
+      - name: Persist recovery inventory in incoming before any deletion
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          destination="docs/branch_cleanup/branch_heads_before_2026-11-01.json"
+          encoded="$(base64 -w0 "$RUNNER_TEMP/raven-branches-before-cleanup.json")"
+          existing="$(gh api "repos/${GITHUB_REPOSITORY}/contents/${destination}?ref=incoming" --jq '.sha' 2>/dev/null || true)"
+          if [[ -n "$existing" ]]; then
+            gh api -X PUT "repos/${GITHUB_REPOSITORY}/contents/${destination}" -f message='chore: refresh pre-cleanup branch recovery inventory' -f branch=incoming -f content="$encoded" -f sha="$existing" >/dev/null
+          else
+            gh api -X PUT "repos/${GITHUB_REPOSITORY}/contents/${destination}" -f message='chore: back up 99 branch refs before cleanup' -f branch=incoming -f content="$encoded" >/dev/null
+          fi
+          echo "Recovery inventory committed to incoming/${destination}"
+      - name: Archive inventory as additional workflow artifact
         uses: actions/upload-artifact@v4
         with:
           name: raven-branch-heads-before-cleanup
