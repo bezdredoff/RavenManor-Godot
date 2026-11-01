@@ -5,8 +5,8 @@ extends VBoxContainer
 signal stage_modified(stage: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const StageOverlay = preload("res://addons/vn_studio/editor/raven_stage_overlay.gd")
-const BACKDROP_PILOT := {"BG-HALL": "res://assets/raven/vn_pilot/hall_morning.webp"}
 const ACTOR_PILOT := {
 	"RM-CHAR-EVELYN": "res://assets/raven/vn_pilot/evelyn_relaxed.webp",
 	"RM-CHAR-ADA": "res://assets/raven/vn_pilot/ada_offer_tea.webp"
@@ -43,7 +43,8 @@ var _browser: ConfirmationDialog
 var _browser_list: ItemList
 var _browser_image: TextureRect
 var _browser_description: Label
-var _browser_selected: String = ""
+var _browser_selected: Dictionary = {}
+var _browser_variants: Array[Dictionary] = []
 var _status: Label
 var _suppress: bool = false
 
@@ -217,8 +218,13 @@ func _draw_stage() -> void:
 		card.queue_free()
 	_cards.clear()
 	var bg_id: String = str(_stage_data.get("backgroundId", ""))
-	_bg_image.texture = _texture(str(BACKDROP_PILOT.get(bg_id, "")))
-	_placeholders.text = "MASTER REFERENCE · light/state not rendered" if _bg_image.texture != null else "ART PENDING · " + bg_id
+	var light: String = str(_stage_data.get("lighting", ""))
+	var state: String = str(_stage_data.get("roomState", ""))
+	# The catalog is the only authority for actual VN images. Never substitute
+	# another lighting/state (or the legacy Hall pilot) when the exact plate is absent.
+	_bg_image.texture = VNBackgrounds.texture_for(bg_id, light, state)
+	var available: bool = _bg_image.texture != null
+	_placeholders.text = "ART CANDIDATE · НЕ УТВЕРЖДЁН" if available else "ART PENDING · %s / %s / %s" % [bg_id, light, state]
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	var cast: Array = _stage_data.get("cast", [])
@@ -246,8 +252,8 @@ func _draw_stage() -> void:
 		_cards.append(card)
 	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
-	_status.text = "%s · %d персонажей · координаты нормализованы; реальные PNG доступны не для всех." % [
-		bg_id, cast.size()]
+	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
+		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING", cast.size()]
 
 
 func _texture(path: String) -> Texture2D:
@@ -419,10 +425,22 @@ func _select_background(bg_id: String) -> void:
 	if master.is_empty():
 		return
 	_stage_data["backgroundId"] = bg_id
-	if _stage_data.get("lighting") not in master.get("lightingVariants", []):
-		_stage_data["lighting"] = master["lightingVariants"][0]
-	if _stage_data.get("roomState") not in master.get("stateLayers", []):
-		_stage_data["roomState"] = master["stateLayers"][0]
+	var light_valid: bool = _stage_data.get("lighting") in master.get("lightingVariants", [])
+	var state_valid: bool = _stage_data.get("roomState") in master.get("stateLayers", [])
+	if not light_valid or not state_valid:
+		# For a new master prefer an actually imported plate, not an arbitrary
+		# product of the first independently declared lighting and state values.
+		var candidate: Dictionary = {}
+		for entry: Dictionary in VNBackgrounds.all_entries():
+			if str(entry.get("backgroundId", "")) == bg_id:
+				candidate = entry
+				break
+		if not candidate.is_empty():
+			_stage_data["lighting"] = candidate["lighting"]
+			_stage_data["roomState"] = candidate["roomState"]
+		else:
+			_stage_data["lighting"] = master.get("lightingVariants", [""])[0]
+			_stage_data["roomState"] = master.get("stateLayers", [""])[0]
 	_commit()
 
 
@@ -468,13 +486,39 @@ func _build_background_browser() -> void:
 	details.add_child(_browser_description)
 
 
+## All options are derived from canonical staging declarations, never from
+## filenames or guessed state combinations in a private asset directory.
+## An ungenerated combination remains selectable but visibly ART PENDING.
+func _catalog_browser_options() -> Array[Dictionary]:
+	var results: Array[Dictionary] = []
+	for master: Dictionary in _project.get("stagingData", {}).get("masters", []):
+		var bg_id: String = str(master.get("id", ""))
+		for light in master.get("lightingVariants", []):
+			for state in master.get("stateLayers", []):
+				results.append({
+					"backgroundId": bg_id,
+					"lighting": str(light),
+					"roomState": str(state)
+				})
+	return results
+
+
 func _on_browse() -> void:
 	_browser_list.clear()
+	_browser_variants = _catalog_browser_options()
+	_browser_selected = {}
 	var current_index: int = 0
-	for master in _project.get("stagingData", {}).get("masters", []):
-		_browser_list.add_item(str(master.get("id", "")))
-		if master.get("id") == _stage_data.get("backgroundId"):
-			current_index = _browser_list.item_count - 1
+	for index in range(_browser_variants.size()):
+		var variant: Dictionary = _browser_variants[index]
+		var entry: Dictionary = VNBackgrounds.entry_for(
+			str(variant["backgroundId"]), str(variant["lighting"]), str(variant["roomState"]))
+		_browser_list.add_item("%s %s · %s / %s" % [
+			"✓" if not entry.is_empty() else "·",
+			variant["backgroundId"], variant["lighting"], variant["roomState"]])
+		if variant["backgroundId"] == _stage_data.get("backgroundId") \
+				and variant["lighting"] == _stage_data.get("lighting") \
+				and variant["roomState"] == _stage_data.get("roomState"):
+			current_index = index
 	if _browser_list.item_count > 0:
 		_browser_list.select(current_index)
 		_on_browser_selected(current_index)
@@ -482,18 +526,31 @@ func _on_browse() -> void:
 
 
 func _on_browser_selected(index: int) -> void:
-	if index < 0 or index >= _browser_list.item_count:
+	if index < 0 or index >= _browser_variants.size():
 		return
-	_browser_selected = _browser_list.get_item_text(index)
-	var master: Dictionary = Store.stage_master(_project, _browser_selected)
-	_browser_image.texture = _texture(str(BACKDROP_PILOT.get(_browser_selected, "")))
-	var availability: String = "Референс мастера, НЕ конкретного состояния" if _browser_image.texture != null else "ART PENDING — изображения ещё нет"
-	_browser_description.text = "%s\n%s\nСвет: %s\nСостояния: %s\n%s" % [
-		_browser_selected, str(master.get("description", "")),
-		", ".join(master.get("lightingVariants", [])),
-		", ".join(master.get("stateLayers", [])), availability]
+	_browser_selected = _browser_variants[index].duplicate(true)
+	var bg_id: String = str(_browser_selected["backgroundId"])
+	var light: String = str(_browser_selected["lighting"])
+	var state: String = str(_browser_selected["roomState"])
+	var master: Dictionary = Store.stage_master(_project, bg_id)
+	var entry: Dictionary = VNBackgrounds.entry_for(bg_id, light, state)
+	_browser_image.texture = VNBackgrounds.texture_for(bg_id, light, state)
+	var availability: String = "1080×1920 · ART CANDIDATE (не финальный)" if _browser_image.texture != null else "ART PENDING — этот вариант ещё не сгенерирован"
+	var scenes: Array[String] = []
+	for shot: Dictionary in _project.get("stagingData", {}).get("sceneShots", []):
+		if shot.get("backgroundId") == bg_id and shot.get("lighting") == light and shot.get("roomState") == state:
+			scenes.append(str(shot.get("sceneId", "")))
+	_browser_description.text = "%s · %s / %s\n%s\n%s\nСцены: %s" % [
+		bg_id, light, state, str(master.get("description", "")), availability,
+		", ".join(scenes) if not scenes.is_empty() else "нет в текущем staging"]
 
 
 func _apply_browser_background() -> void:
-	if not _browser_selected.is_empty():
-		_select_background(_browser_selected)
+	if _browser_selected.is_empty():
+		return
+	# Apply the precise triple selected in the browser, preserving all actors,
+	# dialogue, story IDs, campaign progression and persisted source assets.
+	_stage_data["backgroundId"] = str(_browser_selected["backgroundId"])
+	_stage_data["lighting"] = str(_browser_selected["lighting"])
+	_stage_data["roomState"] = str(_browser_selected["roomState"])
+	_commit()

@@ -50,9 +50,9 @@ func _ready() -> void:
 		_open.bind(HALL_TEA_PILOT)
 	))
 	column.add_child(_card(
-		"8 · VN BACKGROUNDS · Hall + Library",
-		"Девять ChatGPT-изображений в пяти состояниях библиотеки и четырёх состояниях холла. Вертикальные 1080×1920; read-only просмотр без изменения сюжета или сохранения. Пока ART CANDIDATE, не production approval.",
-		"ПРОСМОТРЕТЬ 9 VN-ФОНОВ",
+		"8 · VN BACKGROUNDS · Каталог",
+		"Все импортированные VN-фоны и их состояния из актуального каталога. Вертикальный формат 1080×1920; просмотр без изменения сюжета или сохранения. Пока ART CANDIDATE, не production approval.",
+		"ПРОСМОТРЕТЬ VN-ФОНЫ",
 		_open.bind(VN_BACKGROUND_GALLERY)
 	))
 	column.add_child(_card(

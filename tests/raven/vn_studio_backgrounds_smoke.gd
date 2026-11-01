@@ -1,0 +1,74 @@
+extends SceneTree
+## Editor-only preview routing, future-state ART PENDING and safe exact selection.
+const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const Designer = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
+const Resolver = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+
+
+func _initialize() -> void:
+	call_deferred("_run")
+
+
+func _run() -> void:
+	var project: Dictionary = Store.open_project(ProjectSettings.globalize_path("res://"))
+	assert(project.get("ok", false))
+	var draft: Dictionary = Store.fresh(project)
+	var designer := Designer.new()
+	root.add_child(designer)
+
+	designer.set_scene(project, draft, "RM-BEAT-03-01")
+	assert(designer._stage_data["backgroundId"] == "BG-LIBRARY")
+	assert(designer._stage_data["lighting"] == "evening")
+	assert(designer._stage_data["roomState"] == "shut_dusty")
+	assert(designer._bg_image.texture != null)
+	assert(designer._bg_image.texture.get_width() == 1080)
+	assert(designer._bg_image.texture.get_height() == 1920)
+	assert(designer._placeholders.text.contains("ART CANDIDATE"))
+
+	# An allowed master lighting/state product without a published image must
+	# show an explicit pending state, not the old Hall master or another plate.
+	designer._stage_data["lighting"] = "day"
+	designer._stage_data["roomState"] = "shut_dusty"
+	designer._draw_stage()
+	assert(designer._bg_image.texture == null)
+	assert(designer._placeholders.text.contains("ART PENDING"))
+
+	designer.set_scene(project, draft, "RM-BEAT-05-02")
+	assert(designer._bg_image.texture != null)
+	assert(designer._stage_data["lighting"] == "night")
+	assert(designer._stage_data["roomState"] == "storm_leak")
+	assert(designer._cards.size() == designer._stage_data["cast"].size())
+
+	var options: Array[Dictionary] = designer._catalog_browser_options()
+	assert(options.size() > Resolver.all_entries().size())
+	var selected: Dictionary = {}
+	var missing: Dictionary = {}
+	for option: Dictionary in options:
+		if option["backgroundId"] == "BG-HALL" and option["lighting"] == "day" and option["roomState"] == "habitable":
+			selected = option
+		if option["backgroundId"] == "BG-CORRIDOR" and option["lighting"] == "day" and option["roomState"] == "blocked":
+			missing = option
+	assert(not selected.is_empty() and not missing.is_empty())
+	assert(Resolver.entry_for("BG-CORRIDOR", "day", "blocked").is_empty())
+
+	var original_scene_id: String = str(designer._stage_data["sceneId"])
+	var original_cast: Array = designer._stage_data["cast"].duplicate(true)
+	designer._browser_selected = selected
+	designer._apply_browser_background()
+	assert(designer._stage_data["backgroundId"] == "BG-HALL")
+	assert(designer._stage_data["lighting"] == "day")
+	assert(designer._stage_data["roomState"] == "habitable")
+	assert(designer._bg_image.texture != null)
+	assert(designer._stage_data["sceneId"] == original_scene_id)
+	assert(designer._stage_data["cast"] == original_cast)
+
+	# Other backgrounds remain selectable even before an asset is produced.
+	designer._browser_selected = missing
+	designer._apply_browser_background()
+	assert(designer._stage_data["backgroundId"] == "BG-CORRIDOR")
+	assert(designer._bg_image.texture == null)
+	assert(designer._placeholders.text.contains("ART PENDING"))
+	assert(designer._stage_data["cast"] == original_cast)
+	designer.queue_free()
+	print("Raven VN Studio background-state preview smoke passed")
+	quit()
