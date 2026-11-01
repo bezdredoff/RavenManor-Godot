@@ -38,7 +38,7 @@ func _initialize() -> void:
 	for texture: Texture2D in art:
 		assert(texture != null and texture.get_width() >= 300 and texture.get_height() >= 450)
 	var variants: Array = VNBackgrounds.all_entries()
-	assert(variants.size() == 9, "Four Hall + five Library candidate plates")
+	assert(variants.size() >= 9, "At least the nine baseline Hall + Library candidate plates")
 	for variant: Dictionary in variants:
 		var texture: Texture2D = VNBackgrounds.texture_for(str(variant["backgroundId"]), str(variant["lighting"]), str(variant["roomState"]))
 		assert(texture != null, "VN background missing: " + str(variant["id"]))
@@ -62,5 +62,5 @@ func _initialize() -> void:
 	assert(replay.state.storyBeatsSeen.count(beat_id) == 1)
 	assert(replay.state.workPoints == state.workPoints)
 	assert(replay.state.completedRestorations == state.completedRestorations)
-	print("Raven Manor Hall tea VN pilot smoke passed (9 backgrounds, RU/BE/EN, navigation, save-safe replay).")
+	print("Raven Manor Hall tea VN pilot smoke passed (%d backgrounds, RU/BE/EN, navigation, save-safe replay)." % variants.size())
 	quit()

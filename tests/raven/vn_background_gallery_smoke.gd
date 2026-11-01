@@ -5,7 +5,7 @@ const Gallery = preload("res://scenes/raven/vn_background_gallery.tscn")
 
 func _initialize() -> void:
 	var entries: Array = Resolver.all_entries()
-	assert(entries.size() == 9, "Four Hall and five Library backgrounds expected")
+	assert(entries.size() >= 9, "At least the nine merged Hall and Library backgrounds expected")
 	assert(Gallery != null)
 	var ids := {}
 	for entry: Dictionary in entries:
@@ -16,8 +16,21 @@ func _initialize() -> void:
 		var texture: Texture2D = Resolver.texture_for(str(entry["backgroundId"]), str(entry["lighting"]), str(entry["roomState"]))
 		assert(texture != null, "Missing background asset: " + id)
 		assert(texture.get_width() == 1080 and texture.get_height() == 1920, id)
+	var baseline_ids := [
+		"BG-HALL:evening:dusty",
+		"BG-HALL:day:habitable",
+		"BG-HALL:night:habitable",
+		"BG-HALL:night:storm",
+		"BG-LIBRARY:evening:shut_dusty",
+		"BG-LIBRARY:evening:usable",
+		"BG-LIBRARY:day:usable",
+		"BG-LIBRARY:night:usable",
+		"BG-LIBRARY:night:storm_leak"
+	]
+	for required in baseline_ids:
+		assert(ids.has(required), "Baseline asset missing: " + required)
 	assert(str(Resolver.entry_for_scene("RM-BEAT-02-01").get("id", "")) == "BG-HALL:day:habitable")
 	assert(str(Resolver.entry_for_scene("RM-BEAT-05-02").get("id", "")) == "BG-LIBRARY:night:storm_leak")
 	assert(Resolver.entry_for_scene("RM-BEAT-00-01").is_empty())
-	print("Raven VN background registry and 9 textures PASS (candidate gallery, save neutral)")
+	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral)" % entries.size())
 	quit()
