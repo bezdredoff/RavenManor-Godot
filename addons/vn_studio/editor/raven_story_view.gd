@@ -30,6 +30,7 @@ var _path: LineEdit
 var _save: Button
 var _export: Button
 var _export_stage: Button
+var _export_stage_v2: Button
 var _stage_designer: Control
 var _scene_panel: Control
 var _line_panel: Control
@@ -91,6 +92,11 @@ func _build() -> void:
 	_export_stage.text = "Экспорт постановки JSON"
 	_export_stage.pressed.connect(_export_stage_candidate)
 	toolbar.add_child(_export_stage)
+	_export_stage_v2 = Button.new()
+	_export_stage_v2.text = "Экспорт V2 review"
+	_export_stage_v2.tooltip_text = "Сохранить отдельный JSON-кандидат ориентации/props/layers в user://"
+	_export_stage_v2.pressed.connect(_export_stage_v2_candidate)
+	toolbar.add_child(_export_stage_v2)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -211,6 +217,7 @@ func _build() -> void:
 	_stage_scroll.add_child(stage_contents)
 	_stage_designer = StageDesigner.new()
 	_stage_designer.stage_modified.connect(_on_stage_modified)
+	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
 	stage_contents.add_child(_stage_designer)
 	var visual_label := Label.new()
 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
@@ -442,14 +449,16 @@ func _on_redo() -> void:
 
 
 func _update_diff() -> void:
-	_diff.text = "%d изменённых переводов, %d сцен постановки · %s" % [
-		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), "есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
+	_diff.text = "%d изменённых переводов, %d сцен v1, %d сцен v2 · %s" % [
+		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), _draft.get("stageV2Patches", {}).size(),
+		"есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
 
 
 func _refresh_buttons() -> void:
 	_save.disabled = _blocked or _project.is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty()
+	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty()
+	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty()
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
 
@@ -500,6 +509,40 @@ func _on_stage_modified(stage: Dictionary) -> void:
 	_refresh_context()
 	_update_diff()
 	_refresh_buttons()
+
+
+func _on_stage_v2_modified(overlay: Dictionary) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var id: String = str(overlay.get("sceneId", ""))
+	var before: Dictionary = _draft.get("stageV2Patches", {}).get(id, {})
+	if before == overlay:
+		return
+	var snapshot: Dictionary = _draft.duplicate(true)
+	var error: String = Store.set_stage_v2(_project, _draft, overlay)
+	if not error.is_empty():
+		_status.text = "V2-постановка не сохранена: " + error
+		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		return
+	_undo.append(snapshot)
+	_redo.clear()
+	_dirty = true
+	_update_diff()
+	_refresh_buttons()
+
+
+func _export_stage_v2_candidate() -> void:
+	if _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните Raven-черновик, затем экспортируйте V2 review."
+		return
+	var result: Dictionary = Store.export_v2_candidate(_project, _draft)
+	if result.get("ok", false):
+		_status.text = "Создан локальный V2 review candidate (не runtime, не production)."
+		_path.text = str(result["path"])
+	else:
+		_status.text = "V2 review export заблокирован: " + str(result.get("error", ""))
 
 
 func _export_stage_candidate() -> void:

@@ -9,6 +9,8 @@ const ROUTES := "data/raven/production/map_narrative_routes.json"
 const CUES := "data/raven/production/line_performance_cues.json"
 const CAST := "data/raven/production/character_performance.json"
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
+const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
 
@@ -89,7 +91,7 @@ static func fresh(project: Dictionary) -> Dictionary:
 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
 		"stageSourceSha256": str(project.get("stagingSha", "")),
 		"castSourceSha256": str(project.get("castSha", "")),
-		"patches": {}, "stagePatches": {}}
+		"patches": {}, "stagePatches": {}, "stageV2Patches": {}}
 
 
 static func load_draft(project: Dictionary) -> Dictionary:
@@ -126,6 +128,21 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 			var stage_error: String = validate_stage(project, stage_patches[stage_id])
 			if not stage_error.is_empty():
 				return "%s: %s" % [stage_id, stage_error]
+	var v2_patches: Variant = draft.get("stageV2Patches", {})
+	if not v2_patches is Dictionary:
+		return "Повреждённый список изменений v2-постановки."
+	if not v2_patches.is_empty():
+		if draft.get("stageSourceSha256", "") != project.get("stagingSha", "") or draft.get("castSourceSha256", "") != project.get("castSha", ""):
+			return "V2-черновик привязан к старой постановке/касту; автоматическая миграция запрещена."
+		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
+			return "Исходная постановка изменилась на диске; проверьте SHA вручную."
+		for scene_id in v2_patches:
+			if not project["shots"].has(scene_id):
+				return "V2-черновик ссылается на неизвестную сцену."
+			var source_stage: Dictionary = effective_stage(project, draft, str(scene_id))
+			var v2_error: String = StageV2.validate(source_stage, v2_patches[scene_id])
+			if not v2_error.is_empty():
+				return "%s: %s" % [scene_id, v2_error]
 	var patches: Variant = draft.get("patches", {})
 	if not patches is Dictionary:
 		return "Повреждённый набор правок."
@@ -286,7 +303,67 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
 	if not draft.has("stagePatches"):
 		draft["stagePatches"] = {}
 	draft["stagePatches"][str(stage["sceneId"])] = stage.duplicate(true)
+	var scene_id: String = str(stage["sceneId"])
+	if draft.get("stageV2Patches", {}).has(scene_id):
+		draft["stageV2Patches"][scene_id] = StageV2.trim_actor_z(stage, draft["stageV2Patches"][scene_id])
 	return ""
+
+
+static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictionary) -> String:
+	var scene_id: String = str(overlay.get("sceneId", ""))
+	if not project.get("shots", {}).has(scene_id):
+		return "V2-постановка ссылается на неизвестную сцену."
+	var stage: Dictionary = effective_stage(project, draft, scene_id)
+	var error: String = StageV2.validate(stage, overlay)
+	if not error.is_empty():
+		return error
+	draft["stageSourceSha256"] = str(project["stagingSha"])
+	draft["castSourceSha256"] = str(project["castSha"])
+	if not draft.has("stageV2Patches"):
+		draft["stageV2Patches"] = {}
+	draft["stageV2Patches"][scene_id] = overlay.duplicate(true)
+	return ""
+
+
+static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var error: String = validate(project, draft)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	var patches: Dictionary = draft.get("stageV2Patches", {})
+	if patches.is_empty():
+		return {"ok": false, "error": "V2-изменения постановки отсутствуют."}
+	var asset_store := ImageStaging.new()
+	var asset_result: Dictionary = asset_store.open_project(str(project["root"]))
+	var item_by_id: Dictionary = {}
+	if asset_result.get("ok", false):
+		for item: Dictionary in asset_store.list_items():
+			item_by_id[str(item.get("id", ""))] = item
+	var pending: Array[String] = []
+	var used_assets: Dictionary = {}
+	for scene_id in patches:
+		for prop: Dictionary in patches[scene_id].get("props", []):
+			var asset_id: String = str(prop.get("assetId", ""))
+			if asset_id.is_empty():
+				pending.append("%s/%s: ART PENDING" % [scene_id, prop["instanceId"]])
+				continue
+			if not asset_result.get("ok", false) or not item_by_id.has(asset_id):
+				return {"ok": false, "error": "Staged prop отсутствует или source SHA изменился: " + asset_id}
+			if item_by_id[asset_id].get("category") != "prop":
+				return {"ok": false, "error": "Asset не относится к prop: " + asset_id}
+			used_assets[asset_id] = {"sha256": item_by_id[asset_id]["sha256"],
+				"provenance": item_by_id[asset_id].get("provenance", ""),
+				"license": item_by_id[asset_id].get("license", ""),
+				"approval": "unreviewed_staged_asset"}
+	var output: Dictionary = {"format": "raven-stage-v2-review-candidate", "schemaVersion": 1,
+		"sourceSha256": project["sha"], "stageSourceSha256": project["stagingSha"],
+		"castSourceSha256": project["castSha"], "stageV1Patches": draft.get("stagePatches", {}).duplicate(true),
+		"stageV2Patches": patches.duplicate(true), "stagedPropReferences": used_assets,
+		"artPending": pending, "runtimeApplied": false, "requiresHumanReview": true}
+	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/v2/exports")
+	var payload: String = JSON.stringify(output, "	") + "
+"
+	var path: String = folder.path_join("raven-stage-v2-" + payload.sha256_text().substr(0, 24) + ".json")
+	return _write_new(path, payload, false)
 
 
 static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dictionary:
@@ -300,6 +377,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
 
 
 static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("stageV2Patches", {}).is_empty():
+		return {"ok": false, "error": "Есть stage-v2 данные. Используйте отдельный V2 review export: v1 исключит слои/props."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
