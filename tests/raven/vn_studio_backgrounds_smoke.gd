@@ -108,6 +108,29 @@ func _run() -> void:
 	assert(designer._bg_image.texture == null)
 	assert(designer._placeholders.text.contains("ART PENDING"))
 	assert(designer._stage_data["cast"] == original_cast)
+	# Every approved location is available in the live editor stage without custom asset paths.
+	var new_stage_cases := {
+		"RM-BEAT-01-03": "BG-BATH-VIGNETTE:day:wet_unsafe",
+		"RM-BEAT-02-03": "BG-KITCHEN:day:power_off",
+		"RM-BEAT-02-04": "BG-KITCHEN:evening:partial_lighting",
+		"RM-BEAT-04-01": "BG-GARDEN:day:unsafe_path",
+		"RM-BEAT-04-02": "BG-CONSERVATORY:day:partially_safe",
+		"RM-BEAT-04-03": "BG-CONSERVATORY:day:partially_safe",
+		"RM-BEAT-04-04": "BG-CONSERVATORY:dusk:partially_safe",
+	}
+	for scene_id: String in new_stage_cases:
+		designer.set_scene(project, draft, scene_id)
+		var key: String = "%s:%s:%s" % [
+			str(designer._stage_data["backgroundId"]),
+			str(designer._stage_data["lighting"]),
+			str(designer._stage_data["roomState"])
+		]
+		assert(key == new_stage_cases[scene_id], "Wrong native VN Studio background: " + scene_id)
+		assert(designer._bg_image.texture == Resolver.texture_for_scene(scene_id),
+			"VN Studio must display the exact same image as gameplay: " + scene_id)
+		assert(designer._bg_image.texture != null)
+	assert(designer._available_browser_options().size() == 26,
+		"Native VN Studio must discover all 26 imported variants")
 	designer.queue_free()
 	print("Raven VN Studio background-state preview smoke passed")
 	quit()

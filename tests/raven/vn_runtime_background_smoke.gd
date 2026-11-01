@@ -50,6 +50,12 @@ func _run() -> void:
 	assert(preview.vn_view.background.visible and not preview.vn_view.missing_background.visible)
 	assert(preview.vn_view.actors.size() == 2, "Bedroom must compose Evelyn and Ada")
 	assert(preview.vn_view.dialogue.text == str(Content.data.vnScenes.bedroom.lines[0].text))
+	preview._open_vn("trace")
+	await process_frame
+	assert(preview.vn_view.scene_id == "RM-BEAT-01-03", "Bathroom vignette should be the actual Chapter I scene")
+	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-01-03"))
+	assert(not preview.vn_view.missing_background.visible, "Bathroom image must render, not ART PENDING")
+	assert(preview.vn_view.dialogue.text == str(Content.data.vnScenes.trace.lines[0].text))
 	preview._open_vn("letter")
 	await process_frame
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-01"))
@@ -81,6 +87,22 @@ func _run() -> void:
 	assert(late_bedroom.actors.size() == 1, "Late-night scene stages only Evelyn")
 	late_bedroom.queue_free()
 	await process_frame
+
+	# Chapter II and IV scenes use the common in-game compositor without per-scene mappings.
+	for stage_id: String in [
+		"RM-BEAT-02-03", "RM-BEAT-02-04", "RM-BEAT-04-01",
+		"RM-BEAT-04-02", "RM-BEAT-04-03", "RM-BEAT-04-04"
+	]:
+		var candidate := GameView.new()
+		candidate.size = Vector2(390, 844)
+		root.add_child(candidate)
+		await process_frame
+		candidate.show_beat(stage_id, "Эвелин", "Пробная реплика.", "1/1", Callable())
+		assert(candidate.background.texture == Resolver.texture_for_scene(stage_id), "Missing actual game background: " + stage_id)
+		assert(candidate.background.visible and not candidate.missing_background.visible, "Unexpected ART PENDING: " + stage_id)
+		assert(candidate.background.texture.get_width() == 1080 and candidate.background.texture.get_height() == 1920)
+		candidate.queue_free()
+		await process_frame
 
 	var tea := HallTea.instantiate()
 	root.add_child(tea)
