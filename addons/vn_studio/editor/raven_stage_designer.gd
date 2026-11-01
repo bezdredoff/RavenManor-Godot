@@ -68,10 +68,20 @@ func _ready() -> void:
 	_room_state.custom_minimum_size.x = 125
 	_room_state.item_selected.connect(_on_room_state)
 	controls.add_child(_room_state)
+	# Browser controls are on their own row so the editor stays usable at
+	# the narrower embedded VN Studio panel widths.
+	var browser_row := HBoxContainer.new()
+	add_child(browser_row)
 	_browse_background = Button.new()
-	_browse_background.text = "Просмотреть фоны…"
-	_browse_background.pressed.connect(_on_browse)
-	controls.add_child(_browse_background)
+	_browse_background.text = "В каталоге: %d фонов…" % VNBackgrounds.all_entries().size()
+	_browse_background.tooltip_text = "Показать только реально импортированные варианты фонов VN"
+	_browse_background.pressed.connect(_on_browse_imported)
+	browser_row.add_child(_browse_background)
+	var show_all := Button.new()
+	show_all.text = "Все запланированные состояния…"
+	show_all.tooltip_text = "Включая состояния без изображений (ART PENDING)"
+	show_all.pressed.connect(_on_browse)
+	browser_row.add_child(show_all)
 	var actors_row := HBoxContainer.new()
 	add_child(actors_row)
 	_actor_pick = OptionButton.new()
@@ -253,7 +263,7 @@ func _draw_stage() -> void:
 	_canvas.move_child(_overlay, _canvas.get_child_count() - 1)
 	_layout_cards()
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы." % [
-		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING", cast.size()]
+		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size()]
 
 
 func _texture(path: String) -> Texture2D:
@@ -503,10 +513,37 @@ func _catalog_browser_options() -> Array[Dictionary]:
 	return results
 
 
+## An artist can discover already imported images immediately, even when
+## the first story scene uses a background that has not yet been produced.
+func _available_browser_options() -> Array[Dictionary]:
+	var available: Array[Dictionary] = []
+	for variant: Dictionary in _catalog_browser_options():
+		if VNBackgrounds.texture_for(
+			str(variant["backgroundId"]),
+			str(variant["lighting"]),
+			str(variant["roomState"])) != null:
+			available.append(variant)
+	return available
+
+
+func _on_browse_imported() -> void:
+	_open_background_browser(true)
+
+
 func _on_browse() -> void:
+	_open_background_browser(false)
+
+
+func _open_background_browser(imported_only: bool) -> void:
 	_browser_list.clear()
-	_browser_variants = _catalog_browser_options()
+	_browser_variants = _available_browser_options() if imported_only else _catalog_browser_options()
 	_browser_selected = {}
+	_browser.title = "Загруженные VN-фоны" if imported_only else "Фоны Raven Manor: все состояния"
+	if _browser_variants.is_empty():
+		_browser_image.texture = null
+		_browser_description.text = "В каталоге нет загруженных изображений для текущего набора master-фонов."
+		_browser.popup_centered(Vector2i(710, 475))
+		return
 	var current_index: int = 0
 	for index in range(_browser_variants.size()):
 		var variant: Dictionary = _browser_variants[index]
