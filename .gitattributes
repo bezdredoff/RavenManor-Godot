@@ -3,3 +3,5 @@ art-handbook/** text=auto eol=lf
 art-handbook/**/*.png binary
 art-handbook/**/*.webp binary
 data/raven/production/art_workflow_handbook.json text eol=lf
+# Preserve verbatim prompt whitespace as historical evidence.
+art-handbook/files/prompts/** whitespace=-blank-at-eol,-blank-at-eof
