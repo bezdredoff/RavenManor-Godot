@@ -1,5 +1,5 @@
 extends SceneTree
-## The shared catalog must render inside gameplay, not only the editor/gallery.
+## Shared gameplay VN backgrounds render imported scene art, including Entry.
 const Preview = preload("res://scripts/raven/content_preview.gd")
 const Slice = preload("res://scripts/raven/vertical_slice.gd")
 const GameView = preload("res://scripts/raven/raven_vn_game_view.gd")
@@ -39,9 +39,8 @@ func _run() -> void:
 	preview._open_vn("gates")
 	await process_frame
 	assert(preview.vn_view.scene_id == "RM-BEAT-00-03")
-	assert(preview.vn_view.background.texture == null, "No incorrect fallback for unpainted Entry")
-	assert(preview.vn_view.missing_background.visible)
-	assert(preview.vn_view.missing_background.text.contains("ART PENDING"))
+	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-03"), "Entry must render in gameplay once imported")
+	assert(not preview.vn_view.missing_background.visible)
 	assert(preview.vn_view.dialogue.text == str(Content.data.prologueScenes.gates.lines[0].text))
 	assert(preview.vn_view.actors.size() == 2)
 	preview._open_vn("letter")
@@ -70,5 +69,5 @@ func _run() -> void:
 	await process_frame
 	assert(tea.background.texture == Resolver.texture_for_scene("RM-BEAT-02-01"))
 	tea.queue_free()
-	print("Raven live VN background compositor passed (Road, Apartment, missing Entry, Slice, Hall Tea).")
+	print("Raven live VN background compositor passed (Road, Apartment, Entry, Slice, Hall Tea).")
 	quit()
