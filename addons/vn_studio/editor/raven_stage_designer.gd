@@ -51,7 +51,7 @@ var _suppress: bool = false
 
 func _ready() -> void:
 	size_flags_horizontal = SIZE_EXPAND_FILL
-	var controls := HBoxContainer.new()
+	var controls := HFlowContainer.new()
 	add_child(controls)
 	var bg_caption := Label.new()
 	bg_caption.text = "Фон"
@@ -70,7 +70,7 @@ func _ready() -> void:
 	controls.add_child(_room_state)
 	# Browser controls are on their own row so the editor stays usable at
 	# the narrower embedded VN Studio panel widths.
-	var browser_row := HBoxContainer.new()
+	var browser_row := HFlowContainer.new()
 	add_child(browser_row)
 	_browse_background = Button.new()
 	_browse_background.text = "В каталоге: %d фонов…" % VNBackgrounds.all_entries().size()
@@ -82,7 +82,7 @@ func _ready() -> void:
 	show_all.tooltip_text = "Включая состояния без изображений (ART PENDING)"
 	show_all.pressed.connect(_on_browse)
 	browser_row.add_child(show_all)
-	var actors_row := HBoxContainer.new()
+	var actors_row := HFlowContainer.new()
 	add_child(actors_row)
 	_actor_pick = OptionButton.new()
 	_actor_pick.custom_minimum_size.x = 130
@@ -109,7 +109,7 @@ func _ready() -> void:
 	_remove.pressed.connect(_on_remove)
 	actors_row.add_child(_remove)
 
-	var options_row := HBoxContainer.new()
+	var options_row := HFlowContainer.new()
 	add_child(options_row)
 	_grid_toggle = CheckBox.new()
 	_grid_toggle.text = "Сетка (px)"
@@ -476,17 +476,17 @@ func _build_background_browser() -> void:
 	_browser.confirmed.connect(_apply_browser_background)
 	add_child(_browser)
 	var split := HSplitContainer.new()
-	split.custom_minimum_size = Vector2(640, 390)
+	split.custom_minimum_size = Vector2(420, 300)
 	_browser.add_child(split)
 	_browser_list = ItemList.new()
-	_browser_list.custom_minimum_size.x = 180
+	_browser_list.custom_minimum_size.x = 150
 	_browser_list.item_selected.connect(_on_browser_selected)
 	split.add_child(_browser_list)
 	var details := VBoxContainer.new()
-	details.custom_minimum_size.x = 340
+	details.custom_minimum_size.x = 245
 	split.add_child(details)
 	_browser_image = TextureRect.new()
-	_browser_image.custom_minimum_size.y = 270
+	_browser_image.custom_minimum_size.y = 210
 	_browser_image.size_flags_vertical = SIZE_EXPAND_FILL
 	_browser_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 	_browser_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
@@ -542,7 +542,7 @@ func _open_background_browser(imported_only: bool) -> void:
 	if _browser_variants.is_empty():
 		_browser_image.texture = null
 		_browser_description.text = "В каталоге нет загруженных изображений для текущего набора master-фонов."
-		_browser.popup_centered(Vector2i(710, 475))
+		_popup_background_browser()
 		return
 	var current_index: int = 0
 	for index in range(_browser_variants.size()):
@@ -559,7 +559,7 @@ func _open_background_browser(imported_only: bool) -> void:
 	if _browser_list.item_count > 0:
 		_browser_list.select(current_index)
 		_on_browser_selected(current_index)
-	_browser.popup_centered(Vector2i(710, 475))
+	_popup_background_browser()
 
 
 func _on_browser_selected(index: int) -> void:
@@ -591,3 +591,11 @@ func _apply_browser_background() -> void:
 	_stage_data["lighting"] = str(_browser_selected["lighting"])
 	_stage_data["roomState"] = str(_browser_selected["roomState"])
 	_commit()
+
+
+func _popup_background_browser() -> void:
+	# Avoid a fixed 710×475 dialog extending beyond smaller Godot windows.
+	var viewport_size: Vector2 = get_viewport_rect().size
+	_browser.popup_centered(Vector2i(
+		maxi(300, mini(710, roundi(viewport_size.x - 40.0))),
+		maxi(280, mini(475, roundi(viewport_size.y - 72.0)))))

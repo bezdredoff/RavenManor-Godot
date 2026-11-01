@@ -60,6 +60,7 @@ run_check 'Match3 direct QA Content Preview' 'Raven Manor Match-3 QA shortcut an
 run_check 'RM-VS-01 vertical slice smoke' 'Raven Manor RM-VS-01 smoke passed' --script res://tests/raven/vertical_slice_smoke.gd --quit-after 120
 run_check 'Narrative production contract smoke' 'Raven Manor production narrative contract smoke passed' --script res://tests/raven/production_narrative_smoke.gd --quit-after 120
 run_check 'VN background catalog / gallery' 'Raven VN background registry and 9 textures PASS' --script res://tests/raven/vn_background_gallery_smoke.gd --quit-after 120
+run_check 'VN Studio responsive layout' 'Raven VN Studio responsive layout smoke passed' --script res://tests/raven/vn_studio_layout_smoke.gd --quit-after 120
 run_check 'VN Studio background-state preview' 'Raven VN Studio background-state preview smoke passed' --script res://tests/raven/vn_studio_backgrounds_smoke.gd --quit-after 120
 run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke passed' --script res://tests/raven/hall_tea_vn_smoke.gd --quit-after 120
 run_check 'Hall VN runtime UI smoke' 'Raven Manor Hall VN UI runtime smoke passed' --script res://tests/raven/hall_tea_vn_ui_smoke.gd --quit-after 240
