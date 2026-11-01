@@ -1,5 +1,9 @@
 # VN Studio — native Godot EditorPlugin
 
+## VNS5-02 — read-only asset library
+
+`Raven Manor → Asset Library` lists the exact registered background variants and character metadata from Raven production JSON. Search by ID/state/source; filter category, candidate/accepted status, orientation and 11 planned background master groups; select entries and pin them as A/B to compare image, path, SHA and integrity. File checks use the catalog SHA256 and report `missing_file`, `sha_mismatch` or `invalid_path`. The live count comes from `variantCount` (26 candidate plates at baseline `b83c594`). Four character records describe planned poses/emotions but do not imply that every image exists; no prop assets are registered by this adapter. Rights are `not_recorded` until a reviewed license/provenance field exists in the source. Search, comparison and selection do not edit drafts, stage, runtime or save. Image import and metadata editing are VNS5-03.
+
 ## VNS5-01 — Raven workspace shell
 
 `VN Studio → Raven Manor` has four native workspaces: **Director** (the existing Dialogue and Stage editors), **Asset Library** (current scene background/cast inspection), **Story Map** (current route trigger inspection), and **Animation** (current line cue inspection). The same selected scene and line drive all four; the last three are read-only until their later authoring PRs. Save, candidate export, status and output path stay reachable while the central view scrolls. Dragging the scene divider stores its width in Godot Editor Settings under `vn_studio/raven_scene_pane_width`; no project file, draft or game save stores UI layout. Existing UPDS tabs remain separate and unchanged.

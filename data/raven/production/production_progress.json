@@ -4,10 +4,17 @@
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
-      "id": "VNS5-01",
+      "id": "VNS5-02",
       "status": "PR_review",
+      "owner": "Codex",
       "updated": "2026-11-01",
-      "evidence": "PR #93 https://github.com/bezdredoff/RavenManor-Godot/pull/93. Branch from origin/main 11e87a9; four Raven workspaces and shared scene/line selection. Full Windows Godot 4.7.2 check.ps1 passed with isolated user data. CI/manual desktop QA pending; no v2 runtime or source mutation."
+      "evidence": "PR #96 https://github.com/bezdredoff/RavenManor-Godot/pull/96 targets main b83c594 after PR #95 expanded the live catalog to 26 candidates. Adapter derives count from variantCount and validates 26 entries/4 character metadata records. Full Windows Godot 4.7.2 checks passed; CI/manual UI QA pending. Earlier PR #94 merged only into the closed VNS5-01 feature branch and did not reach main."
+    },
+    {
+      "id": "VNS5-01",
+      "status": "merged",
+      "updated": "2026-11-01",
+      "evidence": "PR #93 merged to main at 89db6e9 on 2026-11-01; CI run 41333028998 passed. Four Raven workspaces and shared scene/line selection are merged. Manual desktop QA remains pending; no v2 runtime or source mutation."
     },
     {
       "id": "VNS5-00",

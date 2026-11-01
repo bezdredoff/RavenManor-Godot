@@ -408,6 +408,21 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-02",
+      "title": "VN Studio v5: read-only Raven asset registry and library",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Adapt actual Raven background variants and character metadata into a validated, searchable editor-only library without inventing assets or changing canonical catalogs.",
+      "deliverable": "Read-only registry model, native library with category/status/orientation filters and A/B comparison, negative validation tests.",
+      "acceptance": "All background candidate records from the live catalog (26 at baseline b83c594) and 4 character metadata records; 11 master groups, missing art and unregistered props explicit; duplicate ID, missing file and SHA drift detected; no source mutation.",
+      "status": "proposed",
+      "dependsOn": ["VNS5-01"],
+      "graphicsDependencies": [],
+      "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 02",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-01",
       "title": "VN Studio v5: Raven workspace shell and shared selection",
       "domain": "narrative",
