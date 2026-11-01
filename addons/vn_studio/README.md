@@ -1,10 +1,10 @@
 # VN Studio — native Godot EditorPlugin
 
-## VNS5-04B — локальный editor-only v2 sidecar (implementation handoff)
+## VNS5-04B — локальный editor-only v2 sidecar (Draft PR #104)
 
 Теперь `Режиссёр → Постановка` хранит ориентацию 390×844/844×390 и fit/cover в **локальном** `stageV2Patches[sceneId]`, а не в каноническом `vn_staging.json`. Редактор также запоминает нормализованный focal (ориентир в preview, не runtime pan), z текущих актёров и независимые prop instances (ID, state, X/Y, Z, Scale, staged image / ART PENDING). Существующие v1 stage/line edits остаются совместимы с ранее сохранёнными черновиками. Новые V2 правки поддерживают отдельный Undo, source-SHA locks и строгую проверку schema/ID/path/range.
 
-`Экспорт V2 review` создаёт отдельный `user://` JSON с SHA исходников и список staged prop references/ART PENDING. Если V2 изменения есть, старый экспорт stage-v1 отклоняется, чтобы данные не потерялись молча. Ни один проп/кадр автоматически не публикуется в production, игровой runtime не читает V2. Подробный контракт и ручной QA: `docs/production/VNS5_04B_STAGE_V2_RU.md`. CI/Godot Editor QA и owner approval обязательны; incoming ZIP не является implementation PR.
+`Экспорт V2 review` создаёт отдельный `user://` JSON с SHA исходников и список staged prop references/ART PENDING. Если V2 изменения есть, старый экспорт stage-v1 отклоняется, чтобы данные не потерялись молча. Ни один проп/кадр автоматически не публикуется в production, игровой runtime не читает V2. Подробный контракт и ручной QA: `docs/production/VNS5_04B_STAGE_V2_RU.md`. Godot/Raven/Web CI [41351469469](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41351469469) прошёл на implementation head; финальный CI и ручной Godot Editor QA обязательны. Код в [PR #104](https://github.com/bezdredoff/RavenManor-Godot/pull/104) остаётся Draft; incoming PR #102 — только handoff, его не мержить.
 
 ## VNS5-04A — ориентация и шаблоны постановки (Draft PR #101)
 
