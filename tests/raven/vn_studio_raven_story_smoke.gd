@@ -132,8 +132,12 @@ func _run() -> void:
 	assert(visual._overlay.show_vn)
 	visual.set_dialogue_preview("EVELYN", "Test line", "RM-TEST-A-L001")
 	assert(visual._overlay.dialogue == "Test line")
+	var stage_size_before: Vector2 = visual._card_size
+	var position_before: Vector2 = visual._coordinates(0)
 	visual._on_portrait_scale(0.4)
-	assert(visual._card_size.x < 60)
+	assert(visual._thumbnail_size.x < 60)
+	assert(visual._card_size == stage_size_before, "Thumbnail sizing must not change game-sized portraits")
+	assert(visual._coordinates(0) == position_before)
 	visual._on_browse()
 	assert(visual._browser_list.item_count == 8, "Two masters × two lighting × two states")
 	visual._on_browser_selected(0)

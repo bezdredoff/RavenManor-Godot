@@ -21,8 +21,11 @@ func _run() -> void:
 	assert(not studio._status.visible)
 	assert(studio._raven_story_view is Raven)
 	var raven: Control = studio._raven_story_view
+	assert(raven._workspace_scroll != null, "All Raven controls should be vertically scrollable")
+	assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
+	assert(raven._dialogue_scroll != null, "Dialogue controls should be vertically scrollable")
 	assert(raven._stage_scroll != null)
-	assert(raven._stage_scroll.horizontal_scroll_mode == ScrollContainer.SCROLL_MODE_DISABLED)
+	assert(raven._stage_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	assert(raven._stage_designer.get_parent().get_parent() == raven._stage_scroll)
 	assert(raven._scene_panel.visible and raven._line_panel.visible)
 	raven._scene_panel.visible = false
@@ -38,6 +41,12 @@ func _run() -> void:
 	studio._stage_tabs.current_tab = 3
 	studio._on_workspace_changed(3)
 	assert(not studio._legacy_scenes_panel.visible and not studio._legacy_details_panel.visible)
+	for scroller: ScrollContainer in [
+		studio._legacy_preview_scroll, studio._legacy_dialogue_scroll,
+		studio._legacy_characters_scroll, studio._migration_scroll
+	]:
+		assert(scroller != null)
+		assert(scroller.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	studio.queue_free()
 	print("Raven VN Studio responsive layout smoke passed")
 	quit()

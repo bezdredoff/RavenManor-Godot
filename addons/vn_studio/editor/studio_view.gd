@@ -63,6 +63,10 @@ var _story_graph_view: Control
 var _stage_tabs: TabContainer
 var _migration_review: Control
 var _raven_story_view: Control
+var _legacy_preview_scroll: ScrollContainer
+var _legacy_dialogue_scroll: ScrollContainer
+var _legacy_characters_scroll: ScrollContainer
+var _migration_scroll: ScrollContainer
 var _legacy_toolbar: Control
 var _legacy_scenes_panel: Control
 var _legacy_details_panel: Control
@@ -183,12 +187,16 @@ func _make_ui() -> void:
 	_stage_tabs.size_flags_horizontal = SIZE_EXPAND_FILL
 	_stage_tabs.size_flags_vertical = SIZE_EXPAND_FILL
 	working.add_child(_stage_tabs)
+	_legacy_preview_scroll = ScrollContainer.new()
+	_legacy_preview_scroll.name = "Постановка"
+	_legacy_preview_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_legacy_preview_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_legacy_preview_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_stage_tabs.add_child(_legacy_preview_scroll)
 	var preview_panel := VBoxContainer.new()
-	preview_panel.name = "Постановка"
-	preview_panel.custom_minimum_size = Vector2(380, 0)
+	preview_panel.custom_minimum_size = Vector2(380, 800)
 	preview_panel.size_flags_horizontal = SIZE_EXPAND_FILL
-	preview_panel.size_flags_vertical = SIZE_EXPAND_FILL
-	_stage_tabs.add_child(preview_panel)
+	_legacy_preview_scroll.add_child(preview_panel)
 	_heading = Label.new()
 	_heading.text = "Постановка · предварительный просмотр"
 	preview_panel.add_child(_heading)
@@ -250,10 +258,17 @@ func _make_ui() -> void:
 	_story_graph_view.name = "Граф сюжета"
 	_story_graph_view.open_scene_requested.connect(_on_graph_scene_requested)
 	_stage_tabs.add_child(_story_graph_view)
+	_migration_scroll = ScrollContainer.new()
+	_migration_scroll.name = "Migration & Review"
+	_migration_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_migration_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_migration_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_stage_tabs.add_child(_migration_scroll)
 	_migration_review = MigrationReview.new()
-	_migration_review.name = "Migration & Review"
+	_migration_review.custom_minimum_size = Vector2(620, 770)
+	_migration_review.size_flags_horizontal = SIZE_EXPAND_FILL
 	_migration_review.analyze_requested.connect(_on_migration_analyze)
-	_stage_tabs.add_child(_migration_review)
+	_migration_scroll.add_child(_migration_review)
 	_raven_story_view = RavenStoryView.new()
 	_raven_story_view.name = "Raven Manor"
 	_stage_tabs.add_child(_raven_story_view)
@@ -265,9 +280,16 @@ func _make_ui() -> void:
 	var tabs := TabContainer.new()
 	tabs.size_flags_vertical = SIZE_EXPAND_FILL
 	details_panel.add_child(tabs)
+	_legacy_dialogue_scroll = ScrollContainer.new()
+	_legacy_dialogue_scroll.name = "Реплики"
+	_legacy_dialogue_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_legacy_dialogue_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_legacy_dialogue_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tabs.add_child(_legacy_dialogue_scroll)
 	var dialogue_tab := VBoxContainer.new()
-	dialogue_tab.name = "Реплики"
-	tabs.add_child(dialogue_tab)
+	dialogue_tab.custom_minimum_size.y = 570
+	dialogue_tab.size_flags_horizontal = SIZE_EXPAND_FILL
+	_legacy_dialogue_scroll.add_child(dialogue_tab)
 	var line_label := Label.new()
 	line_label.text = "Реплики и ветви"
 	dialogue_tab.add_child(line_label)
@@ -284,9 +306,16 @@ func _make_ui() -> void:
 	_details.fit_content = false
 	dialogue_tab.add_child(_details)
 
+	_legacy_characters_scroll = ScrollContainer.new()
+	_legacy_characters_scroll.name = "Персонажи"
+	_legacy_characters_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_legacy_characters_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_legacy_characters_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	tabs.add_child(_legacy_characters_scroll)
 	var characters_tab := VBoxContainer.new()
-	characters_tab.name = "Персонажи"
-	tabs.add_child(characters_tab)
+	characters_tab.custom_minimum_size.y = 760
+	characters_tab.size_flags_horizontal = SIZE_EXPAND_FILL
+	_legacy_characters_scroll.add_child(characters_tab)
 	var library_caption := Label.new()
 	library_caption.text = "UPDS: выбери актёра и прокручивай компактные варианты поз (не импортируется в Raven)"
 	characters_tab.add_child(library_caption)

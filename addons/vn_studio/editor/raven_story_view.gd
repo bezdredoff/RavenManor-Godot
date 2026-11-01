@@ -32,6 +32,8 @@ var _stage_designer: Control
 var _scene_panel: Control
 var _line_panel: Control
 var _stage_scroll: ScrollContainer
+var _workspace_scroll: ScrollContainer
+var _dialogue_scroll: ScrollContainer
 var _undo_button: Button
 var _redo_button: Button
 
@@ -44,13 +46,24 @@ func _ready() -> void:
 
 
 func _build() -> void:
+	# The whole Raven workspace remains vertically reachable in shorter Godot
+	# windows, including heading, toolbar, scene panels and export path.
+	_workspace_scroll = ScrollContainer.new()
+	_workspace_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_workspace_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_workspace_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	add_child(_workspace_scroll)
+	var body := VBoxContainer.new()
+	body.custom_minimum_size.y = 720
+	body.size_flags_horizontal = SIZE_EXPAND_FILL
+	_workspace_scroll.add_child(body)
 	var heading := Label.new()
 	heading.text = "Raven Manor · собственный сценарий (28 сцен / 280 реплик)"
 	heading.add_theme_font_size_override("font_size", 17)
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(heading)
+	body.add_child(heading)
 	var toolbar := HFlowContainer.new()
-	add_child(toolbar)
+	body.add_child(toolbar)
 	var reload := Button.new()
 	reload.text = "Перечитать проект"
 	reload.pressed.connect(open_raven)
@@ -99,11 +112,11 @@ func _build() -> void:
 	toolbar.add_child(lines_toggle)
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	add_child(_status)
+	body.add_child(_status)
 	var panel := HSplitContainer.new()
 	panel.size_flags_vertical = SIZE_EXPAND_FILL
 	panel.size_flags_horizontal = SIZE_EXPAND_FILL
-	add_child(panel)
+	body.add_child(panel)
 	var left := VBoxContainer.new()
 	_scene_panel = left
 	left.custom_minimum_size.x = 150
@@ -135,10 +148,18 @@ func _build() -> void:
 	workspace.size_flags_vertical = SIZE_EXPAND_FILL
 	workspace.size_flags_horizontal = SIZE_EXPAND_FILL
 	editor.add_child(workspace)
+	var dialogue_column := VBoxContainer.new()
+	dialogue_column.name = "Диалог"
+	dialogue_column.size_flags_vertical = SIZE_EXPAND_FILL
+	workspace.add_child(dialogue_column)
+	_dialogue_scroll = ScrollContainer.new()
+	_dialogue_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
+	_dialogue_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	_dialogue_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	dialogue_column.add_child(_dialogue_scroll)
 	var text_column := VBoxContainer.new()
-	text_column.name = "Диалог"
-	text_column.size_flags_vertical = SIZE_EXPAND_FILL
-	workspace.add_child(text_column)
+	text_column.size_flags_horizontal = SIZE_EXPAND_FILL
+	_dialogue_scroll.add_child(text_column)
 	_text_edit = TextEdit.new()
 	_text_edit.custom_minimum_size.y = 160
 	_text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
@@ -158,7 +179,7 @@ func _build() -> void:
 	_stage_scroll = ScrollContainer.new()
 	_stage_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
 	_stage_scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	_stage_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_stage_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	visual_column.add_child(_stage_scroll)
 	var stage_contents := VBoxContainer.new()
 	stage_contents.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -177,7 +198,7 @@ func _build() -> void:
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
-	add_child(_path)
+	body.add_child(_path)
 
 
 func open_raven() -> void:
