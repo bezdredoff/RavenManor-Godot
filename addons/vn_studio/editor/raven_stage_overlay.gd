@@ -1,7 +1,8 @@
 @tool
 extends Control
 ## Editor-only overlay. 390x844 logical reference from project.godot; never exported to game saves.
-const REFERENCE := Vector2(390, 844)
+var reference_size: Vector2 = Vector2(390, 844)
+var show_safe: bool = false
 var show_grid: bool = false
 var show_vn: bool = false
 var speaker: String = ""
@@ -23,15 +24,19 @@ func _draw() -> void:
 	var font: Font = ThemeDB.fallback_font
 	if show_grid:
 		var grid_color := Color(0.92, 0.90, 0.75, 0.29)
-		for x in range(0, 391, 65):
-			var px: float = size.x * float(x) / REFERENCE.x
+		for x in range(0, int(reference_size.x) + 1, 65):
+			var px: float = size.x * float(x) / reference_size.x
 			draw_line(Vector2(px, 0), Vector2(px, size.y), grid_color, 1.0)
 			draw_string(font, Vector2(px + 3, 14), str(x), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
-		for y in range(0, 845, 100):
-			var py: float = size.y * float(y) / REFERENCE.y
+		for y in range(0, int(reference_size.y) + 1, 65):
+			var py: float = size.y * float(y) / reference_size.y
 			draw_line(Vector2(0, py), Vector2(size.x, py), grid_color, 1.0)
 			draw_string(font, Vector2(3, py + 12), str(y), HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
-		draw_string(font, Vector2(7, size.y - 7), "390 x 844 logical px", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
+		draw_string(font, Vector2(7, size.y - 7), "%d x %d logical px" % [int(reference_size.x), int(reference_size.y)], HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color.WHITE)
+	if show_safe:
+		var margin: Vector2 = size * Vector2(0.05, 0.05)
+		draw_rect(Rect2(margin, size - margin * 2.0), Color(0.5, 0.91, 0.74, 0.68), false, 2.0)
+		draw_string(font, margin + Vector2(5, 14), "SAFE · editor guide", HORIZONTAL_ALIGNMENT_LEFT, -1, 11, Color(0.83, 1.0, 0.84))
 	if show_vn:
 		var h: float = size.y * 0.28
 		var top: float = size.y - h
