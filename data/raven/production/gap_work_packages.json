@@ -408,6 +408,21 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-00",
+      "title": "VN Studio v5: baseline and read-only contract audit",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "S",
+      "description": "Record current Raven and donor sources, propose v2 mapping, and verify a dry-run adapter without writing canonical content or drafts.",
+      "deliverable": "Read-only contract audit, synthetic negative tests and reviewable compatibility decision document.",
+      "acceptance": "Exact Raven source counts and stable IDs; source hashes; old draft smoke; no production source or save mutation; independent donor runtime parity remains a separate gate.",
+      "status": "proposed",
+      "dependsOn": ["RAVEN-VN-EDITOR-01", "RAVEN-VN-EDITOR-02", "RAVEN-VN-EDITOR-03"],
+      "graphicsDependencies": [],
+      "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 00",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "RAVEN-VN-EDITOR-03",
       "title": "Raven VN Studio: компактный просмотр, варианты фона, px-сетка и VN UI overlay",
       "domain": "narrative",

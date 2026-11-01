@@ -4,6 +4,13 @@
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
+      "id": "VNS5-00",
+      "status": "in_progress",
+      "owner": "Codex",
+      "updated": "2026-11-01",
+      "evidence": "Branch code/vns5-00-contract-baseline based on origin/main 9b0cbcc; 2 Python audit tests, full Windows check.ps1 on Godot 4.7.2, code plan/dashboard checks passed. Clean UPDS-godot@3deed628 corpus audit passed (45 scenes/1026 line occurrences). PR/CI/manual editor QA and independent donor StorySession parity pending; no v2 runtime or source mutation."
+    },
+    {
       "id": "CODE-01-01",
       "status": "merged",
       "owner": "ChatGPT",
