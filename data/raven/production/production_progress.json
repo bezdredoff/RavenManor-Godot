@@ -5,10 +5,10 @@
   "entries": [
     {
       "id": "VNS5-04A",
-      "status": "in_progress",
+      "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-11-01",
-      "evidence": "Next scoped Godot Editor stage orientation/template pilot based on main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd. Offline source patch prepared; no Godot 4.7.2/local desktop QA or PR CI executed. Orientation/fit are preview-only (not persisted to stage v1); applying templates persists valid actor x/y in draft stagePatches, Undo is editor session-local. Props, z-order and focal anchor not implemented: require agreed stage-v2 schema in VNS5-04B. Incoming ZIP is handoff, not implementation PR, and must not be merged as accepted code."
+      "evidence": "Native implementation in Draft PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 from main ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd after merged PR #99. Incoming handoff PR #100 is transport only; do not merge it as implementation. 10 source files uploaded with exact matching Git blob hashes. Godot/Raven/Web build CI run 41348044068 succeeded on code head 77529bce9892559629e4b98a4b404f0d755abb0b; last-head CI after documentation edits still required. Preview 390x844/844x390, fit/cover, safe/grid/HUD and reversible 1/2/3-actor templates + local Undo added; stage-v1 serialization, runtime, source art and save unchanged. Manual Godot 4.7.2 desktop visual QA at 800x640 / 1024x640 / 1366x768 and owner signoff pending, not accepted. Props/focal/z-order/schema-v2 remain separate VNS5-04B."
     },
     {
       "id": "VNS5-03",
