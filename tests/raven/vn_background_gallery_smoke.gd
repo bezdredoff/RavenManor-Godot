@@ -16,6 +16,11 @@ func _initialize() -> void:
 		var texture: Texture2D = Resolver.texture_for(str(entry["backgroundId"]), str(entry["lighting"]), str(entry["roomState"]))
 		assert(texture != null, "Missing background asset: " + id)
 		assert(texture.get_width() == 1080 and texture.get_height() == 1920, id)
+		if str(entry.get("backgroundId", "")) == "BG-APARTMENT":
+			var asset_path: String = str(entry.get("path", ""))
+			assert(FileAccess.file_exists(asset_path), "Missing apartment source file: " + asset_path)
+			assert(FileAccess.get_sha256(asset_path) == str(entry.get("sha256", "")),
+				"Apartment asset SHA-256 mismatch (incorrect image revision): " + id)
 	var baseline_ids := [
 		"BG-HALL:evening:dusty",
 		"BG-HALL:day:habitable",
