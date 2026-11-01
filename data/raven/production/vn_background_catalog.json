@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "status": "candidate_preview_not_art_approved",
+  "targetCanvas": "1080x1920",
+  "variantCount": 9,
+  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement.",
+  "entries": [
+    {
+      "id": "BG-HALL:evening:dusty",
+      "backgroundId": "BG-HALL",
+      "lighting": "evening",
+      "roomState": "dusty",
+      "path": "res://assets/raven/vn_backgrounds/hall/evening_dusty.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "2cb90ac13351a8c5dc68de47e0a1855a9c6b1b033701498e486ee0ca6b6a9654",
+      "sourceImage": "raven_manor_s_dusty_grand_foyer.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-HALL:day:habitable",
+      "backgroundId": "BG-HALL",
+      "lighting": "day",
+      "roomState": "habitable",
+      "path": "res://assets/raven/vn_backgrounds/hall/day_habitable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "15f4d403c0d8e526393ebc636743afd94a5753d7e53b98ae4c46d9df43966d78",
+      "sourceImage": "victorian_gothic_mansion_entrance_hall.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-HALL:night:habitable",
+      "backgroundId": "BG-HALL",
+      "lighting": "night",
+      "roomState": "habitable",
+      "path": "res://assets/raven/vn_backgrounds/hall/night_habitable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "aa6655a8f015c2cddf94deb719d6d1502e497ca32b347bb282b9b231e50fc3b1",
+      "sourceImage": "raven_manor_grand_entrance_hall.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-HALL:night:storm",
+      "backgroundId": "BG-HALL",
+      "lighting": "night",
+      "roomState": "storm",
+      "path": "res://assets/raven/vn_backgrounds/hall/night_storm.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "f1e9786c8d82c00661b1e97facfb63c7ee636bed92320cca9ea343e54c4a644e",
+      "sourceImage": "stormlit_raven_manor_foyer.png",
+      "sourceSize": [
+        941,
+        1672
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-LIBRARY:evening:shut_dusty",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "shut_dusty",
+      "path": "res://assets/raven/vn_backgrounds/library/evening_shut_dusty.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "b7f1733d94ef9cc6fdbf14caa82939d7d5f52b3ce7d80463b24a06bb2db7811a",
+      "sourceImage": "a_highly_detailed_polished_anime_visual_novel_bac.png",
+      "sourceSize": [
+        1024,
+        1536
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-LIBRARY:evening:usable",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "evening",
+      "roomState": "usable",
+      "path": "res://assets/raven/vn_backgrounds/library/evening_usable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "f1bcaff6c5bada5be7d99481be194a5239fd8cd072ec962b93cc87dc6569341d",
+      "sourceImage": "BG-LIBRARY_evening_usable_revised_1080x1920.png",
+      "sourceSize": [
+        1080,
+        1920
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-LIBRARY:day:usable",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "day",
+      "roomState": "usable",
+      "path": "res://assets/raven/vn_backgrounds/library/day_usable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "b65e9a5c3c896af298f97ed0834a8c8b8bc9558ac1e5293e5c4967883fec3014",
+      "sourceImage": "BG-LIBRARY_day_usable_revised_1080x1920.png",
+      "sourceSize": [
+        1080,
+        1920
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-LIBRARY:night:usable",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "night",
+      "roomState": "usable",
+      "path": "res://assets/raven/vn_backgrounds/library/night_usable.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "a9bced14690a43f1213b8bc274e030656e36798a8022d3dbab8969d8224b043c",
+      "sourceImage": "BG-LIBRARY_night_usable_revised_1080x1920.png",
+      "sourceSize": [
+        1080,
+        1920
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    },
+    {
+      "id": "BG-LIBRARY:night:storm_leak",
+      "backgroundId": "BG-LIBRARY",
+      "lighting": "night",
+      "roomState": "storm_leak",
+      "path": "res://assets/raven/vn_backgrounds/library/night_storm_leak.webp",
+      "width": 1080,
+      "height": 1920,
+      "sha256": "e41c11347083d97552938ce7b4cd11a97b121f1729c091416900ad1df90cebfb",
+      "sourceImage": "BG-LIBRARY_night_storm_leak_revised_1080x1920.png",
+      "sourceSize": [
+        1080,
+        1920
+      ],
+      "status": "candidate",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+    }
+  ]
+}
