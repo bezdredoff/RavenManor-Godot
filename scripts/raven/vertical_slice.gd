@@ -11,6 +11,8 @@ const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
+const RuntimeDispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
+const Copy = preload("res://scripts/raven/raven_production_localization.gd")
 
 var store := Store.new()
 var state := Snapshot.fresh()
@@ -73,13 +75,18 @@ func _build_shell() -> void:
 func _render() -> void:
 	for child in body.get_children(): child.queue_free()
 	step = Director.next_step(state)
+	if step.get("kind") == "done":
+		var approved: Dictionary = RuntimeDispatch.next_scene(state, Copy.new().locale)
+		if not approved.is_empty():
+			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
+				"scene": approved["beatId"], "title": approved["title"], "config": approved}
 	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
 	body.add_child(_label(str(step.title), 20, Color("f0dfbd")))
 	match str(step.kind):
 		"map","restore","clue":
 			body.add_child(_paragraph(str(step.body)))
 			_add_button(body, "ВЫПОЛНИТЬ", _complete_action)
-		"vn": _render_vn()
+		"vn", "vn_production": _render_vn()
 		"match3": _render_match3()
 		"done":
 			body.add_child(_paragraph(str(step.body)))
@@ -89,12 +96,15 @@ func _render() -> void:
 
 func _render_vn() -> void:
 	var scene_id := str(step.scene)
-	var config: Dictionary = content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
+	var config: Dictionary = step["config"] if step.get("kind") == "vn_production" else \
+		content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
 	if vn_player == null or vn_player.scene.get("beatId", "") != config.beatId:
 		vn_player = VN.new(); vn_player.open(config)
 	vn_view = VNGameView.new()
 	body.add_child(vn_view)
-	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn)
+	var line_ids: Array = config.get("lineIds", [])
+	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
+	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id)
 
 
 func _render_match3() -> void:
@@ -119,7 +129,22 @@ func _complete_action() -> void:
 
 func _advance_vn() -> void:
 	if vn_player.advance():
-		_apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}]); vn_player = null
+		if step.get("kind") == "vn_production":
+			var unique_id := "production-%s-%d" % [str(vn_player.scene.beatId), state.revision]
+			var event: Dictionary = RuntimeDispatch.completion_event(vn_player.scene, true, unique_id)
+			if event.is_empty():
+				push_error("Production VN completion rejected")
+				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
+				return
+			var reduced: Dictionary = Reducer.apply(state, event)
+			if not reduced.get("ok", false) or not store.save_campaign(reduced.get("state", {})):
+				push_error("Production VN completion not saved")
+				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
+				return
+			state = reduced["state"]
+		else:
+			_apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}])
+		vn_player = null
 	_render()
 
 
