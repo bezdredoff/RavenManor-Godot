@@ -70,7 +70,8 @@ func _initialize() -> void:
 	var report := Copy.translation_report()
 	assert(report.total == Dialogue.data.entries.size())
 	assert(report.missingDialogueByLocale.ru == 0)
-	assert(report.missingDialogueByLocale.be > 0 and report.missingDialogueByLocale.en > 0, "Translations are intentionally pending; update release quality gate when ready")
+	assert(report.missingDialogueByLocale.en == 0, "All Season 1 English dialogue is authored")
+	assert(report.missingDialogueByLocale.be > 0, "Belarusian editorial work remains pending")
 
 	var path := "user://raven_production_localization_smoke.cfg"
 	var preferences := Copy.new(path)
