@@ -83,7 +83,7 @@ func _build() -> void:
 	body.size_flags_horizontal = SIZE_EXPAND_FILL
 	_workspace_scroll.add_child(body)
 	var heading := Label.new()
-	heading.text = "Raven Manor · собственный сценарий (28 сцен / 280 реплик)"
+	heading.text = "Raven Manor · 28 исходных сцен / 280 исходных реплик + локальные черновики"
 	heading.add_theme_font_size_override("font_size", 17)
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(heading)
@@ -674,7 +674,7 @@ func _on_graph_modified(data: Dictionary) -> void:
 	var error: String = Store.set_story_graph(_project, _draft, data)
 	if not error.is_empty():
 		_status.text = "Story Map не сохранена: " + error
-		_raven_graph.set_context(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		_raven_graph.set_context(_project, _draft, str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"]))
 		return
 	_undo.append(snapshot)
 	_redo.clear()
@@ -707,7 +707,7 @@ func _on_stage_modified(stage: Dictionary) -> void:
 	var error: String = Store.set_stage(_project, _draft, stage)
 	if not error.is_empty():
 		_status.text = "Ошибка постановки: " + error
-		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		_stage_designer.set_scene(_project, _draft, str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"]))
 		return
 	_undo.append(snapshot)
 	_redo.clear()
@@ -729,7 +729,7 @@ func _on_stage_v2_modified(overlay: Dictionary) -> void:
 	var error: String = Store.set_stage_v2(_project, _draft, overlay)
 	if not error.is_empty():
 		_status.text = "V2-постановка не сохранена: " + error
-		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		_stage_designer.set_scene(_project, _draft, str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"]))
 		return
 	_undo.append(snapshot)
 	_redo.clear()
@@ -748,7 +748,7 @@ func _on_stage_fx_modified(data: Dictionary) -> void:
 	var error: String = Store.set_stage_fx(_project, _draft, data)
 	if not error.is_empty():
 		_status.text = "FX не сохранено: " + error
-		_stage_designer.set_scene(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		_stage_designer.set_scene(_project, _draft, str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"]))
 		return
 	_undo.append(snapshot)
 	_redo.clear()
