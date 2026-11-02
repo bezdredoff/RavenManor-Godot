@@ -115,8 +115,8 @@ func _run() -> void:
 	widget._label.clear() # drag gives a safe visible label
 	var previous_size: int = widget._overlay["edges"].size()
 	# The green canonical port can NEVER be used to author a draft.
-	widget._on_connection_request(StringName(widget._name_map[source]), 1,
-		StringName(widget._name_map[third]), 1)
+	widget._on_connection_request(StringName(widget._name_map[source]), 0,
+		StringName(widget._name_map[third]), 0)
 	assert(widget._overlay["edges"].size() == previous_size)
 	# Orange port 1 creates a separate editable wire, even when its endpoint is
 	# also connected by a canonical green line.
