@@ -57,6 +57,7 @@ var _fx_playing: bool = false
 var _fx_elapsed: float = 0.0
 var _fx_list: ItemList
 var _fx_target: OptionButton
+var _fx_controls: VBoxContainer
 var _fx_kind: OptionButton
 var _fx_start: SpinBox
 var _fx_duration: SpinBox
@@ -282,9 +283,14 @@ func _ready() -> void:
 	_prop_scale = _numeric(transforms, 0.1, 3, 0.05, 1)
 	for spinner in [_prop_x, _prop_y, _prop_z, _prop_scale]:
 		spinner.value_changed.connect(_on_prop_transform)
-	# VNS5-05A: editor-only scene-timed micro-FX. No gameplay or sprite authoring.
+	# VNS5-07F1: group the existing working FX controls so Raven Director can
+	# put them into its Animation tab without duplicating the FX state/logic.
+	# Standalone StageDesigner still shows the same controls in place.
+	_fx_controls = VBoxContainer.new()
+	_fx_controls.name = "Stage FX Editor"
+	add_child(_fx_controls)
 	var fx_row := HFlowContainer.new()
-	add_child(fx_row)
+	_fx_controls.add_child(fx_row)
 	var fx_title := Label.new()
 	fx_title.text = "Микроанимации (FX draft)"
 	fx_row.add_child(fx_title)
@@ -308,7 +314,7 @@ func _ready() -> void:
 	_fx_list.item_selected.connect(_on_fx_select)
 	fx_row.add_child(_fx_list)
 	var fx_params := HFlowContainer.new()
-	add_child(fx_params)
+	_fx_controls.add_child(fx_params)
 	_fx_anchor = OptionButton.new()
 	_fx_anchor.custom_minimum_size.x = 180
 	_fx_anchor.tooltip_text = "Запуск FX на всей сцене или на выбранной реплике (editor only)"
@@ -331,7 +337,7 @@ func _ready() -> void:
 	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
 		spinner.value_changed.connect(_on_fx_params)
 	var fx_playback := HFlowContainer.new()
-	add_child(fx_playback)
+	_fx_controls.add_child(fx_playback)
 	_fx_play = Button.new()
 	_fx_play.text = "▶ Play preview"
 	_fx_play.pressed.connect(_on_fx_play)
@@ -381,13 +387,17 @@ func _ready() -> void:
 	add_child(_status)
 
 
-func dock_controls(target: VBoxContainer) -> void:
-	# The same editor widgets can sit in the right inspector while the canvas
-	# remains in the central Stage. Standalone StageDesigner keeps its old layout.
+func dock_controls(target: VBoxContainer, animation_target: VBoxContainer = null) -> void:
+	# Stage properties belong to Stage Inspector; the already working FX editor
+	# belongs to Animation. Both operate on the SAME StageDesigner state and
+	# the SAME editor-only canvas. Standalone instances remain unchanged.
 	for child in get_children():
 		if child == _canvas or child == _status or child == _browser:
 			continue
-		child.reparent(target)
+		if child == _fx_controls and animation_target != null:
+			child.reparent(animation_target)
+		else:
+			child.reparent(target)
 
 
 func fit_docked_preview(available: Vector2) -> void:

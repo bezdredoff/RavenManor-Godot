@@ -417,9 +417,9 @@
     {
       "id": "VNS5-07E",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "Owner supplied screenshot: VN Studio workspace leaves large unused lower region and is not close to approved HTML. Branch code/vns5-07e-full-height-responsive-workspace from merged main 05710372. Root cause ScrollContainer child body min 440 doesn't fill viewport, narrow stage persisted settings and tall 390x844 scroll, Story Map intrinsic GraphEdit min height. Adds viewport-height syncing, stage/inspector split v2, fit-to-pane StageEditor only (no normalized staging/runtime changes), graph viewport sync and responsive smoke tests. CI and native mouse/screenshots are pending; exact HTML parity is NOT claimed. See docs/production/VNS5_07E_FULL_HEIGHT_RU.md."
+      "evidence": "Owner supplied screenshot: VN Studio workspace leaves large unused lower region and is not close to approved HTML. Branch code/vns5-07e-full-height-responsive-workspace from merged main 05710372. Root cause ScrollContainer child body min 440 doesn't fill viewport, narrow stage persisted settings and tall 390x844 scroll, Story Map intrinsic GraphEdit min height. Adds viewport-height syncing, stage/inspector split v2, fit-to-pane StageEditor only (no normalized staging/runtime changes), graph viewport sync and responsive smoke tests. CI and native mouse/screenshots are pending; exact HTML parity is NOT claimed. See docs/production/VNS5_07E_FULL_HEIGHT_RU.md. PR #127 merged into main 8992aa1dc75dd8a02ec96fc65c5d48c31436cb2f at 2026-11-02T20:42:23Z. Full PR-head CI #41520647727 SUCCESS. Native owner QA and exact HTML parity still outstanding."
     },
     {
       "id": "VNS5-07F",
@@ -427,6 +427,13 @@
       "status": "proposed",
       "updated": "2026-11-02",
       "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts."
+    },
+    {
+      "id": "VNS5-07F1",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "evidence": "Review candidate code/vns5-07f1-animation-tab-live-fx based on merged #127. Actual Animation tab previously static placeholder while working StageDesigner FX widgets hidden in Stage Inspector. Reuse same working FX UI/state in Animation with a grouped dockable VBoxContainer, scene/line anchor, typed cue edit, play/reset/scrub; stage remains visible. No draft schema/runtime/save change. Extended Godot layout smoke checks live FX controls and add/undo. Independent PR CI and native Windows QA pending; screenshot HTML parity remains VNS5-07F (proposed), not claimed. Runbook docs/production/VNS5_07F1_ANIMATION_TAB_RU.md; issue #121."
     }
   ],
   "rules": [
