@@ -864,6 +864,23 @@
       "graphicsDependencies": [],
       "source": "Issue #129 ChatGPT approved HTML v5 requirements, 2026-11-02",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07F4",
+      "title": "VN Studio: condition and ending draft-only Story Map links",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Restore approved HTML v5 condition/ending authoring affordances without inventing executable conditions, ending IDs or game-save semantics.",
+      "deliverable": "Graph overlay KINDS condition/ending, safe opaque conditionRef and DRAFT_END terminal, editor controls plus inspect/edit/graph preview, safety validation and smoke tests.",
+      "acceptance": "Godot Editor: condition link with text annotation, ending terminal, proper popup/inspect/edit/review export, rejects fake paths/targets/duplicate/2 unconditional, SHA save/runtime unchanged; independent CI, owner QA.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07F3"
+      ],
+      "graphicsDependencies": [],
+      "source": "Issue #129, Nov 1 approved HTML-v5 recovered history",
+      "requiresHumanAcceptance": true
     }
   ]
 }
