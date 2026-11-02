@@ -5,6 +5,9 @@ GODOT_BIN="${GODOT_BIN:-godot}"
 
 # Production catalogs are checked independently of the playable runtime.
 python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py"
+# Enforce complete RU/BE/EN spoken lines, scene titles and hotspot popups.
+# This registry gate does not certify unrelated in-game UI or manual proofreading.
+python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py" --release
 python3 "$ROOT/scripts/raven/tools/validate_code_plan.py"
 python3 "$ROOT/scripts/raven/tools/build_production_dashboard.py" --check
 python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py scripts/raven/tools/test_pr_governance.py scripts/raven/tools/test_audit_upds_vn.py
@@ -70,6 +73,7 @@ run_check 'Match3 direct QA Content Preview' 'Raven Manor Match-3 QA shortcut an
 run_check 'RM-VS-01 vertical slice smoke' 'Raven Manor RM-VS-01 smoke passed' --script res://tests/raven/vertical_slice_smoke.gd --quit-after 120
 run_check 'Narrative production contract smoke' 'Raven Manor production narrative contract smoke passed' --script res://tests/raven/production_narrative_smoke.gd --quit-after 120
 run_check 'English translation and VN Studio parity' 'Raven English VN Studio localization smoke passed' --script res://tests/raven/vn_english_localization_smoke.gd --quit-after 240
+run_check 'Belarusian translation and VN Studio parity' 'Raven Belarusian VN Studio localization smoke passed' --script res://tests/raven/vn_belarusian_localization_smoke.gd --quit-after 240
 run_check 'VN background catalog / gallery' 'Raven VN background registry and 9 textures PASS' --script res://tests/raven/vn_background_gallery_smoke.gd --quit-after 120
 run_check 'VN Studio responsive layout' 'Raven VN Studio responsive layout smoke passed' --editor --script res://tests/raven/vn_studio_layout_smoke.gd --quit-after 120
 run_check 'VN Studio asset registry' 'Raven VN Studio asset registry read-only smoke passed' --script res://tests/raven/vn_studio_asset_registry_smoke.gd --quit-after 120

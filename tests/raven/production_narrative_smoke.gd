@@ -33,7 +33,7 @@ func _initialize() -> void:
 		assert(available_scenes.has(line.sceneId), "Line belongs to missing beat")
 		assert(actors.has(line.speakerId) or line.speakerId == "RM-CHAR-UNKNOWN-VOICE", "Unknown speaker")
 		assert(not Copy.line_text(line.id, "ru").is_empty(), "Missing source text")
-		assert(not Copy.line_text(line.id, "be").is_empty(), "Missing fallback for BE")
+		assert(not Copy.line_text(line.id, "be").is_empty(), "Missing BE translation")
 		assert(not Copy.line_text(line.id, "en").is_empty(), "Missing fallback for EN")
 		beat_line_ids[line.sceneId] += 1
 	for beat_id: String in available_scenes:
@@ -71,7 +71,7 @@ func _initialize() -> void:
 	assert(report.total == Dialogue.data.entries.size())
 	assert(report.missingDialogueByLocale.ru == 0)
 	assert(report.missingDialogueByLocale.en == 0, "All Season 1 English dialogue is authored")
-	assert(report.missingDialogueByLocale.be > 0, "Belarusian editorial work remains pending")
+	assert(report.missingDialogueByLocale.be == 0, "All Season 1 Belarusian dialogue is authored")
 
 	var path := "user://raven_production_localization_smoke.cfg"
 	var preferences := Copy.new(path)
