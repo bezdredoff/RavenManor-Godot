@@ -142,7 +142,7 @@
       "title": {
         "ru": "3.1. Библиотека",
         "be": null,
-        "en": null
+        "en": "3.1. The Library"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -152,7 +152,7 @@
       "title": {
         "ru": "3.2. Следы чужого почерка",
         "be": null,
-        "en": null
+        "en": "3.2. Traces of Another Hand"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -162,7 +162,7 @@
       "title": {
         "ru": "3.3. Разговор о памяти",
         "be": null,
-        "en": null
+        "en": "3.3. Talking About Memory"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -172,7 +172,7 @@
       "title": {
         "ru": "3.4. Второе письмо",
         "be": null,
-        "en": null
+        "en": "3.4. The Second Letter"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -182,7 +182,7 @@
       "title": {
         "ru": "4.1. Не ходите по этой дорожке",
         "be": null,
-        "en": null
+        "en": "4.1. Stay Off That Path"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -192,7 +192,7 @@
       "title": {
         "ru": "4.2. Под стеклянной крышей",
         "be": null,
-        "en": null
+        "en": "4.2. Under the Glass Roof"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -202,7 +202,7 @@
       "title": {
         "ru": "4.3. Коллекция невозможных сокровищ",
         "be": null,
-        "en": null
+        "en": "4.3. A Collection of Impossible Treasures"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -212,7 +212,7 @@
       "title": {
         "ru": "4.4. После дождя",
         "be": null,
-        "en": null
+        "en": "4.4. After the Rain"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
       "status": "proposed_future_runtime"
@@ -1789,7 +1789,9 @@
           "text": "Прекрасная дверь. Жаль, петли не согласны."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Beautiful door. Shame the hinges disagree."
+        }
       },
       "source": "screenplay"
     },
@@ -1803,7 +1805,9 @@
           "text": "В этом доме есть дверь, которая откроется без комментария о ремонте?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Is there a door in this house that opens without a comment about repairs?"
+        }
       },
       "source": "screenplay"
     },
@@ -1817,7 +1821,9 @@
           "text": "Входная. Иногда."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "The front door. Sometimes."
+        }
       },
       "source": "screenplay"
     },
@@ -1831,7 +1837,9 @@
           "text": "Кажется, я помню эту комнату."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I think I remember this room."
+        }
       },
       "source": "screenplay"
     },
@@ -1845,7 +1853,9 @@
           "text": "Нам нужны семейная переписка и бумаги о ремонтах. Завещание ссылается на документы, которых нет в конторе."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "We need family correspondence and repair records. The will refers to documents that aren't at the office."
+        }
       },
       "source": "screenplay"
     },
@@ -1859,7 +1869,9 @@
           "text": "И, разумеется, всё спрятано в самой пыльной комнате."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And naturally, everything's hidden in the dustiest room."
+        }
       },
       "source": "screenplay"
     },
@@ -1873,7 +1885,9 @@
           "text": "Сначала освободим стол и закрепим полку. Потом будем искать."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "First we'll clear the table and secure that shelf. Then we can start looking."
+        }
       },
       "source": "screenplay"
     },
@@ -1887,7 +1901,9 @@
           "text": "Вот фотография. Это я?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Here's a photograph. Is that me?"
+        }
       },
       "source": "screenplay"
     },
@@ -1901,7 +1917,9 @@
           "text": "Да."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Yes."
+        }
       },
       "source": "screenplay"
     },
@@ -1915,7 +1933,9 @@
           "text": "А кто рядом?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And who's beside me?"
+        }
       },
       "source": "screenplay"
     },
@@ -1929,7 +1949,9 @@
           "text": "Ваша семья."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Your family."
+        }
       },
       "source": "screenplay"
     },
@@ -1943,7 +1965,9 @@
           "text": "Я понимаю, что не случайные люди забрались в альбом. Кто именно?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I gathered they weren't strangers who wandered into the album. Who exactly?"
+        }
       },
       "source": "screenplay"
     },
@@ -1957,7 +1981,9 @@
           "text": "Подпись расплылась. Видна только дата."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "The caption has blurred. Only the date is legible."
+        }
       },
       "source": "screenplay"
     },
@@ -1971,7 +1997,9 @@
           "text": "Дайте взглянуть. Некоторые буквы сохранились. Возможно, получится разобрать их на увеличенном снимке."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Let me see. Some letters have survived. We might be able to make them out in an enlarged image."
+        }
       },
       "source": "screenplay"
     },
@@ -1985,7 +2013,9 @@
           "text": "Вы узнаёте человека?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Do you recognize the person?"
+        }
       },
       "source": "screenplay"
     },
@@ -1999,7 +2029,9 @@
           "text": "Лицо закрыто, фотография выцвела. Я не хочу гадать."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "The face is obscured and the photo's faded. I'd rather not guess."
+        }
       },
       "source": "screenplay"
     },
@@ -2013,7 +2045,9 @@
           "text": "Тогда пока запишем дату. Может, найдётся другая фотография."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Then let's note the date for now. Perhaps we'll find another picture."
+        }
       },
       "source": "screenplay"
     },
@@ -2027,7 +2061,9 @@
           "text": "Они адресованы мне. Почему их не отправили?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "These are addressed to me. Why weren't they sent?"
+        }
       },
       "source": "screenplay"
     },
@@ -2041,7 +2077,9 @@
           "text": "Здесь нет ни марок, ни почтовых отметок. Похоже, их только собирались отправить."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "There are no stamps or postmarks. It looks as though someone intended to send them, but never did."
+        }
       },
       "source": "screenplay"
     },
@@ -2055,7 +2093,9 @@
           "text": "Почему же мне казалось, что меня здесь никто не ждал?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Then why did I think no one here was waiting for me?"
+        }
       },
       "source": "screenplay"
     },
@@ -2069,7 +2109,9 @@
           "text": "Пока я жила далеко, от детства оставались только какие-то обрывки воспоминаний. В основном о комнатах и вещах. А людей я почти не помнила."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "While I lived far away, all I had of my childhood were scraps of memory. Mostly rooms and objects. I could barely remember the people."
+        }
       },
       "source": "screenplay"
     },
@@ -2083,7 +2125,9 @@
           "text": "Детские воспоминания редко бывают полными."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Childhood memories are rarely complete."
+        }
       },
       "source": "screenplay"
     },
@@ -2097,7 +2141,9 @@
           "text": "Но когда я приехала сюда, начала вспоминать больше. Вчера узнала запах спальни. Сегодня вспомнила, где стоял стол, хотя комнату переставили."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "But since I came back, I've started remembering more. Yesterday I recognized the smell of the bedroom. Today I remembered where the desk used to be, even though the room's been rearranged."
+        }
       },
       "source": "screenplay"
     },
@@ -2111,7 +2157,9 @@
           "text": "Знакомые места иногда помогают вспомнить забытое."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Familiar places can sometimes bring back forgotten memories."
+        }
       },
       "source": "screenplay"
     },
@@ -2125,7 +2173,9 @@
           "text": "А если дело не только в местах? Что, если я забывала что-то важное?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "But what if it isn't just the places? What if I forgot something important?"
+        }
       },
       "source": "screenplay"
     },
@@ -2139,7 +2189,9 @@
           "text": "Что заставляет вас так думать?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "What makes you think that?"
+        }
       },
       "source": "screenplay"
     },
@@ -2153,7 +2205,9 @@
           "text": "Я не могла вспомнить лица людей, с которыми жила. А теперь иногда кажется, что вот-вот вспомню."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I couldn't remember the faces of the people I lived with. Now, sometimes, I feel as though I'm just about to."
+        }
       },
       "source": "screenplay"
     },
@@ -2167,7 +2221,9 @@
           "text": "Записывайте всё, что приходит на память. Особенно то, что можно проверить по письмам и фотографиям."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Write down everything you remember. Especially things we can check against letters and photographs."
+        }
       },
       "source": "screenplay"
     },
@@ -2181,7 +2237,9 @@
           "text": "Чтобы отличить воспоминания от догадок?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "So I can tell memories from guesses?"
+        }
       },
       "source": "screenplay"
     },
@@ -2195,7 +2253,9 @@
           "text": "Именно."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Exactly."
+        }
       },
       "source": "screenplay"
     },
@@ -2209,7 +2269,9 @@
           "text": "«Не пытайся удержать её силой. Если она уедет, пусть уедет. Главное, чтобы у неё однажды осталась возможность выбрать самой»."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "\"Don't try to keep her here by force. If she leaves, let her go. What matters is that one day she still has the chance to choose for herself.\""
+        }
       },
       "source": "screenplay"
     },
@@ -2223,7 +2285,9 @@
           "text": "Не все письма писали для чужих глаз."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Not every letter was written for other people's eyes."
+        }
       },
       "source": "screenplay"
     },
@@ -2237,7 +2301,9 @@
           "text": "Это обо мне?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Is this about me?"
+        }
       },
       "source": "screenplay"
     },
@@ -2251,7 +2317,9 @@
           "text": "Возможно."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Perhaps."
+        }
       },
       "source": "screenplay"
     },
@@ -2265,7 +2333,9 @@
           "text": "Я всегда думала, что уехала потому, что меня не хотели видеть."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I always thought I left because they didn't want me here."
+        }
       },
       "source": "screenplay"
     },
@@ -2279,7 +2349,9 @@
           "text": "Люди иногда отпускают тех, кого любят."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Sometimes people let go of those they love."
+        }
       },
       "source": "screenplay"
     },
@@ -2293,7 +2365,9 @@
           "text": "Но зачем было оставлять всё недосказанным?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Then why leave so much unsaid?"
+        }
       },
       "source": "screenplay"
     },
@@ -2307,7 +2381,9 @@
           "text": "Боюсь, на этот вопрос у меня пока нет честного ответа."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I'm afraid I don't have an honest answer to that yet."
+        }
       },
       "source": "screenplay"
     },
@@ -2321,7 +2397,9 @@
           "text": "Тогда мне нужен тот, кто помнит меня ребёнком. Роуэн."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Then I need someone who remembers me as a child. Rowan."
+        }
       },
       "source": "screenplay"
     },
@@ -2335,7 +2413,9 @@
           "text": "Принесла чай. Ада сказала, вы с утра работаете."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I brought tea. Ada said you've been working since morning."
+        }
       },
       "source": "screenplay"
     },
@@ -2349,7 +2429,9 @@
           "text": "Спасибо. Если привыкну, стану требовательным."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Thank you. If I get used to this, I'll start making demands."
+        }
       },
       "source": "screenplay"
     },
@@ -2363,7 +2445,9 @@
           "text": "В следующий раз приносите свой термос."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Next time, bring your own thermos."
+        }
       },
       "source": "screenplay"
     },
@@ -2377,7 +2461,9 @@
           "text": "Справедливо."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Fair enough."
+        }
       },
       "source": "screenplay"
     },
@@ -2391,7 +2477,9 @@
           "text": "Я нашла письма. Похоже, после моего отъезда обо мне помнили."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I found some letters. Looks like people remembered me after I left."
+        }
       },
       "source": "screenplay"
     },
@@ -2405,7 +2493,9 @@
           "text": "Конечно. Вы постоянно что-нибудь находили или теряли. Обычно одновременно."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Of course. You were always finding things or losing them. Usually both at once."
+        }
       },
       "source": "screenplay"
     },
@@ -2419,7 +2509,9 @@
           "text": "Правда?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Really?"
+        }
       },
       "source": "screenplay"
     },
@@ -2433,7 +2525,9 @@
           "text": "Вы однажды спрятали мою лопатку. Сказали, что она устала работать."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Once you hid my hand trowel. Said it was tired of working."
+        }
       },
       "source": "screenplay"
     },
@@ -2447,7 +2541,9 @@
           "text": "И где она?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And where is it?"
+        }
       },
       "source": "screenplay"
     },
@@ -2461,7 +2557,9 @@
           "text": "В оранжерее. Возможно, до сих пор там."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "In the conservatory. Might still be there."
+        }
       },
       "source": "screenplay"
     },
@@ -2475,7 +2573,9 @@
           "text": "Может, поищем?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Shall we look for it?"
+        }
       },
       "source": "screenplay"
     },
@@ -2489,7 +2589,9 @@
           "text": "Пока туда лучше не заходить: битое стекло и прогнившие рамы. Сначала расчистим всё безопасным способом и заменим повреждённое."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Best not go inside yet. Broken glass, rotten frames. We need to clear it safely and replace what's damaged first."
+        }
       },
       "source": "screenplay"
     },
@@ -2503,7 +2605,9 @@
           "text": "Значит, сперва подготовка."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "So preparation comes first."
+        }
       },
       "source": "screenplay"
     },
@@ -2517,7 +2621,9 @@
           "text": "А вот потом можно искать лопатку-пенсионерку."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And then we can hunt for the retired trowel."
+        }
       },
       "source": "screenplay"
     },
@@ -2531,7 +2637,9 @@
           "text": "Здесь стало меньше зелени."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "There's less greenery in here now."
+        }
       },
       "source": "screenplay"
     },
@@ -2545,7 +2653,9 @@
           "text": "Несколько зим без отопления. Часть растений перенёс сюда, под целые стёкла."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Several winters without heating. I moved some of the plants over here, under the unbroken panes."
+        }
       },
       "source": "screenplay"
     },
@@ -2559,7 +2669,9 @@
           "text": "Тут стояла деревянная коробка с защёлкой."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "There used to be a wooden box with a latch here."
+        }
       },
       "source": "screenplay"
     },
@@ -2573,7 +2685,9 @@
           "text": "Вы складывали туда камни, листья и перья. Показывали мне каждый, как драгоценность."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "You kept stones, leaves, and feathers in it. You showed me every one as though it were a jewel."
+        }
       },
       "source": "screenplay"
     },
@@ -2587,7 +2701,9 @@
           "text": "Вспоминаю руку. Маленькую — мою. И ещё чью-то рядом."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I remember a hand. A little one—mine. And someone else's beside it."
+        }
       },
       "source": "screenplay"
     },
@@ -2601,7 +2717,9 @@
           "text": "Не заставляйте себя вспомнить всё сразу."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Don't force yourself to remember everything at once."
+        }
       },
       "source": "screenplay"
     },
@@ -2615,7 +2733,9 @@
           "text": "Почему все здесь так говорят?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Why does everyone here keep saying that?"
+        }
       },
       "source": "screenplay"
     },
@@ -2629,7 +2749,9 @@
           "text": "Потому что вы выглядите так, будто хотите прожить двадцать лет за один день."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Because you look like you're trying to live twenty years in a single day."
+        }
       },
       "source": "screenplay"
     },
@@ -2643,7 +2765,9 @@
           "text": "Камень, лента, пуговица. Великое наследство."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "A stone, a ribbon, a button. What a magnificent inheritance."
+        }
       },
       "source": "screenplay"
     },
@@ -2657,7 +2781,9 @@
           "text": "Пуговицу вы считали королевской."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "You were convinced that button belonged to royalty."
+        }
       },
       "source": "screenplay"
     },
@@ -2671,7 +2797,9 @@
           "text": "А она от старого пальто?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And it was from an old coat?"
+        }
       },
       "source": "screenplay"
     },
@@ -2685,7 +2813,9 @@
           "text": "Почти наверняка."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Almost certainly."
+        }
       },
       "source": "screenplay"
     },
@@ -2699,7 +2829,9 @@
           "text": "А вот это я рисовала? Здесь библиотека, здесь сад… Что за проход?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Did I draw this? Here's the library, here's the garden… What's this passage?"
+        }
       },
       "source": "screenplay"
     },
@@ -2713,7 +2845,9 @@
           "text": "Старая служебная часть. Сейчас закрыта: перекрытия опасны."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "The old service wing. Closed now. The floors aren't safe."
+        }
       },
       "source": "screenplay"
     },
@@ -2727,7 +2861,9 @@
           "text": "Зачем ребёнку такая надпись у себя дома?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Why would a child write something like that about her own home?"
+        }
       },
       "source": "screenplay"
     },
@@ -2741,7 +2877,9 @@
           "text": "Когда я уезжала, думала, что никогда не вернусь."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "When I left, I thought I'd never come back."
+        }
       },
       "source": "screenplay"
     },
@@ -2755,7 +2893,9 @@
           "text": "Дети часто так говорят."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Children often say that."
+        }
       },
       "source": "screenplay"
     },
@@ -2769,7 +2909,9 @@
           "text": "Я уже не была совсем маленькой."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I wasn't exactly a little child anymore."
+        }
       },
       "source": "screenplay"
     },
@@ -2783,7 +2925,9 @@
           "text": "Это не всегда помогает."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "That doesn't always help."
+        }
       },
       "source": "screenplay"
     },
@@ -2797,7 +2941,9 @@
           "text": "А вы никогда не хотели уехать?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Did you never want to leave?"
+        }
       },
       "source": "screenplay"
     },
@@ -2811,7 +2957,9 @@
           "text": "Хотел."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "I did."
+        }
       },
       "source": "screenplay"
     },
@@ -2825,7 +2973,9 @@
           "text": "Что остановило?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "What stopped you?"
+        }
       },
       "source": "screenplay"
     },
@@ -2839,7 +2989,9 @@
           "text": "Работа. Люди. Сад. Порядок зависит от дня."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Work. People. The garden. The order depends on the day."
+        }
       },
       "source": "screenplay"
     },
@@ -2853,7 +3005,9 @@
           "text": "Когда жила далеко, мне иногда снился дом. Но после пробуждения я не могла даже вспомнить, где он."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "When I lived far away, I sometimes dreamed about the house. But when I woke up, I couldn't even remember where it was."
+        }
       },
       "source": "screenplay"
     },
@@ -2867,7 +3021,9 @@
           "text": "А теперь?"
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "And now?"
+        }
       },
       "source": "screenplay"
     },
@@ -2881,7 +3037,9 @@
           "text": "Теперь помню сон целиком."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Now I remember the whole dream."
+        }
       },
       "source": "screenplay"
     },
@@ -2895,7 +3053,9 @@
           "text": "Пойдёмте. Ночью обещают бурю."
         },
         "be": null,
-        "en": null
+        "en": {
+          "text": "Come on. There's a storm forecast for tonight."
+        }
       },
       "source": "screenplay"
     },
