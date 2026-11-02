@@ -455,6 +455,20 @@
       "status": "PR_review",
       "updated": "2026-11-02",
       "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge."
+    },
+    {
+      "id": "CODE-04-03",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "updated": "2026-11-02",
+      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. Independent PR-head full Raven/Godot, governance, dashboard and Web export CI #41531258527 SUCCESS at implementation merge-head 60877d5; native owner UI QA remains pending. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md."
+    },
+    {
+      "id": "RM-GAP-013",
+      "owner": "ChatGPT",
+      "status": "in_progress",
+      "updated": "2026-11-02",
+      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI passed in GitHub Actions run #41531258527; native UI/editor QA pending. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI."
     }
   ],
   "rules": [

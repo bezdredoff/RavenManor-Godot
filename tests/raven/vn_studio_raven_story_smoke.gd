@@ -27,7 +27,8 @@ func _run() -> void:
 	assert(live["scenes"][0]["status"] == "already_runtime")
 	assert(live["linesByScene"]["RM-BEAT-00-01"].size() == 4)
 	var first: Dictionary = live["linesByScene"]["RM-BEAT-00-01"][0]
-	assert(Store.localized(first, Store.fresh(live), "en")["fallback"])
+	assert(not Store.localized(first, Store.fresh(live), "en")["fallback"])
+	assert(Store.localized(first, Store.fresh(live), "en")["translated"])
 	assert(Store.localized(first, Store.fresh(live), "ru")["text"] != "")
 	# UI can open public Raven without selecting any UPDS donor.
 	var view := View.new()

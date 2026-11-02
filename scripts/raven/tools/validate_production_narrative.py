@@ -5,8 +5,9 @@ Usage:
   python3 scripts/raven/tools/validate_production_narrative.py
   python3 scripts/raven/tools/validate_production_narrative.py --release
 
-English/Belarusian dialogue is intentionally not yet translated. The regular
-contract check accepts TODO fields; --release rejects any incomplete locale.
+English dialogue and titles are populated as first-pass translations. Belarusian
+remains incomplete; the regular check accepts TODO fields, while --release
+rejects any missing required locale.
 """
 import argparse
 import json

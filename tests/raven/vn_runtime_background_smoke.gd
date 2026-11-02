@@ -27,21 +27,25 @@ func _run() -> void:
 	assert(road.background.visible and not road.missing_background.visible)
 	assert(road.background.texture.get_width() == 1080)
 	assert(road.background.texture.get_height() == 1920)
-	assert(road.dialogue.text == str(Content.data.prologueScenes.road.lines[0].text))
+	assert(road._full_text == str(Content.data.prologueScenes.road.lines[0].text))
 	assert(road.nameplate.text == "ЭВЕЛИН")
 	assert(road.actors.size() == 1)
 	assert((road.actors[0]["node"] as TextureRect).texture != null)
-	road._next()
-	await process_frame
+	# Long lines may occupy several real pages; one tap must not skip text.
+	for page_click in range(64):
+		if preview.vn_player.line_index == 1:
+			break
+		preview.vn_view._next()
+		await process_frame
 	assert(preview.vn_player.line_index == 1)
-	assert(preview.vn_view.dialogue.text == str(Content.data.prologueScenes.road.lines[1].text))
+	assert(preview.vn_view._full_text == str(Content.data.prologueScenes.road.lines[1].text))
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-02"))
 	preview._open_vn("gates")
 	await process_frame
 	assert(preview.vn_view.scene_id == "RM-BEAT-00-03")
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-03"), "Entry must render in gameplay once imported")
 	assert(not preview.vn_view.missing_background.visible)
-	assert(preview.vn_view.dialogue.text == str(Content.data.prologueScenes.gates.lines[0].text))
+	assert(preview.vn_view._full_text == str(Content.data.prologueScenes.gates.lines[0].text))
 	assert(preview.vn_view.actors.size() == 2)
 	preview._open_vn("bedroom")
 	await process_frame
@@ -49,13 +53,13 @@ func _run() -> void:
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-01-02"), "Bedroom daytime art must render behind the actual story dialogue")
 	assert(preview.vn_view.background.visible and not preview.vn_view.missing_background.visible)
 	assert(preview.vn_view.actors.size() == 2, "Bedroom must compose Evelyn and Ada")
-	assert(preview.vn_view.dialogue.text == str(Content.data.vnScenes.bedroom.lines[0].text))
+	assert(preview.vn_view._full_text == str(Content.data.vnScenes.bedroom.lines[0].text))
 	preview._open_vn("trace")
 	await process_frame
 	assert(preview.vn_view.scene_id == "RM-BEAT-01-03", "Bathroom vignette should be the actual Chapter I scene")
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-01-03"))
 	assert(not preview.vn_view.missing_background.visible, "Bathroom image must render, not ART PENDING")
-	assert(preview.vn_view.dialogue.text == str(Content.data.vnScenes.trace.lines[0].text))
+	assert(preview.vn_view._full_text == str(Content.data.vnScenes.trace.lines[0].text))
 	preview._open_vn("letter")
 	await process_frame
 	assert(preview.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-01"))
@@ -73,7 +77,7 @@ func _run() -> void:
 	assert(slice.vn_view is GameView)
 	assert(slice.vn_view.scene_id == "RM-BEAT-00-02")
 	assert(slice.vn_view.background.texture == Resolver.texture_for_scene("RM-BEAT-00-02"))
-	assert(slice.vn_view.dialogue.text == str(Content.data.prologueScenes.road.lines[0].text))
+	assert(slice.vn_view._full_text == str(Content.data.prologueScenes.road.lines[0].text))
 	slice.queue_free()
 	await process_frame
 

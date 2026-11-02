@@ -1,5 +1,5 @@
 extends "res://scripts/shared/upds/player_preferences.gd"
-## Independent production-localization adapter; NOT yet wired into playable RM-VS-01.
+## Shared production localization used by Raven VN Studio and playable VN.
 ## Mirrors UPDS language persistence & line-key lookup without importing UPDS story.
 
 const DialogueData = preload("res://data/raven/production/season1_dialogue_catalog.json")
@@ -29,6 +29,16 @@ static func localized_text(value: Dictionary, selected_locale: String = DEFAULT_
 	if fallback is Dictionary:
 		return str(fallback.get("text", ""))
 	return ""
+
+
+static func scene_title(scene_id: String, selected_locale: String = DEFAULT_LOCALE) -> String:
+	for scene: Dictionary in DialogueData.data.scenes:
+		if scene.get("sceneId") == scene_id:
+			var titles: Dictionary = scene.get("title", {})
+			var lang: String = normalize_locale(selected_locale)
+			var selected: Variant = titles.get(lang)
+			return str(selected) if selected is String and not selected.strip_edges().is_empty() else str(titles.get(FALLBACK_LOCALE, scene_id))
+	return scene_id
 
 
 static func line_by_id(line_id: String) -> Dictionary:
