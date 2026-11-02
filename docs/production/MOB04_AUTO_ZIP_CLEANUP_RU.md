@@ -28,3 +28,19 @@
 `node --test tests/raven/incoming_zip_cleanup.test.mjs` запускается внутри `pages.yml` и проверяет правила `always()`, допустимые пути, успешную и ошибочную очистку, выбор при manual dispatch и отсутствие удаления новой загрузки при смене HEAD или SHA blob.
 
 **Границы приёмки:** синтетический CI тест не равен live проверке на GitHub. Статус MOB-04 по остальным device/phone acceptance вопросам не закрывается.
+
+## 2026-11-02 — Исправление после merge PR #107
+
+После merge PR #107 GitHub Actions не смог прочитать workflow: ключ `cleanup_incoming_zip:` оказался на верхнем уровне YAML вместо дочернего элемента `jobs:`. Запуски [main #41405224801](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41405224801) и [incoming #41357836990](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41357836990) завершились сразу, без jobs. Успешный Pages CI не подтверждал синтаксис importer.
+
+Исправление: вложить `cleanup_incoming_zip:` под `jobs:` (два пробела) и добавить независимый тест структуры YAML в `tests/raven/incoming_zip_cleanup.test.mjs`. Исправленный workflow нужно применить в обеих ветках: `main` и `incoming`. Старые failed runs не следует rerun как проверку фикса: они привязаны к старым коммитам. ZIP-папка incoming при аудите была пуста.
+
+**Проверка после применения в обе ветки:**
+
+1. В GitHub Actions убедиться, что importer больше не выдаёт мгновенную ошибку парсинга workflow. Изменение только YAML не обязано запускать importer: его push-триггер фильтрует `incoming/*.zip`.
+2. С телефона загрузить тестовый невалидный ZIP `incoming/MOB04-cleanup-negative.zip` в ветку `incoming` (один ZIP за раз), затем открыть последний `Import Raven mobile ZIP candidate` run.
+3. Ожидается: `validate` = failed по отсутствующему `patch-manifest.json`, `candidate` и `test_candidate` пропущены, `cleanup_incoming_zip` = success, ZIP исчез из `incoming`. Общий run может иметь статус failure — это нормально для negative test.
+4. Positive test провести при следующем **настоящем валидном** delta ZIP с актуальным `baseSha`: `validate` / `candidate` / `test_candidate` и `cleanup_incoming_zip` должны пройти; ZIP исчезнет, а candidate PR появится и останется на ручном review. Не мержить smoke-test PR.
+5. При failure `cleanup_incoming_zip` проверить log и разрешения Settings → Actions → General → Workflow permissions; при race warning проверить новую загрузку отдельно. Отмена run и outage API остаются исключениями.
+
+До live positive + negative проверки нельзя отмечать MOB-04 как accepted.
