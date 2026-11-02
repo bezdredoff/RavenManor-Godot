@@ -50,7 +50,14 @@ var _promotion_view: Control
 var _create_scene_dialog: ConfirmationDialog
 var _create_line_dialog: ConfirmationDialog
 var _scene_title_input: LineEdit
+var _scene_chapter: OptionButton
+var _scene_background: OptionButton
+var _scene_backgrounds: Array[Dictionary] = []
 var _scene_first_line_input: TextEdit
+var _line_up: Button
+var _line_down: Button
+var _line_delete: Button
+var _confirm_delete_line: ConfirmationDialog
 var _new_line_input: TextEdit
 var _scene_speaker: OptionButton
 var _line_speaker: OptionButton
@@ -127,6 +134,21 @@ func _build() -> void:
 	new_line_button.tooltip_text = "Добавить реплику в выбранную сцену, не изменяя production JSON."
 	new_line_button.pressed.connect(_show_create_line)
 	toolbar.add_child(new_line_button)
+	_line_up = Button.new()
+	_line_up.text = "↑ Реплика"
+	_line_up.tooltip_text = "Изменить порядок черновых реплик; канонические реплики неизменяемы"
+	_line_up.pressed.connect(_on_line_up)
+	toolbar.add_child(_line_up)
+	_line_down = Button.new()
+	_line_down.text = "↓ Реплика"
+	_line_down.tooltip_text = "Переместить только созданную в редакторе реплику"
+	_line_down.pressed.connect(_on_line_down)
+	toolbar.add_child(_line_down)
+	_line_delete = Button.new()
+	_line_delete.text = "− Реплика"
+	_line_delete.tooltip_text = "Удалить только черновую реплику; доступна отмена"
+	_line_delete.pressed.connect(_request_delete_line)
+	toolbar.add_child(_line_delete)
 	var reload := Button.new()
 	reload.text = "Перечитать проект"
 	reload.pressed.connect(open_raven)
@@ -465,6 +487,17 @@ func _build_authoring_dialogs() -> void:
 	add_child(_create_scene_dialog)
 	var scene_fields := VBoxContainer.new()
 	_create_scene_dialog.add_child(scene_fields)
+	var chapter_label := Label.new()
+	chapter_label.text = "Глава (draft-группа, не runtime)"
+	scene_fields.add_child(chapter_label)
+	_scene_chapter = OptionButton.new()
+	scene_fields.add_child(_scene_chapter)
+	var bg_label := Label.new()
+	bg_label.text = "Фон / свет / состояние (реальные plate из каталога)"
+	scene_fields.add_child(bg_label)
+	_scene_background = OptionButton.new()
+	_scene_background.custom_minimum_size.x = 390
+	scene_fields.add_child(_scene_background)
 	var title := Label.new()
 	title.text = "Название RU"
 	scene_fields.add_child(title)
@@ -492,6 +525,11 @@ func _build_authoring_dialogs() -> void:
 	_line_speaker = OptionButton.new()
 	line_fields.add_child(_line_speaker)
 	_create_line_dialog.confirmed.connect(_on_create_line)
+	_confirm_delete_line = ConfirmationDialog.new()
+	_confirm_delete_line.title = "Удалить черновую реплику?"
+	_confirm_delete_line.dialog_text = "Только локальная реплика; исходный сценарий не изменится. Можно отменить в редакторе."
+	_confirm_delete_line.confirmed.connect(_delete_selected_line)
+	add_child(_confirm_delete_line)
 
 
 func _refresh_speakers() -> void:
@@ -508,6 +546,23 @@ func _show_create_scene() -> void:
 	if _blocked or _project.is_empty():
 		return
 	_refresh_speakers()
+	_scene_chapter.clear()
+	var chapters: Array[String] = []
+	for record in _project.get("scenes", []):
+		var scene_id: String = str(record.get("sceneId", ""))
+		var bits: PackedStringArray = scene_id.split("-")
+		if bits.size() >= 4 and bits[2].length() == 2 and not chapters.has(bits[2]):
+			chapters.append(bits[2])
+	chapters.sort()
+	for chapter in chapters:
+		_scene_chapter.add_item(chapter)
+	_scene_chapter.disabled = chapters.is_empty()
+	_scene_backgrounds = Store.background_variants(_project)
+	_scene_background.clear()
+	for bg in _scene_backgrounds:
+		_scene_background.add_item("%s · %s · %s" % [
+			str(bg["backgroundId"]), str(bg["lighting"]), str(bg["roomState"])])
+	_scene_background.disabled = _scene_backgrounds.is_empty()
 	_scene_title_input.clear()
 	_scene_first_line_input.clear()
 	_create_scene_dialog.popup_centered()
@@ -524,9 +579,14 @@ func _show_create_line() -> void:
 func _on_create_scene() -> void:
 	if _blocked or _scene_speaker.selected < 0:
 		return
+	if _scene_background.selected < 0:
+		_status.text = "Новая сцена: нет доступного изображения фона."
+		return
+	var chapter: String = _scene_chapter.get_item_text(_scene_chapter.selected) if _scene_chapter.selected >= 0 else ""
+	var background: Dictionary = _scene_backgrounds[_scene_background.selected]
 	var result: Dictionary = Store.add_scene(_project, _draft,
 		_scene_title_input.text, _scene_first_line_input.text,
-		_scene_speaker.get_item_text(_scene_speaker.selected))
+		_scene_speaker.get_item_text(_scene_speaker.selected), chapter, background)
 	if not result.get("ok", false):
 		_status.text = "Новая сцена не добавлена: " + str(result.get("error", ""))
 		return
@@ -537,7 +597,7 @@ func _on_create_scene() -> void:
 	_refresh_scene_items()
 	_scene_idx = Store.scene_records(_project, _draft).size() - 1
 	_scene_switch()
-	_status.text = "Черновая сцена " + str(result["sceneId"]) + " создана; не участвует в игре."
+	_status.text = "Черновая сцена " + str(result["sceneId"]) + " создана в главе " + chapter + " с выбранным фоном; не участвует в игре."
 	_refresh_buttons()
 
 
@@ -560,6 +620,86 @@ func _on_create_line() -> void:
 	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, source)
 	_status.text = "Добавлена draft-реплика " + str(result["lineId"]) + "."
 	_refresh_buttons()
+
+
+
+func _on_line_up() -> void:
+	_move_selected_line(-1)
+
+
+func _on_line_down() -> void:
+	_move_selected_line(1)
+
+
+func _move_selected_line(direction: int) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var entry: Dictionary = _current_entry()
+	if entry.is_empty():
+		return
+	var scene_id: String = str(entry["sceneId"])
+	var line_id: String = str(entry["id"])
+	var result: Dictionary = Store.move_line(_project, _draft, scene_id, line_id, direction)
+	if not result.get("ok", false):
+		_status.text = "Порядок не изменён: " + str(result.get("error", ""))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_scene_switch()
+	var entries: Array = Store.entries_for(_project, _draft, scene_id)
+	for index in range(entries.size()):
+		if str(entries[index]["id"]) == line_id:
+			_line_idx = index
+			break
+	_line_render()
+	_status.text = "Черновая реплика перемещена; ID сохранён: " + line_id
+	_refresh_buttons()
+
+
+func _request_delete_line() -> void:
+	if _blocked or _current_entry().is_empty() or _line_delete.disabled:
+		return
+	_confirm_delete_line.dialog_text = "Удалить локальную реплику %s? Исходные реплики неизменяемы; Undo доступен." % str(_current_entry()["id"])
+	_confirm_delete_line.popup_centered()
+
+
+func _delete_selected_line() -> void:
+	if _blocked or _project.is_empty() or _current_entry().is_empty():
+		return
+	var entry: Dictionary = _current_entry()
+	var scene_id: String = str(entry["sceneId"])
+	var line_id: String = str(entry["id"])
+	var result: Dictionary = Store.delete_line(_project, _draft, scene_id, line_id)
+	if not result.get("ok", false):
+		_status.text = "Реплика не удалена: " + str(result.get("error", ""))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_line_idx = mini(_line_idx, Store.entries_for(_project, _draft, scene_id).size() - 1)
+	_scene_switch()
+	_status.text = "Черновая реплика %s удалена; можно использовать Undo." % line_id
+	_refresh_buttons()
+
+
+func _sync_line_actions() -> void:
+	if _line_up == null or _line_down == null or _line_delete == null:
+		return
+	var entry: Dictionary = _current_entry() if not _project.is_empty() else {}
+	var scene_id: String = str(entry.get("sceneId", ""))
+	var line_id: String = str(entry.get("id", ""))
+	var line_ids: Array[String] = []
+	for line in _draft.get("authoredLines", []):
+		if str(line.get("sceneId", "")) == scene_id:
+			line_ids.append(str(line.get("id", "")))
+	var index: int = line_ids.find(line_id)
+	_line_up.disabled = _blocked or index <= 0
+	_line_down.disabled = _blocked or index < 0 or index >= line_ids.size() - 1
+	_line_delete.disabled = _blocked or index < 0 or (
+		Store.Author.is_authored_scene(_draft, scene_id) and line_ids.size() == 1)
 
 
 func _refresh_scene_items() -> void:
@@ -857,6 +997,7 @@ func _refresh_buttons() -> void:
 	_export_graph.disabled = _blocked or _project.is_empty() or (_draft.get("storyGraphPatches", {}).is_empty() and not has_additions)
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
+	_sync_line_actions()
 
 
 func _save_local() -> void:

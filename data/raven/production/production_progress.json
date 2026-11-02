@@ -430,10 +430,17 @@
     },
     {
       "id": "VNS5-07F1",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "evidence": "Review candidate code/vns5-07f1-animation-tab-live-fx based on merged #127. Actual Animation tab previously static placeholder while working StageDesigner FX widgets hidden in Stage Inspector. Reuse same working FX UI/state in Animation with a grouped dockable VBoxContainer, scene/line anchor, typed cue edit, play/reset/scrub; stage remains visible. No draft schema/runtime/save change. Extended Godot layout smoke checks live FX controls and add/undo. Independent PR CI and native Windows QA pending; screenshot HTML parity remains VNS5-07F (proposed), not claimed. Runbook docs/production/VNS5_07F1_ANIMATION_TAB_RU.md; issue #121."
+      "evidence": "Review candidate code/vns5-07f1-animation-tab-live-fx based on merged #127. Actual Animation tab previously static placeholder while working StageDesigner FX widgets hidden in Stage Inspector. Reuse same working FX UI/state in Animation with a grouped dockable VBoxContainer, scene/line anchor, typed cue edit, play/reset/scrub; stage remains visible. No draft schema/runtime/save change. Extended Godot layout smoke checks live FX controls and add/undo. Independent PR CI and native Windows QA pending; screenshot HTML parity remains VNS5-07F (proposed), not claimed. Runbook docs/production/VNS5_07F1_ANIMATION_TAB_RU.md; issue #121. PR #128 merged to main 14cc0a857261661579be1e34de3391be27728bf5; CI #41522374248 success; owner native UX approval not recorded."
+    },
+    {
+      "id": "VNS5-07F3",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "updated": "2026-11-02",
+      "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md."
     }
   ],
   "rules": [

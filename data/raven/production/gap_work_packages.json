@@ -840,12 +840,29 @@
       "description": "Close directly verifiable UX gap: project Animation tab is an info-only placeholder, although a validated FX authoring editor already exists inside StageInspector.",
       "deliverable": "Move shared FX controls to Animation tab (target/effect/scene-line anchor/timing/Play/scrub, list and Undo) without duplicate state, retain standalone StageDesigner; display honest blink-proxy/review-only explanation; safe Godot regression.",
       "acceptance": "Godot Windows: Animation visibly contains functional controls; +FX/edit/line-scoped preview/play/scrub/undo/save/reopen works with Stage central; 800/1024/1366 width access; no canonical/runtime changes, independent CI and owner acceptance.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07E"
       ],
       "graphicsDependencies": [],
       "source": "Owner approved HTML mismatch/Animation placeholder verified in native code, issue #121",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07F3",
+      "title": "VN Studio v5: chapter/background creation wizard and safe authored line reorder/delete",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Restore HTML-v5 functional gaps: +Scene should choose editorial chapter and exact background at creation, authored +Line requires reorder up/down and delete with stable IDs; canonical storyline immutable.",
+      "deliverable": "Chapter (optional draft metadata) and exact imported background in atomic +Scene wizard, authored-only ↑/↓/− line controls with confirmation/undo, reference deletion guards and roundtrip source SHA tests.",
+      "acceptance": "Godot Windows: create scene chapter02/BG-HALL evening dusty/title/line and reopen; reorder authored lines with translations without IDs changing, delete/undo/redo; canonical lines disabled; checkpoint/last authored deletion blocked; CI and status/docs pass.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07F1"
+      ],
+      "graphicsDependencies": [],
+      "source": "Issue #129 ChatGPT approved HTML v5 requirements, 2026-11-02",
       "requiresHumanAcceptance": true
     }
   ]

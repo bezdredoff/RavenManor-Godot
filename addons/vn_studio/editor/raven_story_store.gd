@@ -119,14 +119,69 @@ static func entries_for(project: Dictionary, draft: Dictionary, scene_id: String
 	return Author.lines(project, draft, scene_id)
 
 
+## New authored scenes can pick their exact catalogued background as part of
+## the creation wizard. All mutations are made to a cloned review-only draft.
 static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
-		text_ru: String, speaker_id: String) -> Dictionary:
-	return Author.add_scene(project, draft, title_ru, text_ru, speaker_id)
+		text_ru: String, speaker_id: String, chapter: String = "",
+		background: Dictionary = {}) -> Dictionary:
+	var result: Dictionary = Author.add_scene(project, draft, title_ru, text_ru, speaker_id, chapter)
+	if not result.get("ok", false) or background.is_empty():
+		return result
+	var scene_id: String = str(result["sceneId"])
+	var shot: Dictionary = {"sceneId": scene_id,
+		"backgroundId": str(background.get("backgroundId", "")),
+		"lighting": str(background.get("lighting", "")),
+		"roomState": str(background.get("roomState", "")),
+		"cast": [], "visibleCount": 0}
+	var error: String = set_stage(project, result["draft"], shot)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	error = validate(project, result["draft"])
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	return result
+
+
+## Only real existing catalog plate variants, never planned or fake art.
+static func background_variants(project: Dictionary) -> Array[Dictionary]:
+	var result: Array[Dictionary] = []
+	for entry in VNBackgrounds.all_entries():
+		var id: String = str(entry.get("backgroundId", ""))
+		var master: Dictionary = stage_master(project, id)
+		if master.is_empty():
+			continue
+		if entry.get("lighting") not in master.get("lightingVariants", []) or\
+				entry.get("roomState") not in master.get("stateLayers", []):
+			continue
+		result.append({"backgroundId": id,
+			"lighting": str(entry.get("lighting", "")),
+			"roomState": str(entry.get("roomState", ""))})
+	return result
 
 
 static func add_line(project: Dictionary, draft: Dictionary, scene_id: String,
 		text_ru: String, speaker_id: String) -> Dictionary:
 	return Author.add_line(project, draft, scene_id, text_ru, speaker_id)
+
+
+static func move_line(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String, direction: int) -> Dictionary:
+	var result: Dictionary = Author.move_line(project, draft, scene_id, line_id, direction)
+	if result.get("ok", false):
+		var error: String = validate(project, result["draft"])
+		if not error.is_empty():
+			return {"ok": false, "error": error}
+	return result
+
+
+static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String) -> Dictionary:
+	var result: Dictionary = Author.delete_line(project, draft, scene_id, line_id)
+	if result.get("ok", false):
+		var error: String = validate(project, result["draft"])
+		if not error.is_empty():
+			return {"ok": false, "error": error}
+	return result
 
 
 static func line_ids(project: Dictionary, scene_id: String) -> Array:
