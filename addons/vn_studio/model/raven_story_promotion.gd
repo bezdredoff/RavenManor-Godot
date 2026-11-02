@@ -126,6 +126,9 @@ static func plan(project: Dictionary, draft: Dictionary) -> Dictionary:
 			"changedTextCells": _count_text_patches(draft),
 			"graphSourceScenes": graph.size()},
 		"retainedDraft": {
+			"authoredScenes": draft.get("authoredScenes", []).duplicate(true),
+			"authoredLines": draft.get("authoredLines", []).duplicate(true),
+			"promotionSceneIdMap": mapping.duplicate(true),
 			"storyGraphPatches": draft.get("storyGraphPatches", {}).duplicate(true),
 			"textPatches": draft.get("patches", {}).duplicate(true),
 			"stagePatches": draft.get("stagePatches", {}).duplicate(true),
