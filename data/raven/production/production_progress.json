@@ -188,7 +188,7 @@
       "status": "in_progress",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work.",
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.",
       "implementationState": "partial"
     },
     {

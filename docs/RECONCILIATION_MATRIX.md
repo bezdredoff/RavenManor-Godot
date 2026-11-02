@@ -3,7 +3,7 @@
 | Topic | Older evidence | Current evidence / authority | Resolution |
 |---|---|---|---|
 | Repository implementation | Imported audit and old plan say the new repo is documentation-only | PR #4–#6 are merged into `main`; tests and Pages build pass | Old wording is historical. `STATUS.md` is current. |
-| 70-requirement score | 12 implemented / 30 partial / 6 placeholder / 21 missing / 1 unknown; 0/13 slice steps | Foundation and navigation were implemented after that audit | Preserve baseline counts; rerun after PR 3 instead of guessing revised counts. |
+| 70-requirement score | 12 implemented / 30 partial / 6 placeholder / 21 missing / 1 unknown; 0/13 slice steps (historical) | Integrated RM-VS-01 merged PR #9; many CODE/VN/asset components exist now | Historical score is not current. See `docs/audits/RM-REQUIREMENT-RECONCILIATION_20261102.md` for all 70 IDs, new evidence and pending exact-criterion QA. |
 | Bedroom access | Stage 2 files require bathroom repair + clue before bedroom traversal | `RM-DEC-006`: bedroom access is independent; bedroom work follows entry | Current decision wins. Old files remain preserved historical sources. |
 | Bedroom access hotspot | Earlier correction removed the old dependency but did not choose the triggering hotspot | `RM-DEC-013`: `RM-HS-005` is the early door action; `RM-HS-002` remains in-room restoration | Implement this exact mapping in PR 3; do not introduce another ID. |
 | Door behavior | Older FSM expects repeated locked/closed/opening/open/closing presentation | `RM-DEC-005`: unlocked door may remain open or disappear while portal/state persist | Only locked/available is required for the slice; animation states are optional. |
@@ -19,3 +19,7 @@
 | Visual style | Multiple generators produced visibly different characters | Draft style contract requires one character/room/prop anchor board and Godot composite | Style remains unlocked. Prototype Lab can host the later composite test. |
 | Raven source ownership | Design evidence was split across imported packages and UPDS notes | `RM-DEC-015`: `bezdredoff/RavenManor` is the source-material repository; this repo owns Godot runtime/deployment | Pull narrative/design inputs deliberately; do not treat its Vite prototype as the Godot runtime. |
 | “Raven Miner” naming | Requested review mentioned possible stale references | No `Raven Miner` reference was found in either repository's owned text documents | No replacement was made; do not invent a rename target. |
+
+| VN art approval | Old background ledger says ART CANDIDATE | Owner explicitly approved 26 exact loaded backgrounds and 62 cast frames 2026-11-02 | Catalog records are accepted art; no implicit mobile/gameplay acceptance or missing-state generation. |
+| Three-language dialogue | Historical BE/EN coverage was missing | PR #135 and #136 merged: RU/BE/EN 280/280 lines and 28/28 titles | Translation coverage is implemented first draft, but full-game UI typography and native editorial/device QA remain open. |
+| Duplicate editor tasks | Legacy RAVEN-VN-EDITOR-02/03 overlap VNS5-04/07 | VNS5-07A/B/E/F3/F4/F5 are merged | Mark legacy tasks superseded; keep VNS5-07F2/08/09 active for real UX/props/end-to-end acceptance. |

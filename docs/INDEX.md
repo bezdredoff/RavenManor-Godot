@@ -1,5 +1,7 @@
 # Documentation map and authority
 
+- `audits/RM-REQUIREMENT-RECONCILIATION_20261102.md`: all 70 historical requirement IDs re-evaluated with current component evidence and honest unresolved QA; original CSV remains a frozen baseline.
+
 - `../art-handbook/index.html`: interactive art-production handbook; image-to-recipe links, exact saved ComfyUI settings/prompts, downloads, system/model snapshot and experiment history.
 - `../art-handbook/files/AGENT_GUIDE.md`: human/AI reproduction and evidence rules; companion machine catalog is `../art-handbook/catalog.json`.
 
