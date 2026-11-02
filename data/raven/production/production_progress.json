@@ -395,10 +395,17 @@
     },
     {
       "id": "VNS5-07C1",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "evidence": "Review candidate branch code/vns5-07c1-story-map-interactions based on main a434f157 after #123. Native Story Map graph node click synchronizes Director source scene, drag source→target creates strictly review-only draft edges, selected draft edge can be edited with stable ID, validated A/B/C and canonical level targets; Godot smoke covers focus/edit/negative/immutability. No runtime/story/save/UPDS mutations. PR CI and owner native UX acceptance pending. See docs/production/VNS5_07C1_GRAPH_INTERACTION_RU.md and issue #121. PR #124 merged into main a2f9e6902bd7ae950d9e72d9b2219c902540de94 at 2026-11-02T19:58:05Z; premerge CI #41513732368 success; owner native UI/mouse QA pending."
+    },
+    {
+      "id": "VNS5-07C2",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "evidence": "Review candidate branch code/vns5-07c1-story-map-interactions based on main a434f157 after #123. Native Story Map graph node click synchronizes Director source scene, drag source→target creates strictly review-only draft edges, selected draft edge can be edited with stable ID, validated A/B/C and canonical level targets; Godot smoke covers focus/edit/negative/immutability. No runtime/story/save/UPDS mutations. PR CI and owner native UX acceptance pending. See docs/production/VNS5_07C1_GRAPH_INTERACTION_RU.md and issue #121."
+      "evidence": "PR review branch code/vns5-07c2-direct-wire-selection from merged main a2f9e690. Adds projection-only stable edge IDs to Graph.build, left-click wire lookup via GraphEdit nearest connection, safe A/B/C duplicate-wire popup ID disambiguation, canonical readonly guard and deferred scene-focus rebuild. Extended Raven smoke for match/parallel/canonical; no runtime, save, canon, art or UPDS mutations. Independent CI and owner native mouse QA pending. Runbook docs/production/VNS5_07C2_DIRECT_WIRE_EDIT_RU.md; issue #121."
     }
   ],
   "rules": [
