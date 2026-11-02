@@ -168,7 +168,7 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		ids[id] = "draft"
 		new_ids[id] = true
 		var title: Variant = scene.get("title")
-		if not title is Dictionary or title.get("ru") is not String or
+		if not title is Dictionary or title.get("ru") is not String or\
 				str(title["ru"]).strip_edges().is_empty() or str(title["ru"]).length() > 120:
 			return "Authored scene needs a valid RU title."
 		for lang in title.keys():
@@ -188,7 +188,7 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 				return "Unexpected authored line field: " + str(key)
 		var scene_id: Variant = line.get("sceneId")
 		var id: Variant = line.get("id")
-		if not scene_id is String or not ids.has(scene_id) or not id is String or
+		if not scene_id is String or not ids.has(scene_id) or not id is String or\
 				not id.begins_with(scene_id + "-L") or id.length() != scene_id.length() + 5:
 			return "Authored line has an invalid source or ID."
 		for i in range(scene_id.length() + 2, id.length()):
@@ -203,11 +203,11 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		if line.get("delivery") != "speech" or line.get("source") != "vn_studio_draft_not_runtime":
 			return "Authored line has an unsupported delivery or claimed production source."
 		var localized: Variant = line.get("localized")
-		if not localized is Dictionary or not localized.get("ru") is Dictionary or
+		if not localized is Dictionary or not localized.get("ru") is Dictionary or\
 				str(localized["ru"].get("text", "")).strip_edges().is_empty():
 			return "Authored line requires non-empty RU original."
 		for lang in localized:
-			if lang not in LOCALES or (localized[lang] != null and (not localized[lang] is Dictionary or
+			if lang not in LOCALES or (localized[lang] != null and (not localized[lang] is Dictionary or\
 					not localized[lang].get("text") is String)):
 				return "Authored line contains invalid localization."
 	for id in new_ids:
