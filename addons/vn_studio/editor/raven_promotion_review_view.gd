@@ -166,7 +166,12 @@ func _load_manifest(path: String) -> void:
 	if not FileAccess.file_exists(path):
 		_package_status.text = "Manifest не найден."
 		return
-	var size: int = FileAccess.get_length(path)
+	var handle: FileAccess = FileAccess.open(path, FileAccess.READ)
+	if handle == null:
+		_package_status.text = "Не удалось открыть JSON manifest."
+		return
+	var size: int = handle.get_length()
+	handle.close()
 	if size <= 0 or size > 524288:
 		_package_status.text = "Manifest должен быть непустым JSON не больше 512 КБ."
 		return
