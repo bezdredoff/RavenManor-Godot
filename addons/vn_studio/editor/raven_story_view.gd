@@ -431,6 +431,11 @@ func _sync_story_map_height() -> void:
 	# short windows for the edge fields beneath the canvas.
 	if _story_scroll.size.y > 0.0:
 		_raven_graph.custom_minimum_size.y = _story_scroll.size.y
+		# A ScrollContainer may preserve the content Control's minimum while
+		# the nested GraphEdit remains at its own 310px minimum. Reserve room
+		# for legend, edge form and list, and enlarge the actual graph itself.
+		_raven_graph._canvas.custom_minimum_size.y = maxf(310.0,
+			_story_scroll.size.y - 300.0)
 
 
 func _fit_stage_preview() -> void:
