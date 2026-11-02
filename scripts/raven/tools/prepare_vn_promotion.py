@@ -165,7 +165,8 @@ def build(review: dict, approval: dict, base: Path = DATA,
     for line_id, line in new_lines.items():
         require(LINE_ID.fullmatch(line_id) is not None and line.get("sceneId") in new_scenes,
                 f"Invalid line ID or missing scene: {line_id}")
-        require(line.get("speakerId") in speakers,
+        require(line.get("speakerId") in speakers or
+                (line_id in source_lines and line.get("speakerId") == "RM-CHAR-UNKNOWN-VOICE"),
                 f"Unknown speaker: {line_id}")
         localized = line.get("localized", {})
         ru = localized.get("ru") if isinstance(localized, dict) else None
