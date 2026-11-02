@@ -5,9 +5,9 @@ Usage:
   python3 scripts/raven/tools/validate_production_narrative.py
   python3 scripts/raven/tools/validate_production_narrative.py --release
 
-English dialogue and titles are populated as first-pass translations. Belarusian
-remains incomplete; the regular check accepts TODO fields, while --release
-rejects any missing required locale.
+RU/BE/EN spoken dialogue, scene titles and hotspot popups are populated as
+first-pass translations. --release enforces complete coverage in these three
+registries, not all remaining game UI or native linguistic/editorial QA.
 """
 import argparse
 import json
