@@ -48,9 +48,9 @@
     {
       "id": "VNS5-06D1-CLI",
       "owner": "ChatGPT",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-11-02",
-      "evidence": "PR #116 reconciled as CLI-only companion atop merged PR #117 main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. It now validates the exact native Godot raven-vn-production-4registry-review-v1 JSON without a second manifest format; SHA checks all five canonical registries, immutable historical entries, authorized authored text patch, ID mapping, shot/cue/route parity, blocked gameplay/Story Map edges, positive/negative Python suite, no-overwrite external offline packaging with SHA audit. No Godot UI alterations, runtime apply, canonical source writes or actual game save promotion. PR CI and owner review pending."
+      "evidence": "PR #116 reconciled as CLI-only companion atop merged PR #117 main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. It now validates the exact native Godot raven-vn-production-4registry-review-v1 JSON without a second manifest format; SHA checks all five canonical registries, immutable historical entries, authorized authored text patch, ID mapping, shot/cue/route parity, blocked gameplay/Story Map edges, positive/negative Python suite, no-overwrite external offline packaging with SHA audit. No Godot UI alterations, runtime apply, canonical source writes or actual game save promotion. PR CI and owner review pending. Reconciled with merged #117 through two-parent merge commit 8e7a5f49a3d5339400777c60ec6e4a13479ca069. Full first independent PR CI #41470823663 SUCCESS including Python positive/negative offline verification, Raven/Godot smoke, Room Builder and Web export. Post-merge #117 main CI #41469495925/#41469495839 SUCCESS. Final latest-head CI after docs-only evidence update pending. Owner acceptance and playable release remain open."
     },
     {
       "id": "GFX-05-05",

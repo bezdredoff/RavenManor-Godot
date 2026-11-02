@@ -28,3 +28,7 @@ python3 scripts/raven/tools/prepare_vn_promotion.py --package /path/to/godot-rev
 `tests/raven/test_vns5_promotion_staging.py` включён в `scripts/check.sh` **в дополнение** к Godot smoke из #117. Он создаёт синтетический пакет на основе реальных исходных каталогов, проверяет корректный выделенный экспорт, отсутствие изменения SHA в checkout, отказ при несовпадающих источниках/регистрах/ID, вмешательстве в старые тексты, активных маршрутах, непроверенных cues и неподдерживаемом branching. Это техническая проверка структуры, **не** утверждение игрового контента.
 
 Требуется независимый CI нового HEAD PR #116 и ручное ревью. Без этих проверок PR не считать принятым. См. `docs/production/VNS5_06D1_FOUR_REGISTRY_RU.md` и `docs/production/VNS5_06C_PROMOTION_REVIEW_RU.md`.
+
+## Результат интеграции и CI
+
+PR #116 согласован с уже смёрженным PR #117 с помощью merge commit `8e7a5f49a3d5339400777c60ec6e4a13479ca069` (без force push и без второй несовместимой схемы). Первоначальный независимый CI [#41470823663](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41470823663) — **SUCCESS**: Python positive/negative проверки, Godot/Raven, Room Builder, Web export и dashboard. После этой документационной правки требуется последний CI HEAD. Нативная ручная QA и выпуск сюжетного контента остаются отдельными задачами.
