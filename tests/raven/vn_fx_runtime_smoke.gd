@@ -50,9 +50,8 @@ func _run() -> void:
 	assert(runtime.enter_line("RM-BEAT-02-01", second))
 	frame = runtime.step(0.35)
 	assert(float(frame["background/background"]["alpha"]) < 1.0, "L002 fade active")
-	assert(is_equal_approx(float(frame["background/background"]["scale"].x), 1.0),
-		"Scene-only pulse is finished after 1400ms test time below")
-	# Above scene pulse still at 1050ms; replace with explicit finite scene clock assertion.
+	assert(frame["background/background"]["scale"].x > 1.0,
+		"Scene-wide cue keeps its clock when changing lines")
 	var skipped: Dictionary = runtime.step(0.0, true, false)
 	assert(skipped.is_empty(), "Skip hides presentation without progression write")
 	var reduced: Dictionary = runtime.step(0.0, false, true)
