@@ -11,6 +11,7 @@ const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
+const FxRuntime = preload("res://scripts/raven/raven_vn_fx_runtime.gd")
 const BACK_TO_MAP := "res://scenes/raven/manor_greybox.tscn"
 
 var preferences := Copy.new()
@@ -33,6 +34,11 @@ var back_button: Button
 var locale_selector: OptionButton
 var note: Label
 var focus_tween: Tween
+var _fx: RefCounted = FxRuntime.new()
+var _fx_reduced_motion: bool = false
+var _fx_skipping: bool = false
+var _focus_left_alpha: float = 1.0
+var _focus_right_alpha: float = 1.0
 
 
 func _ready() -> void:
@@ -48,6 +54,69 @@ func _ready() -> void:
 	resized.connect(_layout)
 	_layout()
 	_render(true)
+
+
+## No local Studio drafts are loaded. A separate human-approved bundle must
+## be explicitly injected; its scene, cast and line IDs are validated.
+func configure_reviewed_fx(bundle: Dictionary) -> String:
+	if lines.is_empty():
+		return "Hall Tea VN must be opened before runtime FX configuration."
+	var ids: Array = []
+	for entry in lines:
+		ids.append(str(entry.get("id", "")))
+	var error: String = _fx.configure(SceneId, ids, ["RM-CHAR-EVELYN", "RM-CHAR-ADA"], bundle)
+	if not error.is_empty():
+		_reset_fx_visuals()
+	elif _fx.configured():
+		_fx.enter_line(SceneId, str(lines[line_index].get("id", "")))
+		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
+	return error
+
+
+func set_fx_accessibility(reduced_motion: bool, skipping: bool = false) -> void:
+	_fx_reduced_motion = reduced_motion
+	_fx_skipping = skipping
+	if reduced_motion or skipping:
+		_reset_fx_visuals()
+
+
+func _process(delta: float) -> void:
+	if _fx.configured():
+		_apply_fx_samples(_fx.step(delta, _fx_skipping, _fx_reduced_motion))
+	elif actor_left != null:
+		actor_left.modulate.a = _focus_left_alpha
+		actor_right.modulate.a = _focus_right_alpha
+
+
+func _reset_fx_visuals() -> void:
+	if background == null:
+		return
+	_layout()
+	background.scale = Vector2.ONE
+	background.modulate = Color.WHITE
+	for actor in [actor_left, actor_right]:
+		actor.scale = Vector2.ONE
+	actor_left.modulate = Color(1, 1, 1, _focus_left_alpha)
+	actor_right.modulate = Color(1, 1, 1, _focus_right_alpha)
+
+
+func _apply_fx_samples(samples: Dictionary) -> void:
+	_reset_fx_visuals()
+	for item in [
+		{"node": background, "key": "background/background"},
+		{"node": actor_left, "key": "actor/RM-CHAR-EVELYN"},
+		{"node": actor_right, "key": "actor/RM-CHAR-ADA"}
+	]:
+		var sample: Dictionary = samples.get(item["key"], {})
+		if sample.is_empty():
+			continue
+		var target: Control = item["node"]
+		target.pivot_offset = target.size * 0.5
+		target.position += sample["offset"]
+		target.scale *= sample["scale"]
+		var tint: Color = target.modulate
+		tint.a *= float(sample["alpha"])
+		target.modulate = tint
 
 
 func _build_ui() -> void:
@@ -187,6 +256,7 @@ func _render(animate: bool = false) -> void:
 	if lines.is_empty():
 		return
 	var line: Dictionary = lines[line_index]
+	_fx.enter_line(SceneId, str(line.id))
 	var who := str(line.speakerId)
 	for actor: Dictionary in Characters.cast_for_scene(SceneId, str(line.id)):
 		var image: Texture2D = Characters.texture_for_actor(actor)
@@ -215,6 +285,8 @@ func _render(animate: bool = false) -> void:
 	locale_selector.select(Copy.SUPPORTED_LOCALES.find(lang))
 	if animate:
 		_focus_speaker(who)
+	if _fx.configured():
+		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
 
 
 func _fits_dialogue(candidate: String) -> bool:
@@ -237,8 +309,9 @@ func _focus_speaker(who: String) -> void:
 		focus_tween.kill()
 	focus_tween = create_tween()
 	focus_tween.set_parallel(true)
-	focus_tween.tween_property(actor_left, "modulate", Color(1, 1, 1, 1.0 if who == "RM-CHAR-EVELYN" else 0.65), 0.18)
-	focus_tween.tween_property(actor_right, "modulate", Color(1, 1, 1, 1.0 if who == "RM-CHAR-ADA" else 0.65), 0.18)
+	# Focus alpha is kept separate from additive FX fade alpha to avoid frame drift.
+	focus_tween.tween_property(self, "_focus_left_alpha", 1.0 if who == "RM-CHAR-EVELYN" else 0.65, 0.18)
+	focus_tween.tween_property(self, "_focus_right_alpha", 1.0 if who == "RM-CHAR-ADA" else 0.65, 0.18)
 	# A restrained focus movement is a pilot micro cue. Real facial blink and
 	# mouth layers are NOT part of these single-raster generated sprites.
 
@@ -283,6 +356,7 @@ func _commit_completed_beat() -> void:
 
 
 func _back_to_map() -> void:
+	_fx.clear()
 	get_tree().change_scene_to_file(BACK_TO_MAP)
 
 
