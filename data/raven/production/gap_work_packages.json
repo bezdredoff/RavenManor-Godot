@@ -502,6 +502,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06D",
+      "title": "VN Studio: verified production staging package for explicitly reviewed narrative candidates",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "A strict no-apply Python preflight/packager validates VNS5-06C review + independent human approval manifest and materializes a four-registry PR candidate (dialogue, staging, routes, line cues) with exact SHA manifest and source/no-overwrite guarantees. No actual scene/gameplay promotion or automatic branch runtime is permitted without owner approval and future save/reducer QA.",
+      "deliverable": "scripts/raven/tools/prepare_vn_promotion.py, tests/raven/test_vns5_promotion_staging.py, scripts/check.sh, Russian staging/approval runbook; dash/status.",
+      "acceptance": "Positive synthetic reviewed full package with 1:1 scene-shot-route and line-cue consistency; rejects source/cue SHA drift, review-byte mismatch, missing shot/route/cue, invalid BG/cast/pose, ID collisions, unauthorized text updates, unresolved Story Map edges, unsigned/unreviewed save policy, existing destination; output immutable source SHA and output hashes; no canonical writes; full Python and Godot CI; actual manual release requires future phase2 review and old-save replay tests.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06C",
+        "VNS5-06B"
+      ],
+      "graphicsDependencies": [],
+      "source": "02 Nov 2026 after PR #115 merge, code staging only",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
