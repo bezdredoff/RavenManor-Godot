@@ -772,12 +772,29 @@
       "description": "Click rendered Story Map draft connections to inspect/edit stable edge IDs; explicitly disambiguate parallel A/B/C edges sharing one visual wire, protect canonical gate lines and defer graph rebuild on node select.",
       "deliverable": "GraphEdit nearest-wire hit test, ephemeral edge IDs in Graph.build, popup of parallel choice IDs, inspector sync and readonly protections; synthetic regression test and manual runbook.",
       "acceptance": "Windows Godot 4.7.2: clicking single draft wire selects its edge, A/C overlapping cable opens exact-ID chooser, canonical wire cannot be edited, saved draft survives reopen and no story/runtime source changes; CI success and manual viewport UX QA.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07C1"
       ],
       "graphicsDependencies": [],
       "source": "Issue #121, merged PR #124, 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07C3",
+      "title": "VN Studio v5: visible draft wires and clear Story Map entry point",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "S",
+      "description": "Owner cannot find draft wires after VNS5-07C2: all GraphEdit links currently use identical green ports/lines and no obvious zero-draft instruction.",
+      "deliverable": "Distinct canonical green and draft orange port/wire types; graph legend, empty-state creation instructions, port-aware canonical safety and targeted synthetic Godot regression plus runbook.",
+      "acceptance": "Godot 4.7.2: no-draft Story Map explicitly explains +Связь; adding a draft renders orange wire, canonical stays green; same endpoints use distinct wires, green never editable, orange A/B/C disambiguation and save/reopen work; manual mouse/viewport acceptance at 800×640, 1024×640 and 1366×768.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07C2"
+      ],
+      "graphicsDependencies": [],
+      "source": "Owner report after merged #125, 2026-11-02",
       "requiresHumanAcceptance": true
     }
   ]

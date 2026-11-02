@@ -6,6 +6,10 @@ signal graph_modified(overlay: Dictionary)
 signal scene_focus_requested(scene_id: String)
 
 const Graph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
+const CANONICAL_PORT := 0
+const DRAFT_PORT := 1
+const CANONICAL_COLOR := Color(0.3, 0.82, 0.65)
+const DRAFT_COLOR := Color(1.0, 0.63, 0.20)
 var _project: Dictionary = {}
 var _draft: Dictionary = {}
 var _scene_id: String = ""
@@ -46,6 +50,17 @@ func _ready() -> void:
 	_summary = Label.new()
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
+	# Make the two classes of actual *wires* recognizable before authoring.
+	var legend := HFlowContainer.new()
+	add_child(legend)
+	var canonical_legend := Label.new()
+	canonical_legend.text = "● Зелёный провод — канон (только просмотр)"
+	canonical_legend.add_theme_color_override("font_color", CANONICAL_COLOR)
+	legend.add_child(canonical_legend)
+	var draft_legend := Label.new()
+	draft_legend.text = "● Оранжевый провод — черновик (после «+ Связь»)"
+	draft_legend.add_theme_color_override("font_color", DRAFT_COLOR)
+	legend.add_child(draft_legend)
 	_canvas = GraphEdit.new()
 	_canvas.custom_minimum_size = Vector2(340, 310)
 	_canvas.size_flags_horizontal = SIZE_EXPAND_FILL
@@ -60,7 +75,7 @@ func _ready() -> void:
 	add_child(_edge_popup)
 	_inspect = Label.new()
 	_inspect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_inspect.text = "Кликните сцену для выбора источника, протяните провод для создания draft-связи или кликните существующий провод для её редактирования."
+	_inspect.text = "Черновых проводов пока нет? Выберите target и нажмите «+ Связь» под графом. Или включите «Все сцены» и протяните провод между оранжевыми портами сцен. Клик по оранжевому проводу открывает редактирование."
 	add_child(_inspect)
 	var bar := HFlowContainer.new()
 	add_child(bar)
@@ -231,8 +246,11 @@ func _on_node_selected(id: String) -> void:
 		scene_focus_requested.emit(id)
 
 
-func _on_connection_request(from_name: StringName, _from_port: int,
-		to_name: StringName, _to_port: int) -> void:
+func _on_connection_request(from_name: StringName, from_port: int,
+		to_name: StringName, to_port: int) -> void:
+	if from_port != DRAFT_PORT or to_port != DRAFT_PORT:
+		_summary.text = "Канонические (зелёные) порты нельзя соединять. Используйте оранжевые порты для чернового перехода."
+		return
 	var source: String = str(_node_to_id.get(str(from_name), ""))
 	var target: String = str(_node_to_id.get(str(to_name), ""))
 	if not Graph.scene_ids(_project).has(source) or source != _scene_id:
@@ -310,6 +328,12 @@ func _on_edge_popup_selected(item_id: int) -> void:
 func _select_graph_connection(connection: Dictionary, position: Vector2 = Vector2.ZERO) -> void:
 	var from_id: String = str(_node_to_id.get(str(connection.get("from_node", "")), ""))
 	var to_id: String = str(_node_to_id.get(str(connection.get("to_node", "")), ""))
+	# A canonical and draft link may connect the SAME pair of nodes. Always
+	# identify the actual drawn cable by its port numbers, not endpoints alone.
+	if int(connection.get("from_port", -1)) != DRAFT_PORT or int(connection.get("to_port", -1)) != DRAFT_PORT:
+		_clear_edge_selection()
+		_inspect.text = "Это зелёная каноническая связь %s → %s. Она только для просмотра; редактируются лишь оранжевые провода." % [from_id, to_id]
+		return
 	var matches: Array[String] = Graph.draft_ids_for_connection(
 		_visible_edges, from_id, to_id, _scene_id)
 	if matches.is_empty():
@@ -401,7 +425,18 @@ func _render_graph() -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		node.add_child(label)
 		node.node_selected.connect(_on_node_selected.bind(str(id)))
-		node.set_slot(0, true, 0, Color(0.3, 0.82, 0.65), true, 0, Color(0.3, 0.82, 0.65))
+		# Slot 0 is reserved for the immutable canonical green wire. Separate
+		# physical slot 1 exposes orange draft-only cables and drag targets.
+		node.set_slot(0, true, CANONICAL_PORT, CANONICAL_COLOR,
+			true, CANONICAL_PORT, CANONICAL_COLOR)
+		if kind == "scene" or kind == "match3":
+			var draft_hint := Label.new()
+			draft_hint.text = "Черновик: вход / выход" if kind == "scene" else "Черновик: вход"
+			draft_hint.add_theme_color_override("font_color", DRAFT_COLOR)
+			draft_hint.mouse_filter = Control.MOUSE_FILTER_IGNORE
+			node.add_child(draft_hint)
+			node.set_slot(1, true, DRAFT_PORT, DRAFT_COLOR,
+				kind == "scene", DRAFT_PORT, DRAFT_COLOR)
 		_canvas.add_child(node)
 		_name_map[id] = node.name
 		_node_to_id[str(node.name)] = str(id)
@@ -409,11 +444,14 @@ func _render_graph() -> void:
 		if _name_map.has(edge["from"]) and _name_map.has(edge["to"]):
 			var a: StringName = StringName(_name_map[edge["from"]])
 			var b: StringName = StringName(_name_map[edge["to"]])
-			if not _canvas.is_node_connected(a, 0, b, 0):
-				_canvas.connect_node(a, 0, b, 0)
-	_summary.text = "%s · %d канонических trigger/связей (без редактирования) · %d draft связей. Никакой runtime не изменён." % [
+			var port: int = DRAFT_PORT if edge.get("kind") == "draft" else CANONICAL_PORT
+			if not _canvas.is_node_connected(a, port, b, port):
+				_canvas.connect_node(a, port, b, port)
+	var draft_count: int = _overlay.get("edges", []).size()
+	_summary.text = "%s · %d зелёных канонических связей · %d оранжевых черновых. %s" % [
 		_scene_id, graph.get("edges", []).filter(func(edge): return edge.get("kind") == "canonical").size(),
-		_overlay.get("edges", []).size()]
+		draft_count, "Создайте первую связь через «+ Связь» под графом; она появится оранжевым проводом." if draft_count == 0 else
+		"Выберите оранжевый провод мышью или конкретную связь в списке. Изменения не влияют на runtime."]
 
 
 func _reject_disconnection(_from: StringName, _from_port: int, _to: StringName, _to_port: int) -> void:
