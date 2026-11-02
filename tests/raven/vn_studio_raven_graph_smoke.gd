@@ -192,8 +192,9 @@ func _run() -> void:
 	widget._on_kind(1)
 	widget._choice.select(2)
 	widget._checkpoint.select(0)
-	widget._on_connection_request(StringName(widget._name_map[source]), 0,
-		StringName(widget._name_map[third]), 0)
+	# A duplicate C branch must still fail even when using the orange port.
+	widget._on_connection_request(StringName(widget._name_map[source]), 1,
+		StringName(widget._name_map[third]), 1)
 	assert(widget._overlay["edges"].size() == previous_size)
 	# Canonical connections cannot be deleted via graphical dragging.
 	widget._reject_disconnection(StringName(widget._name_map[source]), 0,
