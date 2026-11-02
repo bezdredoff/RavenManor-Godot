@@ -45,7 +45,7 @@ func _run() -> void:
 	draft_graph = Graph.next_edge(draft_graph, "scene", source, "Назад")
 	assert(Store.set_story_graph(project, draft, draft_graph).is_empty())
 	var mappings: Dictionary = {new_scene: "RM-BEAT-07-01"}
-	assert(not Store.set_promotion_map(project, draft, mappings).length() > 0)
+	assert(Store.set_promotion_map(project, draft, mappings).is_empty())
 	assert(Store.validate(project, draft).is_empty())
 	var plan: Dictionary = Store.promotion_plan(project, draft)
 	assert(plan.get("ok", false), str(plan.get("error", "")))
