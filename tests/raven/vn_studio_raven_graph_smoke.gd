@@ -114,9 +114,18 @@ func _run() -> void:
 	widget._checkpoint.select(0)
 	widget._label.clear() # drag gives a safe visible label
 	var previous_size: int = widget._overlay["edges"].size()
-	widget._on_connection_request(StringName(widget._name_map[source]), 0,
-		StringName(widget._name_map[third]), 0)
+	# The green canonical port can NEVER be used to author a draft.
+	widget._on_connection_request(StringName(widget._name_map[source]), 1,
+		StringName(widget._name_map[third]), 1)
+	assert(widget._overlay["edges"].size() == previous_size)
+	# Orange port 1 creates a separate editable wire, even when its endpoint is
+	# also connected by a canonical green line.
+	widget._on_connection_request(StringName(widget._name_map[source]), 1,
+		StringName(widget._name_map[third]), 1)
 	assert(widget._overlay["edges"].size() == previous_size + 1)
+	assert(widget._canvas.is_node_connected(
+		StringName(widget._name_map[source]), 1,
+		StringName(widget._name_map[third]), 1), "New draft must render on orange port 1")
 	var added: Dictionary = widget._overlay["edges"][-1]
 	assert(added["kind"] == "choice" and added["targetId"] == third)
 	assert(added["choiceKey"] == "C" and added["lineId"] == checkpoint)
@@ -155,13 +164,29 @@ func _run() -> void:
 	assert(not canonical_edge.is_empty())
 	widget._select_graph_connection({
 		"from_node": widget._name_map[canonical_edge["from"]],
-		"to_node": widget._name_map[canonical_edge["to"]]
+		"from_port": 0,
+		"to_node": widget._name_map[canonical_edge["to"]],
+		"to_port": 0
 	})
 	assert(widget._editing_edge == -1 and widget._update.disabled and widget._remove.disabled)
+	# Canonical and draft wires may have identical endpoints, but click on the
+	# green cable must never resolve the orange proposal by endpoint alone.
+	widget._select_graph_connection({
+		"from_node": widget._name_map[source], "from_port": 0,
+		"to_node": widget._name_map[third], "to_port": 0
+	})
+	assert(widget._editing_edge == -1 and widget._update.disabled)
+	# Orange single-wire hit opens the exact edge (no implicit promotion).
+	widget._select_graph_connection({
+		"from_node": widget._name_map[source], "from_port": 1,
+		"to_node": widget._name_map[second], "to_port": 1
+	})
+	# Multiple draft branches can be projected on that single orange cable.
+	assert(widget._popup_edge_ids.size() >= 2)
 	# Invalid source and duplicate choice fail without silently changing any draft.
 	previous_size = widget._overlay["edges"].size()
-	widget._on_connection_request(StringName(widget._name_map[third]), 0,
-		StringName(widget._name_map[source]), 0)
+	widget._on_connection_request(StringName(widget._name_map[third]), 1,
+		StringName(widget._name_map[source]), 1)
 	assert(widget._overlay["edges"].size() == previous_size)
 	widget._kind.select(1)
 	widget._on_kind(1)
