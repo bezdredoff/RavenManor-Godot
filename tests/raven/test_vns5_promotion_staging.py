@@ -162,8 +162,10 @@ class PromotionStagingTest(unittest.TestCase):
 
     def test_corrupted_identity_and_text_rejected(self):
         self.review["idMap"][self.raw_id] = self.sources["catalog"]["scenes"][0]["sceneId"]
+        self.review["retainedDraft"]["promotionSceneIdMap"][self.raw_id] = self.sources["catalog"]["scenes"][0]["sceneId"]
         self.assert_blocked("collide")
         self.review["idMap"][self.raw_id] = self.target
+        self.review["retainedDraft"]["promotionSceneIdMap"][self.raw_id] = self.target
         self.review["reviewCatalog"]["entries"][0]["localized"]["ru"]["text"] = "Changed without approval"
         self.assert_blocked("Unapproved modification")
         self.approval["approvedTextLineIds"].append(
