@@ -12,6 +12,7 @@ const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const StoryGraph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
+const Author = preload("res://addons/vn_studio/model/raven_story_authoring.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
@@ -96,10 +97,32 @@ static func fresh(project: Dictionary) -> Dictionary:
 		"stageSourceSha256": str(project.get("stagingSha", "")),
 		"castSourceSha256": str(project.get("castSha", "")),
 		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {},
-		"storyGraphPatches": {}}
+		"storyGraphPatches": {}, "authoredScenes": [], "authoredLines": []}
 
 
 ## Immutable source line IDs for a scene; used for FX cross-scene validation.
+static func visible_project(project: Dictionary, draft: Dictionary) -> Dictionary:
+	return Author.preview_project(project, draft)
+
+
+static func scene_records(project: Dictionary, draft: Dictionary) -> Array:
+	return Author.scenes(project, draft)
+
+
+static func entries_for(project: Dictionary, draft: Dictionary, scene_id: String) -> Array:
+	return Author.lines(project, draft, scene_id)
+
+
+static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
+		text_ru: String, speaker_id: String) -> Dictionary:
+	return Author.add_scene(project, draft, title_ru, text_ru, speaker_id)
+
+
+static func add_line(project: Dictionary, draft: Dictionary, scene_id: String,
+		text_ru: String, speaker_id: String) -> Dictionary:
+	return Author.add_line(project, draft, scene_id, text_ru, speaker_id)
+
+
 static func line_ids(project: Dictionary, scene_id: String) -> Array:
 	var ids: Array = []
 	for entry in project.get("linesByScene", {}).get(scene_id, []):
@@ -128,19 +151,23 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		return "Raven-сценарий изменился после сохранения черновика. Нужен ручной diff; автоматический rebase запрещён."
 	if FileAccess.get_sha256(str(project["sourcePath"])) != project["sha"]:
 		return "Сценарий в репозитории изменён извне; повторно откройте редактор."
+	var authored_error: String = Author.validate(project, draft)
+	if not authored_error.is_empty():
+		return authored_error
 	# VNS5-06A: route authoring is a separate SHA-locked review-only overlay.
 	var graph_patches: Variant = draft.get("storyGraphPatches", {})
 	if not graph_patches is Dictionary:
 		return "Story Map patches must be an object."
 	if not graph_patches.is_empty():
+		var graph_project: Dictionary = visible_project(project, draft)
 		if draft.get("routeSourceSha256", "") != project.get("routesSha", ""):
 			return "Canonical routes changed since this Story Map draft was created."
 		if FileAccess.get_sha256(str(project["root"]).path_join(ROUTES)) != project["routesSha"]:
 			return "Canonical route file changed on disk; Story Map draft is stale."
 		for scene_id in graph_patches:
-			if not project["routes"].has(scene_id):
+			if not graph_project["routes"].has(scene_id):
 				return "Story Map references an unknown source scene."
-			var validation: String = StoryGraph.validate(project, graph_patches[scene_id])
+			var validation: String = StoryGraph.validate(graph_project, graph_patches[scene_id])
 			if not validation.is_empty() or str(graph_patches[scene_id].get("sceneId", "")) != str(scene_id):
 				return "Story Map %s: %s" % [scene_id, validation if not validation.is_empty() else "sceneId mismatch"]
 	var stage_patches: Variant = draft.get("stagePatches", {})
@@ -194,6 +221,8 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 	var allowed: Dictionary = {}
 	for entry in project["data"]["entries"]:
 		allowed[str(entry["id"])] = true
+	for entry in draft.get("authoredLines", []):
+		allowed[str(entry.get("id", ""))] = true
 	for id in patches:
 		if not id is String or not allowed.has(id) or not patches[id] is Dictionary:
 			return "Черновик содержит неизвестную реплику."
@@ -251,8 +280,8 @@ static func save_local(project: Dictionary, draft: Dictionary) -> Dictionary:
 
 
 static func export_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
-	if not draft.get("storyGraphPatches", {}).is_empty():
-		return {"ok": false, "error": "Story Map draft requires the separate no-loss story graph review export."}
+	if not draft.get("storyGraphPatches", {}).is_empty() or not draft.get("authoredScenes", []).is_empty() or not draft.get("authoredLines", []).is_empty():
+		return {"ok": false, "error": "New scenes, lines or Story Map edges require the no-loss story review export."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -384,8 +413,8 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
 
 
 static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
-	if not draft.get("storyGraphPatches", {}).is_empty():
-		return {"ok": false, "error": "Story Map changes require the story graph review export."}
+	if not draft.get("storyGraphPatches", {}).is_empty() or not draft.get("authoredScenes", []).is_empty() or not draft.get("authoredLines", []).is_empty():
+		return {"ok": false, "error": "Story additions require the no-loss story review export."}
 	if not draft.get("stageFxPatches", {}).is_empty():
 		return {"ok": false, "error": "FX события требуют отдельный FX review export; v2 экспорт потеряет таймлайн."}
 	var error: String = validate(project, draft)
@@ -430,12 +459,12 @@ static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dicti
 
 ## Review-only Story Map authoring — canonical map_narrative_routes remains immutable.
 static func set_story_graph(project: Dictionary, draft: Dictionary, data: Dictionary) -> String:
-	var error: String = StoryGraph.validate(project, data)
+	var error: String = StoryGraph.validate(visible_project(project, draft), data)
 	if not error.is_empty():
 		return error
 	var scene_id: String = str(data.get("sceneId", ""))
-	if not project.get("routes", {}).has(scene_id):
-		return "Cannot author edges for an unknown canonical scene."
+	if not visible_project(project, draft).get("routes", {}).has(scene_id):
+		return "Cannot author edges for an unknown scene."
 	draft["routeSourceSha256"] = str(project.get("routesSha", ""))
 	if not draft.has("storyGraphPatches"):
 		draft["storyGraphPatches"] = {}
@@ -449,13 +478,16 @@ static func export_story_graph_candidate(project: Dictionary, draft: Dictionary)
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
-	if draft.get("storyGraphPatches", {}).is_empty():
-		return {"ok": false, "error": "No authored Story Map edges."}
+	if draft.get("storyGraphPatches", {}).is_empty() and draft.get("authoredScenes", []).is_empty() and draft.get("authoredLines", []).is_empty():
+		return {"ok": false, "error": "No authored Story Map or new dialogue content."}
 	var payload: Dictionary = {
 		"format": "raven-vn-story-graph-review-v1", "schemaVersion": 1,
 		"sourceSha256": project["sha"], "routeSourceSha256": project["routesSha"],
 		"stageSourceSha256": project["stagingSha"], "castSourceSha256": project["castSha"],
-		"storyGraphPatches": draft["storyGraphPatches"].duplicate(true),
+		"storyGraphPatches": draft.get("storyGraphPatches", {}).duplicate(true),
+		"authoredScenes": draft.get("authoredScenes", []).duplicate(true),
+		"authoredLines": draft.get("authoredLines", []).duplicate(true),
+		"dialogueCatalogReview": Author.export_preview(project, draft),
 		"textPatches": draft.get("patches", {}).duplicate(true),
 		"stagePatches": draft.get("stagePatches", {}).duplicate(true),
 		"stageV2Patches": draft.get("stageV2Patches", {}).duplicate(true),
@@ -486,8 +518,8 @@ static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionar
 
 
 static func export_fx_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
-	if not draft.get("storyGraphPatches", {}).is_empty():
-		return {"ok": false, "error": "Story Map changes require the story graph review export."}
+	if not draft.get("storyGraphPatches", {}).is_empty() or not draft.get("authoredScenes", []).is_empty() or not draft.get("authoredLines", []).is_empty():
+		return {"ok": false, "error": "Story additions require the no-loss story review export."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -519,8 +551,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
 
 
 static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
-	if not draft.get("storyGraphPatches", {}).is_empty():
-		return {"ok": false, "error": "Story Map changes require the story graph review export."}
+	if not draft.get("storyGraphPatches", {}).is_empty() or not draft.get("authoredScenes", []).is_empty() or not draft.get("authoredLines", []).is_empty():
+		return {"ok": false, "error": "Story additions require the no-loss story review export."}
 	if not draft.get("stageFxPatches", {}).is_empty():
 		return {"ok": false, "error": "Есть FX таймлайн. Используйте FX review export для сохранения событий."}
 	if not draft.get("stageV2Patches", {}).is_empty():
