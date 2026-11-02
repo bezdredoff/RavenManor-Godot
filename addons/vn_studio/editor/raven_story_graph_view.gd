@@ -24,6 +24,9 @@ var _update: Button
 var _inspect: Label
 var _name_map: Dictionary = {}
 var _node_to_id: Dictionary = {}
+var _visible_edges: Array = []
+var _edge_popup: PopupMenu
+var _popup_edge_ids: Array[String] = []
 var _editing_edge: int = -1
 
 
@@ -50,10 +53,14 @@ func _ready() -> void:
 	_canvas.minimap_enabled = true
 	_canvas.connection_request.connect(_on_connection_request)
 	_canvas.disconnection_request.connect(_reject_disconnection)
+	_canvas.gui_input.connect(_on_canvas_input)
 	add_child(_canvas)
+	_edge_popup = PopupMenu.new()
+	_edge_popup.id_pressed.connect(_on_edge_popup_selected)
+	add_child(_edge_popup)
 	_inspect = Label.new()
 	_inspect.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	_inspect.text = "Кликните сцену, чтобы выбрать источник; протяните провод к сцене для draft-связи."
+	_inspect.text = "Кликните сцену для выбора источника, протяните провод для создания draft-связи или кликните существующий провод для её редактирования."
 	add_child(_inspect)
 	var bar := HFlowContainer.new()
 	add_child(bar)
@@ -256,6 +263,82 @@ func _on_connection_request(from_name: StringName, _from_port: int,
 			source, target, label_text]
 
 
+
+## GraphEdit itself receives left clicks on the rendered connection layer.
+## The Godot API returns node names and ports, never our stable draft edge IDs.
+func _on_canvas_input(event: InputEvent) -> void:
+	if not event is InputEventMouseButton:
+		return
+	var mouse: InputEventMouseButton = event
+	if mouse.button_index != MOUSE_BUTTON_LEFT or not mouse.pressed:
+		return
+	var connection: Dictionary = _canvas.get_closest_connection_at_point(mouse.position, 12.0)
+	if not connection.is_empty():
+		_select_graph_connection(connection, mouse.position)
+
+
+func _clear_edge_selection() -> void:
+	_edge_list.deselect_all()
+	_editing_edge = -1
+	_update.disabled = true
+	_remove.disabled = true
+
+
+func _edge_index_for_id(edge_id: String) -> int:
+	for index in range(_overlay.get("edges", []).size()):
+		if str(_overlay["edges"][index].get("id", "")) == edge_id:
+			return index
+	return -1
+
+
+func _select_edge_id(edge_id: String) -> void:
+	var index: int = _edge_index_for_id(edge_id)
+	if index < 0:
+		_clear_edge_selection()
+		_summary.text = "Черновая связь больше не существует: " + edge_id
+		return
+	_edge_list.select(index)
+	_on_edge_selected(index)
+
+
+func _on_edge_popup_selected(item_id: int) -> void:
+	if item_id < 0 or item_id >= _popup_edge_ids.size():
+		return
+	_select_edge_id(_popup_edge_ids[item_id])
+
+
+func _select_graph_connection(connection: Dictionary, position: Vector2 = Vector2.ZERO) -> void:
+	var from_id: String = str(_node_to_id.get(str(connection.get("from_node", "")), ""))
+	var to_id: String = str(_node_to_id.get(str(connection.get("to_node", "")), ""))
+	var matches: Array[String] = Graph.draft_ids_for_connection(
+		_visible_edges, from_id, to_id, _scene_id)
+	if matches.is_empty():
+		_clear_edge_selection()
+		if from_id == _scene_id:
+			_inspect.text = "Канонический переход %s → %s. Его нельзя редактировать в Story Map; для изменения нужен отдельный approval." % [from_id, to_id]
+		else:
+			_inspect.text = "Связь %s → %s принадлежит другой сцене или является канонической. Сначала выберите исходную сцену." % [from_id, to_id]
+		return
+	if matches.size() == 1:
+		_select_edge_id(matches[0])
+		return
+	# GraphEdit paints parallel A/B/C edges to the same target as one wire.
+	# Never edit an arbitrary branch: ask the user which stable ID they mean.
+	_popup_edge_ids = matches
+	_edge_popup.clear()
+	for index in range(matches.size()):
+		var edge_index: int = _edge_index_for_id(matches[index])
+		if edge_index < 0:
+			continue
+		var edge: Dictionary = _overlay["edges"][edge_index]
+		_edge_popup.add_item("%s · %s · %s" % [
+			matches[index], str(edge.get("choiceKey", edge.get("kind", ""))),
+			str(edge.get("label", ""))], index)
+	_inspect.text = "На этом проводе %d черновых переходов: выберите конкретный ID из меню." % matches.size()
+	_edge_popup.popup(Rect2i(
+		Vector2i(_canvas.get_screen_position() + position), Vector2i(300, 24 * matches.size() + 12)))
+
+
 func _on_full(_pressed: bool) -> void:
 	_render_graph()
 
@@ -285,6 +368,8 @@ func _render_graph() -> void:
 			child.queue_free()
 	_name_map.clear()
 	_node_to_id.clear()
+	_visible_edges.clear()
+	_popup_edge_ids.clear()
 	# Draw the exact existing route gates and authored draft edges separately.
 	var graph: Dictionary = Graph.build(_project, _draft)
 	# The local overlay may have been edited but not yet committed into _draft.
@@ -295,6 +380,7 @@ func _render_graph() -> void:
 	graph = Graph.build(_project, preview_draft)
 	if not _full.button_pressed:
 		graph = Graph.neighborhood(graph, _scene_id)
+	_visible_edges = graph.get("edges", []).duplicate(true)
 	var node_ids: Array = graph.get("nodes", {}).keys()
 	node_ids.sort_custom(func(a, b):
 		var first: Dictionary = graph["nodes"][a]
