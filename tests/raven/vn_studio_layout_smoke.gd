@@ -71,6 +71,27 @@ func _run() -> void:
 	assert(raven._raven_graph._name_map.has("RM-BEAT-00-01"))
 	assert(raven._context_views.size() == 1)
 	assert(raven._context_views[0].text.contains("Animation"))
+	# VNS5-07F1: the Animation tab must contain the *working* StageDesigner
+	# editor, not just the old placeholder info label. Stage stays central.
+	var animation_tab: Control = raven._workspace_tabs.get_tab_control(4)
+	var fx_editor: VBoxContainer = raven._stage_designer._fx_controls
+	assert(fx_editor != null and fx_editor.get_parent() != null)
+	assert(fx_editor.get_parent().get_parent() == animation_tab,
+		"FX editor widgets belong under the visible Animation tab")
+	assert(raven._stage_designer._fx_list.is_ancestor_of(fx_editor) == false)
+	assert(fx_editor.is_ancestor_of(raven._stage_designer._fx_list))
+	assert(raven._stage_designer._fx_play.is_ancestor_of(fx_editor) == false)
+	assert(fx_editor.is_ancestor_of(raven._stage_designer._fx_play))
+	assert(not raven._workspace_tabs.get_tab_control(0).is_ancestor_of(fx_editor),
+		"Stage Inspector no longer doubles as the animation authoring tab")
+	var original_fx_count: int = raven._stage_designer._fx_data.get("cues", []).size()
+	assert(raven._stage_designer._fx_target.item_count > 0)
+	raven._stage_designer._on_fx_add()
+	assert(raven._stage_designer._fx_data["cues"].size() == original_fx_count + 1,
+		"Animation tab is live and creates a draft cue")
+	raven._stage_designer._on_fx_undo()
+	assert(raven._stage_designer._fx_data["cues"].size() == original_fx_count,
+		"Animation tab FX Undo must preserve the original cue list")
 	raven._on_scene(1)
 	var selected: Dictionary = raven.selected_context()
 	assert(selected["sceneId"] == "RM-BEAT-00-02")
