@@ -78,6 +78,9 @@ func _run() -> void:
 			found_existing_patch = entry["localized"]["ru"]["text"] == "Уточнённый текст"
 	assert(found_new and found_existing_patch)
 	assert(bundle["retainedDraft"]["textPatches"][new_line]["en"] == "New story line")
+	assert(bundle["retainedDraft"]["authoredScenes"].size() == 1)
+	assert(bundle["retainedDraft"]["authoredLines"].size() == 2)
+	assert(bundle["retainedDraft"]["promotionSceneIdMap"][new_scene] == "RM-BEAT-07-01")
 	assert(bundle["diffSummary"]["newScenes"] == 1)
 	assert(bundle["diffSummary"]["newLines"] == 2)
 	assert(bundle["diffSummary"]["changedTextCells"] == 2)
