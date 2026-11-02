@@ -100,9 +100,10 @@ static func build_config(beat_id: String, locale: String, scene: Dictionary, ent
 	if scene_shots.size() != 1:
 		return {}
 	var shot: Dictionary = scene_shots[0]
-	var variants: Array = backgrounds.filter(func(item):
-		return item is Dictionary and item.get("backgroundId") == shot.get("backgroundId") and
-			item.get("lighting") == shot.get("lighting") and item.get("roomState") == shot.get("roomState"))
+	var variants: Array = []
+	for item in backgrounds:
+		if item is Dictionary and item.get("backgroundId") == shot.get("backgroundId") and item.get("lighting") == shot.get("lighting") and item.get("roomState") == shot.get("roomState"):
+			variants.append(item)
 	if variants.size() != 1 or not _accepted_asset(variants[0], "res://assets/raven/vn_backgrounds/"):
 		return {}
 	var cast: Variant = shot.get("cast", [])
