@@ -367,6 +367,7 @@ func _build() -> void:
 	_raven_graph = RavenGraph.new()
 	_raven_graph.custom_minimum_size.x = 430
 	_raven_graph.graph_modified.connect(_on_graph_modified)
+	_raven_graph.scene_focus_requested.connect(_on_graph_scene_focus)
 	story_scroll.add_child(_raven_graph)
 	var animation_scroll := ScrollContainer.new()
 	animation_scroll.name = "Animation"
@@ -883,6 +884,18 @@ func _export_four_registry_review(manifest: Dictionary) -> void:
 		_status.text = "Создан four-registry JSON review пакет; production не изменён, runtime запрещён."
 	else:
 		_status.text = "Four-registry export отклонён: " + str(result.get("error", ""))
+
+
+func _on_graph_scene_focus(scene_id: String) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var scenes: Array = Store.scene_records(_project, _draft)
+	for index in range(scenes.size()):
+		if str(scenes[index].get("sceneId", "")) == scene_id:
+			if index != _scene_idx:
+				_scene_idx = index
+				_scene_switch()
+			return
 
 
 func _on_graph_modified(data: Dictionary) -> void:
