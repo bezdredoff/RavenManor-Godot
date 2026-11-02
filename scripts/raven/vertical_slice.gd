@@ -96,7 +96,7 @@ func _render() -> void:
 	if step.get("kind") == "vn":
 		var source: Dictionary = content.get("prologueScenes", {}).get(str(step.scene), content.vnScenes.get(str(step.scene), {}))
 		display_title = Copy.scene_title(str(source.get("beatId", "")), preferences.locale)
-	body.add_child(_label(display_title, 20, Color("f0dfbd"))
+	body.add_child(_label(display_title, 20, Color("f0dfbd")))
 	match str(step.kind):
 		"map","restore","clue":
 			body.add_child(_paragraph(str(step.body)))
