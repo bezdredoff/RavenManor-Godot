@@ -537,6 +537,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06D2A",
+      "title": "VN Studio v5: release readiness, save-compatibility and immutable rollback rehearsal",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "After merged PR #116, validate an exact D1 Godot bundle plus D1-CLI extracted package and report all blockers to playable story promotion. In particular compare new scene IDs to foundation_catalog.storyBeats so Snapshot.normalize and RavenReducer do not silently drop/reject them. Validate route proposals, new locale completeness, cue/reducer gate and save/schema compatibility. Export only an external immutable audit plus source backups for rollback; no production or runtime writes.",
+      "deliverable": "plan_vn_release.py, synthetic offline tamper/cycle/rollback Python test, actual Godot v1 Snapshot/Reducer/CampaignStore save projection smoke, scripts/check.sh, runbook and updated dashboard.",
+      "acceptance": "Fail-closed package/offline-manifest match and no drift, exact SHA every registry and external staging file, no symlinks, support for old saves/reducer idempotence via Godot smoke, identify new beat not in foundation catalog and unsupported scene presenter/route/languages/cue. Refuse --require-ready until blockers resolved. Audit folder external to checkout, no-overwrite, source backups with SHA and no auto-restore. CI green, human review. Real release requires separate D2B approved import.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06D1-CLI",
+        "VNS5-06D1"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-02 PR #116 merged main 8830e018f5332872c16e9a1867cb63792ee188f1; no real approved content",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
