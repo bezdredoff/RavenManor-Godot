@@ -466,6 +466,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06B",
+      "title": "VN Studio v5: create draft-only Raven scenes and dialogue lines with reserved immutable IDs",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Native new scene and line authoring in Raven Editor with immutable reserved RM-DRAFT-BEAT-0001 scene IDs and stable sceneId-LNNN line IDs. Draft-only local JSON and SHA-locked no-loss review export; show new scenes in Story Map with unapproved gate placeholders; do not invent playable route, shots, transitions or save contracts.",
+      "deliverable": "New raven_story_authoring.gd pure model, Raven Story Store and Story View add scene/line UI integration, graph preview and translations, existing locale/undo compatible, full smoke and production status/docs.",
+      "acceptance": "Owner creates new scene with initial RU line, more lines in new and existing scenes, edits RU/BE/EN, uses Story Map choice checkpoint referencing new lines, save/reopen, undo/redo, no-loss review export; rejects empty/duplicate/colliding IDs, invalid speaker/locale, source drift, arbitrary paths, missing routes; original 28 scenes/280 lines, cast, staging, M3/reducer/save, playable routes unchanged; independent CI and Godot Editor native 800x640/1024x640/1366x768 QA, human approval before promotion.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06A",
+        "VNS5-05B"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-02 Raven VN Studio VNS5-06B planning after PR #113 merged",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
