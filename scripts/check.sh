@@ -9,6 +9,7 @@ python3 "$ROOT/scripts/raven/tools/validate_code_plan.py"
 python3 "$ROOT/scripts/raven/tools/build_production_dashboard.py" --check
 python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py scripts/raven/tools/test_pr_governance.py scripts/raven/tools/test_audit_upds_vn.py
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_contract.py'
+python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_promotion_staging.py'
 worklist_check="$(mktemp)"
 python3 "$ROOT/scripts/raven/tools/export_translation_worklist.py" --output "$worklist_check"
 rm -f "$worklist_check"
