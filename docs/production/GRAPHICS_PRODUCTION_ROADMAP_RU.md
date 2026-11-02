@@ -224,7 +224,7 @@ Map-архитектура и VN-фоны являются разными пов
 - `GFX-08-02` Выбрать constructed modular structure против AI structural pieces; AI использовать преимущественно для материалов и уникального декора, если это даёт более стабильные seams.
 - `GFX-08-03` Утвердить material library: wood, plaster, wallpaper, stone, glass, metal, fabric.
 - `GFX-08-04` Для каждой комнаты зафиксировать landmarks, camera, light directions, actor safe zones и occlusion masks.
-- `GFX-08-05` Произвести 11 VN background masters преимущественно через ChatGPT image generation/editing: этот путь уже оказался проще для точного portrait aspect ratio, композиции и стилевого выравнивания в UPDS.
+- `GFX-08-05` Произвести и утвердить только VN background masters/variants, действительно используемые утверждёнными сценами: 28 сцен сейчас обеспечены 26 изображениями из 10 семейств. `BG-CORRIDOR` не заказывать без отдельной сцены. Художественное утверждение загруженных кадров ≠ техническое/мобильное QA.
 - `GFX-08-06` Для каждого ChatGPT-фона сохранять исходный бриф, reference board, целевой размер, Style Contract, landmarks и последующие edits; принятый master image становится источником производных.
 - `GFX-08-07` Производить state overlays и light grades отдельно от base master; ChatGPT использовать для крупных семантических вариантов, ComfyUI или локальную обработку — для воспроизводимых масок, grades и пакетных производных.
 - `GFX-08-08` Произвести map-ready room elements по Room Builder/Godot geometry.

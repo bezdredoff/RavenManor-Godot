@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "status": "owner_accepted_art_integration_review",
-  "approval": "Owner approved clothed cast, full-body emotions, Evelyn props and Ada/Lucas/Rowan performance sets in production chat; latest Rowan approval 2026-11-01.",
+  "status": "owner_accepted_art_pending_device_qa",
+  "approval": "All 62 existing imported character frames (Evelyn 18, Ada 14, Lucas 14, Rowan 16) explicitly reconfirmed as approved art on 2026-11-02. VN only; no new exact pose×emotion combinations or map sprites implied. Runtime/device QA separate.",
   "scope": "VN only. No chibi map art, blink/mouth overlays, nude identity studies, rejected experiments or new pose x emotion combinations.",
   "entries": [
     {
