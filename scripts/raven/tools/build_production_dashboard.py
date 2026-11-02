@@ -117,7 +117,7 @@ def build() -> dict:
     approval_summary = {
         "backgrounds": {"total": len(backgrounds), "artApproved": sum(x.get("status") == "accepted" for x in backgrounds)},
         "characterFrames": {"total": len(portraits), "artApproved": sum(x.get("status") == "accepted" for x in portraits)},
-        "note": "Owner approved exact imported images; staging/animation/mobile acceptance remains separate.",
+        "note": "Owner approved exact imported images; staging/animation/mobile/device acceptance remains separate.",
     }
     plan.sort(key=lambda item: ({"CODE": 0, "GFX": 1}.get(item["domain"], 2), item["id"]))
     return {
