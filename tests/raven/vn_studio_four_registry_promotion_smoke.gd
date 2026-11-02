@@ -55,7 +55,9 @@ func _run() -> void:
 	var original: String = str(result["sceneId"])
 	var new_line: String = str(result["lineId"])
 	var scene: String = "RM-BEAT-07-01"
-	assert(Store.set_promotion_map(project, draft, {original: scene}).is_empty())
+	var id_mapping: Dictionary = {}
+	id_mapping[original] = scene
+	assert(Store.set_promotion_map(project, draft, id_mapping).is_empty())
 	assert(Store.validate(project, draft).is_empty())
 	var manifest: Dictionary = _filled_manifest(project, draft, scene, speaker)
 	assert(manifest["sourceSha256"] == project["sha"])
@@ -134,7 +136,7 @@ func _run() -> void:
 	ui._scene_title_input.text = "UI title"
 	ui._scene_first_line_input.text = "UI line"
 	ui._on_create_scene()
-	ui._on_promotion_mapping_modified({original: scene})
+	ui._on_promotion_mapping_modified(id_mapping)
 	var ui_manifest: Dictionary = _filled_manifest(ui._project, ui._draft, scene, speaker)
 	var tmp: String = ProjectSettings.globalize_path("user://raven_story_studio/production_package_test.json")
 	var out: FileAccess = FileAccess.open(tmp, FileAccess.WRITE)
