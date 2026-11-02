@@ -14,7 +14,7 @@
       "legacyRuntimeScene": "letter",
       "title": {
         "ru": "Письмо",
-        "be": null,
+        "be": "Ліст",
         "en": "The Letter"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -25,7 +25,7 @@
       "legacyRuntimeScene": "road",
       "title": {
         "ru": "Дорога",
-        "be": null,
+        "be": "Дарога",
         "en": "The Road"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -36,7 +36,7 @@
       "legacyRuntimeScene": "gates",
       "title": {
         "ru": "Ворота",
-        "be": null,
+        "be": "Брама",
         "en": "The Gates"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -47,7 +47,7 @@
       "legacyRuntimeScene": "arrival",
       "title": {
         "ru": "Прибытие",
-        "be": null,
+        "be": "Прыбыццё",
         "en": "Arrival"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -58,7 +58,7 @@
       "legacyRuntimeScene": "bedroom",
       "title": {
         "ru": "Знакомая спальня",
-        "be": null,
+        "be": "Знаёмая спальня",
         "en": "A Familiar Bedroom"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -69,7 +69,7 @@
       "legacyRuntimeScene": "trace",
       "title": {
         "ru": "Нужен специалист",
-        "be": null,
+        "be": "Патрэбны спецыяліст",
         "en": "A Job for a Specialist"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -80,7 +80,7 @@
       "legacyRuntimeScene": "night",
       "title": {
         "ru": "Первая ночь",
-        "be": null,
+        "be": "Першая ноч",
         "en": "The First Night"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -91,7 +91,7 @@
       "legacyRuntimeScene": "complete",
       "title": {
         "ru": "Утро: кухня, Роуэн и оранжерея",
-        "be": null,
+        "be": "Раніца: кухня, Роўэн і аранжарэя",
         "en": "Morning: The Kitchen, Rowan and the Conservatory"
       },
       "source": "data/raven/rm_vs_01_content.json",
@@ -111,7 +111,7 @@
       "sceneId": "RM-BEAT-02-02",
       "title": {
         "ru": "2.2. Человек с грязными ботинками",
-        "be": null,
+        "be": "2.2. Чалавек ў брудных ботах",
         "en": "2.2. The Man with Muddy Boots"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
@@ -121,7 +121,7 @@
       "sceneId": "RM-BEAT-02-03",
       "title": {
         "ru": "2.3. Список, который становится длиннее",
-        "be": null,
+        "be": "2.3. Спіс, які ўсё расце",
         "en": "2.3. The Ever-Growing List"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
@@ -131,7 +131,7 @@
       "sceneId": "RM-BEAT-02-04",
       "title": {
         "ru": "2.4. Обед, который всё-таки состоялся",
-        "be": null,
+        "be": "2.4. Абед, які ўсё ж адбыўся",
         "en": "2.4. Lunch, After All"
       },
       "source": "docs/NARRATIVE_SCRIPT_READABLE.md",
@@ -308,7 +308,9 @@
         "ru": {
           "text": "Квартира съёмная. Мебель чужая. Даже чашка — не моя, я её просто не вернула. Так проще уезжать."
         },
-        "be": null,
+        "be": {
+          "text": "Кватэра здымная. Мэбля чужая. Нават кубак — не мой, я яго проста не вярнула. Так прасцей з'язджаць."
+        },
         "en": {
           "text": "The apartment is rented. The furniture belongs to someone else. Even the mug isn't mine—I just never gave it back. Makes leaving easier."
         }
@@ -324,7 +326,9 @@
         "ru": {
           "text": "Письмо из нотариальной конторы. Герб — ворон на ветке. Я такого не видела лет двадцать. Или видела, но забыла, что видела."
         },
-        "be": null,
+        "be": {
+          "text": "Ліст з натарыяльнай канторы. Герб — крумкач на галінцы. Я такога не бачыла гадоў дваццаць. Ці бачыла, але забыла, што бачыла."
+        },
         "en": {
           "text": "A letter from the solicitor's office. A crest: a raven perched on a branch. I haven't seen it in twenty years. Or maybe I have, and forgot."
         }
@@ -340,7 +344,9 @@
         "ru": {
           "text": "«Наследство». Поместье, которое я почти не помню. Дом я любила. Просто не могла там остаться."
         },
-        "be": null,
+        "be": {
+          "text": "«Спадчына». Маёнтак, якога я амаль не памятаю. Я любіла гэты дом. Проста не магла там застацца."
+        },
         "en": {
           "text": "\"Inheritance.\" An estate I can barely remember. I loved that house. I just couldn't stay there."
         }
@@ -356,7 +362,9 @@
         "ru": {
           "text": "Я помню комнаты. Людей — почти нет. Даже лиц."
         },
-        "be": null,
+        "be": {
+          "text": "Я памятаю пакоі. Людзей — амаль не. Нават твараў."
+        },
         "en": {
           "text": "I remember the rooms. The people, hardly at all. Not even their faces."
         }
@@ -372,7 +380,9 @@
         "ru": {
           "text": "Городок есть на картах, но автобусы туда не ходят — только с пересадкой в райцентре, и то не каждый день. Как будто кто-то очень давно решил, что сюда не стоит ездить просто так."
         },
-        "be": null,
+        "be": {
+          "text": "Мястэчка ёсць на картах, але аўтобусы туды не ходзяць — толькі з перасадкай у райцэнтры, ды і тое не штодня. Быццам хтосьці вельмі даўно вырашыў, што сюды не варта ездзіць проста так."
+        },
         "en": {
           "text": "The town is on the map, but there are no direct buses. You have to change in the district center, and even then they don't run every day. As though someone decided long ago that no one should come here without a very good reason."
         }
@@ -388,7 +398,9 @@
         "ru": {
           "text": "Чем ближе я подъезжаю, тем сильнее чувство, что я что-то забыла. Не дом. Не людей. Что-то большее. И это «большее» смотрит на меня из тумана, как старый портрет из тёмной комнаты."
         },
-        "be": null,
+        "be": {
+          "text": "Чым бліжэй я пад'язджаю, тым мацней адчуванне, што я нешта забыла. Не дом. Не людзей. Нешта большае. І гэтае «большае» глядзіць на мяне з туману, нібы стары партрэт з цёмнага пакоя."
+        },
         "en": {
           "text": "The closer I get, the stronger the feeling that I've forgotten something. Not the house. Not the people. Something bigger. And that something is watching me through the mist, like an old portrait in a dark room."
         }
@@ -404,7 +416,9 @@
         "ru": {
           "text": "Здравствуйте. Я… по письму."
         },
-        "be": null,
+        "be": {
+          "text": "Добры дзень. Я… наконт ліста."
+        },
         "en": {
           "text": "Hello. I'm… here about the letter."
         }
@@ -420,7 +434,9 @@
         "ru": {
           "text": "Знаю. Я заварила чай. Вы не пьёте чай?"
         },
-        "be": null,
+        "be": {
+          "text": "Ведаю. Я заварыла гарбату. Вы не п'яце гарбату?"
+        },
         "en": {
           "text": "I know. I've made tea. Don't you drink tea?"
         }
@@ -436,7 +452,9 @@
         "ru": {
           "text": "Пью. Просто… вы меня не ждали?"
         },
-        "be": null,
+        "be": {
+          "text": "П'ю. Проста… вы мяне не чакалі?"
+        },
         "en": {
           "text": "I do. It's just… weren't you expecting me?"
         }
@@ -452,7 +470,9 @@
         "ru": {
           "text": "Ждала. Просто не думала, что вы приедете сегодня. Чай всё равно заварила — привычка. Калитку не закрывайте — она обижается."
         },
-        "be": null,
+        "be": {
+          "text": "Чакала. Проста не думала, што вы прыедзеце сёння. Гарбату ўсё адно заварыла — звычка. Брамку не зачыняйце — яна крыўдуе."
+        },
         "en": {
           "text": "I was. I simply didn't expect you today. I made tea anyway—force of habit. Don't close the garden gate. It takes offense."
         }
@@ -468,7 +488,9 @@
         "ru": {
           "text": "Эвелин Рейвен? Лукас, нотариальная контора."
         },
-        "be": null,
+        "be": {
+          "text": "Эвелін Рэйвен? Лукас, натарыяльная кантора."
+        },
         "en": {
           "text": "Evelyn Raven? Lucas, from the solicitor's office."
         }
@@ -484,7 +506,9 @@
         "ru": {
           "text": "Да. Я помню этот дом хуже, чем должна. И хуже, чем хотелось бы."
         },
-        "be": null,
+        "be": {
+          "text": "Так. Я памятаю гэты дом горш, чым павінна. І горш, чым хацелася б."
+        },
         "en": {
           "text": "Yes. I remember this house less clearly than I should. And far less clearly than I'd like."
         }
@@ -500,7 +524,9 @@
         "ru": {
           "text": "Формальности закрыты. Ключи от первого этажа — ваши. Подписи здесь и здесь. Я загляну завтра — обсудим остальное. Дом не любит спешки. И юристов."
         },
-        "be": null,
+        "be": {
+          "text": "З фармальнасцямі скончана. Ключы ад першага паверха — вашы. Подпісы тут і тут. Я зазірну заўтра — абмяркуем астатняе. Дом не любіць спешкі. І юрыстаў."
+        },
         "en": {
           "text": "The formalities are settled. The ground-floor keys are yours. Sign here and here. I'll come by tomorrow to discuss the rest. The house doesn't like to be rushed. Or lawyers."
         }
@@ -516,7 +542,9 @@
         "ru": {
           "text": "Жилые комнаты стояли пустыми с тех пор, как вы уехали. Если вы остаётесь — начнём со спальни. Дверь там заклинило, я не смогла открыть. Ванную тоже лучше не трогать до утра: там кто-то живёт."
         },
-        "be": null,
+        "be": {
+          "text": "Жылыя пакоі пуставалі з таго часу, як вы з'ехалі. Калі застаецеся — пачнём са спальні. Там заклінавала дзверы, я не змагла іх адчыніць. Ванны пакой таксама лепш не чапаць да раніцы: там хтосьці жыве."
+        },
         "en": {
           "text": "The living rooms have been empty since you left. If you're staying, we'll start with the bedroom. The door's jammed; I couldn't open it. Best leave the bathroom until morning, too. There's something living in there."
         }
@@ -532,7 +560,9 @@
         "ru": {
           "text": "Кто-то?"
         },
-        "be": null,
+        "be": {
+          "text": "Хтосьці?"
+        },
         "en": {
           "text": "Something?"
         }
@@ -548,7 +578,9 @@
         "ru": {
           "text": "Сырость. Она тоже имеет привычки."
         },
-        "be": null,
+        "be": {
+          "text": "Вільгаць. У яе таксама ёсць свае звычкі."
+        },
         "en": {
           "text": "Damp. It has habits of its own."
         }
@@ -564,7 +596,9 @@
         "ru": {
           "text": "Я узнаю комнату, хотя почти не помню, как жила здесь. Как будто помнит не голова, а руки."
         },
-        "be": null,
+        "be": {
+          "text": "Я пазнаю пакой, хоць амаль не памятаю, як жыла тут. Быццам памятае не галава, а рукі."
+        },
         "en": {
           "text": "I recognize the room, though I barely remember living here. As if it's my hands that remember, not my head."
         }
@@ -580,7 +614,9 @@
         "ru": {
           "text": "За столько лет всё кажется чужим. Разберите вещи — а я посмотрю, что ещё можно спасти. И что спасать уже поздно."
         },
-        "be": null,
+        "be": {
+          "text": "За столькі гадоў усё здаецца чужым. Разбярыце рэчы — а я пагляджу, што яшчэ можна ўратаваць. І што ратаваць ужо позна."
+        },
         "en": {
           "text": "After so many years, everything feels unfamiliar. Sort through your things, and I'll see what else can be saved. And what's beyond saving."
         }
@@ -596,7 +632,9 @@
         "ru": {
           "text": "Вы всегда так говорите?"
         },
-        "be": null,
+        "be": {
+          "text": "Вы заўсёды так кажаце?"
+        },
         "en": {
           "text": "Do you always talk like that?"
         }
@@ -612,7 +650,9 @@
         "ru": {
           "text": "Только о мебели. О людях — реже."
         },
-        "be": null,
+        "be": {
+          "text": "Толькі пра мэблю. Пра людзей — радзей."
+        },
         "en": {
           "text": "Only about furniture. Less often about people."
         }
@@ -628,7 +668,9 @@
         "ru": {
           "text": "За шкафом сырость. Это уже не уборка — здесь нужен сантехник."
         },
-        "be": null,
+        "be": {
+          "text": "За шафай сырасць. Гэта ўжо не проста прыборка — тут патрэбны сантэхнік."
+        },
         "en": {
           "text": "There's damp behind the cupboard. This isn't a cleaning job anymore—we need a plumber."
         }
@@ -644,7 +686,9 @@
         "ru": {
           "text": "Я знаю мастера. Он работает со старыми домами. И с их обитателями."
         },
-        "be": null,
+        "be": {
+          "text": "Я ведаю майстра. Ён умее працаваць са старымі дамамі. І з іх насельнікамі."
+        },
         "en": {
           "text": "I know a tradesman. He knows old houses. And their occupants."
         }
@@ -660,7 +704,9 @@
         "ru": {
           "text": "С обитателями?"
         },
-        "be": null,
+        "be": {
+          "text": "З насельнікамі?"
+        },
         "en": {
           "text": "Their occupants?"
         }
@@ -676,7 +722,9 @@
         "ru": {
           "text": "С теми, кто не платит. Сначала освободим трубы — потом позовём."
         },
-        "be": null,
+        "be": {
+          "text": "З тымі, хто не плаціць. Спачатку вызвалім доступ да труб — потым паклічам."
+        },
         "en": {
           "text": "The ones who don't pay. First we'll clear the pipes, then we'll call him."
         }
@@ -692,7 +740,9 @@
         "ru": {
           "text": "Спальня и ванная наконец пригодны. Для первой ночи этого достаточно."
         },
-        "be": null,
+        "be": {
+          "text": "Спальня і ванны пакой нарэшце прыдатныя для жыцця. На першую ноч гэтага хопіць."
+        },
         "en": {
           "text": "The bedroom and bathroom are finally usable. That'll do for the first night."
         }
@@ -708,7 +758,9 @@
         "ru": {
           "text": "Кухню не трогайте до утра — проводка не работает уже несколько месяцев, а газ отключили за неуплату. Я побоялась включать. Поэтому еду я заказала. Её оставили у входа."
         },
-        "be": null,
+        "be": {
+          "text": "Кухню да раніцы не чапайце — праводка не працуе ўжо некалькі месяцаў, а газ адключылі за няплату. Я пабаялася нешта ўключаць. Таму заказала ежу. Яе пакінулі каля ўвахода."
+        },
         "en": {
           "text": "Leave the kitchen until morning. The wiring hasn't worked for months, and the gas was cut off for nonpayment. I was afraid to switch anything on. So I ordered food. They left it by the entrance."
         }
@@ -724,7 +776,9 @@
         "ru": {
           "text": "У входа?"
         },
-        "be": null,
+        "be": {
+          "text": "Каля ўвахода?"
+        },
         "en": {
           "text": "By the entrance?"
         }
@@ -740,7 +794,9 @@
         "ru": {
           "text": "Курьер не стал заходить. Сказал, что дом «не приглашает». Я его не виню."
         },
-        "be": null,
+        "be": {
+          "text": "Кур'ер не захацеў заходзіць. Сказаў, што дом «не запрашае». Не магу яго вінаваціць."
+        },
         "en": {
           "text": "The delivery driver wouldn't come inside. Said the house was 'unwelcoming.' I can't blame him."
         }
@@ -756,7 +812,9 @@
         "ru": {
           "text": "Странно: держу эту вещь, и запах старого дерева кажется знакомым сильнее, чем сам дом. Будто память возвращается кусками."
         },
-        "be": null,
+        "be": {
+          "text": "Дзіўна: трымаю гэтую рэч, і пах старога дрэва здаецца больш знаёмым, чым сам дом. Нібы памяць вяртаецца кавалкамі."
+        },
         "en": {
           "text": "Strange. Holding this thing, the smell of old wood feels more familiar than the house itself. Like my memories are coming back in fragments."
         }
@@ -772,7 +830,9 @@
         "ru": {
           "text": "Возвращается. Всегда возвращается. Вопрос — в каком виде."
         },
-        "be": null,
+        "be": {
+          "text": "Вяртаецца. Заўсёды вяртаецца. Пытанне — у якім выглядзе."
+        },
         "en": {
           "text": "They are. They always do. The question is what shape they'll take."
         }
@@ -788,7 +848,9 @@
         "ru": {
           "text": "Утром начнём с кухни — вызовем электрика, проверим проводку. И Роуэн должен зайти: посмотреть сад и оранжерею. Он не любит, когда его ждут."
         },
-        "be": null,
+        "be": {
+          "text": "Раніцай пачнём з кухні — выклічам электрыка, праверым праводку. І Роўэн павінен зайсці: агледзець сад і аранжарэю. Ён не любіць, калі яго прымушаюць чакаць."
+        },
         "en": {
           "text": "We'll start with the kitchen in the morning—call an electrician, check the wiring. And Rowan is due to stop by to look at the garden and the conservatory. He doesn't like being kept waiting."
         }
@@ -804,7 +866,9 @@
         "ru": {
           "text": "Роуэн?"
         },
-        "be": null,
+        "be": {
+          "text": "Роўэн?"
+        },
         "en": {
           "text": "Rowan?"
         }
@@ -820,7 +884,9 @@
         "ru": {
           "text": "Садовник. Приходит из города, здесь не живёт. Пока."
         },
-        "be": null,
+        "be": {
+          "text": "Садоўнік. Прыходзіць з мястэчка, тут не жыве. Пакуль што."
+        },
         "en": {
           "text": "The gardener. He comes in from town. Doesn't live here. Not yet."
         }
@@ -836,7 +902,9 @@
         "ru": {
           "text": "Хорошо. А потом я хочу понять, почему некоторые комнаты я помню, а людей — почти нет."
         },
-        "be": null,
+        "be": {
+          "text": "Добра. А потым я хачу зразумець, чаму некаторыя пакоі памятаю, а людзей — амаль не."
+        },
         "en": {
           "text": "All right. And then I want to know why I remember certain rooms, but almost none of the people."
         }
@@ -1068,7 +1136,9 @@
         "ru": {
           "text": "Потолок всё ещё на месте. Уже неплохо."
         },
-        "be": null,
+        "be": {
+          "text": "Столь яшчэ на месцы. Ужо нядрэнна."
+        },
         "en": {
           "text": "Roof's still in place. That's something."
         }
@@ -1084,7 +1154,9 @@
         "ru": {
           "text": "Доброе утро?"
         },
-        "be": null,
+        "be": {
+          "text": "Добрай раніцы?"
+        },
         "en": {
           "text": "Good morning?"
         }
@@ -1100,7 +1172,9 @@
         "ru": {
           "text": "Эвелин Рейвен. Роуэн ухаживает за садом."
         },
-        "be": null,
+        "be": {
+          "text": "Эвелін Рэйвен. Роўэн даглядае сад."
+        },
         "en": {
           "text": "Evelyn Raven. Rowan looks after the garden."
         }
@@ -1116,7 +1190,9 @@
         "ru": {
           "text": "Сочувствую наследству. И поздравляю с возвращением."
         },
-        "be": null,
+        "be": {
+          "text": "Спачуваю вам наконт спадчыны. І віншую з вяртаннем."
+        },
         "en": {
           "text": "My condolences on the inheritance. And welcome back."
         }
@@ -1132,7 +1208,9 @@
         "ru": {
           "text": "Здесь все сначала соболезнуют?"
         },
-        "be": null,
+        "be": {
+          "text": "Тут усе спачатку спачуваюць?"
+        },
         "en": {
           "text": "Does everyone here offer condolences first?"
         }
@@ -1148,7 +1226,9 @@
         "ru": {
           "text": "Только те, кто видел смету на ремонт."
         },
-        "be": null,
+        "be": {
+          "text": "Толькі тыя, хто бачыў каштарыс рамонту."
+        },
         "en": {
           "text": "Only those who've seen the repair estimate."
         }
@@ -1164,7 +1244,9 @@
         "ru": {
           "text": "Мы знакомы?"
         },
-        "be": null,
+        "be": {
+          "text": "Мы знаёмыя?"
+        },
         "en": {
           "text": "Have we met?"
         }
@@ -1180,7 +1262,9 @@
         "ru": {
           "text": "Когда вы были маленькой, вы таскали в карманах камни, листья и мои инструменты. Я был старше; не удивлюсь, если не помните."
         },
-        "be": null,
+        "be": {
+          "text": "Калі вы былі маленькая, то цягалі ў кішэнях камяні, лісце і мае інструменты. Я быў старэйшы; не здзіўлюся, калі не памятаеце."
+        },
         "en": {
           "text": "When you were little, you used to fill your pockets with stones, leaves, and my tools. I was older. I wouldn't be surprised if you don't remember."
         }
@@ -1196,7 +1280,9 @@
         "ru": {
           "text": "Сейчас я почти никого не помню."
         },
-        "be": null,
+        "be": {
+          "text": "Цяпер я амаль нікога не памятаю."
+        },
         "en": {
           "text": "These days, I barely remember anyone."
         }
@@ -1212,7 +1298,9 @@
         "ru": {
           "text": "Бывает, когда уезжаешь надолго."
         },
-        "be": null,
+        "be": {
+          "text": "Так бывае, калі надоўга з'язджаеш."
+        },
         "en": {
           "text": "That happens when you're away for a long time."
         }
@@ -1228,7 +1316,9 @@
         "ru": {
           "text": "Восточную тропинку обойдите. После дождя грунт осел. А оранжерею пока не открывайте: там битое стекло и гнилые рамы."
         },
-        "be": null,
+        "be": {
+          "text": "Усходнюю сцежку абыходзьце. Пасля дажджу грунт асеў. А аранжарэю пакуль не адчыняйце: там бітае шкло і струхлелыя рамы."
+        },
         "en": {
           "text": "Stay off the eastern path. The ground has subsided after the rain. And don't open the conservatory yet: broken glass and rotten frames."
         }
@@ -1244,7 +1334,9 @@
         "ru": {
           "text": "Значит, сначала найдём, где безопасно ходить."
         },
-        "be": null,
+        "be": {
+          "text": "Значыць, спачатку высветлім, дзе бяспечна хадзіць."
+        },
         "en": {
           "text": "So first we work out where it's safe to walk."
         }
@@ -1260,7 +1352,9 @@
         "ru": {
           "text": "Наконец-то разумный план."
         },
-        "be": null,
+        "be": {
+          "text": "Нарэшце разумны план."
+        },
         "en": {
           "text": "Finally, a sensible plan."
         }
@@ -1276,7 +1370,9 @@
         "ru": {
           "text": "Я думала, наследство — это когда тебе оставляют что-то ценное."
         },
-        "be": null,
+        "be": {
+          "text": "Я думала, спадчына — гэта калі табе пакідаюць нешта каштоўнае."
+        },
         "en": {
           "text": "I thought an inheritance meant someone left you something valuable."
         }
@@ -1292,7 +1388,9 @@
         "ru": {
           "text": "Вам оставили большой дом."
         },
-        "be": null,
+        "be": {
+          "text": "Вам пакінулі вялікі дом."
+        },
         "en": {
           "text": "They left you a very large house."
         }
@@ -1308,7 +1406,9 @@
         "ru": {
           "text": "С неработающей кухней, сломанными часами и подозрительной ванной."
         },
-        "be": null,
+        "be": {
+          "text": "З непрацоўнай кухняй, зламаным гадзіннікам і падазроным ванным пакоем."
+        },
         "en": {
           "text": "With a kitchen that doesn't work, a broken clock, and a suspicious bathroom."
         }
@@ -1324,7 +1424,9 @@
         "ru": {
           "text": "Ванная уже не подозрительная."
         },
-        "be": null,
+        "be": {
+          "text": "Ванны пакой ужо не падазроны."
+        },
         "en": {
           "text": "The bathroom is no longer suspicious."
         }
@@ -1340,7 +1442,9 @@
         "ru": {
           "text": "А я начала радоваться исправному крану. Тревожный признак."
         },
-        "be": null,
+        "be": {
+          "text": "А я пачала радавацца спраўнаму крану. Трывожная прыкмета."
+        },
         "en": {
           "text": "And I've started celebrating a working tap. That's a worrying sign."
         }
@@ -1356,7 +1460,9 @@
         "ru": {
           "text": "Здесь записи за двадцать лет. Уголь, дрова, ремонт крыши… А вот уборка жилых комнат, хотя здесь никто не жил."
         },
-        "be": null,
+        "be": {
+          "text": "Тут запісы за дваццаць гадоў. Вугаль, дровы, рамонт даху… А вось прыборка жылых пакояў, хоць тут ніхто не жыў."
+        },
         "en": {
           "text": "Twenty years of records. Coal, firewood, roof repairs… And here, cleaning the living rooms, even though nobody lived here."
         }
@@ -1372,7 +1478,9 @@
         "ru": {
           "text": "Пустые комнаты тоже собирают пыль."
         },
-        "be": null,
+        "be": {
+          "text": "Пустыя пакоі таксама збіраюць пыл."
+        },
         "en": {
           "text": "Empty rooms gather dust, too."
         }
@@ -1388,7 +1496,9 @@
         "ru": {
           "text": "Я хочу понять, что было с домом после моего отъезда."
         },
-        "be": null,
+        "be": {
+          "text": "Я хачу зразумець, што адбывалася з домам пасля майго ад'езду."
+        },
         "en": {
           "text": "I want to know what happened to the house after I left."
         }
@@ -1404,7 +1514,9 @@
         "ru": {
           "text": "Тогда посмотрите на даты. По ним иногда узнаёшь больше, чем из разговоров."
         },
-        "be": null,
+        "be": {
+          "text": "Тады паглядзіце на даты. Часам яны расказваюць больш, чым размовы."
+        },
         "en": {
           "text": "Then look at the dates. Sometimes they tell you more than people do."
         }
@@ -1420,7 +1532,9 @@
         "ru": {
           "text": "Сначала ремонтировали всё. Потом — только первый этаж. Оранжерею перестали отапливать. А здесь… деньги на западное крыло, но самого ремонта нет."
         },
-        "be": null,
+        "be": {
+          "text": "Спачатку рамантавалі ўсё. Потым — толькі першы паверх. Аранжарэю перасталі ацяпляць. А тут… грошы на заходняе крыло, але самога рамонту няма."
+        },
         "en": {
           "text": "At first they repaired everything. Then only the ground floor. They stopped heating the conservatory. And here… money allocated to the west wing, but no repairs listed."
         }
@@ -1436,7 +1550,9 @@
         "ru": {
           "text": "Строители обнаружили повреждённые перекрытия. Дальше решили хотя бы закрыть опасную часть."
         },
-        "be": null,
+        "be": {
+          "text": "Будаўнікі знайшлі пашкоджаныя перакрыцці. Вырашылі хаця б закрыць небяспечную частку."
+        },
         "en": {
           "text": "The builders found damaged floor beams. They decided it was safest to close off that section."
         }
@@ -1452,7 +1568,9 @@
         "ru": {
           "text": "То есть комнаты постепенно переставали использовать."
         },
-        "be": null,
+        "be": {
+          "text": "Значыць, пакоі паступова пераставалі выкарыстоўваць."
+        },
         "en": {
           "text": "So the rooms were gradually taken out of use."
         }
@@ -1468,7 +1586,9 @@
         "ru": {
           "text": "Мы сохраняли то, что могли."
         },
-        "be": null,
+        "be": {
+          "text": "Мы захоўвалі тое, што маглі."
+        },
         "en": {
           "text": "We preserved what we could."
         }
@@ -1484,7 +1604,9 @@
         "ru": {
           "text": "А здесь только небольшие заказы еды. Судя по записям, вы сами почти не едите."
         },
-        "be": null,
+        "be": {
+          "text": "А тут толькі невялікія заказы ежы. Мяркуючы па запісах, вы самі амаль не ясьце."
+        },
         "en": {
           "text": "And only small food orders here. Judging by these records, you barely eat."
         }
@@ -1500,7 +1622,9 @@
         "ru": {
           "text": "Скромные привычки."
         },
-        "be": null,
+        "be": {
+          "text": "Сціплыя звычкі."
+        },
         "en": {
           "text": "Modest habits."
         }
@@ -1516,7 +1640,9 @@
         "ru": {
           "text": "Зато чай расходуется с впечатляющей скоростью."
         },
-        "be": null,
+        "be": {
+          "text": "Затое гарбаты сыходзіць уражальная колькасць."
+        },
         "en": {
           "text": "But you go through tea at an astonishing rate."
         }
@@ -1532,7 +1658,9 @@
         "ru": {
           "text": "Хорошие привычки требуют постоянства."
         },
-        "be": null,
+        "be": {
+          "text": "Добрыя звычкі патрабуюць сталасці."
+        },
         "en": {
           "text": "Good habits require consistency."
         }
@@ -1548,7 +1676,9 @@
         "ru": {
           "text": "Мне нужны старые документы о западном крыле. Возможно, они в библиотеке."
         },
-        "be": null,
+        "be": {
+          "text": "Мне патрэбныя старыя дакументы пра заходняе крыло. Магчыма, яны ў бібліятэцы."
+        },
         "en": {
           "text": "I need the old records for the west wing. Maybe they're in the library."
         }
@@ -1564,7 +1694,9 @@
         "ru": {
           "text": "Разумно. Но сначала доведём до ума кухню."
         },
-        "be": null,
+        "be": {
+          "text": "Разумна. Але спачатку давядзём да ладу кухню."
+        },
         "en": {
           "text": "That makes sense. But let's get the kitchen in order first."
         }
@@ -1580,7 +1712,9 @@
         "ru": {
           "text": "Итак, у нас свет, холодильник и электрический чайник."
         },
-        "be": null,
+        "be": {
+          "text": "Такім чынам, у нас ёсць святло, халадзільнік і электрычны чайнік."
+        },
         "en": {
           "text": "So now we have electricity, a fridge, and an electric kettle."
         }
@@ -1596,7 +1730,9 @@
         "ru": {
           "text": "Лучше, чем вчера."
         },
-        "be": null,
+        "be": {
+          "text": "Лепш, чым учора."
+        },
         "en": {
           "text": "Better than yesterday."
         }
@@ -1612,7 +1748,9 @@
         "ru": {
           "text": "А газ?"
         },
-        "be": null,
+        "be": {
+          "text": "А газ?"
+        },
         "en": {
           "text": "And the gas?"
         }
@@ -1628,7 +1766,9 @@
         "ru": {
           "text": "Плиту проверит специалист. До этого не включать."
         },
-        "be": null,
+        "be": {
+          "text": "Пліту праверыць спецыяліст. Да таго часу не ўключаць."
+        },
         "en": {
           "text": "A specialist will inspect the stove. Don't turn it on until then."
         }
@@ -1644,7 +1784,9 @@
         "ru": {
           "text": "Значит, можем хранить продукты, кипятить воду и рассматривать холодный ужин при хорошем освещении."
         },
-        "be": null,
+        "be": {
+          "text": "Значыць, можам захоўваць прадукты, кіпяціць ваду і сузіраць халодную вячэру пры добрым асвятленні."
+        },
         "en": {
           "text": "So we can store food, boil water, and contemplate a cold dinner in excellent lighting."
         }
@@ -1660,7 +1802,9 @@
         "ru": {
           "text": "Вы забыли про чай."
         },
-        "be": null,
+        "be": {
+          "text": "Вы забылі пра гарбату."
+        },
         "en": {
           "text": "You forgot the tea."
         }
@@ -1676,7 +1820,9 @@
         "ru": {
           "text": "Этого вы бы мне не простили."
         },
-        "be": null,
+        "be": {
+          "text": "Гэтага вы б мне не даравалі."
+        },
         "en": {
           "text": "You'd never forgive me for that."
         }
@@ -1692,7 +1838,9 @@
         "ru": {
           "text": "Лукас нашёл упоминание семейных документов. Приедет завтра вечером."
         },
-        "be": null,
+        "be": {
+          "text": "Лукас знайшоў згадку пра сямейныя дакументы. Прыедзе заўтра ўвечары."
+        },
         "en": {
           "text": "Lucas found a reference to some family documents. He's coming tomorrow evening."
         }
@@ -1708,7 +1856,9 @@
         "ru": {
           "text": "Тогда стоит подготовить библиотеку."
         },
-        "be": null,
+        "be": {
+          "text": "Тады варта падрыхтаваць бібліятэку."
+        },
         "en": {
           "text": "Then we'd better get the library ready."
         }
@@ -1724,7 +1874,9 @@
         "ru": {
           "text": "Вы знаете, что он ищет?"
         },
-        "be": null,
+        "be": {
+          "text": "Вы ведаеце, што ён шукае?"
+        },
         "en": {
           "text": "Do you know what he's looking for?"
         }
@@ -1740,7 +1892,9 @@
         "ru": {
           "text": "Знаю, что ему понадобится чистый стол."
         },
-        "be": null,
+        "be": {
+          "text": "Ведаю, што яму спатрэбіцца чысты стол."
+        },
         "en": {
           "text": "I know he'll need a clean table."
         }
@@ -1756,7 +1910,9 @@
         "ru": {
           "text": "Это не ответ."
         },
-        "be": null,
+        "be": {
+          "text": "Гэта не адказ."
+        },
         "en": {
           "text": "That's not an answer."
         }
@@ -1772,7 +1928,9 @@
         "ru": {
           "text": "Зато полезный совет."
         },
-        "be": null,
+        "be": {
+          "text": "Затое карысная парада."
+        },
         "en": {
           "text": "But it's useful advice."
         }
