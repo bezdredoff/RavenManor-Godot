@@ -42,3 +42,11 @@ The first version displays searchable tasks, status, stage, priority, size, depe
 ## Future extensions, only after measured use
 
 Add saved dashboard filters, cost/capacity and milestone estimates after Hall C11 × GFX-11, stage click-through and actual GitHub issue synchronization only if the team adopts them. They are not prerequisites for basic transparent project status.
+
+## Reconciliation / Dashboard v2 (2026-11-02)
+
+The dashboard defaults to **Оставшаяся работа** rather than showing every historical task. `Все задачи` includes merged work; `Архив / заменённые` includes `not_planned` and `superseded` with a mandatory replacement for superseded IDs. This is filtering, not data deletion.
+
+Three independent fields can be attached to entries in `production_progress.json`: `implementationState` (`partial/delivered`), `qaState` (`automated/manual_pending/device_verified`) and `approvalState` (`art_approved/feature_approved/pending/rejected`). If absent, show **Не зафиксировано**—do not infer successful QA from a merged PR. Status continues to represent the task lifecycle. `supersededBy` references replacement task IDs.
+
+The header's **26/26 approved VN backgrounds** and **62/62 approved character frames** are computed from exact `status=accepted` catalog records. They do **not** imply that every staged pose/emotion exists, a room state has pixel-registered lighting, an interactable map is approved, or native/mobile QA passed. A missing background such as unused `BG-CORRIDOR` is not part of the approved exact-art count. After merging the source+dashboard PR, CI publishes a freshly generated `status.json` to Pages. Do not edit generated output manually.

@@ -1,9 +1,9 @@
 {
   "schemaVersion": 1,
-  "status": "candidate_preview_not_art_approved",
+  "status": "owner_accepted_art_pending_device_qa",
   "targetCanvas": "1080x1920",
   "variantCount": 26,
-  "warning": "Hall is sourced from four individually generated plates; Library evening shut_dusty has a cropped master with empty vase while other four are upscaled montage-derived variants. Composition/scale consistency not fully QA-verified; no map view replacement. Apartment adds four independently rendered city-study images, not pixel-perfect state layers; prologue departure shows a suitcase but no clearly packed boxes. Art and desktop/mobile visual QA pending. Road arrival is a standalone dusk/mist master; actor compositing and story-in-game visual QA pending. Entry family adds four gate/approach variants sharing one composition concept across approachable and overgrown states in day and dusk; runtime/VN Studio integration and owner visual QA pending. Bedroom day/night livable variants come from two separately generated candidate masters with closely matched room composition, not exact pixel-registered light grades. Covered/untidy bedroom remains ART PENDING; no pretend cleaning state. On-device QA pending. Six scene-backed candidate plates added for the Bath (wet unsafe), Kitchen (day power off/evening partial lighting), Garden (unsafe path), and Conservatory (day/dusk partially safe). Kitchen and Conservatory day/evening are independently generated variants with closely matching camera and props, not lossless pixel-locked lighting grades. No future-only states or corridor plates. Manual phone/Godot and actor-compositing QA remain pending.",
+  "warning": "All 26 listed plates are art-approved by the owner (2026-11-02). Historical technical differences remain: independently generated compositions, incomplete pixel-locked lighting variants and some cropped/upscaled plates. Exact scene-state background coverage is complete for all 28 authored VN scenes; BG-CORRIDOR has no authored VN scene and is not a generation requirement. Future/not-yet-generated states remain ART PENDING. Desktop/mobile compositing, story-in-game performance and device QA are separate gates; no map replacement or gameplay/save changes.",
   "entries": [
     {
       "id": "BG-HALL:evening:dusty",
@@ -19,8 +19,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-HALL:day:habitable",
@@ -36,8 +37,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-HALL:night:habitable",
@@ -53,8 +55,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-HALL:night:storm",
@@ -70,8 +73,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-LIBRARY:evening:shut_dusty",
@@ -87,8 +91,9 @@
         1024,
         1536
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-LIBRARY:evening:usable",
@@ -104,8 +109,9 @@
         1080,
         1920
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-LIBRARY:day:usable",
@@ -121,8 +127,9 @@
         1080,
         1920
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-LIBRARY:night:usable",
@@ -138,8 +145,9 @@
         1080,
         1920
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-LIBRARY:night:storm_leak",
@@ -155,8 +163,9 @@
         1080,
         1920
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated October 31, 2026; user-reviewed visual iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-APARTMENT:day:inhabited",
@@ -172,8 +181,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+      "status": "accepted",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-APARTMENT:evening:rainy",
@@ -189,8 +199,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+      "status": "accepted",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-APARTMENT:night:rainy",
@@ -206,8 +217,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master"
+      "status": "accepted",
+      "sourceType": "ChatGPT standalone image 2026-11-01; light/state variation, not a pixel-registered master",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-APARTMENT:day:packed_boxes",
@@ -223,8 +235,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT standalone image 2026-11-01; has travel suitcase but packed boxes not clearly depicted"
+      "status": "accepted",
+      "sourceType": "ChatGPT standalone image 2026-11-01; has travel suitcase but packed boxes not clearly depicted",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-ROAD:dusk:mist",
@@ -240,8 +253,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT independent portrait image 2026-11-01, Lanczos-resized to 1080x1920; user approved visible style/format"
+      "status": "accepted",
+      "sourceType": "ChatGPT independent portrait image 2026-11-01, Lanczos-resized to 1080x1920; user approved visible style/format",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-ENTRY:dusk:approachable",
@@ -257,8 +271,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-ENTRY:day:approachable",
@@ -274,8 +289,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-ENTRY:dusk:overgrown",
@@ -291,8 +307,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-ENTRY:day:overgrown",
@@ -308,8 +325,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration"
+      "status": "accepted",
+      "sourceType": "ChatGPT generated November 1, 2026; user-reviewed Entry family iteration",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-BEDROOM:day:livable",
@@ -325,8 +343,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672"
+      "status": "accepted",
+      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-BEDROOM:night:livable",
@@ -342,8 +361,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672"
+      "status": "accepted",
+      "sourceType": "ChatGPT individually generated and approved in chat 2026-11-01; Lanczos resized to 1080x1920 RGB WebP Q91; original canvas 941x1672",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-BATH-VIGNETTE:day:wet_unsafe",
@@ -359,8 +379,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-KITCHEN:day:power_off",
@@ -376,8 +397,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-KITCHEN:evening:partial_lighting",
@@ -393,8 +415,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-GARDEN:day:unsafe_path",
@@ -410,8 +433,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-CONSERVATORY:day:partially_safe",
@@ -427,8 +451,9 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     },
     {
       "id": "BG-CONSERVATORY:dusk:partially_safe",
@@ -444,8 +469,10 @@
         941,
         1672
       ],
-      "status": "candidate",
-      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91"
+      "status": "accepted",
+      "sourceType": "ChatGPT image generated and user-approved 2026-11-01; source PNG 941x1672, resized with Pillow Lanczos to 1080x1920 RGB WebP quality 91",
+      "approved": "2026-11-02"
     }
-  ]
+  ],
+  "approval": "Owner explicitly approved all 26 loaded VN background images on 2026-11-02. Applies to existing exact catalog variants only; absent state variants and map art are not approved by implication."
 }

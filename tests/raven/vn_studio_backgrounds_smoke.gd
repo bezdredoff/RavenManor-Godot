@@ -49,7 +49,7 @@ func _run() -> void:
 	assert(designer._card_size == full_actor_dimensions, "Tool thumbnails must not alter stage portraits")
 	assert(designer._thumbnail_size.x < 60)
 	assert(designer._thumbnail_strip.get_child_count() == designer._cards.size())
-	assert(designer._placeholders.text.contains("ART CANDIDATE"))
+	assert(designer._placeholders.text.contains("ART APPROVED"))
 
 	# An allowed master lighting/state product without a published image must
 	# show an explicit pending state, not the old Hall master or another plate.
@@ -72,7 +72,7 @@ func _run() -> void:
 	assert(designer._browse_background.text.contains(str(Resolver.all_entries().size())), "Imported catalogue count should match current registry")
 	designer._on_browse_imported()
 	assert(designer._browser_list.item_count == available.size())
-	assert(designer._browser_description.text.contains("ART CANDIDATE"))
+	assert(designer._browser_description.text.contains("ART APPROVED"))
 	designer._browser.hide()
 	var has_library_storm := false
 	for item: Dictionary in available:

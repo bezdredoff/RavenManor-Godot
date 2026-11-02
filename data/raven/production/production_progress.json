@@ -187,8 +187,9 @@
       "id": "RM-GAP-009",
       "status": "in_progress",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit."
+      "updated": "2026-11-02",
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work.",
+      "implementationState": "partial"
     },
     {
       "id": "MOB-03",
@@ -262,10 +263,12 @@
     },
     {
       "id": "RM-GFX-WATERCOLOR-001",
-      "status": "deferred",
+      "status": "not_planned",
       "owner": "ChatGPT",
-      "updated": "2026-10-29",
-      "evidence": "PR #66 merged 2026-10-29. Owner reviewed published Evelyn/Ada watercolor shader comparison and rejected visual result. Experiment retired; standalone shader/scene/launcher entry removed by cleanup PR. Do not treat as accepted art direction. Historical record: docs/VN_WATERCOLOR_PILOT.md."
+      "updated": "2026-11-02",
+      "evidence": "PR #66 merged 2026-10-29. Owner reviewed published Evelyn/Ada watercolor shader comparison and rejected visual result. Experiment retired; standalone shader/scene/launcher entry removed by cleanup PR. Do not treat as accepted art direction. Historical record: docs/VN_WATERCOLOR_PILOT.md.\n2026-11-02 reconciliation @ main ea4fc3552c7a: User rejected effect on 2026-10-29; duplicate experimental VN scene removed. Preserve historical docs/VN_WATERCOLOR_PILOT.md, do not resurrect the shader.",
+      "implementationState": "delivered",
+      "approvalState": "rejected"
     },
     {
       "id": "VN-EDITOR-00",
@@ -325,59 +328,90 @@
     },
     {
       "id": "RAVEN-VN-EDITOR-02",
-      "status": "PR_review",
-      "updated": "2026-10-31",
+      "status": "superseded",
+      "updated": "2026-11-02",
       "owner": "ChatGPT",
-      "evidence": "Clean main-based integration PR for stage editor after #78 was merged into an old feature branch. CI pending; Godot UI visual QA pending; no runtime rewrites."
+      "evidence": "Clean main-based integration PR for stage editor after #78 was merged into an old feature branch. CI pending; Godot UI visual QA pending; no runtime rewrites.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Covered by VNS5-04A/04B, VNS5-07A/07B and VNS5-09 for final cross-feature QA. Prior legacy PR_review misleading after merge.",
+      "supersededBy": [
+        "VNS5-04A",
+        "VNS5-04B",
+        "VNS5-09"
+      ],
+      "implementationState": "partial",
+      "qaState": "manual_pending"
     },
     {
       "id": "RAVEN-VN-EDITOR-03",
-      "status": "in_progress",
+      "status": "superseded",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #81 merged 2026-10-31 (VN stage browser/grid/dialogue). Follow-up authored PR in review adds exact catalog-backed stage previews and future-variant ART PENDING rules; full visual editor acceptance and shared VN runtime still pending. Follow-up PR (candidate) adds an imported-only discovery browser after user reported no visible assets: startup scene is BG-APARTMENT (not yet drawn), so stage initially shows ART PENDING. Manual editor QA and local checkout synchronization remain open. Responsive Godot workspace layout fix under review: hide inactive UPDS sidebars in Raven, wrap tool rows, scroll tall stage, allow collapsible lists, constrain popup size. CI and manual editor QA pending. Corrective PR proposal: full vertical scrolling in Raven workspace, separate dialogue/stage scroll, stage portraits sized using Hall Tea VN live ratio 77%×73% on 390×844 frame, tool thumbnail slider independent of stage actor size; CI and manual visual QA pending. VN Studio imported-browser auto lists four additional apartment variants when files exist; smoke adds 1080x1920 prologue stage image, catalogue expansion and exact state checks. No editor hardcoded asset mapping changes; unified runtime not yet claimed. BG-ROAD staged scene RM-BEAT-00-02 resolves via shared background catalog; imported-only VN Studio browser and gallery smoke covered. Full VN gameplay renderer remains distinct from asset resolver. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY exact scene states (RM-BEAT-00-03 dusk/overgrown and RM-BEAT-02-02 day/approachable) now catalog-supported in gameplay via shared compositor and VN Studio; smoke verifies both, actual device QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. "
+      "updated": "2026-11-02",
+      "evidence": "PR #81 merged 2026-10-31 (VN stage browser/grid/dialogue). Follow-up authored PR in review adds exact catalog-backed stage previews and future-variant ART PENDING rules; full visual editor acceptance and shared VN runtime still pending. Follow-up PR (candidate) adds an imported-only discovery browser after user reported no visible assets: startup scene is BG-APARTMENT (not yet drawn), so stage initially shows ART PENDING. Manual editor QA and local checkout synchronization remain open. Responsive Godot workspace layout fix under review: hide inactive UPDS sidebars in Raven, wrap tool rows, scroll tall stage, allow collapsible lists, constrain popup size. CI and manual editor QA pending. Corrective PR proposal: full vertical scrolling in Raven workspace, separate dialogue/stage scroll, stage portraits sized using Hall Tea VN live ratio 77%×73% on 390×844 frame, tool thumbnail slider independent of stage actor size; CI and manual visual QA pending. VN Studio imported-browser auto lists four additional apartment variants when files exist; smoke adds 1080x1920 prologue stage image, catalogue expansion and exact state checks. No editor hardcoded asset mapping changes; unified runtime not yet claimed. BG-ROAD staged scene RM-BEAT-00-02 resolves via shared background catalog; imported-only VN Studio browser and gallery smoke covered. Full VN gameplay renderer remains distinct from asset resolver. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY exact scene states (RM-BEAT-00-03 dusk/overgrown and RM-BEAT-02-02 day/approachable) now catalog-supported in gameplay via shared compositor and VN Studio; smoke verifies both, actual device QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: Detailed editor background, stage and layout tasks handled by VNS5-07A/B/E and VNS5-07F2. No claim of complete owner QA.",
+      "supersededBy": [
+        "VNS5-07A",
+        "VNS5-07B",
+        "VNS5-07E",
+        "VNS5-07F2"
+      ],
+      "implementationState": "partial",
+      "qaState": "manual_pending"
     },
     {
       "id": "GFX-08-05",
-      "status": "in_progress",
+      "status": "accepted",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #82 merged 2026-11-01: two of eleven VN master families (Hall 4/Library 5 plates) imported as candidates. This task is NOT complete for all 11 master families. Preview integration proposed in follow-up editor PR; art/device acceptance pending. Third of eleven VN background master families BG-APARTMENT prepared with 4 candidate city-study plates; source variants map day packed_boxes to prologue RM-BEAT-00-01. PR branch awaits four binary WebP uploads + green CI before merge. Not art/device approved. Road (fourth master family): BG-ROAD dusk/mist individual VN plate prepared in incoming ZIP as candidate; PR/CI/manual game acceptance pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY: four 1080x1920 generated WebP candidate plates for dusk/day × overgrown/approachable prepared and registered; 5th of 11 master families, candidate PR and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. "
+      "updated": "2026-11-02",
+      "evidence": "PR #82 merged 2026-11-01: two of eleven VN master families (Hall 4/Library 5 plates) imported as candidates. This task is NOT complete for all 11 master families. Preview integration proposed in follow-up editor PR; art/device acceptance pending. Third of eleven VN background master families BG-APARTMENT prepared with 4 candidate city-study plates; source variants map day packed_boxes to prologue RM-BEAT-00-01. PR branch awaits four binary WebP uploads + green CI before merge. Not art/device approved. Road (fourth master family): BG-ROAD dusk/mist individual VN plate prepared in incoming ZIP as candidate; PR/CI/manual game acceptance pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY: four 1080x1920 generated WebP candidate plates for dusk/day × overgrown/approachable prepared and registered; 5th of 11 master families, candidate PR and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: Owner explicitly approves all 26 loaded VN background variants on 2026-11-02. All 28 authored VN scenes resolve to an existing exact variant across 10 scene-backed families. BG-CORRIDOR absent from authored scenes: not an art-production requirement until a scene explicitly uses it. No map art or device approval implied.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
     },
     {
       "id": "GFX-08-06",
       "status": "in_progress",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #82 merged: exact source filenames, derived WebP SHA-256 and source sizes recorded in vn_background_catalog.json and docs/production/VN_BG_HALL_LIBRARY_20261031.md. Original seed/reproducible prompts unavailable; 9 assets remain candidates, not approved. Added Apartment source PNG filenames, 941x1672 generation canvas, derived 1080x1920 WebP SHA-256 hashes and state variant provenance to vn_background_catalog.json plus dedicated art documentation. Master composition/props not pixel locked. BG-ROAD art manifest includes source image, source dimensions 941x1672, output 1080x1920, actual SHA-256 and exact runtime catalog key. BG-ENTRY four standalone source PNG names, image sizes and derived exact WebP SHA-256 stored in VN background catalog and docs/production/VN_BG_ENTRY_20261101.md; not pixel-locked variants. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. "
+      "updated": "2026-11-02",
+      "evidence": "PR #82 merged: exact source filenames, derived WebP SHA-256 and source sizes recorded in vn_background_catalog.json and docs/production/VN_BG_HALL_LIBRARY_20261031.md. Original seed/reproducible prompts unavailable; 9 assets remain candidates, not approved. Added Apartment source PNG filenames, 941x1672 generation canvas, derived 1080x1920 WebP SHA-256 hashes and state variant provenance to vn_background_catalog.json plus dedicated art documentation. Master composition/props not pixel locked. BG-ROAD art manifest includes source image, source dimensions 941x1672, output 1080x1920, actual SHA-256 and exact runtime catalog key. BG-ENTRY four standalone source PNG names, image sizes and derived exact WebP SHA-256 stored in VN background catalog and docs/production/VN_BG_ENTRY_20261101.md; not pixel-locked variants. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: All 26 backgrounds have exact paths, source dimensions and SHA metadata; complete original prompts and pixel-registered master provenance remain incomplete.",
+      "approvalState": "art_approved",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-08-07",
       "status": "in_progress",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers. Four apartment lighting/staging variations (day inhabited, rainy evening/night, day departure) prepared as raster candidates with explicit warning: luggage present but packed cardboard boxes not evident. Runtime/editor read from the same catalog; visual QA pending. BG-ROAD only one dusk/mist state; no false claims of separate lighting overlays. Actor safe-zone, image composition and final art QA pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY four semantic paired lighting/state PNG-generated plates; not formally aligned overlay layers; cross-state architecture/season continuity and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. "
+      "updated": "2026-11-02",
+      "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers. Four apartment lighting/staging variations (day inhabited, rainy evening/night, day departure) prepared as raster candidates with explicit warning: luggage present but packed cardboard boxes not evident. Runtime/editor read from the same catalog; visual QA pending. BG-ROAD only one dusk/mist state; no false claims of separate lighting overlays. Actor safe-zone, image composition and final art QA pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY four semantic paired lighting/state PNG-generated plates; not formally aligned overlay layers; cross-state architecture/season continuity and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: Lighting and state images exist and are art-approved, but not all are pixel-locked state overlays/grades; preserve pending technical compositing QA.",
+      "approvalState": "art_approved",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-06-02",
-      "status": "merged",
+      "status": "accepted",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending."
+      "updated": "2026-11-02",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Owner explicitly reconfirms all 62 imported VN character images on 2026-11-02; three authored pose families for each of Evelyn, Ada, Lucas and Rowan are included. Acceptance is art only, not game/device QA.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
     },
     {
       "id": "GFX-06-03",
-      "status": "merged",
+      "status": "accepted",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending."
+      "updated": "2026-11-02",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Owner explicitly reconfirms all 62 imported character images on 2026-11-02; six expressions represented per character. Pose×emotion matrix has gaps and is tracked independently.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
     },
     {
       "id": "GFX-06-06",
       "status": "merged",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending."
+      "updated": "2026-11-02",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Existing accepted cast has approved hand/prop variants; independent map/evidence prop-state families are still GFX-09.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
     },
     {
       "id": "VNS5-07A",
@@ -424,9 +458,11 @@
     {
       "id": "VNS5-07F",
       "owner": "ChatGPT/Codex",
-      "status": "proposed",
+      "status": "in_progress",
       "updated": "2026-11-02",
-      "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts."
+      "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts.\n2026-11-02 reconciliation @ main ea4fc3552c7a: HTML-v5 authoring functional gaps partly delivered in https://github.com/bezdredoff/RavenManor-Godot/pull/130, https://github.com/bezdredoff/RavenManor-Godot/pull/131, https://github.com/bezdredoff/RavenManor-Godot/pull/132. Original HTML pixel/UX parity with matched viewport screenshot evidence remains open as VNS5-07F2.",
+      "implementationState": "partial",
+      "qaState": "manual_pending"
     },
     {
       "id": "VNS5-07F1",
@@ -452,23 +488,277 @@
     {
       "id": "VNS5-07F5",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge."
+      "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Three-phase editor-only Animation timeline merged https://github.com/bezdredoff/RavenManor-Godot/pull/132 at main commit 2bdb55880616. Native Windows owner QA and runtime animation are separate.",
+      "implementationState": "delivered",
+      "qaState": "automated"
     },
     {
       "id": "CODE-04-03",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. Independent PR-head full Raven/Godot, governance, dashboard and Web export CI #41531258527 SUCCESS at implementation merge-head 60877d5; native owner UI QA remains pending. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md. Belarusian follow-up branch feature/rm-be-dialogue-vn-studio-20261102 fills 268 previously missing BE lines while retaining 12 pilot entries (280/280 total), and 27 missing titles while retaining pilot title (28/28 total), no changes to RU/EN lines/IDs. Existing shared Studio/gameplay adapter handles BE; new BE smoke validates Studio source, preview pagination/locale persistence/line cursor, check.sh strict --release dialogue/title/popup registry. Full CI, editorial proofreading, native Godot BE QA pending; PR_review, not release-ready."
+      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. Independent PR-head full Raven/Godot, governance, dashboard and Web export CI #41531258527 SUCCESS at implementation merge-head 60877d5; native owner UI QA remains pending. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md. Belarusian follow-up branch feature/rm-be-dialogue-vn-studio-20261102 fills 268 previously missing BE lines while retaining 12 pilot entries (280/280 total), and 27 missing titles while retaining pilot title (28/28 total), no changes to RU/EN lines/IDs. Existing shared Studio/gameplay adapter handles BE; new BE smoke validates Studio source, preview pagination/locale persistence/line cursor, check.sh strict --release dialogue/title/popup registry. Full CI, editorial proofreading, native Godot BE QA pending; PR_review, not release-ready.\n2026-11-02 reconciliation @ main ea4fc3552c7a: English 280/280 and scene titles 28/28 + VN Studio/gameplay adapter https://github.com/bezdredoff/RavenManor-Godot/pull/135; Belarusian 280/280, titles 28/28 and localized smoke https://github.com/bezdredoff/RavenManor-Godot/pull/136. All three dialogue registries complete first draft; editorial, whole-game UI and physical-device release gate outstanding.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     },
     {
       "id": "RM-GAP-013",
       "owner": "ChatGPT",
       "status": "in_progress",
       "updated": "2026-11-02",
-      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI passed in GitHub Actions run #41531258527; native UI/editor QA pending. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI. BE canonical narration and titles now 280/280 and 28/28 first draft with VN Studio + active gameplay locale tests; no longer missing spoken text. Game UI beyond dialogue, native proofreading, font glyph/overflow QA and owner sign-off remain OPEN. Strict registry --release is not full-game release gate."
+      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI passed in GitHub Actions run #41531258527; native UI/editor QA pending. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI. BE canonical narration and titles now 280/280 and 28/28 first draft with VN Studio + active gameplay locale tests; no longer missing spoken text. Game UI beyond dialogue, native proofreading, font glyph/overflow QA and owner sign-off remain OPEN. Strict registry --release is not full-game release gate.\n2026-11-02 reconciliation @ main ea4fc3552c7a: BE and EN dialogue/title first drafts now complete after https://github.com/bezdredoff/RavenManor-Godot/pull/135 and https://github.com/bezdredoff/RavenManor-Godot/pull/136. Remaining whole-game locale coverage, proofreading and device typography QA; no new BE translation production task.",
+      "implementationState": "partial",
+      "qaState": "manual_pending"
+    },
+    {
+      "id": "CODE-00-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS code source inventory and extraction documented in docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md; source import https://github.com/bezdredoff/RavenManor-Godot/pull/46. No final feature QA claimed.",
+      "implementationState": "delivered",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-00-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: One Raven reducer/save authority with imported UPDS adapters and isolated snapshot: https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Further season runtime gates separate.",
+      "implementationState": "delivered",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-00-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Baseline Raven smoke and UPDS reuse regression suite in tests/raven, introduced with https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Device QA separate.",
+      "implementationState": "delivered",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-01-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS engine is imported (https://github.com/bezdredoff/RavenManor-Godot/pull/46); full seeded blocker/special/hole parity needs explicit cross-project oracle.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-01-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Idempotent Raven rewards, save-state and restoration tests in RM-VS-01 via https://github.com/bezdredoff/RavenManor-Godot/pull/9; broader Season 1 release gates separate.",
+      "implementationState": "delivered",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-03-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Shared paging, VN catalog adapter and game-view/runtime components exist (notably https://github.com/bezdredoff/RavenManor-Godot/pull/46, https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/120); full UPDS scene semantics pending.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-03-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: 1–3 cast Stage templates and 62 accepted VN frames (https://github.com/bezdredoff/RavenManor-Godot/pull/97, https://github.com/bezdredoff/RavenManor-Godot/pull/123); exact 21 pose/emotion staging matches and microanimations not all satisfied.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-03-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall Tea/common Raven VN view and FX runtime shipped (https://github.com/bezdredoff/RavenManor-Godot/pull/112); full RU/BE/EN scene edit/play/save parity and owner native QA outstanding.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-04-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-05-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Room Builder JSON→Godot importer, calibration and dedicated tests exist: scripts/raven/tools/import_room_builder_game.py, tests/raven/room_builder_game_import_smoke.gd; approved production Hall world footprint/device QA pending.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-05-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Authored A* routes and continuous pilot are separate; navigation tests exist. Full imported Hall geometry ↔ route alignment unaccepted.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-08-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-08-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven first-clear 2/2/2 work-point reward and 2/4 restoration costs wired to idempotent reducer in RM-VS-01 https://github.com/bezdredoff/RavenManor-Godot/pull/9; full season objective UX separate.",
+      "implementationState": "delivered",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-09-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Background and character accepted catalog resolvers exist; 26 approved plates and 62 accepted character frames; production props and complete manifest gate pending.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-09-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art import, SHA checks and provenance tests exist (VN character/background smokes, Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103); map/props alpha-pivot and device QA pending.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-10-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Portrait HUD and Stage responsive/layout smokes exist, including VN Studio https://github.com/bezdredoff/RavenManor-Godot/pull/127; cross-system accessibility and real device checks not accepted.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "CODE-10-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Web export/Pages, incoming ZIP CI and smoke runners exist; offline/mobile full regression and independent preview acceptance pending.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "RM-GAP-003",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "superseded",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Large RPG-Maker-style full bidirectional editor is not a current requirement. Keep validated one-way import and reversible preview as CODE-05-01 / RM-GAP-001.",
+      "supersededBy": [
+        "CODE-05-01",
+        "RM-GAP-001"
+      ],
+      "implementationState": "partial"
+    },
+    {
+      "id": "RM-GAP-004",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "deferred",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Broad mandatory bake-off across model families no longer blocks approved assets; revisit targeted consistency experiments only for actual gaps, see ART-BATCH-AUTOMATION.",
+      "implementationState": "partial"
+    },
+    {
+      "id": "GFX-00-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Canonical narrative/staging/props/route registries exist, but cross-registry checklist and owner gate not fully reconciled."
+    },
+    {
+      "id": "GFX-00-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Asset registries for 26 approved VN plates, 62 accepted cast images, 37 proposed logical props exist; not full all-domain asset ledger."
+    },
+    {
+      "id": "GFX-00-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Paths/SHA/provenance contracts implemented for imported assets; all production asset family formats not standardized."
+    },
+    {
+      "id": "GFX-00-06",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103 has provenance/run recipes/inputs; full live generated contact-sheet automation remains pending."
+    },
+    {
+      "id": "GFX-06-08",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Editor-only procedural breath/shake/scale/opacity and phase timeline merged via https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/132; real keyframe animation and whole-game runtime acceptance pending."
+    },
+    {
+      "id": "GFX-06-09",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Reduced-motion math and editor preview implemented, needs systematic mobile/accessibility QA."
+    },
+    {
+      "id": "GFX-08-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall wall/door/stair guides and documented geometry exist, final art and collision acceptance remain open."
+    },
+    {
+      "id": "GFX-08-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Constructed wall tileset plus Blender wall kit and AI alternatives compared. Final production structure strategy pending owner selection."
+    },
+    {
+      "id": "DASH-RECON-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Owner approved reconciliation scope. This PR updates source registries and historical statuses without gameplay/save edits.",
+      "implementationState": "partial"
+    },
+    {
+      "id": "PROC-DASH-V2",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation. Dashboard v2 client/generator/test changes staged in PR #137 second commit to support reconciled status vocabulary and independently show art approval, implementation, QA. CI fresh head pending; manual phone browser QA not claimed.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     }
   ],
   "rules": [

@@ -1,5 +1,19 @@
 # Raven Manor — canonical project status
 
+## 2026-11-02 · Dashboard v2 source-aware UI (PR #137 follow-up commit)
+
+The dashboard generator supports new `superseded` / `not_planned` statuses and separate implementation, QA and owner approval axes. The UI defaults to open work, supports all/archived/manual-QA/art filters, and reports 26/26 approved backgrounds and 62/62 approved character frames from exact canonical catalogs. Merged PR/automated tests never automatically equal full device QA. The source-of-truth `production_progress.json` remains required in this change; generated `dashboard/status.json` is not committed. CI must verify on final PR head; manual native/mobile acceptance is still pending.
+
+
+## 2026-11-02 · owner-approved reconciliation after main@ea4fc3552c7a (review candidate)
+
+Owner reconfirmed **all 26 imported VN background images and all 62 imported character frames as approved art**. This is a documented art decision, *not* a claim that full scenes, mixed actor pose/emotion combinations, native UI or physical device QA are accepted. Every authored VN beat has an exact present background (28/28), while BG-CORRIDOR has zero authored VN use and is not scheduled for generation. There are 21 actor staging combinations without an exact matching pose/emotion frame; existing approved fallback stays until a separate review.
+
+Merged [#132](https://github.com/bezdredoff/RavenManor-Godot/pull/132) delivers the editor-only three-phase FX timeline. Merged [#135](https://github.com/bezdredoff/RavenManor-Godot/pull/135) and [#136](https://github.com/bezdredoff/RavenManor-Godot/pull/136) populate 280/280 EN and BE lines and 28/28 EN and BE titles; editorial proofreading, full UI localization and mobile geometry remain separate. Updated CODE/GFX/GAP source progress to record delivered technical foundations without inferring final product acceptance. Superseded overlapping editor/room-builder tasks are historical, not silently deleted; rejected watercolor R&D is not planned. New focused authoring, props, localization QA, visual parity, art/matrix and dashboard tasks are proposed in the gaps ledger.
+
+**Scope:** catalogs/progress/backlog, stage labels and contract tests, GFX planning scope; no new artwork, dialogue text, runtime branching, save schema, economy, door rules or other gameplay mutation. CI and native Godot manual QA must run on this PR head; status changes here are proposals until merged.
+
+
 ## 2026-11-01 · art production handbook candidate
 
 PR #103 synchronized with `main@7eb2984` after merged PR #104: retained VNS5-04B stage-v2 implementation, smoke tests and canonical status entries alongside the handbook records. Previous handbook head `77b3aa9` passed [CI 41351137265](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41351137265); post-sync latest-head CI is required.

@@ -1,73 +1,96 @@
-const $ = (s) => document.querySelector(s);
-const cfg = { tasks: [] };
-const node = (tag, cls, content) => { const e = document.createElement(tag); if (cls) e.className = cls; if (content !== undefined) e.textContent = String(content); return e; };
-const statuses = { proposed:"Предложено", ready:"К работе", in_progress:"В работе", PR_review:"PR на ревью", merged:"Смержено", integrated:"Интегрировано", device_verified:"Device QA", accepted:"Принято", blocked:"Блокировано", deferred:"Отложено" };
-function field(box,title,value){box.append(node("h4","",title),node("p","",value||"—"))}
-function counter(title,value){const card=node("article","stat");card.append(node("b","",value),node("span","",title));$("#stats").append(card)}
+const $ = (selector) => document.querySelector(selector);
+const cfg = {tasks: [], assets: {backgrounds:{total:0, artApproved:0},characterFrames:{total:0,artApproved:0}}};
+const terminal = new Set(["merged","integrated","device_verified","accepted","superseded","not_planned"]);
+const archived = new Set(["superseded","not_planned"]);
+const statuses = {proposed:"Предложено",ready:"К работе",in_progress:"В работе",PR_review:"PR на ревью",merged:"Смержено",integrated:"Интегрировано",device_verified:"Device QA",accepted:"Принято",blocked:"Блокировано",deferred:"Отложено",superseded:"Заменено",not_planned:"Не планируется"};
+const implementation = {not_recorded:"Не зафиксировано",partial:"Реализовано частично",delivered:"Реализовано"};
+const verification = {not_recorded:"Не зафиксировано",automated:"Автотесты / без ручного QA",manual_pending:"Ожидает ручной проверки",device_verified:"Проверено на устройстве"};
+const approval = {not_recorded:"Не зафиксировано",pending:"Ожидает приёмки",art_approved:"Арт утверждён",feature_approved:"Функция принята",rejected:"Отклонено"};
+const node = (tag,cls,content) => {const e = document.createElement(tag); if(cls)e.className=cls; if(content!==undefined)e.textContent=String(content); return e;};
+function field(box,title,value){box.append(node("h4","",title),node("p","",value||"—"));}
+function counter(title,value){const e=node("article","stat");e.append(node("b","",value),node("span","",title));$("#stats").append(e);}
+function showAssets(data){
+  const a=data.assetSummary||cfg.assets;
+  $("#art-summary").replaceChildren();
+  for(const [title,value] of [["Утверждённые VN-фоны",a.backgrounds],["Утверждённые кадры персонажей",a.characterFrames]]){
+    const box=node("div","art-stat");
+    box.append(node("strong","",String(value.artApproved)+"/"+String(value.total)),node("span","",title));
+    $("#art-summary").append(box);
+  }
+  $("#art-explainer").textContent=a.note||"Арт-приёмка не означает готовность игровых сцен.";
+}
 function detail(item){
   const d=node("div","detail");
   field(d,"Задача",item.description||item.title);
-  field(d,"Что должно получиться",item.deliverable);
-  field(d,"Приёмка",item.acceptance);
+  field(d,"Результат",item.deliverable);
+  field(d,"Критерии приёмки",item.acceptance);
+  const axes=node("div","axes");
+  for(const [label,value] of [
+    ["Реализация",implementation[item.implementationState]||"Не зафиксировано"],
+    ["Проверка",verification[item.qaState]||"Не зафиксировано"],
+    ["Утверждение",approval[item.approvalState]||"Не зафиксировано"]]){
+    const box=node("div","axis");box.append(node("span","",label),node("strong","",value));axes.append(box);
+  }
+  d.append(axes);
   field(d,"Зависимости",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
-  field(d,"Размер / исполнитель",(item.size||"—")+" · "+(item.owner||"не назначен"));
-  field(d,"Обновление",(statuses[item.status]||item.status)+(item.updated?" · "+item.updated:""));
+  if((item.supersededBy||[]).length)field(d,"Заменено на",item.supersededBy.join(", "));
+  field(d,"Оценка / исполнитель",(item.size||"—")+" · "+(item.owner||"не назначен"));
+  field(d,"Статус", (statuses[item.status]||item.status)+(item.updated?" · "+item.updated:""));
   field(d,"Evidence",item.evidence||"Не подтверждено");
   field(d,"Источник",item.source||item.sourceDecision||"GFX roadmap");
-  const evidence=typeof item.evidence==="string" ? item.evidence.split(" ")[0] : "";
-  if(/^https:\/\/github\.com\/[^\s]+$/.test(evidence)){const a=node("a","","Открыть GitHub evidence");a.href=evidence;a.target="_blank";a.rel="noopener noreferrer";d.append(a)}
+  const links = Array.from(String(item.evidence||"").matchAll(/https:\/\/github\.com\/bezdredoff\/RavenManor-Godot\/pull\/\d+/g)).map(x=>x[0]);
+  if(links.length){const a=node("a","","Открыть связанный PR");a.href=links[links.length-1];a.target="_blank";a.rel="noopener noreferrer";d.append(a);}
   return d;
 }
 function card(item){
-  const box=node("details","task"), head=node("summary"), row=node("div","task-head");
-  row.append(node("span","id",item.id),node("span","pill "+item.status,statuses[item.status]||item.status));
-  head.append(row,node("h3","",item.title));
+  const box=node("details","task"+(archived.has(item.status)?" archived":""));
+  const head=node("summary"),top=node("div","task-head");
+  top.append(node("span","id",item.id),node("span","pill "+item.status,statuses[item.status]||item.status));
+  head.append(top,node("h3","",item.title));
   const meta=node("div","meta");
   [item.domain,item.stage,item.priority,item.size].filter(Boolean).forEach(x=>meta.append(node("span","",x)));
+  if(item.approvalState==="art_approved")meta.append(node("span","art-approved","Арт принят"));
   head.append(meta);box.append(head,detail(item));return box;
 }
 function progress(domain){
   const arr=cfg.tasks.filter(x=>x.domain===domain);
-  const accepted=arr.filter(x=>x.status==="accepted").length;
-  const shipped=arr.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length;
-  $("#"+domain.toLowerCase()+"-meter").style.width=(arr.length?100*accepted/arr.length:0)+"%";
-  $("#"+domain.toLowerCase()+"-stats").textContent="Принято: "+accepted+"/"+arr.length+" · merged+: "+shipped+" (не обязательно принято)";
+  const delivered=arr.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length;
+  const ownerAccepted=arr.filter(x=>x.status==="accepted").length;
+  $("#"+domain.toLowerCase()+"-meter").style.width=(arr.length?100*delivered/arr.length:0)+"%";
+  $("#"+domain.toLowerCase()+"-stats").textContent="Поставлено: "+delivered+"/"+arr.length+" · принято: "+ownerAccepted+" · без ручной приёмки — отдельно";
 }
 function render(){
-  const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value;
-  const found=cfg.tasks.filter(t=>{
-    const searchable=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence].join(" ").toLowerCase();
-    return (!q||searchable.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status)&&(!priority||t.priority===priority)&&(!stage||t.stage===stage);
+  const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value,scope=$("#scope").value;
+  const matched=cfg.tasks.filter(t=>{
+    const search=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence,(t.supersededBy||[]).join(" ")].join(" ").toLowerCase();
+    const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && ["automated","manual_pending"].includes(t.qaState)) || (scope==="art" && t.approvalState==="art_approved");
+    return hasScope && (!q||search.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status) && (!priority||t.priority===priority) && (!stage||t.stage===stage);
   });
-  $("#shown").textContent="Показано "+found.length+" из "+cfg.tasks.length;
+  const order={P0:0,P1:1,P2:2};
+  matched.sort((a,b)=>(order[a.priority]??3)-(order[b.priority]??3)||a.id.localeCompare(b.id));
+  $("#shown").textContent="Показано "+matched.length+" из "+cfg.tasks.length;
   const target=$("#tasks");target.replaceChildren();
-  if(!found.length){target.append(node("div","empty","Нет задач для выбранного фильтра."));return}
-  const fragment=document.createDocumentFragment();
-  found.forEach(item=>fragment.append(card(item)));target.append(fragment);
+  if(!matched.length){target.append(node("div","empty","Задачи по выбранным фильтрам не найдены."));return;}
+  const fragment=document.createDocumentFragment();for(const task of matched)fragment.append(card(task));target.append(fragment);
 }
 async function init(){
   try{
-    const response=await fetch("./status.json",{cache:"no-cache"});
-    if(!response.ok)throw new Error("HTTP "+response.status);
-    const data=await response.json();
-    if(!Array.isArray(data.tasks))throw new Error("Неправильный формат данных");
-    cfg.tasks=data.tasks;
-    $("#source").textContent="Обновлено: "+data.updated+" · "+data.sourceFiles.join(" · ");
+    const response=await fetch("./status.json",{cache:"no-cache"});if(!response.ok)throw Error("HTTP "+response.status);
+    const data=await response.json();if(!Array.isArray(data.tasks))throw Error("Неверный формат JSON");
+    cfg.tasks=data.tasks;cfg.assets=data.assetSummary||cfg.assets;
+    $("#source").textContent="Обновлено: "+data.updated+" · из "+(data.sourceFiles||[]).length+" канонических источников";
     counter("Всего задач",data.tasks.length);
-    counter("Принято",data.tasks.filter(x=>x.status==="accepted").length);
-    counter("Смержено",data.tasks.filter(x=>x.status==="merged").length);
-    counter("В работе / PR",data.tasks.filter(x=>["in_progress","PR_review"].includes(x.status)).length);
-    counter("Процессы / риски",data.tasks.filter(x=>!["CODE","GFX"].includes(x.domain)).length);
-    progress("CODE");progress("GFX");
-    Object.entries(statuses).forEach(([key,value])=>{const opt=node("option","",value);opt.value=key;$("#state").append(opt)});
-    [...new Set(data.tasks.map(x=>x.stage).filter(Boolean))].sort().forEach(s=>{const opt=node("option","",s);opt.value=s;$("#stage").append(opt)});
-    ["search","domain","state","priority","stage"].forEach(s=>$("#"+s).addEventListener(s==="search"?"input":"change",render));
-    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage"].forEach(s=>$("#"+s).value="");render()});
+    counter("Открытый бэклог",data.openTaskCount??data.tasks.filter(x=>!terminal.has(x.status)).length);
+    counter("Поставлено",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
+    counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
+    counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);
+    showAssets(data);progress("CODE");progress("GFX");
+    Object.entries(statuses).forEach(([key,value])=>{const opt=node("option","",value);opt.value=key;$("#state").append(opt);});
+    [...new Set(data.tasks.map(t=>t.stage).filter(Boolean))].sort().forEach(v=>{const opt=node("option","",v);opt.value=v;$("#stage").append(opt);});
+    ["search","domain","state","priority","stage","scope"].forEach(k=>$("#"+k).addEventListener(k==="search"?"input":"change",render));
+    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage"].forEach(k=>$("#"+k).value="");$("#scope").value="open";render();});
     render();
-  }catch(err){
-    $("#source").textContent="Не удалось загрузить status.json: "+String(err.message||err)+". Сгенерируйте данные build_production_dashboard.py и откройте через HTTP или Pages.";
-    $("#tasks").append(node("div","empty","Не подменяем отсутствие данных предположениями о прогрессе."));
-  }
+  }catch(err){$("#source").textContent="Не удалось загрузить status.json: "+String(err.message||err);$("#tasks").replaceChildren(node("div","empty","Нет данных. Обновите Pages / CI, не подменяйте статусы догадками."));}
 }
 init();

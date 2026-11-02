@@ -18,7 +18,9 @@ GAPS = PRODUCTION / "gap_work_packages.json"
 PROGRESS = PRODUCTION / "production_progress.json"
 GFX = ROOT / "docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md"
 OUT = ROOT / "dashboard/status.json"
-STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred"}
+BG = PRODUCTION / "vn_background_catalog.json"
+CHAR_ART = PRODUCTION / "vn_character_catalog.json"
+STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred", "not_planned", "superseded"}
 
 
 def load(path: Path) -> dict:
@@ -74,6 +76,8 @@ def build() -> dict:
     gap = load(GAPS)
     progress = load(PROGRESS)
     graphics_stages, graphics_tasks = graphics_items(GFX.read_text(encoding="utf-8"))
+    bg_catalog = load(BG)
+    character_catalog = load(CHAR_ART)
     plan = []
     for item in source["workPackages"]:
         plan.append({**item, "domain": "CODE", "description": item.get("deliverable", ""), "source": item.get("sourceDecision", str(CODE.relative_to(ROOT)))})
@@ -89,12 +93,32 @@ def build() -> dict:
     for item in plan:
         override = overrides.get(item["id"])
         if override:
-            item.update({k: override[k] for k in ("status", "owner", "updated", "evidence") if k in override})
+            item.update({k: override[k] for k in ("status", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy") if k in override})
         item.setdefault("owner", "unassigned")
         item.setdefault("updated", None)
         item.setdefault("evidence", "")
+        item.setdefault("implementationState", "not_recorded")
+        item.setdefault("qaState", "not_recorded")
+        item.setdefault("approvalState", "not_recorded")
+        item.setdefault("supersededBy", [])
+        if item["status"] == "superseded" and not item["supersededBy"]:
+            raise ValueError(f"Superseded task lacks a replacement: {item['id']}")
+        if not isinstance(item["supersededBy"], list):
+            raise ValueError(f"Invalid supersededBy references: {item['id']}")
         if item["status"] not in STATES:
             raise ValueError(f"Unsupported {item['id']} status: {item['status']}")
+    # Asset approval is a separate owner decision; it is not inferred from merge,
+    # gameplay staging or CI. Only exact imported catalog records are counted.
+    backgrounds = bg_catalog.get("entries", [])
+    portraits = character_catalog.get("entries", [])
+    assert bg_catalog.get("variantCount") == len(backgrounds)
+    assert len({x["id"] for x in backgrounds}) == len(backgrounds)
+    assert len({x["id"] for x in portraits}) == len(portraits)
+    approval_summary = {
+        "backgrounds": {"total": len(backgrounds), "artApproved": sum(x.get("status") == "accepted" for x in backgrounds)},
+        "characterFrames": {"total": len(portraits), "artApproved": sum(x.get("status") == "accepted" for x in portraits)},
+        "note": "Owner approved exact imported images; staging/animation/mobile/device acceptance remains separate.",
+    }
     plan.sort(key=lambda item: ({"CODE": 0, "GFX": 1}.get(item["domain"], 2), item["id"]))
     return {
         "schemaVersion": 1,
@@ -103,7 +127,9 @@ def build() -> dict:
         "updated": progress["updated"],
         "baseline": source["baseline"],
         "taskCount": len(plan),
-        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS)],
+        "assetSummary": approval_summary,
+        "openTaskCount": sum(x["status"] not in {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"} for x in plan),
+        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART)],
         "stateVocabulary": sorted(STATES),
         "stages": [{"id": f"CODE-{i:02d}", "domain": "CODE", "title": f"CODE-{i:02d}"} for i in range(14)] + graphics_stages,
         "tasks": plan,
@@ -111,6 +137,7 @@ def build() -> dict:
             "Source plans and current status/evidence are separate; generated dashboard is read-only.",
             "Stage C11 × GFX-11 is the common Hall pilot approval gate.",
             "Merged or tested work is not automatically accepted or phone-approved.",
+            "Owner art approval applies only to exact imported catalog images, not every staged pose/state or the entire game.",
             "Dates are last status updates, never synthetic project deadlines.",
         ]
     }

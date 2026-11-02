@@ -39,6 +39,25 @@ class DashboardTests(unittest.TestCase):
         # IMPORTANT: a green or merged PR must never automatically mean accepted.
         self.assertNotEqual(merged["status"], "accepted")
 
+    def test_reconciled_statuses_do_not_infer_runtime_approval(self):
+        data = dashboard.build()
+        by_id = {task["id"]: task for task in data["tasks"]}
+        self.assertEqual(by_id["VNS5-07F5"]["status"], "merged")
+        self.assertEqual(by_id["CODE-04-03"]["status"], "merged")
+        self.assertEqual(by_id["RM-GFX-WATERCOLOR-001"]["status"], "not_planned")
+        self.assertEqual(by_id["RAVEN-VN-EDITOR-02"]["status"], "superseded")
+        self.assertIn("VNS5-09", by_id["RAVEN-VN-EDITOR-02"]["supersededBy"])
+        self.assertEqual(by_id["GFX-08-05"]["approvalState"], "art_approved")
+        self.assertNotEqual(by_id["GFX-08-05"]["qaState"], "device_verified")
+        self.assertEqual(by_id["CODE-04-03"]["approvalState"], "pending")
+        self.assertGreater(data["openTaskCount"], 0)
+
+    def test_exact_owner_approved_assets_not_game_qa(self):
+        data = dashboard.build()
+        self.assertEqual(data["assetSummary"]["backgrounds"], {"total": 26, "artApproved": 26})
+        self.assertEqual(data["assetSummary"]["characterFrames"], {"total": 62, "artApproved": 62})
+        self.assertIn("device", data["assetSummary"]["note"])
+
     def test_art_source_is_not_mutated(self):
         source = dashboard.GFX.read_text(encoding="utf-8")
         stages, tasks = dashboard.graphics_items(source)

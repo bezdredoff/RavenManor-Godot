@@ -10,6 +10,7 @@ func _initialize() -> void:
 	var ids := {}
 	for entry: Dictionary in entries:
 		var id: String = str(entry.get("id", ""))
+		assert(str(entry.get("status", "")) == "accepted", "Owner-approved imported background must stay accepted: " + id)
 		assert(not ids.has(id), "Duplicate background variant")
 		ids[id] = true
 		assert(entry.get("width", 0) == 1080 and entry.get("height", 0) == 1920)

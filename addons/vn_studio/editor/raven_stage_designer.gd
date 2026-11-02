@@ -585,7 +585,9 @@ func _draw_stage() -> void:
 	# another lighting/state (or the legacy Hall pilot) when the exact plate is absent.
 	_bg_image.texture = VNBackgrounds.texture_for(bg_id, light, state)
 	var available: bool = _bg_image.texture != null
-	_placeholders.text = "ФОН: ART CANDIDATE" if available else "ФОН: ART PENDING · %s / %s / %s" % [bg_id, light, state]
+	var exact_entry: Dictionary = VNBackgrounds.entry_for(bg_id, light, state)
+	var is_approved: bool = available and str(exact_entry.get("status", "")) == "accepted"
+	_placeholders.text = ("ФОН: ART APPROVED" if is_approved else "ФОН: ART CANDIDATE") if available else "ФОН: ART PENDING · %s / %s / %s" % [bg_id, light, state]
 	_bg_image.size = _canvas.size
 	_placeholders.size = Vector2(_canvas.size.x, 28)
 	var cast: Array = _stage_data.get("cast", [])
@@ -635,7 +637,7 @@ func _draw_stage() -> void:
 	_layout_cards()
 	_apply_fx_preview(roundi(_fx_scrub.value))
 	_status.text = "%s / %s / %s · %s · %d персонажей · координаты нормализованы (%s, editor-only)." % [
-		bg_id, light, state, "1080×1920 · кандидат" if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
+		bg_id, light, state, ("1080×1920 · арт утверждён" if is_approved else "1080×1920 · кандидат") if available else "ART PENDING — смотрите «В каталоге»", cast.size(), _preview_orientation]
 	if missing_expressions > 0:
 		_status.text += " Для %d персонажей точная эмоция в этой позе ещё не создана: показан нейтральный вариант." % missing_expressions
 
@@ -1274,7 +1276,7 @@ func _on_browser_selected(index: int) -> void:
 	var master: Dictionary = Store.stage_master(_project, bg_id)
 	var entry: Dictionary = VNBackgrounds.entry_for(bg_id, light, state)
 	_browser_image.texture = VNBackgrounds.texture_for(bg_id, light, state)
-	var availability: String = "1080×1920 · ART CANDIDATE (не финальный)" if _browser_image.texture != null else "ART PENDING — этот вариант ещё не сгенерирован"
+	var availability: String = ("1080×1920 · ART APPROVED" if str(entry.get("status", "")) == "accepted" else "1080×1920 · ART CANDIDATE") if _browser_image.texture != null else "ART PENDING — этот вариант ещё не сгенерирован"
 	var scenes: Array[String] = []
 	for shot: Dictionary in _project.get("stagingData", {}).get("sceneShots", []):
 		if shot.get("backgroundId") == bg_id and shot.get("lighting") == light and shot.get("roomState") == state:
