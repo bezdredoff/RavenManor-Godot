@@ -353,7 +353,8 @@ func _build() -> void:
 	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
 	_stage_designer.stage_fx_modified.connect(_on_stage_fx_modified)
 	stage_contents.add_child(_stage_designer)
-	_stage_designer.dock_controls(stage_controls)
+	# Dock after the Animation tab exists, so the actual FX widgets can be
+	# moved there rather than hidden among unrelated Stage properties.
 	var visual_label := Label.new()
 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
 	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -387,12 +388,19 @@ func _build() -> void:
 	animation_scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	animation_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
 	_workspace_tabs.add_child(animation_scroll)
+	var animation_body := VBoxContainer.new()
+	animation_body.custom_minimum_size.x = 260
+	animation_body.size_flags_horizontal = SIZE_EXPAND_FILL
+	animation_scroll.add_child(animation_body)
 	var animation_context := RichTextLabel.new()
-	animation_context.custom_minimum_size = Vector2(230, 350)
+	animation_context.custom_minimum_size = Vector2(260, 110)
 	animation_context.size_flags_horizontal = SIZE_EXPAND_FILL
 	animation_context.fit_content = true
-	animation_scroll.add_child(animation_context)
+	animation_body.add_child(animation_context)
 	_context_views.append(animation_context)
+	# Stage's existing FX controls (targets, scene/line anchors, cue list,
+	# timing, Play/Pause and scrub) are now editable in their named tab.
+	_stage_designer.dock_controls(stage_controls, animation_body)
 	var promotion_scroll := ScrollContainer.new()
 	promotion_scroll.name = "Promotion Review"
 	promotion_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -701,7 +709,7 @@ func _refresh_context() -> void:
 	var entry: Dictionary = _current_entry()
 	var line_id: String = str(entry.get("id", ""))
 	var cue: Dictionary = _project["cues"].get(line_id, {})
-	_context_views[0].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
+	_context_views[0].text = "Animation · %s\nПоза: %s · Эмоция: %s · исходное micro: %s\n\nВыберите цель, нажмите + FX и редактируйте эффект ниже. FX действует в сцене или на выбранной реплике. Play / Pause / Reset / scrub изменяют только центральный Stage preview, не игровой прогресс. Blink пока геометрический proxy, не анимация глаз." % [
 		line_id, str(cue.get("poseId", "—")), str(cue.get("emotionId", "—")), str(cue.get("microOnEnter", "—"))]
 
 
