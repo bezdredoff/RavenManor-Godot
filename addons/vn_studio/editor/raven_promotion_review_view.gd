@@ -3,6 +3,8 @@ extends VBoxContainer
 ## VNS5-06C: no-apply promotion review panel. Every mapping is explicit.
 signal mapping_modified(mapping: Dictionary)
 signal export_requested
+signal template_requested
+signal package_requested(manifest: Dictionary)
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
@@ -12,6 +14,10 @@ var _rows: VBoxContainer
 var _summary: RichTextLabel
 var _export_button: Button
 var _inputs: Dictionary = {}
+var _package_status: Label
+var _file_picker: FileDialog
+var _manifest: Dictionary = {}
+var _package_button: Button
 
 
 func _ready() -> void:
@@ -38,6 +44,32 @@ func _ready() -> void:
 	_export_button.tooltip_text = "Только JSON-кандидат в user://, после сохранения черновика"
 	_export_button.pressed.connect(func(): export_requested.emit())
 	bar.add_child(_export_button)
+	var package_bar := HFlowContainer.new()
+	add_child(package_bar)
+	var template_button := Button.new()
+	template_button.text = "1 · Пустой manifest для review"
+	template_button.tooltip_text = "Сохранить шаблон постановки, route proposals и performance cues в user://"
+	template_button.pressed.connect(func(): template_requested.emit())
+	package_bar.add_child(template_button)
+	var load_button := Button.new()
+	load_button.text = "2 · Открыть заполненный JSON"
+	load_button.pressed.connect(func(): _file_picker.popup_centered_ratio(0.8))
+	package_bar.add_child(load_button)
+	_package_button = Button.new()
+	_package_button.text = "3 · Экспорт 4 каталогов (review only)"
+	_package_button.disabled = true
+	_package_button.pressed.connect(func(): package_requested.emit(_manifest.duplicate(true)))
+	package_bar.add_child(_package_button)
+	_package_status = Label.new()
+	_package_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_package_status.text = "VNS5-06D1: без заполненного manifest новые сцены не публикуются."
+	add_child(_package_status)
+	_file_picker = FileDialog.new()
+	_file_picker.access = FileDialog.ACCESS_FILESYSTEM
+	_file_picker.file_mode = FileDialog.FILE_MODE_OPEN_FILE
+	_file_picker.add_filter("*.json", "Promotion package JSON manifest")
+	_file_picker.file_selected.connect(_load_manifest)
+	add_child(_file_picker)
 	_summary = RichTextLabel.new()
 	_summary.custom_minimum_size = Vector2(340, 280)
 	_summary.size_flags_vertical = Control.SIZE_EXPAND_FILL
@@ -48,6 +80,11 @@ func _ready() -> void:
 func set_context(project: Dictionary, draft: Dictionary) -> void:
 	_project = project
 	_draft = draft
+	_manifest.clear()
+	if _package_button != null:
+		_package_button.disabled = true
+	if _package_status != null:
+		_package_status.text = "Сопоставление обновлено. Для пакета импортируйте manifest заново."
 	for child in _rows.get_children():
 		_rows.remove_child(child)
 		child.queue_free()
@@ -121,3 +158,30 @@ func _render_report() -> void:
 		output += "… дополнительные предупреждения находятся в полном JSON-кандидате.\n"
 	_summary.text = output
 	_export_button.disabled = false
+
+
+func _load_manifest(path: String) -> void:
+	_manifest.clear()
+	_package_button.disabled = true
+	if not FileAccess.file_exists(path):
+		_package_status.text = "Manifest не найден."
+		return
+	var size: int = FileAccess.get_length(path)
+	if size <= 0 or size > 524288:
+		_package_status.text = "Manifest должен быть непустым JSON не больше 512 КБ."
+		return
+	var input: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))
+	if not input is Dictionary:
+		_package_status.text = "Файл должен содержать JSON-объект."
+		return
+	var plan: Dictionary = Store.promotion_plan(_project, _draft)
+	if not plan.get("ok", false):
+		_package_status.text = "Сначала исправьте Promotion Review: " + str(plan.get("error", ""))
+		return
+	var checked: Dictionary = Store.Package.assemble(_project, _draft, input)
+	if not checked.get("ok", false):
+		_package_status.text = "Manifest отклонён: " + str(checked.get("error", ""))
+		return
+	_manifest = input.duplicate(true)
+	_package_button.disabled = false
+	_package_status.text = "Manifest проверен. Пакет будет создан только в user://; runtime выключен."
