@@ -484,6 +484,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06C",
+      "title": "VN Studio v5: deterministic no-apply promotion review and explicit draft scene ID mapping",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Preflight review of new scenes/lines/branch proposals before any canonical promotion: explicit remap reserved RM-DRAFT-BEAT-XXXX to noncolliding production-style RM-BEAT-XX-YY, rewire line IDs, graph sources, targets and choice checkpoints, show required stage/route/save gates and localization gaps, export a full source-SHA-locked candidate without writing canonical assets or changing gameplay. Runtime approval remains separate.",
+      "deliverable": "Pure Raven promotion planner and native Promotion Review UI tab, Store SHA validation and no-overwrite export, graph/text/stage/FX review preservation, Godot negative/collision tests, docs/dashboard and acceptance list.",
+      "acceptance": "Duplicate, missing, unknown or production-colliding IDs rejected; deterministic remap for scenes, lines and graph choices; no source, routes, cast, stage or save files touched; output contains source SHAs, before/after counts, all draft categories, unresolved ART PENDING/route/migration gates, BE/EN warnings, runtimeApplied false; save/undo/redo and no-overwrite verified by CI and native Windows Godot 800x640/1024x640/1366x768; real promotion with approved staging/gate, actor provenance and replay parity requires separate owner PR.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06B",
+        "VNS5-06A"
+      ],
+      "graphicsDependencies": [],
+      "source": "Raven Manor 2026-11-02 after PR #114 merged",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
