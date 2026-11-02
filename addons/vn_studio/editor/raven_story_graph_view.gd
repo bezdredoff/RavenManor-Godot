@@ -314,10 +314,7 @@ func _render_graph() -> void:
 		label.custom_minimum_size.x = 165
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		node.add_child(label)
-		if kind == "scene":
-			node.node_selected.connect(_on_node_selected.bind(str(id)))
-		else:
-			node.node_selected.connect(_on_node_selected.bind(str(id)))
+		node.node_selected.connect(_on_node_selected.bind(str(id)))
 		node.set_slot(0, true, 0, Color(0.3, 0.82, 0.65), true, 0, Color(0.3, 0.82, 0.65))
 		_canvas.add_child(node)
 		_name_map[id] = node.name
