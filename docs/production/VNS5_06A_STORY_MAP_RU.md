@@ -33,3 +33,6 @@
 **VNS5-06B:** безопасное добавление новых Raven сцен и реплик с неизменяемыми IDs и дефолтными staging/route placeholders, draft-only migration/promotion в новый каталог, параллельная RU/BE/EN локализация, добавление полноценного choice/condition/Match-3/return-map/ending runtime schema после отдельного владельческого решения и parity/reducer tests. VNS5-06A не выдавать за готовый авторский сюжетный движок.
 
 **Важное QA ограничение:** green CI ≠ визуальная приёмка редактора. После merge VNS5-06A оставить status `merged` (не `accepted`) до ручной проверки окон и функциональности.
+
+## Проверенная CI-сборка PR #113 (02.11.2026)
+Первый CI [#41440902075](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41440902075) остановился на старом тесте разметки, который ожидал удалённую текстовую заглушку Story Map. После обновления этого теста независимый [CI #41441192327](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41441192327) **прошёл**, включая новый Story Map smoke и все предыдущие Raven, Godot, Room Builder, Web и dashboard проверки. Эта фиксация результата изменяет только docs/status, dashboard и данный файл, поэтому финальный head CI нужно проверить отдельно перед мержем. Human desktop UX и owner acceptance не проводились.
