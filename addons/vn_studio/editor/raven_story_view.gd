@@ -4,6 +4,7 @@ extends VBoxContainer
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
+const RavenGraph = preload("res://addons/vn_studio/editor/raven_story_graph_view.gd")
 const LOCALES := ["ru", "be", "en"]
 const PANE_SETTING := "vn_studio/raven_scene_pane_width"
 
@@ -32,6 +33,8 @@ var _export: Button
 var _export_stage: Button
 var _export_stage_v2: Button
 var _export_fx: Button
+var _export_graph: Button
+var _raven_graph: Control
 var _stage_designer: Control
 var _scene_panel: Control
 var _line_panel: Control
@@ -103,6 +106,11 @@ func _build() -> void:
 	_export_fx.tooltip_text = "Локальный кандидат анимаций и постановки, не runtime"
 	_export_fx.pressed.connect(_export_fx_candidate)
 	toolbar.add_child(_export_fx)
+	_export_graph = Button.new()
+	_export_graph.text = "Экспорт Story Map review"
+	_export_graph.tooltip_text = "No-overwrite candidate; канонические route gates неизменны"
+	_export_graph.pressed.connect(_export_graph_candidate)
+	toolbar.add_child(_export_graph)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -242,18 +250,26 @@ func _build() -> void:
 	_asset_library = AssetLibrary.new()
 	_asset_library.custom_minimum_size.x = 230
 	library_scroll.add_child(_asset_library)
-	for title in ["Story Map", "Animation"]:
-		var context_scroll := ScrollContainer.new()
-		context_scroll.name = title
-		context_scroll.size_flags_vertical = SIZE_EXPAND_FILL
-		context_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
-		_workspace_tabs.add_child(context_scroll)
-		var context := RichTextLabel.new()
-		context.custom_minimum_size = Vector2(230, 350)
-		context.size_flags_horizontal = SIZE_EXPAND_FILL
-		context.fit_content = true
-		context_scroll.add_child(context)
-		_context_views.append(context)
+	var story_scroll := ScrollContainer.new()
+	story_scroll.name = "Story Map"
+	story_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	story_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_workspace_tabs.add_child(story_scroll)
+	_raven_graph = RavenGraph.new()
+	_raven_graph.custom_minimum_size.x = 430
+	_raven_graph.graph_modified.connect(_on_graph_modified)
+	story_scroll.add_child(_raven_graph)
+	var animation_scroll := ScrollContainer.new()
+	animation_scroll.name = "Animation"
+	animation_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	animation_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_workspace_tabs.add_child(animation_scroll)
+	var animation_context := RichTextLabel.new()
+	animation_context.custom_minimum_size = Vector2(230, 350)
+	animation_context.size_flags_horizontal = SIZE_EXPAND_FILL
+	animation_context.fit_content = true
+	animation_scroll.add_child(animation_context)
+	_context_views.append(animation_context)
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
@@ -321,6 +337,7 @@ func _scene_switch() -> void:
 	_line_render()
 	_stage_designer.set_scene(_project, _draft, id)
 	_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
+	_raven_graph.set_context(_project, _draft, id)
 	_refresh_preview()
 	_refresh_context()
 
@@ -367,18 +384,15 @@ func selected_context() -> Dictionary:
 
 
 func _refresh_context() -> void:
-	if _context_views.size() != 2 or _project.is_empty():
+	if _context_views.size() != 1 or _project.is_empty():
 		return
 	var scene: Dictionary = _project["scenes"][_scene_idx]
 	var scene_id: String = str(scene["sceneId"])
 	_asset_library.set_scene_context(scene_id)
-	var trigger: Dictionary = _project["routes"].get(scene_id, {})
-	_context_views[0].text = "Story Map · %s\n\nТекущий trigger: %s\nПосле сцены: %s\n\nПереходы только для просмотра; редактирование графа — VNS5-06." % [
-		scene_id, JSON.stringify(trigger.get("gate", {})), str(trigger.get("postSceneAction", ""))]
 	var entry: Dictionary = _current_entry()
 	var line_id: String = str(entry.get("id", ""))
 	var cue: Dictionary = _project["cues"].get(line_id, {})
-	_context_views[1].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
+	_context_views[0].text = "Animation · %s\n\nПоза: %s\nЭмоция: %s\nМикродвижение: %s\n\nЭто исходный cue только для просмотра. Timeline и clips — VNS5-07." % [
 		line_id, str(cue.get("poseId", "—")), str(cue.get("emotionId", "—")), str(cue.get("microOnEnter", "—"))]
 
 
@@ -459,17 +473,19 @@ func _on_redo() -> void:
 
 
 func _update_diff() -> void:
-	_diff.text = "%d изменённых переводов, %d сцен v1, %d сцен v2 · %s" % [
+	_diff.text = "%d переводов, %d сцен v1, %d сцен v2, %d FX, %d Story Map · %s" % [
 		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), _draft.get("stageV2Patches", {}).size(),
+		_draft.get("stageFxPatches", {}).size(), _draft.get("storyGraphPatches", {}).size(),
 		"есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
 
 
 func _refresh_buttons() -> void:
 	_save.disabled = _blocked or _project.is_empty()
-	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0
-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
-	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty()
-	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty()
+	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty()
+	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
+	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
+	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
+	_export_graph.disabled = _blocked or _project.is_empty() or _draft.get("storyGraphPatches", {}).is_empty()
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
 
@@ -499,6 +515,39 @@ func _export_candidate() -> void:
 		_path.text = str(result["path"])
 	else:
 		_status.text = "Экспорт заблокирован: " + str(result.get("error", ""))
+
+
+func _on_graph_modified(data: Dictionary) -> void:
+	if _blocked or _project.is_empty():
+		return
+	var id: String = str(data.get("sceneId", ""))
+	if _draft.get("storyGraphPatches", {}).get(id, {}) == data:
+		return
+	var snapshot: Dictionary = _draft.duplicate(true)
+	var error: String = Store.set_story_graph(_project, _draft, data)
+	if not error.is_empty():
+		_status.text = "Story Map не сохранена: " + error
+		_raven_graph.set_context(_project, _draft, str(_project["scenes"][_scene_idx]["sceneId"]))
+		return
+	_undo.append(snapshot)
+	_redo.clear()
+	_dirty = true
+	_update_diff()
+	_refresh_buttons()
+
+
+func _export_graph_candidate() -> void:
+	if _blocked or _project.is_empty() or _draft.get("storyGraphPatches", {}).is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните локальный Raven-черновик, затем экспортируйте Story Map."
+		return
+	var result: Dictionary = Store.export_story_graph_candidate(_project, _draft)
+	if result.get("ok", false):
+		_status.text = "Создан Story Map review JSON (не runtime; без перезаписи канона)."
+		_path.text = str(result["path"])
+	else:
+		_status.text = "Story Map export заблокирован: " + str(result.get("error", ""))
 
 
 func _on_stage_modified(stage: Dictionary) -> void:

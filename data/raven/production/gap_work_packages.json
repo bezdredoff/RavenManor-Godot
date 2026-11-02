@@ -448,6 +448,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06A",
+      "title": "VN Studio v5 Story Map: editable review-only graph of existing Raven scenes and typed transitions",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Show 28 actual Raven scenes and canonical gate dependencies without fabricating edges. Allow safe graph overlay for scene, choice A/B/C anchored to an existing line, and existing referenced Match-3 transitions. New links are review-only, use immutable IDs and source SHA guards, and cannot silently alter active reducer/route/map/save behavior.",
+      "deliverable": "raven_story_graph_draft.gd model and raven_story_graph_view.gd native GraphEdit, Raven draft store integration, Undo/Redo/no-loss review export, validation and Godot smoke, docs/status.",
+      "acceptance": "Real canonical graph shows scene_complete and non-scene gates, no inferred playable sequence. Author scene route, choice A/B/C with verified source line, existing M3 target; reject missing/cross-scene IDs, unknown keys/scripts, duplicate choice and multiple unconditional transitions; preserve old draft; graph export no overwrite includes other draft categories and SHA; editor controls accessible at 800x640, 1024x640, 1366x768, device/owner QA; no runtime/canon writes.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-05B",
+        "VNS5-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "Raven Manor VNS5-06 scope after merged PR #112, 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
