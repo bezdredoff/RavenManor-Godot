@@ -197,7 +197,7 @@ jobs:
             exit 1
           fi
 
-cleanup_incoming_zip:
+  cleanup_incoming_zip:
     name: Remove incoming ZIPs after success or failure
     needs: [validate, candidate, test_candidate]
     # 'always' covers failed ZIP preflight, candidate creation and independent CI.
