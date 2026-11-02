@@ -260,7 +260,7 @@ def main(argv: list[str] | None = None) -> int:
         data = stage(args.package, args.staging, args.audit, args.decision)
         if not args.check_only:
             write_once(args.output, data, [args.staging, args.audit,
-                                          args.package.parent, args.decision.parent])
+                                          args.package, args.decision])
             print("Created LOCKED review staging package:", args.output)
         print("PASS: reversible candidate staged for review, runtime still BLOCKED")
         return 0
