@@ -857,7 +857,7 @@
       "description": "Restore HTML-v5 functional gaps: +Scene should choose editorial chapter and exact background at creation, authored +Line requires reorder up/down and delete with stable IDs; canonical storyline immutable.",
       "deliverable": "Chapter (optional draft metadata) and exact imported background in atomic +Scene wizard, authored-only ↑/↓/− line controls with confirmation/undo, reference deletion guards and roundtrip source SHA tests.",
       "acceptance": "Godot Windows: create scene chapter02/BG-HALL evening dusty/title/line and reopen; reorder authored lines with translations without IDs changing, delete/undo/redo; canonical lines disabled; checkpoint/last authored deletion blocked; CI and status/docs pass.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07F1"
       ],
