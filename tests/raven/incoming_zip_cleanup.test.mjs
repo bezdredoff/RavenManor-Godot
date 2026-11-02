@@ -55,10 +55,10 @@ function harness({ names = ['incoming/one.zip'], head = snapshot, event = 'push'
 }
 
 test('GitHub Actions cleanup job is nested under jobs, not a root YAML key', () => {
-  assert.match(workflow, /^jobs:[ \\t]*$/m);
-  assert.match(workflow, /^  cleanup_incoming_zip:[ \\t]*$/m);
-  assert.doesNotMatch(workflow, /^cleanup_incoming_zip:[ \\t]*$/m);
-  assert.match(workflow, /^    needs: \\[validate, candidate, test_candidate\\][ \\t]*$/m);
+  assert.match(workflow, /^jobs:[ \t]*$/m);
+  assert.match(workflow, /^  cleanup_incoming_zip:[ \t]*$/m);
+  assert.doesNotMatch(workflow, /^cleanup_incoming_zip:[ \t]*$/m);
+  assert.match(workflow, /^    needs: \[validate, candidate, test_candidate\][ \t]*$/m);
 });
 
 test('cleanup runs despite failed validate/candidate/test jobs', async () => {
