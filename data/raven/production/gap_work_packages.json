@@ -573,6 +573,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06D2C",
+      "title": "VN Studio: approved-only canonical VN runtime dispatch after vertical slice",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Wire released scenes to the existing RavenVNPlayer/View and RavenReducer/Save only after explicitly approved scene/gate, foundation story ID, localization on all three languages, real accepted background and character pose assets and manualReview=false performance cue. Preserve current slice ordering and legacy saves, leave blocked all D1/D2B review candidates, unsafe branching and absent/new unapproved content.",
+      "deliverable": "Pure fail-closed raven_vn_runtime_dispatch.gd, gated vertical_slice.gd integration after Director done, synthetic Godot positive/negative smoke and save idempotence regression, check.sh, runbook and dashboard.",
+      "acceptance": "All current content and legacy 16 slice steps unchanged; no new gameplay scene automatically appears in main. New runtime-eligible scene selection only with native canonical runtime_approved plus approvedRuntime, proposedRuntime=false, all 3 translations, known foundation storyBeat, registered accepted BG and exact approved actor art, validated cue, known scene_complete/first_clear gate and one-shot state. Reducer completes after last line; commit state only if save succeeds; repeated event idempotent and existing snapshots normalize. Reject unapproved/background/placeholders/unsupported branches. Full CI + user manual QA; actual owner approved scene art and world-map routing remains separate.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06D2B",
+        "VNS5-06D2A"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-02 after #119 merged; current art backgrounds are candidate, no real new approved production scene",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
