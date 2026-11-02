@@ -28,17 +28,19 @@ func _run() -> void:
 	assert(raven._stage_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	assert(raven._stage_designer.get_parent().get_parent() == raven._stage_scroll)
 	assert(raven._scene_panel.visible and raven._line_panel.visible)
-	assert(raven._workspace_tabs.get_tab_count() == 4)
+	assert(raven._workspace_tabs.get_tab_count() == 5)
 	for width in [800, 1024, 1366]:
 		studio.size = Vector2(width, 640)
 		await process_frame
 		assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
-	for tab_index in range(4):
+	for tab_index in range(5):
 		raven._workspace_tabs.current_tab = tab_index
 		assert(raven.selected_context()["sceneId"] == "RM-BEAT-00-01")
 	assert(raven._asset_library._scene_label.text.contains("RM-BEAT-00-01"))
 	assert(raven._raven_graph != null, "Story Map has a native Raven GraphEdit")
 	assert(raven._raven_graph._canvas is GraphEdit)
+	assert(raven._promotion_view != null)
+	assert(raven._promotion_view._summary != null)
 	assert(raven._raven_graph._scene_id == "RM-BEAT-00-01")
 	assert(raven._raven_graph._name_map.has("RM-BEAT-00-01"))
 	assert(raven._context_views.size() == 1)
