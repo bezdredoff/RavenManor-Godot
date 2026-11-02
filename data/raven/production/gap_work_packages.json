@@ -738,12 +738,29 @@
       "description": "Make the Stage central and persistent, put stage controls in an inspector, and edit RU/BE/EN side by side.",
       "deliverable": "Resizable and collapsible four-column Director, compact actions, persistent Stage, parallel localized fields and authored-scene titles, stable line selection, smoke tests.",
       "acceptance": "At 800x640, 1024x640 and 1366x768, the Stage remains visible while navigating scenes, lines and inspector; missing locales are explicit; edits, selection, save/reopen and Undo/Redo survive.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07A"
       ],
       "graphicsDependencies": [],
       "source": "Issue #121 owner QA and local HTML v5 handoff, 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07C1",
+      "title": "VN Studio v5: interactive graph nodes, draft drag links and edge editing",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Make Raven Story Map scene selection, draft route creation via GraphEdit ports and edit/remove of draft edges understandable without modifying canonical triggers.",
+      "deliverable": "Node click synchronized with Director; draft port drag to scene/Match3; choice A/B/C checkpoint selection; selected edge inspector with stable-ID update; negative/safety tests and runbook.",
+      "acceptance": "Native Godot 4.7.2 owner QA: node selected on first click, scene/choice A/B drafts connected with drag, selected edge label/target editable and removable; save/reopen/export retain proposal; canonical routes, gameplay and save unchanged.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07B"
+      ],
+      "graphicsDependencies": [],
+      "source": "Issue #121 owner QA, 2026-11-02",
       "requiresHumanAcceptance": true
     }
   ]
