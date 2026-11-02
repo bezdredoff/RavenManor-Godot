@@ -31,3 +31,7 @@
 - Старые VNS5-03/04A/04B/05A остаются merged, но manual QA может быть не записана в дашборд. Не закрывать их автоматически.
 
 **Rollback:** revert PR; существующие draft `user://` не удалять. При откате старый VNS5-05A не знает поле `lineId`, поэтому для сохранённых новых FX применять прошлую версию только после копии черновика и отдельного review — не экспортировать через старый plugin с потерей anchors.
+
+## PR review и CI (02.11.2026)
+
+Реализация в [PR #111](https://github.com/bezdredoff/RavenManor-Godot/pull/111). Первоначальный CI [#41435445499](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41435445499) обнаружил незарегистрированный `VNS5-05B` в source-of-truth `gap_work_packages.json`, после добавления задачи независимый [CI #41435663698](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41435663698) **passed** (включая новый `tests/raven/vn_studio_line_fx_smoke.gd`, Godot project import, Room Builder и Web export). При этом ручная Godot Editor QA и runtime phase 2 не выполнялись. Не считать эту фазу принятой по одному CI. Перед merge обязательно проверить самый новый PR head.
