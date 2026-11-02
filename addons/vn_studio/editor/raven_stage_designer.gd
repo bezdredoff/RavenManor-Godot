@@ -91,6 +91,7 @@ var _safe_toggle: CheckBox
 var _template_button: Button
 var _undo_button: Button
 var _preview_orientation: String = "portrait"
+var _docked_preview_bounds: Vector2 = Vector2.ZERO
 var _undo_stages: Array[Dictionary] = []
 var _committed_stage: Dictionary = {}
 var _grid_toggle: CheckBox
@@ -386,6 +387,31 @@ func dock_controls(target: VBoxContainer) -> void:
 		if child == _canvas or child == _status or child == _browser:
 			continue
 		child.reparent(target)
+
+
+func fit_docked_preview(available: Vector2) -> void:
+	# Only changes Editor viewport dimensions. Logical scene reference size,
+	# normalized actor/prop coordinates and runtime assets are never changed.
+	if _canvas == null or available.x <= 0 or available.y <= 0:
+		return
+	_docked_preview_bounds = available
+	_apply_preview_dimensions()
+
+
+func _apply_preview_dimensions() -> void:
+	if _canvas == null:
+		return
+	var reference: Vector2 = StageLayout.reference_size(_preview_orientation)
+	var display: Vector2 = reference
+	if _docked_preview_bounds != Vector2.ZERO:
+		var scale_factor: float = minf(1.0, minf(
+			_docked_preview_bounds.x / reference.x,
+			_docked_preview_bounds.y / reference.y))
+		# Do not force a 390×844 canvas into a short editor viewport.
+		display = (reference * maxf(scale_factor, 0.25)).round()
+	_canvas.custom_minimum_size = display
+	# GDScript layout functions work in actual editor pixels, but stored
+	# staging remains normalized 0–1 and therefore remains lossless.
 
 
 func _numeric(parent: Control, minimum: float, maximum: float, step: float, initial: float) -> SpinBox:
@@ -833,7 +859,7 @@ func _reload_v2_controls() -> void:
 	_orientation.select(1 if _preview_orientation == "landscape" else 0)
 	_bg_fit.select(1 if _stage_v2.get("fitMode", "cover") == "contain" else 0)
 	_bg_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED if _stage_v2.get("fitMode", "cover") == "contain" else TextureRect.STRETCH_KEEP_ASPECT_COVERED
-	_canvas.custom_minimum_size = StageLayout.reference_size(_preview_orientation)
+	_apply_preview_dimensions()
 	_overlay.reference_size = StageLayout.reference_size(_preview_orientation)
 	_focal_x.value = float(_stage_v2.get("focal", {}).get("x", 0.5))
 	_focal_y.value = float(_stage_v2.get("focal", {}).get("y", 0.5))
