@@ -243,7 +243,7 @@ func _build() -> void:
 	# Tall art and multiple tool rows need vertical scrolling rather than
 	# clipping the asset controls and dialogue preview below the viewport.
 	_draft_stage_hint = Label.new()
-	_draft_stage_hint.text = "ART PENDING · для новой сцены ещё нет утверждённой постановки, trigger и runtime."
+	_draft_stage_hint.text = "DRAFT · постановка только для review; сцена не запускается в игре и не меняет art approval."
 	_draft_stage_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_draft_stage_hint.visible = false
 	visual_column.add_child(_draft_stage_hint)
@@ -483,11 +483,10 @@ func _scene_switch() -> void:
 	_line_idx = 0
 	_line_render()
 	var authored: bool = Store.Author.is_authored_scene(_draft, id)
-	_stage_scroll.visible = not authored
+	_stage_scroll.visible = true
 	_draft_stage_hint.visible = authored
-	if not authored:
-		_stage_designer.set_scene(_project, _draft, id)
-		_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
+	_stage_designer.set_scene(_project, _draft, id)
+	_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
 	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, id)
 	_promotion_view.set_context(_project, _draft)
 	_refresh_preview()

@@ -22,6 +22,7 @@ const REFERENCE_SIZE := Vector2(390, 844)
 const GAME_PORTRAIT_FRACTION := Vector2(0.77, 0.73)
 
 var _project: Dictionary = {}
+var _draft: Dictionary = {}
 var _stage_data: Dictionary = {}
 var _stage_v2: Dictionary = {}
 var _committed_v2: Dictionary = {}
@@ -391,6 +392,7 @@ func _numeric(parent: Control, minimum: float, maximum: float, step: float, init
 
 func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 	_project = project
+	_draft = draft
 	_selected_actor = -1
 	if not bool(project.get("ok", false)):
 		return
@@ -403,7 +405,7 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 		_fx_elapsed = 0.0
 		_fx_playing = false
 		_fx_scrub.value = 0
-	_fx_line_ids = Store.line_ids(project, id)
+	_fx_line_ids = Store.entries_for(project, draft, id).map(func(entry: Dictionary) -> String: return str(entry.get("id", "")))
 	_stage_data = Store.effective_stage(project, draft, id)
 	_committed_stage = _stage_data.duplicate(true)
 	_stage_v2 = StageV2.effective(draft, id)
@@ -552,7 +554,9 @@ func _draw_stage() -> void:
 		_cards.append(card)
 	_draw_props()
 	_overlay.z_index = 150
-	_bg_image.z_index = -100
+	# Children with a negative z_index render behind the Panel's stylebox.
+	# The background is the first canvas child, so zero keeps it behind actors.
+	_bg_image.z_index = 0
 	_placeholders.z_index = 149
 	_overlay.focal = Vector2(float(_stage_v2.get("focal", {}).get("x", 0.5)), float(_stage_v2.get("focal", {}).get("y", 0.5)))
 	_overlay.queue_redraw()
@@ -747,7 +751,7 @@ func _on_remove() -> void:
 
 
 func _commit() -> void:
-	var error: String = Store.validate_stage(_project, _stage_data)
+	var error: String = Store.validate_stage(_project, _stage_data, _draft)
 	if not error.is_empty():
 		_status.text = "Постановка заблокирована: " + error
 		_stage_data = _committed_stage.duplicate(true)
@@ -777,7 +781,7 @@ func _on_undo() -> void:
 	if _undo_stages.is_empty():
 		return
 	var previous: Dictionary = _undo_stages.pop_back()
-	if not Store.validate_stage(_project, previous).is_empty():
+	if not Store.validate_stage(_project, previous, _draft).is_empty():
 		_undo_stages.clear()
 		_status.text = "Undo остановлен: исходный проект изменился."
 		return

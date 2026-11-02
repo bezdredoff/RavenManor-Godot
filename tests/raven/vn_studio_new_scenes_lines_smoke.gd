@@ -33,6 +33,35 @@ func _run() -> void:
 	assert(Store.entries_for(project, draft, scene_id).size() == 1)
 	assert(Author.is_authored_scene(draft, scene_id))
 	assert(Store.validate(project, draft).is_empty())
+	var stage: Dictionary = Store.effective_stage(project, draft, scene_id)
+	assert(not stage.is_empty() and stage["cast"].is_empty())
+	stage["backgroundId"] = "BG-HALL"
+	stage["lighting"] = "evening"
+	stage["roomState"] = "dusty"
+	var actors: Dictionary = Store.stage_options(project)["actors"]
+	var actor_ids: Array = actors.keys()
+	for index in range(2):
+		var actor_id: String = str(actor_ids[index])
+		stage["cast"].append({"characterId": actor_id, "slot": "left" if index == 0 else "right",
+			"pose": actors[actor_id]["poses"][0], "emotion": actors[actor_id]["emotions"][0],
+			"x": 0.15 if index == 0 else 0.65, "y": 0.35, "micro": ""})
+	stage["visibleCount"] = 2
+	assert(Store.set_stage(project, draft, stage).is_empty())
+	assert(Store.validate(project, draft).is_empty())
+	assert(Store.effective_stage(project, draft, scene_id) == stage)
+	var reopened: Dictionary = JSON.parse_string(JSON.stringify(draft))
+	assert(Store.validate(project, reopened).is_empty(), "Serialized draft reopens with source locks")
+	assert(reopened["stagePatches"][scene_id]["cast"].size() == 2)
+	assert(reopened["stagePatches"][scene_id]["cast"][0]["emotion"] == stage["cast"][0]["emotion"])
+	var bad_stage: Dictionary = stage.duplicate(true)
+	bad_stage["lighting"] = "night"
+	assert(not Store.validate_stage(project, bad_stage, draft).is_empty(), "Uncatalogued draft plate rejected")
+	bad_stage = stage.duplicate(true)
+	bad_stage["cast"][1]["characterId"] = bad_stage["cast"][0]["characterId"]
+	assert(not Store.validate_stage(project, bad_stage, draft).is_empty(), "Duplicate actor rejected")
+	bad_stage = stage.duplicate(true)
+	bad_stage["cast"][0]["x"] = 2.0
+	assert(not Store.validate_stage(project, bad_stage, draft).is_empty(), "Out-of-range layout rejected")
 	assert(project["sceneCount"] == 28 and project["lineCount"] == 280, "Canonical project was mutated")
 	var second: Dictionary = Store.add_scene(project, draft, "Следующий", "Вторая сцена", speaker)
 	assert(second.get("ok", false))
@@ -105,6 +134,9 @@ func _run() -> void:
 	assert(exported["dialogueCatalogReview"]["scenes"].size() == 30)
 	assert(exported["dialogueCatalogReview"]["status"] == "DRAFT_REVIEW_NOT_RUNTIME")
 	assert(exported["storyGraphPatches"][original_scene]["edges"][0]["targetId"] == scene_id)
+	assert(exported["stagePatches"][scene_id]["backgroundId"] == "BG-HALL", "Review export retains authored background")
+	assert(exported["stagePatches"][scene_id]["cast"].size() == 2, "Review export retains authored cast")
+	assert(exported["stagePatches"][scene_id]["cast"][1]["pose"] == stage["cast"][1]["pose"])
 	var found_en: bool = false
 	for item in exported["dialogueCatalogReview"]["entries"]:
 		if item["id"] == new_line["lineId"]:
@@ -123,7 +155,18 @@ func _run() -> void:
 	view._on_create_scene()
 	assert(view._scenes.item_count == baseline_scenes + 1)
 	assert(view.selected_context()["sceneId"] == "RM-DRAFT-BEAT-0001")
-	assert(view._draft_stage_hint.visible and not view._stage_scroll.visible)
+	assert(view._draft_stage_hint.visible and view._stage_scroll.visible)
+	assert(view._stage_designer._stage_data["sceneId"] == scene_id)
+	var ui_stage: Dictionary = view._stage_designer._stage_data.duplicate(true)
+	ui_stage["backgroundId"] = "BG-APARTMENT"
+	ui_stage["lighting"] = "day"
+	ui_stage["roomState"] = "packed_boxes"
+	view._on_stage_modified(ui_stage)
+	assert(view._draft["stagePatches"][scene_id]["backgroundId"] == "BG-APARTMENT")
+	view._on_undo()
+	assert(not view._draft["stagePatches"].has(scene_id))
+	view._on_redo()
+	assert(view._draft["stagePatches"][scene_id]["backgroundId"] == "BG-APARTMENT")
 	assert(view._lines.item_count == 1)
 	view._show_create_line()
 	view._new_line_input.text = "Вторая UI реплика"
