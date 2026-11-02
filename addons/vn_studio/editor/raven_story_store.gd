@@ -11,6 +11,7 @@ const CAST := "data/raven/production/character_performance.json"
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
+const StoryGraph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
@@ -77,6 +78,7 @@ static func open_project(root: String) -> Dictionary:
 	return {"ok": true, "root": root.simplify_path(), "sourcePath": path, "sha": FileAccess.get_sha256(path),
 		"data": raw, "scenes": raw["scenes"], "linesByScene": groupings,
 		"stagingData": staging, "stagingSha": FileAccess.get_sha256(root.path_join(STAGING)),
+		"routesSha": FileAccess.get_sha256(root.path_join(ROUTES)),
 		"castData": cast_info, "castSha": FileAccess.get_sha256(root.path_join(CAST)),
 		"shots": shots, "routes": triggers, "cues": performance,
 		"sceneCount": order.size(), "lineCount": line_ids.size()}
@@ -90,9 +92,11 @@ static func fresh(project: Dictionary) -> Dictionary:
 	return {"format": FORMAT, "schemaVersion": 1,
 		"sourceSha256": str(project.get("sha", "")),
 		"sourceRootFingerprint": str(project.get("root", "")).sha256_text(),
+		"routeSourceSha256": str(project.get("routesSha", "")),
 		"stageSourceSha256": str(project.get("stagingSha", "")),
 		"castSourceSha256": str(project.get("castSha", "")),
-		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {}}
+		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {},
+		"storyGraphPatches": {}}
 
 
 ## Immutable source line IDs for a scene; used for FX cross-scene validation.
@@ -124,6 +128,21 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		return "Raven-сценарий изменился после сохранения черновика. Нужен ручной diff; автоматический rebase запрещён."
 	if FileAccess.get_sha256(str(project["sourcePath"])) != project["sha"]:
 		return "Сценарий в репозитории изменён извне; повторно откройте редактор."
+	# VNS5-06A: route authoring is a separate SHA-locked review-only overlay.
+	var graph_patches: Variant = draft.get("storyGraphPatches", {})
+	if not graph_patches is Dictionary:
+		return "Story Map patches must be an object."
+	if not graph_patches.is_empty():
+		if draft.get("routeSourceSha256", "") != project.get("routesSha", ""):
+			return "Canonical routes changed since this Story Map draft was created."
+		if FileAccess.get_sha256(str(project["root"]).path_join(ROUTES)) != project["routesSha"]:
+			return "Canonical route file changed on disk; Story Map draft is stale."
+		for scene_id in graph_patches:
+			if not project["routes"].has(scene_id):
+				return "Story Map references an unknown source scene."
+			var validation: String = StoryGraph.validate(project, graph_patches[scene_id])
+			if not validation.is_empty() or str(graph_patches[scene_id].get("sceneId", "")) != str(scene_id):
+				return "Story Map %s: %s" % [scene_id, validation if not validation.is_empty() else "sceneId mismatch"]
 	var stage_patches: Variant = draft.get("stagePatches", {})
 	if not stage_patches is Dictionary:
 		return "Повреждённый список изменений постановки."
@@ -232,6 +251,8 @@ static func save_local(project: Dictionary, draft: Dictionary) -> Dictionary:
 
 
 static func export_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("storyGraphPatches", {}).is_empty():
+		return {"ok": false, "error": "Story Map draft requires the separate no-loss story graph review export."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -363,6 +384,8 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
 
 
 static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("storyGraphPatches", {}).is_empty():
+		return {"ok": false, "error": "Story Map changes require the story graph review export."}
 	if not draft.get("stageFxPatches", {}).is_empty():
 		return {"ok": false, "error": "FX события требуют отдельный FX review export; v2 экспорт потеряет таймлайн."}
 	var error: String = validate(project, draft)
@@ -405,6 +428,46 @@ static func export_v2_candidate(project: Dictionary, draft: Dictionary) -> Dicti
 	return _write_new(path, payload, false)
 
 
+## Review-only Story Map authoring — canonical map_narrative_routes remains immutable.
+static func set_story_graph(project: Dictionary, draft: Dictionary, data: Dictionary) -> String:
+	var error: String = StoryGraph.validate(project, data)
+	if not error.is_empty():
+		return error
+	var scene_id: String = str(data.get("sceneId", ""))
+	if not project.get("routes", {}).has(scene_id):
+		return "Cannot author edges for an unknown canonical scene."
+	draft["routeSourceSha256"] = str(project.get("routesSha", ""))
+	if not draft.has("storyGraphPatches"):
+		draft["storyGraphPatches"] = {}
+	draft["storyGraphPatches"][scene_id] = data.duplicate(true)
+	return ""
+
+
+## Bundles all existing draft categories, so a graph export never discards FX
+## or staging silently; requires review and never writes to res://.
+static func export_story_graph_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var error: String = validate(project, draft)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	if draft.get("storyGraphPatches", {}).is_empty():
+		return {"ok": false, "error": "No authored Story Map edges."}
+	var payload: Dictionary = {
+		"format": "raven-vn-story-graph-review-v1", "schemaVersion": 1,
+		"sourceSha256": project["sha"], "routeSourceSha256": project["routesSha"],
+		"stageSourceSha256": project["stagingSha"], "castSourceSha256": project["castSha"],
+		"storyGraphPatches": draft["storyGraphPatches"].duplicate(true),
+		"textPatches": draft.get("patches", {}).duplicate(true),
+		"stagePatches": draft.get("stagePatches", {}).duplicate(true),
+		"stageV2Patches": draft.get("stageV2Patches", {}).duplicate(true),
+		"stageFxPatches": draft.get("stageFxPatches", {}).duplicate(true),
+		"runtimeApplied": false, "requiresHumanReview": true
+	}
+	var serialized: String = JSON.stringify(payload, "\t") + "\n"
+	var path: String = ProjectSettings.globalize_path("user://raven_story_studio/story_graph/exports").path_join(
+		"raven-story-graph-" + serialized.sha256_text().substr(0, 24) + ".json")
+	return _write_new(path, serialized, false)
+
+
 static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionary) -> String:
 	var scene_id: String = str(data.get("sceneId", ""))
 	if not project.get("shots", {}).has(scene_id):
@@ -423,6 +486,8 @@ static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionar
 
 
 static func export_fx_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("storyGraphPatches", {}).is_empty():
+		return {"ok": false, "error": "Story Map changes require the story graph review export."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -454,6 +519,8 @@ static func materialize_staging(project: Dictionary, draft: Dictionary) -> Dicti
 
 
 static func export_stage_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("storyGraphPatches", {}).is_empty():
+		return {"ok": false, "error": "Story Map changes require the story graph review export."}
 	if not draft.get("stageFxPatches", {}).is_empty():
 		return {"ok": false, "error": "Есть FX таймлайн. Используйте FX review export для сохранения событий."}
 	if not draft.get("stageV2Patches", {}).is_empty():
