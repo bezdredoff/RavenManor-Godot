@@ -172,7 +172,7 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 				str(title["ru"]).strip_edges().is_empty() or str(title["ru"]).length() > 120:
 			return "Authored scene needs a valid RU title."
 		for lang in title.keys():
-			if lang not in LOCALES or (title[lang] != null and not title[lang] is String):
+			if lang not in LOCALES or (title[lang] != null and (not title[lang] is String or str(title[lang]).length() > 120)):
 				return "Invalid authored scene title translation."
 		if scene.get("status") != "draft_not_runtime":
 			return "New scene cannot claim approved runtime status."

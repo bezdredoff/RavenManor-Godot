@@ -1,5 +1,9 @@
 # VN Studio — native Godot EditorPlugin
 
+## VNS5-07B — Director layout and translations (review candidate)
+
+The Raven Director keeps the Stage in the center while scene and line lists stay on the left and Stage Inspector / Translations tabs stay on the right. Stage controls live in the inspector; export actions expand from the sticky toolbar. RU, BE and EN dialogue fields are shown side by side, with missing BE/EN explicitly labelled as RU fallback. New draft scene titles can be edited in all three locales. Locale and inspector-tab switches preserve the selected line ID. Pane widths are editor settings only; story drafts still save to `user://` and no runtime promotion occurs. See `docs/production/VNS5_07B_LAYOUT_LOCALES_RU.md` for manual QA. Native visual acceptance is pending.
+
 ## VNS5-05A — editor-only сценный таймлайн микроанимаций (implementation candidate)
 
 `Raven Manor → Director → Постановка → Микроанимации (FX draft)` предлагает отдельный список FX-событий на уровне сцены. Цель выбирается **только из текущей сцены** (фон, один из 1–3 актёров, существующий prop instance). Доступны `breathe`, `blink`, `shake`, `pulse`, `fade_in` и `fade_out`; задаются `startMs` (0–15000), `durationMs` (120–4000), `repeat` (1–5), `intensity` (0–1). Не более 32 событий и 20 секунд на сцену. Встроенный ползунок времени и Play/Pause показывают deterministic editor proxy (blink — краткое вертикальное сжатие, а не новая нарисованная эмоция), FX Undo ограничен 32 шагами. Меняется только отрисовка редактора, не байты изображений.

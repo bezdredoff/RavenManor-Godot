@@ -173,8 +173,30 @@ func _run() -> void:
 	view._on_create_line()
 	assert(view._lines.item_count == 2)
 	assert(view.selected_context()["lineId"].ends_with("-L002"))
+	var selected_line: String = str(view.selected_context()["lineId"])
+	assert(view._locale_edits["be"].text.is_empty())
+	assert(view._locale_status["be"].text.contains("Не переведено"))
+	view._capture_undo()
+	view._locale_edits["be"].text = "Другая рэпліка"
+	view._on_text_changed("be")
+	view._locale_edits["en"].text = "Second line"
+	view._on_text_changed("en")
+	view._title_edits["be"].text = "Новая сцэна"
+	view._on_title_changed("Новая сцэна", "be")
+	view._on_locale(1)
+	assert(view.selected_context()["lineId"] == selected_line, "Locale switch preserves line ID")
+	assert(view._locale_edits["ru"].text == "Вторая UI реплика")
+	assert(view._locale_edits["be"].text == "Другая рэпліка")
+	assert(view._locale_edits["en"].text == "Second line")
+	var long_translation: String = "Long synthetic translation. ".repeat(120)
+	view._locale_edits["en"].text = long_translation
+	view._on_text_changed("en")
+	assert(Store.localized(view._current_entry(), view._draft, "en")["text"] == long_translation)
+	view._workspace_tabs.current_tab = 2
+	assert(view.selected_context()["lineId"] == selected_line, "Inspector tab preserves line ID")
+	assert(Store.validate(view._project, view._draft).is_empty())
 	view._on_undo()
-	assert(view._lines.item_count == 1)
+	assert(view._locale_edits["be"].text.is_empty())
 	view._on_redo()
 	assert(view._lines.item_count == 2)
 	view._on_scene(0)

@@ -118,7 +118,7 @@ func _run() -> void:
 	var editor := View.new()
 	root.add_child(editor)
 	assert(not editor._blocked)
-	assert(editor._workspace_tabs.get_tab_count() == 5)
+	assert(editor._workspace_tabs.get_tab_count() == 6)
 	editor._show_create_scene()
 	editor._scene_title_input.text = "UI новая сцена"
 	editor._scene_first_line_input.text = "UI реплика"
