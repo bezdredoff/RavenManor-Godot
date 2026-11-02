@@ -1,4 +1,4 @@
-"""VNS5-06D: no-apply candidate staging, approval manifest and negative tests."""
+"""Companion offline check of native Godot VNS5-06D1 review bundles."""
 import copy
 import json
 import sys
@@ -11,195 +11,186 @@ sys.path.insert(0, str(ROOT))
 from scripts.raven.tools import prepare_vn_promotion as stage  # noqa: E402
 
 
-class PromotionStagingTest(unittest.TestCase):
+class OfflineGodotBundleTests(unittest.TestCase):
     def setUp(self):
-        self.sources = {key: stage.json_file(stage.DATA / name)
-                        for key, name in stage.FILES.items()}
-        self.source_sha = {name: stage.digest((stage.DATA / name).read_bytes())
-                           for name in stage.FILES.values()}
-        self.raw_id = "RM-DRAFT-BEAT-0001"
-        self.target = "RM-BEAT-07-01"
-        self.source_line_id = self.raw_id + "-L001"
-        self.line_id = self.target + "-L001"
-        author_scene = {
-            "sceneId": self.raw_id,
-            "title": {"ru": "Новая глава", "be": None, "en": None},
+        self.source = {key: stage.load(stage.BASE / name) for key, name in stage.FILES.items()}
+        self.original_sha = {key: stage.digest((stage.BASE / name).read_bytes())
+                             for key, name in stage.FILES.items()}
+        self.draft_id = "RM-DRAFT-BEAT-0001"
+        self.scene_id = "RM-BEAT-07-01"
+        self.draft_line_id = self.draft_id + "-L001"
+        self.line_id = self.scene_id + "-L001"
+        self.author_scene = {
+            "sceneId": self.draft_id,
+            "title": {"ru": "Проверочная сцена", "be": None, "en": None},
             "status": "draft_not_runtime"
         }
-        author_line = {
-            "id": self.source_line_id, "sceneId": self.raw_id,
+        self.author_line = {
+            "id": self.draft_line_id, "sceneId": self.draft_id,
             "speakerId": "RM-CHAR-EVELYN", "delivery": "speech",
             "source": "vn_studio_draft_not_runtime",
-            "localized": {"ru": {"text": "Начало следующей главы."}, "be": None, "en": None}
+            "localized": {"ru": {"text": "Новый диалог."}, "be": None, "en": None}
         }
-        added_scene = copy.deepcopy(author_scene)
-        added_scene["sceneId"] = self.target
-        added_scene["status"] = "proposed_future_runtime"
-        added_scene["source"] = "vn_studio_promotion_review_only"
-        added_line = copy.deepcopy(author_line)
-        added_line["id"] = self.line_id
-        added_line["sceneId"] = self.target
-        added_line["source"] = "vn_studio_promotion_review_only"
-        catalog = copy.deepcopy(self.sources["catalog"])
-        catalog["scenes"].append(added_scene)
-        catalog["entries"].append(added_line)
-        catalog["status"] = "DRAFT_PROMOTION_REVIEW_NOT_RUNTIME"
-        self.review = {
-            "format": "raven-vn-promotion-review-v1", "schemaVersion": 1,
-            "sourceSha256": self.source_sha[stage.FILES["catalog"]],
-            "stageSourceSha256": self.source_sha[stage.FILES["staging"]],
-            "routeSourceSha256": self.source_sha[stage.FILES["routes"]],
-            "castSourceSha256": self.source_sha[stage.FILES["cast"]],
-            "reviewCatalog": catalog,
-            "idMap": {self.raw_id: self.target},
-            "lineIdMap": {self.source_line_id: self.line_id},
-            "reviewGraphPatches": {},
+        scene = copy.deepcopy(self.author_scene)
+        scene.update(sceneId=self.scene_id, status="review_only_not_runtime",
+                     source="vn_studio_promotion_review_only")
+        line = copy.deepcopy(self.author_line)
+        line.update(id=self.line_id, sceneId=self.scene_id,
+                    source="vn_studio_promotion_review_only")
+        files = {stage.FILES[k]: copy.deepcopy(self.source[k])
+                 for k in ("catalog", "staging", "routes", "cues")}
+        for item in files.values():
+            item["status"] = "DRAFT_REVIEW_NOT_RUNTIME"
+        files[stage.FILES["catalog"]]["scenes"].append(scene)
+        files[stage.FILES["catalog"]]["entries"].append(line)
+        sample_shot = copy.deepcopy(self.source["staging"]["sceneShots"][0])
+        sample_shot.update(sceneId=self.scene_id)
+        files[stage.FILES["staging"]]["sceneShots"].append(sample_shot)
+        sample_route = copy.deepcopy(self.source["routes"]["sceneTriggers"][0])
+        sample_route.update(sceneId=self.scene_id,
+                            ordinal=len(self.source["catalog"]["scenes"]),
+                            interactionTarget="review_only_not_playable",
+                            notes="Review proposal only")
+        sample_route["gate"] = {
+            "kind": "draft_unapproved", "ref": "none",
+            "approvedRuntime": False, "proposedRuntime": True
+        }
+        files[stage.FILES["routes"]]["sceneTriggers"].append(sample_route)
+        cue = copy.deepcopy(self.source["cues"]["cues"][0])
+        cue.update(lineId=self.line_id, sceneId=self.scene_id,
+                   speakerId="RM-CHAR-EVELYN", manualReview=True)
+        files[stage.FILES["cues"]]["cues"].append(cue)
+        self.bundle = {
+            "format": stage.PACKAGE_FORMAT, "schemaVersion": 1,
+            "reviewRef": "RM-SYNTHETIC-REVIEW-NOT-APPROVAL",
+            "sourceSha256": self.original_sha["catalog"],
+            "stageSourceSha256": self.original_sha["staging"],
+            "routeSourceSha256": self.original_sha["routes"],
+            "castSourceSha256": self.original_sha["cast"],
+            "cueSourceSha256": self.original_sha["cues"],
+            "sceneIdMap": {self.draft_id: self.scene_id},
+            "lineIdMap": {self.draft_line_id: self.line_id},
+            "routeProposals": {self.scene_id: {
+                "kind": "scene_complete",
+                "ref": self.source["catalog"]["scenes"][0]["sceneId"],
+                "interactionTarget": "review-placeholder"}},
+            "files": files,
             "retainedDraft": {
-                "authoredScenes": [author_scene],
-                "authoredLines": [author_line],
-                "promotionSceneIdMap": {self.raw_id: self.target},
+                "authoredScenes": [self.author_scene],
+                "authoredLines": [self.author_line],
                 "storyGraphPatches": {}, "textPatches": {},
-                "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {}
-            },
+                "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {},
+                "promotionSceneIdMap": {self.draft_id: self.scene_id}},
+            "releaseBlockers": [
+                "Review-only route is not gameplay",
+                "Needs release owner approval",
+                "Requires save migration and branch runtime parity"
+            ],
             "runtimeApplied": False, "readyForRuntime": False,
             "requiresHumanReview": True, "requiresFollowUpPromotion": True
         }
-        shot = copy.deepcopy(self.sources["staging"]["sceneShots"][0])
-        shot["sceneId"] = self.target
-        trigger = copy.deepcopy(self.sources["routes"]["sceneTriggers"][1])
-        trigger["sceneId"] = self.target
-        trigger["ordinal"] = max(x["ordinal"] for x in self.sources["routes"]["sceneTriggers"]) + 1
-        trigger["gate"]["kind"] = "scene_complete"
-        trigger["gate"]["ref"] = self.sources["catalog"]["scenes"][0]["sceneId"]
-        trigger["gate"]["approvedRuntime"] = False
-        trigger["gate"]["proposedRuntime"] = True
-        cue = copy.deepcopy(self.sources["cues"]["cues"][0])
-        cue["lineId"] = self.line_id
-        cue["sceneId"] = self.target
-        self.approval = {
-            "format": "raven-vn-release-preflight-v1", "schemaVersion": 1,
-            "approvalRef": "STORY-REVIEW-001", "artApprovalRef": "ART-REVIEW-001",
-            "storyApprovalRef": "STORY-REVIEW-001", "cueApprovalRef": "CUE-REVIEW-001",
-            "reviewSha256": "", "cueSourceSha256": self.source_sha[stage.FILES["cues"]],
-            "approvedTextLineIds": [],
-            "saveReview": {"existingSaves": "preserve", "newScenesDefault": "locked",
-                           "reviewRef": "SAVE-CONTRACT-001"},
-            "sceneShots": [shot], "sceneTriggers": [trigger], "lineCues": [cue]
-        }
-        self.refresh_sha()
 
-    def refresh_sha(self):
-        self.raw = (json.dumps(self.review, ensure_ascii=False, indent=2) + "\n").encode()
-        self.approval["reviewSha256"] = stage.digest(self.raw)
+    def verify(self):
+        return stage.verify(self.bundle, package_sha="0" * 64)
 
-    def build(self):
-        return stage.build(self.review, self.approval, review_sha=stage.digest(self.raw))
+    def blocked(self, pattern):
+        with self.assertRaisesRegex(stage.BundleError, pattern):
+            self.verify()
 
-    def assert_blocked(self, message):
-        self.refresh_sha()
-        with self.assertRaisesRegex(stage.PromotionError, message):
-            self.build()
-
-    def test_positive_staging_and_no_canonical_mutation(self):
-        output = self.build()
-        self.assertEqual(len(output), 5)
-        catalog = json.loads(output[stage.FILES["catalog"]])
-        staging = json.loads(output[stage.FILES["staging"]])
-        routes = json.loads(output[stage.FILES["routes"]])
-        cues = json.loads(output[stage.FILES["cues"]])
-        manifest = json.loads(output["promotion_manifest.json"])
-        self.assertEqual(len(catalog["scenes"]), 29)
-        self.assertEqual(len(catalog["entries"]), 281)
-        self.assertEqual(len(staging["sceneShots"]), 29)
-        self.assertEqual(len(routes["sceneTriggers"]), 29)
-        self.assertEqual(len(cues["cues"]), 281)
-        self.assertFalse(manifest["runtimeApplied"])
+    def test_positive_exact_native_schema_and_source_immutability(self):
+        files = self.verify()
+        self.assertEqual(set(files), set(stage.CANDIDATE_NAMES) |
+                         {"offline_integrity_manifest.json"})
+        manifest = json.loads(files["offline_integrity_manifest.json"])
         self.assertFalse(manifest["readyForRuntime"])
+        self.assertFalse(manifest["runtimeApplied"])
         self.assertTrue(manifest["cannotAutoApply"])
-        for name, bytes_data in output.items():
-            self.assertEqual(manifest["candidateSha256"].get(name, stage.digest(bytes_data)),
-                             stage.digest(bytes_data))
+        self.assertEqual(manifest["sceneCount"], 29)
+        self.assertEqual(manifest["lineCount"], 281)
+        self.assertEqual(manifest["sourcePackageSha256"], "0" * 64)
+        self.assertEqual(set(manifest["candidateSha256"]), set(stage.CANDIDATE_NAMES))
         with tempfile.TemporaryDirectory() as tmp:
-            outdir = Path(tmp) / "package"
-            stage.write_once(outdir, output)
-            self.assertEqual((outdir / stage.FILES["catalog"]).read_bytes(),
-                             output[stage.FILES["catalog"]])
-            with self.assertRaisesRegex(stage.PromotionError, "exists"):
-                stage.write_once(outdir, output)
-        for name, sha in self.source_sha.items():
-            self.assertEqual(sha, stage.digest((stage.DATA / name).read_bytes()),
-                             "Canonical production file was mutated: " + name)
+            dest = Path(tmp) / "candidate"
+            stage.write_once(dest, files)
+            self.assertTrue((dest / stage.FILES["routes"]).is_file())
+            self.assertEqual(json.loads((dest / stage.FILES["catalog"]).read_text())
+                             ["scenes"][-1]["sceneId"], self.scene_id)
+            with self.assertRaisesRegex(stage.BundleError, "already exists"):
+                stage.write_once(dest, files)
+        for kind, name in stage.FILES.items():
+            self.assertEqual(self.original_sha[kind], stage.digest((stage.BASE / name).read_bytes()),
+                             "Canonical source mutated: " + name)
 
-    def test_cli_check_only_and_export(self):
+    def test_offline_cli_check_only_and_immutable_export(self):
         with tempfile.TemporaryDirectory() as tmp:
-            root = Path(tmp)
-            review = root / "review.json"
-            approval = root / "approval.json"
-            review.write_bytes(self.raw)
-            approval.write_text(json.dumps(self.approval, ensure_ascii=False), encoding="utf-8")
-            self.assertEqual(stage.main(["--review", str(review), "--approval", str(approval),
-                                         "--check-only"]), 0)
-            out = root / "stage"
-            self.assertEqual(stage.main(["--review", str(review), "--approval", str(approval),
-                                         "--output", str(out)]), 0)
-            self.assertEqual(stage.main(["--review", str(review), "--approval", str(approval),
-                                         "--output", str(out)]), 2)
+            src = Path(tmp) / "godot-review.json"
+            src.write_text(json.dumps(self.bundle, ensure_ascii=False), encoding="utf-8")
+            self.assertEqual(stage.main(["--package", str(src), "--check-only"]), 0)
+            self.assertFalse((Path(tmp) / "output").exists())
+            target = Path(tmp) / "output"
+            self.assertEqual(stage.main(["--package", str(src), "--output", str(target)]), 0)
+            self.assertEqual(stage.main(["--package", str(src), "--output", str(target)]), 2)
 
-    def test_changed_source_rejected(self):
-        self.review["sourceSha256"] = "bad"
-        self.assert_blocked("SHA mismatch")
-        self.review["sourceSha256"] = self.source_sha[stage.FILES["catalog"]]
-        self.approval["cueSourceSha256"] = "drift"
-        self.assert_blocked("Line cue file changed")
+    def test_source_and_review_sha_tampering(self):
+        self.bundle["cueSourceSha256"] = "bad"
+        self.blocked("cue.*SHA drift")
+        self.bundle["cueSourceSha256"] = self.original_sha["cues"]
+        with self.assertRaisesRegex(stage.BundleError, "byte SHA"):
+            stage.verify(self.bundle, package_sha=None)
 
-    def test_unapproved_runtime_and_graph_rejected(self):
-        self.review["readyForRuntime"] = True
-        self.assert_blocked("must not claim runtime")
-        self.review["readyForRuntime"] = False
-        self.review["reviewGraphPatches"] = {"RM-BEAT-00-01": {
-            "sceneId": "RM-BEAT-00-01", "edges": [{"kind": "choice", "targetId": self.target}]}}
-        self.assert_blocked("Playable Story Map branches")
+    def test_staging_route_and_cue_must_remain_review_only(self):
+        self.bundle["files"][stage.FILES["routes"]]["sceneTriggers"][-1]["gate"]["approvedRuntime"] = True
+        self.blocked("Runtime route is forbidden")
+        self.bundle["files"][stage.FILES["routes"]]["sceneTriggers"][-1]["gate"]["approvedRuntime"] = False
+        self.bundle["files"][stage.FILES["cues"]]["cues"][-1]["manualReview"] = False
+        self.blocked("Cue status")
+        self.bundle["files"][stage.FILES["cues"]]["cues"][-1]["manualReview"] = True
+        self.bundle["readyForRuntime"] = True
+        self.blocked("non-runtime review")
 
-    def test_corrupted_identity_and_text_rejected(self):
-        self.review["idMap"][self.raw_id] = self.sources["catalog"]["scenes"][0]["sceneId"]
-        self.review["retainedDraft"]["promotionSceneIdMap"][self.raw_id] = self.sources["catalog"]["scenes"][0]["sceneId"]
-        self.assert_blocked("collide")
-        self.review["idMap"][self.raw_id] = self.target
-        self.review["retainedDraft"]["promotionSceneIdMap"][self.raw_id] = self.target
-        self.review["reviewCatalog"]["entries"][0]["localized"]["ru"]["text"] = "Changed without approval"
-        self.assert_blocked("Unapproved modification")
-        self.approval["approvedTextLineIds"].append(
-            self.sources["catalog"]["entries"][0]["id"])
-        self.refresh_sha()
-        self.assertIsInstance(self.build(), dict)
+    def test_reject_missing_registries_unknown_assets_and_id_collision(self):
+        self.bundle["files"][stage.FILES["staging"]]["sceneShots"].pop()
+        self.blocked("Scene, shot and route")
+        self.bundle["files"][stage.FILES["staging"]]["sceneShots"].append({
+            **copy.deepcopy(self.source["staging"]["sceneShots"][0]),
+            "sceneId": self.scene_id, "backgroundId": "BG-UNKNOWN"})
+        self.blocked("Invalid master")
+        self.bundle["files"][stage.FILES["staging"]]["sceneShots"][-1]["backgroundId"] = (
+            self.source["staging"]["sceneShots"][0]["backgroundId"])
+        self.bundle["lineIdMap"][self.draft_line_id] = self.source["catalog"]["entries"][0]["id"]
+        self.blocked("colliding")
 
-    def test_gates_must_be_complete(self):
-        self.approval["sceneShots"] = []
-        self.assert_blocked("requires exactly one reviewed shot")
-        self.approval["sceneShots"] = [{
-            **self.sources["staging"]["sceneShots"][0], "sceneId": self.target,
-            "backgroundId": "BG-NOT-AVAILABLE"}]
-        self.assert_blocked("Unknown background")
+    def test_prevent_existing_source_modifications(self):
+        self.bundle["files"][stage.FILES["catalog"]]["scenes"][0]["title"]["ru"] = "changed"
+        self.blocked("Canonical scene changed")
+        self.bundle["files"][stage.FILES["catalog"]]["scenes"][0] = (
+            copy.deepcopy(self.source["catalog"]["scenes"][0]))
+        self.bundle["files"][stage.FILES["routes"]]["sceneTriggers"][0]["gate"]["kind"] = "draft_unapproved"
+        self.blocked("Canonical route changed")
 
-    def test_unreviewed_route_and_cue_rejected(self):
-        self.approval["sceneTriggers"][0]["gate"]["approvedRuntime"] = True
-        self.assert_blocked("Only non-runtime")
-        self.approval["sceneTriggers"][0]["gate"]["approvedRuntime"] = False
-        self.approval["lineCues"][0]["poseId"] = "unapproved-pose"
-        self.assert_blocked("Invalid cue pose/emotion")
-        self.approval["lineCues"] = []
-        self.assert_blocked("requires one reviewed cue")
+    def test_reviewed_text_patches_must_match_source(self):
+        old = self.source["catalog"]["entries"][0]["id"]
+        self.bundle["files"][stage.FILES["catalog"]]["entries"][0]["localized"]["ru"]["text"] = "new"
+        self.blocked("Unreviewed canonical line mutation")
+        self.bundle["retainedDraft"]["textPatches"][old] = {"ru": "new"}
+        self.verify()
+        self.bundle["retainedDraft"]["textPatches"][old] = {"en": "different"}
+        self.blocked("Unreviewed canonical line mutation")
 
-    def test_save_review_and_approval_bound_to_input(self):
-        self.approval["saveReview"]["existingSaves"] = "discard"
-        self.assert_blocked("save compatibility")
-        self.approval["saveReview"]["existingSaves"] = "preserve"
-        self.approval["approvalRef"] = ""
-        self.assert_blocked("Missing review reference")
-        self.approval["approvalRef"] = "STORY-REVIEW-001"
-        self.approval["reviewSha256"] = "bad-sha"
-        with self.assertRaisesRegex(stage.PromotionError, "exact input-file SHA"):
-            self.build()
+    def test_registered_new_dialogue_and_graph_runtime_gates(self):
+        self.bundle["files"][stage.FILES["catalog"]]["entries"][-1]["speakerId"] = "UNKNOWN"
+        self.blocked("New line differs")
+        self.bundle["files"][stage.FILES["catalog"]]["entries"][-1]["speakerId"] = "RM-CHAR-EVELYN"
+        self.bundle["retainedDraft"]["storyGraphPatches"] = {
+            self.draft_id: {"sceneId": self.draft_id,
+                            "edges": [{"kind": "choice", "targetId": self.scene_id}]}}
+        self.blocked("Playable Story Map branch")
+
+    def test_old_cue_and_unknown_voice_preserved(self):
+        # Existing unknown-voice dialogue remains accepted exactly as canonical.
+        self.verify()
+        self.bundle["files"][stage.FILES["cues"]]["cues"][0]["poseId"] = "bad"
+        self.blocked("Canonical cue changed")
 
 
 if __name__ == "__main__":
