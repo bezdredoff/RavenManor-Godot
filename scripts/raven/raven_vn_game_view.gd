@@ -5,6 +5,8 @@ const Backgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
 const FxRuntime = preload("res://scripts/raven/raven_vn_fx_runtime.gd")
+const Copy = preload("res://scripts/raven/raven_production_localization.gd")
+const Paging = preload("res://scripts/shared/upds/dialogue_paging.gd")
 
 var scene_id := ""
 var background: TextureRect
@@ -22,6 +24,12 @@ var _advance_callback: Callable
 var _fx: RefCounted = FxRuntime.new()
 var _fx_reduced_motion: bool = false
 var _fx_skipping: bool = false
+var _full_text := ""
+var _display_locale := "ru"
+var _line_progress := ""
+var _pages: Array[String] = []
+var _page_index := 0
+var _paging_box_size := Vector2.ZERO
 
 
 func _init() -> void:
@@ -79,6 +87,7 @@ func _build() -> void:
 	chapter.name = "VNSceneTitle"
 	chapter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	chapter.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	chapter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(chapter)
 
 	dialogue_panel = Panel.new()
@@ -196,15 +205,18 @@ func _apply_fx_to(control: Control, sample: Dictionary) -> void:
 
 
 func show_beat(beat_id: String, speaker: String, line_text: String, line_progress: String,
-		on_next: Callable, explicit_line_id: String = "") -> void:
+		on_next: Callable, explicit_line_id: String = "", locale: String = "ru") -> void:
 	if scene_id != beat_id:
 		_fx.reset_clocks()
 	scene_id = beat_id
 	_advance_callback = on_next
-	chapter.text = beat_id
+	_display_locale = Copy.normalize_locale(locale)
+	_full_text = line_text
+	_line_progress = line_progress
+	_page_index = 0
+	chapter.text = Copy.scene_title(beat_id, _display_locale)
 	nameplate.text = speaker.to_upper()
-	dialogue.text = line_text
-	progress.text = line_progress
+	next_button.text = {"ru": "Далее ›", "be": "Далей ›", "en": "Next ›"}.get(_display_locale, "Next ›")
 	var texture: Texture2D = Backgrounds.texture_for_scene(beat_id)
 	background.texture = texture
 	background.visible = texture != null
@@ -216,6 +228,7 @@ func show_beat(beat_id: String, speaker: String, line_text: String, line_progres
 	_fx.enter_line(beat_id, resolved_line_id)
 	pilot_note.text = ""
 	_layout()
+	_repaginate()
 	if _fx.configured():
 		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
 
@@ -291,10 +304,40 @@ func _layout() -> void:
 	next_button.size = Vector2(105, 43)
 	pilot_note.position = Vector2(6, h - 22)
 	pilot_note.size = Vector2(w - 12, 20)
+	# Reflow on viewport resize, without advancing a line or replaying cues.
+	if not _full_text.is_empty() and _paging_box_size != dialogue.size:
+		_repaginate()
+
+
+func _fits_dialogue(candidate: String) -> bool:
+	var font: Font = dialogue.get_theme_font("font")
+	var font_size: int = dialogue.get_theme_font_size("font_size")
+	var bounds: Vector2 = font.get_multiline_string_size(candidate,
+		HORIZONTAL_ALIGNMENT_LEFT, maxf(40.0, dialogue.size.x - 6), font_size)
+	return bounds.y <= maxf(24.0, dialogue.size.y - 6)
+
+
+func _repaginate() -> void:
+	_paging_box_size = dialogue.size
+	_pages = Paging.paginate(_full_text, Callable(self, "_fits_dialogue"), _display_locale)
+	_page_index = mini(_page_index, maxi(0, _pages.size() - 1))
+	_show_page()
+
+
+func _show_page() -> void:
+	if _pages.is_empty():
+		dialogue.text = ""
+		progress.text = _line_progress
+		return
+	dialogue.text = Paging.continuation(_pages[_page_index], _page_index < _pages.size() - 1)
+	progress.text = "%s · %d/%d" % [_line_progress, _page_index + 1, _pages.size()]
 
 
 func _next() -> void:
-	if _advance_callback.is_valid():
+	if _page_index < _pages.size() - 1:
+		_page_index += 1
+		_show_page()
+	elif _advance_callback.is_valid():
 		_advance_callback.call()
 
 
