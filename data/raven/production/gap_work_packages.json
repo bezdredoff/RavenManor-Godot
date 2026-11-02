@@ -555,6 +555,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06D2B",
+      "title": "VN Studio v5: locked review decision and reversible five-registry release patch staging",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "After VNS5-06D2A preflight, enforce one source-authoritative D1 Godot package, D1-CLI registry extraction, D2A readiness report and immutable backup, plus exact review acknowledgment with route IDs, locale/save/art/story references and every unresolved blocker. Build an external no-overwrite five-registry proposed source diff including append-only foundation_catalog.storyBeats to preserve RavenSnapshot/RavenReducer IDs and seven exact original rollback sources. Never turn on new routes, alter canonical assets or game saves.",
+      "deliverable": "stage_vn_release_patch.py with fail-closed SHA/provenance checks and no-apply release staging + rollback folder; positive/negative synthetic tests in scripts/check.sh, runbook, status and dashboard.",
+      "acceptance": "Reject missing reviewRefs, unknown fields, incorrect SHA of Godot/D2A, incomplete ID lists/route plans/blockers, altered/missing backup or sources, active gate and in-repo/existing destination. Positive full five-registry candidate preserves old save schema, adds only proposed new foundation storyBeats and never enables runtime. Exact rollback includes seven sources. Full CI and owner review; active playable release is separately gated until D2C.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06D2A",
+        "VNS5-06D1-CLI"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-02 after merged PR #118; no real owner-approved new scene assets or gates",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",

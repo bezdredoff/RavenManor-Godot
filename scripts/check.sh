@@ -11,6 +11,7 @@ python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py scri
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_contract.py'
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_promotion_staging.py'
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_release_readiness.py'
+python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_locked_release_patch.py'
 worklist_check="$(mktemp)"
 python3 "$ROOT/scripts/raven/tools/export_translation_worklist.py" --output "$worklist_check"
 rm -f "$worklist_check"
