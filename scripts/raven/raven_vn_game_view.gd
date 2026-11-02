@@ -4,6 +4,7 @@ extends Control
 const Backgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd")
+const FxRuntime = preload("res://scripts/raven/raven_vn_fx_runtime.gd")
 
 var scene_id := ""
 var background: TextureRect
@@ -18,6 +19,9 @@ var progress: Label
 var next_button: Button
 var pilot_note: Label
 var _advance_callback: Callable
+var _fx: RefCounted = FxRuntime.new()
+var _fx_reduced_motion: bool = false
+var _fx_skipping: bool = false
 
 
 func _init() -> void:
@@ -121,7 +125,80 @@ func _build() -> void:
 	add_child(pilot_note)
 
 
-func show_beat(beat_id: String, speaker: String, line_text: String, line_progress: String, on_next: Callable) -> void:
+## A reviewed bundle is injected explicitly; never read editor user:// exports.
+## Cast and line IDs are bound to the same canonical scene, not user-supplied paths.
+func configure_reviewed_fx(beat_id: String, line_ids: Array, bundle: Dictionary) -> String:
+	var allowed_actor_ids: Array = []
+	for line_id in line_ids:
+		for cast: Dictionary in Characters.cast_for_scene(beat_id, str(line_id)):
+			var actor_id: String = str(cast.get("characterId", ""))
+			if not actor_id.is_empty() and not allowed_actor_ids.has(actor_id):
+				allowed_actor_ids.append(actor_id)
+	var error: String = _fx.configure(beat_id, line_ids, allowed_actor_ids, bundle)
+	if not error.is_empty():
+		_reset_fx_visuals()
+	return error
+
+
+func set_fx_accessibility(reduced_motion: bool, skipping: bool = false) -> void:
+	_fx_reduced_motion = reduced_motion
+	_fx_skipping = skipping
+	if reduced_motion or skipping:
+		_reset_fx_visuals()
+
+
+func clear_reviewed_fx() -> void:
+	_fx.clear()
+	_reset_fx_visuals()
+
+
+func _process(delta: float) -> void:
+	if not _fx.configured():
+		return
+	_apply_fx_samples(_fx.step(delta, _fx_skipping, _fx_reduced_motion))
+
+
+func _reset_fx_visuals() -> void:
+	if background == null:
+		return
+	_layout()
+	background.scale = Vector2.ONE
+	background.modulate = Color.WHITE
+	for actor in actors:
+		var visual: Control = actor["node"]
+		if is_instance_valid(visual):
+			visual.scale = Vector2.ONE
+			visual.modulate = Color.WHITE
+
+
+func _apply_fx_samples(samples: Dictionary) -> void:
+	# Always start at canonical layout to avoid transform drift or stale line alpha.
+	_reset_fx_visuals()
+	if background == null:
+		return
+	var bg: Dictionary = samples.get("background/background", {})
+	if not bg.is_empty():
+		_apply_fx_to(background, bg)
+	for actor in actors:
+		var visual: Control = actor["node"]
+		var active: Dictionary = samples.get("actor/" + str(actor["characterId"]), {})
+		if is_instance_valid(visual) and not active.is_empty():
+			_apply_fx_to(visual, active)
+
+
+func _apply_fx_to(control: Control, sample: Dictionary) -> void:
+	control.pivot_offset = control.size * 0.5
+	control.position += sample["offset"]
+	control.scale *= sample["scale"]
+	var tint: Color = control.modulate
+	tint.a *= float(sample["alpha"])
+	control.modulate = tint
+
+
+func show_beat(beat_id: String, speaker: String, line_text: String, line_progress: String,
+		on_next: Callable, explicit_line_id: String = "") -> void:
+	if scene_id != beat_id:
+		_fx.reset_clocks()
 	scene_id = beat_id
 	_advance_callback = on_next
 	chapter.text = beat_id
@@ -134,9 +211,13 @@ func show_beat(beat_id: String, speaker: String, line_text: String, line_progres
 	missing_background.visible = texture == null
 	var entry: Dictionary = Backgrounds.entry_for_scene(beat_id)
 	missing_background.text = "ART PENDING · %s" % str(entry.get("id", beat_id))
-	_fill_actors(beat_id, Characters.line_id_for_text(beat_id, line_text))
+	var resolved_line_id: String = explicit_line_id if not explicit_line_id.is_empty() else Characters.line_id_for_text(beat_id, line_text)
+	_fill_actors(beat_id, resolved_line_id)
+	_fx.enter_line(beat_id, resolved_line_id)
 	pilot_note.text = ""
 	_layout()
+	if _fx.configured():
+		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
 
 
 func _fill_actors(beat_id: String, line_id: String = "") -> void:
