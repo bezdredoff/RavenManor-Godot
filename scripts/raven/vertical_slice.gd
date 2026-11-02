@@ -13,7 +13,10 @@ const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const RuntimeDispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
 const Copy = preload("res://scripts/raven/raven_production_localization.gd")
+const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
 
+var preferences := Copy.new()
+var locale_selector: OptionButton
 var store := Store.new()
 var state := Snapshot.fresh()
 var step: Dictionary = {}
@@ -70,18 +73,30 @@ func _build_shell() -> void:
 	_add_button(footer, "Save", _save)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
+	locale_selector = OptionButton.new()
+	locale_selector.name = "RavenSliceLocale"
+	locale_selector.tooltip_text = "Language / Мова / Язык"
+	for code: String in Copy.SUPPORTED_LOCALES:
+		locale_selector.add_item({"ru": "Русский", "be": "Беларуская", "en": "English"}[code])
+	locale_selector.select(Copy.SUPPORTED_LOCALES.find(preferences.locale))
+	locale_selector.item_selected.connect(_switch_locale)
+	footer.add_child(locale_selector)
 
 
 func _render() -> void:
 	for child in body.get_children(): child.queue_free()
 	step = Director.next_step(state)
 	if step.get("kind") == "done":
-		var approved: Dictionary = RuntimeDispatch.next_scene(state, Copy.new().locale)
+		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
 		if not approved.is_empty():
 			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
 				"scene": approved["beatId"], "title": approved["title"], "config": approved}
 	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
-	body.add_child(_label(str(step.title), 20, Color("f0dfbd")))
+	var display_title: String = str(step.title)
+	if step.get("kind") == "vn":
+		var source: Dictionary = content.get("prologueScenes", {}).get(str(step.scene), content.vnScenes.get(str(step.scene), {}))
+		display_title = Copy.scene_title(str(source.get("beatId", "")), preferences.locale)
+	body.add_child(_label(display_title, 20, Color("f0dfbd"))
 	match str(step.kind):
 		"map","restore","clue":
 			body.add_child(_paragraph(str(step.body)))
@@ -97,14 +112,18 @@ func _render() -> void:
 func _render_vn() -> void:
 	var scene_id := str(step.scene)
 	var config: Dictionary = step["config"] if step.get("kind") == "vn_production" else \
-		content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
+		CatalogAdapter.for_legacy(content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {})), preferences.locale)
 	if vn_player == null or vn_player.scene.get("beatId", "") != config.beatId:
-		vn_player = VN.new(); vn_player.open(config)
+		vn_player = VN.new()
+		vn_player.open(config)
+	else:
+		# Language changes replace copy only, never rewind line or campaign cursor.
+		vn_player.scene = config
 	vn_view = VNGameView.new()
 	body.add_child(vn_view)
 	var line_ids: Array = config.get("lineIds", [])
 	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
-	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id)
+	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
 
 
 func _render_match3() -> void:
@@ -168,6 +187,13 @@ func _step_index(current: String) -> int:
 	for index in Director.STEPS.size():
 		if Director.STEPS[index].id == current: return index
 	return 0
+
+
+func _switch_locale(index: int) -> void:
+	if index < 0 or index >= Copy.SUPPORTED_LOCALES.size():
+		return
+	if preferences.set_locale(Copy.SUPPORTED_LOCALES[index]) == OK:
+		_render()
 
 
 func _save() -> void: store.save_campaign(state); _render()
