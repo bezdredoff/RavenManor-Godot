@@ -13,6 +13,7 @@ const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const StoryGraph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
 const Author = preload("res://addons/vn_studio/model/raven_story_authoring.gd")
+const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
@@ -97,7 +98,8 @@ static func fresh(project: Dictionary) -> Dictionary:
 		"stageSourceSha256": str(project.get("stagingSha", "")),
 		"castSourceSha256": str(project.get("castSha", "")),
 		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {},
-		"storyGraphPatches": {}, "authoredScenes": [], "authoredLines": []}
+		"storyGraphPatches": {}, "authoredScenes": [], "authoredLines": [],
+		"promotionSceneIdMap": {}}
 
 
 ## Immutable source line IDs for a scene; used for FX cross-scene validation.
@@ -154,6 +156,10 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 	var authored_error: String = Author.validate(project, draft)
 	if not authored_error.is_empty():
 		return authored_error
+	var promotion_error: String = Promotion.validate_mapping(project, draft,
+		draft.get("promotionSceneIdMap", {}))
+	if not promotion_error.is_empty():
+		return promotion_error
 	# VNS5-06A: route authoring is a separate SHA-locked review-only overlay.
 	var graph_patches: Variant = draft.get("storyGraphPatches", {})
 	if not graph_patches is Dictionary:
@@ -474,7 +480,38 @@ static func set_story_graph(project: Dictionary, draft: Dictionary, data: Dictio
 
 ## Bundles all existing draft categories, so a graph export never discards FX
 ## or staging silently; requires review and never writes to res://.
+static func set_promotion_map(project: Dictionary, draft: Dictionary, mapping: Dictionary) -> String:
+	var error: String = Promotion.validate_mapping(project, draft, mapping)
+	if not error.is_empty():
+		return error
+	if not draft.has("promotionSceneIdMap"):
+		draft["promotionSceneIdMap"] = {}
+	draft["promotionSceneIdMap"] = mapping.duplicate(true)
+	return ""
+
+
+static func promotion_plan(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var error: String = validate(project, draft)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	return Promotion.plan(project, draft)
+
+
+## Exports a review-only, fully remapped proposal with explicit unresolved
+## route/shot/save blockers. Does not apply any canonical files or runtime flags.
+static func export_promotion_review(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var result: Dictionary = promotion_plan(project, draft)
+	if not result.get("ok", false):
+		return result
+	var payload: String = JSON.stringify(result["bundle"], "\t") + "\n"
+	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/promotion_review")
+	var path: String = folder.path_join("raven-promotion-" + payload.sha256_text().substr(0, 24) + ".json")
+	return _write_new(path, payload, false)
+
+
 static func export_story_graph_candidate(project: Dictionary, draft: Dictionary) -> Dictionary:
+	if not draft.get("promotionSceneIdMap", {}).is_empty():
+		return {"ok": false, "error": "Promotion mappings need the complete promotion review export to prevent ID loss."}
 	var error: String = validate(project, draft)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
