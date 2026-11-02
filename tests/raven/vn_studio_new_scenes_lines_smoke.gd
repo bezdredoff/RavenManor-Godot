@@ -156,8 +156,13 @@ func _run() -> void:
 	assert(wd["stagePatches"][wizard_id]["backgroundId"] == plates[0]["backgroundId"])
 	assert(wd["stagePatches"][wizard_id]["lighting"] == plates[0]["lighting"])
 	assert(Store.validate(project, wd).is_empty())
-	assert(JSON.parse_string(JSON.stringify(wd))["stagePatches"][wizard_id] ==
-		wd["stagePatches"][wizard_id], "Wizard plate roundtrip must be lossless")
+	var roundtrip: Dictionary = JSON.parse_string(JSON.stringify(wd))
+	assert(Store.validate(project, roundtrip).is_empty(), "JSON review draft reopens validly")
+	var restored_shot: Dictionary = roundtrip["stagePatches"][wizard_id]
+	for key in ["sceneId", "backgroundId", "lighting", "roomState"]:
+		assert(restored_shot[key] == wd["stagePatches"][wizard_id][key],
+			"Wizard roundtrip must retain exact scene/plate keys")
+	assert(restored_shot["cast"].size() == 0 and int(restored_shot["visibleCount"]) == 0)
 	assert(not Store.add_scene(project, wd, "Invalid", "RU", speaker, "XX", plates[0]).get("ok", false))
 	assert(not Store.add_scene(project, wd, "Invalid", "RU", speaker, "02",
 		{"backgroundId": "BG-HALL", "lighting": "invalid", "roomState": "dusty"}).get("ok", false))
