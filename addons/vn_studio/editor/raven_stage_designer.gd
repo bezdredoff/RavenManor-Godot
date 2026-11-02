@@ -379,6 +379,15 @@ func _ready() -> void:
 	add_child(_status)
 
 
+func dock_controls(target: VBoxContainer) -> void:
+	# The same editor widgets can sit in the right inspector while the canvas
+	# remains in the central Stage. Standalone StageDesigner keeps its old layout.
+	for child in get_children():
+		if child == _canvas or child == _status or child == _browser:
+			continue
+		child.reparent(target)
+
+
 func _numeric(parent: Control, minimum: float, maximum: float, step: float, initial: float) -> SpinBox:
 	var spinner := SpinBox.new()
 	spinner.min_value = minimum

@@ -8,6 +8,8 @@ const RavenGraph = preload("res://addons/vn_studio/editor/raven_story_graph_view
 const PromotionView = preload("res://addons/vn_studio/editor/raven_promotion_review_view.gd")
 const LOCALES := ["ru", "be", "en"]
 const PANE_SETTING := "vn_studio/raven_scene_pane_width"
+const LINE_PANE_SETTING := "vn_studio/raven_line_pane_width"
+const STAGE_PANE_SETTING := "vn_studio/raven_stage_pane_width"
 
 var _project: Dictionary = {}
 var _draft: Dictionary = {}
@@ -23,6 +25,12 @@ var _scenes: ItemList
 var _lines: ItemList
 var _locale: OptionButton
 var _text_edit: TextEdit
+var _locale_edits: Dictionary = {}
+var _locale_status: Dictionary = {}
+var _title_edits: Dictionary = {}
+var _stage_column: VBoxContainer
+var _inspector: VBoxContainer
+var _advanced_actions: HFlowContainer
 var _heading: Label
 var _line_info: Label
 var _preview: RichTextLabel
@@ -57,6 +65,8 @@ var _workspace_tabs: TabContainer
 var _context_views: Array[RichTextLabel] = []
 var _asset_library: Control
 var _panel_split: HSplitContainer
+var _line_split: HSplitContainer
+var _stage_split: HSplitContainer
 
 
 func _ready() -> void:
@@ -81,7 +91,7 @@ func _build() -> void:
 	_workspace_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	add_child(_workspace_scroll)
 	var body := VBoxContainer.new()
-	body.custom_minimum_size.y = 720
+	body.custom_minimum_size.y = 440
 	body.size_flags_horizontal = SIZE_EXPAND_FILL
 	_workspace_scroll.add_child(body)
 	var heading := Label.new()
@@ -90,6 +100,13 @@ func _build() -> void:
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(heading)
 	var toolbar := sticky
+	_advanced_actions = HFlowContainer.new()
+	_advanced_actions.visible = false
+	body.add_child(_advanced_actions)
+	var exports_toggle := Button.new()
+	exports_toggle.text = "Экспорт…"
+	exports_toggle.pressed.connect(func(): _advanced_actions.visible = not _advanced_actions.visible)
+	toolbar.add_child(exports_toggle)
 	var new_scene_button := Button.new()
 	new_scene_button.text = "+ Сцена"
 	new_scene_button.tooltip_text = "Создать локальную draft-сцену с одной репликой. Не runtime."
@@ -111,26 +128,26 @@ func _build() -> void:
 	_export = Button.new()
 	_export.text = "Экспортировать JSON-кандидат"
 	_export.pressed.connect(_export_candidate)
-	toolbar.add_child(_export)
+	_advanced_actions.add_child(_export)
 	_export_stage = Button.new()
 	_export_stage.text = "Экспорт постановки JSON"
 	_export_stage.pressed.connect(_export_stage_candidate)
-	toolbar.add_child(_export_stage)
+	_advanced_actions.add_child(_export_stage)
 	_export_stage_v2 = Button.new()
 	_export_stage_v2.text = "Экспорт V2 review"
 	_export_stage_v2.tooltip_text = "Сохранить отдельный JSON-кандидат ориентации/props/layers в user://"
 	_export_stage_v2.pressed.connect(_export_stage_v2_candidate)
-	toolbar.add_child(_export_stage_v2)
+	_advanced_actions.add_child(_export_stage_v2)
 	_export_fx = Button.new()
 	_export_fx.text = "Экспорт FX review"
 	_export_fx.tooltip_text = "Локальный кандидат анимаций и постановки, не runtime"
 	_export_fx.pressed.connect(_export_fx_candidate)
-	toolbar.add_child(_export_fx)
+	_advanced_actions.add_child(_export_fx)
 	_export_graph = Button.new()
 	_export_graph.text = "Экспорт Story Map review"
 	_export_graph.tooltip_text = "No-overwrite candidate; канонические route gates неизменны"
 	_export_graph.pressed.connect(_export_graph_candidate)
-	toolbar.add_child(_export_graph)
+	_advanced_actions.add_child(_export_graph)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -167,12 +184,13 @@ func _build() -> void:
 	_build_authoring_dialogs()
 	var panel := HSplitContainer.new()
 	_panel_split = panel
+	panel.split_offset = 145
 	panel.size_flags_vertical = SIZE_EXPAND_FILL
 	panel.size_flags_horizontal = SIZE_EXPAND_FILL
 	body.add_child(panel)
 	var left := VBoxContainer.new()
 	_scene_panel = left
-	left.custom_minimum_size.x = 150
+	left.custom_minimum_size.x = 110
 	panel.add_child(left)
 	if Engine.is_editor_hint():
 		var settings := EditorInterface.get_editor_settings()
@@ -183,11 +201,17 @@ func _build() -> void:
 	_scenes.size_flags_vertical = SIZE_EXPAND_FILL
 	_scenes.item_selected.connect(_on_scene)
 	left.add_child(_scenes)
+	var line_split := HSplitContainer.new()
+	_line_split = line_split
+	line_split.split_offset = 175
+	line_split.size_flags_horizontal = SIZE_EXPAND_FILL
+	line_split.size_flags_vertical = SIZE_EXPAND_FILL
+	panel.add_child(line_split)
 	var middle := VBoxContainer.new()
 	_line_panel = middle
-	middle.custom_minimum_size.x = 195
-	middle.size_flags_horizontal = SIZE_EXPAND_FILL
-	panel.add_child(middle)
+	middle.custom_minimum_size.x = 135
+	middle.size_flags_horizontal = SIZE_FILL
+	line_split.add_child(middle)
 	_heading = Label.new()
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	middle.add_child(_heading)
@@ -195,51 +219,109 @@ func _build() -> void:
 	_lines.size_flags_vertical = SIZE_EXPAND_FILL
 	_lines.item_selected.connect(_on_line)
 	middle.add_child(_lines)
+	var stage_split := HSplitContainer.new()
+	_stage_split = stage_split
+	stage_split.split_offset = 390
+	stage_split.size_flags_horizontal = SIZE_EXPAND_FILL
+	stage_split.size_flags_vertical = SIZE_EXPAND_FILL
+	line_split.add_child(stage_split)
+	var stage_column := VBoxContainer.new()
+	_stage_column = stage_column
+	stage_column.custom_minimum_size.x = 390
+	stage_column.size_flags_horizontal = SIZE_FILL
+	stage_split.add_child(stage_column)
 	var editor := VBoxContainer.new()
-	editor.custom_minimum_size.x = 230
+	_inspector = editor
+	editor.custom_minimum_size.x = 215
 	editor.size_flags_horizontal = SIZE_EXPAND_FILL
-	panel.add_child(editor)
+	stage_split.add_child(editor)
+	if Engine.is_editor_hint():
+		var pane_settings := EditorInterface.get_editor_settings()
+		if pane_settings.has_setting(LINE_PANE_SETTING):
+			line_split.split_offset = clampi(int(pane_settings.get_setting(LINE_PANE_SETTING)), 125, 400)
+		if pane_settings.has_setting(STAGE_PANE_SETTING):
+			stage_split.split_offset = clampi(int(pane_settings.get_setting(STAGE_PANE_SETTING)), 300, 700)
+	line_split.dragged.connect(_on_line_pane_dragged)
+	stage_split.dragged.connect(_on_stage_pane_dragged)
 	_line_info = Label.new()
 	_line_info.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
-	editor.add_child(_line_info)
 	_workspace_tabs = TabContainer.new()
 	_workspace_tabs.size_flags_vertical = SIZE_EXPAND_FILL
 	_workspace_tabs.size_flags_horizontal = SIZE_EXPAND_FILL
 	editor.add_child(_workspace_tabs)
+	var inspector_scroll := ScrollContainer.new()
+	inspector_scroll.name = "Stage Inspector"
+	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	inspector_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_workspace_tabs.add_child(inspector_scroll)
+	var stage_controls := VBoxContainer.new()
+	stage_controls.custom_minimum_size.x = 260
+	inspector_scroll.add_child(stage_controls)
 	var director := VBoxContainer.new()
-	director.name = "Director"
+	director.name = "Translations"
 	director.size_flags_vertical = SIZE_EXPAND_FILL
 	_workspace_tabs.add_child(director)
-	var workspace := TabContainer.new()
-	workspace.size_flags_vertical = SIZE_EXPAND_FILL
-	workspace.size_flags_horizontal = SIZE_EXPAND_FILL
-	director.add_child(workspace)
+	director.add_child(_line_info)
 	var dialogue_column := VBoxContainer.new()
 	dialogue_column.name = "Диалог"
 	dialogue_column.size_flags_vertical = SIZE_EXPAND_FILL
-	workspace.add_child(dialogue_column)
+	director.add_child(dialogue_column)
 	_dialogue_scroll = ScrollContainer.new()
 	_dialogue_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
 	_dialogue_scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	_dialogue_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	_dialogue_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	dialogue_column.add_child(_dialogue_scroll)
 	var text_column := VBoxContainer.new()
+	text_column.custom_minimum_size.x = 525
 	text_column.size_flags_horizontal = SIZE_EXPAND_FILL
 	_dialogue_scroll.add_child(text_column)
-	_text_edit = TextEdit.new()
-	_text_edit.custom_minimum_size.y = 160
-	_text_edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
-	_text_edit.size_flags_vertical = SIZE_EXPAND_FILL
-	_text_edit.focus_entered.connect(_capture_undo)
-	_text_edit.text_changed.connect(_on_text_changed)
-	text_column.add_child(_text_edit)
+	var title_label := Label.new()
+	title_label.text = "Названия сцены · RU / BE / EN"
+	text_column.add_child(title_label)
+	var title_row := HBoxContainer.new()
+	text_column.add_child(title_row)
+	for language in LOCALES:
+		var title_edit := LineEdit.new()
+		title_edit.size_flags_horizontal = SIZE_EXPAND_FILL
+		title_edit.placeholder_text = language.to_upper() + " · нет перевода"
+		title_edit.focus_entered.connect(_capture_undo)
+		title_edit.text_changed.connect(_on_title_changed.bind(language))
+		title_row.add_child(title_edit)
+		_title_edits[language] = title_edit
+	var locale_row := HBoxContainer.new()
+	locale_row.size_flags_horizontal = SIZE_EXPAND_FILL
+	text_column.add_child(locale_row)
+	for language in LOCALES:
+		var column := VBoxContainer.new()
+		column.custom_minimum_size.x = 170
+		column.size_flags_horizontal = SIZE_EXPAND_FILL
+		locale_row.add_child(column)
+		var locale_label := Label.new()
+		locale_label.text = language.to_upper()
+		column.add_child(locale_label)
+		var edit := TextEdit.new()
+		edit.custom_minimum_size.y = 185
+		edit.wrap_mode = TextEdit.LINE_WRAPPING_BOUNDARY
+		edit.size_flags_vertical = SIZE_EXPAND_FILL
+		edit.focus_entered.connect(_capture_undo)
+		edit.text_changed.connect(_on_text_changed.bind(language))
+		column.add_child(edit)
+		_locale_edits[language] = edit
+		var status := Label.new()
+		status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+		column.add_child(status)
+		_locale_status[language] = status
+	_text_edit = _locale_edits["ru"]
 	_diff = Label.new()
 	_diff.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	text_column.add_child(_diff)
 	var visual_column := VBoxContainer.new()
 	visual_column.name = "Постановка"
 	visual_column.size_flags_vertical = SIZE_EXPAND_FILL
-	workspace.add_child(visual_column)
+	stage_column.add_child(visual_column)
+	var stage_label := Label.new()
+	stage_label.text = "STAGE · постановка и preview"
+	visual_column.add_child(stage_label)
 	# Tall art and multiple tool rows need vertical scrolling rather than
 	# clipping the asset controls and dialogue preview below the viewport.
 	_draft_stage_hint = Label.new()
@@ -260,6 +342,7 @@ func _build() -> void:
 	_stage_designer.stage_v2_modified.connect(_on_stage_v2_modified)
 	_stage_designer.stage_fx_modified.connect(_on_stage_fx_modified)
 	stage_contents.add_child(_stage_designer)
+	_stage_designer.dock_controls(stage_controls)
 	var visual_label := Label.new()
 	visual_label.text = "Фоны: точные состояния из каталога; недоступные — ART PENDING. Не игровой runtime."
 	visual_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -430,6 +513,16 @@ func _on_pane_dragged(offset: int) -> void:
 		EditorInterface.get_editor_settings().set_setting(PANE_SETTING, clampi(offset, 120, 420))
 
 
+func _on_line_pane_dragged(offset: int) -> void:
+	if Engine.is_editor_hint():
+		EditorInterface.get_editor_settings().set_setting(LINE_PANE_SETTING, clampi(offset, 125, 400))
+
+
+func _on_stage_pane_dragged(offset: int) -> void:
+	if Engine.is_editor_hint():
+		EditorInterface.get_editor_settings().set_setting(STAGE_PANE_SETTING, clampi(offset, 300, 700))
+
+
 func open_raven() -> void:
 	if _dirty:
 		_status.text = "Есть несохранённые изменения. Сначала сохраните Raven-черновик; перечитывание заблокировано."
@@ -479,8 +572,8 @@ func _scene_switch() -> void:
 		var loc: Dictionary = Store.localized(e, _draft, _language)
 		_lines.add_item("%s · %s" % [
 			str(e["id"]).get_slice("-L", 1),
-			str(loc["text"]).replace("\n", " ").left(36)])
-	_line_idx = 0
+			str(loc["text"]).replace("\n", " ").left(18)])
+	_line_idx = clampi(_line_idx, 0, maxi(entries.size() - 1, 0))
 	_line_render()
 	var authored: bool = Store.Author.is_authored_scene(_draft, id)
 	_stage_scroll.visible = true
@@ -509,8 +602,20 @@ func _line_render() -> void:
 	_lines.select(_line_idx)
 	var text_value: Dictionary = Store.localized(e, _draft, _language)
 	_suppress = true
-	_text_edit.text = str(text_value["text"])
-	_text_edit.editable = not _blocked
+	for language in LOCALES:
+		var localized: Dictionary = Store.localized(e, _draft, language)
+		var edit: TextEdit = _locale_edits[language]
+		edit.text = "" if localized["fallback"] else str(localized["text"])
+		edit.placeholder_text = "RU fallback: " + str(localized["text"]).left(90) if localized["fallback"] else ""
+		edit.editable = not _blocked
+		_locale_status[language].text = "Не переведено · RU fallback" if localized["fallback"] else "Перевод есть / оригинал"
+	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
+	var authored: bool = Store.Author.is_authored_scene(_draft, str(scene["sceneId"]))
+	for language in LOCALES:
+		var title_edit: LineEdit = _title_edits[language]
+		var title_value: Variant = scene.get("title", {}).get(language)
+		title_edit.text = str(title_value) if title_value != null else ""
+		title_edit.editable = authored and not _blocked
 	_suppress = false
 	_line_info.text = "%s\nГоворящий: %s · тип: %s\n%s" % [
 		str(e["id"]), str(e.get("speakerId", "")),
@@ -523,8 +628,7 @@ func _line_render() -> void:
 	_update_diff()
 	_sync_dialogue_preview()
 	# A line click changes only editor FX preview time origin; never game progress.
-	if not Store.Author.is_authored_scene(_draft, str(e["sceneId"])):
-		_stage_designer.set_selected_line(str(e["id"]))
+	_stage_designer.set_selected_line(str(e["id"]))
 	_refresh_context()
 
 
@@ -552,7 +656,10 @@ func _refresh_preview() -> void:
 	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var id: String = str(scene["sceneId"])
 	if Store.Author.is_authored_scene(_draft, id):
-		_preview.text = "ART PENDING · новый sceneId " + id + ". Нет утверждённого фона, trigger или runtime. Подключение — отдельный promotion PR."
+		var draft_shot: Dictionary = Store.effective_stage(_project, _draft, id)
+		_preview.text = "DRAFT · %s / %s / %s · %d персонажей. Нет утверждённого trigger или runtime." % [
+			str(draft_shot.get("backgroundId", "")), str(draft_shot.get("lighting", "")),
+			str(draft_shot.get("roomState", "")), draft_shot.get("cast", []).size()]
 		return
 	var shot: Dictionary = Store.effective_stage(_project, _draft, id)
 	var trigger: Dictionary = _project["routes"][id]
@@ -572,6 +679,7 @@ func _refresh_preview() -> void:
 
 func _on_scene(index: int) -> void:
 	_scene_idx = index
+	_line_idx = 0
 	_scene_switch()
 
 
@@ -584,7 +692,22 @@ func _on_locale(index: int) -> void:
 	_language = LOCALES[index]
 	if _project.is_empty():
 		return
-	_scene_switch()
+	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
+	var title: Dictionary = scene.get("title", {})
+	_heading.text = "%s · %s\nСтатус: %s" % [str(scene["sceneId"]),
+		str(title.get(_language, title.get("ru", ""))) if title.get(_language) != null else str(title.get("ru", "")),
+		str(scene.get("status", ""))]
+	var selected_line: String = str(_current_entry().get("id", ""))
+	_lines.clear()
+	for entry in Store.entries_for(_project, _draft, str(scene["sceneId"])):
+		var loc: Dictionary = Store.localized(entry, _draft, _language)
+		_lines.add_item("%s · %s" % [str(entry["id"]).get_slice("-L", 1), str(loc["text"]).replace("\n", " ").left(18)])
+	for i in range(_lines.item_count):
+		if str(Store.entries_for(_project, _draft, str(scene["sceneId"]))[i]["id"]) == selected_line:
+			_line_idx = i
+			break
+	_line_render()
+	_refresh_preview()
 
 
 func _capture_undo() -> void:
@@ -594,16 +717,39 @@ func _capture_undo() -> void:
 		_refresh_buttons()
 
 
-func _on_text_changed() -> void:
+func _on_text_changed(language: String = "ru") -> void:
 	if _suppress or _blocked or _project.is_empty():
 		return
 	var e: Dictionary = _current_entry()
 	if e.is_empty():
 		return
-	Store.edit(_draft, str(e["id"]), _language, _text_edit.text)
+	Store.edit(_draft, str(e["id"]), language, _locale_edits[language].text)
+	_locale_status[language].text = "Не переведено · RU fallback" if language != "ru" and _locale_edits[language].text.is_empty() else "Перевод есть / оригинал"
 	_dirty = true
 	_update_diff()
 	_sync_dialogue_preview()
+	_refresh_buttons()
+
+
+func _on_title_changed(value: String, language: String) -> void:
+	if _suppress or _blocked or _project.is_empty():
+		return
+	var scene_id: String = str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"])
+	if not Store.Author.is_authored_scene(_draft, scene_id):
+		return
+	for scene in _draft.get("authoredScenes", []):
+		if scene.get("sceneId", "") == scene_id:
+			scene["title"][language] = value if language == "ru" or not value.is_empty() else null
+			break
+	_dirty = true
+	_refresh_scene_items()
+	_scenes.select(_scene_idx)
+	var current_scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
+	var title: Dictionary = current_scene.get("title", {})
+	_heading.text = "%s · %s\nСтатус: %s" % [scene_id,
+		str(title.get(_language, title.get("ru", ""))) if title.get(_language) != null else str(title.get("ru", "")),
+		str(current_scene.get("status", ""))]
+	_update_diff()
 	_refresh_buttons()
 
 

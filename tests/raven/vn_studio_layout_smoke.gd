@@ -28,12 +28,17 @@ func _run() -> void:
 	assert(raven._stage_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
 	assert(raven._stage_designer.get_parent().get_parent() == raven._stage_scroll)
 	assert(raven._scene_panel.visible and raven._line_panel.visible)
-	assert(raven._workspace_tabs.get_tab_count() == 5)
+	assert(raven._workspace_tabs.get_tab_count() == 6)
+	assert(raven._stage_column.visible, "Stage remains visible across inspector tabs")
+	assert(raven._workspace_tabs.get_tab_title(0) == "Stage Inspector")
+	assert(raven._line_info.get_parent().name == "Translations")
+	assert(raven._stage_designer._canvas != null)
+	assert(raven._stage_designer._background.get_parent() != raven._stage_designer)
 	for width in [800, 1024, 1366]:
 		studio.size = Vector2(width, 640)
 		await process_frame
 		assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
-	for tab_index in range(5):
+	for tab_index in range(6):
 		raven._workspace_tabs.current_tab = tab_index
 		assert(raven.selected_context()["sceneId"] == "RM-BEAT-00-01")
 	assert(raven._asset_library._scene_label.text.contains("RM-BEAT-00-01"))

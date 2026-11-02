@@ -381,10 +381,17 @@
     },
     {
       "id": "VNS5-07A",
+      "status": "merged",
+      "owner": "Codex",
+      "updated": "2026-11-02",
+      "evidence": "PR #122 merged into main 97a3d16 on 2026-11-02. PR-head full CI run 41507778044 succeeded. Native owner acceptance remains open; no canonical story/runtime promotion."
+    },
+    {
+      "id": "VNS5-07B",
       "status": "PR_review",
       "owner": "Codex",
       "updated": "2026-11-02",
-      "evidence": "Issue #121 PR1 implementation from main 23edbc4. Background render order and draft-only authored scene staging with exact catalog refs, 0–3 cast, pose/emotion/layout, SHA-locked draft and no-loss Story Map review export. Targeted Godot background and new-scene smoke passed; code-plan and dashboard validators passed. Full local check.ps1 blocked by existing no-overwrite user:// migration export; Windows dashboard unittest has platform encoding/symlink limitations. Independent PR CI and native Windows visual/interaction QA pending; no runtime/canonical changes or owner acceptance claimed."
+      "evidence": "VNS5-07B branch from merged main 97a3d16. Native Stage is persistent in center with stage controls in right inspector; scene/line lists on left, resizable/collapsible panes, compact export actions, parallel RU/BE/EN fields and draft-scene titles, stable lineId. Reference local HTML v5 handoff found in C:/git. Windows Godot 4.7.2 UI was visually inspected at 1154x680 with main screen maximized; background and inspector visible. Full local check.ps1 passed with isolated APPDATA; targeted new-scene/translation and promotion smokes passed; code-plan and dashboard checks passed. PR CI and owner native QA at 800x640, 1024x640, 1366x768 pending; no story/runtime/save changes."
     }
   ],
   "rules": [
