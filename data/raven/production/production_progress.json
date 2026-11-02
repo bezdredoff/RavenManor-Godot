@@ -62,9 +62,16 @@
     {
       "id": "VNS5-06D2B",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06d2b-controlled-release-staging on main 7f4b079046197ec8bac700e5db3d924342d68b2a. Enforces exact Godot/D1-CLI/D2A source hash chain and immutable rollback/decision acknowledgments; creates external locked review candidate of 4 canonical narrative JSON and append-only foundation_catalog.storyBeats, with 7 exact source rollback backups and non-activation manifest. No canonical, game/save/UPDS writes and no actual owner approval. New synthetic tests include tamper, incomplete blocker/ID route review, nonruntime gates, output path/traversal/overwrite. Check.sh, docs and backlog updated. PR CI and owner review pending; real playable integration remains VNS5-06D2C. Draft PR #119 https://github.com/bezdredoff/RavenManor-Godot/pull/119, implementation head 29136550018945246008ca6454f8a2775534bf29 passed full independent CI #41484648111 (new positive/negative Python release staging test, Raven/Godot checks, Web export, dashboard, Room Builder). Both post-merge main runs #41483205220/#41483205927 succeeded. This evidence-only commit triggers latest-head CI; owner approval/actual live save migration and scene activation remain open."
+      "evidence": "Implementation branch code/vns5-06d2b-controlled-release-staging on main 7f4b079046197ec8bac700e5db3d924342d68b2a. Enforces exact Godot/D1-CLI/D2A source hash chain and immutable rollback/decision acknowledgments; creates external locked review candidate of 4 canonical narrative JSON and append-only foundation_catalog.storyBeats, with 7 exact source rollback backups and non-activation manifest. No canonical, game/save/UPDS writes and no actual owner approval. New synthetic tests include tamper, incomplete blocker/ID route review, nonruntime gates, output path/traversal/overwrite. Check.sh, docs and backlog updated. PR CI and owner review pending; real playable integration remains VNS5-06D2C. Draft PR #119 https://github.com/bezdredoff/RavenManor-Godot/pull/119, implementation head 29136550018945246008ca6454f8a2775534bf29 passed full independent CI #41484648111 (new positive/negative Python release staging test, Raven/Godot checks, Web export, dashboard, Room Builder). Both post-merge main runs #41483205220/#41483205927 succeeded. This evidence-only commit triggers latest-head CI; owner approval/actual live save migration and scene activation remain open. PR #119 merged into main 4fc37d8603d277a8aa4a3a49a2cd009d0c55209d, final-head CI #41485359115 success, post-merge main CI #41490305657/#41490308902 both success; native owner acceptance and real runtime still unapproved."
+    },
+    {
+      "id": "VNS5-06D2C",
+      "owner": "ChatGPT",
+      "status": "in_progress",
+      "updated": "2026-11-02",
+      "evidence": "Implementation branch code/vns5-06d2c-runtime-gated-dispatch after merged #119. Adds pure canonical-only RavenVNRuntimeDispatch, explicit runtime_approved+approvedRuntime+unproposed gate; foundation storyBeats save ID; known scene_complete/first_clear, strict all RU/BE/EN, accepted background art with res path, exact portrait art and manualReview=false cues; post-original-RM-VS-01 vertical_slice integration reuses existing RavenVNPlayer, RavenVNGameView, reducer and saving after completion. Current data has no approved new scenes: runtime unchanged. Synthetic Godot smoke uses cloned catalogs to test positive RU/BE/EN, art/route/line/cue denials, reducer completion/idempotence and legacy save projection; CI and owner QA pending. Does not enable world map/branch/Match3 route scheduler."
     },
     {
       "id": "GFX-05-05",
