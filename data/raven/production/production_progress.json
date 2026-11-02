@@ -20,9 +20,16 @@
     {
       "id": "VNS5-06A",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "VNS5-06A review-only Story Map implementation from main be793b37be0ad8f279182ab461230cbe311e029b. Native Godot GraphEdit of 28 real Raven scenes + actual gate dependencies. Typed draft-only scene, choice (A/B/C + existing source lineId), known Match-3 links. SHA-locked route source; no-loss user:// review export, UI Undo/Redo, negatives and scripts/check.sh. No canonical routes/dialogues, runtime, saves or approved art modified. VNS5-06B new scenes/lines, playable branching and native desktop Editor visual QA pending. Independent CI not yet verified. Draft PR #113 https://github.com/bezdredoff/RavenManor-Godot/pull/113. First run 41440902075 failed due to legacy layout assertions for removed text placeholder; corrected test to verify GraphEdit. Full independent PR-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41441192327 passed scripts/check.sh including VNS5-06A and classic UPDS/Raven tests, Web export and dashboard checks. This evidence-only commit will trigger new final-head CI, still to verify. Owner Windows Editor QA + review/merge and VNS5-06B future scene/line authoring remain open."
+      "evidence": "VNS5-06A review-only Story Map implementation from main be793b37be0ad8f279182ab461230cbe311e029b. Native Godot GraphEdit of 28 real Raven scenes + actual gate dependencies. Typed draft-only scene, choice (A/B/C + existing source lineId), known Match-3 links. SHA-locked route source; no-loss user:// review export, UI Undo/Redo, negatives and scripts/check.sh. No canonical routes/dialogues, runtime, saves or approved art modified. VNS5-06B new scenes/lines, playable branching and native desktop Editor visual QA pending. Independent CI not yet verified. Draft PR #113 https://github.com/bezdredoff/RavenManor-Godot/pull/113. First run 41440902075 failed due to legacy layout assertions for removed text placeholder; corrected test to verify GraphEdit. Full independent PR-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41441192327 passed scripts/check.sh including VNS5-06A and classic UPDS/Raven tests, Web export and dashboard checks. This evidence-only commit will trigger new final-head CI, still to verify. Owner Windows Editor QA + review/merge and VNS5-06B future scene/line authoring remain open. PR #113 merged main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Final-head PR CI 41441683149 success. Manual Godot Editor UX QA, actual branch promotion and owner feature acceptance remain open, not accepted."
+    },
+    {
+      "id": "VNS5-06B",
+      "owner": "ChatGPT",
+      "status": "in_progress",
+      "updated": "2026-11-02",
+      "evidence": "Implementation branch code/vns5-06b-author-new-scenes-lines from main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Added pure Raven story authoring model: local draft-only new scene/line IDs, RU text and registered speakers, optional existing-draft schema fields, new scene/line native UI, draft Story Map preview and links, SHA locked no-loss review export preserving text/stage/FX/graph changes, existing ID/locale validation, Godot smoke. 28 original scenes and 280 lines remain unchanged. Independent PR-head CI, native Windows UX and owner acceptance still pending; full promotion and playable branching excluded."
     },
     {
       "id": "GFX-05-05",
