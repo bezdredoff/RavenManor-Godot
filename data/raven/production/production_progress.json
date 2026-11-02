@@ -754,8 +754,11 @@
       "id": "PROC-DASH-V2",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "status": "proposed",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation."
+      "status": "in_progress",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation. Dashboard v2 client/generator/test changes staged in PR #137 second commit to support reconciled status vocabulary and independently show art approval, implementation, QA. CI fresh head pending; manual phone browser QA not claimed.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     }
   ],
   "rules": [

@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-02 · Dashboard v2 source-aware UI (PR #137 follow-up commit)
+
+The dashboard generator supports new `superseded` / `not_planned` statuses and separate implementation, QA and owner approval axes. The UI defaults to open work, supports all/archived/manual-QA/art filters, and reports 26/26 approved backgrounds and 62/62 approved character frames from exact canonical catalogs. Merged PR/automated tests never automatically equal full device QA. The source-of-truth `production_progress.json` remains required in this change; generated `dashboard/status.json` is not committed. CI must verify on final PR head; manual native/mobile acceptance is still pending.
+
+
 ## 2026-11-02 · owner-approved reconciliation after main@ea4fc3552c7a (review candidate)
 
 Owner reconfirmed **all 26 imported VN background images and all 62 imported character frames as approved art**. This is a documented art decision, *not* a claim that full scenes, mixed actor pose/emotion combinations, native UI or physical device QA are accepted. Every authored VN beat has an exact present background (28/28), while BG-CORRIDOR has zero authored VN use and is not scheduled for generation. There are 21 actor staging combinations without an exact matching pose/emotion frame; existing approved fallback stays until a separate review.
