@@ -5,6 +5,7 @@ signal mapping_modified(mapping: Dictionary)
 signal export_requested
 
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
 var _project: Dictionary = {}
 var _draft: Dictionary = {}
 var _rows: VBoxContainer
@@ -87,7 +88,7 @@ func _save_mapping(source: String, raw_target: String) -> void:
 		next[source] = target
 	if next == _draft.get("promotionSceneIdMap", {}):
 		return
-	var error: String = Store.Promotion.validate_mapping(_project, _draft, next)
+	var error: String = Promotion.validate_mapping(_project, _draft, next)
 	if not error.is_empty():
 		_summary.text = "ID не принят: " + error + "\nТекущее сопоставление не изменено."
 		return
