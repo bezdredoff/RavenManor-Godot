@@ -889,6 +889,14 @@ func _export_four_registry_review(manifest: Dictionary) -> void:
 func _on_graph_scene_focus(scene_id: String) -> void:
 	if _blocked or _project.is_empty():
 		return
+	# A GraphNode click emits during GUI input dispatch. Rebuilding the graph
+	# synchronously here could free the node before its click event finishes.
+	call_deferred("_apply_graph_scene_focus", scene_id)
+
+
+func _apply_graph_scene_focus(scene_id: String) -> void:
+	if _blocked or _project.is_empty():
+		return
 	var scenes: Array = Store.scene_records(_project, _draft)
 	for index in range(scenes.size()):
 		if str(scenes[index].get("sceneId", "")) == scene_id:

@@ -156,7 +156,9 @@ static func build(project: Dictionary, draft: Dictionary) -> Dictionary:
 				target = target_node
 			if nodes.has(target):
 				connections.append({"from": scene_id, "to": target,
-					"kind": "draft", "label": str(edge.get("kind")) + ": " + str(edge.get("label"))})
+					"kind": "draft", "edgeId": str(edge.get("id", "")),
+					"sourceSceneId": scene_id,
+					"label": str(edge.get("kind")) + ": " + str(edge.get("label"))})
 	return {"nodes": nodes, "edges": connections}
 
 
@@ -180,3 +182,24 @@ static func neighborhood(graph: Dictionary, focus_id: String) -> Dictionary:
 		if nodes.has(edge["from"]) and nodes.has(edge["to"]):
 			subset.append(edge)
 	return {"nodes": nodes, "edges": subset}
+
+
+## Projection-only hit testing. These metadata keys are never written to draft JSON.
+## Parallel A/B/C lines share one GraphEdit visual cable: the UI must present
+## every distinct, stable edge ID rather than guessing which branch was clicked.
+static func draft_ids_for_connection(edges: Array, from_id: String,
+		to_id: String, active_source: String) -> Array[String]:
+	var matches: Array[String] = []
+	if from_id != active_source:
+		return matches
+	for edge in edges:
+		if not edge is Dictionary or edge.get("kind") != "draft":
+			continue
+		if edge.get("from", "") != from_id or edge.get("to", "") != to_id:
+			continue
+		if edge.get("sourceSceneId", "") != active_source:
+			continue
+		var edge_id: String = str(edge.get("edgeId", ""))
+		if not edge_id.is_empty() and not matches.has(edge_id):
+			matches.append(edge_id)
+	return matches

@@ -131,6 +131,33 @@ func _run() -> void:
 	widget._on_update()
 	assert(widget._overlay["edges"][-1]["id"] == added_id)
 	assert(widget._overlay["edges"][-1]["label"] == "Исправленная подпись")
+	# VNS5-07C2: Graph projection retains immutable, stable draft IDs, so a
+	# clicked wire can resolve its authored edge instead of guessing by target.
+	var visible_ids: Array[String] = Graph.draft_ids_for_connection(
+		widget._visible_edges, source, third, source)
+	assert(visible_ids.size() == 2, "Choice A/C share a visual wire but are distinct")
+	assert(visible_ids.has(added_id))
+	assert(Graph.draft_ids_for_connection(widget._visible_edges, source, third, second).is_empty())
+	assert(Graph.draft_ids_for_connection(widget._visible_edges, "gate:" + source,
+		source, source).is_empty(), "Canonical gates are not draft edges")
+	# Disambiguation must open the *selected* stable edge in the editor.
+	var popup_index: int = visible_ids.find(added_id)
+	widget._popup_edge_ids = visible_ids
+	widget._on_edge_popup_selected(popup_index)
+	assert(widget._editing_edge == 3)
+	assert(widget._label.text == "Исправленная подпись")
+	# Canonical wire selection cannot expose a writable/removable draft.
+	var canonical_edge: Dictionary = {}
+	for rendered in widget._visible_edges:
+		if rendered.get("kind", "") == "canonical":
+			canonical_edge = rendered
+			break
+	assert(not canonical_edge.is_empty())
+	widget._select_graph_connection({
+		"from_node": widget._name_map[canonical_edge["from"]],
+		"to_node": widget._name_map[canonical_edge["to"]]
+	})
+	assert(widget._editing_edge == -1 and widget._update.disabled and widget._remove.disabled)
 	# Invalid source and duplicate choice fail without silently changing any draft.
 	previous_size = widget._overlay["edges"].size()
 	widget._on_connection_request(StringName(widget._name_map[third]), 0,

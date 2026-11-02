@@ -755,12 +755,29 @@
       "description": "Make Raven Story Map scene selection, draft route creation via GraphEdit ports and edit/remove of draft edges understandable without modifying canonical triggers.",
       "deliverable": "Node click synchronized with Director; draft port drag to scene/Match3; choice A/B/C checkpoint selection; selected edge inspector with stable-ID update; negative/safety tests and runbook.",
       "acceptance": "Native Godot 4.7.2 owner QA: node selected on first click, scene/choice A/B drafts connected with drag, selected edge label/target editable and removable; save/reopen/export retain proposal; canonical routes, gameplay and save unchanged.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07B"
       ],
       "graphicsDependencies": [],
       "source": "Issue #121 owner QA, 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07C2",
+      "title": "VN Studio v5: direct graph wire selection and unambiguous branch inspector",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "S",
+      "description": "Click rendered Story Map draft connections to inspect/edit stable edge IDs; explicitly disambiguate parallel A/B/C edges sharing one visual wire, protect canonical gate lines and defer graph rebuild on node select.",
+      "deliverable": "GraphEdit nearest-wire hit test, ephemeral edge IDs in Graph.build, popup of parallel choice IDs, inspector sync and readonly protections; synthetic regression test and manual runbook.",
+      "acceptance": "Windows Godot 4.7.2: clicking single draft wire selects its edge, A/C overlapping cable opens exact-ID chooser, canonical wire cannot be edited, saved draft survives reopen and no story/runtime source changes; CI success and manual viewport UX QA.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07C1"
+      ],
+      "graphicsDependencies": [],
+      "source": "Issue #121, merged PR #124, 2026-11-02",
       "requiresHumanAcceptance": true
     }
   ]
