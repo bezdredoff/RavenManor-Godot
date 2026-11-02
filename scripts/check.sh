@@ -10,6 +10,7 @@ python3 "$ROOT/scripts/raven/tools/build_production_dashboard.py" --check
 python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py scripts/raven/tools/test_pr_governance.py scripts/raven/tools/test_audit_upds_vn.py
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_contract.py'
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_promotion_staging.py'
+python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_release_readiness.py'
 worklist_check="$(mktemp)"
 python3 "$ROOT/scripts/raven/tools/export_translation_worklist.py" --output "$worklist_check"
 rm -f "$worklist_check"
@@ -54,6 +55,7 @@ for script in core/save_storage.gd raven/raven_ids.gd raven/raven_snapshot.gd ra
 	run_check "Parse $script" '' --check-only --script "res://scripts/$script"
 done
 run_check 'Raven foundation smoke' 'Raven Manor foundation smoke passed' --script res://tests/raven/raven_foundation_smoke.gd --quit-after 120
+run_check 'VNS5-06D2A save & rollback rehearsal' 'Raven VN VNS5-06D2A save and rollback projection smoke passed' --script res://tests/raven/vn_release_save_rehearsal_smoke.gd --quit-after 240
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
 run_check 'Prototype Lab smoke' 'Raven Manor Prototype Lab smoke passed' --script res://tests/raven/prototype_lab_smoke.gd --quit-after 120
 run_check 'UPDS engine port parity smoke' 'Raven Manor UPDS core reuse smoke passed' --script res://tests/raven/upds_core_reuse_smoke.gd --quit-after 120
