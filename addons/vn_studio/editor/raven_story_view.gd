@@ -9,7 +9,9 @@ const PromotionView = preload("res://addons/vn_studio/editor/raven_promotion_rev
 const LOCALES := ["ru", "be", "en"]
 const PANE_SETTING := "vn_studio/raven_scene_pane_width"
 const LINE_PANE_SETTING := "vn_studio/raven_line_pane_width"
-const STAGE_PANE_SETTING := "vn_studio/raven_stage_pane_width"
+# v2 deliberately replaces the old narrow 390px default saved by VNS5-07B.
+# Any user-adjusted width in the new layout remains persistent.
+const STAGE_PANE_SETTING := "vn_studio/raven_stage_pane_width_v2"
 
 var _project: Dictionary = {}
 var _draft: Dictionary = {}
@@ -58,6 +60,8 @@ var _scene_panel: Control
 var _line_panel: Control
 var _stage_scroll: ScrollContainer
 var _workspace_scroll: ScrollContainer
+var _workspace_body: VBoxContainer
+var _story_scroll: ScrollContainer
 var _dialogue_scroll: ScrollContainer
 var _undo_button: Button
 var _redo_button: Button
@@ -91,9 +95,15 @@ func _build() -> void:
 	_workspace_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	add_child(_workspace_scroll)
 	var body := VBoxContainer.new()
+	_workspace_body = body
 	body.custom_minimum_size.y = 440
 	body.size_flags_horizontal = SIZE_EXPAND_FILL
+	body.size_flags_vertical = SIZE_EXPAND_FILL
 	_workspace_scroll.add_child(body)
+	# ScrollContainer does not distribute spare vertical space to its content.
+	# Keep the workspace body at least as tall as the visible scrolling viewport,
+	# so the scene/line lists, Stage and inspector really fill the Godot tab.
+	_workspace_scroll.resized.connect(_sync_workspace_height)
 	var heading := Label.new()
 	heading.text = "Raven Manor · 28 исходных сцен / 280 исходных реплик + локальные черновики"
 	heading.add_theme_font_size_override("font_size", 17)
@@ -221,26 +231,26 @@ func _build() -> void:
 	middle.add_child(_lines)
 	var stage_split := HSplitContainer.new()
 	_stage_split = stage_split
-	stage_split.split_offset = 390
+	stage_split.split_offset = 680
 	stage_split.size_flags_horizontal = SIZE_EXPAND_FILL
 	stage_split.size_flags_vertical = SIZE_EXPAND_FILL
 	line_split.add_child(stage_split)
 	var stage_column := VBoxContainer.new()
 	_stage_column = stage_column
 	stage_column.custom_minimum_size.x = 390
-	stage_column.size_flags_horizontal = SIZE_FILL
+	stage_column.size_flags_horizontal = SIZE_EXPAND_FILL
 	stage_split.add_child(stage_column)
 	var editor := VBoxContainer.new()
 	_inspector = editor
-	editor.custom_minimum_size.x = 215
-	editor.size_flags_horizontal = SIZE_EXPAND_FILL
+	editor.custom_minimum_size.x = 300
+	editor.size_flags_horizontal = SIZE_FILL
 	stage_split.add_child(editor)
 	if Engine.is_editor_hint():
 		var pane_settings := EditorInterface.get_editor_settings()
 		if pane_settings.has_setting(LINE_PANE_SETTING):
 			line_split.split_offset = clampi(int(pane_settings.get_setting(LINE_PANE_SETTING)), 125, 400)
 		if pane_settings.has_setting(STAGE_PANE_SETTING):
-			stage_split.split_offset = clampi(int(pane_settings.get_setting(STAGE_PANE_SETTING)), 300, 700)
+			stage_split.split_offset = clampi(int(pane_settings.get_setting(STAGE_PANE_SETTING)), 390, 900)
 	line_split.dragged.connect(_on_line_pane_dragged)
 	stage_split.dragged.connect(_on_stage_pane_dragged)
 	_line_info = Label.new()
@@ -334,6 +344,7 @@ func _build() -> void:
 	_stage_scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	_stage_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	visual_column.add_child(_stage_scroll)
+	_stage_scroll.resized.connect(_fit_stage_preview)
 	var stage_contents := VBoxContainer.new()
 	stage_contents.size_flags_horizontal = SIZE_EXPAND_FILL
 	_stage_scroll.add_child(stage_contents)
@@ -360,10 +371,12 @@ func _build() -> void:
 	_asset_library.custom_minimum_size.x = 230
 	library_scroll.add_child(_asset_library)
 	var story_scroll := ScrollContainer.new()
+	_story_scroll = story_scroll
 	story_scroll.name = "Story Map"
 	story_scroll.size_flags_vertical = SIZE_EXPAND_FILL
 	story_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
 	_workspace_tabs.add_child(story_scroll)
+	story_scroll.resized.connect(_sync_story_map_height)
 	_raven_graph = RavenGraph.new()
 	_raven_graph.custom_minimum_size.x = 430
 	_raven_graph.graph_modified.connect(_on_graph_modified)
@@ -396,6 +409,40 @@ func _build() -> void:
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
 	add_child(_path)
+	# The first nonzero viewport dimensions arrive after Godot's first layout.
+	call_deferred("_sync_workspace_height")
+	call_deferred("_sync_story_map_height")
+	call_deferred("_fit_stage_preview")
+
+
+func _sync_workspace_height() -> void:
+	if _workspace_scroll == null or _workspace_body == null:
+		return
+	var available: float = _workspace_scroll.size.y
+	if available > 0.0:
+		_workspace_body.custom_minimum_size.y = maxf(440.0, available)
+
+
+func _sync_story_map_height() -> void:
+	if _story_scroll == null or _raven_graph == null:
+		return
+	# A GraphEdit inside a ScrollContainer normally stays at its minimum
+	# 310px height. Fill the Inspector when tall, but retain scrolling on
+	# short windows for the edge fields beneath the canvas.
+	if _story_scroll.size.y > 0.0:
+		_raven_graph.custom_minimum_size.y = _story_scroll.size.y
+
+
+func _fit_stage_preview() -> void:
+	if _stage_scroll == null or _stage_designer == null:
+		return
+	if _stage_scroll.size.y <= 0.0 or _stage_scroll.size.x <= 0.0:
+		return
+	# Only visual Editor bounds: the game's logical frame and all normalized
+	# positions remain unchanged. Reserve space for Stage status and captions.
+	_stage_designer.fit_docked_preview(
+		Vector2(maxf(150.0, _stage_scroll.size.x - 24.0),
+			maxf(200.0, _stage_scroll.size.y - 165.0)))
 
 
 func _build_authoring_dialogs() -> void:
@@ -521,7 +568,7 @@ func _on_line_pane_dragged(offset: int) -> void:
 
 func _on_stage_pane_dragged(offset: int) -> void:
 	if Engine.is_editor_hint():
-		EditorInterface.get_editor_settings().set_setting(STAGE_PANE_SETTING, clampi(offset, 300, 700))
+		EditorInterface.get_editor_settings().set_setting(STAGE_PANE_SETTING, clampi(offset, 390, 900))
 
 
 func open_raven() -> void:
