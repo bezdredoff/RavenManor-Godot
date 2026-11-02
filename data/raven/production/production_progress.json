@@ -441,6 +441,20 @@
       "status": "PR_review",
       "updated": "2026-11-02",
       "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md."
+    },
+    {
+      "id": "CODE-04-03",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "updated": "2026-11-02",
+      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md."
+    },
+    {
+      "id": "RM-GAP-013",
+      "owner": "ChatGPT",
+      "status": "in_progress",
+      "updated": "2026-11-02",
+      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI added but not yet independently executed. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI."
     }
   ],
   "rules": [
