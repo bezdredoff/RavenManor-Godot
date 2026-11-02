@@ -4,6 +4,7 @@ const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const Designer = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
+const Timeline = preload("res://addons/vn_studio/editor/raven_fx_timeline.gd")
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -35,6 +36,53 @@ func _run() -> void:
 	assert(StageFx.sample(fx["cues"][0], 500)["scale"].x > 1.0)
 	assert(StageFx.sample(fx["cues"][0], 2000)["scale"] == Vector2.ONE)
 	assert(StageFx.sample(fx["cues"][0], 500) == StageFx.sample(fx["cues"][0], 500))
+	# VNS5-07F5: three phase presets use legacy v1 FX and remain editor-only.
+	var phases: Dictionary = StageFx.fresh(scene_id)
+	for phase in StageFx.PHASES:
+		phases = StageFx.new_phase_cue(phases, "background", "background", phase)
+	assert(StageFx.validate(stage, v2, phases).is_empty())
+	assert(phases["cues"].size() == 3)
+	assert(phases["cues"][0]["phase"] == "enter")
+	assert(phases["cues"][1]["phase"] == "idle")
+	assert(phases["cues"][2]["phase"] == "exit")
+	assert(float(StageFx.sample(phases["cues"][0], 0)["alpha"]) < 0.01)
+	assert(float(StageFx.sample(phases["cues"][0], 900)["alpha"]) == 1.0)
+	assert(float(StageFx.sample(phases["cues"][2], 9000)["alpha"]) < 0.01)
+	assert(StageFx.sample(phases["cues"][1], 900)["scale"] == Vector2.ONE)
+	var invalid_phase: Dictionary = phases.duplicate(true)
+	invalid_phase["cues"][0]["phase"] = "execute_code"
+	assert(not StageFx.validate(stage, v2, invalid_phase).is_empty())
+	# Old cues do not gain phase and keep the exact legacy preview.
+	assert(not fx["cues"][0].has("phase"))
+	assert(StageFx.phase_of(fx["cues"][0]) == "idle")
+	# The new timeline renders bounded bars without modifying draft data.
+	var timeline := Timeline.new()
+	root.add_child(timeline)
+	timeline.size = Vector2(600, 202)
+	timeline.set_timeline(phases["cues"], 0, 8000, "")
+	assert(timeline._hit_cue(timeline._bar_rect(phases["cues"][0]).get_center()) == 0)
+	assert(timeline._hit_cue(timeline._bar_rect(phases["cues"][2]).get_center()) == 2)
+	assert(timeline._time_for_x(timeline._x_for_time(4000)) == 4000)
+	var selected: Array[int] = []
+	var moved: Array[int] = []
+	timeline.cue_selected.connect(func(index: int): selected.append(index))
+	timeline.cue_moved.connect(func(index: int, start: int):
+		moved.append(index)
+		moved.append(start))
+	var click := InputEventMouseButton.new()
+	click.button_index = MOUSE_BUTTON_LEFT
+	click.position = timeline._bar_rect(phases["cues"][2]).get_center()
+	click.pressed = true
+	timeline._gui_input(click)
+	var motion := InputEventMouseMotion.new()
+	motion.position = click.position + Vector2(16, 0)
+	timeline._gui_input(motion)
+	click.pressed = false
+	click.position = motion.position
+	timeline._gui_input(click)
+	assert(selected == [2] and moved.size() == 2 and moved[0] == 2)
+	assert(moved[1] > 8000)
+	timeline.queue_free()
 	var invalid: Dictionary = fx.duplicate(true)
 	invalid["cues"].append(invalid["cues"][0].duplicate(true))
 	assert(not StageFx.validate(stage, v2, invalid).is_empty())
@@ -77,6 +125,21 @@ func _run() -> void:
 	designer._on_fx_scrub(500)
 	assert(designer._bg_image.scale.x > 1.0)
 	designer._on_fx_stop()
+	# Visible Animation tabs share this real editor instance, not a fake timeline.
+	assert(designer._fx_timeline != null)
+	designer._on_fx_add_phase("enter")
+	assert(designer._fx_data["cues"].size() == 3)
+	assert(designer._fx_data["cues"][2]["phase"] == "enter")
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"].size() == 2)
+	designer._on_fx_add_phase("exit")
+	assert(designer._fx_data["cues"][2]["startMs"] == 8000)
+	designer._on_timeline_move(2, 8500)
+	assert(designer._fx_data["cues"][2]["startMs"] == 8500)
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"][2]["startMs"] == 8000)
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"].size() == 2)
 	designer.queue_free()
 	assert(FileAccess.get_sha256(staging_path) == staging_sha)
 	assert(FileAccess.get_sha256(source_path) == source_sha)

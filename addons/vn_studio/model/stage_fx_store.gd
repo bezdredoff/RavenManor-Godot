@@ -6,10 +6,11 @@ const MathFx = preload("res://scripts/shared/vn/micro_fx_math.gd")
 const FORMAT := "raven-vn-stage-fx-v1"
 const EFFECTS := ["breathe", "blink", "shake", "pulse", "fade_in", "fade_out"]
 const TARGET_TYPES := ["actor", "prop", "background"]
+const PHASES := ["enter", "idle", "exit"]
 const MAX_CUES := 32
 const MAX_MS := 20000
 const KEYS := ["format", "schemaVersion", "sceneId", "cues"]
-const CUE_KEYS := ["id", "targetType", "targetId", "effect", "startMs", "durationMs", "repeat", "intensity", "lineId"]
+const CUE_KEYS := ["id", "targetType", "targetId", "effect", "startMs", "durationMs", "repeat", "intensity", "lineId", "phase"]
 
 
 static func fresh(scene_id: String) -> Dictionary:
@@ -78,6 +79,10 @@ static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant, val
 			return "Цель FX отсутствует в выбранной постановке."
 		if cue.get("effect", "") not in EFFECTS:
 			return "Неизвестная микроанимация."
+		# Optional annotation. Existing scene/line FX v1 cues with no phase
+		# retain their original preview and persist without forced migrations.
+		if cue.has("phase") and (not cue["phase"] is String or cue["phase"] not in PHASES):
+			return "Неизвестная дорожка FX (enter/idle/exit)."
 		var start: Variant = cue.get("startMs")
 		var duration: Variant = cue.get("durationMs")
 		var repeat_count: Variant = cue.get("repeat")
@@ -109,6 +114,41 @@ static func new_cue(data: Dictionary, target_type: String, target_id: String, li
 	return result
 
 
+## Create an actual previewable entrance / idle / exit cue with explicit
+## bounded timings and the same v1 FX event format. No runtime scheduling.
+static func new_phase_cue(data: Dictionary, target_type: String, target_id: String,
+		phase: String, line_id: String = "") -> Dictionary:
+	if phase not in PHASES:
+		return data.duplicate(true)
+	var result: Dictionary = new_cue(data, target_type, target_id, line_id)
+	var cue: Dictionary = result["cues"][-1]
+	cue["phase"] = phase
+	match phase:
+		"enter":
+			cue["effect"] = "fade_in"
+			cue["startMs"] = 0
+			cue["durationMs"] = 650
+			cue["repeat"] = 1
+			cue["intensity"] = 1.0
+		"idle":
+			cue["effect"] = "breathe"
+			cue["startMs"] = 1500
+			cue["durationMs"] = 1400
+			cue["repeat"] = 3
+			cue["intensity"] = 0.35
+		"exit":
+			cue["effect"] = "fade_out"
+			cue["startMs"] = 8000
+			cue["durationMs"] = 650
+			cue["repeat"] = 1
+			cue["intensity"] = 1.0
+	return result
+
+
+static func phase_of(cue: Dictionary) -> String:
+	return str(cue.get("phase", "idle"))
+
+
 ## Scene-wide cues are always visible; per-line cues only on their exact line.
 ## Pure editor-preview predicate; never advances story or writes game state.
 static func visible_for_line(cue: Dictionary, line_id: String) -> bool:
@@ -120,4 +160,13 @@ static func visible_for_line(cue: Dictionary, line_id: String) -> bool:
 ## Time-sampling is pure and independent of frame rate. Returns a visual-only
 ## additive offset, scale factor and opacity factor for a single cue.
 static func sample(cue: Dictionary, elapsed_ms: int) -> Dictionary:
-	return MathFx.sample(cue, elapsed_ms)
+	var output: Dictionary = MathFx.sample(cue, elapsed_ms)
+	# Only NEW explicit phase presets hold the object outside a fade; legacy
+	# no-phase cues keep precisely their previous neutral/one-shot semantics.
+	if cue.has("phase") and phase_of(cue) == "enter" and cue.get("effect") == "fade_in":
+		if elapsed_ms >= 0 and elapsed_ms < int(cue["startMs"]):
+			output["alpha"] = 1.0 - float(cue["intensity"])
+	elif cue.has("phase") and phase_of(cue) == "exit" and cue.get("effect") == "fade_out":
+		if elapsed_ms >= int(cue["startMs"]) + int(cue["durationMs"]) * int(cue["repeat"]):
+			output["alpha"] = 1.0 - float(cue["intensity"])
+	return output

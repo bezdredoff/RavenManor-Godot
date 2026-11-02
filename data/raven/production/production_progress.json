@@ -445,9 +445,16 @@
     {
       "id": "VNS5-07F4",
       "owner": "ChatGPT",
+      "status": "merged",
+      "updated": "2026-11-02",
+      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md. PR #131 cleanly rebuilt on main 84ca948 after #130, no parent-branch commits; independent fresh CI and Windows native owner QA required; not merged/accepted. PR #131 merged on 2026-11-02 into main at 33335699f907bc3b605f009ab653260d2c714301; exact-head CI #41529246178 success. Windows native owner QA still unrecorded."
+    },
+    {
+      "id": "VNS5-07F5",
+      "owner": "ChatGPT",
       "status": "PR_review",
       "updated": "2026-11-02",
-      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md. PR #131 cleanly rebuilt on main 84ca948 after #130, no parent-branch commits; independent fresh CI and Windows native owner QA required; not merged/accepted."
+      "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge."
     }
   ],
   "rules": [

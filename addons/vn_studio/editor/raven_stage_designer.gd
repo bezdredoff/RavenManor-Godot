@@ -14,6 +14,7 @@ const PortraitLayout = preload("res://scripts/raven/raven_vn_portrait_layout.gd"
 const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
 const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
+const FxTimeline = preload("res://addons/vn_studio/editor/raven_fx_timeline.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const CARD_SIZE := Vector2(114, 176) # only tool-strip thumbnail size
 const REFERENCE_SIZE := Vector2(390, 844)
@@ -59,6 +60,8 @@ var _fx_list: ItemList
 var _fx_target: OptionButton
 var _fx_controls: VBoxContainer
 var _fx_kind: OptionButton
+var _fx_phase: OptionButton
+var _fx_timeline: Control
 var _fx_start: SpinBox
 var _fx_duration: SpinBox
 var _fx_repeat: SpinBox
@@ -291,6 +294,23 @@ func _ready() -> void:
 	add_child(_fx_controls)
 	var fx_row := HFlowContainer.new()
 	_fx_controls.add_child(fx_row)
+	var timeline_hint := Label.new()
+	timeline_hint.text = "Таймлайн · клик по клипу выбирает FX, перетаскивание двигает начало; preview только в редакторе"
+	timeline_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_fx_controls.add_child(timeline_hint)
+	_fx_timeline = FxTimeline.new()
+	_fx_controls.add_child(_fx_timeline)
+	_fx_timeline.cue_selected.connect(_on_fx_select)
+	_fx_timeline.time_scrubbed.connect(_on_timeline_scrub)
+	_fx_timeline.cue_moved.connect(_on_timeline_move)
+	var phases_row := HFlowContainer.new()
+	_fx_controls.add_child(phases_row)
+	for phase in StageFx.PHASES:
+		var preset := Button.new()
+		preset.text = "+ " + ({"enter": "Вход", "idle": "Ожидание", "exit": "Выход"}[phase])
+		preset.tooltip_text = "Создать FX-клип %s для выбранной цели/реплики, без применения в игровом runtime" % phase
+		preset.pressed.connect(_on_fx_add_phase.bind(phase))
+		phases_row.add_child(preset)
 	var fx_title := Label.new()
 	fx_title.text = "Микроанимации (FX draft)"
 	fx_row.add_child(fx_title)
@@ -326,6 +346,12 @@ func _ready() -> void:
 		_fx_kind.add_item(effect)
 	_fx_kind.item_selected.connect(_on_fx_params)
 	fx_params.add_child(_fx_kind)
+	_fx_phase = OptionButton.new()
+	for phase in StageFx.PHASES:
+		_fx_phase.add_item(phase)
+	_fx_phase.item_selected.connect(_on_fx_phase)
+	_fx_phase.tooltip_text = "Дорожка входа / ожидания / выхода (не игровой scheduler)"
+	fx_params.add_child(_fx_phase)
 	for label_text in ["Start ms", "Duration ms", "Repeat", "Strength"]:
 		var lbl := Label.new()
 		lbl.text = label_text
@@ -1324,12 +1350,15 @@ func _reload_fx_controls() -> void:
 		_fx_duration.value = int(cue["durationMs"])
 		_fx_repeat.value = int(cue["repeat"])
 		_fx_intensity.value = float(cue["intensity"])
+		_fx_phase.select(maxi(0, StageFx.PHASES.find(StageFx.phase_of(cue))))
 	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
 		spinner.editable = _fx_selected >= 0
 	_fx_anchor.disabled = _fx_selected < 0
 	_fx_kind.disabled = _fx_selected < 0
+	_fx_phase.disabled = _fx_selected < 0
 	_fx_remove.disabled = _fx_selected < 0
 	_fx_undo_button.disabled = _fx_undo.is_empty()
+	_fx_timeline.set_timeline(cues, _fx_selected, roundi(_fx_scrub.value), _active_line_id)
 	_fx_suppress = false
 
 
@@ -1339,6 +1368,36 @@ func _on_fx_add() -> void:
 	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
 	_fx_data = StageFx.new_cue(_fx_data, str(target["type"]), str(target["id"]), _active_line_id)
 	_fx_selected = _fx_data["cues"].size() - 1
+	_commit_fx()
+
+
+func _on_fx_add_phase(phase: String) -> void:
+	if _fx_target.selected < 0 or _fx_data.get("cues", []).size() >= StageFx.MAX_CUES:
+		return
+	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
+	_fx_data = StageFx.new_phase_cue(_fx_data, str(target["type"]),
+		str(target["id"]), phase, _active_line_id)
+	_fx_selected = _fx_data["cues"].size() - 1
+	_commit_fx()
+
+
+func _on_fx_phase(index: int) -> void:
+	if _fx_suppress or _fx_selected < 0 or index < 0:
+		return
+	_fx_data["cues"][_fx_selected]["phase"] = StageFx.PHASES[index]
+	_commit_fx()
+
+
+func _on_timeline_scrub(time_ms: int) -> void:
+	_fx_scrub.value = time_ms
+	_on_fx_scrub(float(time_ms))
+
+
+func _on_timeline_move(index: int, start_ms: int) -> void:
+	if index < 0 or index >= _fx_data.get("cues", []).size():
+		return
+	_fx_selected = index
+	_fx_data["cues"][index]["startMs"] = start_ms
 	_commit_fx()
 
 
@@ -1436,6 +1495,9 @@ func _on_fx_scrub(value: float) -> void:
 func _apply_fx_preview(time_ms: int) -> void:
 	if _canvas == null or _stage_data.is_empty():
 		return
+	if _fx_timeline != null:
+		_fx_timeline.set_timeline(_fx_data.get("cues", []), _fx_selected,
+			maxi(0, time_ms), _active_line_id)
 	# Reset to the canonical editor layout *before* every deterministic sample.
 	# Never mutate stageV1, stageV2, staged binaries, or a gameplay state node.
 	_layout_cards()

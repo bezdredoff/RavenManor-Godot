@@ -573,3 +573,9 @@ After the authoring scene wizard PR #130 (VNS5-07F3; at the time unmerged with f
 ## 2026-11-02 — VNS5-07F4 rebased after #130 (PR #131 review)
 
 PR #130 merged to `main` at 84ca9484296694fc9039dfb8b5be2833f8d3e979. To remove the stacked-branch conflict, PR #131 was rebuilt **onto that exact main** as a single new commit covering only Story Map model/editor, graph smoke and F4 documentation/status files (seven total). Original F4 logic is preserved; no duplicated F3 commits or code changes. PR #131 remains **unmerged** pending fresh GitHub CI and manual Godot owner QA of condition/ending controls. No runtime story/ending semantics. Do not treat CI pass or merge as owner acceptance.
+
+## 2026-11-02 — VNS5-07F5 timeline rebased after merged PR #131 (review candidate)
+
+PR #131 VNS5-07F4 condition and ending draft Story Map merged into `main` at `33335699f907bc3b605f009ab653260d2c714301`, with exact-head CI #41529246178 SUCCESS. Its task status is now `merged`, **not automatically owner-accepted**. PR #132 VNS5-07F5 has been rebuilt upon that current main so the F4 and F5 progress/working package entries coexist in the dashboard without overwriting either.
+
+PR #132 implements an **editor-only** three-lane entrance/idle/exit visual FX timeline, clickable/draggable FX bars, time ruler, scrub, shared Stage preview and phase presets. It adds only optional `phase` to the legacy `stageFxPatches` cue, so existing drafts still work without migration; old FX behavior, runtime, Reducer, GameSave, UPDS and canonical story remain unchanged. The prior PR-head full CI #41528584891 passed; **new exact-head CI after the clean rebase and Windows Godot native mouse/screenshot QA are still required** before merge/owner acceptance. See `docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md` and issue #129.
