@@ -36,3 +36,6 @@
 **Ручная Windows Godot Editor проверка** на 800×640, 1024×640 и 1366×768: создать одну сцену и реплику, открыть Promotion Review, ввести `RM-BEAT-07-01`, проверить список блокирующих задач, Undo/Redo, сохранить draft, закрыть/открыть редактор, убедиться в сохранении ID mapping, экспортировать один раз. Проверить неверный target / collision, переключение UI языков, неизменность игрового VN/Match-3 и дашборда. **Green CI не равен owner acceptance.**
 
 Подробнее: `docs/production/VNS5_06A_STORY_MAP_RU.md`, `docs/production/VNS5_06B_NEW_SCENES_RU.md`, `scripts/raven/tools/validate_production_narrative.py`.
+
+## PR #115 CI evidence, 02.11.2026
+Первый полный CI для исходного implementation head c692459162f5e802d6259f7047ee16fb80351e9e: [#41456371177](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41456371177) — **SUCCESS**. Проверены новый VNS5-06C Godot smoke, все прежние Raven checks, Room Builder, сборка Web и dashboard. Эта правка документации и статуса вызывает новый CI для финального head; его результат ещё требуется проверить. Нативный Windows Editor, живой пользовательский save/reopen, art, route, branch runtime и сейвы не были приняты владельцем.

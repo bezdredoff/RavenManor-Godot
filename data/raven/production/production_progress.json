@@ -34,9 +34,9 @@
     {
       "id": "VNS5-06C",
       "owner": "ChatGPT",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06c-promotion-review from main 4ba8d4eab7db22fbccc632421eed06423778d7c1. Promotion Review Godot tab, explicit validated non-colliding production-style ID mapping, deterministic line/graph remap, source-SHA locked review-only catalog with before/after diff, route/shot/save and branch runtime blockers, BE/EN localization warnings, all draft categories retained, no-overwrite user:// export, shared Undo/Redo. No canonical production, asset, game/save/Match-3 files changed. scripts/check.sh + negative Godot smoke, docs and backlog updated. Independent PR CI and Windows owner QA pending; real promotion remains future VNS5-06D."
+      "evidence": "Implementation branch code/vns5-06c-promotion-review from main 4ba8d4eab7db22fbccc632421eed06423778d7c1. Promotion Review Godot tab, explicit validated non-colliding production-style ID mapping, deterministic line/graph remap, source-SHA locked review-only catalog with before/after diff, route/shot/save and branch runtime blockers, BE/EN localization warnings, all draft categories retained, no-overwrite user:// export, shared Undo/Redo. No canonical production, asset, game/save/Match-3 files changed. scripts/check.sh + negative Godot smoke, docs and backlog updated. Independent PR CI and Windows owner QA pending; real promotion remains future VNS5-06D. Draft PR #115 https://github.com/bezdredoff/RavenManor-Godot/pull/115, implementation head c692459162f5e802d6259f7047ee16fb80351e9e full independent CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41456371177 success (new Godot promotion smoke, all Raven, Room Builder, Web export and dashboard checks). Final-head CI after docs-only evidence commit pending. Windows Editor visual/manual save-reopen acceptance and actual runtime promotion with route/stage/save contracts unverified; task not accepted."
     },
     {
       "id": "GFX-05-05",
