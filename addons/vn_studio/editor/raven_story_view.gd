@@ -5,6 +5,7 @@ const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
 const RavenGraph = preload("res://addons/vn_studio/editor/raven_story_graph_view.gd")
+const PromotionView = preload("res://addons/vn_studio/editor/raven_promotion_review_view.gd")
 const LOCALES := ["ru", "be", "en"]
 const PANE_SETTING := "vn_studio/raven_scene_pane_width"
 
@@ -35,6 +36,7 @@ var _export_stage_v2: Button
 var _export_fx: Button
 var _export_graph: Button
 var _raven_graph: Control
+var _promotion_view: Control
 var _create_scene_dialog: ConfirmationDialog
 var _create_line_dialog: ConfirmationDialog
 var _scene_title_input: LineEdit
@@ -294,6 +296,16 @@ func _build() -> void:
 	animation_context.fit_content = true
 	animation_scroll.add_child(animation_context)
 	_context_views.append(animation_context)
+	var promotion_scroll := ScrollContainer.new()
+	promotion_scroll.name = "Promotion Review"
+	promotion_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	promotion_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	_workspace_tabs.add_child(promotion_scroll)
+	_promotion_view = PromotionView.new()
+	_promotion_view.custom_minimum_size.x = 430
+	_promotion_view.mapping_modified.connect(_on_promotion_mapping_modified)
+	_promotion_view.export_requested.connect(_export_promotion_review)
+	promotion_scroll.add_child(_promotion_view)
 	_path = LineEdit.new()
 	_path.editable = false
 	_path.placeholder_text = "Путь локального черновика / JSON-кандидата"
@@ -475,6 +487,7 @@ func _scene_switch() -> void:
 		_stage_designer.set_scene(_project, _draft, id)
 		_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
 	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, id)
+	_promotion_view.set_context(_project, _draft)
 	_refresh_preview()
 	_refresh_context()
 
@@ -618,10 +631,11 @@ func _on_redo() -> void:
 
 
 func _update_diff() -> void:
-	_diff.text = "%d переводов, %d сцен v1, %d сцен v2, %d FX, %d Story Map, %d новых сцен, %d реплик · %s" % [
+	_diff.text = "%d переводов, %d сцен v1, %d сцен v2, %d FX, %d Story Map, %d новых сцен, %d реплик, %d ID-привязок · %s" % [
 		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), _draft.get("stageV2Patches", {}).size(),
 		_draft.get("stageFxPatches", {}).size(), _draft.get("storyGraphPatches", {}).size(),
 		_draft.get("authoredScenes", []).size(), _draft.get("authoredLines", []).size(),
+		_draft.get("promotionSceneIdMap", {}).size(),
 		"есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
 
 
@@ -662,6 +676,37 @@ func _export_candidate() -> void:
 		_path.text = str(result["path"])
 	else:
 		_status.text = "Экспорт заблокирован: " + str(result.get("error", ""))
+
+
+func _on_promotion_mapping_modified(mapping: Dictionary) -> void:
+	if _blocked or _project.is_empty() or mapping == _draft.get("promotionSceneIdMap", {}):
+		return
+	var snapshot: Dictionary = _draft.duplicate(true)
+	var error: String = Store.set_promotion_map(_project, _draft, mapping)
+	if not error.is_empty():
+		_status.text = "Promotion ID не сохранён: " + error
+		_promotion_view.set_context(_project, _draft)
+		return
+	_undo.append(snapshot)
+	_redo.clear()
+	_dirty = true
+	_promotion_view.set_context(_project, _draft)
+	_update_diff()
+	_refresh_buttons()
+
+
+func _export_promotion_review() -> void:
+	if _blocked or _project.is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните локальный Raven-черновик, затем экспортируйте Promotion Review."
+		return
+	var result: Dictionary = Store.export_promotion_review(_project, _draft)
+	if result.get("ok", false):
+		_status.text = "Создан безопасный Promotion Review: не production, не runtime."
+		_path.text = str(result["path"])
+	else:
+		_status.text = "Promotion Review заблокирован: " + str(result.get("error", ""))
 
 
 func _on_graph_modified(data: Dictionary) -> void:
