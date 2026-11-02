@@ -789,12 +789,46 @@
       "description": "Owner cannot find draft wires after VNS5-07C2: all GraphEdit links currently use identical green ports/lines and no obvious zero-draft instruction.",
       "deliverable": "Distinct canonical green and draft orange port/wire types; graph legend, empty-state creation instructions, port-aware canonical safety and targeted synthetic Godot regression plus runbook.",
       "acceptance": "Godot 4.7.2: no-draft Story Map explicitly explains +Связь; adding a draft renders orange wire, canonical stays green; same endpoints use distinct wires, green never editable, orange A/B/C disambiguation and save/reopen work; manual mouse/viewport acceptance at 800×640, 1024×640 and 1366×768.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-07C2"
       ],
       "graphicsDependencies": [],
       "source": "Owner report after merged #125, 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07E",
+      "title": "VN Studio v5: full-height responsive Raven workspace and fit-to-pane Stage",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Owner screenshot shows large unused vertical area and narrow Stage because ScrollContainer VBox body never grows beyond 440px and Scene Stage is fixed 390x844; Story Map GraphEdit also does not fill tall Inspector.",
+      "deliverable": "Viewport-linked minimum height for workspace body and Story Map, balanced stage/inspector splitter settings, aspect-preserving portrait/landscape Stage fit in embedded Editor only, Godot smoke assertions and QA runbook.",
+      "acceptance": "Native Godot 4.7.2 at 800×640/1024×640/1366×768 and screenshot viewport uses available vertical space, no large bottom blank band, full portrait stage visible in center, GraphEdit expands, safe scroll on short panes, actor/props coordinates and draft save unchanged.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-07B"
+      ],
+      "graphicsDependencies": [],
+      "source": "Owner screenshot and report on 2026-11-02, follow-up after merged #126",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07F",
+      "title": "VN Studio v5: approved HTML vs Godot visual/workflow parity audit and implementation",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Use approved local HTML prototype and UX notes to compare exact Godot workspace column hierarchy, controls, asset workflows, stage, graph and timeline at matched viewport screenshots. Prior VNS5-07B claimed structural not pixel parity.",
+      "deliverable": "HTML/Godot side-by-side screenshots, numbered parity gap matrix with exact control mapping, small PRs to close differences, manual owner approval.",
+      "acceptance": "Owner accepts matched visual hierarchy/content/workflows against approved HTML across agreed viewport sizes; comparison evidence and remaining intentional native differences documented; no gameplay/runtime changes inferred.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-07E"
+      ],
+      "graphicsDependencies": [],
+      "source": "Approved HTML handoff local path established in PR #123; owner screenshot 2026-11-02",
       "requiresHumanAcceptance": true
     }
   ]

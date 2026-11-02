@@ -409,10 +409,24 @@
     },
     {
       "id": "VNS5-07C3",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "evidence": "Issue #121 follow-up to merged PR #125: user cannot find draft wires. Review-only code/vns5-07c3-draft-wire-visibility from main 188332a. Adds green canonical port0/wires vs orange draft port1/wires, two-color legend, explicit empty state and +Связь instructions, port-identity guard preventing editing canonical wire even with same endpoints as draft. New smoke coverage; canonical JSON/story/reducer/save/UPDS untouched. CI and owner native mouse/UI QA pending. Details docs/production/VNS5_07C3_DRAFT_WIRES_RU.md."
+      "evidence": "Issue #121 follow-up to merged PR #125: user cannot find draft wires. Review-only code/vns5-07c3-draft-wire-visibility from main 188332a. Adds green canonical port0/wires vs orange draft port1/wires, two-color legend, explicit empty state and +Связь instructions, port-identity guard preventing editing canonical wire even with same endpoints as draft. New smoke coverage; canonical JSON/story/reducer/save/UPDS untouched. CI and owner native mouse/UI QA pending. Details docs/production/VNS5_07C3_DRAFT_WIRES_RU.md. PR #126 merged to main 05710372ad6631abaf3a4a52b2f80fb82fc7e8a7 on 2026-11-02; owner mouse/viewport acceptance remains open."
+    },
+    {
+      "id": "VNS5-07E",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "updated": "2026-11-02",
+      "evidence": "Owner supplied screenshot: VN Studio workspace leaves large unused lower region and is not close to approved HTML. Branch code/vns5-07e-full-height-responsive-workspace from merged main 05710372. Root cause ScrollContainer child body min 440 doesn't fill viewport, narrow stage persisted settings and tall 390x844 scroll, Story Map intrinsic GraphEdit min height. Adds viewport-height syncing, stage/inspector split v2, fit-to-pane StageEditor only (no normalized staging/runtime changes), graph viewport sync and responsive smoke tests. CI and native mouse/screenshots are pending; exact HTML parity is NOT claimed. See docs/production/VNS5_07E_FULL_HEIGHT_RU.md."
+    },
+    {
+      "id": "VNS5-07F",
+      "owner": "ChatGPT/Codex",
+      "status": "proposed",
+      "updated": "2026-11-02",
+      "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts."
     }
   ],
   "rules": [
