@@ -59,7 +59,6 @@ static func plan(project: Dictionary, draft: Dictionary) -> Dictionary:
 	var proposed: Dictionary = Author.export_preview(project, draft)
 	var first_existing_scenes: int = project["scenes"].size()
 	var first_existing_lines: int = project["data"]["entries"].size()
-	var generated_lines: Dictionary = {}
 	for scene in proposed["scenes"]:
 		var id: String = str(scene["sceneId"])
 		if mapping.has(id):
@@ -73,10 +72,8 @@ static func plan(project: Dictionary, draft: Dictionary) -> Dictionary:
 		if line_map.has(str(entry["id"])):
 			entry["id"] = line_map[str(entry["id"])]
 			entry["source"] = "vn_studio_promotion_review_only"
-			generated_lines[str(entry["id"])] = true
 	proposed["status"] = REVIEW_STATUS
 	var graph: Dictionary = {}
-	var linked_scenes: Dictionary = {}
 	for scene_id in draft.get("storyGraphPatches", {}):
 		var source: String = str(scene_id)
 		var overlay: Dictionary = draft["storyGraphPatches"][scene_id].duplicate(true)
@@ -87,9 +84,6 @@ static func plan(project: Dictionary, draft: Dictionary) -> Dictionary:
 				edge["targetId"] = mapping.get(str(edge.get("targetId", "")), edge.get("targetId", ""))
 			if edge.has("lineId"):
 				edge["lineId"] = line_map.get(str(edge["lineId"]), edge["lineId"])
-			if edge.get("kind") == "choice":
-				linked_scenes[mapped_source] = true
-				linked_scenes[str(edge.get("targetId", ""))] = true
 		if graph.has(mapped_source):
 			return {"ok": false, "error": "Promotion graph has a duplicated mapped source."}
 		graph[mapped_source] = overlay
