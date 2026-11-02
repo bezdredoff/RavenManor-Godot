@@ -428,6 +428,26 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-05B",
+      "title": "VN Studio v5: immutable-line-anchored micro-FX authoring and runtime integration",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Phase 1: add optional verified lineId to existing FX cue and native editor preview; old scene FX preserved, SHA locks and no-overwrite export unchanged. Phase 2 (separate approved PR): deterministic line-event runtime playback, skip/auto/reduced-motion arbitration and NoOp preview without Raven progression writes.",
+      "deliverable": "Phase 1: stage_fx_store.gd line anchor, Raven stage designer line picker and preview, Story View selection, canonical draft validation, synthetic smoke, docs/STATUS. Phase 2: explicitly reviewed VN presenter/event sink and playback parity tests.",
+      "acceptance": "Phase 1: old FX without anchor unchanged, correct same-scene line validation, L001/L002 preview filters, Undo and review export, no canonical data/runtime/save mutation; owner Godot 4.7.2 desktop 800x640 / 1024x640 / 1366x768 QA. Full completion additionally requires approved runtime per-line mapping and skip/auto/reduced-motion testing, separate origin/asset constraints.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-05A",
+        "VNS5-04B"
+      ],
+      "graphicsDependencies": [
+        "GFX-06"
+      ],
+      "source": "Raven VN Studio v5 next phase after PR #106; 2026-11-02",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",

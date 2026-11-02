@@ -44,6 +44,9 @@ var _selected_prop: int = -1
 var _dragging_prop: int = -1
 var _prop_grab_delta: Vector2 = Vector2.ZERO
 var _suppress_v2: bool = false
+var _fx_line_ids: Array = []
+var _active_line_id: String = ""
+var _fx_anchor: OptionButton
 var _fx_data: Dictionary = {}
 var _fx_committed: Dictionary = {}
 var _fx_undo: Array[Dictionary] = []
@@ -304,6 +307,12 @@ func _ready() -> void:
 	fx_row.add_child(_fx_list)
 	var fx_params := HFlowContainer.new()
 	add_child(fx_params)
+	_fx_anchor = OptionButton.new()
+	_fx_anchor.custom_minimum_size.x = 180
+	_fx_anchor.tooltip_text = "Запуск FX на всей сцене или на выбранной реплике (editor only)"
+	_fx_anchor.add_item("Вся сцена")
+	_fx_anchor.item_selected.connect(_on_fx_anchor)
+	fx_params.add_child(_fx_anchor)
 	_fx_kind = OptionButton.new()
 	for effect in StageFx.EFFECTS:
 		_fx_kind.add_item(effect)
@@ -389,10 +398,12 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 		_undo_stages.clear()
 		_undo_v2.clear()
 		_fx_undo.clear()
+		_active_line_id = ""
 		_fx_selected = -1
 		_fx_elapsed = 0.0
 		_fx_playing = false
 		_fx_scrub.value = 0
+	_fx_line_ids = Store.line_ids(project, id)
 	_stage_data = Store.effective_stage(project, draft, id)
 	_committed_stage = _stage_data.duplicate(true)
 	_stage_v2 = StageV2.effective(draft, id)
@@ -400,6 +411,18 @@ func set_scene(project: Dictionary, draft: Dictionary, id: String) -> void:
 	_fx_data = StageFx.effective(draft, id)
 	_fx_committed = _fx_data.duplicate(true)
 	_reload()
+
+
+func set_selected_line(line_id: String) -> void:
+	# Selecting a line is non-destructive. No source mutation or implicit FX save.
+	if _stage_data.is_empty() or not _fx_line_ids.has(line_id) or _active_line_id == line_id:
+		return
+	_active_line_id = line_id
+	_fx_playing = false
+	_fx_play.text = "▶ Play preview"
+	_fx_elapsed = 0.0
+	_fx_scrub.set_value_no_signal(0)
+	_apply_fx_preview(-1)
 
 
 func _reload() -> void:
@@ -733,7 +756,7 @@ func _commit() -> void:
 	if _stage_data == _committed_stage:
 		_reload()
 		return
-	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
+	if not StageFx.validate(_stage_data, _stage_v2, _fx_data, _fx_line_ids).is_empty():
 		_status.text = "FX ссылается на удаляемого персонажа. Сначала удалите событие."
 		_stage_data = _committed_stage.duplicate(true)
 		_reload()
@@ -848,7 +871,7 @@ func _apply_v2() -> void:
 		_stage_v2 = _committed_v2.duplicate(true)
 		_reload()
 		return
-	if not StageFx.validate(_stage_data, _stage_v2, _fx_data).is_empty():
+	if not StageFx.validate(_stage_data, _stage_v2, _fx_data, _fx_line_ids).is_empty():
 		_status.text = "FX ссылается на удаляемый prop. Сначала удалите событие."
 		_stage_v2 = _committed_v2.duplicate(true)
 		_reload()
@@ -1218,6 +1241,13 @@ func _process(delta: float) -> void:
 
 func _reload_fx_controls() -> void:
 	_fx_suppress = true
+	_fx_anchor.clear()
+	_fx_anchor.add_item("Вся сцена")
+	_fx_anchor.set_item_metadata(0, "")
+	for line in _fx_line_ids:
+		_fx_anchor.add_item(str(line))
+		_fx_anchor.set_item_metadata(_fx_anchor.item_count - 1, str(line))
+	_fx_anchor.select(0)
 	_fx_target.clear()
 	for target in StageFx.target_options(_stage_data, _stage_v2):
 		_fx_target.add_item(str(target["label"]))
@@ -1225,11 +1255,18 @@ func _reload_fx_controls() -> void:
 	_fx_list.clear()
 	var cues: Array = _fx_data.get("cues", [])
 	for cue in cues:
-		_fx_list.add_item("%s · %s/%s · %s @ %dms" % [cue["id"], cue["targetType"], cue["targetId"], cue["effect"], cue["startMs"]])
+		var anchor_label: String = str(cue.get("lineId", "Вся сцена"))
+		_fx_list.add_item("%s · %s/%s · %s @ %dms · %s" % [
+			cue["id"], cue["targetType"], cue["targetId"], cue["effect"], cue["startMs"], anchor_label])
 	_fx_selected = mini(_fx_selected, cues.size() - 1)
 	if _fx_selected >= 0:
 		_fx_list.select(_fx_selected)
 		var cue: Dictionary = cues[_fx_selected]
+		var cue_line: String = str(cue.get("lineId", ""))
+		for index in range(_fx_anchor.item_count):
+			if str(_fx_anchor.get_item_metadata(index)) == cue_line:
+				_fx_anchor.select(index)
+				break
 		for index in range(_fx_kind.item_count):
 			if _fx_kind.get_item_text(index) == cue["effect"]:
 				_fx_kind.select(index)
@@ -1239,6 +1276,7 @@ func _reload_fx_controls() -> void:
 		_fx_intensity.value = float(cue["intensity"])
 	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
 		spinner.editable = _fx_selected >= 0
+	_fx_anchor.disabled = _fx_selected < 0
 	_fx_kind.disabled = _fx_selected < 0
 	_fx_remove.disabled = _fx_selected < 0
 	_fx_undo_button.disabled = _fx_undo.is_empty()
@@ -1249,7 +1287,7 @@ func _on_fx_add() -> void:
 	if _fx_target.selected < 0 or _fx_data.get("cues", []).size() >= StageFx.MAX_CUES:
 		return
 	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
-	_fx_data = StageFx.new_cue(_fx_data, str(target["type"]), str(target["id"]))
+	_fx_data = StageFx.new_cue(_fx_data, str(target["type"]), str(target["id"]), _active_line_id)
 	_fx_selected = _fx_data["cues"].size() - 1
 	_commit_fx()
 
@@ -1269,6 +1307,18 @@ func _on_fx_select(index: int) -> void:
 	_reload_fx_controls()
 
 
+func _on_fx_anchor(index: int) -> void:
+	if _fx_suppress or _fx_selected < 0 or index < 0:
+		return
+	var cue: Dictionary = _fx_data["cues"][_fx_selected]
+	var line_id: String = str(_fx_anchor.get_item_metadata(index))
+	if line_id.is_empty():
+		cue.erase("lineId")
+	else:
+		cue["lineId"] = line_id
+	_commit_fx()
+
+
 func _on_fx_params(_value: Variant) -> void:
 	if _fx_suppress or _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
 		return
@@ -1282,7 +1332,7 @@ func _on_fx_params(_value: Variant) -> void:
 
 
 func _commit_fx() -> void:
-	var error: String = StageFx.validate(_stage_data, _stage_v2, _fx_data)
+	var error: String = StageFx.validate(_stage_data, _stage_v2, _fx_data, _fx_line_ids)
 	if not error.is_empty():
 		_status.text = "FX: " + error
 		_fx_data = _fx_committed.duplicate(true)
@@ -1302,7 +1352,7 @@ func _on_fx_undo() -> void:
 	if _fx_undo.is_empty():
 		return
 	var previous: Dictionary = _fx_undo.pop_back()
-	if not StageFx.validate(_stage_data, _stage_v2, previous).is_empty():
+	if not StageFx.validate(_stage_data, _stage_v2, previous, _fx_line_ids).is_empty():
 		_fx_undo.clear()
 		return
 	_fx_data = previous.duplicate(true)
@@ -1352,6 +1402,8 @@ func _apply_fx_preview(time_ms: int) -> void:
 			card.scale = Vector2.ONE
 			card.pivot_offset = card.size * 0.5
 	for cue in _fx_data.get("cues", []):
+		if not StageFx.visible_for_line(cue, _active_line_id):
+			continue
 		var control: Control = null
 		match str(cue.get("targetType", "")):
 			"background":

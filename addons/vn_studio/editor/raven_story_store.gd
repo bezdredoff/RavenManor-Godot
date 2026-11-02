@@ -95,6 +95,15 @@ static func fresh(project: Dictionary) -> Dictionary:
 		"patches": {}, "stagePatches": {}, "stageV2Patches": {}, "stageFxPatches": {}}
 
 
+## Immutable source line IDs for a scene; used for FX cross-scene validation.
+static func line_ids(project: Dictionary, scene_id: String) -> Array:
+	var ids: Array = []
+	for entry in project.get("linesByScene", {}).get(scene_id, []):
+		if entry is Dictionary:
+			ids.append(str(entry.get("id", "")))
+	return ids
+
+
 static func load_draft(project: Dictionary) -> Dictionary:
 	var path: String = draft_path(str(project["root"]))
 	if not FileAccess.file_exists(path):
@@ -157,7 +166,7 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 				return "Неизвестный sceneId FX."
 			var fx_stage: Dictionary = effective_stage(project, draft, str(scene_id))
 			var fx_v2: Dictionary = StageV2.effective(draft, str(scene_id))
-			var fx_error: String = StageFx.validate(fx_stage, fx_v2, fx_patches[scene_id])
+			var fx_error: String = StageFx.validate(fx_stage, fx_v2, fx_patches[scene_id], line_ids(project, str(scene_id)))
 			if not fx_error.is_empty():
 				return "%s: %s" % [scene_id, fx_error]
 	var patches: Variant = draft.get("patches", {})
@@ -319,7 +328,7 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
 	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
 	if fx is Dictionary and not fx.is_empty():
 		var overlay: Dictionary = StageV2.trim_actor_z(stage, StageV2.effective(draft, scene_id))
-		var fx_error: String = StageFx.validate(stage, overlay, fx)
+		var fx_error: String = StageFx.validate(stage, overlay, fx, line_ids(project, scene_id))
 		if not fx_error.is_empty():
 			return "Нельзя удалить цель FX: " + fx_error
 	draft["stageSourceSha256"] = str(project["stagingSha"])
@@ -342,7 +351,7 @@ static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictio
 		return error
 	var fx: Variant = draft.get("stageFxPatches", {}).get(scene_id, {})
 	if fx is Dictionary and not fx.is_empty():
-		var fx_error: String = StageFx.validate(stage, overlay, fx)
+		var fx_error: String = StageFx.validate(stage, overlay, fx, line_ids(project, scene_id))
 		if not fx_error.is_empty():
 			return "Нельзя удалить prop, использующийся в FX: " + fx_error
 	draft["stageSourceSha256"] = str(project["stagingSha"])
@@ -402,7 +411,7 @@ static func set_stage_fx(project: Dictionary, draft: Dictionary, data: Dictionar
 		return "FX содержит неизвестный sceneId."
 	var stage: Dictionary = effective_stage(project, draft, scene_id)
 	var overlay: Dictionary = StageV2.effective(draft, scene_id)
-	var error: String = StageFx.validate(stage, overlay, data)
+	var error: String = StageFx.validate(stage, overlay, data, line_ids(project, scene_id))
 	if not error.is_empty():
 		return error
 	draft["stageSourceSha256"] = str(project["stagingSha"])

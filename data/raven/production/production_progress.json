@@ -5,10 +5,17 @@
   "entries": [
     {
       "id": "VNS5-05A",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "Implementation Draft PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 from main 7652a20676bce76e7aead065bdd025b8cee5154b after merged PR #104 VNS5-04B and PR #103 GFX-05. Incoming PR #105 transports docs/patch only and must be closed without merge. Ten manifest-matched code/test/docs paths: editor-only FX (breathe/blink proxy/shake/pulse/fade in/out), per-scene stageFxPatches, target validation, deterministic timeline preview/undo, no-loss and no-overwrite FX review export; no gameplay/runtime/migration or new art. First PR-head CI run 41355139383 failed at mandatory docs/dashboard governance because source-of-truth docs/status were not yet in this branch; these are now added. Independent latest-head Godot/Raven/Web CI and native Godot 4.7.2 desktop UI QA/owner acceptance remain unverified. Stage FX not runtime-accepted."
+      "updated": "2026-11-02",
+      "evidence": "Implementation Draft PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 from main 7652a20676bce76e7aead065bdd025b8cee5154b after merged PR #104 VNS5-04B and PR #103 GFX-05. Incoming PR #105 transports docs/patch only and must be closed without merge. Ten manifest-matched code/test/docs paths: editor-only FX (breathe/blink proxy/shake/pulse/fade in/out), per-scene stageFxPatches, target validation, deterministic timeline preview/undo, no-loss and no-overwrite FX review export; no gameplay/runtime/migration or new art. First PR-head CI run 41355139383 failed at mandatory docs/dashboard governance because source-of-truth docs/status were not yet in this branch; these are now added. Independent latest-head Godot/Raven/Web CI and native Godot 4.7.2 desktop UI QA/owner acceptance remain unverified. Stage FX not runtime-accepted. Final 2026-11-02 audit: PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 merged to main commit 25c30c7752d44a84d17fe03dcc70fb338186f8cf, final-head PR CI 41355287003 passed; manual Godot 4.7.2 desktop 800x640/1024x640/1366x768 checks and owner feature acceptance remain OPEN. StageFX is editor-only, not playable runtime."
+    },
+    {
+      "id": "VNS5-05B",
+      "owner": "ChatGPT",
+      "status": "PR_review",
+      "updated": "2026-11-02",
+      "evidence": "Phase 1 authored as a new review branch from main 816fe56dc9a5c2a593531af7fbba594100627fae: optional lineId for VNS5-05A FX cues, existing scene-wide cue compatibility, exact same-scene line ID validation, line-aware editor preview & UI anchor picker, standard Godot smoke and VNS5_05B_LINE_FX_RU.md. No runtime changes. Independent PR CI/manual desktop Godot QA remain unverified; phase 2 runtime event integration, VNS5-06 topology editing, VNS5-07–09 pipeline and owner acceptance still outstanding. Draft PR #111 https://github.com/bezdredoff/RavenManor-Godot/pull/111; independent full PR CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41435663698 completed success at implementation head c19efad58a92db88cc98a56399424a27d84743ad, including standard scripts/check.sh with VNS5-05B line-FX smoke, Web export and dashboard. First run 41435445499 failed dashboard because the new ID was not registered in gap_work_packages; fixed. Desktop Windows manual QA, final-head CI, owner merge/acceptance and runtime phase 2 remain pending."
     },
     {
       "id": "GFX-05-05",

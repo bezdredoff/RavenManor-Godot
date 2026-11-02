@@ -320,6 +320,7 @@ func _scene_switch() -> void:
 	_line_idx = 0
 	_line_render()
 	_stage_designer.set_scene(_project, _draft, id)
+	_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
 	_refresh_preview()
 	_refresh_context()
 
@@ -353,6 +354,8 @@ func _line_render() -> void:
 			str(cue.get("poseId", "")), str(cue.get("emotionId", "")), str(cue.get("microOnEnter", "—"))]
 	_update_diff()
 	_sync_dialogue_preview()
+	# A line click changes only editor FX preview time origin; never game progress.
+	_stage_designer.set_selected_line(str(e["id"]))
 	_refresh_context()
 
 

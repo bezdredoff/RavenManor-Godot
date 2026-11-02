@@ -8,7 +8,7 @@ const TARGET_TYPES := ["actor", "prop", "background"]
 const MAX_CUES := 32
 const MAX_MS := 20000
 const KEYS := ["format", "schemaVersion", "sceneId", "cues"]
-const CUE_KEYS := ["id", "targetType", "targetId", "effect", "startMs", "durationMs", "repeat", "intensity"]
+const CUE_KEYS := ["id", "targetType", "targetId", "effect", "startMs", "durationMs", "repeat", "intensity", "lineId"]
 
 
 static func fresh(scene_id: String) -> Dictionary:
@@ -33,7 +33,7 @@ static func target_options(stage: Dictionary, stage_v2: Dictionary) -> Array[Dic
 	return options
 
 
-static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant) -> String:
+static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant, valid_line_ids: Array = []) -> String:
 	if not data is Dictionary:
 		return "FX-постановка должна быть объектом."
 	for key in data.keys():
@@ -64,6 +64,12 @@ static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant) -> 
 		if seen.has(id):
 			return "Повторный ID события FX."
 		seen[id] = true
+		# Optional VNS5-05B line anchor: old scene-wide cues remain unchanged.
+		# Fail closed if a saved line no longer exists in this exact scene.
+		if cue.has("lineId"):
+			var line_id: Variant = cue["lineId"]
+			if not line_id is String or line_id.is_empty() or not valid_line_ids.has(line_id):
+				return "FX ссылается на несуществующую реплику выбранной сцены."
 		var target_type: Variant = cue.get("targetType", "")
 		var target_id: Variant = cue.get("targetId", "")
 		if not target_type is String or target_type not in TARGET_TYPES or not target_id is String \
@@ -85,7 +91,7 @@ static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant) -> 
 	return ""
 
 
-static func new_cue(data: Dictionary, target_type: String, target_id: String) -> Dictionary:
+static func new_cue(data: Dictionary, target_type: String, target_id: String, line_id: String = "") -> Dictionary:
 	var result: Dictionary = data.duplicate(true)
 	var ids: Dictionary = {}
 	for cue in result.get("cues", []):
@@ -93,10 +99,21 @@ static func new_cue(data: Dictionary, target_type: String, target_id: String) ->
 	var number: int = 1
 	while ids.has("fx-%04d" % number):
 		number += 1
-	result["cues"].append({"id": "fx-%04d" % number, "targetType": target_type,
+	var cue: Dictionary = {"id": "fx-%04d" % number, "targetType": target_type,
 		"targetId": target_id, "effect": "breathe", "startMs": 0,
-		"durationMs": 1400, "repeat": 1, "intensity": 0.35})
+		"durationMs": 1400, "repeat": 1, "intensity": 0.35}
+	if not line_id.is_empty():
+		cue["lineId"] = line_id
+	result["cues"].append(cue)
 	return result
+
+
+## Scene-wide cues are always visible; per-line cues only on their exact line.
+## Pure editor-preview predicate; never advances story or writes game state.
+static func visible_for_line(cue: Dictionary, line_id: String) -> bool:
+	if not cue.has("lineId"):
+		return true
+	return not line_id.is_empty() and cue["lineId"] == line_id
 
 
 ## Time-sampling is pure and independent of frame rate. Returns a visual-only
