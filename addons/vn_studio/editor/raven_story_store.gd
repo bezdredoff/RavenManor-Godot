@@ -16,6 +16,7 @@ const Author = preload("res://addons/vn_studio/model/raven_story_authoring.gd")
 const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
 const Package = preload("res://addons/vn_studio/model/raven_production_package.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
+const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
 
@@ -188,9 +189,11 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
 			return "Постановка изменилась на диске после открытия. Повторно откройте проект."
 		for stage_id in stage_patches:
-			if not project["shots"].has(stage_id):
+			if not project["shots"].has(stage_id) and not Author.is_authored_scene(draft, str(stage_id)):
 				return "В черновике неизвестная сцена постановки."
-			var stage_error: String = validate_stage(project, stage_patches[stage_id])
+			if not stage_patches[stage_id] is Dictionary or str(stage_patches[stage_id].get("sceneId", "")) != str(stage_id):
+				return "sceneId постановки не совпадает с ключом черновика."
+			var stage_error: String = validate_stage(project, stage_patches[stage_id], draft)
 			if not stage_error.is_empty():
 				return "%s: %s" % [stage_id, stage_error]
 	var v2_patches: Variant = draft.get("stageV2Patches", {})
@@ -202,8 +205,10 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		if FileAccess.get_sha256(str(project["root"]).path_join(STAGING)) != project["stagingSha"] or FileAccess.get_sha256(str(project["root"]).path_join(CAST)) != project["castSha"]:
 			return "Исходная постановка изменилась на диске; проверьте SHA вручную."
 		for scene_id in v2_patches:
-			if not project["shots"].has(scene_id):
+			if not project["shots"].has(scene_id) and not Author.is_authored_scene(draft, str(scene_id)):
 				return "V2-черновик ссылается на неизвестную сцену."
+			if not v2_patches[scene_id] is Dictionary or str(v2_patches[scene_id].get("sceneId", "")) != str(scene_id):
+				return "sceneId V2-постановки не совпадает с ключом черновика."
 			var source_stage: Dictionary = effective_stage(project, draft, str(scene_id))
 			var v2_error: String = StageV2.validate(source_stage, v2_patches[scene_id])
 			if not v2_error.is_empty():
@@ -306,7 +311,18 @@ static func export_candidate(project: Dictionary, draft: Dictionary) -> Dictiona
 
 ## Returns only the selected authored production-stage shot, never modifies res://.
 static func effective_stage(project: Dictionary, draft: Dictionary, scene_id: String) -> Dictionary:
-	return draft.get("stagePatches", {}).get(scene_id, project.get("shots", {}).get(scene_id, {})).duplicate(true)
+	if draft.get("stagePatches", {}).has(scene_id):
+		return draft["stagePatches"][scene_id].duplicate(true)
+	if project.get("shots", {}).has(scene_id):
+		return project["shots"][scene_id].duplicate(true)
+	if Author.is_authored_scene(draft, scene_id):
+		var entries: Array = VNBackgrounds.all_entries()
+		if not entries.is_empty():
+			var bg: Dictionary = entries[0]
+			return {"sceneId": scene_id, "backgroundId": bg["backgroundId"],
+				"lighting": bg["lighting"], "roomState": bg["roomState"],
+				"cast": [], "visibleCount": 0}
+	return {}
 
 
 static func stage_options(project: Dictionary) -> Dictionary:
@@ -326,13 +342,14 @@ static func stage_master(project: Dictionary, bg_id: String) -> Dictionary:
 	return {}
 
 
-static func validate_stage(project: Dictionary, stage: Variant) -> String:
+static func validate_stage(project: Dictionary, stage: Variant, draft: Dictionary = {}) -> String:
 	if not stage is Dictionary:
 		return "Постановка должна быть объектом."
 	var id: String = str(stage.get("sceneId", ""))
-	if not project.get("shots", {}).has(id):
+	var authored: bool = Author.is_authored_scene(draft, id)
+	if not project.get("shots", {}).has(id) and not authored:
 		return "Неизвестная сцена."
-	var original: Dictionary = project["shots"][id]
+	var original: Dictionary = project["shots"].get(id, {"sceneId": id})
 	var approved: Dictionary = original.duplicate(true)
 	approved["backgroundId"] = stage.get("backgroundId")
 	approved["lighting"] = stage.get("lighting")
@@ -349,6 +366,8 @@ static func validate_stage(project: Dictionary, stage: Variant) -> String:
 		return "Освещение не разрешено для выбранного фона."
 	if stage.get("roomState") not in master.get("stateLayers", []):
 		return "Состояние комнаты не разрешено для выбранного фона."
+	if authored and VNBackgrounds.entry_for(str(stage.get("backgroundId", "")), str(stage.get("lighting", "")), str(stage.get("roomState", ""))).is_empty():
+		return "Точный вариант фона отсутствует в VN-каталоге."
 	var cast_list: Variant = stage.get("cast", [])
 	if not cast_list is Array or cast_list.size() > 3 or int(stage.get("visibleCount", -1)) != cast_list.size():
 		return "В кадре можно разместить не более трёх персонажей."
@@ -380,7 +399,7 @@ static func validate_stage(project: Dictionary, stage: Variant) -> String:
 
 
 static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary) -> String:
-	var error: String = validate_stage(project, stage)
+	var error: String = validate_stage(project, stage, draft)
 	if not error.is_empty():
 		return error
 	var scene_id: String = str(stage.get("sceneId", ""))
@@ -402,7 +421,7 @@ static func set_stage(project: Dictionary, draft: Dictionary, stage: Dictionary)
 
 static func set_stage_v2(project: Dictionary, draft: Dictionary, overlay: Dictionary) -> String:
 	var scene_id: String = str(overlay.get("sceneId", ""))
-	if not project.get("shots", {}).has(scene_id):
+	if not project.get("shots", {}).has(scene_id) and not Author.is_authored_scene(draft, scene_id):
 		return "V2-постановка ссылается на неизвестную сцену."
 	var stage: Dictionary = effective_stage(project, draft, scene_id)
 	var error: String = StageV2.validate(stage, overlay)

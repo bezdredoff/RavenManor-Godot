@@ -711,6 +711,23 @@
       "graphicsDependencies": [],
       "source": "User feedback 2026-10-31; addons/vn_studio/README.md",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-07A",
+      "title": "VN Studio v5: visible backgrounds and authored-scene stage",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "description": "Show catalogued VN plates in the native stage and permit draft-only staging of newly authored scenes.",
+      "deliverable": "Background render order fix, authored scene background/lighting/state and 0–3 cast staging with pose/emotion/layout, strict validation, no-loss review export and smoke tests.",
+      "acceptance": "Windows native Editor shows canonical background and a new draft scene with two characters; save/reopen/Undo/Redo/export retain staging; runtime and canonical sources unchanged.",
+      "status": "PR_review",
+      "dependsOn": [
+        "VNS5-06B"
+      ],
+      "graphicsDependencies": [],
+      "source": "Issue #121 owner QA handoff, 2026-11-02",
+      "requiresHumanAcceptance": true
     }
   ]
 }
