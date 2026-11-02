@@ -101,3 +101,7 @@ new-locked-patch/
 `tests/raven/test_vns5_locked_release_patch.py` в `scripts/check.sh` проводит синтетический (не утверждённый) положительный no-apply экспорт и отрицательные проверки: испорченные SHA пакета/отчёта/backup, отсутствие файлов rollback, незнакомые ID или изменённые proposed gate, отсутствие подтверждения всех блокеров, попытки активации/overwrite, запись внутри checkout, целостность всех семи исходных файлов. Работают также старые тесты Godot save schema/Reducer, D1 и D2A.
 
 **Остаётся для D2C:** отдельная реализация real, opt-in, owner-approved runtime patch с VN presenter, match-3/story transitions, актуальной `foundation_catalog`, проверкой реальных локализаций/арта, старых и новых сейвов, внешними rollback-тестами и контрольным PR. Пока нет реально утверждённых сцен, этот PR сознательно не активирует их.
+
+## Результат CI
+
+Первый полный независимый CI для implementation HEAD `29136550018945246008ca6454f8a2775534bf29`: [#41484648111](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41484648111) — **SUCCESS**: новый Python тест целостности/фейл-клоуз, существующие Raven/Godot и VN Studio smoke, Web/Room Builder, dashboard. После этой записи CI финального HEAD запускается повторно. User approval, игровые переходы и реальные сейвы не принимались.
