@@ -5,6 +5,9 @@ GODOT_BIN="${GODOT_BIN:-godot}"
 
 # Production catalogs are checked independently of the playable runtime.
 python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py"
+# Enforce complete RU/BE/EN spoken lines, scene titles and hotspot popups.
+# This registry gate does not certify unrelated in-game UI or manual proofreading.
+python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py" --release
 python3 "$ROOT/scripts/raven/tools/validate_code_plan.py"
 python3 "$ROOT/scripts/raven/tools/build_production_dashboard.py" --check
 python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py scripts/raven/tools/test_pr_governance.py scripts/raven/tools/test_audit_upds_vn.py
