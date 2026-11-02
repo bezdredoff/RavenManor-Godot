@@ -7,7 +7,11 @@ const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
+const Copy = preload("res://scripts/raven/raven_production_localization.gd")
+const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
 
+var preferences := Copy.new()
+var locale_selector: OptionButton
 var content: Dictionary
 var body: VBoxContainer
 var match_game: RefCounted
@@ -64,6 +68,14 @@ func _build_shell() -> void:
 	_add_button(footer, "← Лаунчер", func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
 	if return_to_map:
 		_add_button(footer, "← Карта", func(): get_tree().change_scene_to_file("res://scenes/raven/season1_map_greybox.tscn"))
+	locale_selector = OptionButton.new()
+	locale_selector.name = "RavenPreviewLocale"
+	locale_selector.tooltip_text = "Language / Мова / Язык"
+	for code: String in Copy.SUPPORTED_LOCALES:
+		locale_selector.add_item({"ru": "Русский", "be": "Беларуская", "en": "English"}[code])
+	locale_selector.select(Copy.SUPPORTED_LOCALES.find(preferences.locale))
+	locale_selector.item_selected.connect(_switch_locale)
+	footer.add_child(locale_selector)
 
 
 func _clear() -> void:
@@ -78,10 +90,10 @@ func _show_menu() -> void:
 	body.add_child(_label("VN СЦЕНЫ / BEATS", 18, Color("f0dfbd")))
 	for scene_id in content.get("prologueScenes", {}):
 		var prologue: Dictionary = content.prologueScenes[scene_id]
-		_add_button(body, "%s · %s" % [prologue.beatId, scene_id], _open_vn.bind(str(scene_id)))
+		_add_button(body, "%s · %s" % [prologue.beatId, Copy.scene_title(str(prologue.beatId), preferences.locale)], _open_vn.bind(str(scene_id)))
 	for scene_id in content.vnScenes:
 		var scene: Dictionary = content.vnScenes[scene_id]
-		_add_button(body, "%s · %s" % [scene.beatId, scene_id], _open_vn.bind(str(scene_id)))
+		_add_button(body, "%s · %s" % [scene.beatId, Copy.scene_title(str(scene.beatId), preferences.locale)], _open_vn.bind(str(scene_id)))
 
 
 func _open_level(level_id: String) -> void:
@@ -126,7 +138,9 @@ func _render_vn() -> void:
 	var scene: Dictionary = vn_player.scene
 	vn_view = VNGameView.new()
 	body.add_child(vn_view)
-	vn_view.show_beat(str(scene.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn)
+	var line_ids: Array = scene.get("lineIds", [])
+	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
+	vn_view.show_beat(str(scene.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
 	_add_button(body, "ПЕРЕЗАПУСТИТЬ BEAT", _open_vn.bind(current_id))
 
 
@@ -136,7 +150,19 @@ func _advance_vn() -> void:
 
 
 func _scene(scene_id: String) -> Dictionary:
-	return content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {}))
+	return CatalogAdapter.for_legacy(content.get("prologueScenes", {}).get(scene_id, content.vnScenes.get(scene_id, {})), preferences.locale)
+
+
+func _switch_locale(index: int) -> void:
+	if index < 0 or index >= Copy.SUPPORTED_LOCALES.size():
+		return
+	if preferences.set_locale(Copy.SUPPORTED_LOCALES[index]) != OK:
+		return
+	if current_kind == "vn" and vn_player != null:
+		vn_player.scene = _scene(current_id)
+		_render_vn()
+	elif current_kind == "menu":
+		_show_menu()
 
 
 func _level(id: String) -> Dictionary:

@@ -20,7 +20,7 @@ The implementation is not Godot's global `tr()` with CSV import alone; the relev
 - `data/raven/production/vn_staging.json`: room art variant, 1–3 visible actors, positions, poses, expressions; **not localized**.
 - `data/raven/production/line_performance_cues.json`: line-level poses/gesture suggestions; **not localized**. Stage directions are editorial notes, not spoken text. Convert them into new translation keys only if a specific direction will be seen as narration or UI.
 - `data/raven/production/hotspot_popup_copy.json`: 28 short interactable object/NPC popups, currently first-pass fully translated into RU/BE/EN; review in context.
-- `scripts/raven/raven_production_localization.gd`: standalone lookup & `ConfigFile` preference adapter, `ru` fallback when translation missing, speaker-name localized labels. Explicitly **not yet hooked into the playable VN**.
+- `scripts/raven/raven_production_localization.gd`: canonical lookup, locale preference persistence, RU fallback, localized scene titles and speaker names. The shared `raven_vn_catalog_adapter.gd` now supplies production catalog lines and IDs to active `RM-VS-01` and `Content Preview` VN beats.
 
 Line data example:
 
@@ -38,7 +38,7 @@ Line data example:
 }
 ```
 
-**Do not confuse fallback with finished translation.** The current `ru` line ledger is complete; **all Belarusian and English dialogue and scene-title translation remains to be written and proofread**. The `null` values are transparent TODOs so a reviewer sees real coverage. Do not invent a translation only to force a green metric. Popup BE/EN text exists as a first-pass draft only.
+**Translation status (2026-11-02):** RU is the source; all **280 of 280 English dialogue entries** and **28 of 28 English scene titles** are filled in the same canonical ledger, including the existing Chapter II pilot. This is a first editorial draft, not native-speaker proofread/acceptance. **Belarusian remains incomplete** and falls back to RU. Popup BE/EN text is still a first-pass draft. A nonempty cell is not proof of final language quality.
 
 ### Proposed runtime resolver contract
 
@@ -74,3 +74,13 @@ No change to `RM-VS-01` save schema, 2/2/2 reward and 2/4 costs. No release-grad
 - Error/fallback is deterministic and logged; no missing string silently hidden.
 - All three languages pass first-run tutorial, chapter transitions, Match-3, old-save loading and complete season playback.
 - `--release` zero missing translations, native editorial pass, mobile readability and fonts approved.
+
+## English dialogue integration — CODE-04-03 / RM-GAP-013 (2026-11-02)
+
+- **Single source of spoken truth:** `data/raven/production/season1_dialogue_catalog.json` is both the Raven VN Studio source and the translated data consumed by the playable VN. Do not maintain a second hand-written English list in `rm_vs_01_content.json` or UI scripts.
+- **Legacy stage compatibility:** `scripts/raven/raven_vn_catalog_adapter.gd` checks that every legacy Russian line and order matches the canonical catalog, then projects the same `beatId`, immutable `lineIds`, speaker IDs and localized text to `RavenVNPlayer`. On source drift, it logs an error and keeps the legacy scene instead of silently assigning the wrong translation.
+- **Visible runtime:** The vertical slice and Content Preview expose RU/BE/EN, persist the choice through the shared `user://raven_language.cfg` preference, and replace the line text without changing the beat or line cursor. Existing Raven campaign save and reducer semantics are untouched. `raven_vn_game_view.gd` shows localized titles/speakers/buttons, paginates long translated dialogue using the existing UPDS text measurement/paging utility, and passes the canonical line ID to character staging.
+- **Standalone Hall Tea pilot:** already read `Copy.line_text(line.id, lang)` from this exact catalog; English entries for that pilot were preserved. Editing English content in Raven VN Studio changes its source in the same place; reviewed source promotion is still required before gameplay reflects local `user://` draft edits.
+- **VN Studio local drafts:** Source SHA locking is intentional. A draft made against the previous Russian-only catalog may show a source-drift warning after this PR; **do not discard it**. Back up and compare the draft; resolve against the new catalog explicitly. Do not auto-rebase a local draft or silently overwrite a canonical locale cell.
+- **QA:** `tests/raven/vn_english_localization_smoke.gd` covers English completeness, stable scene/line IDs, legacy beat/source parity, active preview language switching, saved locale and translated UI elements. Existing runtime background tests now account for paginated lines. The regular contract smoke expects EN=0 missing and BE remaining incomplete.
+- **Remaining release gates:** full English native-editorial proofreading; manual 390×844, 412×915, 430×932 and tablet checks; all user-visible menu, Match-3, map, choice, objective and journal copy must be localized separately. `validate_production_narrative.py --release` **still fails intentionally** until Belarusian and other required locale/title coverage is complete; English dialogue coverage alone does not release the game.
