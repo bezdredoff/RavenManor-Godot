@@ -438,16 +438,16 @@
     {
       "id": "VNS5-07F3",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md."
+      "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md. PR #130 merged to main 84ca9484296694fc9039dfb8b5be2833f8d3e979; CI #41525831931 SUCCESS, native owner QA still outstanding."
     },
     {
       "id": "VNS5-07F4",
       "owner": "ChatGPT",
       "status": "PR_review",
       "updated": "2026-11-02",
-      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md."
+      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md. PR #131 cleanly rebuilt on main 84ca948 after #130, no parent-branch commits; independent fresh CI and Windows native owner QA required; not merged/accepted."
     }
   ],
   "rules": [
