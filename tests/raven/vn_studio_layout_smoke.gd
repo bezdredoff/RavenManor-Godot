@@ -37,7 +37,28 @@ func _run() -> void:
 	for width in [800, 1024, 1366]:
 		studio.size = Vector2(width, 640)
 		await process_frame
+		await process_frame
 		assert(raven._workspace_scroll.vertical_scroll_mode != ScrollContainer.SCROLL_MODE_DISABLED)
+		assert(raven._workspace_body.custom_minimum_size.y >=
+			raven._workspace_scroll.size.y - 1.0, "Raven body must fill its visible viewport")
+		assert(raven._panel_split.size.y >=
+			raven._workspace_scroll.size.y - 140.0, "Main workspace must use Godot tab height")
+		var canvas_size: Vector2 = raven._stage_designer._canvas.custom_minimum_size
+		assert(canvas_size.y > 0 and canvas_size.y < 844,
+			"Docked portrait Stage must fit a short editor pane, not require 844px scrolling")
+		assert(absf(canvas_size.x / canvas_size.y - 390.0 / 844.0) < 0.01,
+			"Editor Stage fit must preserve portrait aspect ratio")
+	# In a taller Godot window Story Map must expand its *graph canvas*, not
+	# leave a large unused dark area below a fixed 310px GraphEdit.
+	studio.size = Vector2(1366, 900)
+	raven._workspace_tabs.current_tab = 3 # Story Map
+	await process_frame
+	await process_frame
+	assert(raven._story_scroll.size.y > 0)
+	assert(raven._raven_graph.custom_minimum_size.y >=
+		raven._story_scroll.size.y - 1.0)
+	assert(raven._raven_graph._canvas.size.y > 310.0,
+		"Story Map canvas should grow with a tall Godot editor pane")
 	for tab_index in range(6):
 		raven._workspace_tabs.current_tab = tab_index
 		assert(raven.selected_context()["sceneId"] == "RM-BEAT-00-01")
