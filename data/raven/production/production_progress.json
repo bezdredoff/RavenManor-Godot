@@ -55,9 +55,9 @@
     {
       "id": "VNS5-06D2A",
       "owner": "ChatGPT",
-      "status": "in_progress",
+      "status": "PR_review",
       "updated": "2026-11-02",
-      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending."
+      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending. Draft PR #118 https://github.com/bezdredoff/RavenManor-Godot/pull/118, implementation head e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676 full independent CI #41477532318 SUCCESS including actual Godot schema-1 save normalization/reducer idempotence/rollback projection and D2A Python tamper/rollback readiness tests, Raven, Room Builder, Web and dashboard. Post-merge main CI #41476075822/#41476074919 SUCCESS. This documentation update requires another latest-HEAD CI; owner acceptance, real approved new content, runtime/branch/save integration remain open."
     },
     {
       "id": "GFX-05-05",

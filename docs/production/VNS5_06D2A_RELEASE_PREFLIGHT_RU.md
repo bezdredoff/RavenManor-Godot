@@ -62,3 +62,7 @@ python3 scripts/raven/tools/plan_vn_release.py \
 `tests/raven/test_vns5_release_readiness.py` проверяет полный synthetic happy-path диагностики, реальный откатный архив, повторный экспорт, отказ при изменённом extracted JSON/манифесте/поддельном SHA/symlink/лишнем файле, ошибки graph/level dependency. `tests/raven/vn_release_save_rehearsal_smoke.gd` запускается в Godot и проверяет нормализацию и сохранение legacy snapshot schema 1, rejected unknown beat, разрешённый event и идемпотентность на **временной копии расширенного каталога**, а также регрессию отката к старому каталогу. Никаких новых ID он не дописывает в канон.
 
 Оба теста добавлены в `scripts/check.sh`, рядом с D1-CLI тестами. Нужна зелёная CI финального PR-head, затем ручное ревью/приёмка владельцем. **Следующий VNS5-06D2B**: реальный opt-in атомарный production import только после утверждённого контента, gate и source diff, согласованного snapshot/reducer и отката с сохранением user data.
+
+## CI и состояние PR
+
+Implementation head `e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676` прошёл полный CI [#41477532318](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41477532318), включая новую Godot-проверку old-save и Python-проверки целостности/backup. После добавления этого свидетельства нужен повторный финальный CI. PR #118 остаётся Draft/PR_review; реальная публикация сцен и ручная owner QA не выполнены.
