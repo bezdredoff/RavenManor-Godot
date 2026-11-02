@@ -62,6 +62,35 @@ func _run() -> void:
 	assert(Graph.validate(project, m3).is_empty())
 	m3["edges"][0]["targetId"] = "RM-LVL-FAKE"
 	assert(not Graph.validate(project, m3).is_empty())
+	# VNS5-07F4: review-only condition annotation and terminal ending marker.
+	var extra: Dictionary = Graph.fresh(source)
+	extra = Graph.next_edge(extra, "condition", third, "Секрет найден", "", "", "has_clue")
+	extra = Graph.next_edge(extra, "ending", Graph.END_MARKER, "Финал черновика")
+	assert(Graph.validate(project, extra).is_empty())
+	var invalid_condition: Dictionary = extra.duplicate(true)
+	invalid_condition["edges"][0]["conditionRef"] = "res://evil.gd"
+	assert(not Graph.validate(project, invalid_condition).is_empty(),
+		"Condition is opaque annotation, never a script/resource path")
+	invalid_condition = extra.duplicate(true)
+	invalid_condition["edges"][0].erase("conditionRef")
+	assert(not Graph.validate(project, invalid_condition).is_empty())
+	invalid_condition = extra.duplicate(true)
+	invalid_condition["edges"][1]["targetId"] = "RM-BEAT-00-01"
+	assert(not Graph.validate(project, invalid_condition).is_empty(),
+		"Ending cannot masquerade as a real runtime scene")
+	var more: Dictionary = Graph.next_edge(extra, "condition", third,
+		"Дубликат", "", "", "has_clue")
+	assert(not Graph.validate(project, more).is_empty())
+	more = Graph.next_edge(extra, "scene", second, "Ещё один безусловный")
+	assert(not Graph.validate(project, more).is_empty())
+	var condition_draft: Dictionary = Store.fresh(project)
+	assert(Store.set_story_graph(project, condition_draft, extra).is_empty())
+	assert(Store.validate(project, condition_draft).is_empty())
+	var graph_result: Dictionary = Graph.build(project, condition_draft)
+	assert(graph_result["nodes"].has("end:" + source))
+	assert(graph_result["nodes"]["end:" + source]["kind"] == "ending")
+	assert(graph_result["edges"].any(func(edge):
+		return edge.get("kind") == "draft" and edge.get("to") == "end:" + source))
 	assert(Store.set_story_graph(project, draft, data).is_empty())
 	assert(Store.validate(project, draft).is_empty())
 	var story: Dictionary = Graph.build(project, draft)
@@ -203,6 +232,34 @@ func _run() -> void:
 	widget._edge_list.select(previous_size - 1)
 	widget._on_remove()
 	assert(widget._overlay["edges"].size() == previous_size - 1)
+	# New condition and ending controls are live and roundtrip exact typed data.
+	widget.set_context(project, Store.fresh(project), third)
+	assert(widget._kind.item_count == 5)
+	assert(widget._select_option(widget._kind, "condition"))
+	widget._on_kind(widget._kind.selected)
+	assert(widget._condition_ref.visible)
+	widget._condition_ref.text = "has_clue"
+	widget._label.text = "Открывается дверь"
+	assert(widget._select_option(widget._target, source))
+	widget._on_add()
+	assert(widget._overlay["edges"].size() == 1)
+	assert(widget._overlay["edges"][0]["conditionRef"] == "has_clue")
+	widget._edge_list.select(0)
+	widget._on_edge_selected(0)
+	widget._condition_ref.text = "has_letter"
+	widget._on_update()
+	assert(widget._overlay["edges"][0]["conditionRef"] == "has_letter")
+	assert(widget._select_option(widget._kind, "ending"))
+	widget._on_kind(widget._kind.selected)
+	assert(not widget._condition_ref.visible)
+	widget._label.text = "Конец только в review"
+	widget._on_add()
+	assert(widget._overlay["edges"].size() == 2)
+	assert(widget._overlay["edges"][1]["targetId"] == Graph.END_MARKER)
+	assert(widget._name_map.has("end:" + third))
+	assert(widget._canvas.is_node_connected(
+		StringName(widget._name_map[third]), 1,
+		StringName(widget._name_map["end:" + third]), 1))
 	widget.queue_free()
 	for path in paths:
 		assert(FileAccess.get_sha256(root_path.path_join(path)) == original[path],

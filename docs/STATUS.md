@@ -566,6 +566,14 @@ Issue #129 recovered the November 1 HTML-v5 approved flows, revealing the missin
 
 Remaining HTML-v5 gaps: VNS5-07F4 condition/ending **draft** links (no implicit game runtime), VNS5-07F5 actual enter/idle/exit visual timeline, and detailed asset group/state workflows and matched HTML-vs-Godot screenshots by local Codex.
 
+## 2026-11-02 — VNS5-07F4 condition/ending proposal in Story Map (stacked review)
+
+After the authoring scene wizard PR #130 (VNS5-07F3; at the time unmerged with final CI #41525831931 success), HTML v5 requires `condition` and `ending` link affordances beyond `scene/choice/match3`. Stacked branch `code/vns5-07f4-condition-ending-drafts` adds strictly **review-only** `condition` edges with bounded opaque `conditionRef` annotation, and an `ending` edge to **DRAFT_END**, a clearly fake terminal in GraphEdit; editor targets and typed fields, save/review export and duplicate/unconditional validation are covered by Raven synthetic smoke. It intentionally does not introduce executable expressions, actual ending assets/IDs, gameplay branching, RavenReducer writes or save migration. Canonical story and UPDS remain immutable. Independent branch CI and Windows Godot native QA pending. No pixel-parity claim. **Merge #130 first; rebase/retarget this PR against main before owner QA/merge.** See `docs/production/VNS5_07F4_CONDITION_ENDING_RU.md`, issue #129. Status `PR_review`, not accepted.
+
+## 2026-11-02 — VNS5-07F4 rebased after #130 (PR #131 review)
+
+PR #130 merged to `main` at 84ca9484296694fc9039dfb8b5be2833f8d3e979. To remove the stacked-branch conflict, PR #131 was rebuilt **onto that exact main** as a single new commit covering only Story Map model/editor, graph smoke and F4 documentation/status files (seven total). Original F4 logic is preserved; no duplicated F3 commits or code changes. PR #131 remains **unmerged** pending fresh GitHub CI and manual Godot owner QA of condition/ending controls. No runtime story/ending semantics. Do not treat CI pass or merge as owner acceptance.
+
 ## 2026-11-02 — CODE-04-03 / RM-GAP-013: English spoken dialogue in gameplay and VN Studio (PR review)
 
 The Raven VN Studio canonical `data/raven/production/season1_dialogue_catalog.json` now contains first-pass English translations for **280/280 spoken lines** and **28/28 scene titles**, with source RU and existing BE cells/immutable IDs preserved. Gameplay `RM-VS-01` and `Content Preview` resolve spoken text, speaker and title from that same catalog using `raven_vn_catalog_adapter.gd`; old slice Russian text is checked for exact order/content before attaching ID (fail-closed). Language selection RU/BE/EN persists in `raven_language.cfg` without a campaign save-schema change or line-index reset; the shared VN GameView uses UPDS paging rather than clipping long English lines. Existing Hall Tea VN already reads from this source. No new route or asset is marked runtime-approved.

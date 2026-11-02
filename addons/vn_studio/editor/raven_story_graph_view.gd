@@ -21,6 +21,7 @@ var _kind: OptionButton
 var _target: OptionButton
 var _checkpoint: OptionButton
 var _choice: OptionButton
+var _condition_ref: LineEdit
 var _label: LineEdit
 var _edge_list: ItemList
 var _remove: Button
@@ -95,6 +96,11 @@ func _ready() -> void:
 	for choice in ["A", "B", "C"]:
 		_choice.add_item(choice)
 	bar.add_child(_choice)
+	_condition_ref = LineEdit.new()
+	_condition_ref.custom_minimum_size.x = 170
+	_condition_ref.placeholder_text = "conditionRef: e.g. has_letter"
+	_condition_ref.tooltip_text = "Только текстовая метка для review, не выполняемая логика игры"
+	bar.add_child(_condition_ref)
 	_label = LineEdit.new()
 	_label.custom_minimum_size.x = 190
 	_label.placeholder_text = "Подпись перехода (черновик)"
@@ -138,7 +144,8 @@ func _on_kind(_index: int) -> void:
 		return
 	_target.clear()
 	var kind: String = _kind.get_item_text(_kind.selected)
-	var targets: Array = Graph.level_ids(_project) if kind == "match3" else Graph.scene_ids(_project)
+	var targets: Array = Graph.level_ids(_project) if kind == "match3" else (
+		[Graph.END_MARKER] if kind == "ending" else Graph.scene_ids(_project))
 	for target in targets:
 		_target.add_item(str(target))
 	_checkpoint.clear()
@@ -146,6 +153,8 @@ func _on_kind(_index: int) -> void:
 		_checkpoint.add_item(str(entry.get("id", "")))
 	_checkpoint.disabled = kind != "choice"
 	_choice.disabled = kind != "choice"
+	_condition_ref.visible = kind == "condition"
+	_condition_ref.editable = kind == "condition"
 	if _label.text.is_empty():
 		_label.placeholder_text = "Выбор / переход / Match-3 (для review)"
 
@@ -165,7 +174,8 @@ func _fields() -> Dictionary:
 		"targetId": _target.get_item_text(_target.selected) if _target.selected >= 0 else "",
 		"label": _label.text.strip_edges(),
 		"lineId": _checkpoint.get_item_text(_checkpoint.selected) if kind == "choice" and _checkpoint.selected >= 0 else "",
-		"choiceKey": _choice.get_item_text(_choice.selected) if kind == "choice" and _choice.selected >= 0 else ""
+		"choiceKey": _choice.get_item_text(_choice.selected) if kind == "choice" and _choice.selected >= 0 else "",
+		"conditionRef": _condition_ref.text.strip_edges() if kind == "condition" else ""
 	}
 
 
@@ -186,7 +196,7 @@ func _on_add() -> void:
 		return
 	var fields: Dictionary = _fields()
 	var candidate: Dictionary = Graph.next_edge(_overlay, fields["kind"], fields["targetId"],
-		fields["label"], fields["lineId"], fields["choiceKey"])
+		fields["label"], fields["lineId"], fields["choiceKey"], fields["conditionRef"])
 	_commit_overlay(candidate)
 
 
@@ -202,6 +212,7 @@ func _on_edge_selected(index: int) -> void:
 	if kind == "choice":
 		_select_option(_checkpoint, str(edge.get("lineId", "")))
 		_select_option(_choice, str(edge.get("choiceKey", "A")))
+	_condition_ref.text = str(edge.get("conditionRef", "")) if kind == "condition" else ""
 	_label.text = str(edge["label"])
 	_remove.disabled = false
 	_update.disabled = false
@@ -225,6 +236,10 @@ func _on_update() -> void:
 	else:
 		edge.erase("lineId")
 		edge.erase("choiceKey")
+	if fields["kind"] == "condition":
+		edge["conditionRef"] = fields["conditionRef"]
+	else:
+		edge.erase("conditionRef")
 	_commit_overlay(candidate)
 
 
@@ -260,6 +275,10 @@ func _on_connection_request(from_name: StringName, from_port: int,
 		_select_option(_kind, "match3")
 		_on_kind(_kind.selected)
 		target = target.trim_prefix("m3:")
+	elif target == "end:" + _scene_id:
+		_select_option(_kind, "ending")
+		_on_kind(_kind.selected)
+		target = Graph.END_MARKER
 	elif Graph.scene_ids(_project).has(target):
 		if _kind.get_item_text(_kind.selected) == "match3":
 			_select_option(_kind, "scene")
@@ -275,7 +294,7 @@ func _on_connection_request(from_name: StringName, from_port: int,
 	if label_text.is_empty():
 		label_text = ("Выбор %s" % fields["choiceKey"]) if fields["kind"] == "choice" else ("Переход к " + target)
 	var candidate: Dictionary = Graph.next_edge(_overlay, fields["kind"], target,
-		label_text, fields["lineId"], fields["choiceKey"])
+		label_text, fields["lineId"], fields["choiceKey"], fields["conditionRef"])
 	if _commit_overlay(candidate):
 		_inspect.text = "Создан черновой %s → %s: %s. Для изменения выберите строку в списке связей." % [
 			source, target, label_text]
@@ -376,7 +395,8 @@ func _refresh() -> void:
 	_update.disabled = true
 	for edge in _overlay.get("edges", []):
 		var suffix: String = (" · " + str(edge.get("lineId", "")) + "/" +
-			str(edge.get("choiceKey", ""))) if edge.get("kind") == "choice" else ""
+			str(edge.get("choiceKey", ""))) if edge.get("kind") == "choice" else (
+			" · if " + str(edge.get("conditionRef", "")) if edge.get("kind") == "condition" else "")
 		_edge_list.add_item("%s · %s → %s%s · %s" % [edge["id"], edge["kind"], edge["targetId"], suffix, edge["label"]])
 	_remove.disabled = true
 	_render_graph()
@@ -415,7 +435,7 @@ func _render_graph() -> void:
 		var kind: String = str(info["kind"])
 		var node := GraphNode.new()
 		node.name = "Node%03d" % _name_map.size()
-		node.title = ("СЦЕНА · " if kind == "scene" else "GATE · " if kind == "gate" else "MATCH-3 · ") + str(info.get("title", id)).left(58)
+		node.title = ("СЦЕНА · " if kind == "scene" else "GATE · " if kind == "gate" else "ФИНАЛ-ЧЕРНОВИК · " if kind == "ending" else "MATCH-3 · ") + str(info.get("title", id)).left(58)
 		node.resizable = false
 		node.position_offset = Vector2(float(int(info["ordinal"]) % 5) * 325.0 + (100.0 if kind != "scene" else 0.0),
 			float(int(info["ordinal"]) / 5) * 235.0 + (95.0 if kind != "scene" else 0.0))
@@ -429,7 +449,7 @@ func _render_graph() -> void:
 		# physical slot 1 exposes orange draft-only cables and drag targets.
 		node.set_slot(0, true, CANONICAL_PORT, CANONICAL_COLOR,
 			true, CANONICAL_PORT, CANONICAL_COLOR)
-		if kind == "scene" or kind == "match3":
+		if kind == "scene" or kind == "match3" or kind == "ending":
 			var draft_hint := Label.new()
 			draft_hint.text = "Черновик: вход / выход" if kind == "scene" else "Черновик: вход"
 			draft_hint.add_theme_color_override("font_color", DRAFT_COLOR)

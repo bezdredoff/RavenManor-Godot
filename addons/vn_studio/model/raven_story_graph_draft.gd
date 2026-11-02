@@ -2,9 +2,10 @@
 extends RefCounted
 ## VNS5-06A: typed review-only Raven scene routes. No gameplay or canonical writes.
 const FORMAT := "raven-vn-story-edges-v1"
-const KINDS := ["scene", "choice", "match3"]
+const KINDS := ["scene", "choice", "condition", "match3", "ending"]
+const END_MARKER := "DRAFT_END"
 const KEYS := ["format", "schemaVersion", "sceneId", "edges"]
-const EDGE_KEYS := ["id", "kind", "targetId", "label", "lineId", "choiceKey"]
+const EDGE_KEYS := ["id", "kind", "targetId", "label", "lineId", "choiceKey", "conditionRef"]
 const MAX_EDGES := 20
 
 
@@ -57,6 +58,7 @@ static func validate(project: Dictionary, overlay: Variant) -> String:
 	var allowed_levels: Array = level_ids(project)
 	var seen_ids: Dictionary = {}
 	var seen_choices: Dictionary = {}
+	var seen_conditions: Dictionary = {}
 	var unconditional: int = 0
 	for edge in edges:
 		if not edge is Dictionary:
@@ -81,14 +83,30 @@ static func validate(project: Dictionary, overlay: Variant) -> String:
 		if not label is String or label.strip_edges().is_empty() or label.length() > 80:
 			return "Story Map label is missing or longer than 80 characters."
 		if kind == "scene":
-			if target not in allowed_scenes or edge.has("lineId") or edge.has("choiceKey"):
-				return "Invalid unconditional scene target or extra choice properties."
+			if target not in allowed_scenes or edge.has("lineId") or edge.has("choiceKey") or edge.has("conditionRef"):
+				return "Invalid unconditional scene target or extra properties."
 			unconditional += 1
 		elif kind == "match3":
-			if target not in allowed_levels or edge.has("lineId") or edge.has("choiceKey"):
+			if target not in allowed_levels or edge.has("lineId") or edge.has("choiceKey") or edge.has("conditionRef"):
 				return "Match-3 target must be an existing canonical level."
 			unconditional += 1
+		elif kind == "ending":
+			# END_MARKER is only an editor terminal node, NOT a real ending ID.
+			if target != END_MARKER or edge.has("lineId") or edge.has("choiceKey") or edge.has("conditionRef"):
+				return "Draft ending must use the review-only END marker."
+			unconditional += 1
+		elif kind == "condition":
+			if target not in allowed_scenes or edge.has("lineId") or edge.has("choiceKey"):
+				return "Conditional draft must point to a real scene without choice fields."
+			if not edge.get("conditionRef") is String or not _valid_condition_ref(str(edge["conditionRef"])):
+				return "Condition reference must be a 1–64 character safe annotation (letters/numbers/._-)."
+			var cond_key: String = str(edge["conditionRef"]) + "|" + str(target)
+			if seen_conditions.has(cond_key):
+				return "Duplicate conditional draft to the same target."
+			seen_conditions[cond_key] = true
 		else:
+			if edge.has("conditionRef"):
+				return "Choice cannot contain a condition annotation."
 			if target not in allowed_scenes:
 				return "Choice target must be an existing scene."
 			if not edge.get("lineId") is String or not line_ids.has(edge["lineId"]):
@@ -104,8 +122,19 @@ static func validate(project: Dictionary, overlay: Variant) -> String:
 	return ""
 
 
+## Opaque conditionRef is a *plain textual annotation*, never a script,
+## expression, gameplay flag evaluation or RavenReducer event.
+static func _valid_condition_ref(value: String) -> bool:
+	if value.is_empty() or value.length() > 64:
+		return false
+	for index in range(value.length()):
+		if not "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789._-".contains(value.substr(index, 1)):
+			return false
+	return true
+
+
 static func next_edge(data: Dictionary, kind: String, target_id: String, label: String,
-		line_id: String = "", choice_key: String = "") -> Dictionary:
+		line_id: String = "", choice_key: String = "", condition_ref: String = "") -> Dictionary:
 	var result: Dictionary = data.duplicate(true)
 	var existing: Dictionary = {}
 	for edge in result.get("edges", []):
@@ -118,6 +147,8 @@ static func next_edge(data: Dictionary, kind: String, target_id: String, label: 
 	if kind == "choice":
 		edge["lineId"] = line_id
 		edge["choiceKey"] = choice_key
+	elif kind == "condition":
+		edge["conditionRef"] = condition_ref
 	result["edges"].append(edge)
 	return result
 
@@ -154,6 +185,12 @@ static func build(project: Dictionary, draft: Dictionary) -> Dictionary:
 					nodes[target_node] = {"id": target_node, "kind": "match3",
 						"ordinal": scenes.find(scene_id), "title": target}
 				target = target_node
+			elif str(edge.get("kind")) == "ending":
+				# Terminal is visible, but never points to a playable ending.
+				target = "end:" + scene_id
+				if not nodes.has(target):
+					nodes[target] = {"id": target, "kind": "ending",
+						"ordinal": scenes.find(scene_id), "title": "DRAFT END — не игровой финал"}
 			if nodes.has(target):
 				connections.append({"from": scene_id, "to": target,
 					"kind": "draft", "edgeId": str(edge.get("id", "")),
