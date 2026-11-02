@@ -29,3 +29,6 @@ Godot 4.7.2 на Windows — вручную проверить окна **800×6
 - Отдельный review/promotion workflow: явное преобразование draft scene IDs в согласованные production IDs с проверкой всех inbound/outbound links, route gates, art staging, line/FX references, i18n, совместимости и reversible diff. Никакой auto-promotion.
 - Полноценные условия, альтернативные ending paths и игровой choice/Match-3/map transition sink требуют отдельного утверждения контрактов reducer и сохранений.
 - VNS5-07: animation clips, runtime production renderer, parity/migration, E2E device QA. Сценарный редактор пока не является полностью завершённой авторской платформой.
+
+## CI и review evidence · 02.11.2026
+[PR #114](https://github.com/bezdredoff/RavenManor-Godot/pull/114), начальный код прошёл полный независимый [CI #41453230267](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41453230267): новый smoke для scene/line draft, прежние VN Studio/Raven проверки, Room Builder, Web export, dashboard. Позднее поправлена восстановительная обработка текущей сцены в UI (чтобы новая сцена не индексировала канон) и название панели; у финального коммита нужен самостоятельный CI перед merge. Ручная Windows QA, настоящие draft save/reopen, owner acceptance и полноценная production promotion не подтверждены.
