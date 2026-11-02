@@ -353,8 +353,9 @@ func _ready() -> void:
 	_thumbnail_strip.size_flags_horizontal = SIZE_EXPAND_FILL
 	add_child(_thumbnail_strip)
 	_canvas = Panel.new()
-	# The preview is a 390x844 logical game frame, never shrunk to thumbnail
-	# proportions. On smaller panes the parent ScrollContainer scrolls it.
+	# Standalone Stage uses the full logical game reference frame. Embedded
+	# Raven Director may fit that frame to its visible pane, preserving aspect
+	# ratio and normalized coordinates rather than cropping via scrolling.
 	_canvas.custom_minimum_size = REFERENCE_SIZE
 	_canvas.size_flags_horizontal = Control.SIZE_SHRINK_CENTER
 	_canvas.clip_contents = true
