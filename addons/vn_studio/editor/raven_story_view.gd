@@ -35,6 +35,14 @@ var _export_stage_v2: Button
 var _export_fx: Button
 var _export_graph: Button
 var _raven_graph: Control
+var _create_scene_dialog: ConfirmationDialog
+var _create_line_dialog: ConfirmationDialog
+var _scene_title_input: LineEdit
+var _scene_first_line_input: TextEdit
+var _new_line_input: TextEdit
+var _scene_speaker: OptionButton
+var _line_speaker: OptionButton
+var _draft_stage_hint: Label
 var _stage_designer: Control
 var _scene_panel: Control
 var _line_panel: Control
@@ -80,6 +88,16 @@ func _build() -> void:
 	heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	body.add_child(heading)
 	var toolbar := sticky
+	var new_scene_button := Button.new()
+	new_scene_button.text = "+ Сцена"
+	new_scene_button.tooltip_text = "Создать локальную draft-сцену с одной репликой. Не runtime."
+	new_scene_button.pressed.connect(_show_create_scene)
+	toolbar.add_child(new_scene_button)
+	var new_line_button := Button.new()
+	new_line_button.text = "+ Реплика"
+	new_line_button.tooltip_text = "Добавить реплику в выбранную сцену, не изменяя production JSON."
+	new_line_button.pressed.connect(_show_create_line)
+	toolbar.add_child(new_line_button)
 	var reload := Button.new()
 	reload.text = "Перечитать проект"
 	reload.pressed.connect(open_raven)
@@ -144,6 +162,7 @@ func _build() -> void:
 	_status = Label.new()
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_status)
+	_build_authoring_dialogs()
 	var panel := HSplitContainer.new()
 	_panel_split = panel
 	panel.size_flags_vertical = SIZE_EXPAND_FILL
@@ -221,6 +240,11 @@ func _build() -> void:
 	workspace.add_child(visual_column)
 	# Tall art and multiple tool rows need vertical scrolling rather than
 	# clipping the asset controls and dialogue preview below the viewport.
+	_draft_stage_hint = Label.new()
+	_draft_stage_hint.text = "ART PENDING · для новой сцены ещё нет утверждённой постановки, trigger и runtime."
+	_draft_stage_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	_draft_stage_hint.visible = false
+	visual_column.add_child(_draft_stage_hint)
 	_stage_scroll = ScrollContainer.new()
 	_stage_scroll.size_flags_horizontal = SIZE_EXPAND_FILL
 	_stage_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -276,6 +300,117 @@ func _build() -> void:
 	add_child(_path)
 
 
+func _build_authoring_dialogs() -> void:
+	_create_scene_dialog = ConfirmationDialog.new()
+	_create_scene_dialog.title = "Новая сцена Raven · только черновик"
+	_create_scene_dialog.min_size = Vector2i(440, 320)
+	add_child(_create_scene_dialog)
+	var scene_fields := VBoxContainer.new()
+	_create_scene_dialog.add_child(scene_fields)
+	var title := Label.new()
+	title.text = "Название RU"
+	scene_fields.add_child(title)
+	_scene_title_input = LineEdit.new()
+	_scene_title_input.placeholder_text = "Например: Разговор у ворот"
+	scene_fields.add_child(_scene_title_input)
+	var first := Label.new()
+	first.text = "Первая реплика RU (обязательно)"
+	scene_fields.add_child(first)
+	_scene_first_line_input = TextEdit.new()
+	_scene_first_line_input.custom_minimum_size = Vector2(360, 90)
+	scene_fields.add_child(_scene_first_line_input)
+	_scene_speaker = OptionButton.new()
+	scene_fields.add_child(_scene_speaker)
+	_create_scene_dialog.confirmed.connect(_on_create_scene)
+	_create_line_dialog = ConfirmationDialog.new()
+	_create_line_dialog.title = "Добавить реплику в текущую сцену · только черновик"
+	_create_line_dialog.min_size = Vector2i(440, 240)
+	add_child(_create_line_dialog)
+	var line_fields := VBoxContainer.new()
+	_create_line_dialog.add_child(line_fields)
+	_new_line_input = TextEdit.new()
+	_new_line_input.custom_minimum_size = Vector2(360, 100)
+	line_fields.add_child(_new_line_input)
+	_line_speaker = OptionButton.new()
+	line_fields.add_child(_line_speaker)
+	_create_line_dialog.confirmed.connect(_on_create_line)
+
+
+func _refresh_speakers() -> void:
+	var actors: Array = Store.Author.actor_ids(_project)
+	for picker in [_scene_speaker, _line_speaker]:
+		picker.clear()
+		for actor_id in actors:
+			picker.add_item(str(actor_id))
+		if picker.item_count > 0:
+			picker.select(0)
+
+
+func _show_create_scene() -> void:
+	if _blocked or _project.is_empty():
+		return
+	_refresh_speakers()
+	_scene_title_input.clear()
+	_scene_first_line_input.clear()
+	_create_scene_dialog.popup_centered()
+
+
+func _show_create_line() -> void:
+	if _blocked or _project.is_empty():
+		return
+	_refresh_speakers()
+	_new_line_input.clear()
+	_create_line_dialog.popup_centered()
+
+
+func _on_create_scene() -> void:
+	if _blocked or _scene_speaker.selected < 0:
+		return
+	var result: Dictionary = Store.add_scene(_project, _draft,
+		_scene_title_input.text, _scene_first_line_input.text,
+		_scene_speaker.get_item_text(_scene_speaker.selected))
+	if not result.get("ok", false):
+		_status.text = "Новая сцена не добавлена: " + str(result.get("error", ""))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_refresh_scene_items()
+	_scene_idx = Store.scene_records(_project, _draft).size() - 1
+	_scene_switch()
+	_status.text = "Черновая сцена " + str(result["sceneId"]) + " создана; не участвует в игре."
+	_refresh_buttons()
+
+
+func _on_create_line() -> void:
+	if _blocked or _line_speaker.selected < 0:
+		return
+	var source: String = str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"])
+	var result: Dictionary = Store.add_line(_project, _draft, source,
+		_new_line_input.text, _line_speaker.get_item_text(_line_speaker.selected))
+	if not result.get("ok", false):
+		_status.text = "Реплика не добавлена: " + str(result.get("error", ""))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_scene_switch()
+	_line_idx = Store.entries_for(_project, _draft, source).size() - 1
+	_line_render()
+	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, source)
+	_status.text = "Добавлена draft-реплика " + str(result["lineId"]) + "."
+	_refresh_buttons()
+
+
+func _refresh_scene_items() -> void:
+	_scenes.clear()
+	for scene in Store.scene_records(_project, _draft):
+		_scenes.add_item("%s · %s" % [
+			str(scene.get("sceneId", "")), str(scene.get("title", {}).get("ru", ""))])
+
+
 func _on_pane_dragged(offset: int) -> void:
 	if Engine.is_editor_hint():
 		EditorInterface.get_editor_settings().set_setting(PANE_SETTING, clampi(offset, 120, 420))
@@ -306,10 +441,7 @@ func open_raven() -> void:
 			"Локальный черновик восстановлен." if loaded["found"] else "Исходный production draft."]
 	_undo.clear()
 	_redo.clear()
-	_scenes.clear()
-	for s in _project["scenes"]:
-		_scenes.add_item("%s · %s" % [
-			str(s.get("sceneId", "")), str(s.get("title", {}).get("ru", ""))])
+	_refresh_scene_items()
 	_scene_idx = 0
 	_scene_switch()
 	_refresh_buttons()
@@ -318,16 +450,17 @@ func open_raven() -> void:
 func _scene_switch() -> void:
 	if _project.is_empty():
 		return
-	_scene_idx = clampi(_scene_idx, 0, _project["scenes"].size() - 1)
+	var scenes: Array = Store.scene_records(_project, _draft)
+	_scene_idx = clampi(_scene_idx, 0, scenes.size() - 1)
 	_scenes.select(_scene_idx)
-	var scene: Dictionary = _project["scenes"][_scene_idx]
+	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var id: String = str(scene["sceneId"])
 	var title: Dictionary = scene.get("title", {})
 	_heading.text = "%s · %s\nСтатус: %s" % [id,
 		str(title.get(_language, title.get("ru", ""))) if title.get(_language) != null else str(title.get("ru", "")),
 		str(scene.get("status", ""))]
 	_lines.clear()
-	var entries: Array = _project["linesByScene"][id]
+	var entries: Array = Store.entries_for(_project, _draft, id)
 	for e in entries:
 		var loc: Dictionary = Store.localized(e, _draft, _language)
 		_lines.add_item("%s · %s" % [
@@ -335,9 +468,13 @@ func _scene_switch() -> void:
 			str(loc["text"]).replace("\n", " ").left(36)])
 	_line_idx = 0
 	_line_render()
-	_stage_designer.set_scene(_project, _draft, id)
-	_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
-	_raven_graph.set_context(_project, _draft, id)
+	var authored: bool = Store.Author.is_authored_scene(_draft, id)
+	_stage_scroll.visible = not authored
+	_draft_stage_hint.visible = authored
+	if not authored:
+		_stage_designer.set_scene(_project, _draft, id)
+		_stage_designer.set_selected_line(str(_current_entry().get("id", "")))
+	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, id)
 	_refresh_preview()
 	_refresh_context()
 
@@ -345,8 +482,8 @@ func _scene_switch() -> void:
 func _current_entry() -> Dictionary:
 	if _project.is_empty():
 		return {}
-	var id: String = str(_project["scenes"][_scene_idx]["sceneId"])
-	var lines: Array = _project["linesByScene"][id]
+	var id: String = str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"])
+	var lines: Array = Store.entries_for(_project, _draft, id)
 	return lines[_line_idx] if _line_idx >= 0 and _line_idx < lines.size() else {}
 
 
@@ -354,7 +491,7 @@ func _line_render() -> void:
 	var e: Dictionary = _current_entry()
 	if e.is_empty():
 		return
-	_line_idx = clampi(_line_idx, 0, _project["linesByScene"][str(e["sceneId"])].size() - 1)
+	_line_idx = clampi(_line_idx, 0, Store.entries_for(_project, _draft, str(e["sceneId"])).size() - 1)
 	_lines.select(_line_idx)
 	var text_value: Dictionary = Store.localized(e, _draft, _language)
 	_suppress = true
@@ -372,7 +509,8 @@ func _line_render() -> void:
 	_update_diff()
 	_sync_dialogue_preview()
 	# A line click changes only editor FX preview time origin; never game progress.
-	_stage_designer.set_selected_line(str(e["id"]))
+	if not Store.Author.is_authored_scene(_draft, str(e["sceneId"])):
+		_stage_designer.set_selected_line(str(e["id"]))
 	_refresh_context()
 
 
@@ -386,7 +524,7 @@ func selected_context() -> Dictionary:
 func _refresh_context() -> void:
 	if _context_views.size() != 1 or _project.is_empty():
 		return
-	var scene: Dictionary = _project["scenes"][_scene_idx]
+	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var scene_id: String = str(scene["sceneId"])
 	_asset_library.set_scene_context(scene_id)
 	var entry: Dictionary = _current_entry()
@@ -397,8 +535,11 @@ func _refresh_context() -> void:
 
 
 func _refresh_preview() -> void:
-	var scene: Dictionary = _project["scenes"][_scene_idx]
+	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var id: String = str(scene["sceneId"])
+	if Store.Author.is_authored_scene(_draft, id):
+		_preview.text = "ART PENDING · новый sceneId " + id + ". Нет утверждённого фона, trigger или runtime. Подключение — отдельный promotion PR."
+		return
 	var shot: Dictionary = Store.effective_stage(_project, _draft, id)
 	var trigger: Dictionary = _project["routes"][id]
 	var output: String = "Фон: %s · свет: %s · состояние: %s\n" % [
@@ -458,6 +599,8 @@ func _on_undo() -> void:
 	_redo.append(_draft.duplicate(true))
 	_draft = _undo.pop_back()
 	_dirty = true
+	_refresh_scene_items()
+	_scene_idx = mini(_scene_idx, Store.scene_records(_project, _draft).size() - 1)
 	_scene_switch()
 	_refresh_buttons()
 
@@ -468,24 +611,28 @@ func _on_redo() -> void:
 	_undo.append(_draft.duplicate(true))
 	_draft = _redo.pop_back()
 	_dirty = true
+	_refresh_scene_items()
+	_scene_idx = mini(_scene_idx, Store.scene_records(_project, _draft).size() - 1)
 	_scene_switch()
 	_refresh_buttons()
 
 
 func _update_diff() -> void:
-	_diff.text = "%d переводов, %d сцен v1, %d сцен v2, %d FX, %d Story Map · %s" % [
+	_diff.text = "%d переводов, %d сцен v1, %d сцен v2, %d FX, %d Story Map, %d новых сцен, %d реплик · %s" % [
 		Store.change_count(_draft), _draft.get("stagePatches", {}).size(), _draft.get("stageV2Patches", {}).size(),
 		_draft.get("stageFxPatches", {}).size(), _draft.get("storyGraphPatches", {}).size(),
+		_draft.get("authoredScenes", []).size(), _draft.get("authoredLines", []).size(),
 		"есть несохранённые правки" if _dirty else "локально сохранено / без изменений"]
 
 
 func _refresh_buttons() -> void:
 	_save.disabled = _blocked or _project.is_empty()
-	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty()
-	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
-	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
-	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty()
-	_export_graph.disabled = _blocked or _project.is_empty() or _draft.get("storyGraphPatches", {}).is_empty()
+	var has_additions: bool = not _draft.get("authoredScenes", []).is_empty() or not _draft.get("authoredLines", []).is_empty()
+	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions
+	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions
+	_export_stage_v2.disabled = _blocked or _project.is_empty() or _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions
+	_export_fx.disabled = _blocked or _project.is_empty() or _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions
+	_export_graph.disabled = _blocked or _project.is_empty() or (_draft.get("storyGraphPatches", {}).is_empty() and not has_additions)
 	_undo_button.disabled = _blocked or _undo.is_empty()
 	_redo_button.disabled = _blocked or _redo.is_empty()
 
@@ -537,7 +684,7 @@ func _on_graph_modified(data: Dictionary) -> void:
 
 
 func _export_graph_candidate() -> void:
-	if _blocked or _project.is_empty() or _draft.get("storyGraphPatches", {}).is_empty():
+	if _blocked or _project.is_empty() or (_draft.get("storyGraphPatches", {}).is_empty() and _draft.get("authoredLines", []).is_empty()):
 		return
 	if _dirty:
 		_status.text = "Сначала сохраните локальный Raven-черновик, затем экспортируйте Story Map."
