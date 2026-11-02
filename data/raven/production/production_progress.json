@@ -388,10 +388,17 @@
     },
     {
       "id": "VNS5-07B",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "Codex",
       "updated": "2026-11-02",
-      "evidence": "VNS5-07B branch from merged main 97a3d16. Native Stage is persistent in center with stage controls in right inspector; scene/line lists on left, resizable/collapsible panes, compact export actions, parallel RU/BE/EN fields and draft-scene titles, stable lineId. Reference local HTML v5 handoff found in C:/git. Windows Godot 4.7.2 UI was visually inspected at 1154x680 with main screen maximized; background and inspector visible. Full local check.ps1 passed with isolated APPDATA; targeted new-scene/translation and promotion smokes passed; code-plan and dashboard checks passed. PR CI and owner native QA at 800x640, 1024x640, 1366x768 pending; no story/runtime/save changes."
+      "evidence": "VNS5-07B branch from merged main 97a3d16. Native Stage is persistent in center with stage controls in right inspector; scene/line lists on left, resizable/collapsible panes, compact export actions, parallel RU/BE/EN fields and draft-scene titles, stable lineId. Reference local HTML v5 handoff found in C:/git. Windows Godot 4.7.2 UI was visually inspected at 1154x680 with main screen maximized; background and inspector visible. Full local check.ps1 passed with isolated APPDATA; targeted new-scene/translation and promotion smokes passed; code-plan and dashboard checks passed. PR CI and owner native QA at 800x640, 1024x640, 1366x768 pending; no story/runtime/save changes. PR #123 merged into main a434f1570e793f05d75e62950b4c87a61ee663e3 at 2026-11-02T19:42:11Z; native owner QA is still outstanding. PR-head CI #41511288798 success; latest main CI should be checked separately."
+    },
+    {
+      "id": "VNS5-07C1",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "evidence": "Review candidate branch code/vns5-07c1-story-map-interactions based on main a434f157 after #123. Native Story Map graph node click synchronizes Director source scene, drag source→target creates strictly review-only draft edges, selected draft edge can be edited with stable ID, validated A/B/C and canonical level targets; Godot smoke covers focus/edit/negative/immutability. No runtime/story/save/UPDS mutations. PR CI and owner native UX acceptance pending. See docs/production/VNS5_07C1_GRAPH_INTERACTION_RU.md and issue #121."
     }
   ],
   "rules": [
