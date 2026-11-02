@@ -28,7 +28,7 @@ func _run() -> void:
 	var background_ids: Dictionary = {}
 	for record: Dictionary in registry["records"]:
 		if record["category"] == "background":
-			assert(record["orientation"] == "portrait" and record["status"] == "candidate")
+			assert(record["orientation"] == "portrait" and record["status"] == "accepted")
 			assert(record["integrity"] == "ok" and not background_ids.has(record["id"]))
 			background_ids[record["id"]] = true
 		else:
@@ -62,14 +62,15 @@ func _run() -> void:
 	library._list.select(0)
 	library._pin("A")
 	assert(library._compare_labels[0].text.contains("BG-ROAD"))
-	library._status_filter.select(2) # Backgrounds remain candidates; cast art is accepted.
+	library._status_filter.select(2) # Exact owner-approved backgrounds are accepted.
 	library._refresh()
-	assert(library._visible.is_empty())
-	library._status_filter.select(1)
+	assert(library._visible.size() == 1)
+	library._status_filter.select(1) # No imported backgrounds remain candidates.
 	library._orientation.select(2) # The registered plates are portrait.
 	library._refresh()
 	assert(library._visible.is_empty())
 	library._orientation.select(0)
+	library._status_filter.select(2) # Return to approved records for family filter.
 	library._search.text = ""
 	library._group.select(1)
 	library._refresh()
