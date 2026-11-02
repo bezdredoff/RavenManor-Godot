@@ -1,4 +1,4 @@
-> **Текущее состояние (2026-11-02):** исправления PR #108/#109 уже в двух ветках; negative live run #41417364700 подтвердил автоудаление ZIP. Следующий шаг — этот валидный позитивный ZIP, создание candidate PR и его независимый CI. Ранние инструкции ниже описывают исторический rollout.
+> **Актуальный результат (2026-11-02):** автоочистка ZIP подтверждена live на обеих ветвях: negative [#41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700) и positive [#41431240753](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753). Candidate [PR #110](https://github.com/bezdredoff/RavenManor-Godot/pull/110) и независимый CI [#41431330573](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573) созданы/прошли. Общий MOB-04 ещё in_progress; старые инструкции ниже сохранены для истории.
 
 # MOB-04 · Автоматическая очистка incoming ZIP
 
@@ -61,3 +61,12 @@
 Итоговый run должен быть зелёным. **Не мержить candidate PR автоматически**. Проверить diff (строго 4 документа), дашборд и отсутствие незаявленных файлов, затем вручную мержить после QA. Полученные run ID, PR ID и исход проверки вписать в evidence после факта; текущий ZIP не выдаёт ожидаемый позитивный тест за доказанный. Подфункция ZIP cleanup считается принятой только после подтверждённого позитивного и негативного путей. Общий MOB-04 может оставаться `in_progress` из-за неохваченных adversarial/phone-preview требований.
 
 При stale main SHA или незелёном CI **не мержить PR и не переиспользовать архив**; пересобрать на свежем main и исследовать logs.
+
+## Реальная приёмка автоматической очистки — success и failure
+
+| Сценарий | Validate | Candidate | Независимый CI | Cleanup | Подтверждение |
+|---|---|---|---|---|---|
+| Невалидный ZIP | failed (ожидаемо) | skipped | skipped | **success** | [run #41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700); удалён `MOB04-cleanup-negative.zip` |
+| Валидный ZIP | success | success | **success** | **success** | [run #41431240753](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753); [PR #110](https://github.com/bezdredoff/RavenManor-Godot/pull/110); [candidate build #41431330573](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573) |
+
+Для positive запуска job `cleanup_incoming_zip` записал `Removed incoming/RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip` с новым HEAD `4c7954578580d96808e934989f6b0ecc3a47c62a`. После этого в дереве `incoming/` нет ZIP; остались `.gitkeep` и `README.md`. Candidate Web artifact предоставлен, production deploy пропущен. Подфункция автоматического удаления ZIP принята **по функциональному CI-критерию success+failure**, но PR #110 требует финальной PR CI проверки и ручного merge; оставшиеся критерии MOB-04 перечислены в каноническом production progress, статус всей задачи `in_progress`.
