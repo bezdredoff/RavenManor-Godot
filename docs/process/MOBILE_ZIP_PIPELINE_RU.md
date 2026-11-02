@@ -1,6 +1,10 @@
 # Raven Manor — загрузка больших патчей в GitHub с телефона
 
-**Status (27.10.2026):** MOB-00…03 implemented in main. After owner enabled Actions PR creation, a GitHub-uploaded harmless delta ZIP produced automatic [PR #52](https://github.com/bezdredoff/RavenManor-Godot/pull/52), and independent candidate Web/Godot CI produced a seven-day artifact ([run 40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376)). PR #52 was closed without merge, the inbox was cleaned. **MOB-04 remains open**: no actual upload from a physical phone, no full malicious-archive live matrix, no interactive candidate preview on a separate origin.
+> **Актуальный результат:** позитивный ZIP [run #41431240753](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753), PR [#110](https://github.com/bezdredoff/RavenManor-Godot/pull/110), отдельный CI [#41431330573](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573) и автоматическое удаление ZIP — **подтверждены**. Негативный ZIP также удалён автоматически в [run #41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700). Подфункция ZIP cleanup проверена для success/failure; общий MOB-04 остаётся `in_progress` по другим критериям.
+
+> **Историческая актуализация до позитивного теста (2026-11-02):** PR [#108](https://github.com/bezdredoff/RavenManor-Godot/pull/108) и [#109](https://github.com/bezdredoff/RavenManor-Godot/pull/109) смёржены в `main` и `incoming`. Негативный live-тест [#41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700) доказал автоудаление невалидного ZIP. Позитивный тест с валидным архивом и независимым CI остаётся последним gate для **автоочистки**; другие требования MOB-04 (полная матрица атак/отдельный origin для playable preview/дальнейшая приёмка устройства) нельзя закрывать на основании этого теста. См. раздел «MOB-04 positive ZIP acceptance» ниже.
+
+**Исторический статус (27.10.2026, см. актуализацию выше):** MOB-00…03 implemented in main. After owner enabled Actions PR creation, a GitHub-uploaded harmless delta ZIP produced automatic [PR #52](https://github.com/bezdredoff/RavenManor-Godot/pull/52), and independent candidate Web/Godot CI produced a seven-day artifact ([run 40545034376](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376)). PR #52 was closed without merge, the inbox was cleaned. **MOB-04 remains open**: no actual upload from a physical phone, no full malicious-archive live matrix, no interactive candidate preview on a separate origin.
 
 ## Когда использовать
 
@@ -133,3 +137,21 @@ GitHub Pages `https://bezdredoff.github.io/RavenManor-Godot/` и `/preview/` и�
 **Доказано:** физическая загрузка, GitHub Actions permission/auto PR, отдельный CI и создание Web-артефакта без деплоя на стабильный origin. **Не доказано/остаётся задачей:** live-интеграция всех атакующих ZIP-наборов, открытие/загрузка артефакта непосредственно в мобильном браузере, перенос больших бинарных пакетов, а также играбельная версия candidate на отдельном origin. Не отмечать весь MOB-04 как `accepted` до этих проверок.
 
 Продолжение разработки CODE-02A: [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54) переносит проверенные UI primitives UPDS; он не входит в smoke ZIP, и его можно мержить отдельно, когда завершена мобильная загрузка.
+
+## MOB-04 positive ZIP acceptance — 2026-11-02
+
+Рабочий `raven-delta-v1` архив `RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip` подготовлен по `main` commit `d3e300720b4f79f358bff7a274bc7267d49cc8f1`, с `taskIds: ["MOB-04"]`. Его `files[]` содержит только канонические документы `docs/STATUS.md`, `docs/process/MOBILE_ZIP_PIPELINE_RU.md`, `docs/production/MOB04_AUTO_ZIP_CLEANUP_RU.md` и `data/raven/production/production_progress.json`.
+
+Подтверждённая негативная ветка: [run #41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700), `validate=fail` ожидаемо, `cleanup_incoming_zip=success`, архив `MOB04-cleanup-negative.zip` удалён. В позитивной ветке ожидается: `validate=success` → `candidate=success` → `test_candidate=success` → `cleanup_incoming_zip=success`; ZIP больше не находится в `incoming/`, GitHub создал candidate PR, а независимая проверка не деплоит непроверенный код в stable Pages.
+
+Положительный run и URL candidate PR **невозможно вписать до загрузки архива**. После запуска внести точные номера/ссылки отдельным ревью-коммитом/последующим PR, убедиться в ручном merge и только затем считать **подфункцию автоочистки** принятой. Не трактовать это как закрытие оставшихся требований MOB-04, включая полный adversarial matrix или отдельный origin для playable preview. Если `main` изменится до загрузки, не переиспользовать ZIP: пересобрать `baseSha`.
+
+### Фактические результаты позитивной приёмки, 02.11.2026
+
+- [Импорт #41431240753](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753): `validate`, `candidate`, `test_candidate` и `cleanup_incoming_zip` — все **success**.
+- [Создан PR #110](https://github.com/bezdredoff/RavenManor-Godot/pull/110): ровно 4 изменённых документа/дашборд, 0 удалений, без игрового кода и workflow.
+- [Независимый CI #41431330573](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573): Godot/Room Builder/Web — **success**, candidate Web artifact создан, `deploy` skipped.
+- Лог cleanup: `Removed incoming/RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip`; HEAD `incoming` после удаления `4c7954578580d96808e934989f6b0ecc3a47c62a`. В `incoming/` остались только `.gitkeep` и `README.md`.
+- Негативный [run #41417364700](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700) также подтвердил удаление ZIP при `validate=failure`.
+
+**Итог:** обе ветви автоочистки доказаны в живом CI; отсутствие дополнительного ZIP-ручного удаления подтверждено. Это не закрывает весь MOB-04: полная матрица adversarial tests, mobile artifact review и отдельный origin для playable preview остаются открыты. Проверки финального состояния PR #110 и ручной merge отдельно обязательны. Исторические инструкции выше сохранены ради provenance, даже если в них говорится о ранее ожидавшемся позитивном тесте.
