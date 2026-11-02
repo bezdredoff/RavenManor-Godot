@@ -55,9 +55,16 @@
     {
       "id": "VNS5-06D2A",
       "owner": "ChatGPT",
-      "status": "PR_review",
+      "status": "merged",
       "updated": "2026-11-02",
-      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending. Draft PR #118 https://github.com/bezdredoff/RavenManor-Godot/pull/118, implementation head e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676 full independent CI #41477532318 SUCCESS including actual Godot schema-1 save normalization/reducer idempotence/rollback projection and D2A Python tamper/rollback readiness tests, Raven, Room Builder, Web and dashboard. Post-merge main CI #41476075822/#41476074919 SUCCESS. This documentation update requires another latest-HEAD CI; owner acceptance, real approved new content, runtime/branch/save integration remain open."
+      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending. Draft PR #118 https://github.com/bezdredoff/RavenManor-Godot/pull/118, implementation head e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676 full independent CI #41477532318 SUCCESS including actual Godot schema-1 save normalization/reducer idempotence/rollback projection and D2A Python tamper/rollback readiness tests, Raven, Room Builder, Web and dashboard. Post-merge main CI #41476075822/#41476074919 SUCCESS. This documentation update requires another latest-HEAD CI; owner acceptance, real approved new content, runtime/branch/save integration remain open. PR #118 merged into main 7f4b079046197ec8bac700e5db3d924342d68b2a. Final-head CI #41478202348 SUCCESS; post-merge main CI #41483205220 SUCCESS, #41483205927 in progress at branch creation. Owner content/runtime acceptance not inferred."
+    },
+    {
+      "id": "VNS5-06D2B",
+      "owner": "ChatGPT",
+      "status": "in_progress",
+      "updated": "2026-11-02",
+      "evidence": "Implementation branch code/vns5-06d2b-controlled-release-staging on main 7f4b079046197ec8bac700e5db3d924342d68b2a. Enforces exact Godot/D1-CLI/D2A source hash chain and immutable rollback/decision acknowledgments; creates external locked review candidate of 4 canonical narrative JSON and append-only foundation_catalog.storyBeats, with 7 exact source rollback backups and non-activation manifest. No canonical, game/save/UPDS writes and no actual owner approval. New synthetic tests include tamper, incomplete blocker/ID route review, nonruntime gates, output path/traversal/overwrite. Check.sh, docs and backlog updated. PR CI and owner review pending; real playable integration remains VNS5-06D2C."
     },
     {
       "id": "GFX-05-05",
