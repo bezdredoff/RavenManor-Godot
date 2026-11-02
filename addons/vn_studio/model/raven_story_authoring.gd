@@ -4,7 +4,7 @@ extends RefCounted
 ## Stable reserved IDs deliberately cannot masquerade as promoted runtime scenes.
 const MAX_NEW_SCENES := 32
 const MAX_NEW_LINES := 320
-const SCENE_KEYS := ["sceneId", "title", "status"]
+const SCENE_KEYS := ["sceneId", "title", "status", "chapter"]
 const LINE_KEYS := ["id", "sceneId", "speakerId", "delivery", "localized", "source"]
 const LOCALES := ["ru", "be", "en"]
 
@@ -82,7 +82,7 @@ static func next_line_id(project: Dictionary, draft: Dictionary, scene_id: Strin
 
 
 static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
-		initial_line_ru: String, speaker_id: String) -> Dictionary:
+		initial_line_ru: String, speaker_id: String, chapter: String = "") -> Dictionary:
 	var scene_id: String = next_scene_id(project, draft)
 	if scene_id.is_empty() or draft.get("authoredScenes", []).size() >= MAX_NEW_SCENES:
 		return {"ok": false, "error": "Scene draft limit reached."}
@@ -92,14 +92,19 @@ static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
 		return {"ok": false, "error": "First dialogue line requires RU text (max 6000 characters)."}
 	if not actor_ids(project).has(speaker_id):
 		return {"ok": false, "error": "Speaker is not in the approved character registry."}
+	if not chapter.is_empty() and not _valid_chapter(chapter):
+		return {"ok": false, "error": "Draft chapter must use a two-digit group such as 02."}
 	var candidate: Dictionary = draft.duplicate(true)
 	if not candidate.has("authoredScenes"):
 		candidate["authoredScenes"] = []
 	if not candidate.has("authoredLines"):
 		candidate["authoredLines"] = []
-	candidate["authoredScenes"].append({"sceneId": scene_id,
+	var authored: Dictionary = {"sceneId": scene_id,
 		"title": {"ru": title_ru.strip_edges(), "be": null, "en": null},
-		"status": "draft_not_runtime"})
+		"status": "draft_not_runtime"}
+	if not chapter.is_empty():
+		authored["chapter"] = chapter
+	candidate["authoredScenes"].append(authored)
 	var line_id: String = scene_id + "-L001"
 	candidate["authoredLines"].append(_line(line_id, scene_id, initial_line_ru, speaker_id))
 	var error: String = validate(project, candidate)
@@ -132,6 +137,84 @@ static func add_line(project: Dictionary, draft: Dictionary, scene_id: String,
 	if not error.is_empty():
 		return {"ok": false, "error": error}
 	return {"ok": true, "draft": candidate, "sceneId": scene_id, "lineId": id}
+
+
+
+## Chapter is editorial metadata for draft scene navigation. It does not
+## fabricate a canonical route, runtime chapter or RM-BEAT ID.
+static func _valid_chapter(chapter: String) -> bool:
+	if chapter.length() != 2:
+		return false
+	for pos in range(2):
+		if not "0123456789".contains(chapter.substr(pos, 1)):
+			return false
+	return true
+
+
+## Reorder *authored* lines only; canonical authored order is immutable.
+## Stable lineIds, cue targets, locale patches and FX anchors are not renamed.
+static func move_line(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String, direction: int) -> Dictionary:
+	if direction != -1 and direction != 1:
+		return {"ok": false, "error": "Direction must be -1 or +1."}
+	var own: Array = []
+	var lines_new: Array = draft.get("authoredLines", [])
+	for index in range(lines_new.size()):
+		if str(lines_new[index].get("sceneId", "")) == scene_id:
+			own.append(index)
+	var current: int = -1
+	for index in range(own.size()):
+		if str(lines_new[own[index]].get("id", "")) == line_id:
+			current = index
+			break
+	if current < 0:
+		return {"ok": false, "error": "Only draft-authored lines can be moved."}
+	var to_index: int = current + direction
+	if to_index < 0 or to_index >= own.size():
+		return {"ok": false, "error": "Line is already at the edge of its authored block."}
+	var candidate: Dictionary = draft.duplicate(true)
+	var left: int = own[current]
+	var right: int = own[to_index]
+	var saved: Dictionary = candidate["authoredLines"][left]
+	candidate["authoredLines"][left] = candidate["authoredLines"][right]
+	candidate["authoredLines"][right] = saved
+	var error: String = validate(project, candidate)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	return {"ok": true, "draft": candidate, "lineId": line_id}
+
+
+## Keep canonical lines immutable and protect referenced draft checkpoints.
+## An authored scene must retain at least one line.
+static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String) -> Dictionary:
+	var candidate: Dictionary = draft.duplicate(true)
+	var to_delete: int = -1
+	var count_in_scene: int = 0
+	for index in range(candidate.get("authoredLines", []).size()):
+		var line: Dictionary = candidate["authoredLines"][index]
+		if str(line.get("sceneId", "")) == scene_id:
+			count_in_scene += 1
+			if str(line.get("id", "")) == line_id:
+				to_delete = index
+	if to_delete < 0:
+		return {"ok": false, "error": "Canonical or unknown line cannot be deleted."}
+	if is_authored_scene(candidate, scene_id) and count_in_scene == 1:
+		return {"ok": false, "error": "New scenes need at least one authored line."}
+	for patch in candidate.get("storyGraphPatches", {}).values():
+		for edge in patch.get("edges", []):
+			if str(edge.get("lineId", "")) == line_id:
+				return {"ok": false, "error": "Line is referenced by a Story Map choice."}
+	for fx in candidate.get("stageFxPatches", {}).values():
+		for cue in fx.get("cues", []):
+			if str(cue.get("lineId", "")) == line_id:
+				return {"ok": false, "error": "Line is referenced by an animation cue."}
+	candidate["authoredLines"].remove_at(to_delete)
+	candidate.get("patches", {}).erase(line_id)
+	var error: String = validate(project, candidate)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	return {"ok": true, "draft": candidate, "lineId": line_id}
 
 
 static func _line(id: String, scene_id: String, text_ru: String, speaker_id: String) -> Dictionary:
@@ -174,6 +257,8 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 		for lang in title.keys():
 			if lang not in LOCALES or (title[lang] != null and (not title[lang] is String or str(title[lang]).length() > 120)):
 				return "Invalid authored scene title translation."
+		if scene.has("chapter") and (not scene["chapter"] is String or not _valid_chapter(str(scene["chapter"]))):
+			return "Authored scene chapter must be a two-digit draft group."
 		if scene.get("status") != "draft_not_runtime":
 			return "New scene cannot claim approved runtime status."
 	var known_lines: Dictionary = {}
