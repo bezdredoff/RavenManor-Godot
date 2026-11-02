@@ -50,7 +50,7 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 		if known_scenes[beat_id].get("status") != APPROVED_SCENE_STATUS:
 			continue
 		var gate: Variant = route.get("gate", {})
-		if not gate is Dictionary or gate.get("approvedRuntime") is not bool or gate.get("approvedRuntime") is not bool:
+		if not gate is Dictionary or gate.get("approvedRuntime") is not bool or gate.get("proposedRuntime") is not bool:
 			continue
 		if gate.get("approvedRuntime") is not true or gate.get("proposedRuntime") is not false:
 			continue
