@@ -402,10 +402,17 @@
     },
     {
       "id": "VNS5-07C2",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-02",
+      "evidence": "PR review branch code/vns5-07c2-direct-wire-selection from merged main a2f9e690. Adds projection-only stable edge IDs to Graph.build, left-click wire lookup via GraphEdit nearest connection, safe A/B/C duplicate-wire popup ID disambiguation, canonical readonly guard and deferred scene-focus rebuild. Extended Raven smoke for match/parallel/canonical; no runtime, save, canon, art or UPDS mutations. Independent CI and owner native mouse QA pending. Runbook docs/production/VNS5_07C2_DIRECT_WIRE_EDIT_RU.md; issue #121. PR #125 merged into main 188332a22153b9853439fa5cd8c4ad41a2e50b63; PR-head GitHub CI #41515671812 SUCCESS. Native owner UI QA not recorded; user reported draft wires impossible to find."
+    },
+    {
+      "id": "VNS5-07C3",
       "status": "PR_review",
       "owner": "ChatGPT",
       "updated": "2026-11-02",
-      "evidence": "PR review branch code/vns5-07c2-direct-wire-selection from merged main a2f9e690. Adds projection-only stable edge IDs to Graph.build, left-click wire lookup via GraphEdit nearest connection, safe A/B/C duplicate-wire popup ID disambiguation, canonical readonly guard and deferred scene-focus rebuild. Extended Raven smoke for match/parallel/canonical; no runtime, save, canon, art or UPDS mutations. Independent CI and owner native mouse QA pending. Runbook docs/production/VNS5_07C2_DIRECT_WIRE_EDIT_RU.md; issue #121."
+      "evidence": "Issue #121 follow-up to merged PR #125: user cannot find draft wires. Review-only code/vns5-07c3-draft-wire-visibility from main 188332a. Adds green canonical port0/wires vs orange draft port1/wires, two-color legend, explicit empty state and +Связь instructions, port-identity guard preventing editing canonical wire even with same endpoints as draft. New smoke coverage; canonical JSON/story/reducer/save/UPDS untouched. CI and owner native mouse/UI QA pending. Details docs/production/VNS5_07C3_DRAFT_WIRES_RU.md."
     }
   ],
   "rules": [
