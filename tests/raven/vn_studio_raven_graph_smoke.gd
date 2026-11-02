@@ -101,6 +101,55 @@ func _run() -> void:
 	widget._edge_list.select(3)
 	widget._on_remove()
 	assert(widget._overlay["edges"].size() == 3)
+	# VNS5-07C1: selecting a graph node requests a scene focus in the Director.
+	var requested: Array[String] = []
+	widget.scene_focus_requested.connect(func(id: String): requested.append(id))
+	widget._on_node_selected(third)
+	assert(requested == [third])
+	assert(widget._node_to_id.get(str(widget._name_map[source]), "") == source)
+	# Connect from the active scene to a different scene, preserving a review-only edge.
+	widget._kind.select(1) # choice
+	widget._on_kind(1)
+	widget._choice.select(2) # C (A and B already exist)
+	widget._checkpoint.select(0)
+	widget._label.clear() # drag gives a safe visible label
+	var previous_size: int = widget._overlay["edges"].size()
+	widget._on_connection_request(StringName(widget._name_map[source]), 0,
+		StringName(widget._name_map[third]), 0)
+	assert(widget._overlay["edges"].size() == previous_size + 1)
+	var added: Dictionary = widget._overlay["edges"][-1]
+	assert(added["kind"] == "choice" and added["targetId"] == third)
+	assert(added["choiceKey"] == "C" and added["lineId"] == checkpoint)
+	assert(added["label"] != "")
+	var added_id: String = str(added["id"])
+	# Selecting the review-only edge must populate an editor; update keeps its ID.
+	widget._edge_list.select(previous_size)
+	widget._on_edge_selected(previous_size)
+	assert(widget._update.disabled == false)
+	assert(widget._label.text == added["label"])
+	widget._label.text = "Исправленная подпись"
+	widget._on_update()
+	assert(widget._overlay["edges"][-1]["id"] == added_id)
+	assert(widget._overlay["edges"][-1]["label"] == "Исправленная подпись")
+	# Invalid source and duplicate choice fail without silently changing any draft.
+	previous_size = widget._overlay["edges"].size()
+	widget._on_connection_request(StringName(widget._name_map[third]), 0,
+		StringName(widget._name_map[source]), 0)
+	assert(widget._overlay["edges"].size() == previous_size)
+	widget._kind.select(1)
+	widget._on_kind(1)
+	widget._choice.select(2)
+	widget._checkpoint.select(0)
+	widget._on_connection_request(StringName(widget._name_map[source]), 0,
+		StringName(widget._name_map[third]), 0)
+	assert(widget._overlay["edges"].size() == previous_size)
+	# Canonical connections cannot be deleted via graphical dragging.
+	widget._reject_disconnection(StringName(widget._name_map[source]), 0,
+		StringName(widget._name_map[third]), 0)
+	assert(widget._overlay["edges"].size() == previous_size)
+	widget._edge_list.select(previous_size - 1)
+	widget._on_remove()
+	assert(widget._overlay["edges"].size() == previous_size - 1)
 	widget.queue_free()
 	for path in paths:
 		assert(FileAccess.get_sha256(root_path.path_join(path)) == original[path],
