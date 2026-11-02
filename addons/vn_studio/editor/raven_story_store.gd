@@ -14,6 +14,7 @@ const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const StoryGraph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
 const Author = preload("res://addons/vn_studio/model/raven_story_authoring.gd")
 const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
+const Package = preload("res://addons/vn_studio/model/raven_production_package.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
 const FORMAT := "raven-vn-studio-draft-v1"
 const LANGUAGES := ["ru", "be", "en"]
@@ -81,6 +82,8 @@ static func open_project(root: String) -> Dictionary:
 		"data": raw, "scenes": raw["scenes"], "linesByScene": groupings,
 		"stagingData": staging, "stagingSha": FileAccess.get_sha256(root.path_join(STAGING)),
 		"routesSha": FileAccess.get_sha256(root.path_join(ROUTES)),
+		"routesData": routes, "cuesData": cues,
+		"cuesSha": FileAccess.get_sha256(root.path_join(CUES)),
 		"castData": cast_info, "castSha": FileAccess.get_sha256(root.path_join(CAST)),
 		"shots": shots, "routes": triggers, "cues": performance,
 		"sceneCount": order.size(), "lineCount": line_ids.size()}
@@ -499,6 +502,41 @@ static func promotion_plan(project: Dictionary, draft: Dictionary) -> Dictionary
 
 ## Exports a review-only, fully remapped proposal with explicit unresolved
 ## route/shot/save blockers. Does not apply any canonical files or runtime flags.
+## VNS5-06D1: Generate a blank manifest in user://. It must be explicitly
+## filled by a reviewer before package assembly. Cannot activate scenes.
+static func export_package_manifest_template(project: Dictionary, draft: Dictionary) -> Dictionary:
+	var result: Dictionary = promotion_plan(project, draft)
+	if not result.get("ok", false):
+		return result
+	var manifest: Dictionary = Package.template(project, draft)
+	if not manifest.get("ok", false):
+		return manifest
+	var serialized: String = JSON.stringify(manifest["manifest"], "\t") + "\n"
+	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/production_package")
+	return _write_new(folder.path_join("promotion-manifest-template-" +
+		serialized.sha256_text().substr(0, 20) + ".json"), serialized, false)
+
+
+## Fail closed on any changed canonical source, even if draft has no existing
+## stage or FX patches. Assembled output is never written to res://.
+static func export_four_registry_review(project: Dictionary, draft: Dictionary,
+		manifest: Variant) -> Dictionary:
+	var planned: Dictionary = promotion_plan(project, draft)
+	if not planned.get("ok", false):
+		return planned
+	for pair in [[RELATIVE, "sha"], [ROUTES, "routesSha"], [STAGING, "stagingSha"],
+			[CAST, "castSha"], [CUES, "cuesSha"]]:
+		if FileAccess.get_sha256(str(project["root"]).path_join(pair[0])) != project[pair[1]]:
+			return {"ok": false, "error": "Canonical source changed on disk: " + str(pair[0])}
+	var candidate: Dictionary = Package.assemble(project, draft, manifest)
+	if not candidate.get("ok", false):
+		return candidate
+	var serialized: String = JSON.stringify(candidate["bundle"], "\t") + "\n"
+	var folder: String = ProjectSettings.globalize_path("user://raven_story_studio/production_package")
+	return _write_new(folder.path_join("raven-four-registry-review-" +
+		serialized.sha256_text().substr(0, 24) + ".json"), serialized, false)
+
+
 static func export_promotion_review(project: Dictionary, draft: Dictionary) -> Dictionary:
 	var result: Dictionary = promotion_plan(project, draft)
 	if not result.get("ok", false):

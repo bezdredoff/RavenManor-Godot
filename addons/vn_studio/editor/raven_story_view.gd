@@ -305,6 +305,8 @@ func _build() -> void:
 	_promotion_view.custom_minimum_size.x = 430
 	_promotion_view.mapping_modified.connect(_on_promotion_mapping_modified)
 	_promotion_view.export_requested.connect(_export_promotion_review)
+	_promotion_view.template_requested.connect(_export_package_template)
+	_promotion_view.package_requested.connect(_export_four_registry_review)
 	promotion_scroll.add_child(_promotion_view)
 	_path = LineEdit.new()
 	_path.editable = false
@@ -707,6 +709,35 @@ func _export_promotion_review() -> void:
 		_path.text = str(result["path"])
 	else:
 		_status.text = "Promotion Review заблокирован: " + str(result.get("error", ""))
+
+
+## VNS5-06D1: review-only four-registry package, never res:// or runtime.
+func _export_package_template() -> void:
+	if _blocked or _project.is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните Raven-черновик, затем создайте шаблон manifest."
+		return
+	var result: Dictionary = Store.export_package_manifest_template(_project, _draft)
+	if result.get("ok", false):
+		_path.text = str(result["path"])
+		_status.text = "Создан пустой manifest в user://. Заполните постановки, маршруты и cue и импортируйте JSON в Promotion Review."
+	else:
+		_status.text = "Manifest template: " + str(result.get("error", ""))
+
+
+func _export_four_registry_review(manifest: Dictionary) -> void:
+	if _blocked or _project.is_empty():
+		return
+	if _dirty:
+		_status.text = "Сначала сохраните Raven-черновик, затем экспортируйте четыре каталога."
+		return
+	var result: Dictionary = Store.export_four_registry_review(_project, _draft, manifest)
+	if result.get("ok", false):
+		_path.text = str(result["path"])
+		_status.text = "Создан four-registry JSON review пакет; production не изменён, runtime запрещён."
+	else:
+		_status.text = "Four-registry export отклонён: " + str(result.get("error", ""))
 
 
 func _on_graph_modified(data: Dictionary) -> void:

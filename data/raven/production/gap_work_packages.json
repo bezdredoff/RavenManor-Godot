@@ -502,6 +502,24 @@
       "requiresHumanAcceptance": true
     },
     {
+      "id": "VNS5-06D1",
+      "title": "VN Studio v5: owner-supplied four-registry production candidate with strict no-runtime gate",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "L",
+      "description": "Take a reviewed promotion ID plan and explicit reviewer manifest for every new scene's background/cast/lighting and route proposal, every new line's speaker cue, and unchanged five source SHAs. Assemble a coherent review-only candidate over dialogue, staging, narrative routes and performance cues; do not mutate production or activate game. Report missing art, unsupported branching, save parity blockers, duplicate and foreign fields.",
+      "deliverable": "raven_production_package.gd deterministic pure model, Raven Store no-overwrite user:// template/export APIs, Promotion Review tab manifest import and four-registry candidate controls, strict smoke and maintained docs/dashboard.",
+      "acceptance": "Explicit reviewer ref, complete known background state/cast/pose/micro, route dependency, per-line performance cue and five SHA match required; reject missing/duplicate/unregistered actor, cue, gate, invalid ID, source drift and any Story Map branch not implemented by reducer. Full four-catalog review JSON with no changed canonical file, no runtimeApproved, no save migration, no-apply and release blockers. Full Godot/Raven CI, native Windows 800x640/1024x640/1366x768 QA, user signoff; subsequent VNS5-06D2 must implement approved active routes and safe rollback separately.",
+      "status": "proposed",
+      "dependsOn": [
+        "VNS5-06C",
+        "VNS5-06B"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-02 post merged PR #115",
+      "requiresHumanAcceptance": true
+    },
+    {
       "id": "VNS5-04B",
       "title": "VN Studio v5: versioned stage-v2 editor sidecar for orientation, focal, props and z-order",
       "domain": "narrative",
