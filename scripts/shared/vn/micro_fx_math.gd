@@ -1,3 +1,4 @@
+@tool
 extends RefCounted
 ## Shared deterministic presentation math for VN micro-FX.
 ## No EditorInterface, scene tree, audio or campaign state dependencies.
