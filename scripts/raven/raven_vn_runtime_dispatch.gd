@@ -50,9 +50,9 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 		if known_scenes[beat_id].get("status") != APPROVED_SCENE_STATUS:
 			continue
 		var gate: Variant = route.get("gate", {})
-		if not gate is Dictionary or gate.get("approvedRuntime") is not bool or gate.get("proposedRuntime") is not bool:
+		if not gate is Dictionary or not (gate.get("approvedRuntime") is bool) or not (gate.get("proposedRuntime") is bool):
 			continue
-		if gate.get("approvedRuntime") is not true or gate.get("proposedRuntime") is not false:
+		if gate.get("approvedRuntime") != true or gate.get("proposedRuntime") != false:
 			continue
 		if not foundation.get("storyBeats", []).has(beat_id) or state["storyBeatsSeen"].has(beat_id):
 			continue
@@ -145,9 +145,9 @@ static func build_config(beat_id: String, locale: String, scene: Dictionary, ent
 		if line_cues.size() != 1:
 			return {}
 		var cue: Dictionary = line_cues[0]
-		if cue.get("manualReview") is not false or cue.get("sceneId") != beat_id or cue.get("speakerId") != speaker:
+		if cue.get("manualReview") != false or cue.get("sceneId") != beat_id or cue.get("speakerId") != speaker:
 			return {}
-		if cue.get("portraitVisible") is not true:
+		if cue.get("portraitVisible") != true:
 			return {}
 		if not _has_art(speaker, str(cue.get("poseId", "")), str(cue.get("emotionId", "")), portraits):
 			return {}
