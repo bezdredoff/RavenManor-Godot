@@ -67,9 +67,9 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 					valid = false
 					break
 				var kind := str(action.get("kind", ""))
-				if kind == "swap" and action.get("first") is int and action.get("second") is int and int(action.first) >= 0 and int(action.second) >= 0 and int(action.first) < 256 and int(action.second) < 256:
+				if kind == "swap" and _valid_board_index(action.get("first")) and _valid_board_index(action.get("second")):
 					safe_actions.append({"kind": "swap", "first": int(action.first), "second": int(action.second)})
-				elif kind == "special" and action.get("index") is int and int(action.index) >= 0 and int(action.index) < 256:
+				elif kind == "special" and _valid_board_index(action.get("index")):
 					safe_actions.append({"kind": "special", "index": int(action.index)})
 				else:
 					valid = false
@@ -102,3 +102,12 @@ static func _unique_strings(value: Variant) -> Array:
 		if id is String and not id.is_empty() and not result.has(id):
 			result.append(id)
 	return result
+
+
+static func _valid_board_index(value: Variant) -> bool:
+	# JSON.parse_string decodes integer-valued JSON numbers as floats.
+	# Reject fractional, nonnumeric, NaN, infinite and out-of-bounds indices.
+	if not (value is int or value is float):
+		return false
+	var number: float = float(value)
+	return is_finite(number) and number == floor(number) and number >= 0.0 and number < 256.0

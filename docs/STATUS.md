@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 Match-3 checkpoint JSON fix (draft)
+
+After merged #166, Pages succeeded but blocking Prototype Lab CI failed at `Move checkpoint not persisted`. Root cause matches VN cursor issue: Godot JSON decoding yields float-valued action indices, while RavenSnapshot accepted only int. Candidate validates finite integral swap/special indices, rejects fractional values and adds JSON roundtrip coverage. **CI/device QA pending; GAME-UI-01 in_progress.**
+
 # 2026-11-03 · GAME-UI-01 JSON cursor normalization fix (draft)
 
 After #165 merged, GitHub Pages succeeded but blocking Prototype Lab CI failed: persisted VN cursor was empty after JSON save/load. Root cause: Godot JSON parser returns numeric values as float, while RavenSnapshot.normalize accepted only int for vnCursor.lineIndex. Candidate accepts only finite integral numeric values and casts to int, rejecting fractional values; session lifecycle smoke adds JSON roundtrip regression. **CI and device QA pending; GAME-UI-01 remains in_progress.** Separate UI direction: use UPDS-godot full VN screen shell (header/settings, dialogue footer, speaker nameplate, history/Auto/Skip), with Raven theme and data/session adapters; avoid rebuilding the UI from scratch. Visual parity not yet implemented or approved.
