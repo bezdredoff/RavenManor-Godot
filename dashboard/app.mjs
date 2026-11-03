@@ -33,6 +33,7 @@ function detail(item){
     const box=node("div","axis");box.append(node("span","",label),node("strong","",value));axes.append(box);
   }
   d.append(axes);
+  if(item.workstreamId)field(d,"Общий рабочий поток",item.workstreamName+" · "+item.workstreamPhase+" · "+item.workstreamId);
   field(d,"Активные зависимости",(item.openDependsOn||[]).join(", ")||"нет");
   field(d,"Исторические связи плана",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
@@ -88,11 +89,11 @@ function progress(domain){
   $("#"+domain.toLowerCase()+"-stats").textContent="Поставлено: "+delivered+"/"+arr.length+" · принято: "+ownerAccepted+" · без ручной приёмки — отдельно";
 }
 function render(){
-  const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value,scope=$("#scope").value;
+  const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value,scope=$("#scope").value,workstream=$("#workstream").value;
   const matched=cfg.tasks.filter(t=>{
-    const search=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence,(t.supersededBy||[]).join(" ")].join(" ").toLowerCase();
+    const search=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence,t.workstreamId,t.workstreamName,(t.supersededBy||[]).join(" ")].join(" ").toLowerCase();
     const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && t.qaState==="manual_pending") || (scope==="art" && t.approvalState==="art_approved");
-    return hasScope && (!q||search.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status) && (!priority||t.priority===priority) && (!stage||t.stage===stage);
+    return hasScope && (!q||search.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status) && (!priority||t.priority===priority) && (!stage||t.stage===stage) && (!workstream||t.workstreamId===workstream);
   });
   const order={P0:0,P1:1,P2:2};
   matched.sort((a,b)=>(order[a.priority]??3)-(order[b.priority]??3)||a.id.localeCompare(b.id));
@@ -120,9 +121,10 @@ async function init(){
     showAssets(data);showPriority();progress("CODE");progress("GFX");
     Object.entries(statuses).forEach(([key,value])=>{const opt=node("option","",value);opt.value=key;$("#state").append(opt);});
     [...new Set(data.tasks.map(t=>t.stage).filter(Boolean))].sort().forEach(v=>{const opt=node("option","",v);opt.value=v;$("#stage").append(opt);});
-    ["search","domain","state","priority","stage","scope"].forEach(k=>$("#"+k).addEventListener(k==="search"?"input":"change",()=>{shownLimit=24;render();}));
+    (data.workstreams||[]).forEach(w=>{const opt=node("option","",w.title+" · "+w.taskCount+" задач ("+w.p0Count+" P0)");opt.value=w.id;$("#workstream").append(opt);});
+    ["search","domain","state","priority","stage","workstream","scope"].forEach(k=>$("#"+k).addEventListener(k==="search"?"input":"change",()=>{shownLimit=24;render();}));
     $("#more").addEventListener("click",()=>{shownLimit+=24;render();});
-    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage"].forEach(k=>$("#"+k).value="");$("#scope").value="open";shownLimit=24;render();});
+    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage","workstream"].forEach(k=>$("#"+k).value="");$("#scope").value="open";shownLimit=24;render();});
     render();
   }catch(err){$("#source").textContent="Ошибка отображения реестра: "+String(err.message||err);$("#quick-work-info").textContent="Загрузка не удалась: "+String(err.message||err);$("#tasks").replaceChildren(node("div","empty","Не удалось показать задачи. Откройте status.json из ссылки в верхнем блоке или проверьте опубликованный CI."));$("#more").hidden=true;}
 }
