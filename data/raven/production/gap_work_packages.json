@@ -131,7 +131,7 @@
       "id": "RM-GAP-004",
       "title": "Qwen/Base/Turbo vs MOSS/FLUX art job bake-off",
       "domain": "art",
-      "priority": "P1",
+      "priority": "P2",
       "size": "M",
       "description": "Qwen обязателен хотя бы как прототип: одинаковый объект clean/dirty/broken, alpha removal, pose continuity, seed/outputs, 2–3 reused items; проверить реальную консистентность",
       "deliverable": "GFX-01..05 experiment, Art Job Pack",
@@ -952,7 +952,7 @@
       "id": "VNS5-08",
       "title": "VN Studio: usable real prop catalog and state workflow",
       "domain": "narrative",
-      "priority": "P0",
+      "priority": "P2",
       "size": "L",
       "description": "Import/group/rename props and states, choose exact asset variant, arrange in scene; avoid invented accepted prop art. CURRENT RELEASE: no independent VN props; objects held in hands are part of approved character composite images. This task is future-version only; map props remain separate work.",
       "deliverable": "Functional state-aware asset library, Stage placement, review-only save/reopen with immutable IDs.",
@@ -962,7 +962,7 @@
         "VNS5-04B"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 owner explicitly deferred VN props to future version; map props remain separately planned",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 owner explicitly deferred VN props to future version; map props remain separately planned | 2026-11-03 current-release scope review: deferred standalone VN props, maps unaffected",
       "requiresHumanAcceptance": true
     },
     {
