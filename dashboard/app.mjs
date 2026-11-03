@@ -34,6 +34,7 @@ function detail(item){
   }
   d.append(axes);
   if(item.workstreamId)field(d,"Общий рабочий поток",item.workstreamName+" · "+item.workstreamPhase+" · "+item.workstreamId);
+  if(item.p2ReentryGroup)field(d,"Возврат P2 по условию",item.p2ReentryGroup);
   field(d,"Активные зависимости",(item.openDependsOn||[]).join(", ")||"нет");
   field(d,"Исторические связи плана",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
@@ -56,6 +57,40 @@ function card(item){
   [item.domain,item.stage,item.priority,item.size].filter(Boolean).forEach(x=>meta.append(node("span","",x)));
   if(item.approvalState==="art_approved")meta.append(node("span","art-approved","Арт принят"));
   head.append(meta);box.append(head,detail(item));return box;
+}
+
+function acceptanceList(container,heading,items){
+  container.append(node("h4","",heading));
+  const list=node("ul","");
+  for(const item of items){list.append(node("li","",item));}
+  container.append(list);
+}
+function renderAcceptance(data){
+  const main=$("#acceptance-streams"),future=$("#p2-groups");
+  main.replaceChildren();future.replaceChildren();
+  for(const stream of data.workstreams||[]){
+    const card=node("details","task"),summary=node("summary","");
+    summary.append(node("strong","",stream.title+" · "+stream.taskCount+" задач"));
+    summary.append(node("span","meta",stream.phase+" · "+stream.p0Count+" P0 / "+stream.p1Count+" P1"));
+    const detail=node("div","detail"),matrix=stream.acceptancePlan;
+    field(detail,"Общий gate",stream.gate);
+    acceptanceList(detail,"ChatGPT / CI: что можно проверить автоматически",matrix.automatedChecks);
+    acceptanceList(detail,"Владелец / реальный Godot / устройство",matrix.ownerChecks);
+    acceptanceList(detail,"Новая работа — только при необходимости",matrix.newWorkIfFailed);
+    field(detail,"Условие закрытия",matrix.decision);
+    card.append(summary,detail);main.append(card);
+  }
+  for(const group of data.p2Groups||[]){
+    const card=node("details","task"),summary=node("summary","");
+    summary.append(node("strong","",group.label+" · "+group.taskCount+" задач"));
+    const detail=node("div","detail");
+    field(detail,"Возвращать при условии",group.trigger);
+    field(detail,"Решение",group.action);
+    field(detail,"Код группы",group.id);
+    card.append(summary,detail);future.append(card);
+  }
+  if(!main.childElementCount)main.append(node("p","hint","Матрица приёмки отсутствует в реестре."));
+  if(!future.childElementCount)future.append(node("p","hint","Политика P2 отсутствует в реестре."));
 }
 
 function showPriority(){
@@ -118,7 +153,7 @@ async function init(){
     counter("Закрытая поставка",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
     counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
     counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);
-    showAssets(data);showPriority();progress("CODE");progress("GFX");
+    showAssets(data);showPriority();renderAcceptance(data);progress("CODE");progress("GFX");
     Object.entries(statuses).forEach(([key,value])=>{const opt=node("option","",value);opt.value=key;$("#state").append(opt);});
     [...new Set(data.tasks.map(t=>t.stage).filter(Boolean))].sort().forEach(v=>{const opt=node("option","",v);opt.value=v;$("#stage").append(opt);});
     (data.workstreams||[]).forEach(w=>{const opt=node("option","",w.title+" · "+w.taskCount+" задач ("+w.p0Count+" P0)");opt.value=w.id;$("#workstream").append(opt);});
