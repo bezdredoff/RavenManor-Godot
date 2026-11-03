@@ -28,6 +28,7 @@ var event_serial := 0
 var content: Dictionary
 var body: VBoxContainer
 var status: Label
+var pause_dialog: ConfirmationDialog
 
 
 func _ready() -> void:
@@ -69,7 +70,7 @@ func _build_shell() -> void:
 	footer.add_theme_constant_override("h_separation", 6)
 	footer.add_theme_constant_override("v_separation", 6)
 	root.add_child(footer)
-	_add_button(footer, "← Лаунчер", func(): get_tree().change_scene_to_file("res://scenes/raven/prototype_launcher.tscn"))
+	_add_button(footer, "☰ Меню", _open_pause)
 	_add_button(footer, "Save", _save)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
@@ -81,6 +82,13 @@ func _build_shell() -> void:
 	locale_selector.select(Copy.SUPPORTED_LOCALES.find(preferences.locale))
 	locale_selector.item_selected.connect(_switch_locale)
 	footer.add_child(locale_selector)
+	pause_dialog = ConfirmationDialog.new()
+	pause_dialog.title = "Raven Manor"
+	pause_dialog.dialog_text = "Сохранить прогресс и выйти в главное меню?"
+	pause_dialog.ok_button_text = "Сохранить и выйти"
+	pause_dialog.cancel_button_text = "Продолжить"
+	pause_dialog.confirmed.connect(_save_and_exit)
+	add_child(pause_dialog)
 
 
 func _render() -> void:
@@ -195,6 +203,15 @@ func _switch_locale(index: int) -> void:
 	if preferences.set_locale(Copy.SUPPORTED_LOCALES[index]) == OK:
 		_render()
 
+
+func _open_pause() -> void:
+	pause_dialog.popup_centered()
+
+func _save_and_exit() -> void:
+	if not store.save_campaign(state):
+		push_error("Could not save campaign before leaving gameplay")
+		return
+	get_tree().change_scene_to_file("res://scenes/raven/main_menu.tscn")
 
 func _save() -> void: store.save_campaign(state); _render()
 func _reload() -> void: state = store.load_campaign(); match_game = null; vn_player = null; _render()
