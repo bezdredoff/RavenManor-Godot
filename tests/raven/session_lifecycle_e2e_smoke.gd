@@ -25,12 +25,17 @@ func _run() -> void:
 	var beat: String = str(game.vn_player.scene.beatId)
 	game._advance_vn()
 	assert(game.state.vnCursor.beatId == beat and game.state.vnCursor.lineIndex == 1, "VN advance not saved")
+	var saved_before_failure: String = str(adapter.values.get(CONTRACT.data.ravenKey, ""))
+	assert(not saved_before_failure.is_empty(), "First VN cursor write missing from storage")
 	# Failed VN line save must not silently advance the visible line.
 	adapter.fail_write = true
 	game._advance_vn()
 	assert(game.vn_player.line_index == 1, "VN cursor advanced despite failed save")
 	assert(game.status.text == game.PAUSE_COPY[game.preferences.locale][4], "VN save failure not visible")
 	adapter.fail_write = false
+	assert(str(adapter.values.get(CONTRACT.data.ravenKey, "")) == saved_before_failure, "Failed VN save mutated stored snapshot")
+	var stored_after_failure := Store.new(adapter).load_campaign()
+	assert(stored_after_failure.get("vnCursor", {}).get("lineIndex", -1) == 1, "Persisted VN cursor missing before reload: %s" % str(stored_after_failure.get("vnCursor", {})))
 	# A scene reload is the core Continue contract; avoid changing the SceneTree
 	# to main_menu inside this headless smoke (the menu has separate coverage).
 	game.queue_free()
