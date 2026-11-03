@@ -22,6 +22,7 @@ static func fresh() -> Dictionary:
 		"lastRoomId": "RM-ROOM-HALL",
 		"lastSafeAnchorId": "",
 		"vnCursor": {},
+		"match3Checkpoint": {},
 	}
 
 
@@ -51,6 +52,27 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 		var line_index: Variant = cursor.get("lineIndex", -1)
 		if catalog.storyBeats.has(beat_id) and line_index is int and line_index >= 0 and line_index < 10000 and not result.storyBeatsSeen.has(beat_id):
 			result.vnCursor = {"beatId": beat_id, "lineIndex": line_index}
+	var checkpoint: Variant = value.get("match3Checkpoint", {})
+	if checkpoint is Dictionary:
+		var level_id := str(checkpoint.get("levelId", ""))
+		var actions: Variant = checkpoint.get("actions", [])
+		if catalog.levels.has(level_id) and not result.firstClearLevels.has(level_id) and actions is Array and actions.size() <= 500:
+			var safe_actions := []
+			var valid := true
+			for action in actions:
+				if not action is Dictionary:
+					valid = false
+					break
+				var kind := str(action.get("kind", ""))
+				if kind == "swap" and action.get("first") is int and action.get("second") is int and int(action.first) >= 0 and int(action.second) >= 0 and int(action.first) < 256 and int(action.second) < 256:
+					safe_actions.append({"kind": "swap", "first": int(action.first), "second": int(action.second)})
+				elif kind == "special" and action.get("index") is int and int(action.index) >= 0 and int(action.index) < 256:
+					safe_actions.append({"kind": "special", "index": int(action.index)})
+				else:
+					valid = false
+					break
+			if valid and not safe_actions.is_empty():
+				result.match3Checkpoint = {"levelId": level_id, "actions": safe_actions}
 	var hotspot_states: Variant = value.get("hotspotStates")
 	if hotspot_states is Dictionary:
 		for hotspot_id in hotspot_states:
