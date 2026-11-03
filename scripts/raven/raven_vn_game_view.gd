@@ -15,6 +15,12 @@ var actor_layer: Control
 var actors: Array[Dictionary] = []
 var dialogue_panel: Panel
 var chapter: Label
+var header_menu: Button
+var header_settings: Button
+var header_history: Button
+var _menu_callback: Callable
+var _settings_callback: Callable
+var _history_lines: Array[Dictionary] = []
 var nameplate: Label
 var dialogue: Label
 var progress: Label
@@ -89,6 +95,28 @@ func _build() -> void:
 	chapter.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	chapter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(chapter)
+	# UPDS-godot scripts/vn/vn_screen.gd: top-level VN actions stay in the
+	# header, separate from the lower dialogue/nameplate shell.
+	header_menu = Button.new()
+	header_menu.name = "VNHeaderMenu"
+	header_menu.text = "☰"
+	header_menu.tooltip_text = "Menu"
+	header_menu.pressed.connect(func() -> void:
+		if _menu_callback.is_valid(): _menu_callback.call())
+	add_child(header_menu)
+	header_history = Button.new()
+	header_history.name = "VNHeaderHistory"
+	header_history.text = "▤"
+	header_history.tooltip_text = "History"
+	header_history.pressed.connect(_show_history)
+	add_child(header_history)
+	header_settings = Button.new()
+	header_settings.name = "VNHeaderSettings"
+	header_settings.text = "⚙"
+	header_settings.tooltip_text = "Settings"
+	header_settings.pressed.connect(func() -> void:
+		if _settings_callback.is_valid(): _settings_callback.call())
+	add_child(header_settings)
 
 	dialogue_panel = Panel.new()
 	dialogue_panel.name = "VNDialoguePanel"
@@ -204,6 +232,30 @@ func _apply_fx_to(control: Control, sample: Dictionary) -> void:
 	control.modulate = tint
 
 
+func set_header_actions(on_menu: Callable, on_settings: Callable, history_lines: Array[Dictionary]) -> void:
+	_menu_callback = on_menu
+	_settings_callback = on_settings
+	_history_lines = history_lines.duplicate(true)
+
+
+func _show_history() -> void:
+	# UPDS history is read-only. Raven supplies already-viewed canonical lines;
+	# this view never advances the campaign or writes progress.
+	var popup := AcceptDialog.new()
+	popup.title = {"ru": "История", "be": "Гісторыя", "en": "History"}.get(_display_locale, "History")
+	var log := RichTextLabel.new()
+	log.bbcode_enabled = false
+	log.custom_minimum_size = Vector2(290, 340)
+	log.fit_content = false
+	for entry in _history_lines:
+		log.add_text(str(entry.get("speaker", "")) + ": " + str(entry.get("text", "")) + "\n\n")
+	popup.add_child(log)
+	add_child(popup)
+	popup.popup_centered_ratio(0.85)
+	popup.confirmed.connect(popup.queue_free)
+	popup.canceled.connect(popup.queue_free)
+
+
 func show_beat(beat_id: String, speaker: String, line_text: String, line_progress: String,
 		on_next: Callable, explicit_line_id: String = "", locale: String = "ru") -> void:
 	if scene_id != beat_id:
@@ -287,8 +339,14 @@ func _layout() -> void:
 	var heading := get_node("VNHeadingBar") as ColorRect
 	heading.position = Vector2.ZERO
 	heading.size = Vector2(w, 40)
-	chapter.position = Vector2(8, 0)
-	chapter.size = Vector2(w - 16, 40)
+	header_menu.position = Vector2(6, 3)
+	header_menu.size = Vector2(42, 34)
+	header_settings.position = Vector2(w - 46, 3)
+	header_settings.size = Vector2(40, 34)
+	header_history.position = Vector2(w - 91, 3)
+	header_history.size = Vector2(40, 34)
+	chapter.position = Vector2(52, 0)
+	chapter.size = Vector2(maxf(1.0, w - 150), 40)
 
 	var margin := maxf(8.0, w * 0.032)
 	var box_h := maxf(225.0, minf(h * 0.37, 295.0))
