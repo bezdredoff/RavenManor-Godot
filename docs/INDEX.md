@@ -1,5 +1,7 @@
 # Documentation map and authority
 
+- `audits/ACTIVE_WORK_AND_REVIEW_20261103.md`: 35-item live GitHub workflow state re-audit after PR #139; separates currently active/review from previously partial, merged and waiting for QA.
+
 - `audits/RM-REQUIREMENT-RECONCILIATION_20261102.md`: all 70 historical requirement IDs re-evaluated with current component evidence and honest unresolved QA; original CSV remains a frozen baseline.
 
 - `../art-handbook/index.html`: interactive art-production handbook; image-to-recipe links, exact saved ComfyUI settings/prompts, downloads, system/model snapshot and experiment history.
