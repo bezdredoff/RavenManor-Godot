@@ -128,6 +128,39 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["assetSummary"]["backgrounds"]["artApproved"], 26)
         self.assertEqual(data["assetSummary"]["characterFrames"]["artApproved"], 62)
 
+    def test_code_gap_p0_only_current_release_gates(self):
+        data = dashboard.build()
+        by_id = {task["id"]: task for task in data["tasks"]}
+        expected_code_gap = {
+            "CODE-02-06", "CODE-05-01", "CODE-05-02",
+            "CODE-11-01", "RM-GAP-001", "RM-GAP-006",
+        }
+        live_code_gap = {
+            item["id"] for item in data["tasks"]
+            if item["priority"] == "P0" and not item["id"].startswith("GFX-")
+        }
+        self.assertEqual(live_code_gap, expected_code_gap)
+        all_current_p0 = {
+            item["id"] for item in data["tasks"]
+            if item["priority"] == "P0"
+        }
+        self.assertEqual(len(all_current_p0), 13)
+        for key in expected_code_gap:
+            self.assertNotIn(by_id[key]["status"], {
+                "merged", "integrated", "accepted", "device_verified",
+                "superseded", "not_planned",
+            })
+        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-09"]["priority"], "P2")
+        self.assertEqual(by_id["VNS5-08"]["priority"], "P2")
+        self.assertEqual(by_id["VNS5-09"]["openDependsOn"], [])
+        self.assertNotIn("VNS5-09", by_id["VNS5-11"]["dependsOn"])
+        self.assertNotIn("VNS5-09", by_id["VNS5-12"]["dependsOn"])
+        self.assertEqual(by_id["CODE-02-02"]["openDependsOn"], [])
+        self.assertIn("CODE-02-05", by_id["CODE-02-06"]["openDependsOn"])
+        self.assertEqual(by_id["VNS5-00"]["openDependsOn"], [])
+        self.assertEqual(by_id["VNS5-00"]["dependsOn"], [])
+
     def test_discovered_gap_status_mirrors_authoritative_progress(self):
         # CODE work packages retain the immutable October planning baseline;
         # discovered-gap statuses with progress overrides are a synchronized
