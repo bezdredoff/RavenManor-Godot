@@ -1167,6 +1167,24 @@
       ],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-12",
+      "title": "VN Studio QA fixture: append three-way Story Map with branch returns and distinct FX",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "status": "proposed",
+      "source": "Owner 2026-11-03 native QA request",
+      "description": "Add reversible, user-confirmed editor-only QA four-scene tail to inspect draft Choice A/B/C → Evelyn/Ada/Rowan and each return link; assign separate phase effects.",
+      "deliverable": "Four appended draft scenes, 3 choice edges and 3 return scene edges; exact BG-HALL and approved character base portraits, 3 different FX on hub and branches, safe local save/review export; Godot smoke of graph, FX and Undo.",
+      "acceptance": "Never changes canonical 28 scenes/280 lines or runtime, never writes user's local draft without Save; preview graph shows all branches and return edges; Animation plays each character's distinctive FX, SHA validation and local serialization pass, owner manual QA pending.",
+      "dependsOn": [
+        "VNS5-11",
+        "VNS5-09"
+      ],
+      "graphicsDependencies": [],
+      "requiresHumanAcceptance": true
     }
   ]
 }
