@@ -27,6 +27,15 @@ func _run() -> void:
 	assert(normalized.vnCursor.get("lineIndex", -1) == 1, "JSON roundtrip dropped valid VN cursor")
 	roundtrip.vnCursor.lineIndex = 1.5
 	assert(Snapshot.normalize(roundtrip, preload("res://data/raven/foundation_catalog.json").data).vnCursor.is_empty(), "Fractional VN cursor accepted")
+	# Checkpoint action indices must survive the same JSON storage roundtrip.
+	var checkpoint_fixture := Snapshot.fresh()
+	checkpoint_fixture.match3Checkpoint = {"levelId": "RM-LVL-001", "actions": [{"kind": "swap", "first": 0, "second": 1}, {"kind": "special", "index": 4}]}
+	var checkpoint_roundtrip: Dictionary = JSON.parse_string(JSON.stringify(checkpoint_fixture))
+	var catalog: Dictionary = preload("res://data/raven/foundation_catalog.json").data
+	var checkpoint_normalized: Dictionary = Snapshot.normalize(checkpoint_roundtrip, catalog)
+	assert(checkpoint_normalized.match3Checkpoint.get("actions", []).size() == 2, "JSON roundtrip dropped Match-3 checkpoint")
+	checkpoint_roundtrip.match3Checkpoint.actions[0].first = 0.5
+	assert(Snapshot.normalize(checkpoint_roundtrip, catalog).match3Checkpoint.is_empty(), "Fractional Match-3 index accepted")
 	var adapter := MemoryStorage.new()
 	var game := _spawn(adapter)
 	await process_frame
