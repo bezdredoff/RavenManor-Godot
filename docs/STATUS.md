@@ -1,3 +1,11 @@
+## 2026-11-03 · GFX P0 re-scope after accepted static VN art (candidate)
+
+Owner observes that current static character art exists and remaining main visual gap is chibi map characters. Audit of source production/Godot catalogs: **62 accepted VN character composites** (Evelyn 18, Ada 14, Lucas 14, Rowan 16); **26 accepted background variants** resolve all **28** authored VN scenes. These are *art approvals*, not map walker, Match-3, missing pose×emotion combinations, keyframe animation or phone/device QA. No accepted Raven chibi/map character sheet exists; `assets/prototypes/onoe` remains a technical placeholder.
+
+Dashboard previously forced P0 for whole early GFX stages, producing **63 historical P0** (**57 proposed, 4 ready, 2 superseded**). Detailed ID-level reconciliation in `docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md` records **43 obsolete process tasks as superseded**, **2 exact Hall art-completion tasks accepted**, **1 2-character Hall staging task integrated** and **17 correctly scoped pending tasks**, most P1. The only **7 current GFX P0** are `GFX-07-01/05/06/09/10` plus Hall map staging `GFX-11-T06` and real mobile/resume/reduced-motion QA `GFX-11-T09`. Other character/M3/map/prop work is **not cancelled**; GFX-08 Hall geometry remains separately open.
+
+A guarded per-task GFX `priority` override now separates current severity from roadmap stage order. Regression tests check seven-P0 scope and keep art acceptance separate from scene/device QA. This proposal contains no art/image/generated scene/navigation/save modifications. Owner PR review + full CI required before entry into main.
+
 # Raven Manor — canonical project status
 
 ## 2026-11-03 · GFX-08-06 / GFX-08-07 — archived historical VN background methods
