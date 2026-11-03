@@ -13,6 +13,17 @@ Read `docs/PROJECT_CONTEXT.md`, `docs/DECISIONS.md`, `docs/NARRATIVE_GAMEPLAY_IN
 4. Audits of *UPDS-godot*, not evidence that Raven implementation exists here.
 Do not silently reconcile contradictory source files. Preserve historical source and record active override.
 
+## Mandatory UPDS-first reuse gate (all agents, all gameplay/UI PRs)
+Before implementing or fixing VN, Match-3, save/Continue/New Game, menus, settings, animation, input or tests:
+1. Inspect current `bezdredoff/UPDS-godot@main` **first** (authoritative native donor); `bezdredoff/UPDS` is historical/exported, not the default native source. Check Raven `scripts/shared/upds/` and existing adapters/tests before coding.
+2. Record a reuse decision in the PR: donor repo/commit/path/blob SHA, Raven counterpart, feature parity and gaps, and one of `reuse-as-is / extract / adapter / new`. Explain why `new` is necessary. No duplicate gameplay/session controller simply for convenience.
+3. Keep Raven's `raven_campaign_store.gd`, snapshot, reducer, stable `RM-*` IDs and VN Studio draft boundaries authoritative. **Do not** replace Raven state with UPDS scene indexes or import UPDS story/assets into public Raven without rights review.
+4. Compare behavior and failure modes, not just APIs: corrupt save recovery, failed writes/removes, VN line/page resume, Match-3 checkpoint, locale, branches, UI and device behavior. Port relevant donor tests/fixtures with provenance and add Raven integration tests; do not claim parity based on a smoke test alone.
+5. Before each new PR, search for an open PR covering the same task and extend it where safe. Do not start dependent feature PRs while blocking functional CI is red. Report actual CI status; nonfunctional task-count/dashboard consistency checks are advisory and must not block gameplay builds.
+6. Keep small reviewable diffs, update `docs/STATUS.md` and `data/raven/production/production_progress.json`, and distinguish merged, CI-passed, device-tested and owner-accepted.
+
+See [UPDS reuse audit and decision matrix](docs/production/UPDS_FIRST_REUSE_AUDIT_20261103_RU.md).
+
 ## Implementation rules
 - Preserve established `RM-*` identifiers, including deprecated aliases. Validate catalog references.
 - Godot 4.7.2 and GDScript are the target; no engine migration or third-party addon without evidence of need.
