@@ -36,6 +36,7 @@ function detail(item){
   field(d,"Зависимости",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
   if((item.supersededBy||[]).length)field(d,"Заменено на",item.supersededBy.join(", "));
+  if((item.followUpTaskIds||[]).length)field(d,"Незавершённые следующие задачи",item.followUpTaskIds.join(", "));
   field(d,"Оценка / исполнитель",(item.size||"—")+" · "+(item.owner||"не назначен"));
   field(d,"Статус", (statuses[item.status]||item.status)+(item.updated?" · "+item.updated:""));
   field(d,"Evidence",item.evidence||"Не подтверждено");
@@ -89,7 +90,7 @@ function render(){
   const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value,scope=$("#scope").value;
   const matched=cfg.tasks.filter(t=>{
     const search=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence,(t.supersededBy||[]).join(" ")].join(" ").toLowerCase();
-    const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && ["automated","manual_pending"].includes(t.qaState)) || (scope==="art" && t.approvalState==="art_approved");
+    const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && t.qaState==="manual_pending") || (scope==="art" && t.approvalState==="art_approved");
     return hasScope && (!q||search.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status) && (!priority||t.priority===priority) && (!stage||t.stage===stage);
   });
   const order={P0:0,P1:1,P2:2};
@@ -112,7 +113,7 @@ async function init(){
     counter("Открытый бэклог",data.openTaskCount??data.tasks.filter(x=>!terminal.has(x.status)).length);
     counter("В работе",data.tasks.filter(x=>x.status==="in_progress").length);
     counter("На ревью",data.tasks.filter(x=>x.status==="PR_review").length);
-    counter("Поставлено",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
+    counter("Закрытая поставка",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
     counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
     counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);
     showAssets(data);showPriority();progress("CODE");progress("GFX");

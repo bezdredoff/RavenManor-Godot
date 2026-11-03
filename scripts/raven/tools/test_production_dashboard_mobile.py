@@ -69,6 +69,28 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('counter("В работе"', (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8"))
         self.assertIn('counter("На ревью"', (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8"))
 
+
+    def test_merged_closure_audit_follows_pr_scope(self):
+        data = dashboard.build()
+        by_id = {task["id"]: task for task in data["tasks"]}
+        self.assertEqual(by_id["GFX-05-04"]["status"], "ready")
+        self.assertEqual(by_id["GFX-05-05"]["status"], "ready")
+        self.assertEqual(by_id["GFX-06-06"]["status"], "ready")
+        self.assertEqual(by_id["GFX-06-06"]["approvalState"], "pending")
+        self.assertIn("VNS5-08", by_id["GFX-06-06"]["followUpTaskIds"])
+        self.assertEqual(by_id["VNS5-05A"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-05A"]["qaState"], "manual_pending")
+        self.assertIn("VNS5-09", by_id["VNS5-05A"]["followUpTaskIds"])
+        self.assertEqual(by_id["CODE-04-03"]["status"], "merged")
+        self.assertIn("LOC-BE-QA", by_id["CODE-04-03"]["followUpTaskIds"])
+        self.assertIn("MOB-04", by_id["MOB-00"]["followUpTaskIds"])
+        self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
+        self.assertEqual(sum(t["status"] == "merged" for t in data["tasks"]), 50)
+        client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
+        self.assertIn("Незавершённые следующие задачи", client)
+        self.assertIn('scope==="qa" && t.qaState==="manual_pending"', client)
+        self.assertIn('counter("Закрытая поставка"', client)
+
     def test_exact_owner_approved_assets_not_game_qa(self):
         data = dashboard.build()
         self.assertEqual(data["assetSummary"]["backgrounds"], {"total": 26, "artApproved": 26})
