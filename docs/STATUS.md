@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 UPDS VN header adaptation (draft)
+
+With #167 merged, Prototype Lab and Pages workflows are green on `68e38e8`. This candidate starts incremental UPDS-godot `scripts/vn/vn_screen.gd` shell adaptation: header menu, history and settings controls; existing Raven dialogue, nameplate, stage, approved backgrounds and FX remain intact. Menu reuses Raven pause/save; settings opens existing locale selector; history is read-only and limited to reached lines in the current scene (not yet a persistent multi-scene log). No Auto/Skip yet. CI and visual/mobile QA pending; not a claim of full UPDS visual parity. Donor: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`; adaptation rather than verbatim import because its StorySession, art registry, and menu dependencies differ.
+
 # 2026-11-03 · GAME-UI-01 Match-3 checkpoint JSON fix (draft)
 
 After merged #166, Pages succeeded but blocking Prototype Lab CI failed at `Move checkpoint not persisted`. Root cause matches VN cursor issue: Godot JSON decoding yields float-valued action indices, while RavenSnapshot accepted only int. Candidate validates finite integral swap/special indices, rejects fractional values and adds JSON roundtrip coverage. **CI/device QA pending; GAME-UI-01 in_progress.**
