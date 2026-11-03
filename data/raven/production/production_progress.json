@@ -1011,9 +1011,10 @@
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "status": "ready",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Season-wide progression graph is later scale-out after the current Hall gate; first-slice economy and save contracts remain guarded. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "implementationState": "partial",
-      "qaState": "automated"
+      "qaState": "automated",
+      "priority": "P2"
     },
     {
       "id": "CODE-08-02",
@@ -1984,9 +1985,9 @@
     {
       "id": "GFX-05-03",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Named poses are in 62 accepted frames but true intermediate keyframe generation remains separate animation work. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Named poses are in 62 accepted frames but true intermediate keyframe generation remains separate animation work. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Dedicated named keyframe generation tooling is a future optional workflow, distinct from existing editor-only FX. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "partial",
       "qaState": "manual_pending",
@@ -2100,9 +2101,9 @@
     {
       "id": "GFX-07-02",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: No measured chibi generator comparison or stable selected tool; needed only to choose production approach after a first test. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: No measured chibi generator comparison or stable selected tool; needed only to choose production approach after a first test. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Chibi model/tool evaluation criteria are folded into single GFX-07-01 comparative spike; avoid two parallel bake-offs. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "not_recorded",
       "qaState": "manual_pending",
@@ -2111,9 +2112,9 @@
     {
       "id": "GFX-07-03",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: 3.5/4.0/4.5-head proportion options not approved; minimize to one contact comparison before generating full walker. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: 3.5/4.0/4.5-head proportion options not approved; minimize to one contact comparison before generating full walker. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): 3.5/4.0/4.5-head proportions are an optional experiment folded into GFX-07-01 selection, not a separate blocking production batch. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "not_recorded",
       "qaState": "manual_pending",
@@ -2155,9 +2156,9 @@
     {
       "id": "GFX-07-07",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Rowan chibi walker and work interactions absent; defer until an authored active garden route is ready. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Rowan chibi walker and work interactions absent; defer until an authored active garden route is ready. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Rowan map animation batch waits for an authored playable gardening encounter; Evelyn/Ada map chibi gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "not_recorded",
       "qaState": "manual_pending",
@@ -2166,9 +2167,9 @@
     {
       "id": "GFX-07-08",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Lucas static/short-approach chibi stage absent; can remain P1 until an authored visit requires it. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Lucas static/short-approach chibi stage absent; can remain P1 until an authored visit requires it. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Lucas map animation batch waits for an authored playable notary encounter; Evelyn/Ada map chibi gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "not_recorded",
       "qaState": "manual_pending",
@@ -2243,9 +2244,9 @@
     {
       "id": "GFX-11-T05",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Editor preview FX has fade/breathe/shake, but two independent authored keyframe microanimations and runtime verification are not demonstrated. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Editor preview FX has fade/breathe/shake, but two independent authored keyframe microanimations and runtime verification are not demonstrated. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Two image-keyframe animations remain a future scene-specific production item; existing editor FX smoke does not prove these assets exist. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "status": "ready",
-      "priority": "P1",
+      "priority": "P2",
       "updated": "2026-11-03",
       "implementationState": "partial",
       "qaState": "manual_pending",
@@ -2303,8 +2304,8 @@
       "implementationState": "not_recorded",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
-      "priority": "P1"
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full shared audio/feedback bridge is a follow-on after basic preferences and slice UX, not an immediate Hall vertical-slice blocker. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2"
     },
     {
       "id": "CODE-06-01",
@@ -2459,6 +2460,204 @@
       "approvalState": "not_recorded",
       "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
       "priority": "P1"
+    },
+    {
+      "id": "CODE-06-02",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Extended Ada/Rowan/Lucas scheduling is season expansion; prototype walker and authored Hall route remain separate active gates. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-07-03",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Expanded revisit and multi-chapter clue-insert states are later content; the first Hall evidence/prop gate stays P1. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-12-W1",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-12-W2",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-12-W3",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "RM-GAP-005",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): General offline art-job pack automation is unnecessary for already accepted VN images; use only for a future production batch. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "RM-GAP-007",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Broad chapter/location unresolved-decision list belongs to the later season roadmap, without blocking the existing vertical-slice QA. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full 280-line cue pose-matrix reauthoring is not a current batch prerequisite; targeted VN-CAST-MATRIX review stays P1. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-04",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Storyboarding all signature keyframe microanimations is optional until a specific approved scene requires actual image swaps. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-05",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Per-keyframe identity-drift QA is deferred with the not-yet-produced physical keyframe sequences; approved static composites unchanged. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-07",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full frame-duration/hold/easing asset manifest is future image-swap animation infrastructure, not the already merged editor FX. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-10",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Complete all-poses held-object contradiction matrix is a follow-up after scene-specific VN-CAST-MATRIX QA; does not invalidate accepted art. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-08-03",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full all-room materials atlas is a later scale-out; Hall physical architecture stays P0 and existing accepted VN scenes unchanged. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-08-04",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full all-room landmark/safe-zone matrices are season expansion; Hall authoring gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-09-03",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Secondary prop families are deferred until their authored map/evidence interactions are required; Hall essential map props remain P1. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-09-04",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Tertiary prop families (archive, estate forms, late diary) are deferred to future scenes and states. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-10-06",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Optional Match-3 polish glow/dissolve/bounce is not prerequisite for fixing real touch/hint/help input or approved tile readability. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-10-08",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Whole-UI final visual harmonization follows approved Hall/Match-3 gameplay/device QA, and is not a separate current P1 artwork gate. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
     }
   ],
   "rules": [
