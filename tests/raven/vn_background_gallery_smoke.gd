@@ -100,5 +100,5 @@ func _initialize() -> void:
 	assert(Resolver.entry_for("BG-BATH-VIGNETTE", "day", "specialist_fixed").is_empty())
 	assert(Resolver.entry_for("BG-GARDEN", "dusk", "after_storm").is_empty())
 	assert(Resolver.entry_for("BG-CONSERVATORY", "storm", "storm_damage").is_empty())
-	print("Raven VN background registry and 26 exact hashes/provenance PASS (actual total: %d, save neutral)" % entries.size())
+	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral; all 26 exact raster hashes and provenance verified)" % entries.size())
 	quit()
