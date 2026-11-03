@@ -78,7 +78,7 @@ class DashboardTests(unittest.TestCase):
         self.assertIn("ART-BATCH-AUTOMATION", by_id["GFX-05-05"]["supersededBy"])
         self.assertEqual(by_id["ART-HANDBOOK-01"]["status"], "accepted")
         self.assertEqual(by_id["PROC-002"]["status"], "accepted")
-        self.assertEqual(by_id["VNS5-10"]["status"], "PR_review")
+        self.assertEqual(by_id["VNS5-10"]["status"], "merged")
         self.assertEqual(by_id["GFX-06-06"]["status"], "ready")
         self.assertEqual(by_id["GFX-06-06"]["approvalState"], "pending")
         self.assertIn("VNS5-08", by_id["GFX-06-06"]["followUpTaskIds"])
