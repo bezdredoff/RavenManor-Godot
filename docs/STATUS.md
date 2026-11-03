@@ -1,5 +1,11 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · Owner-confirmed manual QA: scoped closeouts and preserved wider gates (PR candidate)
+
+Owner confirmed in this chat that the requested manual checks were completed and passed. The scoped **VNS5-09** current-version native authoring workflow, **LOC-EN-QA**, **LOC-BE-QA**, **RM-GAP-013** tri-locale/editorial UI, and **PROC-003** secure phone incoming ZIP contract are now `accepted` with `manual_verified`/`feature_approved` and clear owner-reported evidence. Four previously active P1 tasks leave the active workstreams; VNS5-09 was already technically merged and is now owner-accepted. Remaining **13 P0 + 61 P1 + 44 P2 = 118 open tasks** and all **74 active P0/P1** remain assigned across ten workstreams.
+
+**Not** auto-closed: exact HTML-v5 pixel/screenshot parity `VNS5-07F/F2`, `MOB-04` full adversarial/post-merge device evidence, `GFX-11-T08` Hall screenshot geometry, full `RM-GAP-010` device matrix, any Match-3/Hall/chibi/physical map work, runtime branching or vertical-slice owner gate. No screenshots, device matrix or fresh run IDs were attached to this message: record the owner PASS without inventing such artifacts. Detail: `docs/production/OWNER_QA_ACCEPTANCE_20261103_RU.md`. Original HTML, source art, app/runtime and save schemes are unchanged.
+
 ## 2026-11-03 · P2 re-entry and current-workstream acceptance matrix (PR candidate)
 
 Owner merged PR #152, confirming **13 active P0, 65 active P1, 44 open P2** and 10 uniquely assigned workstreams across 78 active tasks. P2 is no longer a misleading single bucket: the new `data/raven/production/p2_reentry_policy.json` provides **16 later-season/content, 14 conditional method, 2 explicitly deferred and 12 mandatory full-season release-gate** entries. **All 44** retain exact original task IDs, their statuses/approvals, and explicit re-entry triggers; full-season QA is not described as optional.
