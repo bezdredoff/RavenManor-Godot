@@ -89,10 +89,10 @@ class DashboardTests(unittest.TestCase):
         self.assertIn("LOC-BE-QA", by_id["CODE-04-03"]["followUpTaskIds"])
         self.assertIn("MOB-04", by_id["MOB-00"]["followUpTaskIds"])
         self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
-        self.assertGreaterEqual(sum(t["status"] == "merged" for t in data["tasks"]), 51)
-        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
-        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_pending")
-        self.assertEqual(by_id["VNS5-09"]["approvalState"], "pending")
+        self.assertGreaterEqual(sum(t["status"] == "merged" for t in data["tasks"]), 50)
+        self.assertEqual(by_id["VNS5-09"]["status"], "accepted")
+        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_verified")
+        self.assertEqual(by_id["VNS5-09"]["approvalState"], "feature_approved")
         self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
         client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
         self.assertIn("Незавершённые следующие задачи", client)
@@ -159,8 +159,8 @@ class DashboardTests(unittest.TestCase):
         self.assertIn("renderAcceptance(data)", js)
         self.assertIn("ChatGPT / CI", js)
         # Old runtime/video/manual QA must not become automatically accepted.
-        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
-        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_pending")
+        self.assertEqual(by_id["VNS5-09"]["status"], "accepted")
+        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_verified")
         self.assertEqual(by_id["GFX-08-05"]["approvalState"], "art_approved")
 
     def test_p1_workstreams_and_future_scope_are_explicit(self):
@@ -172,10 +172,10 @@ class DashboardTests(unittest.TestCase):
         active = {task["id"] for task in tasks
                   if task["status"] not in terminal and task["priority"] in {"P0", "P1"}}
         self.assertEqual(grouped, active)
-        self.assertEqual(len(active), 78)
+        self.assertEqual(len(active), 74)
         self.assertEqual(len(data["workstreams"]), 10)
         self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 13)
-        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 65)
+        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 61)
         for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
                     "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
             self.assertEqual(by_id[key]["priority"], "P2", key)
@@ -184,20 +184,42 @@ class DashboardTests(unittest.TestCase):
         for key in ["CODE-02-06", "CODE-05-01", "GFX-07-05", "GFX-11-T09"]:
             self.assertEqual(by_id[key]["priority"], "P0", key)
             self.assertTrue(by_id[key]["workstreamId"], key)
-        self.assertEqual(by_id["RM-GAP-013"]["workstreamId"], "WS-LOCALES")
-        self.assertEqual(by_id["LOC-EN-QA"]["workstreamId"], "WS-LOCALES")
-        self.assertEqual(by_id["LOC-BE-QA"]["workstreamId"], "WS-LOCALES")
+        self.assertEqual(by_id["RM-GAP-013"]["workstreamId"], "")
+        self.assertEqual(by_id["LOC-EN-QA"]["workstreamId"], "")
+        self.assertEqual(by_id["LOC-BE-QA"]["workstreamId"], "")
         self.assertEqual(by_id["MOB-04"]["workstreamId"], "WS-MOBILE-HANDOFF")
-        self.assertEqual(by_id["PROC-003"]["workstreamId"], "WS-MOBILE-HANDOFF")
+        self.assertEqual(by_id["PROC-003"]["workstreamId"], "")
         self.assertEqual(by_id["VNS5-07F2"]["workstreamId"], "WS-VN-STUDIO")
         self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
-        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-09"]["status"], "accepted")
         html = (dashboard.ROOT / "dashboard/index.html").read_text(encoding="utf-8")
         client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
         self.assertIn('id="workstream"', html)
         self.assertIn('workstreamId===workstream', client)
         self.assertIn("Активные зависимости", client)
         self.assertIn("Исторические связи плана", client)
+
+    def test_owner_accepted_scoped_qa_only_no_unsupported_completion(self):
+        data = dashboard.build()
+        by_id = {task["id"]: task for task in data["tasks"]}
+        for key in ("VNS5-09", "LOC-EN-QA", "LOC-BE-QA", "RM-GAP-013", "PROC-003"):
+            task = by_id[key]
+            self.assertEqual(task["status"], "accepted", key)
+            self.assertEqual(task["qaState"], "manual_verified", key)
+            self.assertEqual(task["approvalState"], "feature_approved", key)
+            self.assertIn("OWNER-REPORTED MANUAL ACCEPTANCE", task["evidence"], key)
+            self.assertEqual(task["workstreamId"], "", key)
+        # These need their own exact screenshot/device/security or integration proof.
+        for key in ("VNS5-07F", "VNS5-07F2", "GFX-11-T08", "MOB-04",
+                    "RM-GAP-002", "CODE-02-06", "CODE-05-01", "GFX-11-T09"):
+            self.assertNotIn(by_id[key]["status"], {"accepted", "device_verified"}, key)
+        self.assertEqual(by_id["VNS5-09"]["implementationState"], "delivered")
+        self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
+        self.assertEqual(by_id["GFX-08-05"]["approvalState"], "art_approved")
+        streams = {stream["id"]: stream for stream in data["workstreams"]}
+        self.assertEqual(streams["WS-LOCALES"]["taskCount"], 1)
+        self.assertEqual(streams["WS-MOBILE-HANDOFF"]["taskCount"], 1)
+        self.assertEqual(data["openTaskCount"], 118)
 
     def test_code_gap_p0_only_current_release_gates(self):
         data = dashboard.build()
@@ -221,7 +243,7 @@ class DashboardTests(unittest.TestCase):
                 "merged", "integrated", "accepted", "device_verified",
                 "superseded", "not_planned",
             })
-        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-09"]["status"], "accepted")
         self.assertEqual(by_id["VNS5-09"]["priority"], "P2")
         self.assertEqual(by_id["VNS5-08"]["priority"], "P2")
         self.assertEqual(by_id["VNS5-09"]["openDependsOn"], [])
@@ -246,7 +268,7 @@ class DashboardTests(unittest.TestCase):
         plans = json.loads((dashboard.ROOT / "data/raven/production/code_work_packages.json").read_text(encoding="utf-8"))
         self.assertEqual(plans["status"], "PROPOSAL_NOT_RUNTIME")
         self.assertEqual(next(w for w in plans["workPackages"] if w["id"] == "CODE-01-01")["status"], "PR_review")
-        self.assertEqual(next(w for w in gaps["workPackages"] if w["id"] == "VNS5-09")["status"], "merged")
+        self.assertEqual(next(w for w in gaps["workPackages"] if w["id"] == "VNS5-09")["status"], "accepted")
         self.assertEqual(next(w for w in gaps["workPackages"] if w["id"] == "VNS5-08")["status"], "deferred")
 
     def test_exact_owner_approved_assets_not_game_qa(self):
