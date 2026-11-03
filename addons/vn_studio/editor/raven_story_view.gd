@@ -3,6 +3,7 @@ extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
 signal legacy_tools_requested
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const QABranch = preload("res://addons/vn_studio/model/raven_qa_branch_demo.gd")
 const DraggableLines = preload("res://addons/vn_studio/editor/raven_draggable_lines.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
@@ -35,6 +36,8 @@ var _title_edits: Dictionary = {}
 var _stage_column: VBoxContainer
 var _inspector: VBoxContainer
 var _advanced_actions: HFlowContainer
+var _qa_demo_button: Button
+var _qa_demo_dialog: ConfirmationDialog
 var _heading: Label
 var _line_info: Label
 var _preview: RichTextLabel
@@ -131,7 +134,7 @@ func _build() -> void:
 	_advanced_actions.visible = false
 	body.add_child(_advanced_actions)
 	var exports_toggle := Button.new()
-	exports_toggle.text = "Экспорт…"
+	exports_toggle.text = "Дополнительно…"
 	exports_toggle.pressed.connect(func(): _advanced_actions.visible = not _advanced_actions.visible)
 	toolbar.add_child(exports_toggle)
 	var new_scene_button := Button.new()
@@ -202,6 +205,11 @@ func _build() -> void:
 	_export_graph.tooltip_text = "No-overwrite candidate; канонические route gates неизменны"
 	_export_graph.pressed.connect(_export_graph_candidate)
 	_advanced_actions.add_child(_export_graph)
+	_qa_demo_button = Button.new()
+	_qa_demo_button.text = "QA · выбор 3 героев + FX"
+	_qa_demo_button.tooltip_text = "Добавить четыре сцены в конец локального черновика: A/B/C → Эвелин/Ада/Роуэн → возврат. Не runtime."
+	_qa_demo_button.pressed.connect(_request_qa_demo)
+	_advanced_actions.add_child(_qa_demo_button)
 	_undo_button = Button.new()
 	_undo_button.text = "↶"
 	_undo_button.tooltip_text = "Отменить правки последнего фокуса"
@@ -554,6 +562,12 @@ func _build_authoring_dialogs() -> void:
 	_confirm_delete_line.dialog_text = "Только локальная реплика; исходный сценарий не изменится. Можно отменить в редакторе."
 	_confirm_delete_line.confirmed.connect(_delete_selected_line)
 	add_child(_confirm_delete_line)
+	_qa_demo_dialog = ConfirmationDialog.new()
+	_qa_demo_dialog.title = "Raven · QA Story Map + FX"
+	_qa_demo_dialog.dialog_text = "Добавить в КОНЕЦ локального черновика 4 сцены: выбор Эвелин / Ада / Роуэн, по одному возврату к выбору, три разных эффекта анимации. Существующие сцены и реплики не изменяются. Новые сцены не подключены к игре. Все данные создаются только в памяти до нажатия «Сохранить Raven-черновик»."
+	_qa_demo_dialog.ok_button_text = "Добавить только в черновик"
+	_qa_demo_dialog.confirmed.connect(_on_confirm_qa_demo)
+	add_child(_qa_demo_dialog)
 
 
 func _refresh_speakers() -> void:
@@ -712,6 +726,35 @@ func _on_line_dropped(from_index: int, to_index: int) -> void:
 			break
 	_line_render()
 	_status.text = "Перетащено: " + from_id + " · ID, переводы и привязки сохранены."
+	_refresh_buttons()
+
+
+func _request_qa_demo() -> void:
+	if _blocked or _project.is_empty():
+		return
+	_qa_demo_dialog.popup_centered(Vector2i(660, 260))
+
+
+func _on_confirm_qa_demo() -> void:
+	if _blocked or _project.is_empty():
+		return
+	var result: Dictionary = QABranch.build(_project, _draft)
+	if not result.get("ok", false):
+		_status.text = "QA-развилка не добавлена: " + str(result.get("error", "ошибка"))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_refresh_scene_items()
+	for i in range(Store.scene_records(_project, _draft).size()):
+		if str(Store.scene_records(_project, _draft)[i]["sceneId"]) == str(result["hubSceneId"]):
+			_scene_idx = i
+			break
+	_line_idx = 0
+	_scene_switch()
+	_workspace_tabs.current_tab = 3 # Open Story Map for this draft hub
+	_status.text = "QA · 3 выбора + 3 возврата + FX добавлены в конец черновика. Сохраните черновик вручную; это не игра."
 	_refresh_buttons()
 
 
@@ -1084,6 +1127,7 @@ func _update_diff() -> void:
 
 func _refresh_buttons() -> void:
 	_recover_button.visible = _blocked and not _project.is_empty() and Store.stale_draft_info(_project).get("ok", false)
+	_qa_demo_button.disabled = _blocked or _project.is_empty()
 	_save.disabled = _blocked or _project.is_empty()
 	var has_additions: bool = not _draft.get("authoredScenes", []).is_empty() or not _draft.get("authoredLines", []).is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions

@@ -1133,6 +1133,16 @@
       "qaState": "manual_pending",
       "approvalState": "pending",
       "evidence": "Owner 2026-11-03: drag-drop missing; authored speaker creates no portraits; want auto 1→2→3 layout and narrator with no portrait. Model, UI and CI proposed in PR; runtime/approved content unaffected."
+    },
+    {
+      "id": "VNS5-12",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "evidence": "User requested assistant to verify Story Map by adding draft 3-way choice Evelyn/Ada/Rowan, each return link, and distinct cast FX. Proposed VNS5-12: editor-only optional append fixture with automated pure data and UI Undo smoke, no canonical game routes. Stacked after VNS5-11, CI and owner QA pending."
     }
   ],
   "rules": [
