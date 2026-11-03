@@ -1,5 +1,14 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · GFX-08-06 / GFX-08-07 — archived historical VN background methods
+
+Owner requested a fast reevaluation of `GFX-08-06` and `GFX-08-07`. Scoped closeout proposed in `docs/production/GFX08_VN_BACKGROUND_SCOPE_CLOSEOUT_20261103_RU.md`. All **26 owner-approved current VN WebP plates** have exact source filename/source canvas/derivative SHA/path and are available to the shared Godot resolver; all **28 authored VN scenes** select an existing approved tuple. Upgraded `vn_background_gallery_smoke.gd` to check the actual SHA of **all 26 binaries** (not just later 17) plus every staged scene mapping.
+
+- `GFX-08-06`: **superseded by GFX-08-05's scoped archived asset contract**, *not accepted as full original prompt/reference board/seed/edit reproduction*. Missing generation inputs are openly acknowledged; new art should be logged with full inputs when possible.
+- `GFX-08-07`: **superseded by GFX-08-05's already-approved pre-rendered static lighting/state plates**, *not accepted as pixel-registered master+mask/grade production*. Original semantic illustrations may have positional/perspective drift. Only commission a layered state family if an authored future interaction needs it.
+
+These statuses retire obsolete production-method P0 backlog only; preserve artwork `art_approved` status for actual catalog entries and all map/prop/Room Builder/mobile/pixel/geometry QA boundaries. PR-head CI and review must pass before these scope changes enter main.
+
 ## 2026-11-03 · VNS5-09 full current-release authoring disk round-trip (candidate)
 
 Following the owner's merge of [#146](https://github.com/bezdredoff/RavenManor-Godot/pull/146), the remaining functional end-to-end editor QA is a **real local save/reopen** of scene background, 1–3 approved composite character frames, narrator, RU/BE/EN dialogues and scene titles, Story Map choices/returns, and preview FX. VNS5-08 separate VN prop catalog is explicitly **deferred** by owner; independent map/restoration props are unchanged. Original HTML screenshot parity VNS5-07F2 and playable branching VN-RUNTIME-01 are independent, open deliverables.

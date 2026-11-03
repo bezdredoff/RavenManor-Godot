@@ -1,5 +1,6 @@
 extends SceneTree
 const Resolver = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+const Staging = preload("res://data/raven/production/vn_staging.json")
 const Gallery = preload("res://scenes/raven/vn_background_gallery.tscn")
 
 
@@ -17,11 +18,37 @@ func _initialize() -> void:
 		var texture: Texture2D = Resolver.texture_for(str(entry["backgroundId"]), str(entry["lighting"]), str(entry["roomState"]))
 		assert(texture != null, "Missing background asset: " + id)
 		assert(texture.get_width() == 1080 and texture.get_height() == 1920, id)
-		if str(entry.get("backgroundId", "")) in ["BG-APARTMENT", "BG-ROAD", "BG-ENTRY", "BG-BEDROOM", "BG-BATH-VIGNETTE", "BG-KITCHEN", "BG-GARDEN", "BG-CONSERVATORY"]:
-			var asset_path: String = str(entry.get("path", ""))
-			assert(FileAccess.file_exists(asset_path), "Missing VN background source file: " + asset_path)
-			assert(FileAccess.get_sha256(asset_path) == str(entry.get("sha256", "")),
-				"VN background asset SHA-256 mismatch: " + id)
+		# GFX-08-06/07 release-scope audit: every accepted pre-rendered
+		# plate must be traceable to an exact immutable file and source pointer.
+		# Previous checks verified the newer 17 images but omitted Hall/Library.
+		assert(id == "%s:%s:%s" % [entry["backgroundId"], entry["lighting"], entry["roomState"]],
+			"VN catalog identity disagrees with exact scene-state tuple: " + id)
+		var asset_path: String = str(entry.get("path", ""))
+		assert(asset_path.begins_with("res://assets/raven/vn_backgrounds/"), "Unexpected VN asset path: " + id)
+		assert(asset_path.ends_with(".webp"), "VN raster must be a WebP file: " + id)
+		assert(FileAccess.file_exists(asset_path), "Missing VN background raster: " + asset_path)
+		assert(FileAccess.get_sha256(asset_path) == str(entry.get("sha256", "")),
+			"VN background asset SHA-256 mismatch: " + id)
+		var source_image: String = str(entry.get("sourceImage", ""))
+		assert(not source_image.is_empty() and source_image.get_file() == source_image
+			and source_image.ends_with(".png"), "Original PNG pointer missing or unsafe: " + id)
+		var original_dimensions: Array = entry.get("sourceSize", [])
+		assert(original_dimensions.size() == 2 and int(original_dimensions[0]) > 0
+			and int(original_dimensions[1]) > 0, "Original canvas size missing: " + id)
+		assert(not str(entry.get("sourceType", "")).is_empty(), "Source type missing: " + id)
+		assert(str(entry.get("approved", "")) == "2026-11-02", "Unexpected approval evidence: " + id)
+	# A general ledger-to-scene proof; no extra Corridor image is needed
+	# unless an authored scene starts using the Corridor master.
+	var scene_shots: Array = Staging.data.get("sceneShots", [])
+	assert(scene_shots.size() == 28)
+	for shot: Dictionary in scene_shots:
+		var scene_id: String = str(shot["sceneId"])
+		var expected_id: String = "%s:%s:%s" % [shot["backgroundId"], shot["lighting"], shot["roomState"]]
+		assert(ids.has(expected_id), "Authored VN scene missing exact accepted variant: " + scene_id)
+		assert(str(Resolver.entry_for_scene(scene_id).get("id", "")) == expected_id,
+			"Catalog staged scene maps to an incorrect asset: " + scene_id)
+		assert(Resolver.texture_for_scene(scene_id) != null,
+			"Authored scene has no loadable approved texture: " + scene_id)
 	var baseline_ids := [
 		"BG-HALL:evening:dusty",
 		"BG-HALL:day:habitable",
@@ -86,5 +113,5 @@ func _initialize() -> void:
 	assert(Resolver.entry_for("BG-BATH-VIGNETTE", "day", "specialist_fixed").is_empty())
 	assert(Resolver.entry_for("BG-GARDEN", "dusk", "after_storm").is_empty())
 	assert(Resolver.entry_for("BG-CONSERVATORY", "storm", "storm_damage").is_empty())
-	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral)" % entries.size())
+	print("Raven VN background registry and 9 textures PASS (actual total: %d, save neutral; all 26 exact raster hashes and provenance verified)" % entries.size())
 	quit()
