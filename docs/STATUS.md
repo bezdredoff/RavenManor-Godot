@@ -1,5 +1,11 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · P1 current-release scope and shared QA workstreams (PR candidate)
+
+After owner-merged #151, the source task inventory still contained **13 active P0, 91 active P1 and 18 active P2** among 238 tasks. Reviewed 26 genuinely non-urgent P1 feature/production-method items (later season content waves, nonessential image keyframes, Rowan/Lucas map batches, secondary props, full material/landmark atlases and optional effect polish) and reduced their current `priority` to P2 **without changing their proposed/ready status, evidence, actual art approval, runtime or owner QA**. Current priority inventory: **13 P0, 65 P1, 44 P2**; all remain explicitly tracked.
+
+New `data/raven/production/active_workstreams.json` groups all **78 active P0/P1** across **10 shared QA/build/asset gates** (VN Studio, locales, device, phone ZIP, Match-3, Hall, chibi, map props, asset contracts, approved-only story/runtime). Each task still has its own status and acceptance criteria, while the dashboard exposes group name/phase and a workstream filter. Strict generation/validator tests reject forgotten or duplicated active tasks; Linux/Windows CI include the registry audit. Exact owners/native QA and gameplay acceptance remain pending, no new art/game logic. Details: `docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md`.
+
 ## 2026-11-03 · CODE/GAP active P0 and dependency reconciliation (candidate)
 
 Following merged #150, **88 historical CODE/GAP P0** (34 CODE, 54 gap/process) were triaged with explicit evidence and current-priority overrides instead of changing archived `code_work_packages.json` implementation claims. Current CODE/GAP **six P0**: `CODE-02-06`, `CODE-05-01/02`, `CODE-11-01`, `RM-GAP-001/006`. Combined with prior seven GFX P0 = **13 actual current P0**. Other historical CODE/GAP P0 resolve to 24 P1 and 58 P2; task completion, acceptance and asset statuses are unchanged. Some CODE/GAP tasks now have new *priority-only* progress entries, retaining `proposed`, `not_recorded` implementation, and no owner QA claim.

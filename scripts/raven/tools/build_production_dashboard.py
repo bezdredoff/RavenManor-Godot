@@ -20,6 +20,7 @@ GFX = ROOT / "docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md"
 OUT = ROOT / "dashboard/status.json"
 BG = PRODUCTION / "vn_background_catalog.json"
 CHAR_ART = PRODUCTION / "vn_character_catalog.json"
+WORKSTREAMS = PRODUCTION / "active_workstreams.json"
 STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred", "not_planned", "superseded"}
 
 
@@ -130,6 +131,37 @@ def build() -> dict:
             [dep for dep in deps if dep in task_by_id and task_by_id[dep]["status"] not in terminal]
             if item["status"] not in terminal else []
         )
+    # The active delivery work is grouped by one shared QA/build gate, not
+    # collapsed into a fictitious single task. P2/future tasks stay visible
+    # without a current workstream; the group registry enforces exact coverage.
+    stream_source = load(WORKSTREAMS)
+    workstreams = stream_source["workstreams"]
+    streams_by_id = {}
+    member_to_stream = {}
+    for workstream in workstreams:
+        stream_id = workstream["id"]
+        if stream_id in streams_by_id:
+            raise ValueError(f"Duplicate active workstream ID: {stream_id}")
+        if workstream["phase"] not in {"QA-first", "Audit-first", "Build+QA", "New assets"}:
+            raise ValueError(f"Unknown active workstream phase: {stream_id}")
+        streams_by_id[stream_id] = workstream
+        for task_id in workstream["taskIds"]:
+            if task_id in member_to_stream:
+                raise ValueError(f"Task in two workstreams: {task_id}")
+            if task_id not in task_by_id:
+                raise ValueError(f"Unknown workstream member {task_id}: {stream_id}")
+            member_to_stream[task_id] = stream_id
+    active_ids = {item["id"] for item in plan
+                  if item["priority"] in {"P0", "P1"} and item["status"] not in terminal}
+    if set(member_to_stream) != active_ids:
+        raise ValueError(f"Active workstream scope mismatch: "
+                         f"missing={sorted(active_ids - set(member_to_stream))}, "
+                         f"inactive={sorted(set(member_to_stream) - active_ids)}")
+    for item in plan:
+        stream = streams_by_id.get(member_to_stream.get(item["id"]))
+        item["workstreamId"] = stream["id"] if stream else ""
+        item["workstreamName"] = stream["title"] if stream else ""
+        item["workstreamPhase"] = stream["phase"] if stream else ""
     # Asset approval is a separate owner decision; it is not inferred from merge,
     # gameplay staging or CI. Only exact imported catalog records are counted.
     backgrounds = bg_catalog.get("entries", [])
@@ -152,7 +184,14 @@ def build() -> dict:
         "taskCount": len(plan),
         "assetSummary": approval_summary,
         "openTaskCount": sum(x["status"] not in {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"} for x in plan),
-        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART)],
+        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART, WORKSTREAMS)],
+        "workstreams": [
+            {**{k: value for k, value in workstream.items() if k != "taskIds"},
+             "taskCount": len(workstream["taskIds"]),
+             "p0Count": sum(task_by_id[task_id]["priority"] == "P0" for task_id in workstream["taskIds"]),
+             "p1Count": sum(task_by_id[task_id]["priority"] == "P1" for task_id in workstream["taskIds"])}
+            for workstream in workstreams
+        ],
         "stateVocabulary": sorted(STATES),
         "stages": [{"id": f"CODE-{i:02d}", "domain": "CODE", "title": f"CODE-{i:02d}"} for i in range(14)] + graphics_stages,
         "tasks": plan,
