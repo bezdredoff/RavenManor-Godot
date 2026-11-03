@@ -79,7 +79,7 @@ The table distinguishes original **technical delivery closure** from work still 
 
 - Keep the technical PR task `merged` once its **exact agreed deliverable** is on main. Follow-up acceptance is in a separate ID; do not re-open code-delivery only because the whole game remains incomplete.
 - Re-open to `ready` when a task's **own exact deliverable** is not evidenced (three GFX examples), despite some nearby PR being merged.
-- For closed tasks, record `followUpTaskIds` pointing to existing canonical work packages. The dashboard validates IDs and displays them as separate remaining work.
+- For closed tasks, record `followUpTaskIds` pointing to existing canonical work packages. The dashboard validates IDs and displays them as separate remaining work. The dashboard's «Требует ручной / device QA» filter now matches explicitly `qaState=manual_pending` only; `automated` alone no longer labels a scoped code deliverable as awaiting real-device checking.
 - Set `implementationState=delivered` for code delivered to main, `qaState=manual_pending` for unperformed native/device acceptance, and `approvalState=pending` unless specific owner acceptance is recorded. Preserve the 26/26 approved VN backgrounds and 62/62 accepted character image records; no new art variants invented.
 - There is no blanket auto-acceptance from a merge or green CI. If a future PR genuinely finishes a follow-up task, update that ID's own status and QA evidence in the same PR.
 

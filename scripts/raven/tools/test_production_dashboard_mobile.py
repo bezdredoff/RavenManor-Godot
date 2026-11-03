@@ -88,6 +88,7 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(sum(t["status"] == "merged" for t in data["tasks"]), 50)
         client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
         self.assertIn("Незавершённые следующие задачи", client)
+        self.assertIn('scope==="qa" && t.qaState==="manual_pending"', client)
         self.assertIn('counter("Закрытая поставка"', client)
 
     def test_exact_owner_approved_assets_not_game_qa(self):

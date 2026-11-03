@@ -90,7 +90,7 @@ function render(){
   const q=$("#search").value.trim().toLowerCase(),domain=$("#domain").value,status=$("#state").value,priority=$("#priority").value,stage=$("#stage").value,scope=$("#scope").value;
   const matched=cfg.tasks.filter(t=>{
     const search=[t.id,t.title,t.description,t.deliverable,t.acceptance,t.source,t.evidence,(t.supersededBy||[]).join(" ")].join(" ").toLowerCase();
-    const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && ["automated","manual_pending"].includes(t.qaState)) || (scope==="art" && t.approvalState==="art_approved");
+    const hasScope = scope==="all" || (scope==="open" && !terminal.has(t.status)) || (scope==="archived" && archived.has(t.status)) || (scope==="qa" && t.qaState==="manual_pending") || (scope==="art" && t.approvalState==="art_approved");
     return hasScope && (!q||search.includes(q)) && (!domain||(domain==="other"?!["CODE","GFX"].includes(t.domain):t.domain===domain)) && (!status||t.status===status) && (!priority||t.priority===priority) && (!stage||t.stage===stage);
   });
   const order={P0:0,P1:1,P2:2};
