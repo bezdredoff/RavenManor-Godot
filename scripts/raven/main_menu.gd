@@ -16,6 +16,7 @@ var column: VBoxContainer
 var message: Label
 var continue_button: Button
 var settings_panel: Control
+var settings_container: CenterContainer
 var confirm: ConfirmationDialog
 
 func _ready() -> void:
@@ -115,7 +116,11 @@ func _show_settings() -> void:
 	column.visible = false
 	settings_panel = VBoxContainer.new()
 	settings_panel.add_theme_constant_override("separation", 14)
-	column.get_parent().add_child(settings_panel)
+	settings_container = CenterContainer.new()
+	settings_container.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	settings_container.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	column.get_parent().add_child(settings_container)
+	settings_container.add_child(settings_panel)
 	_settings_heading(_tr(2))
 	var language := OptionButton.new()
 	for item in [["Русский", "ru"], ["Беларуская", "be"], ["English", "en"]]:
@@ -166,8 +171,9 @@ func _update_audio(patch: Dictionary) -> void:
 		message.text = _tr(13)
 
 func _close_settings() -> void:
-	if is_instance_valid(settings_panel):
-		settings_panel.queue_free()
+	if is_instance_valid(settings_container):
+		settings_container.queue_free()
+		settings_container = null
 		settings_panel = null
 	column.visible = true
 	_refresh()

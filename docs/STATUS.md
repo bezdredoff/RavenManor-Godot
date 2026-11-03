@@ -1,3 +1,7 @@
+# 2026-11-03 · Main menu regression coverage (PR candidate)
+
+Following merged #156, this candidate fixes settings centering and adds a native Godot menu smoke to blocking gameplay CI: player menu boot route, required controls, settings open/close and one-tap Prototype Lab availability. Historical task counts remain advisory. GAME-UI-01 stays in_progress pending CI, device QA, audio runtime, pause/resume and UPDS visual parity; no owner acceptance claimed.
+
 # 2026-11-03 · GAME-UI-01 initial playable menu (PR candidate)
 
 Player-facing menu now boots by default; Prototype Lab remains one tap away, with all existing QA cards and a return button. Initial implementation reuses Raven's shared UPDS preferences (RU/BE/EN, audio and haptics) and canonical RavenCampaignStore; New Game confirms destructive reset, Continue gates on stored progress. This is an initial integration candidate, **not** owner-accepted UPDS visual parity or proven device QA. Full pause flow, exact UPDS menu/settings layout, audio runtime and resume-at-exact-VN-position require further implementation/verification before GAME-UI-01 closure.
