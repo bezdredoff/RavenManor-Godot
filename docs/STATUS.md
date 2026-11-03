@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 responsive VN footer (draft)
+
+Following merged #170, the UPDS-style Raven VN footer now uses a responsive portrait layout. Below 460 px of available VN panel width, Skip/Auto/Next share an equal-width bottom row, and the page-progress label moves above the controls; dialogue pagination measures the smaller available text area. Wider views retain the existing layout. Existing Raven save, staging, FX, locale and story callbacks unchanged. Donor layout reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`. CI and actual mobile visual QA pending; full-screen VN shell and full UPDS visual parity remain open.
+
 # 2026-11-03 · GAME-UI-01 safe VN Skip (draft)
 
 Following merged #169 and green main workflows, add an incremental UPDS-style Skip footer action. In this candidate Skip only reveals the final text page of the **current line**, never invokes Raven's advance callback, story reducer or save flow, and stops Auto. Disabled when the current line has no more pages. Deliberately does not skip full scenes or choose branches. Donor UX reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`; Raven paging remains `scripts/shared/upds/dialogue_paging.gd`. CI and phone UI QA pending. Full scene-aware Skip and VN visual parity remain open.
