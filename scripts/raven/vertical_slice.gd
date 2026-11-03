@@ -9,6 +9,7 @@ const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
+const ReadHistory = preload("res://scripts/raven/raven_vn_read_history.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const RuntimeDispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
@@ -157,17 +158,11 @@ func _render_vn() -> void:
 		vn_view = VNGameView.new()
 		vn_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		vn_frame.add_child(vn_view)
-	# UPDS-first header shell: menu/settings are existing Raven actions;
-	# history contains only lines already reached in this scene.
-	var read_lines: Array[Dictionary] = []
-	var scene_lines: Array = vn_player.scene.get("lines", [])
-	for index in range(mini(vn_player.line_index + 1, scene_lines.size())):
-		var entry: Variant = scene_lines[index]
-		if entry is Dictionary:
-			read_lines.append({"speaker": str(entry.get("speaker", "")), "text": str(entry.get("text", ""))})
-		else:
-			read_lines.append({"speaker": str(vn_player.scene.get("speaker", "")), "text": str(entry)})
+	var read_lines: Array[Dictionary] = ReadHistory.localized_entries(state.vnReadLines, preferences.locale)
 	vn_view.set_header_actions(_open_pause, _open_vn_settings, read_lines)
+	vn_view.set_playback_context(_skip_read_vn,
+		ReadHistory.skip_target(config, vn_player.line_index, state.vnReadLines) > vn_player.line_index,
+		ReadHistory.at_checkpoint(config, vn_player.line_index))
 	var line_ids: Array = config.get("lineIds", [])
 	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
 	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
@@ -239,6 +234,9 @@ func _complete_action() -> void:
 
 
 func _advance_vn() -> void:
+	if vn_player == null or ReadHistory.at_checkpoint(vn_player.scene, vn_player.line_index):
+		return
+	var read_id := ReadHistory.current_id(vn_player.scene, vn_player.line_index)
 	if vn_player.advance():
 		if step.get("kind") == "vn_production":
 			var unique_id := "production-%s-%d" % [str(vn_player.scene.beatId), state.revision]
@@ -254,18 +252,20 @@ func _advance_vn() -> void:
 				return
 			var completed: Dictionary = reduced["state"]
 			completed.vnCursor = {}
+			ReadHistory.mark_read(completed, read_id)
 			if not store.save_campaign(completed):
 				_show_save_error()
 				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
 				return
 			state = completed
 		else:
-			if not _apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}], true):
+			if not _apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}], true, read_id):
 				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
 				return
 		vn_player = null
 	else:
 		var updated := state.duplicate(true)
+		ReadHistory.mark_read(updated, read_id)
 		updated.vnCursor = {"beatId": str(vn_player.scene.beatId), "lineIndex": vn_player.line_index}
 		if store.save_campaign(updated):
 			state = updated
@@ -277,7 +277,21 @@ func _advance_vn() -> void:
 	_render()
 
 
-func _apply_events(events: Array, clear_vn_cursor: bool = false) -> bool:
+func _skip_read_vn() -> void:
+	if vn_player == null: return
+	var target := ReadHistory.skip_target(vn_player.scene, vn_player.line_index, state.vnReadLines)
+	if target <= vn_player.line_index: return
+	var updated := state.duplicate(true)
+	updated.vnCursor = {"beatId": str(vn_player.scene.beatId), "lineIndex": target}
+	if not store.save_campaign(updated):
+		_show_save_error()
+		return
+	state = updated
+	vn_player.line_index = target
+	_render()
+
+
+func _apply_events(events: Array, clear_vn_cursor: bool = false, read_id: String = "") -> bool:
 	var updated := state.duplicate(true)
 	for raw: Dictionary in events:
 		event_serial += 1
@@ -290,6 +304,7 @@ func _apply_events(events: Array, clear_vn_cursor: bool = false) -> bool:
 		updated = result.state
 	if clear_vn_cursor:
 		updated.vnCursor = {}
+		ReadHistory.mark_read(updated, read_id)
 	if not store.save_campaign(updated):
 		_show_save_error()
 		return false

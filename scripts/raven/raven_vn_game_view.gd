@@ -29,6 +29,9 @@ var auto_button: Button
 var skip_button: Button
 var _auto_timer: Timer
 var _auto_mode := false
+var _skip_callback: Callable
+var _can_skip := false
+var _at_checkpoint := false
 var pilot_note: Label
 var _advance_callback: Callable
 var _fx: RefCounted = FxRuntime.new()
@@ -187,8 +190,8 @@ func _build() -> void:
 	skip_button = Button.new()
 	skip_button.name = "VNSkip"
 	skip_button.text = "Skip »"
-	skip_button.tooltip_text = "Show the final page of this line without advancing the story"
-	skip_button.pressed.connect(_skip_current_line)
+	skip_button.tooltip_text = "Skip previously read lines; stop at unread text or a choice"
+	skip_button.pressed.connect(_skip_read_lines)
 	controls_panel.add_child(skip_button)
 	_auto_timer = Timer.new()
 	_auto_timer.one_shot = true
@@ -434,18 +437,23 @@ func _show_page() -> void:
 		return
 	dialogue.text = Paging.continuation(_pages[_page_index], _page_index < _pages.size() - 1)
 	progress.text = "%s · %d/%d" % [_line_progress, _page_index + 1, _pages.size()]
-	if skip_button != null: skip_button.disabled = _page_index >= _pages.size() - 1
+	if skip_button != null: skip_button.disabled = not _can_skip or _at_checkpoint
 	_schedule_auto()
 
 
-func _skip_current_line() -> void:
-	# Deliberately never calls _advance_callback: no choices, events or scene
-	# boundaries can be crossed by Skip. Only reveal the last text page.
-	if _pages.size() <= 1 or _page_index >= _pages.size() - 1:
+func set_playback_context(on_skip: Callable, can_skip: bool, at_checkpoint: bool) -> void:
+	_skip_callback = on_skip
+	_can_skip = can_skip
+	_at_checkpoint = at_checkpoint
+	skip_button.disabled = not can_skip or at_checkpoint
+	_schedule_auto()
+
+
+func _skip_read_lines() -> void:
+	if _interaction_blocked or _at_checkpoint or not _can_skip or not is_visible_in_tree():
 		return
 	_stop_auto()
-	_page_index = _pages.size() - 1
-	_show_page()
+	if _skip_callback.is_valid(): _skip_callback.call()
 
 
 func _toggle_auto() -> void:
@@ -463,17 +471,17 @@ func _stop_auto() -> void:
 func _schedule_auto() -> void:
 	if _auto_timer == null: return
 	_auto_timer.stop()
-	if _auto_mode and is_visible_in_tree() and not _interaction_blocked and _advance_callback.is_valid():
+	if _auto_mode and is_visible_in_tree() and not _interaction_blocked and not _at_checkpoint and _advance_callback.is_valid():
 		# Enough reading time for short/long pages; never fire in same frame.
-		_auto_timer.start(clampf(2.5 + float(dialogue.text.length()) / 22.0, 3.0, 12.0))
+		_auto_timer.start(2.5 + minf(1800.0, maxf(0.0, dialogue.text.length() - 28) * 18.0) / 1000.0)
 
 
 func _on_auto_timeout() -> void:
-	if _auto_mode and is_visible_in_tree() and not _interaction_blocked: _next()
+	if _auto_mode and is_visible_in_tree() and not _interaction_blocked and not _at_checkpoint: _next()
 
 
 func _next() -> void:
-	if _interaction_blocked or not is_visible_in_tree():
+	if _interaction_blocked or _at_checkpoint or not is_visible_in_tree():
 		return
 	if _page_index < _pages.size() - 1:
 		_page_index += 1

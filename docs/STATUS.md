@@ -1,3 +1,9 @@
+# 2026-11-03 · GAME-UI-01 Wave 2 — persisted read-only Skip
+
+An optional schema-v1 `vnReadLines` field stores canonical completed line IDs in the existing Raven campaign save, atomically with cursor/event writes. Old saves default to empty history; beat flags never fabricate read lines. Skip moves only across already-read lines in the same scene, stops at unread/choice/Match-3 checkpoints and cannot complete a scene. Failed Skip persistence leaves the cursor untouched. Auto uses UPDS normal-speed timing and suspends at checkpoints/overlays; read history now survives scene/reload and is localized from canonical IDs. No new story branch activation, save authority or assets.
+
+Godot 4.7.2 targeted read/Skip smoke PASS: JSON/old saves, invalid IDs, first-read/reread, choice/Match-3 barriers, failed writes, restart/New Game, unchanged wallet/reducer events. Full suite and exact-head CI pending. Stacked on PR #174; merge shell before this increment. Runbook: [Wave 2](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md). Physical device/user acceptance and full choice UI remain separate.
+
 # 2026-11-03 · GAME-UI-01 Wave 1 — donor-derived VN shell
 
 The game VN uses its own fullscreen/desktop-centred frame rather than the debug scroll wrapper. UPDS `_layout_vn` and `_build_controls` geometry is extracted/adapted into `scripts/shared/upds/vn_shell_layout.gd`, keeping Raven artwork, staging, FX and campaign authority. The view survives line changes; pause/history/locale popups suspend input/Auto. Touch plus emulated mouse is guarded. Skip semantics remain a separate Wave 2 change.
