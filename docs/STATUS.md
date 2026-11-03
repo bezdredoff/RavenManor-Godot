@@ -1,5 +1,13 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · VNS5-09 full current-release authoring disk round-trip (candidate)
+
+Following the owner's merge of [#146](https://github.com/bezdredoff/RavenManor-Godot/pull/146), the remaining functional end-to-end editor QA is a **real local save/reopen** of scene background, 1–3 approved composite character frames, narrator, RU/BE/EN dialogues and scene titles, Story Map choices/returns, and preview FX. VNS5-08 separate VN prop catalog is explicitly **deferred** by owner; independent map/restoration props are unchanged. Original HTML screenshot parity VNS5-07F2 and playable branching VN-RUNTIME-01 are independent, open deliverables.
+
+New `tests/raven/vn_studio_full_authoring_e2e_smoke.gd` clones all five current source catalogs into a unique test-owned `user://` root and creates a five-scene synthetic QA draft (one authored 3-cast scene + the existing optional four-scene branch fixture), with **11** explicitly translated lines in RU/BE/EN, title translations, stable ID reorder, real BG-HALL/assetIds and 3 different FX. It performs **atomic `Store.save_local` to disk**, new `Store.open_project` and `Store.load_draft`, then validates the graph, poses/FX, all locales and complete review export. Duplicate export and stale-source overwrite must fail; production source SHA checks detect unintended changes. It cleans only its own temporary files. Both OS check runners include the new smoke, with runbook `docs/production/VNS5_09_END_TO_END_QA_RU.md`.
+
+This is **PR review, not accepted** until exact-head Godot CI and separately verified native Windows editor interactions; no user draft, season-one canonical dialogue, runtime route, game save or artwork is changed.
+
 ## 2026-11-03 · VN Studio QA follow-up and current-release prop decision (PR candidate)
 
 **Owner decision:** Standalone prop catalog/asset states in Raven VN Studio are **deferred** for this release (VNS5-08), not completed. VN imagery uses already approved composite character frames, including objects held in hands; interactive props/restoration items live in the **map workstream** and remain separately open. Functional VNS5-09 acceptance is re-scoped to authored background/1–3 characters/RU-BE-EN text/review-only Story Map/editor Animation/local save/reopen. Full HTML-v5 screenshot parity VNS5-07F2 remains a separate review, not an implied requirement of current-version E2E functionality.
