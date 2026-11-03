@@ -26,6 +26,7 @@ var dialogue: Label
 var progress: Label
 var next_button: Button
 var auto_button: Button
+var skip_button: Button
 var _auto_timer: Timer
 var _auto_mode := false
 var pilot_note: Label
@@ -164,6 +165,12 @@ func _build() -> void:
 	auto_button.tooltip_text = "Auto advance dialogue"
 	auto_button.pressed.connect(_toggle_auto)
 	dialogue_panel.add_child(auto_button)
+	skip_button = Button.new()
+	skip_button.name = "VNSkip"
+	skip_button.text = "Skip »"
+	skip_button.tooltip_text = "Show the final page of this line without advancing the story"
+	skip_button.pressed.connect(_skip_current_line)
+	dialogue_panel.add_child(skip_button)
 	_auto_timer = Timer.new()
 	_auto_timer.one_shot = true
 	_auto_timer.timeout.connect(_on_auto_timeout)
@@ -375,6 +382,8 @@ func _layout() -> void:
 	dialogue.size = Vector2(maxf(1, dialogue_panel.size.x - 28), box_h - 105)
 	progress.position = Vector2(14, box_h - 35)
 	progress.size = Vector2(135, 25)
+	skip_button.position = Vector2(maxf(0, dialogue_panel.size.x - 288), box_h - 51)
+	skip_button.size = Vector2(80, 43)
 	auto_button.position = Vector2(maxf(0, dialogue_panel.size.x - 201), box_h - 51)
 	auto_button.size = Vector2(78, 43)
 	next_button.position = Vector2(maxf(0, dialogue_panel.size.x - 115), box_h - 51)
@@ -403,12 +412,24 @@ func _repaginate() -> void:
 
 func _show_page() -> void:
 	if _pages.is_empty():
+		if skip_button != null: skip_button.disabled = true
 		dialogue.text = ""
 		progress.text = _line_progress
 		return
 	dialogue.text = Paging.continuation(_pages[_page_index], _page_index < _pages.size() - 1)
 	progress.text = "%s · %d/%d" % [_line_progress, _page_index + 1, _pages.size()]
+	if skip_button != null: skip_button.disabled = _page_index >= _pages.size() - 1
 	_schedule_auto()
+
+
+func _skip_current_line() -> void:
+	# Deliberately never calls _advance_callback: no choices, events or scene
+	# boundaries can be crossed by Skip. Only reveal the last text page.
+	if _pages.size() <= 1 or _page_index >= _pages.size() - 1:
+		return
+	_stop_auto()
+	_page_index = _pages.size() - 1
+	_show_page()
 
 
 func _toggle_auto() -> void:
