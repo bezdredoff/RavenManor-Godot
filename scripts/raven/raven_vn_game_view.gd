@@ -25,6 +25,9 @@ var nameplate: Label
 var dialogue: Label
 var progress: Label
 var next_button: Button
+var auto_button: Button
+var _auto_timer: Timer
+var _auto_mode := false
 var pilot_note: Label
 var _advance_callback: Callable
 var _fx: RefCounted = FxRuntime.new()
@@ -154,6 +157,19 @@ func _build() -> void:
 	next_button.custom_minimum_size = Vector2(100, 40)
 	next_button.pressed.connect(_next)
 	dialogue_panel.add_child(next_button)
+	# UPDS VN footer: Auto advances pages and lines, never bypasses a choice.
+	auto_button = Button.new()
+	auto_button.name = "VNAuto"
+	auto_button.text = "Auto"
+	auto_button.tooltip_text = "Auto advance dialogue"
+	auto_button.pressed.connect(_toggle_auto)
+	dialogue_panel.add_child(auto_button)
+	_auto_timer = Timer.new()
+	_auto_timer.one_shot = true
+	_auto_timer.timeout.connect(_on_auto_timeout)
+	add_child(_auto_timer)
+	visibility_changed.connect(func() -> void:
+		if not is_visible_in_tree(): _stop_auto())
 
 	pilot_note = _label(11, Color("f7e7cb"))
 	pilot_note.name = "VNArtStatus"
@@ -281,6 +297,7 @@ func show_beat(beat_id: String, speaker: String, line_text: String, line_progres
 	pilot_note.text = ""
 	_layout()
 	_repaginate()
+	_schedule_auto()
 	if _fx.configured():
 		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
 
@@ -358,6 +375,8 @@ func _layout() -> void:
 	dialogue.size = Vector2(maxf(1, dialogue_panel.size.x - 28), box_h - 105)
 	progress.position = Vector2(14, box_h - 35)
 	progress.size = Vector2(135, 25)
+	auto_button.position = Vector2(maxf(0, dialogue_panel.size.x - 201), box_h - 51)
+	auto_button.size = Vector2(78, 43)
 	next_button.position = Vector2(maxf(0, dialogue_panel.size.x - 115), box_h - 51)
 	next_button.size = Vector2(105, 43)
 	pilot_note.position = Vector2(6, h - 22)
@@ -389,6 +408,31 @@ func _show_page() -> void:
 		return
 	dialogue.text = Paging.continuation(_pages[_page_index], _page_index < _pages.size() - 1)
 	progress.text = "%s · %d/%d" % [_line_progress, _page_index + 1, _pages.size()]
+	_schedule_auto()
+
+
+func _toggle_auto() -> void:
+	_auto_mode = not _auto_mode
+	auto_button.text = "Auto ✓" if _auto_mode else "Auto"
+	_schedule_auto()
+
+
+func _stop_auto() -> void:
+	_auto_mode = false
+	if _auto_timer != null: _auto_timer.stop()
+	if auto_button != null: auto_button.text = "Auto"
+
+
+func _schedule_auto() -> void:
+	if _auto_timer == null: return
+	_auto_timer.stop()
+	if _auto_mode and is_visible_in_tree() and _advance_callback.is_valid():
+		# Enough reading time for short/long pages; never fire in same frame.
+		_auto_timer.start(clampf(2.5 + float(dialogue.text.length()) / 22.0, 3.0, 12.0))
+
+
+func _on_auto_timeout() -> void:
+	if _auto_mode and is_visible_in_tree(): _next()
 
 
 func _next() -> void:
