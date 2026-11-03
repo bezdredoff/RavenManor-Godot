@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 initial playable menu (PR candidate)
+
+Player-facing menu now boots by default; Prototype Lab remains one tap away, with all existing QA cards and a return button. Initial implementation reuses Raven's shared UPDS preferences (RU/BE/EN, audio and haptics) and canonical RavenCampaignStore; New Game confirms destructive reset, Continue gates on stored progress. This is an initial integration candidate, **not** owner-accepted UPDS visual parity or proven device QA. Full pause flow, exact UPDS menu/settings layout, audio runtime and resume-at-exact-VN-position require further implementation/verification before GAME-UI-01 closure.
+
 # Raven Manor — canonical project status
 
 ## 2026-11-03 · Game completeness and consistency planning PR #155 (draft)
