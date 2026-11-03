@@ -1103,13 +1103,16 @@
     },
     {
       "id": "VNS5-10",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "implementationState": "delivered",
-      "qaState": "manual_partial",
+      "qaState": "manual_pending",
       "approvalState": "pending",
-      "evidence": "Owner screenshots 2026-11-03 show Raven draft blocked on post-save source SHA drift without any in-Studio escape hatch. Candidate PR implements explicit byte-verified backup-and-start-fresh, never auto-rebases or applies old edits, and Raven-first legacy UPDS panel separation. Await PR CI and owner Windows Godot QA.\n2026-11-03 owner on Windows: archive-and-start-fresh unlocked the editor; successfully created scene/line and moved lines with arrow buttons. Legacy UPDS switch, exact backup bytes and cross-device UI remain unverified, so not full acceptance."
+      "evidence": "Owner screenshots 2026-11-03 show Raven draft blocked on post-save source SHA drift without any in-Studio escape hatch. Candidate PR implements explicit byte-verified backup-and-start-fresh, never auto-rebases or applies old edits, and Raven-first legacy UPDS panel separation. Await PR CI and owner Windows Godot QA.\n2026-11-03 owner on Windows: archive-and-start-fresh unlocked the editor; successfully created scene/line and moved lines with arrow buttons. Legacy UPDS switch, exact backup bytes and cross-device UI remain unverified, so not full acceptance.\n2026-11-03 follow-up correction: PR #142 merged; owner confirmed recovery works and can author/reorder by arrows. Mark technical delivery merged, not stale PR_review. Full manual backup-byte verification and optional legacy UPDS roundtrip await owner QA; no blanket acceptance.",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "ART-HANDBOOK-01",

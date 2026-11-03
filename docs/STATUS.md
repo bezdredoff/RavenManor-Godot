@@ -2,7 +2,7 @@
 
 ## 2026-11-03 · VNS5-11 authored dialogue and Stage quality-of-life
 
-Owner confirms VNS5-10 recovery by «Архивировать…», created a scene and lines, and arrow-based authored reorder works; full VNS5-10 acceptance remains open for backup verification and legacy mode. Reports missing drag/drop and speakers do not automatically create cast on Stage. VNS5-11 PR supplies in-editor narrated text (`RM-NARRATOR`, `delivery=narration`, **not a runtime character**), exact approved neutral portrait defaults, additive 1→2→3 cast layout on new distinct speakers, no silent fourth portrait, and drag/drop of authored lines only. Canonical lines never move; one Undo transaction. Existing image assets are unchanged and the game never gains a narrator speaker without separate promotion/runtime review. Windows QA pending CI / owner acceptance.
+Owner confirms VNS5-10 recovery by «Архивировать…», created a scene and lines, and arrow-based authored reorder works; VNS5-10 implementation is merged (#142) with partial owner QA; full acceptance remains open for backup verification and legacy mode. Reports missing drag/drop and speakers do not automatically create cast on Stage. VNS5-11 PR supplies in-editor narrated text (`RM-NARRATOR`, `delivery=narration`, **not a runtime character**), exact approved neutral portrait defaults, additive 1→2→3 cast layout on new distinct speakers, no silent fourth portrait, and drag/drop of authored lines only. Canonical lines never move; one Undo transaction. Existing image assets are unchanged and the game never gains a narrator speaker without separate promotion/runtime review. Windows QA pending CI / owner acceptance.
 
 
 ## 2026-11-03 · VNS5-10 draft lock recovery / owner QA follow-up
