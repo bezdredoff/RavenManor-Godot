@@ -1,5 +1,11 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · CODE/GAP active P0 and dependency reconciliation (candidate)
+
+Following merged #150, **88 historical CODE/GAP P0** (34 CODE, 54 gap/process) were triaged with explicit evidence and current-priority overrides instead of changing archived `code_work_packages.json` implementation claims. Current CODE/GAP **six P0**: `CODE-02-06`, `CODE-05-01/02`, `CODE-11-01`, `RM-GAP-001/006`. Combined with prior seven GFX P0 = **13 actual current P0**. Other historical CODE/GAP P0 resolve to 24 P1 and 58 P2; task completion, acceptance and asset statuses are unchanged. Some CODE/GAP tasks now have new *priority-only* progress entries, retaining `proposed`, `not_recorded` implementation, and no owner QA claim.
+
+The `VNS5-09 ↔ VNS5-11/12` authoring cycles were corrected in gap planning dependencies; VNS5-10 recovery is linked to draft authoring and baseline VNS5-00 no longer depends on superseded editor plans. Source CODE dependencies are kept as historical architecture; the dashboard now exposes `openDependsOn` separately from full original `dependsOn`. A new cross-source dependency DAG validator runs in Linux/Windows CI. Owner report: `docs/audits/CODE_GAP_P0_RECONCILIATION_20261103.md`, next steps: `docs/NEXT_PLAN.md`. No runtime, images, scene/route/save, or gameplay changes. CI and PR review pending.
+
 ## 2026-11-03 · Current backlog and next-plan reconciliation (candidate)
 
 After merged #149, current backlog is being made consistent without starting new art or gameplay development. **40** discovered-gap statuses were reconciled against the authoritative `production_progress.json` (including **VNS5-09 now merged #147**, while its native UI QA remains `manual_pending`). The original 49-package `code_work_packages.json` remains an intentionally historical `PROPOSAL_NOT_RUNTIME` plan, **not** a second live status source. A new Linux/Windows check reports any future status drift. The old 2026-10-25 Hall-only `NEXT_PLAN` is archived, and the current `docs/NEXT_PLAN.md` is reorganized into QA-only, runtime/map work, chibi art and explicit deferrals. Full per-task evidence and duplicate gates: `docs/audits/BACKLOG_RECONCILIATION_20261103.md`.
