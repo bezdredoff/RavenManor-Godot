@@ -29,6 +29,11 @@ var content: Dictionary
 var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
+const PAUSE_COPY := {
+	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
+	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
+	"en": ["Pause", "Save progress and return to the main menu?", "Save and exit", "Resume", "Could not save progress. Exit cancelled."]
+}
 
 
 func _ready() -> void:
@@ -83,10 +88,7 @@ func _build_shell() -> void:
 	locale_selector.item_selected.connect(_switch_locale)
 	footer.add_child(locale_selector)
 	pause_dialog = ConfirmationDialog.new()
-	pause_dialog.title = "Raven Manor"
-	pause_dialog.dialog_text = "Сохранить прогресс и выйти в главное меню?"
-	pause_dialog.ok_button_text = "Сохранить и выйти"
-	pause_dialog.cancel_button_text = "Продолжить"
+	_refresh_pause_copy()
 	pause_dialog.confirmed.connect(_save_and_exit)
 	add_child(pause_dialog)
 
@@ -201,15 +203,24 @@ func _switch_locale(index: int) -> void:
 	if index < 0 or index >= Copy.SUPPORTED_LOCALES.size():
 		return
 	if preferences.set_locale(Copy.SUPPORTED_LOCALES[index]) == OK:
+		_refresh_pause_copy()
 		_render()
 
 
+func _refresh_pause_copy() -> void:
+	var copy: Array = PAUSE_COPY.get(preferences.locale, PAUSE_COPY["ru"])
+	pause_dialog.title = copy[0]
+	pause_dialog.dialog_text = copy[1]
+	pause_dialog.ok_button_text = copy[2]
+	pause_dialog.cancel_button_text = copy[3]
+
 func _open_pause() -> void:
+	_refresh_pause_copy()
 	pause_dialog.popup_centered()
 
 func _save_and_exit() -> void:
 	if not store.save_campaign(state):
-		push_error("Could not save campaign before leaving gameplay")
+		push_error(str(PAUSE_COPY.get(preferences.locale, PAUSE_COPY["ru"])[4]))
 		return
 	get_tree().change_scene_to_file("res://scenes/raven/main_menu.tscn")
 

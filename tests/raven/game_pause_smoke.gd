@@ -11,6 +11,12 @@ func _run() -> void:
 	await process_frame
 	assert(game.pause_dialog != null, "Missing pause confirmation")
 	assert(game.pause_dialog.confirmed.get_connections().size() > 0, "Save-and-exit not connected")
+	for locale in ["ru", "be", "en"]:
+		game.preferences.locale = locale
+		game._open_pause()
+		assert(game.pause_dialog.title == game.PAUSE_COPY[locale][0], "Pause title not localized: " + locale)
+		assert(game.pause_dialog.dialog_text == game.PAUSE_COPY[locale][1], "Pause message not localized: " + locale)
+		game.pause_dialog.hide()
 	game._open_pause()
 	assert(game.pause_dialog.visible, "Pause dialog did not open")
 	game.pause_dialog.hide()
