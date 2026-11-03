@@ -33,11 +33,14 @@ func attempt_special_activation(index: int) -> Dictionary:
 
 func reset() -> void:
 	super.reset()
-	move_history.clear()
+	if move_history != null:
+		move_history.clear()
 	if not _replaying:
 		checkpoint_changed.emit()
 
 func restore_history(actions: Array) -> bool:
+	if actions.size() > 500:
+		return false
 	_replaying = true
 	reset()
 	for action in actions:
@@ -46,7 +49,31 @@ func restore_history(actions: Array) -> bool:
 			reset()
 			return false
 		var result: Dictionary = {}
-		match str(action.get("kind", "")):
+		var cell_count: int = tiles.size()
+		var kind := str(action.get("kind", ""))
+		if kind == "swap":
+			if not (action.get("first") is int and action.get("second") is int):
+				_replaying = false
+				reset()
+				return false
+			if int(action.first) < 0 or int(action.second) < 0 or int(action.first) >= cell_count or int(action.second) >= cell_count:
+				_replaying = false
+				reset()
+				return false
+		elif kind == "special":
+			if not action.get("index") is int or int(action.index) < 0 or int(action.index) >= cell_count:
+				_replaying = false
+				reset()
+				return false
+		else:
+			_replaying = false
+			reset()
+			return false
+		if state != "playing":
+			_replaying = false
+			reset()
+			return false
+		match kind:
 			"swap":
 				result = super.attempt_swap(int(action.get("first", -1)), int(action.get("second", -1)))
 			"special":
