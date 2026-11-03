@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 safe VN Skip (draft)
+
+Following merged #169 and green main workflows, add an incremental UPDS-style Skip footer action. In this candidate Skip only reveals the final text page of the **current line**, never invokes Raven's advance callback, story reducer or save flow, and stops Auto. Disabled when the current line has no more pages. Deliberately does not skip full scenes or choose branches. Donor UX reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`; Raven paging remains `scripts/shared/upds/dialogue_paging.gd`. CI and phone UI QA pending. Full scene-aware Skip and VN visual parity remain open.
+
 # 2026-11-03 · GAME-UI-01 UPDS VN Auto footer (draft)
 
 Following merged #168, add UPDS-style Auto control to Raven VN dialogue footer, using a one-shot Timer and page-length-dependent reading delay. Existing Raven pagination and `_advance_vn` remain the only progress path, preserving save behavior. Auto stops when the view is hidden; no Skip (requires choice-aware semantics), no persistent Auto preference. Donor UI/behavior reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`. CI, visual/mobile QA and interaction QA pending. This is an incremental shell migration, not full UPDS parity.
