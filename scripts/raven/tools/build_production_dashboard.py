@@ -93,7 +93,13 @@ def build() -> dict:
     for item in plan:
         override = overrides.get(item["id"])
         if override:
-            item.update({k: override[k] for k in ("status", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy", "followUpTaskIds") if k in override})
+            # Section-based graphics priorities are a *historical default*.
+            # Accepted art and a scoped Hall/Chibi backlog may override P0
+            # per task without rewriting or deleting source production gates.
+            if "priority" in override:
+                if not item["id"].startswith("GFX-") or override["priority"] not in {"P0", "P1", "P2"}:
+                    raise ValueError(f"Invalid graphics task priority override: {item['id']}")
+            item.update({k: override[k] for k in ("status", "priority", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy", "followUpTaskIds") if k in override})
         item.setdefault("owner", "unassigned")
         item.setdefault("updated", None)
         item.setdefault("evidence", "")
