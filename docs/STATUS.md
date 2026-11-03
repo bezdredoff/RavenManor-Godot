@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 localized pause candidate
+
+After merged #158, player pause confirmation is localized RU/BE/EN, including the save failure message. Native pause smoke now verifies all three locale variants. Still pending CI/device QA and exact mid-scene/mid-level resume; GAME-UI-01 remains in_progress.
+
 # 2026-11-03 · GAME-UI-01 pause/navigation follow-up
 
 Candidate replaces the vertical slice's direct QA launcher exit with a player-facing confirmation: save campaign, then return to main menu; cancellation resumes gameplay. New native Godot smoke checks dialog wiring. This does **not** yet guarantee exact VN-line or in-progress Match-3 board restoration: Continue reloads the latest committed campaign step. No GAME-UI-01 acceptance until CI and device checks.
