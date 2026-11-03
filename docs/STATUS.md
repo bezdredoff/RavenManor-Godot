@@ -1,3 +1,7 @@
+# 2026-11-03 · UPDS-first engineering policy and GAME-UI-01 CI investigation (PR #165)
+
+Owner approved mandatory reuse-first workflow for all agents: inspect current UPDS-godot and existing Raven adapters before new VN/Match-3/session/menu/save code; document source provenance and reuse/extract/adapter/new decision, preserve Raven reducer/store, and port donor parity tests. See `AGENTS.md` and `docs/production/UPDS_FIRST_REUSE_AUDIT_20261103_RU.md`. The PR #165 CI still fails on VN cursor Continue after an injected write failure; additional storage-level assertions isolate whether the cursor was persisted or lost during reload. **No CI pass or QA acceptance claimed.**
+
 # 2026-11-03 · GAME-UI-01 reset failure safety (draft)
 
 Follow-up to merged #164: reset no longer clears the live VN/Match-3 session when the Raven campaign save cannot be removed. The in-memory storage test adapter now supports injected remove failures and the blocking lifecycle smoke verifies session preservation and visible localized error. CI and device QA pending; task remains in_progress.
