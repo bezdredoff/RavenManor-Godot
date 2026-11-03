@@ -7,6 +7,8 @@
 
 **Парный инженерный план:** [`CODE_PRODUCTION_ROADMAP_RU.md`](CODE_PRODUCTION_ROADMAP_RU.md) — кодовые gates C0–C13, UPDS reuse, Hall end-to-end и общий G11/C11 approval. Этот документ остаётся источником art scope/gates; технический план не заменяет художественных критериев.
 
+> **Сверка приоритетов 2026-11-03:** приоритеты GFX-00…05 и GFX-11 в этом документе — **исторический default** производственного плана до создания арта. В текущей версии уже утверждены 62 VN-портрета и 26 VN-фонов, 28/28 сцен обеспечены exact variants. Старые необязательные эксперименты/turnaround/production-механики архивируются как `superseded`, а не ошибочно `accepted`. Актуальный P0 определяется **по задаче**, через приоритеты из `production_progress.json`: 5 связанных с map-chibi GFX-07 задач + GFX-11-T06 и GFX-11-T09. Задачи карты, Match-3, props, keyframes и мобильного QA сохранены. Полная сверка: [GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md](GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md).
+
 ## 1. Решение верхнего уровня
 
 Работа идёт в таком порядке:
