@@ -24,7 +24,7 @@ Owner requested a fast reevaluation of `GFX-08-06` and `GFX-08-07`. Scoped close
 
 These statuses retire obsolete production-method P0 backlog only; preserve artwork `art_approved` status for actual catalog entries and all map/prop/Room Builder/mobile/pixel/geometry QA boundaries. PR #148 merged after exact-head CI; these narrow scope decisions are now reflected in main.
 
-## 2026-11-03 · VNS5-09 full current-release authoring disk round-trip (candidate)
+## 2026-11-03 · VNS5-09 full current-release authoring disk round-trip (merged #147; manual QA pending)
 
 Following the owner's merge of [#146](https://github.com/bezdredoff/RavenManor-Godot/pull/146), the remaining functional end-to-end editor QA is a **real local save/reopen** of scene background, 1–3 approved composite character frames, narrator, RU/BE/EN dialogues and scene titles, Story Map choices/returns, and preview FX. VNS5-08 separate VN prop catalog is explicitly **deferred** by owner; independent map/restoration props are unchanged. Original HTML screenshot parity VNS5-07F2 and playable branching VN-RUNTIME-01 are independent, open deliverables.
 
@@ -32,11 +32,11 @@ New `tests/raven/vn_studio_full_authoring_e2e_smoke.gd` clones all five current 
 
 PR #147 is **merged** and exact-head Godot CI passed. The technical E2E smoke is delivered, but native Windows editor interactions and owner approval remain **manual_pending**; no user draft, season-one canonical dialogue, runtime route, game save or artwork was changed.
 
-## 2026-11-03 · VN Studio QA follow-up and current-release prop decision (PR candidate)
+## 2026-11-03 · VN Studio QA follow-up and current-release prop decision (merged #146; native QA pending)
 
 **Owner decision:** Standalone prop catalog/asset states in Raven VN Studio are **deferred** for this release (VNS5-08), not completed. VN imagery uses already approved composite character frames, including objects held in hands; interactive props/restoration items live in the **map workstream** and remain separately open. Functional VNS5-09 acceptance is re-scoped to authored background/1–3 characters/RU-BE-EN text/review-only Story Map/editor Animation/local save/reopen. Full HTML-v5 screenshot parity VNS5-07F2 remains a separate review, not an implied requirement of current-version E2E functionality.
 
-No duplicate A/B/C scenes added to the shipped game. **Merged #144** already implements the optional confirmed QA fixture: four appended *draft-only* scenes, choice A/B/C to Evelyn/Ada/Rowan, three return connections and fade_in/breathe/shake previews with approved BG-HALL/cast images. This candidate strengthens its existing Godot smoke to exercise append **after pre-existing authored content**, persisted structure, actual orange connection select/edit and canonical-port guard, Timeline Play/Pause/Reset/clip move with Undo/Redo, and a no-implicit-save assertion. The VNS5-10 synthetic recovery smoke also tests wrong-root stale-draft rejection and exact-byte restoration. CI on new PR head is required; native Godot Windows screenshot/mouse acceptance remains **unverified**. No canonical Season1 routes/story, runtime branching, saves, imported art or map prop scope altered.
+No duplicate A/B/C scenes added to the shipped game. **Merged #144** already implements the optional confirmed QA fixture: four appended *draft-only* scenes, choice A/B/C to Evelyn/Ada/Rowan, three return connections and fade_in/breathe/shake previews with approved BG-HALL/cast images. This candidate strengthens its existing Godot smoke to exercise append **after pre-existing authored content**, persisted structure, actual orange connection select/edit and canonical-port guard, Timeline Play/Pause/Reset/clip move with Undo/Redo, and a no-implicit-save assertion. The VNS5-10 synthetic recovery smoke also tests wrong-root stale-draft rejection and exact-byte restoration. CI on PR #146 passed (run #41662359592); native Godot Windows screenshot/mouse acceptance remains **unverified**. No canonical Season1 routes/story, runtime branching, saves, imported art or map prop scope altered.
 
 ## 2026-11-03 · VNS5-11/12 owner closeout after merged #143 and #144
 
