@@ -44,7 +44,7 @@ func _initialize() -> void:
 	assert(not bad.restore_history([{"kind": "unknown"}]), "Unknown action accepted")
 	assert(not bad.restore_history([{"kind": "swap", "first": "0", "second": 1}]), "String index accepted")
 	assert(not bad.restore_history([{"kind": "special", "index": -1}]), "Negative index accepted")
-	assert(not bad.restore_history(Array(range(501))), "Oversized history accepted")
+	assert(not bad.restore_history(range(501)), "Oversized history accepted")
 	bad.attempt_swap(int(hint.first), int(hint.second))
 	bad.reset()
 	assert(bad.move_history.is_empty(), "Retry retained move history")
