@@ -6,13 +6,13 @@
 - **`merged` is already a terminal/closed delivery state in dashboard**, not part of the default «Оставшаяся работа». A task's original PR cannot be merged again; it need not be reimplemented just because a higher-level feature remains unfinished.
 - **Not synonymous with `accepted`:** many editor tasks have automated GitHub CI but no owner Windows Godot interaction, actual authoring workflow acceptance, or 3-language/device release check. Those remain in existing named follow-up tasks. No human approvals inferred or fabricated.
 - **50 of 53** keep `merged` (scoped technical delivery closed), with explicit implementation, QA and approval axes and follow-up ID links where residual work is already planned.
-- **3 of 53** were incorrectly marked `merged` for broader-than-delivered art workflow states; reset to `ready`, retaining the original PR evidence and already approved exact art.
+- **3 of 53** were marked `merged` beyond demonstrated contract coverage for broader-than-delivered art workflow states; reset to `ready`, retaining the original PR evidence and already approved exact art.
 - Existing `integrated` and `accepted` statuses are untouched, including `DASH-RENDER-01` owner-confirmed functioning. Full game/runtime/mobile acceptance remains unclaimed.
 
 ## Three misleading merged states re-opened
 
-1. **`GFX-05-04`** — deterministic paths, partial resume and per-frame regeneration. PR #103 implemented a read-only art workflow handbook and catalog, not a ComfyUI batch execution / resume runner. Follow-up: `ART-BATCH-AUTOMATION` and `ART-PROVENANCE-QA`. Implementation partial; no native batch proof.
-2. **`GFX-05-05`** — each generated frame should preserve RAW, matte mask, RGBA master, preview and manifest. Art Handbook records evidence and recipes; it does not establish end-to-end output for every type. Follow-up: `ART-BATCH-AUTOMATION` and `ART-PROVENANCE-QA`.
+1. **`GFX-05-04`** — deterministic paths, partial resume and per-frame regeneration. PR #103 delivered a read-only handbook builder and catalog. The handbook also includes archived local-path reference runners with some resume logic plus an opt-in single-recipe replay helper; neither demonstrates an adopted, reproducible production batch with deterministic partial resume and per-frame regeneration. Follow-up: `ART-BATCH-AUTOMATION` and `ART-PROVENANCE-QA`. Implementation partial; no native batch proof.
+2. **`GFX-05-05`** — each generated frame should preserve RAW, matte mask, RGBA master, preview and manifest. Art Handbook preserves output recipes and archived reference scripts (some of which process masks and raw PNGs), but no production-grade, independently verified per-frame export contract across RAW, matte, RGBA master, preview and manifest has been shown. Follow-up: `ART-BATCH-AUTOMATION` and `ART-PROVENANCE-QA`.
 3. **`GFX-06-06`** — actual stateful physical props (letter, tray, folder, tools). Merged #97 contains accepted hand-held **composite character images** (e.g., Ada holding tray, Lucas with folder, Evelyn envelope). The 62 imported images are all artistically approved, but this does **not** produce standalone state variants to bind in map/VN. Follow-up: `VNS5-08`, `CODE-07-01`. Retain `approvalState=art_approved` **only for the exact 62 frames**, do not claim art or feature acceptance for missing states.
 
 ## Complete 53-item audit
