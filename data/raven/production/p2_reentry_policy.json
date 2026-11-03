@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "kind": "p2_reentry_policy",
+  "asOf": "2026-11-03",
+  "authority": "Status and priority remain production_progress.json. A bucket is not a new task, a grant of approval, or proof of implementation. Deferred and full season release gates remain distinguishable.",
+  "groups": [
+    {
+      "id": "P2-SEASON-CONTENT",
+      "label": "Контент и функциональность последующих глав",
+      "trigger": "Включить в авторскую карту конкретную сцену/главу, подтвердить интерактив и необходимого персонажа либо изменение игровой экономики; только затем повышать приоритет.",
+      "action": "Plan after vertical-slice gate, no production now.",
+      "taskIds": [
+        "CODE-06-02",
+        "CODE-07-03",
+        "CODE-08-01",
+        "CODE-12-W1",
+        "CODE-12-W2",
+        "CODE-12-W3",
+        "CODE-12-W4",
+        "CODE-12-W5",
+        "RM-GAP-007",
+        "GFX-07-07",
+        "GFX-07-08",
+        "GFX-08-03",
+        "GFX-08-04",
+        "GFX-09-03",
+        "GFX-09-04",
+        "GFX-10-08"
+      ]
+    },
+    {
+      "id": "P2-CONDITIONAL-PIPELINE",
+      "label": "Условные способы генерации, анимации и полировки",
+      "trigger": "Появилась конкретная утверждённая сцена или повторяемый артовый дефект, который не устраняется существующими VN composites, простыми editor FX или узким чиби-пилотом.",
+      "action": "Require one scoped experiment with measurable before/after, no blanket rerun of VNCCS/model bake-offs.",
+      "taskIds": [
+        "CODE-04-02",
+        "RM-GAP-005",
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA",
+        "GFX-05-03",
+        "GFX-06-01",
+        "GFX-06-04",
+        "GFX-06-05",
+        "GFX-06-07",
+        "GFX-06-10",
+        "GFX-07-02",
+        "GFX-07-03",
+        "GFX-10-06",
+        "GFX-11-T05"
+      ]
+    },
+    {
+      "id": "P2-EXPLICITLY-DEFERRED",
+      "label": "Явно отложенные функции",
+      "trigger": "Отдельное решение владельца о возвращении именно этой возможности. VNS5-08 — только самостоятельный каталог VN-пропсов, не физические map props.",
+      "action": "Retain existing deferred status, no implied replacement or acceptance.",
+      "taskIds": [
+        "RM-GAP-004",
+        "VNS5-08"
+      ]
+    },
+    {
+      "id": "P2-FULL-SEASON-RELEASE",
+      "label": "Обязательные проверки финального сезона (позже)",
+      "trigger": "Полный сезонный контент и технические зависимости готовы к release-candidate; перед публикацией выполнить каждый gate и сохранить устройство/арты/лицензии/текстовое QA.",
+      "action": "Not optional at full-season release; merely not on current Hall vertical-slice critical path.",
+      "taskIds": [
+        "CODE-13-01",
+        "GFX-13-T01",
+        "GFX-13-T02",
+        "GFX-13-T03",
+        "GFX-13-T04",
+        "GFX-13-T05",
+        "GFX-13-T06",
+        "GFX-13-T07",
+        "GFX-13-T08",
+        "GFX-13-T09",
+        "GFX-13-T10",
+        "GFX-13-T11"
+      ]
+    }
+  ]
+}
