@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "discovered_gaps_and_process",
   "status": "PROPOSAL_NOT_RUNTIME",
-  "note": "Previously discussed tasks or proposed follow-ups, not claim of accepted behavior; reconcile with existing CODE/GFX IDs before executing. No duplicate independent core mechanics.",
+  "note": "Planning definitions, dependencies and original priorities are retained. Live status authority: production_progress.json. This snapshot mirrors known live overrides for convenience; unmatched proposed tasks are NOT runtime implementations. Use scripts/raven/tools/reconcile_gap_statuses.py --check to detect drift. code_work_packages.json is a separate historical PROPOSAL_NOT_RUNTIME planning baseline, intentionally not status-synchronized.",
   "workPackages": [
     {
       "id": "PROC-001",
@@ -13,7 +13,7 @@
       "description": "Все агенты читают authority/roadmaps/status и предлагают PR в одинаковом формате, даже если нет GitHub connector",
       "deliverable": "docs/process/AI_WORKFLOW_RU.md, AGENTS.md и платформенные entrypoints",
       "acceptance": "Все агенты читают authority/roadmaps/status и предлагают PR в одинаковом формате, даже если нет GitHub connector",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -28,7 +28,7 @@
       "description": "Включить CODE, GFX, art/code gates, дополнительные process/Room Builder задачи, поиск, приоритеты, статусы, зависимости, evidence, подробности и mobile UI",
       "deliverable": "dashboard/index.html, generator и JSON statuses",
       "acceptance": "Включить CODE, GFX, art/code gates, дополнительные process/Room Builder задачи, поиск, приоритеты, статусы, зависимости, evidence, подробности и mobile UI",
-      "status": "proposed",
+      "status": "accepted",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -43,7 +43,7 @@
       "description": "Согласовать Raven delta ZIP контракт, read-only validation, защищённые paths, PR candidate и QA; main только вручную",
       "deliverable": "docs/process/MOBILE_ZIP_PIPELINE_RU.md и security pilot",
       "acceptance": "Согласовать Raven delta ZIP контракт, read-only validation, защищённые paths, PR candidate и QA; main только вручную",
-      "status": "proposed",
+      "status": "ready",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -58,7 +58,7 @@
       "description": "Каждый кодовый/артовый PR должен содержать task IDs, upstream SHA, story/map IDs, tests and result, риск, изменённые docs/status, устройство/review",
       "deliverable": "PR template + status check script",
       "acceptance": "Каждый кодовый/артовый PR должен содержать task IDs, upstream SHA, story/map IDs, tests and result, риск, изменённые docs/status, устройство/review",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -73,7 +73,7 @@
       "description": "ChatGPT/Codex/DeepSeek обязаны менять docs/STATUS.md и data/raven/production/production_progress.json в том же PR с кодом, артом, схемами или документацией; автоматический incoming ZIP candidate может быть исключён из pre-merge gate, но обязан пройти ручной review и follow-up.",
       "deliverable": "PR template + canonical agent policy + scripts/raven/tools/check_pr_governance.py and tests + CI fail-on-omission",
       "acceptance": "Authored PR without either status source fails CI, both present succeeds; only candidate/mobile-* intake is exempt with documented review follow-up; no generated dashboard/status.json edited",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "PROC-004",
         "PROC-002"
@@ -121,7 +121,7 @@
       "description": "Стабильный JSON import в Godot, mirrored layout acceptance, re-export/round-trip, сохранение ручной позиции объектов, дверей и state, не ломать graph",
       "deliverable": "Room Builder→Godot contract and tests",
       "acceptance": "Стабильный JSON import в Godot, mirrored layout acceptance, re-export/round-trip, сохранение ручной позиции объектов, дверей и state, не ломать graph",
-      "status": "proposed",
+      "status": "superseded",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -136,7 +136,7 @@
       "description": "Qwen обязателен хотя бы как прототип: одинаковый объект clean/dirty/broken, alpha removal, pose continuity, seed/outputs, 2–3 reused items; проверить реальную консистентность",
       "deliverable": "GFX-01..05 experiment, Art Job Pack",
       "acceptance": "Qwen обязателен хотя бы как прототип: одинаковый объект clean/dirty/broken, alpha removal, pose continuity, seed/outputs, 2–3 reused items; проверить реальную консистентность",
-      "status": "proposed",
+      "status": "deferred",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -211,7 +211,7 @@
       "description": "Устаревший STATUS от 26 октября отстаёт от merged #45–47; отделять merged, candidate, CI pass, device/human approval и актуальный main SHA",
       "deliverable": "docs/STATUS.md, runbook status ledger",
       "acceptance": "Устаревший STATUS от 26 октября отстаёт от merged #45–47; отделять merged, candidate, CI pass, device/human approval и актуальный main SHA",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -271,7 +271,7 @@
       "description": "RU/BE/EN lines, menu and map popups; native proofread; при смене языка state/page не перескакивают; fallback не выдавать за готовую локализацию",
       "deliverable": "C4/GFX-13",
       "acceptance": "RU/BE/EN lines, menu and map popups; native proofread; при смене языка state/page не перескакивают; fallback не выдавать за готовую локализацию",
-      "status": "proposed",
+      "status": "ready",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -286,7 +286,7 @@
       "description": "read-only package/preflight, SHA and path security; no upload credentials",
       "deliverable": "PR #48 package_mobile_patch.py, validate_mobile_patch.py, tests",
       "acceptance": "read-only package/preflight, SHA and path security; no upload credentials",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "docs/process/MOBILE_ZIP_PIPELINE_RU.md"
@@ -300,7 +300,7 @@
       "description": "one archive, read-only validate then isolated write job, exact validated main commit, candidate/* PR with no auto-merge",
       "deliverable": "separate security-reviewed Actions PR and protected inbox",
       "acceptance": "one archive, read-only validate then isolated write job, exact validated main commit, candidate/* PR with no auto-merge",
-      "status": "proposed",
+      "status": "integrated",
       "dependsOn": [
         "MOB-00"
       ],
@@ -316,7 +316,7 @@
       "description": "untrusted candidate never executed in write-token job; run Raven CI and maintain evidence on last PR head",
       "deliverable": "independent low-privilege Godot/Room Builder/Web gate",
       "acceptance": "untrusted candidate never executed in write-token job; run Raven CI and maintain evidence on last PR head",
-      "status": "proposed",
+      "status": "integrated",
       "dependsOn": [
         "MOB-01"
       ],
@@ -332,7 +332,7 @@
       "description": "preview only on GitHub Pages, stable / unaffected, separate SW/cache identity, manual merge",
       "deliverable": "preview deploy and rollback tests",
       "acceptance": "preview only on GitHub Pages, stable / unaffected, separate SW/cache identity, manual merge",
-      "status": "proposed",
+      "status": "integrated",
       "dependsOn": [
         "MOB-02"
       ],
@@ -348,7 +348,7 @@
       "description": "iPhone/Android upload, stale base, zip-slip/symlinks, validated PR, preview, merge, post-merge stable",
       "deliverable": "device/screenshots/PR evidence and owner approval",
       "acceptance": "iPhone/Android upload, stale base, zip-slip/symlinks, validated PR, preview, merge, post-merge stable",
-      "status": "proposed",
+      "status": "ready",
       "dependsOn": [
         "MOB-03"
       ],
@@ -364,7 +364,7 @@
       "description": "Сравнить оригинальную VN-сцену с отдельной версией с процедурной акварельной обработкой на Godot Web. Результат проверен владельцем 2026-10-29 и отклонён; прототип удаляется из runtime, запись сохраняется для истории.",
       "deliverable": "Historical experiment record only; no runtime watercolor shader or duplicate VN scene.",
       "acceptance": "Owner rejected visual outcome on 2026-10-29; archived as deferred, no active implementation.",
-      "status": "proposed",
+      "status": "not_planned",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "User request 2026-10-28 / docs/VN_WATERCOLOR_PILOT.md",
@@ -379,7 +379,7 @@
       "description": "Native Godot editor tab for canonical 28-scene/280-line Raven Season1 production screenplay, RU/BE/EN editing with accurate fallback and scene/cue/route metadata; separate SHA-locked draft and no-overwrite candidate export.",
       "deliverable": "Raven Manor authoring tab independent from UPDS, local persistence and JSON export, synthetic tests + production corpus validation",
       "acceptance": "Owner verifies editing/saving/reopening/export, source SHA fail-closed, no runtime/source overwrite and readable desktop UI; production catalog promotion only by separate reviewed PR.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VN-EDITOR-03",
         "VN-EDITOR-04"
@@ -397,7 +397,7 @@
       "description": "Extend native Raven text editor with scene-wide 2D stage canvas, drag actors with normalized positions, catalog-backed background/cast/pose/emotion, reversible local draft patches, distinct immutable stage JSON candidate for review.",
       "deliverable": "Godot visual stage editor, stage SHA-pinned private draft, candidates from existing production staging, CI smoke and manual QA.",
       "acceptance": "Owner verifies desktop actor drag/selection, scene backgrounds, pose/emotion controls, undo/redo, save/reopen, no writes into production files or runtime, approve visual clarity; missing art labeled placeholders.",
-      "status": "proposed",
+      "status": "superseded",
       "dependsOn": [
         "RAVEN-VN-EDITOR-01"
       ],
@@ -416,7 +416,7 @@
       "description": "Versioned per-scene stageFxPatches tied to existing Raven stage v1 and Stage v2 props. Deterministic visual preview of breath/blink/shake/pulse/fade with start/duration/repeat/intensity, target-validated scene cues, bounded local undo and source-SHA review export; do not change gameplay/runtime or fabricate sprite frames.",
       "deliverable": "stage_fx_store.gd pure model, native director FX controls/play/scrub, Raven draft save/validate/export, tests in both runners, docs and status updates",
       "acceptance": "Owner checks 0/1/2/3 actors, staged prop and background targets, start/duration/intensity/repeat, play/pause/scrub, undo/save/reopen; missing targets, duplicate IDs, unknown effects, NaN and >20s rejected; no-loss v1/v2 export, SHA-pinned no-overwrite review; no source/gameplay mutation; full Godot CI + 800/1024/1366 editor QA",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-04B",
         "VNS5-03"
@@ -436,7 +436,7 @@
       "description": "Phase 1: add optional verified lineId to existing FX cue and native editor preview; old scene FX preserved, SHA locks and no-overwrite export unchanged. Phase 2 (separate approved PR): deterministic line-event runtime playback, skip/auto/reduced-motion arbitration and NoOp preview without Raven progression writes.",
       "deliverable": "Phase 1: stage_fx_store.gd line anchor, Raven stage designer line picker and preview, Story View selection, canonical draft validation, synthetic smoke, docs/STATUS. Phase 2: explicitly reviewed VN presenter/event sink and playback parity tests.",
       "acceptance": "Phase 1: old FX without anchor unchanged, correct same-scene line validation, L001/L002 preview filters, Undo and review export, no canonical data/runtime/save mutation; owner Godot 4.7.2 desktop 800x640 / 1024x640 / 1366x768 QA. Full completion additionally requires approved runtime per-line mapping and skip/auto/reduced-motion testing, separate origin/asset constraints.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-05A",
         "VNS5-04B"
@@ -456,7 +456,7 @@
       "description": "Show 28 actual Raven scenes and canonical gate dependencies without fabricating edges. Allow safe graph overlay for scene, choice A/B/C anchored to an existing line, and existing referenced Match-3 transitions. New links are review-only, use immutable IDs and source SHA guards, and cannot silently alter active reducer/route/map/save behavior.",
       "deliverable": "raven_story_graph_draft.gd model and raven_story_graph_view.gd native GraphEdit, Raven draft store integration, Undo/Redo/no-loss review export, validation and Godot smoke, docs/status.",
       "acceptance": "Real canonical graph shows scene_complete and non-scene gates, no inferred playable sequence. Author scene route, choice A/B/C with verified source line, existing M3 target; reject missing/cross-scene IDs, unknown keys/scripts, duplicate choice and multiple unconditional transitions; preserve old draft; graph export no overwrite includes other draft categories and SHA; editor controls accessible at 800x640, 1024x640, 1366x768, device/owner QA; no runtime/canon writes.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-05B",
         "VNS5-01"
@@ -474,7 +474,7 @@
       "description": "Native new scene and line authoring in Raven Editor with immutable reserved RM-DRAFT-BEAT-0001 scene IDs and stable sceneId-LNNN line IDs. Draft-only local JSON and SHA-locked no-loss review export; show new scenes in Story Map with unapproved gate placeholders; do not invent playable route, shots, transitions or save contracts.",
       "deliverable": "New raven_story_authoring.gd pure model, Raven Story Store and Story View add scene/line UI integration, graph preview and translations, existing locale/undo compatible, full smoke and production status/docs.",
       "acceptance": "Owner creates new scene with initial RU line, more lines in new and existing scenes, edits RU/BE/EN, uses Story Map choice checkpoint referencing new lines, save/reopen, undo/redo, no-loss review export; rejects empty/duplicate/colliding IDs, invalid speaker/locale, source drift, arbitrary paths, missing routes; original 28 scenes/280 lines, cast, staging, M3/reducer/save, playable routes unchanged; independent CI and Godot Editor native 800x640/1024x640/1366x768 QA, human approval before promotion.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06A",
         "VNS5-05B"
@@ -492,7 +492,7 @@
       "description": "Preflight review of new scenes/lines/branch proposals before any canonical promotion: explicit remap reserved RM-DRAFT-BEAT-XXXX to noncolliding production-style RM-BEAT-XX-YY, rewire line IDs, graph sources, targets and choice checkpoints, show required stage/route/save gates and localization gaps, export a full source-SHA-locked candidate without writing canonical assets or changing gameplay. Runtime approval remains separate.",
       "deliverable": "Pure Raven promotion planner and native Promotion Review UI tab, Store SHA validation and no-overwrite export, graph/text/stage/FX review preservation, Godot negative/collision tests, docs/dashboard and acceptance list.",
       "acceptance": "Duplicate, missing, unknown or production-colliding IDs rejected; deterministic remap for scenes, lines and graph choices; no source, routes, cast, stage or save files touched; output contains source SHAs, before/after counts, all draft categories, unresolved ART PENDING/route/migration gates, BE/EN warnings, runtimeApplied false; save/undo/redo and no-overwrite verified by CI and native Windows Godot 800x640/1024x640/1366x768; real promotion with approved staging/gate, actor provenance and replay parity requires separate owner PR.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06B",
         "VNS5-06A"
@@ -510,7 +510,7 @@
       "description": "Take a reviewed promotion ID plan and explicit reviewer manifest for every new scene's background/cast/lighting and route proposal, every new line's speaker cue, and unchanged five source SHAs. Assemble a coherent review-only candidate over dialogue, staging, narrative routes and performance cues; do not mutate production or activate game. Report missing art, unsupported branching, save parity blockers, duplicate and foreign fields.",
       "deliverable": "raven_production_package.gd deterministic pure model, Raven Store no-overwrite user:// template/export APIs, Promotion Review tab manifest import and four-registry candidate controls, strict smoke and maintained docs/dashboard.",
       "acceptance": "Explicit reviewer ref, complete known background state/cast/pose/micro, route dependency, per-line performance cue and five SHA match required; reject missing/duplicate/unregistered actor, cue, gate, invalid ID, source drift and any Story Map branch not implemented by reducer. Full four-catalog review JSON with no changed canonical file, no runtimeApproved, no save migration, no-apply and release blockers. Full Godot/Raven CI, native Windows 800x640/1024x640/1366x768 QA, user signoff; subsequent VNS5-06D2 must implement approved active routes and safe rollback separately.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06C",
         "VNS5-06B"
@@ -528,7 +528,7 @@
       "description": "Reconciled companion after merged PR #117. Offline Python verifies the exact Godot VNS5-06D1 four-registry review bundle, SHA-locked against five source catalogs; checks all canonical records, stage/route/cue parity, new draft ID derivation, text patches, review-only flags, source graph constraints and exports fixed-name artifacts only to a fresh external folder. No second approval schema, no runtime apply.",
       "deliverable": "Reworked prepare_vn_promotion.py and offline validation smoke, CI, Russian runbook, dashboard.",
       "acceptance": "Accept native raven-vn-production-4registry-review-v1; reject source SHA drift, modified old scene/shot/route/cue/line outside retained text patches, new ID collisions, missing shot/route/cue, invalid art/cast/pose, active gate or cue and proposed branching. Creates four candidate JSON + byte-SHA audit without overwrites. Independent PR-head CI and owner review. No new playable release; no actual owner approval inferred.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06D1"
       ],
@@ -545,7 +545,7 @@
       "description": "After merged PR #116, validate an exact D1 Godot bundle plus D1-CLI extracted package and report all blockers to playable story promotion. In particular compare new scene IDs to foundation_catalog.storyBeats so Snapshot.normalize and RavenReducer do not silently drop/reject them. Validate route proposals, new locale completeness, cue/reducer gate and save/schema compatibility. Export only an external immutable audit plus source backups for rollback; no production or runtime writes.",
       "deliverable": "plan_vn_release.py, synthetic offline tamper/cycle/rollback Python test, actual Godot v1 Snapshot/Reducer/CampaignStore save projection smoke, scripts/check.sh, runbook and updated dashboard.",
       "acceptance": "Fail-closed package/offline-manifest match and no drift, exact SHA every registry and external staging file, no symlinks, support for old saves/reducer idempotence via Godot smoke, identify new beat not in foundation catalog and unsupported scene presenter/route/languages/cue. Refuse --require-ready until blockers resolved. Audit folder external to checkout, no-overwrite, source backups with SHA and no auto-restore. CI green, human review. Real release requires separate D2B approved import.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06D1-CLI",
         "VNS5-06D1"
@@ -563,7 +563,7 @@
       "description": "After VNS5-06D2A preflight, enforce one source-authoritative D1 Godot package, D1-CLI registry extraction, D2A readiness report and immutable backup, plus exact review acknowledgment with route IDs, locale/save/art/story references and every unresolved blocker. Build an external no-overwrite five-registry proposed source diff including append-only foundation_catalog.storyBeats to preserve RavenSnapshot/RavenReducer IDs and seven exact original rollback sources. Never turn on new routes, alter canonical assets or game saves.",
       "deliverable": "stage_vn_release_patch.py with fail-closed SHA/provenance checks and no-apply release staging + rollback folder; positive/negative synthetic tests in scripts/check.sh, runbook, status and dashboard.",
       "acceptance": "Reject missing reviewRefs, unknown fields, incorrect SHA of Godot/D2A, incomplete ID lists/route plans/blockers, altered/missing backup or sources, active gate and in-repo/existing destination. Positive full five-registry candidate preserves old save schema, adds only proposed new foundation storyBeats and never enables runtime. Exact rollback includes seven sources. Full CI and owner review; active playable release is separately gated until D2C.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06D2A",
         "VNS5-06D1-CLI"
@@ -581,7 +581,7 @@
       "description": "Wire released scenes to the existing RavenVNPlayer/View and RavenReducer/Save only after explicitly approved scene/gate, foundation story ID, localization on all three languages, real accepted background and character pose assets and manualReview=false performance cue. Preserve current slice ordering and legacy saves, leave blocked all D1/D2B review candidates, unsafe branching and absent/new unapproved content.",
       "deliverable": "Pure fail-closed raven_vn_runtime_dispatch.gd, gated vertical_slice.gd integration after Director done, synthetic Godot positive/negative smoke and save idempotence regression, check.sh, runbook and dashboard.",
       "acceptance": "All current content and legacy 16 slice steps unchanged; no new gameplay scene automatically appears in main. New runtime-eligible scene selection only with native canonical runtime_approved plus approvedRuntime, proposedRuntime=false, all 3 translations, known foundation storyBeat, registered accepted BG and exact approved actor art, validated cue, known scene_complete/first_clear gate and one-shot state. Reducer completes after last line; commit state only if save succeeds; repeated event idempotent and existing snapshots normalize. Reject unapproved/background/placeholders/unsupported branches. Full CI + user manual QA; actual owner approved scene art and world-map routing remains separate.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-06D2B",
         "VNS5-06D2A"
@@ -599,7 +599,7 @@
       "description": "Store orientation, contain/cover, normalized focal, staged-prop instance ID/state/position/scale/z and character z in versioned draft stageV2Patches; old v1 stage and game runtime unchanged. Prop references must be project-scoped staged asset IDs or explicit ART PENDING, never arbitrary paths. Separate read-only no-overwrite review export; no automatic promotion.",
       "deliverable": "stage_v2_store.gd, Raven Story Store/View integration, StageDesigner prop controls & focal overlay, safety negative and serialization smoke tests, docs; follow-up runtime adapter/review gate separate.",
       "acceptance": "Owner verifies portrait/landscape saved/reopened, contain/cover/focal, adding/removing props, staged prop image previews vs ART PENDING, clean/dirty/broken, actor and prop z-order and normalized prop drag/scale. Invalid instance IDs/path traversal/NaN/duplicate/reparse and source SHA drift blocked; v1 draft/source unchanged; v1 export refuses to silently drop v2. CI and manual 800/1024/1366 desktop QA; explicit review before migration/runtime.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-04A",
         "VNS5-03"
@@ -617,7 +617,7 @@
       "description": "Editor-only 390×844 / 844×390 stage preview, fit/cover without fictional backgrounds, safe/grid/HUD overlays, 1/2/3 cast templates, normalized drag and limited scene-local Undo. Stage-v1 only: no orientation, props, focal or z-order fields written to canonical source. Does not replace the runtime portrait compositor.",
       "deliverable": "stage_layout_tools.gd, Raven StageDesigner and overlay updates, focused Godot headless smoke, docs and progress; separate v2 schema follow-on VNS5-04B.",
       "acceptance": "Owner checks two orientations, previews 1/2/3 cast with approved art, no clipping/giant portraits, selected background exact-state, template→save/reopen and local undo, fit/cover and grid/safe overlay; tests at 800×640, 1024×640, 1366×768. No source/runtime/save writes; missing landscape art marked candidate/placeholder.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-03"
       ],
@@ -634,7 +634,7 @@
       "description": "Editor-only multi-file PNG/JPEG/WebP decode, SHA/dimensions/alpha, scoped versioned user:// staging, metadata drafts, duplicate/collision/path validation and separately reviewable no-overwrite candidate export. No res:// writes/promotion or VNS5-04 composition.",
       "deliverable": "addons/vn_studio/model/staged_image_store.gd, native Asset Library import/editor controls, synthetic Godot safety smoke, rollback/QA docs.",
       "acceptance": "Two portrait + two landscape images; valid PNG/JPEG/WebP; duplicate SHA and filename collision; unsafe path/SVG/fake bytes/oversize rejected; manifest reopened and source SHA drift blocked; no-overwrite candidate export requires provenance+license; canonical production content, original backgrounds and saves unchanged; visual desktop QA remains owner gate.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-02"
       ],
@@ -651,7 +651,7 @@
       "description": "Adapt actual Raven background variants and character metadata into a validated, searchable editor-only library without inventing assets or changing canonical catalogs.",
       "deliverable": "Read-only registry model, native library with category/status/orientation filters and A/B comparison, negative validation tests.",
       "acceptance": "All background candidate records from the live catalog (26 at baseline b83c594) and 4 character metadata records; 11 master groups, missing art and unregistered props explicit; duplicate ID, missing file and SHA drift detected; no source mutation.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-01"
       ],
@@ -668,7 +668,7 @@
       "description": "Restructure the existing Raven EditorPlugin view into four navigable workspaces with one scene/line selection and responsive editor panels.",
       "deliverable": "Native Godot workspace shell, read-only contextual panes, sticky draft actions, layout persistence and UI smoke tests.",
       "acceptance": "Four workspaces retain selected scene/line; old Raven and UPDS controls remain accessible at narrow/short editor sizes; pane width persists in editor settings; no gameplay or save schema change.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "VNS5-00"
       ],
@@ -685,7 +685,7 @@
       "description": "Record current Raven and donor sources, propose v2 mapping, and verify a dry-run adapter without writing canonical content or drafts.",
       "deliverable": "Read-only contract audit, synthetic negative tests and reviewable compatibility decision document.",
       "acceptance": "Exact Raven source counts and stable IDs; source hashes; old draft smoke; no production source or save mutation; independent donor runtime parity remains a separate gate.",
-      "status": "proposed",
+      "status": "merged",
       "dependsOn": [
         "RAVEN-VN-EDITOR-01",
         "RAVEN-VN-EDITOR-02",
@@ -704,7 +704,7 @@
       "description": "Make all UPDS pose thumbnails and Raven stage actor previews browseable; canonical background lighting/state selectors and master browser with asset availability, optional 390x844 logical-pixel grid and selected-line dialogue UI overlay.",
       "deliverable": "Godot editor controls and validation, editor-only overlay, smoke tests and manuals; no source asset fabrication or runtime changes.",
       "acceptance": "Owner can browse all portrait options, choose master+light+state, distinguish real art from pending variant plates, toggle 390x844 grid and selected dialogue preview, drag and save; CI plus manual Godot QA.",
-      "status": "proposed",
+      "status": "superseded",
       "dependsOn": [
         "RAVEN-VN-EDITOR-02"
       ],
@@ -823,7 +823,7 @@
       "description": "Use approved local HTML prototype and UX notes to compare exact Godot workspace column hierarchy, controls, asset workflows, stage, graph and timeline at matched viewport screenshots. Prior VNS5-07B claimed structural not pixel parity.",
       "deliverable": "HTML/Godot side-by-side screenshots, numbered parity gap matrix with exact control mapping, small PRs to close differences, manual owner approval.",
       "acceptance": "Owner accepts matched visual hierarchy/content/workflows against approved HTML across agreed viewport sizes; comparison evidence and remaining intentional native differences documented; no gameplay/runtime changes inferred.",
-      "status": "proposed",
+      "status": "ready",
       "dependsOn": [
         "VNS5-07E"
       ],
@@ -908,7 +908,7 @@
       "description": "Reconcile the source backlog with current main PRs, owner-art acceptance, duplicates and tech QA.",
       "deliverable": "Evidence-linked statuses and replacement mapping without invented release acceptance.",
       "acceptance": "Dashboard sources validate, archived work retains rationale, no unreviewed game/save mutation.",
-      "status": "proposed",
+      "status": "integrated",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "Owner-approved dashboard reconciliation 2026-11-02",
@@ -923,7 +923,7 @@
       "description": "Expose implementation, verification and owner approval independently from PR lifecycle.",
       "deliverable": "Responsive clear dashboard with counts, new filters, archived / superseded distinctions and asset approval overview.",
       "acceptance": "Source JSON is authoritative, generated status not committed; mobile/desktop UI and schema tests pass.",
-      "status": "proposed",
+      "status": "accepted",
       "dependsOn": [
         "DASH-RECON-01"
       ],
@@ -974,7 +974,7 @@
       "description": "Create full draft scene with approved background, 1–3 actors, dialogues in 3 locales, FX and graph transitions. Current release E2E is background + 1–3 accepted character composites (including held objects) + RU/BE/EN text + editor FX + draft Story Map + save/reopen/Undo. Standalone VN prop workflow is not a prerequisite.",
       "deliverable": "Repeatable native Godot scene-authoring scenario with approved plate, 1–3 composite cast images, three locales, editor-only FX and draft choice links; save/reopen/undo/review export. No separate VN prop catalog. CI smoke stored in tests/raven/vn_studio_full_authoring_e2e_smoke.gd; full manual Godot QA remains separate.",
       "acceptance": "Owner can complete the scoped current-version workflow without code edits, all three locale texts plus draft Story Map/FX survive save/reopen and Undo; this does NOT imply executable branching, full HTML pixel parity or production prop catalog.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "VNS5-11",
         "VNS5-12"
@@ -1111,7 +1111,7 @@
       "description": "Owner reports no tasks visible after dashboard v2 merged. Show top P0 items above statistics, keep the complete backlog discoverable and add real Chromium render gate.",
       "deliverable": "P0 quick list, 24-card progressive all-task view, visible error state, browser smoke on Pages artifact.",
       "acceptance": "Browser renders at least 1 active P0 and at least 1 full card; default filter and show-more remain discoverable on desktop/mobile. Source JSON immutable.",
-      "status": "proposed",
+      "status": "accepted",
       "dependsOn": [
         "PROC-DASH-V2"
       ],
@@ -1142,7 +1142,7 @@
       "domain": "art",
       "priority": "P2",
       "size": "S",
-      "status": "proposed",
+      "status": "accepted",
       "source": "Owner explicit acceptance 2026-11-03; implementation PR #103",
       "description": "Browsable evidence and documented workflow-replay reference handbook for already approved art. Distinct from future ComfyUI executable batch tool and deterministic regeneration.",
       "deliverable": "Published Art Handbook UI and manifest references; owner reviews access and organization.",
