@@ -5,7 +5,7 @@ const archived = new Set(["superseded","not_planned"]);
 let shownLimit = 24;
 const statuses = {proposed:"Предложено",ready:"К работе",in_progress:"В работе",PR_review:"PR на ревью",merged:"Смержено",integrated:"Интегрировано",device_verified:"Device QA",accepted:"Принято",blocked:"Блокировано",deferred:"Отложено",superseded:"Заменено",not_planned:"Не планируется"};
 const implementation = {not_recorded:"Не зафиксировано",partial:"Реализовано частично",delivered:"Реализовано"};
-const verification = {not_recorded:"Не зафиксировано",automated:"Автотесты / без ручного QA",manual_pending:"Ожидает ручной проверки",device_verified:"Проверено на устройстве"};
+const verification = {not_recorded:"Не зафиксировано",automated:"Автотесты / без ручного QA",manual_pending:"Ожидает ручной проверки",manual_verified:"Ручная проверка владельцем",device_verified:"Проверено на устройстве"};
 const approval = {not_recorded:"Не зафиксировано",pending:"Ожидает приёмки",art_approved:"Арт утверждён",feature_approved:"Функция принята",rejected:"Отклонено"};
 const node = (tag,cls,content) => {const e = document.createElement(tag); if(cls)e.className=cls; if(content!==undefined)e.textContent=String(content); return e;};
 function field(box,title,value){box.append(node("h4","",title),node("p","",value||"—"));}
