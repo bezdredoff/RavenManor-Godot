@@ -1,5 +1,10 @@
 # Raven Manor (Godot)
 
+## Approved UPDS-first UI migration (2026-11-03)
+
+**All game UI** must be audited against the existing [UPDS-godot donor](https://github.com/bezdredoff/UPDS-godot) before writing replacement code. Approved scope includes VN shell, menus, settings, Match-3 UI, save/load, overlays, mobile layout, accessibility and shared widgets. VN Skip must follow UPDS **previously-read-lines only** semantics, stopping at unread lines and choice gates; the existing Raven page-reveal Skip is not parity. The [approved source inventory, decisions and phased plan](docs/production/UPDS_UI_REUSE_APPROVED_PLAN_20261103_RU.md) are authoritative for future work. Draft PR #171 is superseded as the canonical layout approach. These are plans, not claims of shipped parity.
+
+
 Cozy gothic-anime, portrait-first narrative restoration game.
 
 [Launch the interactive Prototype Lab](https://bezdredoff.github.io/RavenManor-Godot/)
