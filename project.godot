@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Raven Manor"
-run/main_scene="res://scenes/raven/prototype_launcher.tscn"
+run/main_scene="res://scenes/raven/main_menu.tscn"
 config/features=PackedStringArray("4.7", "GL Compatibility")
 
 [display]

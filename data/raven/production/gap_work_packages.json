@@ -1193,7 +1193,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-04-01; no duplication or automatic acceptance.",
       "deliverable": "UPDS main menu/settings UI reused through Raven adapters; New/Continue, pause/restart, return and language/audio work with saved Raven session; no second save authority.",
       "acceptance": "UPDS main menu/settings UI reused through Raven adapters; New/Continue, pause/restart, return and language/audio work with saved Raven session; no second save authority.",
-      "status": "proposed",
+      "status": "in_progress",
       "dependsOn": [
         "CODE-02-06"
       ],

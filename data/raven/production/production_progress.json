@@ -985,7 +985,7 @@
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "status": "ready",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-03 PR #156 draft: initial settings controls wired to existing UPDS preferences adapter; audio runtime and visual parity not verified, no owner QA acceptance; existing partial status retained.",
       "implementationState": "partial",
       "qaState": "automated",
       "priority": "P0"
@@ -2665,12 +2665,12 @@
     },
     {
       "id": "GAME-UI-01",
-      "status": "proposed",
+      "status": "in_progress",
       "priority": "P0",
-      "owner": "Unassigned",
+      "owner": "ChatGPT",
       "updated": "2026-11-03",
-      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-04-01.",
-      "implementationState": "not_started",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-04-01.\n2026-11-03 PR #156 draft: initial main menu scene, canonical Raven save-backed New/Continue, UPDS preferences-backed RU/BE/EN settings, one-tap Prototype Lab and return route. CI and native device QA pending; no claim of exact UPDS parity, audio runtime, pause or exact VN-position resume. Keep open until acceptance.",
+      "implementationState": "partial",
       "qaState": "not_started",
       "approvalState": "pending"
     },

@@ -19,6 +19,7 @@ func _ready() -> void:
 	var scroll := ScrollContainer.new(); margin.add_child(scroll)
 	var column := VBoxContainer.new(); column.custom_minimum_size = Vector2(354, 0); column.add_theme_constant_override("separation", 14); scroll.add_child(column)
 	column.add_child(_title("RAVEN MANOR", 30, Color("eadbbf")))
+	column.add_child(_card("Главное меню", "Вернуться к игровому меню без отдельного URL.", "← ГЛАВНОЕ МЕНЮ", _open.bind("res://scenes/raven/main_menu.tscn")))
 	column.add_child(_title("Prototype Lab · RM-HUB-001", 17, Color("a9c8be")))
 	column.add_child(_paragraph("Единая интерактивная сборка для изолированной и совместной проверки прототипов. Данные обоих режимов используют одно Raven-сохранение."))
 	column.add_child(_card(

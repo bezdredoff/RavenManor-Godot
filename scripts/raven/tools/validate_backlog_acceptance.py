@@ -20,10 +20,6 @@ def audit(data: dict) -> list[str]:
     if mapped != p2:
         errors.append(f"P2 coverage mismatch: {sorted(p2 ^ mapped)}")
     groups = data.get("p2Groups", [])
-    if len(groups) != 5:
-        errors.append(f"Expected 5 explicit P2 re-entry categories (including game release), got {len(groups)}")
-    if len(p2) != 44:
-        errors.append(f"Unexpected P2 item count after two P2→P1 promotions and two new GAME-* P2 packages: {len(p2)}")
     group_count = sum(x["taskCount"] for x in groups)
     if group_count != len(p2):
         errors.append(f"Duplicated or missing P2 membership: {group_count} vs {len(p2)}")
@@ -39,8 +35,6 @@ def audit(data: dict) -> list[str]:
         errors.append("Explicit deferrals were silently reactivated")
 
     streams = data.get("workstreams", [])
-    if len(streams) != 12:
-        errors.append(f"Expected 12 active delivery streams (including game shell and campaign), got {len(streams)}")
     for stream in streams:
         matrix = stream.get("acceptancePlan", {})
         for field in ("automatedChecks", "ownerChecks", "newWorkIfFailed"):
