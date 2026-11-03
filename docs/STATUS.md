@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 checkpoint replay hardening (draft follow-up)
+
+Follow-up to #161: validate replay action indices against the real board, reject malformed/oversized histories and actions after terminal state, and exercise multi-move deterministic continuation, retry/reset and completed-level checkpoint normalization in blocking Godot smoke. Keep canonical RavenCampaignStore/schema-v1 and existing gameplay CI gate. **CI and device QA not yet verified**; no owner acceptance or GAME-UI-01 completion claimed. Full session E2E, save failure UX and browser refresh remain separate work.
+
 # 2026-11-03 · Match-3 checkpoint candidate
 
 After merged #160, Raven Match-3 tracks valid swap/special actions and replays them from a bounded optional `match3Checkpoint` stored inside the existing Raven campaign snapshot. On returning to an unfinished level, replay reconstructs tiles, specials, blockers, ingredients, moves and objective counters. Level completion clears the checkpoint. A blocking native Godot smoke compares original and replayed states. This is a draft pending CI and manual web/mobile checks; avoid claiming complete mid-animation restoration or GAME-UI-01 approval.
