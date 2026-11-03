@@ -18,6 +18,15 @@ func _spawn(adapter: RefCounted) -> Control:
 	return game
 
 func _run() -> void:
+	# Godot JSON.parse_string turns integral JSON numbers into floats.
+	# Roundtrip must retain a valid VN cursor and reject fractional indices.
+	var cursor_fixture := Snapshot.fresh()
+	cursor_fixture.vnCursor = {"beatId": "RM-BEAT-00-01", "lineIndex": 1}
+	var roundtrip: Variant = JSON.parse_string(JSON.stringify(cursor_fixture))
+	var normalized: Variant = Snapshot.normalize(roundtrip, preload("res://data/raven/foundation_catalog.json").data)
+	assert(normalized.vnCursor.get("lineIndex", -1) == 1, "JSON roundtrip dropped valid VN cursor")
+	roundtrip.vnCursor.lineIndex = 1.5
+	assert(Snapshot.normalize(roundtrip, preload("res://data/raven/foundation_catalog.json").data).vnCursor.is_empty(), "Fractional VN cursor accepted")
 	var adapter := MemoryStorage.new()
 	var game := _spawn(adapter)
 	await process_frame
