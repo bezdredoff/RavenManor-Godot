@@ -21,6 +21,7 @@ OUT = ROOT / "dashboard/status.json"
 BG = PRODUCTION / "vn_background_catalog.json"
 CHAR_ART = PRODUCTION / "vn_character_catalog.json"
 WORKSTREAMS = PRODUCTION / "active_workstreams.json"
+P2_REENTRY = PRODUCTION / "p2_reentry_policy.json"
 STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred", "not_planned", "superseded"}
 
 
@@ -162,6 +163,34 @@ def build() -> dict:
         item["workstreamId"] = stream["id"] if stream else ""
         item["workstreamName"] = stream["title"] if stream else ""
         item["workstreamPhase"] = stream["phase"] if stream else ""
+    p2_source = load(P2_REENTRY)
+    p2_groups = p2_source["groups"]
+    p2_members = {}
+    p2_ids = {item["id"] for item in plan
+              if item["priority"] == "P2" and item["status"] not in terminal}
+    for group in p2_groups:
+        if not group["id"].startswith("P2-"):
+            raise ValueError(f"Invalid P2 policy group: {group['id']}")
+        for task_id in group["taskIds"]:
+            if task_id in p2_members:
+                raise ValueError(f"Duplicate P2 task in re-entry policy: {task_id}")
+            if task_id not in task_by_id:
+                raise ValueError(f"Unknown P2 task: {task_id}")
+            p2_members[task_id] = group["id"]
+    if set(p2_members) != p2_ids:
+        raise ValueError(f"P2 re-entry coverage mismatch: "
+                         f"missing={sorted(p2_ids - set(p2_members))}, "
+                         f"inactive={sorted(set(p2_members) - p2_ids)}")
+    for item in plan:
+        item["p2ReentryGroup"] = p2_members.get(item["id"], "")
+    for workstream in workstreams:
+        matrix = workstream.get("acceptancePlan")
+        if not isinstance(matrix, dict) or any(
+            not isinstance(matrix.get(field), list) or not matrix[field] or
+            any(not isinstance(v, str) or not v.strip() for v in matrix[field])
+            for field in ("automatedChecks", "ownerChecks", "newWorkIfFailed")
+        ) or not isinstance(matrix.get("decision"), str) or not matrix["decision"].strip():
+            raise ValueError(f"Missing distinct automated/owner/new-work acceptance fields: {workstream['id']}")
     # Asset approval is a separate owner decision; it is not inferred from merge,
     # gameplay staging or CI. Only exact imported catalog records are counted.
     backgrounds = bg_catalog.get("entries", [])
@@ -184,7 +213,12 @@ def build() -> dict:
         "taskCount": len(plan),
         "assetSummary": approval_summary,
         "openTaskCount": sum(x["status"] not in {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"} for x in plan),
-        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART, WORKSTREAMS)],
+        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART, WORKSTREAMS, P2_REENTRY)],
+        "p2Groups": [
+            {**{k: value for k, value in group.items() if k != "taskIds"},
+             "taskCount": len(group["taskIds"])}
+            for group in p2_groups
+        ],
         "workstreams": [
             {**{k: value for k, value in workstream.items() if k != "taskIds"},
              "taskCount": len(workstream["taskIds"]),
