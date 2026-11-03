@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 reset failure safety (draft)
+
+Follow-up to merged #164: reset no longer clears the live VN/Match-3 session when the Raven campaign save cannot be removed. The in-memory storage test adapter now supports injected remove failures and the blocking lifecycle smoke verifies session preservation and visible localized error. CI and device QA pending; task remains in_progress.
+
 # 2026-11-03 · GAME-UI-01 atomic VN and map persistence (draft)
 
 Follow-up to merged #163: VN beat completion now saves reducer event and cleared VN cursor in one canonical snapshot write; map multi-event actions are also staged and saved atomically. On a failed VN line write, the visible line is rolled back and localized error shown; failed map/beat writes leave in-memory campaign state unchanged. Blocking scene lifecycle smoke extends failure injection. **CI and device QA pending**; GAME-UI-01 remains in_progress. No new save key or schema.
