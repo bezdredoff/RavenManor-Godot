@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 scene lifecycle session E2E (stacked draft)
+
+Stacked on checkpoint hardening: blocking headless Godot smoke exercises New Game → VN line advance → Save/Exit → Continue, authorized campaign transition to Match-3, move checkpoint → scene reload → board/move restoration, retry checkpoint clearing, New Game reset, corrupt-save recovery and localized visible save-error feedback. Level completion now commits the reducer reward and checkpoint removal in one canonical Raven snapshot write, avoiding a two-write window. This is a **draft**: CI, browser refresh, real-device UI and genuine level-win E2E remain unverified. GAME-UI-01 stays in_progress. Merge prerequisite checkpoint hardening first.
+
 # 2026-11-03 · GAME-UI-01 checkpoint replay hardening (draft follow-up)
 
 Follow-up to #161: validate replay action indices against the real board, reject malformed/oversized histories and actions after terminal state, and exercise multi-move deterministic continuation, retry/reset and completed-level checkpoint normalization in blocking Godot smoke. Keep canonical RavenCampaignStore/schema-v1 and existing gameplay CI gate. **CI and device QA not yet verified**; no owner acceptance or GAME-UI-01 completion claimed. Full session E2E, save failure UX and browser refresh remain separate work.
