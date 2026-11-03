@@ -95,6 +95,35 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('scope==="qa" && t.qaState==="manual_pending"', client)
         self.assertIn('counter("Закрытая поставка"', client)
 
+    def test_gfx_p0_scoped_to_active_chibi_and_hall_acceptance(self):
+        # Historical GFX-00/01/02/03/04/05/11 phase defaults used to
+        # make 63 stale preparation tasks look like active P0 blockers.
+        data = dashboard.build()
+        gfx = {t["id"]: t for t in data["tasks"] if t["id"].startswith("GFX-")}
+        p0 = {key for key, task in gfx.items() if task["priority"] == "P0"}
+        self.assertEqual(p0, {
+            "GFX-07-01", "GFX-07-05", "GFX-07-06",
+            "GFX-07-09", "GFX-07-10",
+            "GFX-11-T06", "GFX-11-T09",
+        })
+        for key in ["GFX-01-01", "GFX-02-04", "GFX-03-02", "GFX-04-A", "GFX-05-06"]:
+            self.assertEqual(gfx[key]["status"], "superseded", key)
+            self.assertEqual(gfx[key]["priority"], "P2", key)
+            self.assertTrue(gfx[key]["supersededBy"], key)
+            self.assertNotEqual(gfx[key]["approvalState"], "feature_approved")
+        self.assertEqual(gfx["GFX-11-T01"]["status"], "accepted")
+        self.assertEqual(gfx["GFX-11-T01"]["approvalState"], "art_approved")
+        self.assertEqual(gfx["GFX-11-T03"]["status"], "accepted")
+        self.assertEqual(gfx["GFX-11-T02"]["status"], "integrated")
+        self.assertEqual(gfx["GFX-11-T02"]["qaState"], "manual_pending")
+        self.assertEqual(gfx["GFX-07-05"]["status"], "ready")
+        self.assertEqual(gfx["GFX-11-T09"]["qaState"], "manual_pending")
+        self.assertEqual(gfx["GFX-08-06"]["status"], "superseded")
+        self.assertEqual(gfx["GFX-08-07"]["status"], "superseded")
+        self.assertEqual(gfx["GFX-08-05"]["approvalState"], "art_approved")
+        self.assertEqual(data["assetSummary"]["backgrounds"]["artApproved"], 26)
+        self.assertEqual(data["assetSummary"]["characterFrames"]["artApproved"], 62)
+
     def test_exact_owner_approved_assets_not_game_qa(self):
         data = dashboard.build()
         self.assertEqual(data["assetSummary"]["backgrounds"], {"total": 26, "artApproved": 26})
