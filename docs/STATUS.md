@@ -1,3 +1,7 @@
+# 2026-11-03 · Match-3 checkpoint candidate
+
+After merged #160, Raven Match-3 tracks valid swap/special actions and replays them from a bounded optional `match3Checkpoint` stored inside the existing Raven campaign snapshot. On returning to an unfinished level, replay reconstructs tiles, specials, blockers, ingredients, moves and objective counters. Level completion clears the checkpoint. A blocking native Godot smoke compares original and replayed states. This is a draft pending CI and manual web/mobile checks; avoid claiming complete mid-animation restoration or GAME-UI-01 approval.
+
 # 2026-11-03 · GAME-UI-01 VN line resume candidate
 
 Optional `vnCursor` (beat ID + line index) is normalized in the existing Raven campaign snapshot; it is not a second save. The vertical slice checkpoints each advanced VN line and restores it for the matching unfinished beat, discarding stale/invalid or completed-beat cursors. New native normalization smoke is blocking. Match-3 board resume, exact page/subline, full device QA and UPDS visual parity remain open; GAME-UI-01 remains in_progress.
