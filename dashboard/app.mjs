@@ -36,6 +36,7 @@ function detail(item){
   field(d,"Зависимости",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
   if((item.supersededBy||[]).length)field(d,"Заменено на",item.supersededBy.join(", "));
+  if((item.followUpTaskIds||[]).length)field(d,"Незавершённые следующие задачи",item.followUpTaskIds.join(", "));
   field(d,"Оценка / исполнитель",(item.size||"—")+" · "+(item.owner||"не назначен"));
   field(d,"Статус", (statuses[item.status]||item.status)+(item.updated?" · "+item.updated:""));
   field(d,"Evidence",item.evidence||"Не подтверждено");
@@ -112,7 +113,7 @@ async function init(){
     counter("Открытый бэклог",data.openTaskCount??data.tasks.filter(x=>!terminal.has(x.status)).length);
     counter("В работе",data.tasks.filter(x=>x.status==="in_progress").length);
     counter("На ревью",data.tasks.filter(x=>x.status==="PR_review").length);
-    counter("Поставлено",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
+    counter("Закрытая поставка",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
     counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
     counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);
     showAssets(data);showPriority();progress("CODE");progress("GFX");

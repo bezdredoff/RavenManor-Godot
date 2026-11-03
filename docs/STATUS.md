@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · full merged-work-item closure audit (after #140)
+
+All **53** current `merged` task overrides checked against actual merged GitHub PRs and their exact original deliverables. `merged` already excludes work from the open backlog; it is technical delivery closure, not user acceptance. **50** remain closed (`merged`), with explicit implementation/QA/approval axes and linked follow-up task IDs; **3** misleading completed GFX states (`GFX-05-04`, `GFX-05-05`, `GFX-06-06`) move to `ready` because Art Handbook read-only recording and approved composite cast frames do not deliver the full per-frame generation/resume or standalone prop-state obligations. All imported 26 backgrounds / 62 character frames retain owner-approved art status. Manual VN Studio and Match-3 QA remain separate; no new acceptance inferred. Complete per-ID evidence: `docs/audits/MERGED_CLOSURE_AUDIT_20261103.md`. Dashboard explicitly explains `merged` as terminal code delivery and shows follow-up work IDs. This PR is an audit candidate pending CI/merge.
+
+
 ## 2026-11-03 · DASH-RECON-01 follow-up: active/PR review status audit
 
 Live GitHub audit at `main@82c6f0b64e9b`: no open PRs and no active feature branches (only `main`, `incoming`). Previous dashboard source marked **32 in progress** plus **3 PR review**. These were all checked individually against merged PRs, open issues, documented remaining QA and owner approvals. Reclassified **29 ready**, **1 blocked**, **2 merged**, **2 integrated**, **1 accepted**. Notably `VNS5-06D2C` #120 is merged, `DASH-RENDER-01` #139 is merged and owner-confirmed visible, and `CODE-02-06` has no open PR or surviving recovery branch. Workflow status is no longer used as a surrogate for partial implementation. Added independent on-page work/review counts and evidence ledger `docs/audits/ACTIVE_WORK_AND_REVIEW_20261103.md`. This PR is an evidence-only status reconciliation pending CI/merge; native QA for Match-3/Hall/VN remains unfinished.

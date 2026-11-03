@@ -93,7 +93,7 @@ def build() -> dict:
     for item in plan:
         override = overrides.get(item["id"])
         if override:
-            item.update({k: override[k] for k in ("status", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy") if k in override})
+            item.update({k: override[k] for k in ("status", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy", "followUpTaskIds") if k in override})
         item.setdefault("owner", "unassigned")
         item.setdefault("updated", None)
         item.setdefault("evidence", "")
@@ -101,10 +101,16 @@ def build() -> dict:
         item.setdefault("qaState", "not_recorded")
         item.setdefault("approvalState", "not_recorded")
         item.setdefault("supersededBy", [])
+        item.setdefault("followUpTaskIds", [])
         if item["status"] == "superseded" and not item["supersededBy"]:
             raise ValueError(f"Superseded task lacks a replacement: {item['id']}")
         if not isinstance(item["supersededBy"], list):
             raise ValueError(f"Invalid supersededBy references: {item['id']}")
+        remaining = item["followUpTaskIds"]
+        if not isinstance(remaining, list) or any(not isinstance(ref, str) for ref in remaining) or len(set(remaining)) != len(remaining):
+            raise ValueError(f"Invalid followUpTaskIds: {item['id']}")
+        if set(remaining) - known_ids or item["id"] in remaining:
+            raise ValueError(f"Unknown/self follow-up IDs for {item['id']}: {remaining}")
         if item["status"] not in STATES:
             raise ValueError(f"Unsupported {item['id']} status: {item['status']}")
     # Asset approval is a separate owner decision; it is not inferred from merge,

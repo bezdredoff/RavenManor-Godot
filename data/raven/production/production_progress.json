@@ -7,149 +7,272 @@
       "id": "VNS5-05A",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "Implementation Draft PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 from main 7652a20676bce76e7aead065bdd025b8cee5154b after merged PR #104 VNS5-04B and PR #103 GFX-05. Incoming PR #105 transports docs/patch only and must be closed without merge. Ten manifest-matched code/test/docs paths: editor-only FX (breathe/blink proxy/shake/pulse/fade in/out), per-scene stageFxPatches, target validation, deterministic timeline preview/undo, no-loss and no-overwrite FX review export; no gameplay/runtime/migration or new art. First PR-head CI run 41355139383 failed at mandatory docs/dashboard governance because source-of-truth docs/status were not yet in this branch; these are now added. Independent latest-head Godot/Raven/Web CI and native Godot 4.7.2 desktop UI QA/owner acceptance remain unverified. Stage FX not runtime-accepted. Final 2026-11-02 audit: PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 merged to main commit 25c30c7752d44a84d17fe03dcc70fb338186f8cf, final-head PR CI 41355287003 passed; manual Godot 4.7.2 desktop 800x640/1024x640/1366x768 checks and owner feature acceptance remain OPEN. StageFX is editor-only, not playable runtime."
+      "updated": "2026-11-03",
+      "evidence": "Implementation Draft PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 from main 7652a20676bce76e7aead065bdd025b8cee5154b after merged PR #104 VNS5-04B and PR #103 GFX-05. Incoming PR #105 transports docs/patch only and must be closed without merge. Ten manifest-matched code/test/docs paths: editor-only FX (breathe/blink proxy/shake/pulse/fade in/out), per-scene stageFxPatches, target validation, deterministic timeline preview/undo, no-loss and no-overwrite FX review export; no gameplay/runtime/migration or new art. First PR-head CI run 41355139383 failed at mandatory docs/dashboard governance because source-of-truth docs/status were not yet in this branch; these are now added. Independent latest-head Godot/Raven/Web CI and native Godot 4.7.2 desktop UI QA/owner acceptance remain unverified. Stage FX not runtime-accepted. Final 2026-11-02 audit: PR #106 https://github.com/bezdredoff/RavenManor-Godot/pull/106 merged to main commit 25c30c7752d44a84d17fe03dcc70fb338186f8cf, final-head PR CI 41355287003 passed; manual Godot 4.7.2 desktop 800x640/1024x640/1366x768 checks and owner feature acceptance remain OPEN. StageFX is editor-only, not playable runtime.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #106 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-05B",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Phase 1 authored as a new review branch from main 816fe56dc9a5c2a593531af7fbba594100627fae: optional lineId for VNS5-05A FX cues, existing scene-wide cue compatibility, exact same-scene line ID validation, line-aware editor preview & UI anchor picker, standard Godot smoke and VNS5_05B_LINE_FX_RU.md. No runtime changes. Independent PR CI/manual desktop Godot QA remain unverified; phase 2 runtime event integration, VNS5-06 topology editing, VNS5-07–09 pipeline and owner acceptance still outstanding. Draft PR #111 https://github.com/bezdredoff/RavenManor-Godot/pull/111; independent full PR CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41435663698 completed success at implementation head c19efad58a92db88cc98a56399424a27d84743ad, including standard scripts/check.sh with VNS5-05B line-FX smoke, Web export and dashboard. First run 41435445499 failed dashboard because the new ID was not registered in gap_work_packages; fixed. Desktop Windows manual QA, final-head CI, owner merge/acceptance and runtime phase 2 remain pending. 2026-11-02 phase 1 PR #111 https://github.com/bezdredoff/RavenManor-Godot/pull/111 merged into main f9817672e066c1823e43c15c05fe75332c5531d9; final-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41436031275 passed. Phase 2 implementation branch code/vns5-05b-runtime-fx-opt-in adds explicit reviewed-only raven-vn-runtime-fx-v1 API and shared deterministic math, hooks in raven_vn_game_view and hall_tea_vn, deterministic scene/line clocks, skip/reduced motion, no unapproved user:// imports and no reducer/save mutations. New synthetic Godot smoke and scripts/check.sh; docs/production/VNS5_05B_RUNTIME_FX_RU.md. CI, manual desktop Godot and actual approved content promotion remain unverified until run; task stays in_progress. PR #112 https://github.com/bezdredoff/RavenManor-Godot/pull/112 merged to main be793b37be0ad8f279182ab461230cbe311e029b. Final PR-head CI 41438980464 success, main CI 41439712108 success. Phase 1 (#111) and phase 2 (#112) merged in code; native Windows Studio QA, owner feature acceptance and approved runtime FX promotion remain outstanding. Not accepted."
+      "updated": "2026-11-03",
+      "evidence": "Phase 1 authored as a new review branch from main 816fe56dc9a5c2a593531af7fbba594100627fae: optional lineId for VNS5-05A FX cues, existing scene-wide cue compatibility, exact same-scene line ID validation, line-aware editor preview & UI anchor picker, standard Godot smoke and VNS5_05B_LINE_FX_RU.md. No runtime changes. Independent PR CI/manual desktop Godot QA remain unverified; phase 2 runtime event integration, VNS5-06 topology editing, VNS5-07–09 pipeline and owner acceptance still outstanding. Draft PR #111 https://github.com/bezdredoff/RavenManor-Godot/pull/111; independent full PR CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41435663698 completed success at implementation head c19efad58a92db88cc98a56399424a27d84743ad, including standard scripts/check.sh with VNS5-05B line-FX smoke, Web export and dashboard. First run 41435445499 failed dashboard because the new ID was not registered in gap_work_packages; fixed. Desktop Windows manual QA, final-head CI, owner merge/acceptance and runtime phase 2 remain pending. 2026-11-02 phase 1 PR #111 https://github.com/bezdredoff/RavenManor-Godot/pull/111 merged into main f9817672e066c1823e43c15c05fe75332c5531d9; final-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41436031275 passed. Phase 2 implementation branch code/vns5-05b-runtime-fx-opt-in adds explicit reviewed-only raven-vn-runtime-fx-v1 API and shared deterministic math, hooks in raven_vn_game_view and hall_tea_vn, deterministic scene/line clocks, skip/reduced motion, no unapproved user:// imports and no reducer/save mutations. New synthetic Godot smoke and scripts/check.sh; docs/production/VNS5_05B_RUNTIME_FX_RU.md. CI, manual desktop Godot and actual approved content promotion remain unverified until run; task stays in_progress. PR #112 https://github.com/bezdredoff/RavenManor-Godot/pull/112 merged to main be793b37be0ad8f279182ab461230cbe311e029b. Final PR-head CI 41438980464 success, main CI 41439712108 success. Phase 1 (#111) and phase 2 (#112) merged in code; native Windows Studio QA, owner feature acceptance and approved runtime FX promotion remain outstanding. Not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #112 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09, VN-RUNTIME-01.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09",
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "VNS5-06A",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "VNS5-06A review-only Story Map implementation from main be793b37be0ad8f279182ab461230cbe311e029b. Native Godot GraphEdit of 28 real Raven scenes + actual gate dependencies. Typed draft-only scene, choice (A/B/C + existing source lineId), known Match-3 links. SHA-locked route source; no-loss user:// review export, UI Undo/Redo, negatives and scripts/check.sh. No canonical routes/dialogues, runtime, saves or approved art modified. VNS5-06B new scenes/lines, playable branching and native desktop Editor visual QA pending. Independent CI not yet verified. Draft PR #113 https://github.com/bezdredoff/RavenManor-Godot/pull/113. First run 41440902075 failed due to legacy layout assertions for removed text placeholder; corrected test to verify GraphEdit. Full independent PR-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41441192327 passed scripts/check.sh including VNS5-06A and classic UPDS/Raven tests, Web export and dashboard checks. This evidence-only commit will trigger new final-head CI, still to verify. Owner Windows Editor QA + review/merge and VNS5-06B future scene/line authoring remain open. PR #113 merged main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Final-head PR CI 41441683149 success. Manual Godot Editor UX QA, actual branch promotion and owner feature acceptance remain open, not accepted."
+      "updated": "2026-11-03",
+      "evidence": "VNS5-06A review-only Story Map implementation from main be793b37be0ad8f279182ab461230cbe311e029b. Native Godot GraphEdit of 28 real Raven scenes + actual gate dependencies. Typed draft-only scene, choice (A/B/C + existing source lineId), known Match-3 links. SHA-locked route source; no-loss user:// review export, UI Undo/Redo, negatives and scripts/check.sh. No canonical routes/dialogues, runtime, saves or approved art modified. VNS5-06B new scenes/lines, playable branching and native desktop Editor visual QA pending. Independent CI not yet verified. Draft PR #113 https://github.com/bezdredoff/RavenManor-Godot/pull/113. First run 41440902075 failed due to legacy layout assertions for removed text placeholder; corrected test to verify GraphEdit. Full independent PR-head CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41441192327 passed scripts/check.sh including VNS5-06A and classic UPDS/Raven tests, Web export and dashboard checks. This evidence-only commit will trigger new final-head CI, still to verify. Owner Windows Editor QA + review/merge and VNS5-06B future scene/line authoring remain open. PR #113 merged main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Final-head PR CI 41441683149 success. Manual Godot Editor UX QA, actual branch promotion and owner feature acceptance remain open, not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #113 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-06B",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06b-author-new-scenes-lines from main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Added pure Raven story authoring model: local draft-only new scene/line IDs, RU text and registered speakers, optional existing-draft schema fields, new scene/line native UI, draft Story Map preview and links, SHA locked no-loss review export preserving text/stage/FX/graph changes, existing ID/locale validation, Godot smoke. 28 original scenes and 280 lines remain unchanged. Independent PR-head CI, native Windows UX and owner acceptance still pending; full promotion and playable branching excluded. PR #114 https://github.com/bezdredoff/RavenManor-Godot/pull/114 opened Draft. Initial implementation CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41453230267 SUCCESS on head 5a8d96d384b404478b7bd683dbf20ed94a63aa58 including new scenario draft smoke and Room Builder/Web production checks. Small subsequent UI recovery fix commit feb4436cfef9213caa39a7b4f0630b7b8e129afc; final latest-head CI remains pending. Windows native Godot UI QA, save/reopen human verification and reviewed scene-promotion/runtime branching are OPEN. No canonical content or game/save mutations. PR #114 https://github.com/bezdredoff/RavenManor-Godot/pull/114 merged main 4ba8d4eab7db22fbccc632421eed06423778d7c1, final-head CI 41453803573 and main CI 41454983033 success. Native Windows Editor owner QA and save/reopen verification remain unaccepted. No runtime scene promotion."
+      "updated": "2026-11-03",
+      "evidence": "Implementation branch code/vns5-06b-author-new-scenes-lines from main eac94deb1be08f7a44c1f6486ab293c3bb3f2dc7. Added pure Raven story authoring model: local draft-only new scene/line IDs, RU text and registered speakers, optional existing-draft schema fields, new scene/line native UI, draft Story Map preview and links, SHA locked no-loss review export preserving text/stage/FX/graph changes, existing ID/locale validation, Godot smoke. 28 original scenes and 280 lines remain unchanged. Independent PR-head CI, native Windows UX and owner acceptance still pending; full promotion and playable branching excluded. PR #114 https://github.com/bezdredoff/RavenManor-Godot/pull/114 opened Draft. Initial implementation CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41453230267 SUCCESS on head 5a8d96d384b404478b7bd683dbf20ed94a63aa58 including new scenario draft smoke and Room Builder/Web production checks. Small subsequent UI recovery fix commit feb4436cfef9213caa39a7b4f0630b7b8e129afc; final latest-head CI remains pending. Windows native Godot UI QA, save/reopen human verification and reviewed scene-promotion/runtime branching are OPEN. No canonical content or game/save mutations. PR #114 https://github.com/bezdredoff/RavenManor-Godot/pull/114 merged main 4ba8d4eab7db22fbccc632421eed06423778d7c1, final-head CI 41453803573 and main CI 41454983033 success. Native Windows Editor owner QA and save/reopen verification remain unaccepted. No runtime scene promotion.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #114 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-06C",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06c-promotion-review from main 4ba8d4eab7db22fbccc632421eed06423778d7c1. Promotion Review Godot tab, explicit validated non-colliding production-style ID mapping, deterministic line/graph remap, source-SHA locked review-only catalog with before/after diff, route/shot/save and branch runtime blockers, BE/EN localization warnings, all draft categories retained, no-overwrite user:// export, shared Undo/Redo. No canonical production, asset, game/save/Match-3 files changed. scripts/check.sh + negative Godot smoke, docs and backlog updated. Independent PR CI and Windows owner QA pending; real promotion remains future VNS5-06D. Draft PR #115 https://github.com/bezdredoff/RavenManor-Godot/pull/115, implementation head c692459162f5e802d6259f7047ee16fb80351e9e full independent CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41456371177 success (new Godot promotion smoke, all Raven, Room Builder, Web export and dashboard checks). Final-head CI after docs-only evidence commit pending. Windows Editor visual/manual save-reopen acceptance and actual runtime promotion with route/stage/save contracts unverified; task not accepted. PR #115 https://github.com/bezdredoff/RavenManor-Godot/pull/115 merged main 5372e3c544c43cc71c758a9411e93bf317caea14; final-head CI 41457068346 success. Windows native UX owner acceptance/real promotion not verified. No auto-runtime activation."
+      "updated": "2026-11-03",
+      "evidence": "Implementation branch code/vns5-06c-promotion-review from main 4ba8d4eab7db22fbccc632421eed06423778d7c1. Promotion Review Godot tab, explicit validated non-colliding production-style ID mapping, deterministic line/graph remap, source-SHA locked review-only catalog with before/after diff, route/shot/save and branch runtime blockers, BE/EN localization warnings, all draft categories retained, no-overwrite user:// export, shared Undo/Redo. No canonical production, asset, game/save/Match-3 files changed. scripts/check.sh + negative Godot smoke, docs and backlog updated. Independent PR CI and Windows owner QA pending; real promotion remains future VNS5-06D. Draft PR #115 https://github.com/bezdredoff/RavenManor-Godot/pull/115, implementation head c692459162f5e802d6259f7047ee16fb80351e9e full independent CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41456371177 success (new Godot promotion smoke, all Raven, Room Builder, Web export and dashboard checks). Final-head CI after docs-only evidence commit pending. Windows Editor visual/manual save-reopen acceptance and actual runtime promotion with route/stage/save contracts unverified; task not accepted. PR #115 https://github.com/bezdredoff/RavenManor-Godot/pull/115 merged main 5372e3c544c43cc71c758a9411e93bf317caea14; final-head CI 41457068346 success. Windows native UX owner acceptance/real promotion not verified. No auto-runtime activation.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #115 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-06D1",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Review-only four-registry candidate generator based on merged main 5372e3c544c43cc71c758a9411e93bf317caea14. Explicit user-filled manifest via native Promotion Review template/file-import/export, strict source SHA including performance cues, same known background master/lighting/state/actors/pose/emotion/micro, known source scenes/first_clear gates, each new line cue. Generates review copies of dialogue, staging, route gates (draft_unapproved) and cues (manualReview true), no canonical writes nor playable transition/save activation. Refuses any authored Story Map branches pending reducer semantics. SHA, empty/missing/colliding IDs, unknown fields, no-overwrite, source immutability and UI tests; docs/production/VNS5_06D1_FOUR_REGISTRY_RU.md. First independent CI and native Windows UX QA not yet verified; full activation/rollback is VNS5-06D2. Draft PR #117 https://github.com/bezdredoff/RavenManor-Godot/pull/117, code head 59c585b704b1f4522b583a37e46ee4e36d41c51f independent full CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41466727888 success including Godot smoke, Raven, Web, Dashboard. Documentation final-head CI pending. Parallel PR #116 uses separate Python CLI staging based on same main; overlapping check.sh/docs/status/dashboard must be rebased or explicitly reconciled, not blindly merged. Owner Windows Editor manifest import/exports and actual gate/save/branch activation remain unaccepted. PR #117 merged main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. Final-head full CI #41467434228 success. Post-merge main CI was pending on inspection. Native Windows owner QA and actual game promotion are not accepted. Supersedes earlier merge-order recommendation."
+      "updated": "2026-11-03",
+      "evidence": "Review-only four-registry candidate generator based on merged main 5372e3c544c43cc71c758a9411e93bf317caea14. Explicit user-filled manifest via native Promotion Review template/file-import/export, strict source SHA including performance cues, same known background master/lighting/state/actors/pose/emotion/micro, known source scenes/first_clear gates, each new line cue. Generates review copies of dialogue, staging, route gates (draft_unapproved) and cues (manualReview true), no canonical writes nor playable transition/save activation. Refuses any authored Story Map branches pending reducer semantics. SHA, empty/missing/colliding IDs, unknown fields, no-overwrite, source immutability and UI tests; docs/production/VNS5_06D1_FOUR_REGISTRY_RU.md. First independent CI and native Windows UX QA not yet verified; full activation/rollback is VNS5-06D2. Draft PR #117 https://github.com/bezdredoff/RavenManor-Godot/pull/117, code head 59c585b704b1f4522b583a37e46ee4e36d41c51f independent full CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41466727888 success including Godot smoke, Raven, Web, Dashboard. Documentation final-head CI pending. Parallel PR #116 uses separate Python CLI staging based on same main; overlapping check.sh/docs/status/dashboard must be rebased or explicitly reconciled, not blindly merged. Owner Windows Editor manifest import/exports and actual gate/save/branch activation remain unaccepted. PR #117 merged main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. Final-head full CI #41467434228 success. Post-merge main CI was pending on inspection. Native Windows owner QA and actual game promotion are not accepted. Supersedes earlier merge-order recommendation.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #117 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09, VN-RUNTIME-01.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09",
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "VNS5-06D1-CLI",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "PR #116 reconciled as CLI-only companion atop merged PR #117 main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. It now validates the exact native Godot raven-vn-production-4registry-review-v1 JSON without a second manifest format; SHA checks all five canonical registries, immutable historical entries, authorized authored text patch, ID mapping, shot/cue/route parity, blocked gameplay/Story Map edges, positive/negative Python suite, no-overwrite external offline packaging with SHA audit. No Godot UI alterations, runtime apply, canonical source writes or actual game save promotion. PR CI and owner review pending. Reconciled with merged #117 through two-parent merge commit 8e7a5f49a3d5339400777c60ec6e4a13479ca069. Full first independent PR CI #41470823663 SUCCESS including Python positive/negative offline verification, Raven/Godot smoke, Room Builder and Web export. Post-merge #117 main CI #41469495925/#41469495839 SUCCESS. Final latest-head CI after docs-only evidence update pending. Owner acceptance and playable release remain open. PR #116 merged into main 8830e018f5332872c16e9a1867cb63792ee188f1. Final-head CI #41471556869 passed; manual acceptance/runtime release still outstanding. Post-merge main CI #41476074919 passed; other #41476075822 was in progress at D2A branch creation."
+      "updated": "2026-11-03",
+      "evidence": "PR #116 reconciled as CLI-only companion atop merged PR #117 main 3d712b423ce39b8cda6f54b67098a8560c3c30ea. It now validates the exact native Godot raven-vn-production-4registry-review-v1 JSON without a second manifest format; SHA checks all five canonical registries, immutable historical entries, authorized authored text patch, ID mapping, shot/cue/route parity, blocked gameplay/Story Map edges, positive/negative Python suite, no-overwrite external offline packaging with SHA audit. No Godot UI alterations, runtime apply, canonical source writes or actual game save promotion. PR CI and owner review pending. Reconciled with merged #117 through two-parent merge commit 8e7a5f49a3d5339400777c60ec6e4a13479ca069. Full first independent PR CI #41470823663 SUCCESS including Python positive/negative offline verification, Raven/Godot smoke, Room Builder and Web export. Post-merge #117 main CI #41469495925/#41469495839 SUCCESS. Final latest-head CI after docs-only evidence update pending. Owner acceptance and playable release remain open. PR #116 merged into main 8830e018f5332872c16e9a1867cb63792ee188f1. Final-head CI #41471556869 passed; manual acceptance/runtime release still outstanding. Post-merge main CI #41476074919 passed; other #41476075822 was in progress at D2A branch creation.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #116 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-RUNTIME-01.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "VNS5-06D2A",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending. Draft PR #118 https://github.com/bezdredoff/RavenManor-Godot/pull/118, implementation head e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676 full independent CI #41477532318 SUCCESS including actual Godot schema-1 save normalization/reducer idempotence/rollback projection and D2A Python tamper/rollback readiness tests, Raven, Room Builder, Web and dashboard. Post-merge main CI #41476075822/#41476074919 SUCCESS. This documentation update requires another latest-HEAD CI; owner acceptance, real approved new content, runtime/branch/save integration remain open. PR #118 merged into main 7f4b079046197ec8bac700e5db3d924342d68b2a. Final-head CI #41478202348 SUCCESS; post-merge main CI #41483205220 SUCCESS, #41483205927 in progress at branch creation. Owner content/runtime acceptance not inferred."
+      "updated": "2026-11-03",
+      "evidence": "Implements new Python release preflight with exact native bundle+offline SHA agreement, candidate integrity check, report of Snapshot.normalize storyBeats registry gap, route proposal cycles/Match-3 refs, new BE/EN title/dialogue, staging/cue/branch/runtime+save acceptance blockers, immutable source backups in external folder. Adds Godot real RavenSnapshot/RavenReducer/CampaignStore synthetic v1 save round-trip/replay/rollback tests and negative Python tamper/symlink/extra-file checks in scripts/check.sh. No actual new gameplay scenes are approved/published; branch code/vns5-06d2a-release-preflight-saves, CI and human acceptance pending. Draft PR #118 https://github.com/bezdredoff/RavenManor-Godot/pull/118, implementation head e772c8b6c6fe99e4fed2a8a9c6311e5b1d79c676 full independent CI #41477532318 SUCCESS including actual Godot schema-1 save normalization/reducer idempotence/rollback projection and D2A Python tamper/rollback readiness tests, Raven, Room Builder, Web and dashboard. Post-merge main CI #41476075822/#41476074919 SUCCESS. This documentation update requires another latest-HEAD CI; owner acceptance, real approved new content, runtime/branch/save integration remain open. PR #118 merged into main 7f4b079046197ec8bac700e5db3d924342d68b2a. Final-head CI #41478202348 SUCCESS; post-merge main CI #41483205220 SUCCESS, #41483205927 in progress at branch creation. Owner content/runtime acceptance not inferred.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #118 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-RUNTIME-01.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "VNS5-06D2B",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06d2b-controlled-release-staging on main 7f4b079046197ec8bac700e5db3d924342d68b2a. Enforces exact Godot/D1-CLI/D2A source hash chain and immutable rollback/decision acknowledgments; creates external locked review candidate of 4 canonical narrative JSON and append-only foundation_catalog.storyBeats, with 7 exact source rollback backups and non-activation manifest. No canonical, game/save/UPDS writes and no actual owner approval. New synthetic tests include tamper, incomplete blocker/ID route review, nonruntime gates, output path/traversal/overwrite. Check.sh, docs and backlog updated. PR CI and owner review pending; real playable integration remains VNS5-06D2C. Draft PR #119 https://github.com/bezdredoff/RavenManor-Godot/pull/119, implementation head 29136550018945246008ca6454f8a2775534bf29 passed full independent CI #41484648111 (new positive/negative Python release staging test, Raven/Godot checks, Web export, dashboard, Room Builder). Both post-merge main runs #41483205220/#41483205927 succeeded. This evidence-only commit triggers latest-head CI; owner approval/actual live save migration and scene activation remain open. PR #119 merged into main 4fc37d8603d277a8aa4a3a49a2cd009d0c55209d, final-head CI #41485359115 success, post-merge main CI #41490305657/#41490308902 both success; native owner acceptance and real runtime still unapproved."
+      "updated": "2026-11-03",
+      "evidence": "Implementation branch code/vns5-06d2b-controlled-release-staging on main 7f4b079046197ec8bac700e5db3d924342d68b2a. Enforces exact Godot/D1-CLI/D2A source hash chain and immutable rollback/decision acknowledgments; creates external locked review candidate of 4 canonical narrative JSON and append-only foundation_catalog.storyBeats, with 7 exact source rollback backups and non-activation manifest. No canonical, game/save/UPDS writes and no actual owner approval. New synthetic tests include tamper, incomplete blocker/ID route review, nonruntime gates, output path/traversal/overwrite. Check.sh, docs and backlog updated. PR CI and owner review pending; real playable integration remains VNS5-06D2C. Draft PR #119 https://github.com/bezdredoff/RavenManor-Godot/pull/119, implementation head 29136550018945246008ca6454f8a2775534bf29 passed full independent CI #41484648111 (new positive/negative Python release staging test, Raven/Godot checks, Web export, dashboard, Room Builder). Both post-merge main runs #41483205220/#41483205927 succeeded. This evidence-only commit triggers latest-head CI; owner approval/actual live save migration and scene activation remain open. PR #119 merged into main 4fc37d8603d277a8aa4a3a49a2cd009d0c55209d, final-head CI #41485359115 success, post-merge main CI #41490305657/#41490308902 both success; native owner acceptance and real runtime still unapproved.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #119 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-RUNTIME-01.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "VNS5-06D2C",
       "owner": "ChatGPT",
       "status": "merged",
       "updated": "2026-11-03",
-      "evidence": "Implementation branch code/vns5-06d2c-runtime-gated-dispatch after merged #119. Adds pure canonical-only RavenVNRuntimeDispatch, explicit runtime_approved+approvedRuntime+unproposed gate; foundation storyBeats save ID; known scene_complete/first_clear, strict all RU/BE/EN, accepted background art with res path, exact portrait art and manualReview=false cues; post-original-RM-VS-01 vertical_slice integration reuses existing RavenVNPlayer, RavenVNGameView, reducer and saving after completion. Current data has no approved new scenes: runtime unchanged. Synthetic Godot smoke uses cloned catalogs to test positive RU/BE/EN, art/route/line/cue denials, reducer completion/idempotence and legacy save projection; CI and owner QA pending. Does not enable world map/branch/Match3 route scheduler. Draft PR #120 https://github.com/bezdredoff/RavenManor-Godot/pull/120. Implementation HEAD 9f6cd96b2dc750e8a06ec50c91d6f46e8137d8de independently passed full GitHub CI #41494291648: Godot parse/real synthetic approved/blocked dispatch test, old RM-VS-01 and Match-3 regression, VN Studio, Room Builder, Web export and dashboard. Two prior PR head runs #41493432414/#41493897433 exposed and then fixed GDScript boolean/multiline expression parse issues; neither was merged. This documentation evidence commit triggers a new final-head CI. Owner visual/native QA, real approved art/content, non-linear map interactions and save migration acceptance remain open; do not call new scene playable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: PR #120 merged 2026-11-02; approved-only dispatcher delivered, real scene approvals and native QA remain future gates. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "evidence": "Implementation branch code/vns5-06d2c-runtime-gated-dispatch after merged #119. Adds pure canonical-only RavenVNRuntimeDispatch, explicit runtime_approved+approvedRuntime+unproposed gate; foundation storyBeats save ID; known scene_complete/first_clear, strict all RU/BE/EN, accepted background art with res path, exact portrait art and manualReview=false cues; post-original-RM-VS-01 vertical_slice integration reuses existing RavenVNPlayer, RavenVNGameView, reducer and saving after completion. Current data has no approved new scenes: runtime unchanged. Synthetic Godot smoke uses cloned catalogs to test positive RU/BE/EN, art/route/line/cue denials, reducer completion/idempotence and legacy save projection; CI and owner QA pending. Does not enable world map/branch/Match3 route scheduler. Draft PR #120 https://github.com/bezdredoff/RavenManor-Godot/pull/120. Implementation HEAD 9f6cd96b2dc750e8a06ec50c91d6f46e8137d8de independently passed full GitHub CI #41494291648: Godot parse/real synthetic approved/blocked dispatch test, old RM-VS-01 and Match-3 regression, VN Studio, Room Builder, Web export and dashboard. Two prior PR head runs #41493432414/#41493897433 exposed and then fixed GDScript boolean/multiline expression parse issues; neither was merged. This documentation evidence commit triggers a new final-head CI. Owner visual/native QA, real approved art/content, non-linear map interactions and save migration acceptance remain open; do not call new scene playable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: PR #120 merged 2026-11-02; approved-only dispatcher delivered, real scene approvals and native QA remain future gates. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #120 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-RUNTIME-01.",
       "implementationState": "delivered",
-      "qaState": "automated",
-      "approvalState": "pending"
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-RUNTIME-01"
+      ]
     },
     {
       "id": "GFX-05-05",
-      "status": "merged",
+      "status": "ready",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit."
+      "updated": "2026-11-03",
+      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #103 is merged. Art Handbook preserves references/recipes but does NOT demonstrate a complete RAW+matte+RGBA master+preview+manifest export workflow for each generated frame. Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: ART-BATCH-AUTOMATION, ART-PROVENANCE-QA.",
+      "implementationState": "partial",
+      "qaState": "not_recorded",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ]
     },
     {
       "id": "GFX-05-04",
-      "status": "merged",
+      "status": "ready",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit."
+      "updated": "2026-11-03",
+      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #103 is merged. PR #103's Art Handbook is a read-only evidence/catalog builder, NOT a ComfyUI batch runner with deterministic resume or per-frame regeneration. Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: ART-BATCH-AUTOMATION, ART-PROVENANCE-QA.",
+      "implementationState": "partial",
+      "qaState": "not_recorded",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ]
     },
     {
       "id": "VNS5-04B",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #104 https://github.com/bezdredoff/RavenManor-Godot/pull/104 merged into main as 7eb2984f12ada628346a8571f485cd02c6e1621c. Final-head Godot/Raven/Web CI #41351723065 passed. Versioned editor-only stageV2Patches (orientation/fit/focal, actorZ, prop instance draft, review export) merged; native Windows Godot Editor QA at 800x640/1024x640/1366x768, source SHA/reparse negatives and owner feature acceptance still OPEN. No runtime v2 consumption or art approval."
+      "updated": "2026-11-03",
+      "evidence": "PR #104 https://github.com/bezdredoff/RavenManor-Godot/pull/104 merged into main as 7eb2984f12ada628346a8571f485cd02c6e1621c. Final-head Godot/Raven/Web CI #41351723065 passed. Versioned editor-only stageV2Patches (orientation/fit/focal, actorZ, prop instance draft, review export) merged; native Windows Godot Editor QA at 800x640/1024x640/1366x768, source SHA/reparse negatives and owner feature acceptance still OPEN. No runtime v2 consumption or art approval.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #104 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-04A",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 merged to main at 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346 (2026-11-01). Final-head Godot/Raven/Web CI run 41348331431 passed. Owner marked PR merged, but manual Godot Editor interactive acceptance at 800x640 / 1024x640 / 1366x768 is NOT recorded; do not mark accepted. Import VNS5-03 in PR #99 also merged, not manually accepted."
+      "updated": "2026-11-03",
+      "evidence": "PR #101 https://github.com/bezdredoff/RavenManor-Godot/pull/101 merged to main at 6bdd5fa6fc494a7c37d7b5c4aaf0e1d05ecf5346 (2026-11-01). Final-head Godot/Raven/Web CI run 41348331431 passed. Owner marked PR merged, but manual Godot Editor interactive acceptance at 800x640 / 1024x640 / 1366x768 is NOT recorded; do not mark accepted. Import VNS5-03 in PR #99 also merged, not manually accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #101 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-03",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-01",
-      "evidence": "PR #99 merged to main at ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd (2026-11-01). Final-head GitHub CI 41345448978 passed Godot/Raven/Web; import and metadata editing exist in native Raven Asset Library. Manual desktop 800x640/1024x640/1366x768, real-file and Windows reparse/symlink QA remain OPEN, so not accepted. All 26 background variants remain candidates; 62 accepted cast frames preserved. PR #98 was incoming patch transport and must be closed unmerged."
+      "updated": "2026-11-03",
+      "evidence": "PR #99 merged to main at ac7bcd0bbbe52db71262ae8a1adf4fbecf9fe9cd (2026-11-01). Final-head GitHub CI 41345448978 passed Godot/Raven/Web; import and metadata editing exist in native Raven Asset Library. Manual desktop 800x640/1024x640/1366x768, real-file and Windows reparse/symlink QA remain OPEN, so not accepted. All 26 background variants remain candidates; 62 accepted cast frames preserved. PR #98 was incoming patch transport and must be closed unmerged.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #99 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-02",
       "status": "merged",
       "owner": "Codex",
-      "updated": "2026-11-01",
-      "evidence": "PR #96 merged into main as 0a94636e3a7af5aa897e39b7c82ece6b4e6e5943 on 2026-11-01; CI run 41338354945 passed. Live 26 background candidates, 11 masters, 4 character metadata, 0 props; rights not_recorded. Manual desktop QA and owner/art acceptance pending. PR #94 merged only to a closed feature branch and was not main delivery."
+      "updated": "2026-11-03",
+      "evidence": "PR #96 merged into main as 0a94636e3a7af5aa897e39b7c82ece6b4e6e5943 on 2026-11-01; CI run 41338354945 passed. Live 26 background candidates, 11 masters, 4 character metadata, 0 props; rights not_recorded. Manual desktop QA and owner/art acceptance pending. PR #94 merged only to a closed feature branch and was not main delivery.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #96 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-01",
       "status": "merged",
-      "updated": "2026-11-01",
-      "evidence": "PR #93 merged to main at 89db6e9 on 2026-11-01; CI run 41333028998 passed. Four Raven workspaces and shared scene/line selection are merged. Manual desktop QA remains pending; no v2 runtime or source mutation."
+      "updated": "2026-11-03",
+      "evidence": "PR #93 merged to main at 89db6e9 on 2026-11-01; CI run 41333028998 passed. Four Raven workspaces and shared scene/line selection are merged. Manual desktop QA remains pending; no v2 runtime or source mutation.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #93 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-00",
       "status": "merged",
-      "updated": "2026-11-01",
-      "evidence": "PR #92 merged at 11e87a9 on 2026-11-01; CI run 41331701624 passed. Contract proposal merged; independent donor StorySession parity and manual Godot editor QA remain pending, so not accepted."
+      "updated": "2026-11-03",
+      "evidence": "PR #92 merged at 11e87a9 on 2026-11-01; CI run 41331701624 passed. Contract proposal merged; independent donor StorySession parity and manual Godot editor QA remain pending, so not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #92 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07"
+      ]
     },
     {
       "id": "CODE-01-01",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/46 (merged; CI success). C1 full release gate still needs review; not accepted."
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/46 (merged; CI success). C1 full release gate still needs review; not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-01-02.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-01-02"
+      ]
     },
     {
       "id": "PROC-001",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "PROC-002",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "PROC-003",
@@ -163,15 +286,25 @@
       "id": "PROC-004",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "MOB-00",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied."
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: MOB-04.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "MOB-04"
+      ]
     },
     {
       "id": "MOB-01",
@@ -192,10 +325,11 @@
       "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
-      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Historical audit reconciled by merged PR #138 (70 requirements overlay); criterion-by-criterion native re-verification remains a separate quality gate. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Historical audit reconciled by merged PR #138 (70 requirements overlay); criterion-by-criterion native re-verification remains a separate quality gate. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #138 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
       "implementationState": "delivered",
       "qaState": "automated",
-      "approvalState": "pending"
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "MOB-03",
@@ -224,15 +358,29 @@
       "id": "CODE-02-02",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/60 merged 2026-10-27: original UPDS frame-driven clear/special impact and blocker-segment clip boundaries, Godot smoke and CI passing. Device QA and final GFX-10 polish remain open; not accepted."
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/60 merged 2026-10-27: original UPDS frame-driven clear/special impact and blocker-segment clip boundaries, Godot smoke and CI passing. Device QA and final GFX-10 polish remain open; not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #60 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ]
     },
     {
       "id": "CODE-02-00",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 merged 2026-10-27T18:07:19Z: byte-identical UPDS Match3 board shape, CSS easing, tile motion GDScript + scene and tutorial predicates; dedicated Godot smoke wired into Raven checks. Not accepted as full Match-3 screen or GFX-10 art."
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 merged 2026-10-27T18:07:19Z: byte-identical UPDS Match3 board shape, CSS easing, tile motion GDScript + scene and tutorial predicates; dedicated Godot smoke wired into Raven checks. Not accepted as full Match-3 screen or GFX-10 art.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #54 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ]
     },
     {
       "id": "CODE-02-03",
@@ -245,16 +393,27 @@
     {
       "id": "CODE-02-04",
       "status": "merged",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged 2026-10-27; responsive 320/390/412/430 board, vertical-slice safe-area shell and HUD Godot smoke CI passed. Actual Safari mobile QA not yet accepted; old Content Preview did not use this board until CODE-02-05 candidate.",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged 2026-10-27; responsive 320/390/412/430 board, vertical-slice safe-area shell and HUD Godot smoke CI passed. Actual Safari mobile QA not yet accepted; old Content Preview did not use this board until CODE-02-05 candidate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #61 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.",
       "owner": "ChatGPT",
-      "updated": "2026-10-27"
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ]
     },
     {
       "id": "PROC-005",
       "status": "merged",
-      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged; GitHub Actions now requires authored PRs to update docs/STATUS.md and production_progress.json, tested with numeric incoming candidate exception; no claim of protection against all possible malicious actor branches.",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged; GitHub Actions now requires authored PRs to update docs/STATUS.md and production_progress.json, tested with numeric incoming candidate exception; no claim of protection against all possible malicious actor branches.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #61 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
       "owner": "ChatGPT",
-      "updated": "2026-10-27"
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "CODE-02-05",
@@ -285,57 +444,105 @@
       "id": "VN-EDITOR-00",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
-      "evidence": "Architecture/specification/agent guide and proposed CODE-03-linked backlog merged via https://github.com/bezdredoff/RavenManor-Godot/pull/68 at commit 81353fdb8d72b191fbf1e8c53dc131618321349c; design only, no plugin or converter implemented."
+      "updated": "2026-11-03",
+      "evidence": "Architecture/specification/agent guide and proposed CODE-03-linked backlog merged via https://github.com/bezdredoff/RavenManor-Godot/pull/68 at commit 81353fdb8d72b191fbf1e8c53dc131618321349c; design only, no plugin or converter implemented.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #68 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "VN-EDITOR-01",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
-      "evidence": "PR #69 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/69 at commit 8f1604cc913c3ba513fd98040e69b411a6609bf9; 45 donor scenes/source SHAs and read-only audit script/tests. No full private donor local parity approval."
+      "updated": "2026-11-03",
+      "evidence": "PR #69 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/69 at commit 8f1604cc913c3ba513fd98040e69b411a6609bf9; 45 donor scenes/source SHAs and read-only audit script/tests. No full private donor local parity approval.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #69 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07"
+      ]
     },
     {
       "id": "VN-EDITOR-02",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
-      "evidence": "PR #70 merged at https://github.com/bezdredoff/RavenManor-Godot/pull/70 (main merge commit 7d198e94ee8e56a8c64a418ade07337dc857b82a). Native Godot legacy viewer and synthetic smoke; no owner/manual UPDS editor acceptance."
+      "updated": "2026-11-03",
+      "evidence": "PR #70 merged at https://github.com/bezdredoff/RavenManor-Godot/pull/70 (main merge commit 7d198e94ee8e56a8c64a418ade07337dc857b82a). Native Godot legacy viewer and synthetic smoke; no owner/manual UPDS editor acceptance.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #70 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07"
+      ]
     },
     {
       "id": "VN-EDITOR-03",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "PR #71 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/71, merge commit 83e7bcd78dc1fcce000d89b4a65682f16f68d12e; Godot local SHA-pinned draft authoring (text/pose/drag/undo), synthetic CI passed. Human donor/editor visual approval not recorded."
+      "evidence": "PR #71 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/71, merge commit 83e7bcd78dc1fcce000d89b4a65682f16f68d12e; Godot local SHA-pinned draft authoring (text/pose/drag/undo), synthetic CI passed. Human donor/editor visual approval not recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #71 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07"
+      ]
     },
     {
       "id": "VN-EDITOR-04",
       "status": "merged",
-      "updated": "2026-10-31",
+      "updated": "2026-11-03",
       "owner": "ChatGPT",
-      "evidence": "PR #72 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/72; merge commit 1cc99d93e3066d0ecc4003f3dde086e8148cb8dc. Character gallery and preview-only reduced-motion animation with synthetic CI; no owner-reported private UPDS editor visual acceptance."
+      "evidence": "PR #72 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/72; merge commit 1cc99d93e3066d0ecc4003f3dde086e8148cb8dc. Character gallery and preview-only reduced-motion animation with synthetic CI; no owner-reported private UPDS editor visual acceptance.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #72 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07"
+      ]
     },
     {
       "id": "VN-EDITOR-05",
       "status": "merged",
-      "updated": "2026-10-31",
+      "updated": "2026-11-03",
       "owner": "ChatGPT",
-      "evidence": "PR #73 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/73 (main c29dea932c21eda0d68fc9477ed5699cd766cf79). Read-only Godot GraphEdit story graph; post-merge main CI 41226672594 succeeded including synthetic 45-scene graph, donor manual QA not recorded."
+      "evidence": "PR #73 merged: https://github.com/bezdredoff/RavenManor-Godot/pull/73 (main c29dea932c21eda0d68fc9477ed5699cd766cf79). Read-only Godot GraphEdit story graph; post-merge main CI 41226672594 succeeded including synthetic 45-scene graph, donor manual QA not recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #73 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VN-EDITOR-06",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-10-31",
-      "evidence": "Sub-increments #74, #75 and #76 all merged: https://github.com/bezdredoff/RavenManor-Godot/pull/76 at commit 41f78a786d8d8b37d0d90e7ac7bb93b3fa9333eb; post-merge CI 41231531095 and 41231531685 successful. MERGED code only; work package still missing independent original StorySession oracle, actual saved-state import and user acceptance."
+      "updated": "2026-11-03",
+      "evidence": "Sub-increments #74, #75 and #76 all merged: https://github.com/bezdredoff/RavenManor-Godot/pull/76 at commit 41f78a786d8d8b37d0d90e7ac7bb93b3fa9333eb; post-merge CI 41231531095 and 41231531685 successful. MERGED code only; work package still missing independent original StorySession oracle, actual saved-state import and user acceptance.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #76 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VN-EDITOR-07, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VN-EDITOR-07",
+        "VNS5-09"
+      ]
     },
     {
       "id": "RAVEN-VN-EDITOR-01",
       "status": "merged",
-      "updated": "2026-10-31",
+      "updated": "2026-11-03",
       "owner": "ChatGPT",
-      "evidence": "PR #77 merged into main; native Raven screenplay draft and safe local JSON export. Godot native stage UI via follow-on PR; desktop manual QA not yet accepted."
+      "evidence": "PR #77 merged into main; native Raven screenplay draft and safe local JSON export. Godot native stage UI via follow-on PR; desktop manual QA not yet accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #77 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-09"
+      ]
     },
     {
       "id": "RAVEN-VN-EDITOR-02",
@@ -416,55 +623,101 @@
     },
     {
       "id": "GFX-06-06",
-      "status": "merged",
+      "status": "ready",
       "owner": "Codex",
-      "updated": "2026-11-02",
-      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Existing accepted cast has approved hand/prop variants; independent map/evidence prop-state families are still GFX-09.",
+      "updated": "2026-11-03",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Existing accepted cast has approved hand/prop variants; independent map/evidence prop-state families are still GFX-09.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #97 is merged. 8 hand-held prop-image variants and 62 approved character frames do NOT constitute separate stateful prop sprites (e.g., letter/tray/folder/tools). Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: VNS5-08, CODE-07-01.",
       "approvalState": "art_approved",
       "qaState": "manual_pending",
-      "implementationState": "delivered"
+      "implementationState": "partial",
+      "followUpTaskIds": [
+        "VNS5-08",
+        "CODE-07-01"
+      ]
     },
     {
       "id": "VNS5-07A",
       "status": "merged",
       "owner": "Codex",
-      "updated": "2026-11-02",
-      "evidence": "PR #122 merged into main 97a3d16 on 2026-11-02. PR-head full CI run 41507778044 succeeded. Native owner acceptance remains open; no canonical story/runtime promotion."
+      "updated": "2026-11-03",
+      "evidence": "PR #122 merged into main 97a3d16 on 2026-11-02. PR-head full CI run 41507778044 succeeded. Native owner acceptance remains open; no canonical story/runtime promotion.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #122 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07B",
       "status": "merged",
       "owner": "Codex",
-      "updated": "2026-11-02",
-      "evidence": "VNS5-07B branch from merged main 97a3d16. Native Stage is persistent in center with stage controls in right inspector; scene/line lists on left, resizable/collapsible panes, compact export actions, parallel RU/BE/EN fields and draft-scene titles, stable lineId. Reference local HTML v5 handoff found in C:/git. Windows Godot 4.7.2 UI was visually inspected at 1154x680 with main screen maximized; background and inspector visible. Full local check.ps1 passed with isolated APPDATA; targeted new-scene/translation and promotion smokes passed; code-plan and dashboard checks passed. PR CI and owner native QA at 800x640, 1024x640, 1366x768 pending; no story/runtime/save changes. PR #123 merged into main a434f1570e793f05d75e62950b4c87a61ee663e3 at 2026-11-02T19:42:11Z; native owner QA is still outstanding. PR-head CI #41511288798 success; latest main CI should be checked separately."
+      "updated": "2026-11-03",
+      "evidence": "VNS5-07B branch from merged main 97a3d16. Native Stage is persistent in center with stage controls in right inspector; scene/line lists on left, resizable/collapsible panes, compact export actions, parallel RU/BE/EN fields and draft-scene titles, stable lineId. Reference local HTML v5 handoff found in C:/git. Windows Godot 4.7.2 UI was visually inspected at 1154x680 with main screen maximized; background and inspector visible. Full local check.ps1 passed with isolated APPDATA; targeted new-scene/translation and promotion smokes passed; code-plan and dashboard checks passed. PR CI and owner native QA at 800x640, 1024x640, 1366x768 pending; no story/runtime/save changes. PR #123 merged into main a434f1570e793f05d75e62950b4c87a61ee663e3 at 2026-11-02T19:42:11Z; native owner QA is still outstanding. PR-head CI #41511288798 success; latest main CI should be checked separately.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #123 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07C1",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "Review candidate branch code/vns5-07c1-story-map-interactions based on main a434f157 after #123. Native Story Map graph node click synchronizes Director source scene, drag source→target creates strictly review-only draft edges, selected draft edge can be edited with stable ID, validated A/B/C and canonical level targets; Godot smoke covers focus/edit/negative/immutability. No runtime/story/save/UPDS mutations. PR CI and owner native UX acceptance pending. See docs/production/VNS5_07C1_GRAPH_INTERACTION_RU.md and issue #121. PR #124 merged into main a2f9e6902bd7ae950d9e72d9b2219c902540de94 at 2026-11-02T19:58:05Z; premerge CI #41513732368 success; owner native UI/mouse QA pending."
+      "updated": "2026-11-03",
+      "evidence": "Review candidate branch code/vns5-07c1-story-map-interactions based on main a434f157 after #123. Native Story Map graph node click synchronizes Director source scene, drag source→target creates strictly review-only draft edges, selected draft edge can be edited with stable ID, validated A/B/C and canonical level targets; Godot smoke covers focus/edit/negative/immutability. No runtime/story/save/UPDS mutations. PR CI and owner native UX acceptance pending. See docs/production/VNS5_07C1_GRAPH_INTERACTION_RU.md and issue #121. PR #124 merged into main a2f9e6902bd7ae950d9e72d9b2219c902540de94 at 2026-11-02T19:58:05Z; premerge CI #41513732368 success; owner native UI/mouse QA pending.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #124 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07C2",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "PR review branch code/vns5-07c2-direct-wire-selection from merged main a2f9e690. Adds projection-only stable edge IDs to Graph.build, left-click wire lookup via GraphEdit nearest connection, safe A/B/C duplicate-wire popup ID disambiguation, canonical readonly guard and deferred scene-focus rebuild. Extended Raven smoke for match/parallel/canonical; no runtime, save, canon, art or UPDS mutations. Independent CI and owner native mouse QA pending. Runbook docs/production/VNS5_07C2_DIRECT_WIRE_EDIT_RU.md; issue #121. PR #125 merged into main 188332a22153b9853439fa5cd8c4ad41a2e50b63; PR-head GitHub CI #41515671812 SUCCESS. Native owner UI QA not recorded; user reported draft wires impossible to find."
+      "updated": "2026-11-03",
+      "evidence": "PR review branch code/vns5-07c2-direct-wire-selection from merged main a2f9e690. Adds projection-only stable edge IDs to Graph.build, left-click wire lookup via GraphEdit nearest connection, safe A/B/C duplicate-wire popup ID disambiguation, canonical readonly guard and deferred scene-focus rebuild. Extended Raven smoke for match/parallel/canonical; no runtime, save, canon, art or UPDS mutations. Independent CI and owner native mouse QA pending. Runbook docs/production/VNS5_07C2_DIRECT_WIRE_EDIT_RU.md; issue #121. PR #125 merged into main 188332a22153b9853439fa5cd8c4ad41a2e50b63; PR-head GitHub CI #41515671812 SUCCESS. Native owner UI QA not recorded; user reported draft wires impossible to find.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #125 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07C3",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "Issue #121 follow-up to merged PR #125: user cannot find draft wires. Review-only code/vns5-07c3-draft-wire-visibility from main 188332a. Adds green canonical port0/wires vs orange draft port1/wires, two-color legend, explicit empty state and +Связь instructions, port-identity guard preventing editing canonical wire even with same endpoints as draft. New smoke coverage; canonical JSON/story/reducer/save/UPDS untouched. CI and owner native mouse/UI QA pending. Details docs/production/VNS5_07C3_DRAFT_WIRES_RU.md. PR #126 merged to main 05710372ad6631abaf3a4a52b2f80fb82fc7e8a7 on 2026-11-02; owner mouse/viewport acceptance remains open."
+      "updated": "2026-11-03",
+      "evidence": "Issue #121 follow-up to merged PR #125: user cannot find draft wires. Review-only code/vns5-07c3-draft-wire-visibility from main 188332a. Adds green canonical port0/wires vs orange draft port1/wires, two-color legend, explicit empty state and +Связь instructions, port-identity guard preventing editing canonical wire even with same endpoints as draft. New smoke coverage; canonical JSON/story/reducer/save/UPDS untouched. CI and owner native mouse/UI QA pending. Details docs/production/VNS5_07C3_DRAFT_WIRES_RU.md. PR #126 merged to main 05710372ad6631abaf3a4a52b2f80fb82fc7e8a7 on 2026-11-02; owner mouse/viewport acceptance remains open.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #126 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07E",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Owner supplied screenshot: VN Studio workspace leaves large unused lower region and is not close to approved HTML. Branch code/vns5-07e-full-height-responsive-workspace from merged main 05710372. Root cause ScrollContainer child body min 440 doesn't fill viewport, narrow stage persisted settings and tall 390x844 scroll, Story Map intrinsic GraphEdit min height. Adds viewport-height syncing, stage/inspector split v2, fit-to-pane StageEditor only (no normalized staging/runtime changes), graph viewport sync and responsive smoke tests. CI and native mouse/screenshots are pending; exact HTML parity is NOT claimed. See docs/production/VNS5_07E_FULL_HEIGHT_RU.md. PR #127 merged into main 8992aa1dc75dd8a02ec96fc65c5d48c31436cb2f at 2026-11-02T20:42:23Z. Full PR-head CI #41520647727 SUCCESS. Native owner QA and exact HTML parity still outstanding."
+      "updated": "2026-11-03",
+      "evidence": "Owner supplied screenshot: VN Studio workspace leaves large unused lower region and is not close to approved HTML. Branch code/vns5-07e-full-height-responsive-workspace from merged main 05710372. Root cause ScrollContainer child body min 440 doesn't fill viewport, narrow stage persisted settings and tall 390x844 scroll, Story Map intrinsic GraphEdit min height. Adds viewport-height syncing, stage/inspector split v2, fit-to-pane StageEditor only (no normalized staging/runtime changes), graph viewport sync and responsive smoke tests. CI and native mouse/screenshots are pending; exact HTML parity is NOT claimed. See docs/production/VNS5_07E_FULL_HEIGHT_RU.md. PR #127 merged into main 8992aa1dc75dd8a02ec96fc65c5d48c31436cb2f at 2026-11-02T20:42:23Z. Full PR-head CI #41520647727 SUCCESS. Native owner QA and exact HTML parity still outstanding.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #127 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07F",
@@ -479,41 +732,72 @@
       "id": "VNS5-07F1",
       "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "Review candidate code/vns5-07f1-animation-tab-live-fx based on merged #127. Actual Animation tab previously static placeholder while working StageDesigner FX widgets hidden in Stage Inspector. Reuse same working FX UI/state in Animation with a grouped dockable VBoxContainer, scene/line anchor, typed cue edit, play/reset/scrub; stage remains visible. No draft schema/runtime/save change. Extended Godot layout smoke checks live FX controls and add/undo. Independent PR CI and native Windows QA pending; screenshot HTML parity remains VNS5-07F (proposed), not claimed. Runbook docs/production/VNS5_07F1_ANIMATION_TAB_RU.md; issue #121. PR #128 merged to main 14cc0a857261661579be1e34de3391be27728bf5; CI #41522374248 success; owner native UX approval not recorded."
+      "updated": "2026-11-03",
+      "evidence": "Review candidate code/vns5-07f1-animation-tab-live-fx based on merged #127. Actual Animation tab previously static placeholder while working StageDesigner FX widgets hidden in Stage Inspector. Reuse same working FX UI/state in Animation with a grouped dockable VBoxContainer, scene/line anchor, typed cue edit, play/reset/scrub; stage remains visible. No draft schema/runtime/save change. Extended Godot layout smoke checks live FX controls and add/undo. Independent PR CI and native Windows QA pending; screenshot HTML parity remains VNS5-07F (proposed), not claimed. Runbook docs/production/VNS5_07F1_ANIMATION_TAB_RU.md; issue #121. PR #128 merged to main 14cc0a857261661579be1e34de3391be27728bf5; CI #41522374248 success; owner native UX approval not recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #128 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07F3",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md. PR #130 merged to main 84ca9484296694fc9039dfb8b5be2833f8d3e979; CI #41525831931 SUCCESS, native owner QA still outstanding."
+      "updated": "2026-11-03",
+      "evidence": "Issue #129, restored ChatGPT HTML v5 authoring contract. In branch code/vns5-07f3-scene-wizard-line-order from merged #128: +Сцена chapter/title/exact real background/first line, atomic stagePatches & authoredScenes chapter optional validated; ↑/↓/− for authoredLines only with stable IDs/locale patches, prevent deleting last/referenced checkpoint, Undo/Redo and confirmation, regressions for save/no loss/SHA. Independent CI and owner Godot QA pending. Review-only, not runtime. Docs: docs/production/VNS5_07F3_SCENE_AUTHORING_RU.md. PR #130 merged to main 84ca9484296694fc9039dfb8b5be2833f8d3e979; CI #41525831931 SUCCESS, native owner QA still outstanding.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #130 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07F4",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md. PR #131 cleanly rebuilt on main 84ca948 after #130, no parent-branch commits; independent fresh CI and Windows native owner QA required; not merged/accepted. PR #131 merged on 2026-11-02 into main at 33335699f907bc3b605f009ab653260d2c714301; exact-head CI #41529246178 success. Windows native owner QA still unrecorded."
+      "updated": "2026-11-03",
+      "evidence": "Stacked review-only proposal based on PR #130 branch (VNS5-07F3), issue #129 HTML-v5 contract. Adds condition draft edge with bounded nonexecuting conditionRef, ending proposal DRAFT_END node, GraphEdit native inspector/connected orange wires, duplicate/unsafe/path validation, source target and unconditional checks, Godot smoke. Runtime/Reducer/game endings/source untouched; old graph overlay remains valid. CI and owner Godot QA pending. Must merge #130 first, then retarget/rebase F4; see docs/production/VNS5_07F4_CONDITION_ENDING_RU.md. PR #131 cleanly rebuilt on main 84ca948 after #130, no parent-branch commits; independent fresh CI and Windows native owner QA required; not merged/accepted. PR #131 merged on 2026-11-02 into main at 33335699f907bc3b605f009ab653260d2c714301; exact-head CI #41529246178 success. Windows native owner QA still unrecorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #131 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "VNS5-07F5",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Three-phase editor-only Animation timeline merged https://github.com/bezdredoff/RavenManor-Godot/pull/132 at main commit 2bdb55880616. Native Windows owner QA and runtime animation are separate.",
+      "updated": "2026-11-03",
+      "evidence": "Issue #129 approved HTML v5 animation gaps. Review branch code/vns5-07f5-three-phase-fx-timeline on main after PR #130; independently of open Story Map PR #131. Real Animation tab 3-track editor-only FX timeline, enter/idle/exit presets using existing v1 stageFxPatches with optional phase key, 20s renderer, click select, drag start snapped 50ms, scrub/Play/Pause/Reset, line-scope, legacy FX compatibility, Undo, source SHA/test. CI and native Windows Godot QA pending. Docs: docs/production/VNS5_07F5_THREE_PHASE_TIMELINE_RU.md. No approved animation artwork/runtime. Initial PR #132 CI #41528584891 SUCCESS on earlier main; rebased to merged #131 main requires new exact-head CI and owner native FX QA before merge.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Three-phase editor-only Animation timeline merged https://github.com/bezdredoff/RavenManor-Godot/pull/132 at main commit 2bdb55880616. Native Windows owner QA and runtime animation are separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #132 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: VNS5-07F2, VNS5-09.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "VNS5-07F2",
+        "VNS5-09"
+      ]
     },
     {
       "id": "CODE-04-03",
       "owner": "ChatGPT",
       "status": "merged",
-      "updated": "2026-11-02",
-      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. Independent PR-head full Raven/Godot, governance, dashboard and Web export CI #41531258527 SUCCESS at implementation merge-head 60877d5; native owner UI QA remains pending. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md. Belarusian follow-up branch feature/rm-be-dialogue-vn-studio-20261102 fills 268 previously missing BE lines while retaining 12 pilot entries (280/280 total), and 27 missing titles while retaining pilot title (28/28 total), no changes to RU/EN lines/IDs. Existing shared Studio/gameplay adapter handles BE; new BE smoke validates Studio source, preview pagination/locale persistence/line cursor, check.sh strict --release dialogue/title/popup registry. Full CI, editorial proofreading, native Godot BE QA pending; PR_review, not release-ready.\n2026-11-02 reconciliation @ main ea4fc3552c7a: English 280/280 and scene titles 28/28 + VN Studio/gameplay adapter https://github.com/bezdredoff/RavenManor-Godot/pull/135; Belarusian 280/280, titles 28/28 and localized smoke https://github.com/bezdredoff/RavenManor-Godot/pull/136. All three dialogue registries complete first draft; editorial, whole-game UI and physical-device release gate outstanding.",
+      "updated": "2026-11-03",
+      "evidence": "English dialogue/localization implementation in branch feature/rm-l10n-en-dialogue-20261102: 280/280 canonical EN lines, 28/28 EN titles in VN Studio production source; shared line-ID adapter integrated in playable vertical slice and Content Preview, RU/BE/EN selection via existing preferences, paginated game VN, targeted Godot smoke + CI invocation. Independent PR-head full Raven/Godot, governance, dashboard and Web export CI #41531258527 SUCCESS at implementation merge-head 60877d5; native owner UI QA remains pending. English editorial QA and native Godot device validation pending. Belarusian remains incomplete, release gate still blocked; no production scene/route approval or campaign save changes. docs/production/LOCALIZATION_UPDS_ADAPTATION.md. Belarusian follow-up branch feature/rm-be-dialogue-vn-studio-20261102 fills 268 previously missing BE lines while retaining 12 pilot entries (280/280 total), and 27 missing titles while retaining pilot title (28/28 total), no changes to RU/EN lines/IDs. Existing shared Studio/gameplay adapter handles BE; new BE smoke validates Studio source, preview pagination/locale persistence/line cursor, check.sh strict --release dialogue/title/popup registry. Full CI, editorial proofreading, native Godot BE QA pending; PR_review, not release-ready.\n2026-11-02 reconciliation @ main ea4fc3552c7a: English 280/280 and scene titles 28/28 + VN Studio/gameplay adapter https://github.com/bezdredoff/RavenManor-Godot/pull/135; Belarusian 280/280, titles 28/28 and localized smoke https://github.com/bezdredoff/RavenManor-Godot/pull/136. All three dialogue registries complete first draft; editorial, whole-game UI and physical-device release gate outstanding.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #136 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: RM-GAP-013, LOC-EN-QA, LOC-BE-QA.",
       "implementationState": "delivered",
-      "qaState": "automated",
-      "approvalState": "pending"
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "RM-GAP-013",
+        "LOC-EN-QA",
+        "LOC-BE-QA"
+      ]
     },
     {
       "id": "RM-GAP-013",
@@ -527,29 +811,39 @@
     {
       "id": "CODE-00-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS code source inventory and extraction documented in docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md; source import https://github.com/bezdredoff/RavenManor-Godot/pull/46. No final feature QA claimed.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS code source inventory and extraction documented in docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md; source import https://github.com/bezdredoff/RavenManor-Godot/pull/46. No final feature QA claimed.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": []
     },
     {
       "id": "CODE-00-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: One Raven reducer/save authority with imported UPDS adapters and isolated snapshot: https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Further season runtime gates separate.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: One Raven reducer/save authority with imported UPDS adapters and isolated snapshot: https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Further season runtime gates separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-08-01.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-08-01"
+      ]
     },
     {
       "id": "CODE-00-03",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Baseline Raven smoke and UPDS reuse regression suite in tests/raven, introduced with https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Device QA separate.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Baseline Raven smoke and UPDS reuse regression suite in tests/raven, introduced with https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Device QA separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: RM-GAP-010.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "RM-GAP-010"
+      ]
     },
     {
       "id": "CODE-01-02",
@@ -563,11 +857,15 @@
     {
       "id": "CODE-01-03",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Idempotent Raven rewards, save-state and restoration tests in RM-VS-01 via https://github.com/bezdredoff/RavenManor-Godot/pull/9; broader Season 1 release gates separate.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Idempotent Raven rewards, save-state and restoration tests in RM-VS-01 via https://github.com/bezdredoff/RavenManor-Godot/pull/9; broader Season 1 release gates separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-13-01.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-13-01"
+      ]
     },
     {
       "id": "CODE-03-01",
@@ -635,11 +933,15 @@
     {
       "id": "CODE-08-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
+      "updated": "2026-11-03",
       "status": "merged",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven first-clear 2/2/2 work-point reward and 2/4 restoration costs wired to idempotent reducer in RM-VS-01 https://github.com/bezdredoff/RavenManor-Godot/pull/9; full season objective UX separate.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven first-clear 2/2/2 work-point reward and 2/4 restoration costs wired to idempotent reducer in RM-VS-01 https://github.com/bezdredoff/RavenManor-Godot/pull/9; full season objective UX separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-13-01.",
       "implementationState": "delivered",
-      "qaState": "automated"
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-13-01"
+      ]
     },
     {
       "id": "CODE-09-01",
