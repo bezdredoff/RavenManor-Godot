@@ -1107,9 +1107,9 @@
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "implementationState": "delivered",
-      "qaState": "manual_pending",
+      "qaState": "manual_partial",
       "approvalState": "pending",
-      "evidence": "Owner screenshots 2026-11-03 show Raven draft blocked on post-save source SHA drift without any in-Studio escape hatch. Candidate PR implements explicit byte-verified backup-and-start-fresh, never auto-rebases or applies old edits, and Raven-first legacy UPDS panel separation. Await PR CI and owner Windows Godot QA."
+      "evidence": "Owner screenshots 2026-11-03 show Raven draft blocked on post-save source SHA drift without any in-Studio escape hatch. Candidate PR implements explicit byte-verified backup-and-start-fresh, never auto-rebases or applies old edits, and Raven-first legacy UPDS panel separation. Await PR CI and owner Windows Godot QA.\n2026-11-03 owner on Windows: archive-and-start-fresh unlocked the editor; successfully created scene/line and moved lines with arrow buttons. Legacy UPDS switch, exact backup bytes and cross-device UI remain unverified, so not full acceptance."
     },
     {
       "id": "ART-HANDBOOK-01",
@@ -1120,6 +1120,16 @@
       "qaState": "manual_verified",
       "approvalState": "feature_approved",
       "evidence": "PR #103 Art Handbook exists and published. Owner directly accepted the current Art Handbook on 2026-11-03. Acceptance limited to browsable reference catalog, documented sources/recipes and handoff UI; no independent GPU replay or full production batch automation implied."
+    },
+    {
+      "id": "VNS5-11",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "evidence": "Owner 2026-11-03: drag-drop missing; authored speaker creates no portraits; want auto 1→2→3 layout and narrator with no portrait. Model, UI and CI proposed in PR; runtime/approved content unaffected."
     }
   ],
   "rules": [

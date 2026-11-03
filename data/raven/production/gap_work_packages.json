@@ -1150,6 +1150,23 @@
       "dependsOn": [],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-11",
+      "title": "Raven VN Studio: narrator, real approved portraits on authored lines and line drag/reorder",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "M",
+      "status": "proposed",
+      "source": "Owner native Godot QA 2026-11-03",
+      "description": "New authored speakers must appear in Stage, auto-transition 1/2/3 cast templates, allow author narration with no portrait, and support stable-ID drag/drop within authored lines.",
+      "deliverable": "Editor-only narrator sentinel + narration delivery, exact accepted neutral/base artwork when possible, 1/2/3 template reflow and safe authored-only DnD; Undo and smoke tests.",
+      "acceptance": "Adding Evelyn then Ada then Rowan uses exact approved image state if present, 1/2/3 Stage layout; narrator line creates no portrait; drag reorder preserves translations/checkpoints/FX, rejects canonical lines and supports Undo; no production save/runtime changes.",
+      "dependsOn": [
+        "VNS5-09"
+      ],
+      "graphicsDependencies": [],
+      "requiresHumanAcceptance": true
     }
   ]
 }

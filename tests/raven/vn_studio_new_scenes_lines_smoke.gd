@@ -162,7 +162,45 @@ func _run() -> void:
 	for key in ["sceneId", "backgroundId", "lighting", "roomState"]:
 		assert(restored_shot[key] == wd["stagePatches"][wizard_id][key],
 			"Wizard roundtrip must retain exact scene/plate keys")
-	assert(restored_shot["cast"].size() == 0 and int(restored_shot["visibleCount"]) == 0)
+	assert(restored_shot["cast"].size() == 1 and int(restored_shot["visibleCount"]) == 1)
+	assert(restored_shot["cast"][0]["characterId"] == speaker)
+	assert(restored_shot["cast"][0].has("assetId"), "Approved default portrait must be selected when available")
+	# A first-time second/third speaker moves the scene to 2/3 preset,
+	# but repeated or narrator lines never duplicate/create a portrait.
+	var ada: String = "RM-CHAR-ADA"
+	var rowan: String = "RM-CHAR-ROWAN"
+	var two: Dictionary = Store.add_line(project, wd, wizard_id, "Ада пришла", ada)
+	assert(two.get("ok", false), JSON.stringify(two))
+	wd = two["draft"]
+	assert(wd["stagePatches"][wizard_id]["cast"].size() == 2)
+	assert(wd["stagePatches"][wizard_id]["cast"][0]["slot"] == "left")
+	assert(wd["stagePatches"][wizard_id]["cast"][1]["slot"] == "right")
+	var three: Dictionary = Store.add_line(project, wd, wizard_id, "Роуэн вошёл", rowan)
+	assert(three.get("ok", false), JSON.stringify(three))
+	wd = three["draft"]
+	assert(wd["stagePatches"][wizard_id]["cast"].size() == 3)
+	assert(wd["stagePatches"][wizard_id]["cast"][1]["slot"] == "center")
+	var narrator: Dictionary = Store.add_line(project, wd, wizard_id, "В доме повисла тишина.", Author.NARRATOR_ID)
+	assert(narrator.get("ok", false), JSON.stringify(narrator))
+	wd = narrator["draft"]
+	assert(wd["authoredLines"][-1]["delivery"] == "narration")
+	assert(wd["stagePatches"][wizard_id]["cast"].size() == 3)
+	assert(Store.validate(project, wd).is_empty())
+	var fourth: Dictionary = Store.add_line(project, wd, wizard_id, "Лукас за дверью", "RM-CHAR-LUCAS")
+	assert(fourth.get("ok", false))
+	assert(fourth.get("stageNotice", "") != "")
+	assert(fourth["draft"]["stagePatches"][wizard_id]["cast"].size() == 3)
+	# Test reorder on a separate draft so existing exact authored-line
+	# expectations remain anchored to original three dialogue lines.
+	var moved_dnd: Dictionary = Store.move_line_to(project, wd, wizard_id,
+		str(narrator["lineId"]), str(two["lineId"]))
+	assert(moved_dnd.get("ok", false), JSON.stringify(moved_dnd))
+	assert(Store.entries_for(project, moved_dnd["draft"], wizard_id)[1]["id"] == narrator["lineId"])
+	assert(Store.entries_for(project, moved_dnd["draft"], wizard_id)[1]["delivery"] == "narration")
+	assert(not Store.move_line_to(project, wd, wizard_id,
+		str(project["linesByScene"][str(project["scenes"][0]["sceneId"])][0]["id"]),
+		str(two["lineId"])).get("ok", false))
+	wd = wizard["draft"] # Return to baseline three-line reorder test below.
 	assert(not Store.add_scene(project, wd, "Invalid", "RU", speaker, "XX", plates[0]).get("ok", false))
 	assert(not Store.add_scene(project, wd, "Invalid", "RU", speaker, "02",
 		{"backgroundId": "BG-HALL", "lighting": "invalid", "roomState": "dusty"}).get("ok", false))
@@ -239,6 +277,14 @@ func _run() -> void:
 	view._on_create_line()
 	assert(view._lines.item_count == 3)
 	var id_three: String = str(view.selected_context()["lineId"])
+	var id_two: String = str(Store.entries_for(view._project, view._draft, scene_id)[1]["id"])
+	view._on_line_dropped(2, 1)
+	assert(view.selected_context()["lineId"] == id_three)
+	assert(Store.entries_for(view._project, view._draft, scene_id)[1]["id"] == id_three)
+	view._on_line_dropped(1, 2)
+	assert(view.selected_context()["lineId"] == id_three)
+	assert(Store.entries_for(view._project, view._draft, scene_id)[2]["id"] == id_three)
+	assert(view._draft.get("authoredLines", []).size() == 3)
 	view._on_line_up()
 	assert(view.selected_context()["lineId"] == id_three)
 	assert(view._lines.item_count == 3 and view._line_idx == 1)
