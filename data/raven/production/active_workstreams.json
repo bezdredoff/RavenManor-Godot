@@ -1,0 +1,176 @@
+{
+  "schemaVersion": 1,
+  "kind": "active_raven_delivery_workstreams",
+  "asOf": "2026-11-03",
+  "authority": "Task statuses and priorities remain authoritative in production_progress.json. Workstreams group overlapping delivery and QA evidence; they do NOT merge, cancel, supersede or accept task IDs. Only active P0/P1 tasks are grouped.",
+  "workstreams": [
+    {
+      "id": "WS-VN-STUDIO",
+      "title": "VN Studio, композиция и редактирование",
+      "phase": "QA-first",
+      "gate": "Один native Godot walkthrough: восстановить draft после рестарта, 1–3 accepted composites, narrator, Story Map/FX, UX comparison с original HTML-v5; 28 approved scene backplates и cast fallback проверять на реальном viewport",
+      "ownerAcceptance": "Native Windows editor and original HTML visual parity still require owner review",
+      "taskIds": [
+        "CODE-03-01",
+        "CODE-03-02",
+        "CODE-03-03",
+        "VN-EDITOR-07",
+        "VN-EDITOR-08",
+        "VNS5-07F",
+        "VNS5-07F2",
+        "VN-CAST-MATRIX",
+        "VN-BG-DEVICE-QA",
+        "GFX-03-05",
+        "GFX-05-08",
+        "GFX-06-08"
+      ]
+    },
+    {
+      "id": "WS-LOCALES",
+      "title": "RU/EN/BE — полный QA интерфейса",
+      "phase": "QA-first",
+      "gate": "Один tri-locale proofreading/font/overflow/device matrix; подтвердить всю UI-копию без повтора уже готового перевода 280 строк и 28 scene titles",
+      "ownerAcceptance": "Native linguistic and layout acceptance is separate from registry --release",
+      "taskIds": [
+        "RM-GAP-013",
+        "LOC-EN-QA",
+        "LOC-BE-QA",
+        "GFX-11-T08"
+      ]
+    },
+    {
+      "id": "WS-DEVICE",
+      "title": "Мобильность и accessibility",
+      "phase": "QA-first",
+      "gate": "Один набор portrait/tablet/PWA device checks: tap targets, safe zones, reduced motion, resume, Room Builder stylus and Web/offline; evidence linked to each original task",
+      "ownerAcceptance": "Browser CI never substitutes native phone/tablet visual proof",
+      "taskIds": [
+        "CODE-04-01",
+        "CODE-10-01",
+        "CODE-10-02",
+        "RM-GAP-002",
+        "RM-GAP-010",
+        "GFX-00-08",
+        "GFX-06-09",
+        "GFX-11-T09"
+      ]
+    },
+    {
+      "id": "WS-MOBILE-HANDOFF",
+      "title": "Incoming ZIP и безопасная мобильная передача",
+      "phase": "QA-first",
+      "gate": "Один phone ZIP→incoming→candidate PR happy/error path с cleanup success/failure, adversarial archive and manual merge control",
+      "ownerAcceptance": "No claim that synthetic GitHub Actions proves real phone workflow",
+      "taskIds": [
+        "PROC-003",
+        "MOB-04"
+      ]
+    },
+    {
+      "id": "WS-MATCH3",
+      "title": "Match-3 — реальный input и графика",
+      "phase": "Build+QA",
+      "gate": "Проверить/исправить browser/phone swipe, hint 2 cells, modal Help, shape/blockers/specials, восемь визуально различимых tiles и mobile UI parity с UPDS",
+      "ownerAcceptance": "Real gameplay/on-device visuals required",
+      "taskIds": [
+        "CODE-01-02",
+        "CODE-02-01",
+        "CODE-02-03",
+        "CODE-02-05",
+        "CODE-02-06",
+        "RM-GAP-012",
+        "GFX-10-01",
+        "GFX-10-02",
+        "GFX-10-03",
+        "GFX-10-04",
+        "GFX-10-05",
+        "GFX-10-07"
+      ]
+    },
+    {
+      "id": "WS-HALL",
+      "title": "Hall/Room Builder — единая физическая карта",
+      "phase": "Build+QA",
+      "gate": "Одна проверка Room Builder→Godot geometry 65°, doors/stairs/footprints, collisions, authored A* routes and foreground occlusion; Hall/Corridor/Bedroom chain без переизобретения VN painting",
+      "ownerAcceptance": "Owner approval of real Hall physical layout and route on device",
+      "taskIds": [
+        "CODE-05-01",
+        "CODE-05-02",
+        "CODE-05-03",
+        "RM-GAP-001",
+        "RM-GAP-006",
+        "GFX-08-01",
+        "GFX-08-02",
+        "GFX-08-08",
+        "GFX-08-09",
+        "GFX-08-10"
+      ]
+    },
+    {
+      "id": "WS-CHIBI",
+      "title": "Chibi-герои — карты и позиционирование",
+      "phase": "New assets",
+      "gate": "Один короткий pilot Эвелин по approved VN refs; затем Эвелин/Ада walker & stage, foot pivots, 65° camera bounds, actor interaction and route/device test",
+      "ownerAcceptance": "Onoe technical placeholder is not an approved Raven chibi",
+      "taskIds": [
+        "CODE-06-01",
+        "RM-GAP-011",
+        "GFX-03-06",
+        "GFX-07-01",
+        "GFX-07-04",
+        "GFX-07-05",
+        "GFX-07-06",
+        "GFX-07-09",
+        "GFX-07-10",
+        "GFX-11-T06"
+      ]
+    },
+    {
+      "id": "WS-MAP-PROPS",
+      "title": "Карта, физические пропсы и реставрация",
+      "phase": "Build+QA",
+      "gate": "Одна Hall-first map/interactable/state contract: письмо, чай, двери, часы, журналы; logical prop ID reused across surfaces but no standalone VN prop editor",
+      "ownerAcceptance": "Independent map prop states and owner-approved physical interactions required",
+      "taskIds": [
+        "CODE-07-01",
+        "CODE-07-02",
+        "GFX-06-06",
+        "GFX-09-01",
+        "GFX-09-02",
+        "GFX-09-05",
+        "GFX-09-06",
+        "GFX-11-T04",
+        "GFX-11-T07"
+      ]
+    },
+    {
+      "id": "WS-ASSET-CONTRACT",
+      "title": "Импорт арта и технические контракты",
+      "phase": "Audit-first",
+      "gate": "Один cross-domain asset/ID/path/sha/alpha/pivot manifest audit for actual map/chibi/M3 assets; 26 backgrounds and 62 VN frames already accepted, not re-generated",
+      "ownerAcceptance": "Technical import smoke is not author art approval",
+      "taskIds": [
+        "CODE-09-01",
+        "CODE-09-02",
+        "GFX-00-01",
+        "GFX-00-02",
+        "GFX-00-03",
+        "GFX-00-05",
+        "GFX-03-07",
+        "GFX-05-11"
+      ]
+    },
+    {
+      "id": "WS-STORY-RUNTIME",
+      "title": "Сюжет и Hall вертикальный срез",
+      "phase": "Build+QA",
+      "gate": "Единый reviewed-only release gate for original routes/saves and tri-locale VN→Match3→map, explicit authored branching only after approval and save migration",
+      "ownerAcceptance": "Editor draft QA is not playable VN branching or finished Season 1",
+      "taskIds": [
+        "CODE-11-01",
+        "RM-GAP-008",
+        "VN-RUNTIME-01"
+      ]
+    }
+  ]
+}
