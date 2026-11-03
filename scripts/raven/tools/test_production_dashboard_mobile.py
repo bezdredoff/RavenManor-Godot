@@ -58,6 +58,19 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["assetSummary"]["characterFrames"], {"total": 62, "artApproved": 62})
         self.assertIn("device", data["assetSummary"]["note"])
 
+
+    def test_dashboard_first_screen_and_incremental_card_contract(self):
+        html = (dashboard.ROOT / "dashboard/index.html").read_text(encoding="utf-8")
+        client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
+        self.assertLess(html.index('id="quick-work"'), html.index('id="stats"'),
+                        "Active P0 tasks should appear before progress summaries")
+        self.assertIn('id="quick-tasks"', html)
+        self.assertIn('id="more"', html)
+        self.assertIn('data-rendered', client)
+        self.assertIn('matched.slice(0,shownLimit)', client)
+        self.assertIn('showPriority();', client)
+        self.assertIn('cache:"no-store"', client)
+
     def test_art_source_is_not_mutated(self):
         source = dashboard.GFX.read_text(encoding="utf-8")
         stages, tasks = dashboard.graphics_items(source)

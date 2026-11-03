@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-02",
+  "updated": "2026-11-03",
   "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
   "entries": [
     {
@@ -759,6 +759,16 @@
       "implementationState": "delivered",
       "qaState": "automated",
       "approvalState": "pending"
+    },
+    {
+      "id": "DASH-RENDER-01",
+      "status": "PR_review",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "evidence": "Owner 2026-11-03 cannot see any dashboard tasks. UI visibility fix, progressive card load and actual headless-Chrome Pages render regression proposed in PR awaiting independent CI. Live iOS visual QA remains unverified."
     }
   ],
   "rules": [

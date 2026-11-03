@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · DASH-RENDER-01 — render visibility and real browser test (PR candidate)
+
+After #137/#138 merged with successful code/Pages CI, owner reports no work items visible on dashboard. Main source catalogs still contain 115 CODE/GAP items plus GFX tasks; no task deletion detected. Fix moves a P0 shortlist immediately under the heading above tall analytics panels, keeps full tasks section and adds 24-card progressive rendering, asset/error fallbacks and an actual headless Chromium test of the **built** Pages dashboard (visible task DOM, default scope). Syntax/unit-only dashboard checks were insufficient to validate visible UI. This is a review-only PR until head CI and owner browser check; the exact cause of owner's prior blank screen has not been conclusively reproduced. No gameplay, art, canonical localization or save changes.
+
+
 ## 2026-11-02 · historical requirement and next-plan audit (follow-up review)
 
 Legacy `RM-VERTICAL-SLICE-GAP.md` and historical 70-item CSV predate PR #9 and subsequent engineering merges; they cannot be represented as current implementation scores. A new 70-row reconciliation overlay records evidence and explicit verification gaps without overwriting the archived source. `docs/NEXT_PLAN.md` is labeled historical and references current P0 priorities, accepted exact VN art and merged RU/BE/EN dialogue. The following documentation-only PR must run normal governance CI and must not mutate any runtime or save state.

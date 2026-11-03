@@ -1101,6 +1101,23 @@
       "graphicsDependencies": [],
       "source": "Owner-approved dashboard reconciliation 2026-11-02",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "DASH-RENDER-01",
+      "title": "Dashboard: tasks immediately visible + real browser render smoke",
+      "domain": "process",
+      "priority": "P0",
+      "size": "S",
+      "description": "Owner reports no tasks visible after dashboard v2 merged. Show top P0 items above statistics, keep the complete backlog discoverable and add real Chromium render gate.",
+      "deliverable": "P0 quick list, 24-card progressive all-task view, visible error state, browser smoke on Pages artifact.",
+      "acceptance": "Browser renders at least 1 active P0 and at least 1 full card; default filter and show-more remain discoverable on desktop/mobile. Source JSON immutable.",
+      "status": "proposed",
+      "dependsOn": [
+        "PROC-DASH-V2"
+      ],
+      "graphicsDependencies": [],
+      "source": "Owner feedback 2026-11-03 after #137/#138",
+      "requiresHumanAcceptance": true
     }
   ]
 }
