@@ -22,8 +22,8 @@ def audit(data: dict) -> list[str]:
     groups = data.get("p2Groups", [])
     if len(groups) != 5:
         errors.append(f"Expected 5 explicit P2 re-entry categories (including game release), got {len(groups)}")
-    if len(p2) != 46:
-        errors.append(f"Unexpected P2 item count after two new GAME-* deferred packages: {len(p2)}")
+    if len(p2) != 44:
+        errors.append(f"Unexpected P2 item count after two P2→P1 promotions and two new GAME-* P2 packages: {len(p2)}")
     group_count = sum(x["taskCount"] for x in groups)
     if group_count != len(p2):
         errors.append(f"Duplicated or missing P2 membership: {group_count} vs {len(p2)}")
