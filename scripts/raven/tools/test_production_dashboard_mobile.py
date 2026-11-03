@@ -89,7 +89,7 @@ class DashboardTests(unittest.TestCase):
         self.assertIn("LOC-BE-QA", by_id["CODE-04-03"]["followUpTaskIds"])
         self.assertIn("MOB-04", by_id["MOB-00"]["followUpTaskIds"])
         self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
-        self.assertEqual(sum(t["status"] == "merged" for t in data["tasks"]), 49)
+        self.assertEqual(sum(t["status"] == "merged" for t in data["tasks"]), 50)
         client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
         self.assertIn("Незавершённые следующие задачи", client)
         self.assertIn('scope==="qa" && t.qaState==="manual_pending"', client)
