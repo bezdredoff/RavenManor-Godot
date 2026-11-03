@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · Game completeness and consistency planning PR #155 (draft)
+
+Owner approved a planning-only reconciliation: nine new GAME-* task packages, current-priority overrides for five CODE tasks, two additional delivery streams, and a documented authority hierarchy for Stage 1/2 vs later approved decisions. Canonical planning direction retains work_points as the sole restoration currency, RM-LVL-001..003 stable, and UPDS 22 levels as layout/mechanics candidates rather than automatically replacing Raven content. Bedroom access is independent of bathroom repair; no free tap-to-move; RavenCampaignStore is the sole progression/save authority. Source-of-truth `production_progress.json` and `gap_work_packages.json` were updated in the same PR, with all new tasks `proposed` and unaccepted. Existing accepted/merged statuses and owner QA evidence are unchanged. **No runtime code, art, save migration, or gameplay acceptance is claimed.** See `docs/production/GAME_CONSISTENCY_AUDIT_RU.md`, `GAME_FEATURE_COVERAGE_RU.md`, `GAME_PROGRESSION_CONTRACT_RU.md` and `UPDS_REUSE_IMPLEMENTATION_MATRIX.md`. CI validation pending.
+
+
 ## 2026-11-03 · Owner-confirmed manual QA: scoped closeouts and preserved wider gates (PR candidate)
 
 Owner confirmed in this chat that the requested manual checks were completed and passed. The scoped **VNS5-09** current-version native authoring workflow, **LOC-EN-QA**, **LOC-BE-QA**, **RM-GAP-013** tri-locale/editorial UI, and **PROC-003** secure phone incoming ZIP contract are now `accepted` with `manual_verified`/`feature_approved` and clear owner-reported evidence. Four previously active P1 tasks leave the active workstreams; VNS5-09 was already technically merged and is now owner-accepted. Remaining **13 P0 + 61 P1 + 44 P2 = 118 open tasks** and all **74 active P0/P1** remain assigned across ten workstreams.

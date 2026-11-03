@@ -1,3 +1,5 @@
+> **Historical supersession (2026-11-03):** The `RM-HS-005` door gate described below is obsolete. Bedroom entry is independent of bathroom and clue per [DECISIONS.md](../../DECISIONS.md) `RM-DEC-006/013`; see [canonical progression](../../production/GAME_PROGRESSION_CONTRACT_RU.md). Retain historical IDs, do not implement the old gate.
+
 # Raven Manor — 04 Early vertical slice flow — Stage 1 v0.5 (approved)
 
 **Scope:** один непрерывный фрагмент `RM-CH-01`, вход/холл + спальня и компактный санузел (санузел — смежная функциональная ячейка, а не вторая самостоятельная master-локация). Один проверяемый дверной переход `RM-DOOR-HALL-BEDROOM`. `RM-DOOR-HALL-PARLOR` сохранён как зарезервированный legacy-ID и не используется в S1. Все пять `RM-BEAT-01-01`–`RM-BEAT-01-05` сохранены.

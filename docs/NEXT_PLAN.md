@@ -1,4 +1,8 @@
 # Raven Manor — актуальный план и очередь задач
+
+> **2026-11-03 owner-approved planning reconciliation (proposed PR):** see [consistency audit](production/GAME_CONSISTENCY_AUDIT_RU.md), [feature coverage](production/GAME_FEATURE_COVERAGE_RU.md), [progression contract](production/GAME_PROGRESSION_CONTRACT_RU.md) and [UPDS reuse matrix](production/UPDS_REUSE_IMPLEMENTATION_MATRIX.md). The historical counts below are snapshots before this plan change; current authority is `production_progress.json`. No runtime/asset changes in this PR.
+
+**New foundation packages:** GAME-UI-01, GAME-M3-01, GAME-LOOP-01, GAME-QA-01; P1 GAME-ONBOARD-01, GAME-BOOST-01, GAME-JOURNAL-01; deferred GAME-ENDING-01, GAME-RELEASE-01. Two new workstreams WS-GAME-SHELL and WS-CAMPAIGN. Existing CODE tasks remain separate; no task accepted by priority change.
 **Срез:** 2026-11-03, `main` после смерженного PR #153 и owner-отчёта о пройденной QA.  
 **Режим работы сейчас:** очередь поддерживается через 10 проверяемых рабочих потоков и независимые ID; пока готовим QA batches и актуализируем планы, **не начинаем новую генерацию арта или игровую разработку без следующего решения владельца**.
 

@@ -1,3 +1,5 @@
+> **Supersession notice (2026-11-03):** This historical Stage 2 proposal contains an obsolete bedroom-door dependency on bathroom repair and clue. **Do not implement that gate.** Approved `RM-DEC-006/013` in [DECISIONS.md](../../DECISIONS.md) and [canonical progression](../../production/GAME_PROGRESSION_CONTRACT_RU.md) take precedence. The 2/2/2 rewards and 2/4 costs remain stable.
+
 # Raven Manor — 07a Restoration economy and gate contract — Stage 2 v0.2
 
 **Status [Proposal]:** testable, intentionally **not monetization**. Stage 1 fixes the **sequence and count**, not resource numbers. Story `work_points` represents prepared work, not cash, tradesperson skill or magically produced physical materials.

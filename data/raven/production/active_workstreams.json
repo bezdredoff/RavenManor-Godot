@@ -71,7 +71,6 @@
       "gate": "Один набор portrait/tablet/PWA device checks: tap targets, safe zones, reduced motion, resume, Room Builder stylus and Web/offline; evidence linked to each original task",
       "ownerAcceptance": "Browser CI never substitutes native phone/tablet visual proof",
       "taskIds": [
-        "CODE-04-01",
         "CODE-10-01",
         "CODE-10-02",
         "RM-GAP-002",
@@ -128,7 +127,6 @@
       "taskIds": [
         "CODE-01-02",
         "CODE-02-01",
-        "CODE-02-03",
         "CODE-02-05",
         "CODE-02-06",
         "RM-GAP-012",
@@ -227,7 +225,6 @@
       "ownerAcceptance": "Independent map prop states and owner-approved physical interactions required",
       "taskIds": [
         "CODE-07-01",
-        "CODE-07-02",
         "GFX-06-06",
         "GFX-09-01",
         "GFX-09-02",
@@ -307,6 +304,60 @@
           "Только reviewed-only branching promotion / gameplay integration, saves and exact route fixes; не продвигать QA fixture в канон автоматически"
         ],
         "decision": "Owner approves playable slice and safe migration/rollback; technical smoke ≠ finished Season 1"
+      }
+    },
+    {
+      "id": "WS-GAME-SHELL",
+      "title": "Игровая оболочка и управление сессией",
+      "phase": "Build+QA",
+      "gate": "New/Continue/Pause/Settings, no duplicate save owner; complete owner device walkthrough.",
+      "ownerAcceptance": "Separate functional and device evidence required",
+      "taskIds": [
+        "GAME-UI-01",
+        "CODE-04-01"
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "Menu routing, settings persistence, restart/resume regression"
+        ],
+        "ownerChecks": [
+          "New game and Continue on real device; pause/restart and locale/audio"
+        ],
+        "newWorkIfFailed": [
+          "Reuse upstream UI components and correct Raven adapter only"
+        ],
+        "decision": "Owner accepts integrated game shell, not just component smoke"
+      }
+    },
+    {
+      "id": "WS-CAMPAIGN",
+      "title": "Кампания, экономика и игровой цикл",
+      "phase": "Build+QA",
+      "gate": "Stable RM level IDs, once-only workPoints, restoration dependencies and integrated route to story.",
+      "ownerAcceptance": "Owner approves campaign pacing and real end-to-end run",
+      "taskIds": [
+        "GAME-M3-01",
+        "GAME-LOOP-01",
+        "GAME-ONBOARD-01",
+        "GAME-QA-01",
+        "GAME-BOOST-01",
+        "GAME-JOURNAL-01",
+        "CODE-07-02",
+        "CODE-08-01",
+        "CODE-02-03",
+        "CODE-04-02"
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "Level catalogue schema, ID stability, first-clear idempotency, no double store"
+        ],
+        "ownerChecks": [
+          "Real complete first-session flow, 22-level balance pilot and save reload"
+        ],
+        "newWorkIfFailed": [
+          "Update adapters and canonical content only after decision review"
+        ],
+        "decision": "Do not replace the three canonical VS levels or auto-publish VN drafts"
       }
     }
   ]
