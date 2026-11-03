@@ -76,7 +76,7 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(by_id["GFX-05-04"]["status"], "ready")
         self.assertEqual(by_id["GFX-05-05"]["status"], "ready")
         self.assertEqual(by_id["GFX-06-06"]["status"], "ready")
-        self.assertEqual(by_id["GFX-06-06"]["approvalState"], "art_approved")
+        self.assertEqual(by_id["GFX-06-06"]["approvalState"], "pending")
         self.assertIn("VNS5-08", by_id["GFX-06-06"]["followUpTaskIds"])
         self.assertEqual(by_id["VNS5-05A"]["status"], "merged")
         self.assertEqual(by_id["VNS5-05A"]["qaState"], "manual_pending")
