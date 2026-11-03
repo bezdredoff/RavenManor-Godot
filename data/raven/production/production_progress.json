@@ -1126,23 +1126,31 @@
     },
     {
       "id": "VNS5-11",
-      "status": "PR_review",
+      "status": "accepted",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "implementationState": "delivered",
-      "qaState": "manual_pending",
-      "approvalState": "pending",
-      "evidence": "Owner 2026-11-03: drag-drop missing; authored speaker creates no portraits; want auto 1→2→3 layout and narrator with no portrait. Model, UI and CI proposed in PR; runtime/approved content unaffected."
+      "qaState": "manual_verified",
+      "approvalState": "feature_approved",
+      "evidence": "Owner 2026-11-03: drag-drop missing; authored speaker creates no portraits; want auto 1→2→3 layout and narrator with no portrait. Model, UI and CI proposed in PR; runtime/approved content unaffected.\n2026-11-03 OWNER CLOSEOUT (scoped): PR #143 https://github.com/bezdredoff/RavenManor-Godot/pull/143 merged to main as aa65e06147362b238668c228de119c8b202ccc72. Owner reports the current editor seems to work and explicitly authorizes closing the related tasks after #144; scope accepted is the VNS5-11 editor-only narrator / approved portrait defaults / 1→2→3 staging / authored-line drag-and-drop functionality. This is an informal manual owner smoke, not exhaustive save/reopen, viewport, fallback matrix, or legacy UPDS QA. Does not approve runtime narrator/production promotion; broader acceptance remains VNS5-09 and visual parity VNS5-07F2.",
+      "followUpTaskIds": [
+        "VNS5-09",
+        "VNS5-07F2"
+      ]
     },
     {
       "id": "VNS5-12",
-      "status": "PR_review",
+      "status": "accepted",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "implementationState": "delivered",
-      "qaState": "manual_pending",
-      "approvalState": "pending",
-      "evidence": "User requested assistant to verify Story Map by adding draft 3-way choice Evelyn/Ada/Rowan, each return link, and distinct cast FX. Proposed VNS5-12: editor-only optional append fixture with automated pure data and UI Undo smoke, no canonical game routes. Stacked after VNS5-11, CI and owner QA pending."
+      "qaState": "manual_verified",
+      "approvalState": "feature_approved",
+      "evidence": "User requested assistant to verify Story Map by adding draft 3-way choice Evelyn/Ada/Rowan, each return link, and distinct cast FX. Proposed VNS5-12: editor-only optional append fixture with automated pure data and UI Undo smoke, no canonical game routes. Stacked after VNS5-11, CI and owner QA pending.\n2026-11-03 OWNER CLOSEOUT (scoped): PR #144 https://github.com/bezdredoff/RavenManor-Godot/pull/144 merged to main as dfe94dc6192b60010e2564c8f9a8ce191dd22b2b; latest-head CI #41651992785 passed https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41651992785. Owner says the features appear to work and explicitly requests closure. Accept only editor-only QA fixture (3 A/B/C choices, 3 return links, distinct fade/breathe/shake previews, one Undo, save only on explicit action). Automated smoke covers graph/FX/JSON/SHA safety. No claim of playable choices, full device/browser matrix, pixel parity or released animations. Future E2E authoring VNS5-09 and actual runtime VN-RUNTIME-01 remain open.",
+      "followUpTaskIds": [
+        "VNS5-09",
+        "VN-RUNTIME-01"
+      ]
     }
   ],
   "rules": [
