@@ -1092,10 +1092,10 @@
       "acceptance": "No unsupported claims of full exact reproducibility; failures documented.",
       "status": "proposed",
       "dependsOn": [
-        "GFX-05-05"
+        "ART-HANDBOOK-01"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 CI DAG correction: provenance QA now depends on accepted Art Handbook rather than superseded legacy GFX-05-05 batch/export method.",
       "requiresHumanAcceptance": true
     },
     {
