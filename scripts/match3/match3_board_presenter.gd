@@ -51,6 +51,14 @@ func setup(next_game: RefCounted, theme: Dictionary) -> void:
 	add_theme_constant_override("separation", 8)
 	_build()
 	resized.connect(_on_board_resized)
+	visibility_changed.connect(func() -> void:
+		if not is_visible_in_tree():
+			_gesture_index = -1
+			_gesture_kind = ""
+			_gesture_touch = -1
+			selected_index = -1
+			highlighted.clear()
+			if help_dialog.visible: help_dialog.hide())
 	_paint_live()
 	call_deferred("_on_board_resized")
 
@@ -203,8 +211,10 @@ func _build() -> void:
 		str(skin.get("help_goal", ""))
 	])
 	help_dialog.min_size = Vector2i(280, 340)
-	help_dialog.confirmed.connect(_on_help_modal_closed)
-	help_dialog.close_requested.connect(_on_help_modal_closed)
+	# Includes Esc/cancel, window close and programmatic hide. A modal must
+	# never leave the board permanently locked after disappearing.
+	help_dialog.visibility_changed.connect(func() -> void:
+		if not help_dialog.visible: _on_help_modal_closed())
 	add_child(help_dialog)
 	help_panel = PanelContainer.new()
 	help_panel.name = "Match3HelpPanel"
@@ -299,7 +309,7 @@ func _on_help_modal_closed() -> void:
 
 
 func _on_cell_gui_input(event: InputEvent, index: int) -> void:
-	if game == null or input_locked or help_open or str(game.state) != "playing":
+	if game == null or not is_visible_in_tree() or input_locked or help_open or str(game.state) != "playing":
 		return
 	var position := Vector2.ZERO
 	var kind := ""
@@ -314,6 +324,10 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 		position = cells[index].get_global_transform_with_canvas() * event.position
 	else:
 		return
+	# Mirror the common pointer path for direct GUI dispatch too. Only the
+	# finger that began a gesture can complete it; ignore emulated mouse.
+	if kind == "mouse" and Time.get_ticks_msec() - _last_touch_ms < 650:
+		return
 	if is_press and _gesture_index < 0 and game.can_interact_with_tile(index):
 		_gesture_index = index
 		_gesture_start = position
@@ -322,7 +336,7 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 		if kind == "touch":
 			_last_touch_ms = Time.get_ticks_msec()
 		accept_event()
-	elif not is_press and _gesture_index >= 0 and _gesture_kind == kind:
+	elif not is_press and _gesture_index >= 0 and _gesture_kind == kind and (kind != "touch" or event.index == _gesture_touch):
 		_finish_gesture(position)
 		accept_event()
 
@@ -378,7 +392,7 @@ func _refresh_controls() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if game == null or input_locked or help_open or str(game.state) != "playing":
+	if game == null or not is_visible_in_tree() or input_locked or help_open or str(game.state) != "playing":
 		return
 	var position := Vector2.ZERO
 	var kind := ""

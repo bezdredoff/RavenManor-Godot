@@ -83,6 +83,7 @@ run_check 'Main menu smoke' 'Raven Manor main menu and Prototype Lab navigation 
 run_check 'Prototype Lab smoke' 'Raven Manor Prototype Lab smoke passed' --script res://tests/raven/prototype_lab_smoke.gd --quit-after 120
 run_check 'UPDS engine port parity smoke' 'Raven Manor UPDS core reuse smoke passed' --script res://tests/raven/upds_core_reuse_smoke.gd --quit-after 120
 run_check 'UPDS M3 visual primitives' 'Raven Manor UPDS Match-3 visual primitives smoke passed' --script res://tests/raven/upds_match3_visual_primitives_smoke.gd --quit-after 120
+run_check 'Match-3 viewport pointer and modal' 'Raven Match-3 viewport pointer and modal smoke passed' --script res://tests/raven/match3_viewport_input_smoke.gd --quit-after 240
 run_check 'UPDS Match3 interactive board' 'Raven Manor UPDS interactive Match-3 board smoke passed' --script res://tests/raven/upds_match3_interactive_board_smoke.gd --quit-after 120
 run_check 'UPDS M3 help, blockers and retry' 'Raven Manor UPDS Match-3 help, objectives, special/blocker and retry smoke passed' --script res://tests/raven/upds_match3_presentation_states_smoke.gd --quit-after 120
 run_check 'UPDS Match3 frame FX / blocker segments' 'Raven Manor UPDS special-impact and blocker-segment settle smoke passed' --script res://tests/raven/upds_match3_frame_fx_smoke.gd --quit-after 120

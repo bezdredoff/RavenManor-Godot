@@ -116,3 +116,5 @@ Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPa
 Invoke-GodotCheck 'UPDS VN shell layout and input' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_layout_smoke.gd', '--quit-after', '600') 'Raven UPDS VN shell layout and input smoke passed'
 
 Invoke-GodotCheck 'VN persisted read-only Skip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_read_skip_smoke.gd', '--quit-after', '600') 'Raven VN persisted read-only Skip smoke passed'
+
+Invoke-GodotCheck 'Match-3 viewport pointer and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_viewport_input_smoke.gd', '--quit-after', '240') 'Raven Match-3 viewport pointer and modal smoke passed'
