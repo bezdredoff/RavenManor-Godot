@@ -686,13 +686,9 @@
       "deliverable": "Read-only contract audit, synthetic negative tests and reviewable compatibility decision document.",
       "acceptance": "Exact Raven source counts and stable IDs; source hashes; old draft smoke; no production source or save mutation; independent donor runtime parity remains a separate gate.",
       "status": "merged",
-      "dependsOn": [
-        "RAVEN-VN-EDITOR-01",
-        "RAVEN-VN-EDITOR-02",
-        "RAVEN-VN-EDITOR-03"
-      ],
+      "dependsOn": [],
       "graphicsDependencies": [],
-      "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 00",
+      "source": "Raven VN Studio Godot Handoff v5, 2026-11-01, PR 00 | 2026-11-03 dependency-cycle correction: Initial read-only baseline audit must not depend on retired broad editor designs; current authoring layers may use its result.",
       "requiresHumanAcceptance": true
     },
     {
@@ -1096,10 +1092,10 @@
       "acceptance": "No unsupported claims of full exact reproducibility; failures documented.",
       "status": "proposed",
       "dependsOn": [
-        "GFX-05-05"
+        "ART-HANDBOOK-01"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 CI DAG correction: provenance QA now depends on accepted Art Handbook rather than superseded legacy GFX-05-05 batch/export method.",
       "requiresHumanAcceptance": true
     },
     {
@@ -1126,12 +1122,12 @@
       "priority": "P0",
       "size": "S",
       "status": "merged",
-      "source": "Owner screenshots, 2026-11-03 | merged PR #142; partial owner backup recovery QA 2026-11-03",
+      "source": "Owner screenshots, 2026-11-03 | merged PR #142; partial owner backup recovery QA 2026-11-03 | 2026-11-03 dependency-cycle correction: Recovery/clean-start is a draft-authoring safety prerequisite, not a downstream feature of VNS5-09.",
       "description": "Raven draft blocks after source SHA drift with no user-controlled archive/reset. Legacy UPDS toolbar/nav/tabs distract from Raven-first authoring. Add explicit no-loss backup and clean-start and separate optional legacy tools.",
       "deliverable": "Manual-confirmation dialog with exact immutable recovery JSON, clean new draft on current SHA only after backup verification; Raven-first workspace hides 3 UPDS tabs but optional mode returns to donor; regression tests.",
       "acceptance": "Old draft preserved byte-for-byte, old edit data not silently rebased or applied; project/source files remain unchanged. User can edit/save new draft after explicitly agreeing; no accidental overwrite or cross-root recovery. UPDS tabs/toolbars hidden in Raven and accessible explicitly; CI and Windows visual QA.",
       "dependsOn": [
-        "VNS5-09"
+        "VNS5-06B"
       ],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true
@@ -1158,12 +1154,13 @@
       "priority": "P0",
       "size": "M",
       "status": "accepted",
-      "source": "Owner native Godot QA 2026-11-03 | PR #143 merged; scoped owner acceptance 2026-11-03",
+      "source": "Owner native Godot QA 2026-11-03 | PR #143 merged; scoped owner acceptance 2026-11-03 | 2026-11-03 dependency-cycle correction: Narrator/default portraits and authored reorder were prerequisites for full authoring QA; VNS5-09 depends on VNS5-11, not the reverse.",
       "description": "New authored speakers must appear in Stage, auto-transition 1/2/3 cast templates, allow author narration with no portrait, and support stable-ID drag/drop within authored lines.",
       "deliverable": "Editor-only narrator sentinel + narration delivery, exact accepted neutral/base artwork when possible, 1/2/3 template reflow and safe authored-only DnD; Undo and smoke tests.",
       "acceptance": "Adding Evelyn then Ada then Rowan uses exact approved image state if present, 1/2/3 Stage layout; narrator line creates no portrait; drag reorder preserves translations/checkpoints/FX, rejects canonical lines and supports Undo; no production save/runtime changes.",
       "dependsOn": [
-        "VNS5-09"
+        "VNS5-07B",
+        "VNS5-07F3"
       ],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true
@@ -1175,13 +1172,14 @@
       "priority": "P0",
       "size": "M",
       "status": "accepted",
-      "source": "Owner 2026-11-03 native QA request | PR #144 merged; scoped owner acceptance 2026-11-03",
+      "source": "Owner 2026-11-03 native QA request | PR #144 merged; scoped owner acceptance 2026-11-03 | 2026-11-03 dependency-cycle correction: The optional A/B/C fixtures depend on authored actors/graph wires and existing stage timeline, not on VNS5-09 E2E acceptance.",
       "description": "Add reversible, user-confirmed editor-only QA four-scene tail to inspect draft Choice A/B/C → Evelyn/Ada/Rowan and each return link; assign separate phase effects.",
       "deliverable": "Four appended draft scenes, 3 choice edges and 3 return scene edges; exact BG-HALL and approved character base portraits, 3 different FX on hub and branches, safe local save/review export; Godot smoke of graph, FX and Undo.",
       "acceptance": "Never changes canonical 28 scenes/280 lines or runtime, never writes user's local draft without Save; preview graph shows all branches and return edges; Animation plays each character's distinctive FX, SHA validation and local serialization pass, owner manual QA pending.",
       "dependsOn": [
         "VNS5-11",
-        "VNS5-09"
+        "VNS5-07C3",
+        "VNS5-07F5"
       ],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true

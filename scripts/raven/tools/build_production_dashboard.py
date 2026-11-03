@@ -93,12 +93,11 @@ def build() -> dict:
     for item in plan:
         override = overrides.get(item["id"])
         if override:
-            # Section-based graphics priorities are a *historical default*.
-            # Accepted art and a scoped Hall/Chibi backlog may override P0
-            # per task without rewriting or deleting source production gates.
-            if "priority" in override:
-                if not item["id"].startswith("GFX-") or override["priority"] not in {"P0", "P1", "P2"}:
-                    raise ValueError(f"Invalid graphics task priority override: {item['id']}")
+            # Source plans preserve historical CODE/GAP/GFX definitions and
+            # priorities. Only an explicit, reviewed production-progress
+            # override may change the *current* task priority.
+            if "priority" in override and override["priority"] not in {"P0", "P1", "P2"}:
+                raise ValueError(f"Invalid task priority override: {item['id']}")
             item.update({k: override[k] for k in ("status", "priority", "owner", "updated", "evidence", "implementationState", "qaState", "approvalState", "supersededBy", "followUpTaskIds") if k in override})
         item.setdefault("owner", "unassigned")
         item.setdefault("updated", None)
@@ -119,6 +118,18 @@ def build() -> dict:
             raise ValueError(f"Unknown/self follow-up IDs for {item['id']}: {remaining}")
         if item["status"] not in STATES:
             raise ValueError(f"Unsupported {item['id']} status: {item['status']}")
+    # Dependencies on delivered tasks remain visible as planning history,
+    # but they are not *active blockers* in the dashboard. For example, an
+    # old merged CODE-02 migration can list a not-yet-accepted UI gate without
+    # implying it must be implemented again. No original source edges deleted.
+    task_by_id = {item["id"]: item for item in plan}
+    terminal = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
+    for item in plan:
+        deps = item.get("dependsOn", [])
+        item["openDependsOn"] = (
+            [dep for dep in deps if dep in task_by_id and task_by_id[dep]["status"] not in terminal]
+            if item["status"] not in terminal else []
+        )
     # Asset approval is a separate owner decision; it is not inferred from merge,
     # gameplay staging or CI. Only exact imported catalog records are counted.
     backgrounds = bg_catalog.get("entries", [])

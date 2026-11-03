@@ -33,7 +33,8 @@ function detail(item){
     const box=node("div","axis");box.append(node("span","",label),node("strong","",value));axes.append(box);
   }
   d.append(axes);
-  field(d,"Зависимости",(item.dependsOn||[]).join(", ")||"нет");
+  field(d,"Активные зависимости",(item.openDependsOn||[]).join(", ")||"нет");
+  field(d,"Исторические связи плана",(item.dependsOn||[]).join(", ")||"нет");
   field(d,"Арт/код связи",(item.graphicsDependencies||[]).join(", ")||"—");
   if((item.supersededBy||[]).length)field(d,"Заменено на",item.supersededBy.join(", "));
   if((item.followUpTaskIds||[]).length)field(d,"Незавершённые следующие задачи",item.followUpTaskIds.join(", "));
