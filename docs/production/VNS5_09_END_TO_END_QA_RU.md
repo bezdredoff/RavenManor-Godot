@@ -1,5 +1,7 @@
 # VNS5-09 · сквозное создание и сохранение VN-черновика
 
+> **Результат QA 2026-11-03:** владелец подтвердил успешное выполнение ручных проверок после merged #153. `VNS5-09` обновлена до `accepted`, `qaState=manual_verified`, `approvalState=feature_approved` в рамках текущего draft-authoring workflow. Приведённый ниже исторический чеклист сохранён для воспроизводимости. Исходное HTML visual parity `VNS5-07F2` и playable branching `VN-RUNTIME-01` — отдельные незакрытые задачи. См. [журнал приёмки](OWNER_QA_ACCEPTANCE_20261103_RU.md).
+
 Дата: 2026-11-03. Рабочая область: **редактор Raven VN Studio**, не игровой runtime.
 
 ## Актуальный scope
