@@ -1,3 +1,9 @@
+# 2026-11-03 · GAME-UI-01 / CODE-02-06 Web glyph/copy repair
+
+Actual Chromium Web export QA of the combined #174 → #176 → #175 stack showed missing Unicode menu/history/gear glyphs (squares). The shared VN now uses existing-font text: `...`, localized history abbreviation and current locale code for the language action. Auto/Skip captions and tooltips are localized RU/BE/EN; active Auto uses a plain plus instead of another missing checkmark. The same browser pass found missing cup/brooch/special symbols in the temporary Match-3 skin; distinct ASCII marks and matching help legend replace them. Existing tile names/tooltips remain intact. No fonts, icons or other assets added. This does not claim a full settings screen or donor icon parity.
+
+Chromium loaded the combined Web build without JS errors; touch Next paginated VN and header Menu opened pause. Full combined Godot 4.7.2 scripts/check.sh passed before this copy-only follow-up. Existing layout/input/localization tests, repaired Web screenshots and PR CI are being checked. Physical-device QA remains open.
+
 # 2026-11-03 · CODE-02-06 — viewport pointer and modal recovery
 
 PR #175 is now stacked on #176 after #174; merge in that order. Check runners and status sources preserve all three increments. Combined regression and rebased-head CI pending.
