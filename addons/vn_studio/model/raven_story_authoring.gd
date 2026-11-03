@@ -2,6 +2,7 @@
 extends RefCounted
 ## VNS5-06B: immutable draft-only Raven scene/line additions.
 ## Stable reserved IDs deliberately cannot masquerade as promoted runtime scenes.
+const NARRATOR_ID := "RM-NARRATOR" # Review-only speaker; no portrait or canonical actor
 const MAX_NEW_SCENES := 32
 const MAX_NEW_LINES := 320
 const SCENE_KEYS := ["sceneId", "title", "status", "chapter"]
@@ -90,7 +91,7 @@ static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
 		return {"ok": false, "error": "Scene title in RU must contain 1–120 characters."}
 	if initial_line_ru.strip_edges().is_empty() or initial_line_ru.length() > 6000:
 		return {"ok": false, "error": "First dialogue line requires RU text (max 6000 characters)."}
-	if not actor_ids(project).has(speaker_id):
+	if not actor_ids(project).has(speaker_id) and speaker_id != NARRATOR_ID:
 		return {"ok": false, "error": "Speaker is not in the approved character registry."}
 	if not chapter.is_empty() and not _valid_chapter(chapter):
 		return {"ok": false, "error": "Draft chapter must use a two-digit group such as 02."}
@@ -122,7 +123,7 @@ static func add_line(project: Dictionary, draft: Dictionary, scene_id: String,
 		return {"ok": false, "error": "Line source scene does not exist."}
 	if text_ru.strip_edges().is_empty() or text_ru.length() > 6000:
 		return {"ok": false, "error": "Dialogue requires non-empty RU text (max 6000 characters)."}
-	if not actor_ids(project).has(speaker_id):
+	if not actor_ids(project).has(speaker_id) and speaker_id != NARRATOR_ID:
 		return {"ok": false, "error": "Speaker is not in the approved character registry."}
 	if draft.get("authoredLines", []).size() >= MAX_NEW_LINES:
 		return {"ok": false, "error": "Draft line count exceeds limit."}
@@ -186,6 +187,28 @@ static func move_line(project: Dictionary, draft: Dictionary, scene_id: String,
 
 ## Keep canonical lines immutable and protect referenced draft checkpoints.
 ## An authored scene must retain at least one line.
+## Stable-ID move across any number of authored lines in one scene.
+## One UI Undo point, preserves translations, FX and Story Map checkpoints.
+static func move_line_to(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String, target_line_id: String) -> Dictionary:
+	var own: Array = []
+	for item in draft.get("authoredLines", []):
+		if item is Dictionary and item.get("sceneId", "") == scene_id:
+			own.append(str(item.get("id", "")))
+	var from_index: int = own.find(line_id)
+	var to_index: int = own.find(target_line_id)
+	if from_index < 0 or to_index < 0:
+		return {"ok": false, "error": "Перемещать можно только черновые реплики одной сцены."}
+	var candidate: Dictionary = draft
+	var direction: int = 1 if from_index < to_index else -1
+	for _step in range(absi(to_index - from_index)):
+		var moved: Dictionary = move_line(project, candidate, scene_id, line_id, direction)
+		if not moved.get("ok", false):
+			return moved
+		candidate = moved["draft"]
+	return {"ok": true, "draft": candidate, "lineId": line_id}
+
+
 static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String,
 		line_id: String) -> Dictionary:
 	var candidate: Dictionary = draft.duplicate(true)
@@ -219,7 +242,8 @@ static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String
 
 static func _line(id: String, scene_id: String, text_ru: String, speaker_id: String) -> Dictionary:
 	return {"id": id, "sceneId": scene_id, "speakerId": speaker_id,
-		"delivery": "speech", "source": "vn_studio_draft_not_runtime",
+		"delivery": "narration" if speaker_id == NARRATOR_ID else "speech",
+		"source": "vn_studio_draft_not_runtime",
 		"localized": {"ru": {"text": text_ru.strip_edges()}, "be": null, "en": null}}
 
 
@@ -283,9 +307,10 @@ static func validate(project: Dictionary, draft: Dictionary) -> String:
 			return "Duplicate line ID."
 		known_lines[id] = true
 		per_scene[scene_id] = int(per_scene.get(scene_id, 0)) + 1
-		if line.get("speakerId") not in actor_ids(project):
+		var is_narration: bool = line.get("speakerId") == NARRATOR_ID
+		if not is_narration and line.get("speakerId") not in actor_ids(project):
 			return "Authored line speaker is not in the character registry."
-		if line.get("delivery") != "speech" or line.get("source") != "vn_studio_draft_not_runtime":
+		if line.get("delivery") != ("narration" if is_narration else "speech") or line.get("source") != "vn_studio_draft_not_runtime":
 			return "Authored line has an unsupported delivery or claimed production source."
 		var localized: Variant = line.get("localized")
 		if not localized is Dictionary or not localized.get("ru") is Dictionary or\

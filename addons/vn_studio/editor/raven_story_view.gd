@@ -3,6 +3,7 @@ extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
 signal legacy_tools_requested
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
+const DraggableLines = preload("res://addons/vn_studio/editor/raven_draggable_lines.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
 const RavenGraph = preload("res://addons/vn_studio/editor/raven_story_graph_view.gd")
@@ -268,9 +269,11 @@ func _build() -> void:
 	_heading = Label.new()
 	_heading.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	middle.add_child(_heading)
-	_lines = ItemList.new()
+	_lines = DraggableLines.new()
 	_lines.size_flags_vertical = SIZE_EXPAND_FILL
 	_lines.item_selected.connect(_on_line)
+	_lines.reorder_requested.connect(_on_line_dropped)
+	_lines.tooltip_text = "Черновые реплики: перетащите на другую черновую реплику. Канон не перемещается."
 	middle.add_child(_lines)
 	var stage_split := HSplitContainer.new()
 	_stage_split = stage_split
@@ -558,7 +561,10 @@ func _refresh_speakers() -> void:
 	for picker in [_scene_speaker, _line_speaker]:
 		picker.clear()
 		for actor_id in actors:
-			picker.add_item(str(actor_id))
+			picker.add_item(str(actor_id).trim_prefix("RM-CHAR-"))
+			picker.set_item_metadata(picker.item_count - 1, actor_id)
+		picker.add_item("Авторский текст (без персонажа)")
+		picker.set_item_metadata(picker.item_count - 1, Store.Author.NARRATOR_ID)
 		if picker.item_count > 0:
 			picker.select(0)
 
@@ -607,7 +613,7 @@ func _on_create_scene() -> void:
 	var background: Dictionary = _scene_backgrounds[_scene_background.selected]
 	var result: Dictionary = Store.add_scene(_project, _draft,
 		_scene_title_input.text, _scene_first_line_input.text,
-		_scene_speaker.get_item_text(_scene_speaker.selected), chapter, background)
+		str(_scene_speaker.get_item_metadata(_scene_speaker.selected)), chapter, background)
 	if not result.get("ok", false):
 		_status.text = "Новая сцена не добавлена: " + str(result.get("error", ""))
 		return
@@ -627,7 +633,7 @@ func _on_create_line() -> void:
 		return
 	var source: String = str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"])
 	var result: Dictionary = Store.add_line(_project, _draft, source,
-		_new_line_input.text, _line_speaker.get_item_text(_line_speaker.selected))
+		_new_line_input.text, str(_line_speaker.get_item_metadata(_line_speaker.selected)))
 	if not result.get("ok", false):
 		_status.text = "Реплика не добавлена: " + str(result.get("error", ""))
 		return
@@ -639,7 +645,7 @@ func _on_create_line() -> void:
 	_line_idx = Store.entries_for(_project, _draft, source).size() - 1
 	_line_render()
 	_raven_graph.set_context(Store.visible_project(_project, _draft), _draft, source)
-	_status.text = "Добавлена draft-реплика " + str(result["lineId"]) + "."
+	_status.text = "Добавлена draft-реплика " + str(result["lineId"]) + "." + str(result.get("stageNotice", ""))
 	_refresh_buttons()
 
 
@@ -676,6 +682,36 @@ func _move_selected_line(direction: int) -> void:
 			break
 	_line_render()
 	_status.text = "Черновая реплика перемещена; ID сохранён: " + line_id
+	_refresh_buttons()
+
+
+func _on_line_dropped(from_index: int, to_index: int) -> void:
+	if _blocked or _project.is_empty() or from_index == to_index:
+		return
+	var scene_id: String = str(Store.scene_records(_project, _draft)[_scene_idx]["sceneId"])
+	var entries: Array = Store.entries_for(_project, _draft, scene_id)
+	if from_index < 0 or to_index < 0 or from_index >= entries.size() or to_index >= entries.size():
+		return
+	var from_id: String = str(entries[from_index]["id"])
+	var to_id: String = str(entries[to_index]["id"])
+	var result: Dictionary = Store.move_line_to(_project, _draft, scene_id, from_id, to_id)
+	if not result.get("ok", false):
+		_status.text = "Drag & drop: " + str(result.get("error", "Не удалось переместить."))
+		return
+	if result["draft"] == _draft:
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_scene_switch()
+	var after: Array = Store.entries_for(_project, _draft, scene_id)
+	for index in range(after.size()):
+		if str(after[index]["id"]) == from_id:
+			_line_idx = index
+			break
+	_line_render()
+	_status.text = "Перетащено: " + from_id + " · ID, переводы и привязки сохранены."
 	_refresh_buttons()
 
 
@@ -878,7 +914,7 @@ func _line_render() -> void:
 		title_edit.editable = authored and not _blocked
 	_suppress = false
 	_line_info.text = "%s\nГоворящий: %s · тип: %s\n%s" % [
-		str(e["id"]), str(e.get("speakerId", "")),
+		str(e["id"]), "Автор / без портрета" if e.get("speakerId") == Store.Author.NARRATOR_ID else str(e.get("speakerId", "")),
 		str(e.get("delivery", "speech")),
 		"⚠ Перевод пока отсутствует — показан RU fallback." if text_value["fallback"] else "Перевод есть / оригинал."]
 	var cue: Dictionary = _project["cues"].get(str(e["id"]), {})
@@ -1310,5 +1346,5 @@ func _sync_dialogue_preview() -> void:
 		return
 	var loc: Dictionary = Store.localized(entry, _draft, _language)
 	_stage_designer.set_dialogue_preview(
-		str(entry.get("speakerId", "")).trim_prefix("RM-CHAR-"),
+		"Автор" if entry.get("speakerId") == Store.Author.NARRATOR_ID else str(entry.get("speakerId", "")).trim_prefix("RM-CHAR-"),
 		str(loc.get("text", "")), str(entry.get("id", "")))

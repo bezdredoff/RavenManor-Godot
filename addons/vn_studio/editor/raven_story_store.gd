@@ -13,6 +13,7 @@ const StageV2 = preload("res://addons/vn_studio/model/stage_v2_store.gd")
 const StageFx = preload("res://addons/vn_studio/model/stage_fx_store.gd")
 const StoryGraph = preload("res://addons/vn_studio/model/raven_story_graph_draft.gd")
 const Author = preload("res://addons/vn_studio/model/raven_story_authoring.gd")
+const StageLayout = preload("res://addons/vn_studio/model/stage_layout_tools.gd")
 const Promotion = preload("res://addons/vn_studio/model/raven_story_promotion.gd")
 const Package = preload("res://addons/vn_studio/model/raven_production_package.gd")
 const ImageStaging = preload("res://addons/vn_studio/model/staged_image_store.gd")
@@ -136,6 +137,10 @@ static func add_scene(project: Dictionary, draft: Dictionary, title_ru: String,
 	var error: String = set_stage(project, result["draft"], shot)
 	if not error.is_empty():
 		return {"ok": false, "error": error}
+	var composed: Dictionary = _with_speaker_on_stage(project, result["draft"], scene_id, speaker_id)
+	if not composed.get("ok", false):
+		return composed
+	result["draft"] = composed["draft"]
 	error = validate(project, result["draft"])
 	if not error.is_empty():
 		return {"ok": false, "error": error}
@@ -161,12 +166,82 @@ static func background_variants(project: Dictionary) -> Array[Dictionary]:
 
 static func add_line(project: Dictionary, draft: Dictionary, scene_id: String,
 		text_ru: String, speaker_id: String) -> Dictionary:
-	return Author.add_line(project, draft, scene_id, text_ru, speaker_id)
+	var result: Dictionary = Author.add_line(project, draft, scene_id, text_ru, speaker_id)
+	if not result.get("ok", false):
+		return result
+	var composed: Dictionary = _with_speaker_on_stage(project, result["draft"], scene_id, speaker_id)
+	if not composed.get("ok", false):
+		return composed
+	result["draft"] = composed["draft"]
+	result["stageNotice"] = composed.get("stageNotice", "")
+	return result
+
+
+## Prefer an exact, accepted neutral portrait from the existing VN art registry.
+## Never fabricate art IDs when no matching default image exists.
+static func default_actor(project: Dictionary, actor_id: String) -> Dictionary:
+	var spec: Dictionary = stage_options(project).get("actors", {}).get(actor_id, {})
+	if spec.is_empty():
+		return {}
+	var entries: Array[Dictionary] = Characters.entries_for(actor_id)
+	for item: Dictionary in entries:
+		if item.get("status") == "accepted" and item.get("defaultForPose", false) and item.get("emotion") == "neutral" and\
+				item.get("pose") in spec.get("poses", []) and item.get("emotion") in spec.get("emotions", []):
+			return {"characterId": actor_id, "pose": item["pose"], "emotion": item["emotion"],
+				"assetId": item["id"], "slot": "center", "x": 0.5, "y": 0.55, "micro": ""}
+	for item: Dictionary in entries:
+		if item.get("status") == "accepted" and item.get("defaultForPose", false) and\
+				item.get("pose") in spec.get("poses", []) and item.get("emotion") in spec.get("emotions", []):
+			return {"characterId": actor_id, "pose": item["pose"], "emotion": item["emotion"],
+				"assetId": item["id"], "slot": "center", "x": 0.5, "y": 0.55, "micro": ""}
+	return {"characterId": actor_id, "pose": str(spec.get("poses", [""])[0]),
+		"emotion": str(spec.get("emotions", [""])[0]), "slot": "center", "x": 0.5,
+		"y": 0.55, "micro": ""} # ART PENDING; no invented assetId
+
+
+static func _with_speaker_on_stage(project: Dictionary, draft: Dictionary,
+		scene_id: String, speaker_id: String) -> Dictionary:
+	if speaker_id == Author.NARRATOR_ID:
+		return {"ok": true, "draft": draft}
+	var stage: Dictionary = effective_stage(project, draft, scene_id)
+	if stage.is_empty():
+		return {"ok": false, "error": "Сцена не имеет постановки."}
+	var cast: Array = stage.get("cast", [])
+	for actor in cast:
+		if actor.get("characterId", "") == speaker_id:
+			return {"ok": true, "draft": draft}
+	if cast.size() >= 3:
+		return {"ok": true, "draft": draft,
+			"stageNotice": "В кадре уже три персонажа; текст добавлен, но четвёртый портрет не вставлен."}
+	var actor: Dictionary = default_actor(project, speaker_id)
+	if actor.is_empty():
+		return {"ok": false, "error": "Персонаж отсутствует в реестре постановки."}
+	cast.append(actor)
+	stage["cast"] = cast
+	stage["visibleCount"] = cast.size()
+	# When a NEW speaker arrives, transition 1→2 or 2→3 portraits.
+	# Does not change a pose, image or costume already chosen by the author.
+	stage = StageLayout.apply_template(stage, StageLayout.PORTRAIT)
+	var error: String = set_stage(project, draft, stage)
+	if not error.is_empty():
+		return {"ok": false, "error": "Не удалось добавить портрет: " + error}
+	return {"ok": true, "draft": draft}
+
 
 
 static func move_line(project: Dictionary, draft: Dictionary, scene_id: String,
 		line_id: String, direction: int) -> Dictionary:
 	var result: Dictionary = Author.move_line(project, draft, scene_id, line_id, direction)
+	if result.get("ok", false):
+		var error: String = validate(project, result["draft"])
+		if not error.is_empty():
+			return {"ok": false, "error": error}
+	return result
+
+
+static func move_line_to(project: Dictionary, draft: Dictionary, scene_id: String,
+		line_id: String, target_line_id: String) -> Dictionary:
+	var result: Dictionary = Author.move_line_to(project, draft, scene_id, line_id, target_line_id)
 	if result.get("ok", false):
 		var error: String = validate(project, result["draft"])
 		if not error.is_empty():
