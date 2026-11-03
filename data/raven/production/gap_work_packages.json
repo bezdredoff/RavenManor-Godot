@@ -954,15 +954,15 @@
       "domain": "narrative",
       "priority": "P0",
       "size": "L",
-      "description": "Import/group/rename props and states, choose exact asset variant, arrange in scene; avoid invented accepted prop art.",
+      "description": "Import/group/rename props and states, choose exact asset variant, arrange in scene; avoid invented accepted prop art. CURRENT RELEASE: no independent VN props; objects held in hands are part of approved character composite images. This task is future-version only; map props remain separate work.",
       "deliverable": "Functional state-aware asset library, Stage placement, review-only save/reopen with immutable IDs.",
       "acceptance": "Prop gallery, staging, scene, undo and export tested in Godot with actual states and no production write.",
-      "status": "proposed",
+      "status": "deferred",
       "dependsOn": [
         "VNS5-04B"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 owner explicitly deferred VN props to future version; map props remain separately planned",
       "requiresHumanAcceptance": true
     },
     {
@@ -971,16 +971,16 @@
       "domain": "narrative",
       "priority": "P0",
       "size": "M",
-      "description": "Create full draft scene with approved background, 1–3 actors, dialogues in 3 locales, FX and graph transitions.",
-      "deliverable": "Repeatable native Godot authoring scenario with save/reopen/undo/review export.",
-      "acceptance": "Owner can complete workflow without code edits, all 3 locale texts survive; not equivalent to executable runtime.",
+      "description": "Create full draft scene with approved background, 1–3 actors, dialogues in 3 locales, FX and graph transitions. Current release E2E is background + 1–3 accepted character composites (including held objects) + RU/BE/EN text + editor FX + draft Story Map + save/reopen/Undo. Standalone VN prop workflow is not a prerequisite.",
+      "deliverable": "Repeatable native Godot scene-authoring scenario with approved plate, 1–3 composite cast images, three locales, editor-only FX and draft choice links; save/reopen/undo/review export. No separate VN prop catalog.",
+      "acceptance": "Owner can complete the scoped current-version workflow without code edits, all three locale texts plus draft Story Map/FX survive save/reopen and Undo; this does NOT imply executable branching, full HTML pixel parity or production prop catalog.",
       "status": "proposed",
       "dependsOn": [
-        "VNS5-08",
-        "VNS5-07F2"
+        "VNS5-11",
+        "VNS5-12"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 current VN release excludes standalone VN props",
       "requiresHumanAcceptance": true
     },
     {

@@ -20,6 +20,29 @@ func _run() -> void:
 	var project: Dictionary = Store.open_project(root_path)
 	assert(project.get("ok", false))
 	var original: Dictionary = Store.fresh(project)
+	# Start from a pre-existing authored scene too: the fixture is appended,
+	# not substituted for or mixed into the owner's earlier authored content.
+	var plate: Dictionary = QABranch._plate(project)
+	var prior: Dictionary = Store.add_scene(project, original,
+		"QA · уже созданная сцена", "Ранее созданная реплика", QABranch.ACTORS[0], "09", plate)
+	assert(prior.get("ok", false), str(prior.get("error", "")))
+	var prior_draft: Dictionary = prior["draft"].duplicate(true)
+	var appended: Dictionary = QABranch.build(project, prior_draft)
+	assert(appended.get("ok", false), str(appended.get("error", "")))
+	assert(prior_draft == prior["draft"], "Append must never mutate caller's draft")
+	assert(appended["hubSceneId"] == "RM-DRAFT-BEAT-0002")
+	assert(appended["draft"]["authoredScenes"].size() == 5)
+	assert(appended["draft"]["authoredLines"].size() == 8)
+	assert(appended["draft"]["authoredScenes"][0] == prior_draft["authoredScenes"][0])
+	assert(appended["draft"]["authoredLines"][0] == prior_draft["authoredLines"][0])
+	assert(appended["draft"]["stagePatches"][str(prior["sceneId"])] ==
+		prior_draft["stagePatches"][str(prior["sceneId"])] )
+	assert(Store.validate(project, JSON.parse_string(JSON.stringify(appended["draft"]))).is_empty())
+	assert(not QABranch.build(project, appended["draft"]).get("ok", false),
+		"Duplicate QA fixture must be rejected without touching other scenes")
+	var user_path: String = Store.draft_path(root_path)
+	var user_exists: bool = FileAccess.file_exists(user_path)
+	var original_user_bytes: String = FileAccess.get_file_as_string(user_path) if user_exists else ""
 	var result: Dictionary = QABranch.build(project, original)
 	assert(result.get("ok", false), str(result.get("error", "")))
 	var d: Dictionary = result["draft"]
@@ -86,6 +109,63 @@ func _run() -> void:
 	assert(view._draft["authoredScenes"].is_empty(), "Single-click demo must be one Undo step")
 	view._on_redo()
 	assert(view._draft["authoredScenes"].size() == 4)
+	# Undo may select the previous canonical scene; explicitly refocus the QA hub.
+	view._scene_idx = project["sceneCount"]
+	view._scene_switch()
+	assert(view.selected_context()["sceneId"] == hub)
+
+	# User-visible Story Map: all three orange links exist and are selectable.
+	assert(view._raven_graph._edge_list.item_count == 3)
+	for i in range(3):
+		var from_node: StringName = StringName(view._raven_graph._name_map[hub])
+		var to_node: StringName = StringName(view._raven_graph._name_map[branches[i]])
+		assert(view._raven_graph._canvas.is_node_connected(from_node, 1, to_node, 1),
+			"Each choice must show a draft-port wire")
+	view._raven_graph._select_graph_connection({
+		"from_node": StringName(view._raven_graph._name_map[hub]),
+		"to_node": StringName(view._raven_graph._name_map[branches[0]]),
+		"from_port": 0, "to_port": 0})
+	assert(view._raven_graph._editing_edge == -1, "Canonical port must stay read-only")
+	view._raven_graph._select_graph_connection({
+		"from_node": StringName(view._raven_graph._name_map[hub]),
+		"to_node": StringName(view._raven_graph._name_map[branches[0]]),
+		"from_port": 1, "to_port": 1})
+	assert(view._raven_graph._editing_edge == 0, "Draft wire selects exact choice")
+	var old_label: String = str(view._draft["storyGraphPatches"][hub]["edges"][0]["label"])
+	view._raven_graph._label.text = "QA · Эвелин — проверка редактирования"
+	view._raven_graph._on_update()
+	assert(view._draft["storyGraphPatches"][hub]["edges"][0]["label"] != old_label)
+	view._on_undo()
+	assert(view._draft["storyGraphPatches"][hub]["edges"][0]["label"] == old_label)
+	view._on_redo()
+	assert(view._draft["storyGraphPatches"][hub]["edges"][0]["label"] != old_label)
+	view._on_undo() # Preserve baseline for the animation fixture.
+	# Editor Animation: Play/Pause/Reset, scrub and moving a real clip persist
+	# via the same signal/Undo path as mouse-driven timeline authoring.
+	var stage_ui = view._stage_designer
+	assert(stage_ui._fx_timeline._cues.size() == 3)
+	assert(not stage_ui._fx_playing)
+	stage_ui._on_fx_play()
+	assert(stage_ui._fx_playing)
+	stage_ui._process(0.25)
+	assert(stage_ui._fx_elapsed > 0.0)
+	stage_ui._on_fx_play()
+	assert(not stage_ui._fx_playing)
+	stage_ui._on_fx_stop()
+	assert(stage_ui._fx_elapsed == 0.0)
+	var old_start: int = int(view._draft["stageFxPatches"][hub]["cues"][1]["startMs"])
+	stage_ui._on_timeline_move(1, 1750)
+	assert(int(view._draft["stageFxPatches"][hub]["cues"][1]["startMs"]) == 1750)
+	assert(Store.validate(view._project, view._draft).is_empty())
+	view._on_undo()
+	assert(int(view._draft["stageFxPatches"][hub]["cues"][1]["startMs"]) == old_start)
+	view._on_redo()
+	assert(int(view._draft["stageFxPatches"][hub]["cues"][1]["startMs"]) == 1750)
+	assert(Store.validate(view._project, JSON.parse_string(JSON.stringify(view._draft))).is_empty())
+	assert(FileAccess.file_exists(user_path) == user_exists,
+		"Preview/Undo/FX must not implicitly save a local draft")
+	if user_exists:
+		assert(FileAccess.get_file_as_string(user_path) == original_user_bytes)
 	view.queue_free()
 	for rel in original_files:
 		assert(FileAccess.get_sha256(root_path.path_join(rel)) == original_files[rel],

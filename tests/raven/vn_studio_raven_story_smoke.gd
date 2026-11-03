@@ -227,6 +227,20 @@ func _run() -> void:
 	var old_info: Dictionary = Store.stale_draft_info(changed_project)
 	assert(old_info.get("ok", false), JSON.stringify(old_info))
 	assert(old_info["changes"]["translations"] == 2)
+	# Fail-closed recovery: a valid-looking stale JSON from another project
+	# must not be archived, cleared or silently imported.
+	var foreign: Dictionary = JSON.parse_string(saved_before_drift)
+	foreign["sourceRootFingerprint"] = "wrong-repository"
+	_write(Store.draft_path(source), foreign)
+	assert(not Store.stale_draft_info(changed_project).get("ok", false))
+	assert(not Store.archive_and_start_fresh(changed_project).get("ok", false))
+	assert(FileAccess.get_file_as_string(original_path) != original,
+		"Recovery test operates only on its synthetic source")
+	var restore_draft: FileAccess = FileAccess.open(Store.draft_path(source), FileAccess.WRITE)
+	assert(restore_draft != null)
+	restore_draft.store_string(saved_before_drift)
+	restore_draft.close()
+	assert(Store.stale_draft_info(changed_project).get("ok", false))
 	var recovered: Dictionary = Store.archive_and_start_fresh(changed_project)
 	assert(recovered.get("ok", false), JSON.stringify(recovered))
 	assert(FileAccess.get_file_as_string(str(recovered["backupPath"])) == saved_before_drift)
