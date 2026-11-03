@@ -379,15 +379,30 @@ func _layout() -> void:
 	nameplate.position = Vector2(14, -20)
 	nameplate.size = Vector2(minf(170, w * 0.50), 38)
 	dialogue.position = Vector2(14, 30)
-	dialogue.size = Vector2(maxf(1, dialogue_panel.size.x - 28), box_h - 105)
-	progress.position = Vector2(14, box_h - 35)
-	progress.size = Vector2(135, 25)
-	skip_button.position = Vector2(maxf(0, dialogue_panel.size.x - 288), box_h - 51)
-	skip_button.size = Vector2(80, 43)
-	auto_button.position = Vector2(maxf(0, dialogue_panel.size.x - 201), box_h - 51)
-	auto_button.size = Vector2(78, 43)
-	next_button.position = Vector2(maxf(0, dialogue_panel.size.x - 115), box_h - 51)
-	next_button.size = Vector2(105, 43)
+	dialogue.size = Vector2(maxf(1, dialogue_panel.size.x - 28), box_h - (128 if dialogue_panel.size.x < 460.0 else 105))
+	# UPDS-style portrait shell: on narrow phones the progress label sits
+	# above a full-width three-action row, not underneath Skip.
+	var footer_y := box_h - 51.0
+	if dialogue_panel.size.x < 460.0:
+		progress.position = Vector2(14, footer_y - 24)
+		progress.size = Vector2(maxf(1.0, dialogue_panel.size.x - 28), 21)
+		var action_gap := 6.0
+		var action_width := maxf(1.0, (dialogue_panel.size.x - 28.0 - 2.0 * action_gap) / 3.0)
+		skip_button.position = Vector2(14, footer_y)
+		skip_button.size = Vector2(action_width, 43)
+		auto_button.position = Vector2(14 + action_width + action_gap, footer_y)
+		auto_button.size = Vector2(action_width, 43)
+		next_button.position = Vector2(14 + 2.0 * (action_width + action_gap), footer_y)
+		next_button.size = Vector2(action_width, 43)
+	else:
+		progress.position = Vector2(14, box_h - 35)
+		progress.size = Vector2(135, 25)
+		skip_button.position = Vector2(dialogue_panel.size.x - 288, footer_y)
+		skip_button.size = Vector2(80, 43)
+		auto_button.position = Vector2(dialogue_panel.size.x - 201, footer_y)
+		auto_button.size = Vector2(78, 43)
+		next_button.position = Vector2(dialogue_panel.size.x - 115, footer_y)
+		next_button.size = Vector2(105, 43)
 	pilot_note.position = Vector2(6, h - 22)
 	pilot_note.size = Vector2(w - 12, 20)
 	# Reflow on viewport resize, without advancing a line or replaying cues.
