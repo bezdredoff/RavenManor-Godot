@@ -1,5 +1,10 @@
 # Agent instructions — Raven Manor Godot
 
+## Binding 2026-11-03 product-owner UI reuse decision
+
+Read [the approved UPDS UI reuse plan](docs/production/UPDS_UI_REUSE_APPROVED_PLAN_20261103_RU.md) **before any game UI implementation**. The scope is **all game UI**, not only VN. First compare the corresponding `bezdredoff/UPDS-godot` component, pin donor commit/blob SHA, map functions/dependencies, and classify reuse-as-is / extract / adapt / not-applicable. New implementations by visual analogy are not acceptable without an explicit technical reason. The full UPDS VN shell (header/stage/nameplate/dialogue/controls/overlays/responsive rules) is the target, adapted to Raven state/art/locales. **Skip means only previously read lines, stopping at unread text and choice gates**, never automatic choice; Raven's current last-page reveal is not feature parity. Do not merge draft PR #171 as the canonical responsive shell. Preserve Raven reducer/store, approved art and FX; add parity tests and truthful evidence in status/dashboard sources. UI inventory is not proof of runtime parity.
+
+
 **MANDATORY FOR EVERY AUTHORED PR:** update `docs/STATUS.md` **and** `data/raven/production/production_progress.json` in the SAME branch and PR, with task ID, truthful status and evidence. This applies to code, art, process and docs-only PRs. GitHub Actions checks both changed files; only automatically imported `candidate/mobile-<run>` ZIP intake PRs are exempt and still require human review. Do not edit generated `dashboard/status.json` as the source of truth.
 
 **All ChatGPT, Codex and DeepSeek work follows [docs/process/AI_COLLABORATION_RU.md](docs/process/AI_COLLABORATION_RU.md) and [docs/process/TASK_AND_PR_TEMPLATE_RU.md](docs/process/TASK_AND_PR_TEMPLATE_RU.md). Start with one task ID, current main and status; update source-of-truth progress/evidence in the same PR, not the generated dashboard.**
