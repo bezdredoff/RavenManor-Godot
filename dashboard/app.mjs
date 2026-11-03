@@ -110,6 +110,8 @@ async function init(){
     $("#source").textContent="Обновлено: "+data.updated+" · из "+(data.sourceFiles||[]).length+" канонических источников";
     counter("Всего задач",data.tasks.length);
     counter("Открытый бэклог",data.openTaskCount??data.tasks.filter(x=>!terminal.has(x.status)).length);
+    counter("В работе",data.tasks.filter(x=>x.status==="in_progress").length);
+    counter("На ревью",data.tasks.filter(x=>x.status==="PR_review").length);
     counter("Поставлено",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
     counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
     counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);

@@ -50,6 +50,13 @@ Open questions: explicitly identified, no invented approvals:
 - Отчёт о рисках: затронутые сохранения, locale, story flags, новые GPX/model hashes, чужие workflow/dependencies и публичность assets/спойлеров.
 - Не создавать календарные Gantt-даты задним числом: размер `S/M/L/XL`, dependency order и milestone достаточны до измеренного Hall pilot.
 
+
+### Проверка актуальности статусов активности (аудит 2026-11-03)
+
+`in_progress` ставится **только** при наличии текущего активного изменения с владельцем и датой: открытая рабочая ветка/коммиты или явно подтверждённая локальная работа. Факт частичной реализации и старый зелёный CI не означают «в работе». `PR_review` ставится **только для действительно открытого PR** со ссылкой. После merge/close нужно обновить статус на `merged`/`integrated` либо `ready` (если осталась другая работа), а не переносить stale PR_review в main. `ready` обозначает доступную, но не начатую сейчас работу; `blocked` требует явного препятствия и способа снятия. `qaState=manual_pending` не означает `in_progress`. Пример полного аудита — `docs/audits/ACTIVE_WORK_AND_REVIEW_20261103.md`.
+
+При каждом ревью dashboard сверять `PR_review` с GitHub open PRs, а `in_progress` с актуальной веткой/прямым подтверждением владельца. Не обещать, что CI или наличие старых branches доказывают текущую работу; ручная проверка GitHub необходима.
+
 ## 4. Доставка при ограничениях AI/GitHub
 
 Default — connector/direct branch PR для небольших изменений, если GitHub connector действительно даёт upload. Если архив содержит много бинарных ассетов/большое число файлов, **не посылать 100 коммитов с изображениями подряд** и не пытаться скрыть пропуски. Подготовить версионированный delta archive согласно `docs/process/MOBILE_ZIP_PIPELINE_RU.md` и пропустить через read-only validate → candidate PR → independent CI → mobile QA → ручной merge. Не утверждать, что это автоматизировано, пока bootstrap ZIP importer не принят и проверен end-to-end.

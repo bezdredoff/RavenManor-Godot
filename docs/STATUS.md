@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · DASH-RECON-01 follow-up: active/PR review status audit
+
+Live GitHub audit at `main@82c6f0b64e9b`: no open PRs and no active feature branches (only `main`, `incoming`). Previous dashboard source marked **32 in progress** plus **3 PR review**. These were all checked individually against merged PRs, open issues, documented remaining QA and owner approvals. Reclassified **29 ready**, **1 blocked**, **2 merged**, **2 integrated**, **1 accepted**. Notably `VNS5-06D2C` #120 is merged, `DASH-RENDER-01` #139 is merged and owner-confirmed visible, and `CODE-02-06` has no open PR or surviving recovery branch. Workflow status is no longer used as a surrogate for partial implementation. Added independent on-page work/review counts and evidence ledger `docs/audits/ACTIVE_WORK_AND_REVIEW_20261103.md`. This PR is an evidence-only status reconciliation pending CI/merge; native QA for Match-3/Hall/VN remains unfinished.
+
+
 ## 2026-11-03 · DASH-RENDER-01 — render visibility and real browser test (PR candidate)
 
 After #137/#138 merged with successful code/Pages CI, owner reports no work items visible on dashboard. Main source catalogs still contain 115 CODE/GAP items plus GFX tasks; no task deletion detected. Fix moves a P0 shortlist immediately under the heading above tall analytics panels, keeps full tasks section and adds 24-card progressive rendering, asset/error fallbacks and an actual headless Chromium test of the **built** Pages dashboard (visible task DOM, default scope). Syntax/unit-only dashboard checks were insufficient to validate visible UI. This is a review-only PR until head CI and owner browser check; the exact cause of owner's prior blank screen has not been conclusively reproduced. No gameplay, art, canonical localization or save changes.

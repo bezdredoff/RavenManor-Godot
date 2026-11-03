@@ -52,6 +52,23 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(by_id["CODE-04-03"]["approvalState"], "pending")
         self.assertGreater(data["openTaskCount"], 0)
 
+    def test_activity_audit_does_not_confuse_merges_and_reviews(self):
+        # 2026-11-03 snapshot after #139: these PRs were actually merged.
+        data = dashboard.build()
+        by_id = {task["id"]: task for task in data["tasks"]}
+        self.assertEqual(by_id["VNS5-06D2C"]["status"], "merged")
+        self.assertEqual(by_id["RM-GAP-009"]["status"], "merged")
+        self.assertEqual(by_id["DASH-RECON-01"]["status"], "integrated")
+        self.assertEqual(by_id["PROC-DASH-V2"]["status"], "integrated")
+        self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
+        self.assertEqual(by_id["DASH-RENDER-01"]["approvalState"], "feature_approved")
+        self.assertEqual(by_id["CODE-02-06"]["status"], "ready")
+        self.assertEqual(by_id["GFX-08-02"]["status"], "blocked")
+        self.assertEqual(by_id["GFX-08-06"]["approvalState"], "art_approved")
+        self.assertNotEqual(by_id["GFX-08-06"]["qaState"], "device_verified")
+        self.assertIn('counter("В работе"', (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8"))
+        self.assertIn('counter("На ревью"', (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8"))
+
     def test_exact_owner_approved_assets_not_game_qa(self):
         data = dashboard.build()
         self.assertEqual(data["assetSummary"]["backgrounds"], {"total": 26, "artApproved": 26})

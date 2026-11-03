@@ -69,9 +69,12 @@
     {
       "id": "VNS5-06D2C",
       "owner": "ChatGPT",
-      "status": "PR_review",
-      "updated": "2026-11-02",
-      "evidence": "Implementation branch code/vns5-06d2c-runtime-gated-dispatch after merged #119. Adds pure canonical-only RavenVNRuntimeDispatch, explicit runtime_approved+approvedRuntime+unproposed gate; foundation storyBeats save ID; known scene_complete/first_clear, strict all RU/BE/EN, accepted background art with res path, exact portrait art and manualReview=false cues; post-original-RM-VS-01 vertical_slice integration reuses existing RavenVNPlayer, RavenVNGameView, reducer and saving after completion. Current data has no approved new scenes: runtime unchanged. Synthetic Godot smoke uses cloned catalogs to test positive RU/BE/EN, art/route/line/cue denials, reducer completion/idempotence and legacy save projection; CI and owner QA pending. Does not enable world map/branch/Match3 route scheduler. Draft PR #120 https://github.com/bezdredoff/RavenManor-Godot/pull/120. Implementation HEAD 9f6cd96b2dc750e8a06ec50c91d6f46e8137d8de independently passed full GitHub CI #41494291648: Godot parse/real synthetic approved/blocked dispatch test, old RM-VS-01 and Match-3 regression, VN Studio, Room Builder, Web export and dashboard. Two prior PR head runs #41493432414/#41493897433 exposed and then fixed GDScript boolean/multiline expression parse issues; neither was merged. This documentation evidence commit triggers a new final-head CI. Owner visual/native QA, real approved art/content, non-linear map interactions and save migration acceptance remain open; do not call new scene playable."
+      "status": "merged",
+      "updated": "2026-11-03",
+      "evidence": "Implementation branch code/vns5-06d2c-runtime-gated-dispatch after merged #119. Adds pure canonical-only RavenVNRuntimeDispatch, explicit runtime_approved+approvedRuntime+unproposed gate; foundation storyBeats save ID; known scene_complete/first_clear, strict all RU/BE/EN, accepted background art with res path, exact portrait art and manualReview=false cues; post-original-RM-VS-01 vertical_slice integration reuses existing RavenVNPlayer, RavenVNGameView, reducer and saving after completion. Current data has no approved new scenes: runtime unchanged. Synthetic Godot smoke uses cloned catalogs to test positive RU/BE/EN, art/route/line/cue denials, reducer completion/idempotence and legacy save projection; CI and owner QA pending. Does not enable world map/branch/Match3 route scheduler. Draft PR #120 https://github.com/bezdredoff/RavenManor-Godot/pull/120. Implementation HEAD 9f6cd96b2dc750e8a06ec50c91d6f46e8137d8de independently passed full GitHub CI #41494291648: Godot parse/real synthetic approved/blocked dispatch test, old RM-VS-01 and Match-3 regression, VN Studio, Room Builder, Web export and dashboard. Two prior PR head runs #41493432414/#41493897433 exposed and then fixed GDScript boolean/multiline expression parse issues; neither was merged. This documentation evidence commit triggers a new final-head CI. Owner visual/native QA, real approved art/content, non-linear map interactions and save migration acceptance remain open; do not call new scene playable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: PR #120 merged 2026-11-02; approved-only dispatcher delivered, real scene approvals and native QA remain future gates. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     },
     {
       "id": "GFX-05-05",
@@ -150,10 +153,11 @@
     },
     {
       "id": "PROC-003",
-      "status": "in_progress",
+      "status": "ready",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "Complete phone-to-GitHub ZIP → candidate PR → isolated Godot/Room Builder/Web CI verified after owner phone upload: https://github.com/bezdredoff/RavenManor-Godot/pull/55 ; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 and /actions/runs/40554457157. PR closed unmerged, inbox cleaned. Live malicious ZIP edge cases and optional distinct-origin playable preview still separate gates."
+      "updated": "2026-11-03",
+      "evidence": "Complete phone-to-GitHub ZIP → candidate PR → isolated Godot/Room Builder/Web CI verified after owner phone upload: https://github.com/bezdredoff/RavenManor-Godot/pull/55 ; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 and /actions/runs/40554457157. PR closed unmerged, inbox cleaned. Live malicious ZIP edge cases and optional distinct-origin playable preview still separate gates.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Phone ZIP intake and isolated checks merged in earlier PRs; broader adversarial security acceptance is not active in any current PR. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "PROC-004",
@@ -185,11 +189,13 @@
     },
     {
       "id": "RM-GAP-009",
-      "status": "in_progress",
+      "status": "merged",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.",
-      "implementationState": "partial"
+      "updated": "2026-11-03",
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Historical audit reconciled by merged PR #138 (70 requirements overlay); criterion-by-criterion native re-verification remains a separate quality gate. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     },
     {
       "id": "MOB-03",
@@ -201,16 +207,18 @@
     {
       "id": "MOB-04",
       "owner": "ChatGPT",
-      "status": "in_progress",
-      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented. 2026-11-01: Follow-up implementation candidate adds auto cleanup of incoming ZIP for success/failure using always() after validate/candidate/CI, with per-job write token, immutable triggering SHA + content-SHA race guards, manual dispatch scoped to requested ZIP, Node regression tests. See docs/production/MOB04_AUTO_ZIP_CLEANUP_RU.md. Actual live success/failure cleanup acceptance and remaining device/phone review still require independent evidence; do not mark task accepted. 2026-11-02 audit after PR #107 merge: main and incoming had malformed root-level cleanup_incoming_zip YAML, causing no-job importer failures main run 41405224801 / incoming run 41357836990. Correct job indentation and regression test proposed; must merge fix into main AND incoming; live negative/positive ZIP acceptance remains open. 2026-11-02 live proof: PR #108 merged into main SHA d3e300720b4f79f358bff7a274bc7267d49cc8f1; PR #109 merged into incoming. CI main https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41416732259 passed. Negative import https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700: validate failed for missing patch-manifest.json, candidate/test skipped, cleanup_incoming_zip succeeded and deleted incoming/MOB04-cleanup-negative.zip (incoming cleanup commit 86923b531252f9e1f775e0e404fc5551d75acde1), owner confirmed phone steps. Positive-package RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip prepared on main d3e300720b4f79f358bff7a274bc7267d49cc8f1 with docs/process/runbook/status/dashboard, for end-to-end valid import and automatic success-path deletion test. Candidate creation, independent CI, positive cleanup and manual merge MUST be checked after upload; not yet proven. Keep overall MOB-04 in_progress because full adversarial, preview isolation and device follow-up remain incomplete. 2026-11-02 ACTUAL positive live proof: importer https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753 succeeded in validate, candidate, test_candidate and cleanup_incoming_zip. Auto-created candidate PR https://github.com/bezdredoff/RavenManor-Godot/pull/110 changes exactly 4 docs/status files, zero deletions, no runtime/workflows/assets. Independent Godot/Room Builder/Web CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573 succeeded, produced a non-deployed Web artifact; Pages deploy skipped. Cleanup log: Removed incoming/RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip; incoming cleanup SHA 4c7954578580d96808e934989f6b0ecc3a47c62a; incoming/ contains no ZIP. Together with negative run 41417364700, auto ZIP removal success and failure paths are operationally verified. PR #110 final-head PR CI and manual review/merge remain separate; full MOB-04 stays in_progress for other adversarial/mobile artifact/isolated playable preview acceptance.",
-      "updated": "2026-11-02"
+      "status": "ready",
+      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented. 2026-11-01: Follow-up implementation candidate adds auto cleanup of incoming ZIP for success/failure using always() after validate/candidate/CI, with per-job write token, immutable triggering SHA + content-SHA race guards, manual dispatch scoped to requested ZIP, Node regression tests. See docs/production/MOB04_AUTO_ZIP_CLEANUP_RU.md. Actual live success/failure cleanup acceptance and remaining device/phone review still require independent evidence; do not mark task accepted. 2026-11-02 audit after PR #107 merge: main and incoming had malformed root-level cleanup_incoming_zip YAML, causing no-job importer failures main run 41405224801 / incoming run 41357836990. Correct job indentation and regression test proposed; must merge fix into main AND incoming; live negative/positive ZIP acceptance remains open. 2026-11-02 live proof: PR #108 merged into main SHA d3e300720b4f79f358bff7a274bc7267d49cc8f1; PR #109 merged into incoming. CI main https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41416732259 passed. Negative import https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700: validate failed for missing patch-manifest.json, candidate/test skipped, cleanup_incoming_zip succeeded and deleted incoming/MOB04-cleanup-negative.zip (incoming cleanup commit 86923b531252f9e1f775e0e404fc5551d75acde1), owner confirmed phone steps. Positive-package RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip prepared on main d3e300720b4f79f358bff7a274bc7267d49cc8f1 with docs/process/runbook/status/dashboard, for end-to-end valid import and automatic success-path deletion test. Candidate creation, independent CI, positive cleanup and manual merge MUST be checked after upload; not yet proven. Keep overall MOB-04 in_progress because full adversarial, preview isolation and device follow-up remain incomplete. 2026-11-02 ACTUAL positive live proof: importer https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753 succeeded in validate, candidate, test_candidate and cleanup_incoming_zip. Auto-created candidate PR https://github.com/bezdredoff/RavenManor-Godot/pull/110 changes exactly 4 docs/status files, zero deletions, no runtime/workflows/assets. Independent Godot/Room Builder/Web CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573 succeeded, produced a non-deployed Web artifact; Pages deploy skipped. Cleanup log: Removed incoming/RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip; incoming cleanup SHA 4c7954578580d96808e934989f6b0ecc3a47c62a; incoming/ contains no ZIP. Together with negative run 41417364700, auto ZIP removal success and failure paths are operationally verified. PR #110 final-head PR CI and manual review/merge remain separate; full MOB-04 stays in_progress for other adversarial/mobile artifact/isolated playable preview acceptance.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Positive and negative cleanup paths evidenced in #108/#109/#110, but no current branch/PR for remaining adversarial/device checks. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "updated": "2026-11-03",
+      "implementationState": "partial"
     },
     {
       "id": "CODE-02-01",
-      "status": "in_progress",
+      "status": "ready",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign."
+      "updated": "2026-11-03",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Old Match-3 swipe regression work lacks current branch/PR; prior UI and input code does not prove mobile parity. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "CODE-02-02",
@@ -229,9 +237,10 @@
     {
       "id": "CODE-02-03",
       "owner": "ChatGPT",
-      "status": "in_progress",
-      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.",
-      "updated": "2026-10-27"
+      "status": "ready",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Tutorial/help/tiles require real Web/mobile and UPDS presentation parity; former recovery branch is absent. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "updated": "2026-11-03",
+      "implementationState": "partial"
     },
     {
       "id": "CODE-02-04",
@@ -249,17 +258,19 @@
     },
     {
       "id": "CODE-02-05",
-      "status": "in_progress",
-      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.",
+      "status": "ready",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Direct QA route exists in prior work; actual device parity and route validation remain unaccepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "owner": "ChatGPT",
-      "updated": "2026-10-27"
+      "updated": "2026-11-03",
+      "implementationState": "partial"
     },
     {
       "id": "CODE-02-06",
       "owner": "ChatGPT",
-      "updated": "2026-10-27",
-      "status": "PR_review",
-      "evidence": "User-reported critical parity regression; recovery branch fixes cell GUI input and modal help/hint style, with tests. Must re-evaluate on actual Web build/phone. Full faithful UPDS Godot or PWA presentation + legacy Raven art parity is a distinct unfinished stage."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "User-reported critical parity regression; recovery branch fixes cell GUI input and modal help/hint style, with tests. Must re-evaluate on actual Web build/phone. Full faithful UPDS Godot or PWA presentation + legacy Raven art parity is a distinct unfinished stage.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: No open recovery PR and old fix/code02-input-help-parity-recovery branch not present; prior PR_review was stale. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "RM-GFX-WATERCOLOR-001",
@@ -367,19 +378,19 @@
     },
     {
       "id": "GFX-08-06",
-      "status": "in_progress",
+      "status": "ready",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "PR #82 merged: exact source filenames, derived WebP SHA-256 and source sizes recorded in vn_background_catalog.json and docs/production/VN_BG_HALL_LIBRARY_20261031.md. Original seed/reproducible prompts unavailable; 9 assets remain candidates, not approved. Added Apartment source PNG filenames, 941x1672 generation canvas, derived 1080x1920 WebP SHA-256 hashes and state variant provenance to vn_background_catalog.json plus dedicated art documentation. Master composition/props not pixel locked. BG-ROAD art manifest includes source image, source dimensions 941x1672, output 1080x1920, actual SHA-256 and exact runtime catalog key. BG-ENTRY four standalone source PNG names, image sizes and derived exact WebP SHA-256 stored in VN background catalog and docs/production/VN_BG_ENTRY_20261101.md; not pixel-locked variants. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: All 26 backgrounds have exact paths, source dimensions and SHA metadata; complete original prompts and pixel-registered master provenance remain incomplete.",
+      "updated": "2026-11-03",
+      "evidence": "PR #82 merged: exact source filenames, derived WebP SHA-256 and source sizes recorded in vn_background_catalog.json and docs/production/VN_BG_HALL_LIBRARY_20261031.md. Original seed/reproducible prompts unavailable; 9 assets remain candidates, not approved. Added Apartment source PNG filenames, 941x1672 generation canvas, derived 1080x1920 WebP SHA-256 hashes and state variant provenance to vn_background_catalog.json plus dedicated art documentation. Master composition/props not pixel locked. BG-ROAD art manifest includes source image, source dimensions 941x1672, output 1080x1920, actual SHA-256 and exact runtime catalog key. BG-ENTRY four standalone source PNG names, image sizes and derived exact WebP SHA-256 stored in VN background catalog and docs/production/VN_BG_ENTRY_20261101.md; not pixel-locked variants. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: All 26 backgrounds have exact paths, source dimensions and SHA metadata; complete original prompts and pixel-registered master provenance remain incomplete.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Exact 26 existing plates accepted, but full prompt/reproducibility provenance remains incomplete; art approval stays independent. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "approvalState": "art_approved",
       "implementationState": "partial"
     },
     {
       "id": "GFX-08-07",
-      "status": "in_progress",
+      "status": "ready",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers. Four apartment lighting/staging variations (day inhabited, rainy evening/night, day departure) prepared as raster candidates with explicit warning: luggage present but packed cardboard boxes not evident. Runtime/editor read from the same catalog; visual QA pending. BG-ROAD only one dusk/mist state; no false claims of separate lighting overlays. Actor safe-zone, image composition and final art QA pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY four semantic paired lighting/state PNG-generated plates; not formally aligned overlay layers; cross-state architecture/season continuity and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: Lighting and state images exist and are art-approved, but not all are pixel-locked state overlays/grades; preserve pending technical compositing QA.",
+      "updated": "2026-11-03",
+      "evidence": "PR #82 merged: nine semantic lighting/state raster variants are registered; separable overlay/grade production and pixel-locked composition, QA pending. Editor exact-state preview proposed in follow-up PR. Do not claim finalized state layers. Four apartment lighting/staging variations (day inhabited, rainy evening/night, day departure) prepared as raster candidates with explicit warning: luggage present but packed cardboard boxes not evident. Runtime/editor read from the same catalog; visual QA pending. BG-ROAD only one dusk/mist state; no false claims of separate lighting overlays. Actor safe-zone, image composition and final art QA pending. In-game shared VN compositor PR candidate: RM-VS-01 and QA Content Preview now render actual catalog background plus staging pilot/ART PENDING cast and dialogue; Hall Tea pilot also uses catalog; headless smoke in both operating-system check scripts. CI + desktop/mobile visual QA pending; no claim of fully migrated VN engine or all character art. BG-ENTRY four semantic paired lighting/state PNG-generated plates; not formally aligned overlay layers; cross-state architecture/season continuity and visual QA pending. BG-BEDROOM two candidate plates day/livable & night/livable from approved 2026-11-01 sources in patch GFX08_BG_BEDROOM_R2. Scene 01-02/06-03 shared VN runtime and VN Studio exact-state catalogue; gallery/runtime headless checks include textures and hashes. Not device/art accepted; covered version still missing. GFX-08 FINAL6 R1 incoming candidate from approved six source PNGs: Bath day/wet_unsafe, Kitchen day/power_off + evening/partial_lighting, Garden day/unsafe_path, Conservatory day/partially_safe + dusk/partially_safe. Exact 1080x1920 WebP, catalog 20→26, native VN Studio and runtime smoke tests, source provenance; full independent GitHub Actions CI and device QA required, not yet final art accepted. No unused variants. \n2026-11-02 reconciliation @ main ea4fc3552c7a: Lighting and state images exist and are art-approved, but not all are pixel-locked state overlays/grades; preserve pending technical compositing QA.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Exact state variants art-approved, but pixel-locked overlay/grade method and technical QA incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "approvalState": "art_approved",
       "implementationState": "partial"
     },
@@ -458,9 +469,9 @@
     {
       "id": "VNS5-07F",
       "owner": "ChatGPT/Codex",
-      "status": "in_progress",
-      "updated": "2026-11-02",
-      "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts.\n2026-11-02 reconciliation @ main ea4fc3552c7a: HTML-v5 authoring functional gaps partly delivered in https://github.com/bezdredoff/RavenManor-Godot/pull/130, https://github.com/bezdredoff/RavenManor-Godot/pull/131, https://github.com/bezdredoff/RavenManor-Godot/pull/132. Original HTML pixel/UX parity with matched viewport screenshot evidence remains open as VNS5-07F2.",
+      "status": "ready",
+      "updated": "2026-11-03",
+      "evidence": "Owner screenshot proves HTML parity was not achieved by previous structural VNS5-07B. Compare the local approved source C:/git/Raven_VN_Studio_Godot_Handoff_v5_2026-11-01/prototype/raven_vn_studio_v5.html with Godot 4.7.2 side by side at matching viewports, record screenshot diff/feature parity; implement missing content workflows in separate PRs. No pixel parity claim or approval until owner accepts.\n2026-11-02 reconciliation @ main ea4fc3552c7a: HTML-v5 authoring functional gaps partly delivered in https://github.com/bezdredoff/RavenManor-Godot/pull/130, https://github.com/bezdredoff/RavenManor-Godot/pull/131, https://github.com/bezdredoff/RavenManor-Godot/pull/132. Original HTML pixel/UX parity with matched viewport screenshot evidence remains open as VNS5-07F2.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: V5 authoring enhancements #130/#131/#132 merged; original HTML side-by-side visual comparison still not done; local Codex source exists outside repo. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "manual_pending"
     },
@@ -507,9 +518,9 @@
     {
       "id": "RM-GAP-013",
       "owner": "ChatGPT",
-      "status": "in_progress",
-      "updated": "2026-11-02",
-      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI passed in GitHub Actions run #41531258527; native UI/editor QA pending. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI. BE canonical narration and titles now 280/280 and 28/28 first draft with VN Studio + active gameplay locale tests; no longer missing spoken text. Game UI beyond dialogue, native proofreading, font glyph/overflow QA and owner sign-off remain OPEN. Strict registry --release is not full-game release gate.\n2026-11-02 reconciliation @ main ea4fc3552c7a: BE and EN dialogue/title first drafts now complete after https://github.com/bezdredoff/RavenManor-Godot/pull/135 and https://github.com/bezdredoff/RavenManor-Godot/pull/136. Remaining whole-game locale coverage, proofreading and device typography QA; no new BE translation production task.",
+      "status": "ready",
+      "updated": "2026-11-03",
+      "evidence": "English narrative subset now authored in full and connected to playable legacy VN using stable IDs, with GameView dialogue pagination and editor source parity; targeted smoke/CI passed in GitHub Actions run #41531258527; native UI/editor QA pending. BE missing and full menu/map/Match-3/choices/objective/journal locale tests, native proofreading, owner QA remain open. Does not claim complete tri-locale game UI. BE canonical narration and titles now 280/280 and 28/28 first draft with VN Studio + active gameplay locale tests; no longer missing spoken text. Game UI beyond dialogue, native proofreading, font glyph/overflow QA and owner sign-off remain OPEN. Strict registry --release is not full-game release gate.\n2026-11-02 reconciliation @ main ea4fc3552c7a: BE and EN dialogue/title first drafts now complete after https://github.com/bezdredoff/RavenManor-Godot/pull/135 and https://github.com/bezdredoff/RavenManor-Godot/pull/136. Remaining whole-game locale coverage, proofreading and device typography QA; no new BE translation production task.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: English/Belarusian 280-line first-draft catalogs merged #135/#136; whole UI locale/font/typography/native proofreading remains unaccepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "manual_pending"
     },
@@ -543,9 +554,9 @@
     {
       "id": "CODE-01-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS engine is imported (https://github.com/bezdredoff/RavenManor-Godot/pull/46); full seeded blocker/special/hole parity needs explicit cross-project oracle.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS engine is imported (https://github.com/bezdredoff/RavenManor-Godot/pull/46); full seeded blocker/special/hole parity needs explicit cross-project oracle.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: UPDS engine merged #46, special/blocker/hole parity oracle not yet complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
@@ -561,63 +572,63 @@
     {
       "id": "CODE-03-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Shared paging, VN catalog adapter and game-view/runtime components exist (notably https://github.com/bezdredoff/RavenManor-Godot/pull/46, https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/120); full UPDS scene semantics pending.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Shared paging, VN catalog adapter and game-view/runtime components exist (notably https://github.com/bezdredoff/RavenManor-Godot/pull/46, https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/120); full UPDS scene semantics pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Shared VN components merged; end-to-end UPDS scene semantics and UI parity incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-03-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: 1–3 cast Stage templates and 62 accepted VN frames (https://github.com/bezdredoff/RavenManor-Godot/pull/97, https://github.com/bezdredoff/RavenManor-Godot/pull/123); exact 21 pose/emotion staging matches and microanimations not all satisfied.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: 1–3 cast Stage templates and 62 accepted VN frames (https://github.com/bezdredoff/RavenManor-Godot/pull/97, https://github.com/bezdredoff/RavenManor-Godot/pull/123); exact 21 pose/emotion staging matches and microanimations not all satisfied.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: 1–3 character templates and accepted image library merged; exact pose/emotion staging and animations remain gaps. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-03-03",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall Tea/common Raven VN view and FX runtime shipped (https://github.com/bezdredoff/RavenManor-Godot/pull/112); full RU/BE/EN scene edit/play/save parity and owner native QA outstanding.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall Tea/common Raven VN view and FX runtime shipped (https://github.com/bezdredoff/RavenManor-Godot/pull/112); full RU/BE/EN scene edit/play/save parity and owner native QA outstanding.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Hall Tea and common view integrated, but replay/history/full tri-locale save QA not owner-accepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-04-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-05-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Room Builder JSON→Godot importer, calibration and dedicated tests exist: scripts/raven/tools/import_room_builder_game.py, tests/raven/room_builder_game_import_smoke.gd; approved production Hall world footprint/device QA pending.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Room Builder JSON→Godot importer, calibration and dedicated tests exist: scripts/raven/tools/import_room_builder_game.py, tests/raven/room_builder_game_import_smoke.gd; approved production Hall world footprint/device QA pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Room Builder importer and tests exist; production Hall geometry/pivots native acceptance pending. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-05-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Authored A* routes and continuous pilot are separate; navigation tests exist. Full imported Hall geometry ↔ route alignment unaccepted.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Authored A* routes and continuous pilot are separate; navigation tests exist. Full imported Hall geometry ↔ route alignment unaccepted.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Route/navigation tests exist; authored Hall geometry versus route anchor alignment still needs validation. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-08-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
@@ -633,36 +644,36 @@
     {
       "id": "CODE-09-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Background and character accepted catalog resolvers exist; 26 approved plates and 62 accepted character frames; production props and complete manifest gate pending.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Background and character accepted catalog resolvers exist; 26 approved plates and 62 accepted character frames; production props and complete manifest gate pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Accepted VN backgrounds/character assets resolve, but final all-family prop/asset manifest missing. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-09-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art import, SHA checks and provenance tests exist (VN character/background smokes, Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103); map/props alpha-pivot and device QA pending.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art import, SHA checks and provenance tests exist (VN character/background smokes, Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103); map/props alpha-pivot and device QA pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: SHA provenance and handbook infrastructure exists; prop/map pivots and device import QA pending. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-10-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Portrait HUD and Stage responsive/layout smokes exist, including VN Studio https://github.com/bezdredoff/RavenManor-Godot/pull/127; cross-system accessibility and real device checks not accepted.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Portrait HUD and Stage responsive/layout smokes exist, including VN Studio https://github.com/bezdredoff/RavenManor-Godot/pull/127; cross-system accessibility and real device checks not accepted.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Responsive smokes and VN Studio height work merged; accessibility/mobile QA across game screens incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
     {
       "id": "CODE-10-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Web export/Pages, incoming ZIP CI and smoke runners exist; offline/mobile full regression and independent preview acceptance pending.",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Web export/Pages, incoming ZIP CI and smoke runners exist; offline/mobile full regression and independent preview acceptance pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Web export and ZIP CI active in main; offline/resume/mobile full regression is not completed. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "partial",
       "qaState": "automated"
     },
@@ -689,86 +700,96 @@
     {
       "id": "GFX-00-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Canonical narrative/staging/props/route registries exist, but cross-registry checklist and owner gate not fully reconciled."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Canonical narrative/staging/props/route registries exist, but cross-registry checklist and owner gate not fully reconciled.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Production registries exist; cross-registry owner gate and consistency checklist are not accepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-00-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Asset registries for 26 approved VN plates, 62 accepted cast images, 37 proposed logical props exist; not full all-domain asset ledger."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Asset registries for 26 approved VN plates, 62 accepted cast images, 37 proposed logical props exist; not full all-domain asset ledger.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: 26 VN plates, 62 frames and 37 logical props tracked, not a complete all-domain source asset ledger. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-00-03",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Paths/SHA/provenance contracts implemented for imported assets; all production asset family formats not standardized."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Paths/SHA/provenance contracts implemented for imported assets; all production asset family formats not standardized.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Imported plate hashes/provenance exist, but whole production file contract not standardized. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-00-06",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103 has provenance/run recipes/inputs; full live generated contact-sheet automation remains pending."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Art Handbook https://github.com/bezdredoff/RavenManor-Godot/pull/103 has provenance/run recipes/inputs; full live generated contact-sheet automation remains pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Art Handbook #103 delivered; live generation contact-sheet batch automation not completed. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-06-08",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Editor-only procedural breath/shake/scale/opacity and phase timeline merged via https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/132; real keyframe animation and whole-game runtime acceptance pending."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Editor-only procedural breath/shake/scale/opacity and phase timeline merged via https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/132; real keyframe animation and whole-game runtime acceptance pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Editor-only FX timeline and existing runtime phase effects merged #112/#132; complete production animation capability not delivered. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-06-09",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Reduced-motion math and editor preview implemented, needs systematic mobile/accessibility QA."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Reduced-motion math and editor preview implemented, needs systematic mobile/accessibility QA.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Reduced-motion preview/math exists, real-device/accessibility acceptance pending. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-08-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall wall/door/stair guides and documented geometry exist, final art and collision acceptance remain open."
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall wall/door/stair guides and documented geometry exist, final art and collision acceptance remain open.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Hall guides/geometry exist; final Hall art, collision and native room acceptance incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "GFX-08-02",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Constructed wall tileset plus Blender wall kit and AI alternatives compared. Final production structure strategy pending owner selection."
+      "updated": "2026-11-03",
+      "status": "blocked",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Constructed wall tileset plus Blender wall kit and AI alternatives compared. Final production structure strategy pending owner selection.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Production Hall structural strategy requires explicit owner choice between wall tileset, Blender wall kit and alternatives; no current execution branch. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
     },
     {
       "id": "DASH-RECON-01",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Owner approved reconciliation scope. This PR updates source registries and historical statuses without gameplay/save edits.",
-      "implementationState": "partial"
+      "updated": "2026-11-03",
+      "status": "integrated",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Owner approved reconciliation scope. This PR updates source registries and historical statuses without gameplay/save edits.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Merged PRs #137 and #138 reconcile historical backlog, exact accepted art and 70-requirement audit; documentation is in main. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending"
     },
     {
       "id": "PROC-DASH-V2",
       "owner": "ChatGPT",
-      "updated": "2026-11-02",
-      "status": "in_progress",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation. Dashboard v2 client/generator/test changes staged in PR #137 second commit to support reconciled status vocabulary and independently show art approval, implementation, QA. CI fresh head pending; manual phone browser QA not claimed.",
+      "updated": "2026-11-03",
+      "status": "integrated",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation. Dashboard v2 client/generator/test changes staged in PR #137 second commit to support reconciled status vocabulary and independently show art approval, implementation, QA. CI fresh head pending; manual phone browser QA not claimed.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Dashboard v2 shipped to Pages in #137; implementation/QA/art axes and filters are operational; feature-level full acceptance not inferred. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
       "implementationState": "delivered",
       "qaState": "automated",
       "approvalState": "pending"
     },
     {
       "id": "DASH-RENDER-01",
-      "status": "PR_review",
+      "status": "accepted",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "implementationState": "delivered",
-      "qaState": "manual_pending",
-      "approvalState": "pending",
-      "evidence": "Owner 2026-11-03 cannot see any dashboard tasks. UI visibility fix, progressive card load and actual headless-Chrome Pages render regression proposed in PR awaiting independent CI. Live iOS visual QA remains unverified."
+      "qaState": "automated",
+      "approvalState": "feature_approved",
+      "evidence": "Owner 2026-11-03 cannot see any dashboard tasks. UI visibility fix, progressive card load and actual headless-Chrome Pages render regression proposed in PR awaiting independent CI. Live iOS visual QA remains unverified.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: PR #139 merged 2026-11-03, real Chromium build smoke passed (24 cards + 6 P0), owner explicitly confirmed tasks visible. Scoped visibility accepted; no separate device matrix acceptance. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded."
     }
   ],
   "rules": [
