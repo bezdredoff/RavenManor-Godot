@@ -1,3 +1,7 @@
+# 2026-11-03 · UPDS UI Wave 0 donor pin (documentation only)
+
+Pinned UPDS-godot donor commit `3deed628efd6c22bcd1717f7c545b7d3ca865781` and documented source-to-Raven adapters, Auto continuity risk, read-only Skip prerequisites and an unexecuted portrait/desktop parity matrix in `docs/production/UPDS_UI_WAVE0_DONOR_BASELINE_20261103_RU.md`. No runtime or screenshot parity claimed. PR #171 remains superseded.
+
 # 2026-11-03 · UPDS-UI-REUSE-PLAN (approved documentation; not runtime delivery)
 
 Product owner approved UPDS read-only Skip, maximal UPDS VN shell reuse and **all game UI** scope. New source inventory, migration waves and acceptance gates: `docs/production/UPDS_UI_REUSE_APPROVED_PLAN_20261103_RU.md`. README/AGENTS policy updated. Draft PR #171 superseded as canonical layout. No gameplay code changed; UI parity remains unverified.
