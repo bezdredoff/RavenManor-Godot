@@ -128,6 +128,42 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["assetSummary"]["backgrounds"]["artApproved"], 26)
         self.assertEqual(data["assetSummary"]["characterFrames"]["artApproved"], 62)
 
+    def test_p1_workstreams_and_future_scope_are_explicit(self):
+        data = dashboard.build()
+        tasks = data["tasks"]
+        by_id = {task["id"]: task for task in tasks}
+        terminal = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
+        grouped = {task["id"] for task in tasks if task["workstreamId"]}
+        active = {task["id"] for task in tasks
+                  if task["status"] not in terminal and task["priority"] in {"P0", "P1"}}
+        self.assertEqual(grouped, active)
+        self.assertEqual(len(active), 78)
+        self.assertEqual(len(data["workstreams"]), 10)
+        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 13)
+        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 65)
+        for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
+                    "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
+            self.assertEqual(by_id[key]["priority"], "P2", key)
+            self.assertIn(by_id[key]["status"], {"ready", "proposed"}, key)
+            self.assertEqual(by_id[key]["workstreamId"], "", key)
+        for key in ["CODE-02-06", "CODE-05-01", "GFX-07-05", "GFX-11-T09"]:
+            self.assertEqual(by_id[key]["priority"], "P0", key)
+            self.assertTrue(by_id[key]["workstreamId"], key)
+        self.assertEqual(by_id["RM-GAP-013"]["workstreamId"], "WS-LOCALES")
+        self.assertEqual(by_id["LOC-EN-QA"]["workstreamId"], "WS-LOCALES")
+        self.assertEqual(by_id["LOC-BE-QA"]["workstreamId"], "WS-LOCALES")
+        self.assertEqual(by_id["MOB-04"]["workstreamId"], "WS-MOBILE-HANDOFF")
+        self.assertEqual(by_id["PROC-003"]["workstreamId"], "WS-MOBILE-HANDOFF")
+        self.assertEqual(by_id["VNS5-07F2"]["workstreamId"], "WS-VN-STUDIO")
+        self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
+        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        html = (dashboard.ROOT / "dashboard/index.html").read_text(encoding="utf-8")
+        client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
+        self.assertIn('id="workstream"', html)
+        self.assertIn('workstreamId===workstream', client)
+        self.assertIn("Активные зависимости", client)
+        self.assertIn("Исторические связи плана", client)
+
     def test_code_gap_p0_only_current_release_gates(self):
         data = dashboard.build()
         by_id = {task["id"]: task for task in data["tasks"]}
