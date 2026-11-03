@@ -2,6 +2,7 @@ const $ = (selector) => document.querySelector(selector);
 const cfg = {tasks: [], assets: {backgrounds:{total:0, artApproved:0},characterFrames:{total:0,artApproved:0}}};
 const terminal = new Set(["merged","integrated","device_verified","accepted","superseded","not_planned"]);
 const archived = new Set(["superseded","not_planned"]);
+let shownLimit = 24;
 const statuses = {proposed:"Предложено",ready:"К работе",in_progress:"В работе",PR_review:"PR на ревью",merged:"Смержено",integrated:"Интегрировано",device_verified:"Device QA",accepted:"Принято",blocked:"Блокировано",deferred:"Отложено",superseded:"Заменено",not_planned:"Не планируется"};
 const implementation = {not_recorded:"Не зафиксировано",partial:"Реализовано частично",delivered:"Реализовано"};
 const verification = {not_recorded:"Не зафиксировано",automated:"Автотесты / без ручного QA",manual_pending:"Ожидает ручной проверки",device_verified:"Проверено на устройстве"};
@@ -53,6 +54,30 @@ function card(item){
   if(item.approvalState==="art_approved")meta.append(node("span","art-approved","Арт принят"));
   head.append(meta);box.append(head,detail(item));return box;
 }
+
+function showPriority(){
+  const active=cfg.tasks.filter(t=>t.priority==="P0"&&!terminal.has(t.status));
+  active.sort((a,b)=>a.id.localeCompare(b.id));
+  const focus=active.slice(0,6);
+  const target=$("#quick-tasks");
+  target.replaceChildren();
+  for(const task of focus){
+    const link=node("a","quick-task");
+    link.href="#work";
+    link.append(node("strong","",task.id),node("span","",task.title),node("small","",statuses[task.status]||task.status));
+    link.addEventListener("click",()=>{
+      $("#search").value=task.id;
+      $("#scope").value="all";
+      shownLimit=24;
+      render();
+    });
+    target.append(link);
+  }
+  target.dataset.spotlightCount=String(focus.length);
+  $("#quick-work-info").textContent="Открытых P0-задач: "+active.length+" · показаны первые "+focus.length+". Полный реестр ниже.";
+  if(!focus.length)target.append(node("p","hint","Открытых P0-задач в текущем реестре нет."));
+}
+
 function progress(domain){
   const arr=cfg.tasks.filter(x=>x.domain===domain);
   const delivered=arr.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length;
@@ -71,12 +96,15 @@ function render(){
   matched.sort((a,b)=>(order[a.priority]??3)-(order[b.priority]??3)||a.id.localeCompare(b.id));
   $("#shown").textContent="Показано "+matched.length+" из "+cfg.tasks.length;
   const target=$("#tasks");target.replaceChildren();
-  if(!matched.length){target.append(node("div","empty","Задачи по выбранным фильтрам не найдены."));return;}
-  const fragment=document.createDocumentFragment();for(const task of matched)fragment.append(card(task));target.append(fragment);
+  if(!matched.length){target.append(node("div","empty","Задачи по выбранным фильтрам не найдены."));target.dataset.renderedCount="0";$("#more").hidden=true;return;}
+  const fragment=document.createDocumentFragment();for(const task of matched.slice(0,shownLimit))fragment.append(card(task));target.append(fragment);
+  target.dataset.renderedCount=String(target.querySelectorAll(".task").length);
+  $("#more").hidden=matched.length<=shownLimit;
+  $("#more").textContent="Показать ещё задачи ("+Math.min(24,matched.length-shownLimit)+" из "+(matched.length-shownLimit)+")";
 }
 async function init(){
   try{
-    const response=await fetch("./status.json",{cache:"no-cache"});if(!response.ok)throw Error("HTTP "+response.status);
+    const response=await fetch("./status.json",{cache:"no-store"});if(!response.ok)throw Error("HTTP "+response.status);
     const data=await response.json();if(!Array.isArray(data.tasks))throw Error("Неверный формат JSON");
     cfg.tasks=data.tasks;cfg.assets=data.assetSummary||cfg.assets;
     $("#source").textContent="Обновлено: "+data.updated+" · из "+(data.sourceFiles||[]).length+" канонических источников";
@@ -85,12 +113,13 @@ async function init(){
     counter("Поставлено",data.tasks.filter(x=>["merged","integrated","device_verified","accepted"].includes(x.status)).length);
     counter("Формально принято",data.tasks.filter(x=>x.status==="accepted").length);
     counter("В архиве",data.tasks.filter(x=>archived.has(x.status)).length);
-    showAssets(data);progress("CODE");progress("GFX");
+    showAssets(data);showPriority();progress("CODE");progress("GFX");
     Object.entries(statuses).forEach(([key,value])=>{const opt=node("option","",value);opt.value=key;$("#state").append(opt);});
     [...new Set(data.tasks.map(t=>t.stage).filter(Boolean))].sort().forEach(v=>{const opt=node("option","",v);opt.value=v;$("#stage").append(opt);});
-    ["search","domain","state","priority","stage","scope"].forEach(k=>$("#"+k).addEventListener(k==="search"?"input":"change",render));
-    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage"].forEach(k=>$("#"+k).value="");$("#scope").value="open";render();});
+    ["search","domain","state","priority","stage","scope"].forEach(k=>$("#"+k).addEventListener(k==="search"?"input":"change",()=>{shownLimit=24;render();}));
+    $("#more").addEventListener("click",()=>{shownLimit+=24;render();});
+    $("#reset").addEventListener("click",()=>{["search","domain","state","priority","stage"].forEach(k=>$("#"+k).value="");$("#scope").value="open";shownLimit=24;render();});
     render();
-  }catch(err){$("#source").textContent="Не удалось загрузить status.json: "+String(err.message||err);$("#tasks").replaceChildren(node("div","empty","Нет данных. Обновите Pages / CI, не подменяйте статусы догадками."));}
+  }catch(err){$("#source").textContent="Ошибка отображения реестра: "+String(err.message||err);$("#quick-work-info").textContent="Загрузка не удалась: "+String(err.message||err);$("#tasks").replaceChildren(node("div","empty","Не удалось показать задачи. Откройте status.json из ссылки в верхнем блоке или проверьте опубликованный CI."));$("#more").hidden=true;}
 }
 init();
