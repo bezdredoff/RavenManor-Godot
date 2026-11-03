@@ -1,5 +1,7 @@
 # Raven Manor — план и roadmap производства кода
 
+> **Живой план на 2026-11-03:** [`docs/NEXT_PLAN.md`](../NEXT_PLAN.md) — единственный актуальный список ближайших gates после #149. Этот большой CODE-roadmap сохраняет оригинальную архитектуру, зависимости и исторические этапы. `code_work_packages.json` имеет статус `PROPOSAL_NOT_RUNTIME`: прежние `proposed`/ `PR_review` записи **не являются текущим состоянием** уже смерженных PR. Правильный live status — `production_progress.json`, включая VNS5-09 merged #147 и открытые ручные QA; сверка см. [BACKLOG_RECONCILIATION_20261103.md](../audits/BACKLOG_RECONCILIATION_20261103.md). На текущем этапе не начинать новую реализацию без решения владельца.
+
 **Версия:** 0.2 (reconciliation; исходные этапы и требования сохранены)  
 **Дата:** 27 октября 2026  
 **Статус:** действующий engineering production plan; фактическое исполнение и evidence ведутся в `data/raven/production/production_progress.json`, а не выводятся из наличия пункта плана.  

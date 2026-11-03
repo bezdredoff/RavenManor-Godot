@@ -1,0 +1,74 @@
+# Archive — previous Hall / Room Builder plan (2026-10-25)
+
+> Historical source copied unchanged below. This is no longer the active to-do list. For up-to-date priorities, see [NEXT_PLAN.md](../NEXT_PLAN.md) and `data/raven/production/production_progress.json`.
+
+---
+
+# Next plan — Hall production pipeline (historical 2026-10-25)
+
+> **2026-11-02 current priority overlay:** This document preserves the detailed Hall-calibration history; its older “Immediate next PR” recommendations are not current. See production dashboard source for live statuses and [the 70-item reconciliation](audits/RM-REQUIREMENT-RECONCILIATION_20261102.md). Current P0 review: (1) merge PR #137 and verify dashboard/art approval, (2) original HTML vs Godot parity `VNS5-07F2`, prop workflow `VNS5-08`, scene authoring test `VNS5-09`, (3) `CODE-02-06` real touch/hint/help and `CODE-05-01/02` map path/collision/device QA, (4) `VN-RUNTIME-01` reviewed-only playable scene promotion and tri-locale full UI QA. All 26 scene-backed VN plates and 62 character frames are artistically approved by owner; they are NOT map/collision/device approved. Do not generate BG-CORRIDOR without a scene using it.
+
+
+## Current decision
+
+Prototype Lab (including `RM-VS-01`), Room Builder PWA v0.1, and Hall AI1/AI2 art comparison are **implemented and merged**. The owner reports the published tools working. The next productive phase is **not** bulk art creation: prove that a room laid out on a tablet can become a spatially correct, separately editable, restorable game scene while preserving gameplay routing.
+
+Primary workstream: **RM-PIPE-001 — Room Builder → Hall → Godot → ComfyUI proof**, defined with acceptance criteria in `docs/ROOM_PIPELINE_NEXT_GATE.md`.
+
+## Ordered, independently reviewable PR candidates
+
+| Priority | Candidate | Scope | Exit / evidence |
+|---|---|---|---|
+| P0 | **RM-PIPE-001A: touch and export validation** | Android tablet/phone use (stylus drag, multitouch pan/zoom, file import, local persistence and JSON round-trip), browser fallback and data-loss safeguards. Correct example catalog ID mismatches before using any plan as data source. | Repro steps + real-device capture and JSON round-trip; no right click/keyboard dependency. User opening app alone is not a full pass. |
+| P0 | **RM-PIPE-001B: coordinate/ID bridge** | Define explicit local plan → global world transform for `RM-ROOM-HALL` and pinned door/route anchors; validate `RM-ASSET-*`, hotspot references, layer order, per-instance pivots and occluders. Import to **isolated comparison scene**, not production routes. | Tests for bounds, IDs, pivots/footpoint, round-trip and no mutations to current Raven save, `season1_world_map.json` or `manor_greybox_graph.json`. |
+| P0 | **RM-PIPE-001C: Hall layout calibration** | Validate staircase landing, doors to Entry/Archive/Corridor, clock, two independent chairs and small table, blocking furniture and feasible routes under 65°/0.74× portrait view. | Owner-reviewed flat plan and Godot overlay plus 390×844/412×915/430×932 screenshots and route/click/occlusion QA. No invented approved pixel coordinates. |
+| P1 | **RM-PIPE-001D: art/state pilot** | Produce one geometry-conditioned base shell, separated props and 2–3 state changes, document alpha/pivots, light/shadow and mask/depth rules and locally reproducible ComfyUI model/reference/seed provenance. | Layered visual composite in Godot that preserves 65° scale and interaction points; AI1/AI2/SVG preserved for comparison. |
+| P1 | **RM-PIPE-001E: style anchor / Evelyn** | Select a cohesive cozy gothic-anime direction; one Evelyn VN identity reference plus an independently drawn mildly-chibi map sprite and minimal walk/idle QA. | Review on real portrait UI; identity/proportion, alpha/feet, silhouette and frame consistency. |
+| P2 | **RM-PIPE-002: replicate** | Only after Hall proof, compose Bedroom, Archive, Corridor etc. from asset catalog and the same workflow; maintain unique story hotspots and restoration state variants. | Second room reproduces the Hall method without one-off hardcoded paint/composition. |
+
+## Guardrails and boundaries
+
+- **Do not mark the Hall art, map topology or Evelyn canonically approved** merely because AI images render in game. Existing generated sources are pilot references with unaligned doors/perspective.
+- Keep current `RM-*` IDs, `RM-VS-01` mechanics, saved state, authored AStar2D route graph and independent continuous-world AStarGrid2D feasibility map unchanged until an explicit, tested migration is approved.
+- Treat `docs/NARRATIVE_GAMEPLAY_INTEGRATION.md` and `data/raven/season1_narrative.json` as the runtime narrative contract: room layout/art may expose a hotspot or state visually, but must not reorder beats, reveal supernatural identities early, or mutate campaign state implicitly.
+- Room Builder saves locally on the tablet and exports JSON/PNG; no automatic GitHub synchronization, production ComfyUI integration or final 65° scene exporter exists today.
+- Do not commit purchased/licensed source graphics to the public repository without provenance and rights verification.
+- `docs/assets/CHARACTER_PRODUCTION_BIBLE.md`, `ROOM_FURNISHING_AND_PLACEMENT.md`, and `ROOM_OBJECT_REGISTER.csv` remain **proposed source inputs**, not automatically approved pixel layouts or production orders.
+- Bathrooms remain a corridor-side vignette in the original vertical slice; access to Bedroom does not depend on repairing Bathroom.
+- Existing two Pages deployments share the same `/builder/` fallback. Operational cleanup (switch Pages Source to GitHub Actions) is worthwhile but lower priority than the pipeline and may require repository Settings access.
+- Update `docs/STATUS.md` on every accepted gate; record actual device tests, failures and affected IDs. Keep historical specs rather than silently rewriting them.
+
+## Inventory bridge (RM-CAT-001, delivered)
+
+First-season CSV proposals now total **120 positions**, including separate Hall chair instances and small round table; an autogenerated catalog is visible in Room Builder v0.2 with room switch and state metadata. This completes **the draft inventory-in-editor prerequisite**, not spatial calibration, fully split sprite families or production art approval. See `docs/ROOM_CATALOG_PRODUCTION.md`.
+
+## Immediate next PR
+
+**RM-PIPE-001A/B** if small enough for one reviewable change; otherwise split. Deliver verified Android input/export workflow and a strict Hall coordinate/anchor/asset-ID mapping with dry-run importer tests **before** refitting PNG background pixels. See `docs/ROOM_PIPELINE_NEXT_GATE.md` for exact checks.
+
+
+## RM-PIPE pilot update — render contract (2026-10-25)
+
+Hall now has a shared experimental 7-cutout visual contract for Room Builder v0.4 and Godot. Upright foot-depth sorting and independent actor occlusion work on this supported subset. The manual JSON→Godot visual override deliberately leaves physical routes/collisions unchanged; do not mistake a moved image for a moved physical obstacle. The next approval gate is to validate Hall world footprints/door thresholds, collision and occlusion masks, and state-specific artwork before any 120-item art scale-out. See \`docs/ROOM_BUILDER_GAME_PROJECTION.md\`.
+
+## RM-PIPE-002B — original placement import parity
+
+Godot's provisional Hall world map and seven-item visual contract are now mirrored into a stable, Builder-compatible authored JSON and a dedicated, directly launchable Godot scene. Original door and physical footprint guides included for visual review. The next gate is actual art alignment/collider approval; no live-game scene swap is implied.
+
+## RM-PIPE-003 visual integration complete, pending art approval
+
+Imported Hall art from the .tscn is now drawn in the actual Whole Manor Map without double rendering. Existing A* paths, unlocked gates and collision shapes still come from world-map data. Next: approve image/door/stair seams, repair state visuals and individually calibrated chair/table footprints. See `docs/HALL_LIVE_IMPORT_PARITY.md`.
+
+## Following Hall render calibration: production art work
+
+Use the now instrumented import map to compare fixed five door markers and the two staircase bounds against the existing measured 1254×1254 painting. Replace the offset library/corridor arches using geometry-conditioned artwork and create separate doorway/balustrade alpha occlusion layers before approving pixel alignment. Then evaluate chair/table contact masks with the reversible test-only AStar mode and promote shapes only after review. Full criteria: `docs/HALL_VISUAL_ACCURACY_GATE.md`.
+
+The wall/portal/stair geometry portion is now implemented and captured; see `docs/HALL_WALL_PARITY.md`. The remaining work is asset production: repaint or tile the pilot background to those fixed guides, replace schematic rail strokes with transparent art cutouts, review both collision modes, and only then promote the three individual seating footprints.
+
+The complete 52-candidate prompt matrix and locally matched ComfyUI batch are now specified in `docs/RAVEN_WALL_COMFYUI_WORKFLOW.md`. Generated outputs remain outside production until the documented alpha, seam, scale and render review passes. The batch has since been rendered locally (2026-10-26, ComfyUI Desktop 0.42.5) and waits for the human overlay/state review recorded in `data/raven/comfyui_wall_asset_review.json`; the next gate is that review, not another generator change.
+
+Structural wall tiles now have a second, cheaper option: `docs/WALL_TILESET_PIPELINE.md` records a constructed tileset prototype (one AI material source, seven shapes composed in code, seam delta 0.0 in 0.03 s). The open decision is whether modular structure moves to construction while the AI batch keeps props and materials.
+
+## 2026-10-27 — parallel CODE-02 delivery status
+
+This file remains the Room Builder/Hall **art-geometry next plan**. For the overall Season 1 production sequence, use `docs/production/CODE_PRODUCTION_ROADMAP_RU.md` and its paired graphics roadmap. PR #54 merged the reusable original UPDS Match-3 visual **primitives** only (`CODE-02-00`); the actual Raven Match-3 screen with touch input, cascades, HUD, specials and accessibility is still `CODE-02-01/02 in_progress`. GFX-10 tile/FX approval is not implied. Mobile ZIP upload→PR→CI is demonstrated and documented via merged PR #56; MOB-04 negative/device QA remains pending. Follow canonical `production_progress.json` overrides, not the historical priorities above.
