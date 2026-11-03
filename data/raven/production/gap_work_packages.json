@@ -972,15 +972,15 @@
       "priority": "P0",
       "size": "M",
       "description": "Create full draft scene with approved background, 1–3 actors, dialogues in 3 locales, FX and graph transitions. Current release E2E is background + 1–3 accepted character composites (including held objects) + RU/BE/EN text + editor FX + draft Story Map + save/reopen/Undo. Standalone VN prop workflow is not a prerequisite.",
-      "deliverable": "Repeatable native Godot scene-authoring scenario with approved plate, 1–3 composite cast images, three locales, editor-only FX and draft choice links; save/reopen/undo/review export. No separate VN prop catalog.",
+      "deliverable": "Repeatable native Godot scene-authoring scenario with approved plate, 1–3 composite cast images, three locales, editor-only FX and draft choice links; save/reopen/undo/review export. No separate VN prop catalog. CI smoke stored in tests/raven/vn_studio_full_authoring_e2e_smoke.gd; full manual Godot QA remains separate.",
       "acceptance": "Owner can complete the scoped current-version workflow without code edits, all three locale texts plus draft Story Map/FX survive save/reopen and Undo; this does NOT imply executable branching, full HTML pixel parity or production prop catalog.",
-      "status": "proposed",
+      "status": "PR_review",
       "dependsOn": [
         "VNS5-11",
         "VNS5-12"
       ],
       "graphicsDependencies": [],
-      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 current VN release excludes standalone VN props",
+      "source": "Owner-approved dashboard reconciliation 2026-11-02 | 2026-11-03 current VN release excludes standalone VN props | 2026-11-03 VNS5-09 full isolated disk save/reopen QA candidate",
       "requiresHumanAcceptance": true
     },
     {
