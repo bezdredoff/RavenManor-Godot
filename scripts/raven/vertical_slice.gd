@@ -26,6 +26,8 @@ var vn_view: Control
 var selected := -1
 var event_serial := 0
 var content: Dictionary
+var technical_shell: MarginContainer
+var vn_frame: Control
 var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
@@ -47,6 +49,7 @@ func _build_shell() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new(); bg.color = Color("0d1118"); bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(bg)
 	var margin := MarginContainer.new(); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	technical_shell = margin
 	var insets := Vector4.ZERO
 	if OS.has_feature("mobile") and not OS.has_feature("web"):
 		insets = MobileLayout.native_safe_insets(
@@ -87,20 +90,37 @@ func _build_shell() -> void:
 	locale_selector.select(Copy.SUPPORTED_LOCALES.find(preferences.locale))
 	locale_selector.item_selected.connect(_switch_locale)
 	footer.add_child(locale_selector)
+	vn_frame = Control.new()
+	vn_frame.name = "GameVNFrame"
+	add_child(vn_frame)
+	resized.connect(_layout_vn_frame)
+	_layout_vn_frame()
 	pause_dialog = ConfirmationDialog.new()
 	_refresh_pause_copy()
 	pause_dialog.confirmed.connect(_save_and_exit)
+	pause_dialog.visibility_changed.connect(func() -> void:
+		if is_instance_valid(vn_view): vn_view.set_interaction_blocked(pause_dialog.visible))
+	locale_selector.get_popup().visibility_changed.connect(func() -> void:
+		if is_instance_valid(vn_view): vn_view.set_interaction_blocked(locale_selector.get_popup().visible))
 	add_child(pause_dialog)
 
 
 func _render() -> void:
-	for child in body.get_children(): child.queue_free()
+	for child in body.get_children():
+		body.remove_child(child)
+		child.queue_free()
 	step = Director.next_step(state)
 	if step.get("kind") == "done":
 		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
 		if not approved.is_empty():
 			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
 				"scene": approved["beatId"], "title": approved["title"], "config": approved}
+	var is_vn: bool = step.get("kind") in ["vn", "vn_production"]
+	technical_shell.visible = not is_vn
+	vn_frame.visible = is_vn
+	if not is_vn and is_instance_valid(vn_view):
+		vn_view.queue_free()
+		vn_view = null
 	status.add_theme_color_override("font_color", Color("9fc8bc"))
 	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
 	var display_title: String = str(step.title)
@@ -133,8 +153,10 @@ func _render_vn() -> void:
 	else:
 		# Language changes replace copy only, never rewind line or campaign cursor.
 		vn_player.scene = config
-	vn_view = VNGameView.new()
-	body.add_child(vn_view)
+	if not is_instance_valid(vn_view):
+		vn_view = VNGameView.new()
+		vn_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		vn_frame.add_child(vn_view)
 	# UPDS-first header shell: menu/settings are existing Raven actions;
 	# history contains only lines already reached in this scene.
 	var read_lines: Array[Dictionary] = []
@@ -151,9 +173,18 @@ func _render_vn() -> void:
 	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
 
 
+func _layout_vn_frame() -> void:
+	# UPDS PhoneFrame max 430×932, centred on desktop; use existing Raven stretch.
+	var frame_size := Vector2(minf(size.x, 430.0), minf(size.y, 932.0))
+	vn_frame.position = (size - frame_size) * 0.5
+	vn_frame.size = frame_size
+
+
 func _open_vn_settings() -> void:
 	# Reuse the existing locale selector; do not introduce a second preference store.
-	locale_selector.get_popup().popup()
+	var popup := locale_selector.get_popup()
+	popup.position = Vector2i(get_window().position + Vector2i(vn_frame.position + Vector2(8, 60)))
+	popup.popup()
 
 
 func _render_match3() -> void:
@@ -306,6 +337,16 @@ func _show_save_error() -> void:
 	var message := str(PAUSE_COPY.get(preferences.locale, PAUSE_COPY["ru"])[4])
 	push_error(message)
 	status.text = message
+	if is_instance_valid(vn_view):
+		vn_view.set_interaction_blocked(true)
+		var error := AcceptDialog.new()
+		error.dialog_text = message
+		add_child(error)
+		error.tree_exited.connect(func() -> void:
+			if is_instance_valid(vn_view): vn_view.set_interaction_blocked(false))
+		error.confirmed.connect(error.queue_free)
+		error.canceled.connect(error.queue_free)
+		error.popup_centered()
 	status.add_theme_color_override("font_color", Color("ffb8b8"))
 
 func _save() -> void:

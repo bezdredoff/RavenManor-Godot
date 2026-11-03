@@ -1,3 +1,9 @@
+# 2026-11-03 · GAME-UI-01 Wave 1 — donor-derived VN shell
+
+The game VN uses its own fullscreen/desktop-centred frame rather than the debug scroll wrapper. UPDS `_layout_vn` and `_build_controls` geometry is extracted/adapted into `scripts/shared/upds/vn_shell_layout.gd`, keeping Raven artwork, staging, FX and campaign authority. The view survives line changes; pause/history/locale popups suspend input/Auto. Touch plus emulated mouse is guarded. Skip semantics remain a separate Wave 2 change.
+
+Godot **4.7.2** layout/input tests pass at 320/340/360/390/430, landscape/desktop, long RU/BE/EN and synthetic safe insets. Existing session lifecycle E2E passes with intentional failure injection. Fifteen native Xvfb screenshots were captured; 320 RU inspected. Full check/PR CI pending; physical device, donor screenshot parity and owner acceptance remain open. No art/assets generated or imported. Provenance and verification: [Wave 1 runbook](production/UPDS_UI_WAVE1_VN_SHELL_20261103_RU.md).
+
 # 2026-11-03 · UPDS UI Wave 0 donor pin (documentation only)
 
 Pinned UPDS-godot donor commit `3deed628efd6c22bcd1717f7c545b7d3ca865781` and documented source-to-Raven adapters, Auto continuity risk, read-only Skip prerequisites and an unexecuted portrait/desktop parity matrix in `docs/production/UPDS_UI_WAVE0_DONOR_BASELINE_20261103_RU.md`. No runtime or screenshot parity claimed. PR #171 remains superseded.

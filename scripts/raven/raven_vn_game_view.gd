@@ -40,10 +40,16 @@ var _line_progress := ""
 var _pages: Array[String] = []
 var _page_index := 0
 var _paging_box_size := Vector2.ZERO
+var controls_panel: Panel
+var _interaction_blocked := false
+var _last_input_msec := -1000
+var safe_insets := Vector4.ZERO
+const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
+const ShellLayout = preload("res://scripts/shared/upds/vn_shell_layout.gd")
 
 
 func _init() -> void:
-	custom_minimum_size = Vector2(0, 610)
+	custom_minimum_size = Vector2(0, 360)
 	size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	clip_contents = true
 
@@ -97,7 +103,9 @@ func _build() -> void:
 	chapter.name = "VNSceneTitle"
 	chapter.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	chapter.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
-	chapter.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	chapter.autowrap_mode = TextServer.AUTOWRAP_OFF
+	chapter.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
+	chapter.clip_text = true
 	add_child(chapter)
 	# UPDS-godot scripts/vn/vn_screen.gd: top-level VN actions stay in the
 	# header, separate from the lower dialogue/nameplate shell.
@@ -134,6 +142,8 @@ func _build() -> void:
 
 	nameplate = _label(17, Color("eedab3"))
 	nameplate.name = "VNSpeaker"
+	nameplate.clip_text = true
+	nameplate.text_overrun_behavior = TextServer.OVERRUN_TRIM_ELLIPSIS
 	nameplate.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	nameplate.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
 	var name_style := StyleBoxFlat.new()
@@ -151,30 +161,42 @@ func _build() -> void:
 	progress = _label(12, Color("665044"))
 	progress.name = "VNLineProgress"
 	dialogue_panel.add_child(progress)
+	# UPDS _build_controls: independent bottom strip, outside the text panel.
+	controls_panel = Panel.new()
+	controls_panel.name = "VNControls"
+	var strip := StyleBoxFlat.new()
+	strip.bg_color = Color("33262d")
+	strip.border_color = Color("b58a56")
+	strip.border_width_top = 1
+	controls_panel.add_theme_stylebox_override("panel", strip)
+	add_child(controls_panel)
 
 	next_button = Button.new()
 	next_button.name = "VNNext"
 	next_button.text = "Далее ›"
-	next_button.custom_minimum_size = Vector2(100, 40)
-	next_button.pressed.connect(_next)
-	dialogue_panel.add_child(next_button)
+	next_button.custom_minimum_size = Vector2(0, 44)
+	next_button.pressed.connect(_advance_from_input)
+	controls_panel.add_child(next_button)
 	# UPDS VN footer: Auto advances pages and lines, never bypasses a choice.
 	auto_button = Button.new()
 	auto_button.name = "VNAuto"
 	auto_button.text = "Auto"
 	auto_button.tooltip_text = "Auto advance dialogue"
 	auto_button.pressed.connect(_toggle_auto)
-	dialogue_panel.add_child(auto_button)
+	controls_panel.add_child(auto_button)
 	skip_button = Button.new()
 	skip_button.name = "VNSkip"
 	skip_button.text = "Skip »"
 	skip_button.tooltip_text = "Show the final page of this line without advancing the story"
 	skip_button.pressed.connect(_skip_current_line)
-	dialogue_panel.add_child(skip_button)
+	controls_panel.add_child(skip_button)
 	_auto_timer = Timer.new()
 	_auto_timer.one_shot = true
 	_auto_timer.timeout.connect(_on_auto_timeout)
 	add_child(_auto_timer)
+	dialogue_panel.mouse_filter = Control.MOUSE_FILTER_STOP
+	dialogue_panel.gui_input.connect(_on_dialogue_gui_input)
+	set_process_unhandled_key_input(true)
 	visibility_changed.connect(func() -> void:
 		if not is_visible_in_tree(): _stop_auto())
 
@@ -264,6 +286,7 @@ func set_header_actions(on_menu: Callable, on_settings: Callable, history_lines:
 func _show_history() -> void:
 	# UPDS history is read-only. Raven supplies already-viewed canonical lines;
 	# this view never advances the campaign or writes progress.
+	set_interaction_blocked(true)
 	var popup := AcceptDialog.new()
 	popup.title = {"ru": "История", "be": "Гісторыя", "en": "History"}.get(_display_locale, "History")
 	var log := RichTextLabel.new()
@@ -275,6 +298,7 @@ func _show_history() -> void:
 	popup.add_child(log)
 	add_child(popup)
 	popup.popup_centered_ratio(0.85)
+	popup.tree_exited.connect(func() -> void: set_interaction_blocked(false))
 	popup.confirmed.connect(popup.queue_free)
 	popup.canceled.connect(popup.queue_free)
 
@@ -360,36 +384,26 @@ func _layout() -> void:
 			visual.position = Vector2(w * (0.02 if slot == "left" else 0.68 if slot == "right" else 0.35), h * 0.48)
 	missing_background.position = Vector2(w * 0.05, h * 0.28)
 	missing_background.size = Vector2(w * 0.90, 70)
-	var heading := get_node("VNHeadingBar") as ColorRect
-	heading.position = Vector2.ZERO
-	heading.size = Vector2(w, 40)
-	header_menu.position = Vector2(6, 3)
-	header_menu.size = Vector2(42, 34)
-	header_settings.position = Vector2(w - 46, 3)
-	header_settings.size = Vector2(40, 34)
-	header_history.position = Vector2(w - 91, 3)
-	header_history.size = Vector2(40, 34)
-	chapter.position = Vector2(52, 0)
-	chapter.size = Vector2(maxf(1.0, w - 150), 40)
-
-	var margin := maxf(8.0, w * 0.032)
-	var box_h := maxf(225.0, minf(h * 0.37, 295.0))
-	dialogue_panel.position = Vector2(margin, h - box_h - 28)
-	dialogue_panel.size = Vector2(w - 2.0 * margin, box_h)
-	nameplate.position = Vector2(14, -20)
-	nameplate.size = Vector2(minf(170, w * 0.50), 38)
-	dialogue.position = Vector2(14, 30)
-	dialogue.size = Vector2(maxf(1, dialogue_panel.size.x - 28), box_h - 105)
-	progress.position = Vector2(14, box_h - 35)
-	progress.size = Vector2(135, 25)
-	skip_button.position = Vector2(maxf(0, dialogue_panel.size.x - 288), box_h - 51)
-	skip_button.size = Vector2(80, 43)
-	auto_button.position = Vector2(maxf(0, dialogue_panel.size.x - 201), box_h - 51)
-	auto_button.size = Vector2(78, 43)
-	next_button.position = Vector2(maxf(0, dialogue_panel.size.x - 115), box_h - 51)
-	next_button.size = Vector2(105, 43)
-	pilot_note.position = Vector2(6, h - 22)
-	pilot_note.size = Vector2(w - 12, 20)
+	var insets := safe_insets
+	if OS.has_feature("mobile") and not OS.has_feature("web"):
+		insets = MobileLayout.native_safe_insets(get_viewport().get_visible_rect().size,
+			DisplayServer.screen_get_size(), DisplayServer.get_display_safe_area())
+	var layout: Dictionary = ShellLayout.geometry(Vector2(w, h), insets)
+	_place(get_node("VNHeadingBar"), layout.header)
+	_place(header_menu, layout.menu)
+	_place(header_settings, layout.settings)
+	_place(header_history, layout.history)
+	_place(chapter, layout.title)
+	_place(dialogue_panel, layout.dialogue)
+	_place(nameplate, layout.nameplate)
+	_place(dialogue, layout.text)
+	_place(progress, layout.progress)
+	_place(controls_panel, layout.controls)
+	_place(skip_button, layout.buttons[0])
+	_place(auto_button, layout.buttons[1])
+	_place(next_button, layout.buttons[2])
+	dialogue.add_theme_font_size_override("font_size", 15 if w <= 340 else 18)
+	pilot_note.hide()
 	# Reflow on viewport resize, without advancing a line or replaying cues.
 	if not _full_text.is_empty() and _paging_box_size != dialogue.size:
 		_repaginate()
@@ -400,7 +414,9 @@ func _fits_dialogue(candidate: String) -> bool:
 	var font_size: int = dialogue.get_theme_font_size("font_size")
 	var bounds: Vector2 = font.get_multiline_string_size(candidate,
 		HORIZONTAL_ALIGNMENT_LEFT, maxf(40.0, dialogue.size.x - 6), font_size)
-	return bounds.y <= maxf(24.0, dialogue.size.y - 6)
+	# UPDS _paginate_dialogue: two-line reading window, even on tall screens.
+	return bounds.y <= minf(font_size * (1.34 if size.x <= 340 else 1.42) * 2.0 + 7.0,
+		maxf(24.0, dialogue.size.y - 6))
 
 
 func _repaginate() -> void:
@@ -447,16 +463,18 @@ func _stop_auto() -> void:
 func _schedule_auto() -> void:
 	if _auto_timer == null: return
 	_auto_timer.stop()
-	if _auto_mode and is_visible_in_tree() and _advance_callback.is_valid():
+	if _auto_mode and is_visible_in_tree() and not _interaction_blocked and _advance_callback.is_valid():
 		# Enough reading time for short/long pages; never fire in same frame.
 		_auto_timer.start(clampf(2.5 + float(dialogue.text.length()) / 22.0, 3.0, 12.0))
 
 
 func _on_auto_timeout() -> void:
-	if _auto_mode and is_visible_in_tree(): _next()
+	if _auto_mode and is_visible_in_tree() and not _interaction_blocked: _next()
 
 
 func _next() -> void:
+	if _interaction_blocked or not is_visible_in_tree():
+		return
 	if _page_index < _pages.size() - 1:
 		_page_index += 1
 		_show_page()
@@ -470,3 +488,33 @@ func _label(font_size: int, color: Color) -> Label:
 	label.add_theme_color_override("font_color", color)
 	label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	return label
+
+
+func _place(control: Control, rect: Rect2) -> void:
+	control.position = rect.position
+	control.size = rect.size
+
+
+func set_interaction_blocked(blocked: bool) -> void:
+	_interaction_blocked = blocked
+	_schedule_auto()
+
+
+func _on_dialogue_gui_input(event: InputEvent) -> void:
+	# Same 120ms guard as UPDS _next: emulated mouse must not double a touch.
+	if (event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed) or (event is InputEventScreenTouch and event.pressed):
+		_advance_from_input()
+		get_viewport().set_input_as_handled()
+
+
+func _advance_from_input() -> void:
+	if Time.get_ticks_msec() - _last_input_msec < 120:
+		return
+	_last_input_msec = Time.get_ticks_msec()
+	_next()
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if is_visible_in_tree() and not event.is_echo() and event.is_action_pressed("ui_accept"):
+		_advance_from_input()
+		get_viewport().set_input_as_handled()
