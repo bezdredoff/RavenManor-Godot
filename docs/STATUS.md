@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 atomic VN and map persistence (draft)
+
+Follow-up to merged #163: VN beat completion now saves reducer event and cleared VN cursor in one canonical snapshot write; map multi-event actions are also staged and saved atomically. On a failed VN line write, the visible line is rolled back and localized error shown; failed map/beat writes leave in-memory campaign state unchanged. Blocking scene lifecycle smoke extends failure injection. **CI and device QA pending**; GAME-UI-01 remains in_progress. No new save key or schema.
+
 # 2026-11-03 · GAME-UI-01 scene lifecycle session E2E (stacked draft)
 
 Stacked on checkpoint hardening: blocking headless Godot smoke exercises New Game → VN line advance → Save/Exit → Continue, authorized campaign transition to Match-3, move checkpoint → scene reload → board/move restoration, retry checkpoint clearing, New Game reset, corrupt-save recovery and localized visible save-error feedback. Level completion now commits the reducer reward and checkpoint removal in one canonical Raven snapshot write, avoiding a two-write window. This is a **draft**: CI, browser refresh, real-device UI and genuine level-win E2E remain unverified. GAME-UI-01 stays in_progress. Merge prerequisite checkpoint hardening first.

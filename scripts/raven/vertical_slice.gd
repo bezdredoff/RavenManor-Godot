@@ -187,7 +187,8 @@ func _complete_level() -> void:
 
 
 func _complete_action() -> void:
-	_apply_events(Director.events_for(str(step.id))); _render()
+	if _apply_events(Director.events_for(str(step.id))):
+		_render()
 
 
 func _advance_vn() -> void:
@@ -200,16 +201,21 @@ func _advance_vn() -> void:
 				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
 				return
 			var reduced: Dictionary = Reducer.apply(state, event)
-			if not reduced.get("ok", false) or not store.save_campaign(reduced.get("state", {})):
-				push_error("Production VN completion not saved")
+			if not reduced.get("ok", false):
+				push_error("Production VN completion rejected")
 				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
 				return
-			state = reduced["state"]
+			var completed: Dictionary = reduced["state"]
+			completed.vnCursor = {}
+			if not store.save_campaign(completed):
+				_show_save_error()
+				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
+				return
+			state = completed
 		else:
-			_apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}])
-		state.vnCursor = {}
-		if not store.save_campaign(state):
-			push_error("Could not persist VN completion cursor cleanup")
+			if not _apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}], true):
+				vn_player.line_index = maxi(0, vn_player.scene.get("lines", []).size() - 1)
+				return
 		vn_player = null
 	else:
 		var updated := state.duplicate(true)
@@ -217,19 +223,29 @@ func _advance_vn() -> void:
 		if store.save_campaign(updated):
 			state = updated
 		else:
-			push_error("Could not persist VN line cursor")
+			_show_save_error()
+			vn_player.line_index = maxi(0, vn_player.line_index - 1)
 	_render()
 
 
-func _apply_events(events: Array) -> void:
+func _apply_events(events: Array, clear_vn_cursor: bool = false) -> bool:
+	var updated := state.duplicate(true)
 	for raw: Dictionary in events:
 		event_serial += 1
-		var event := raw.duplicate(true); event.eventId = "vs-%s-%d-%d" % [step.id, state.revision, event_serial]
-		var result := Reducer.apply(state, event)
-		if not result.ok: push_error("RM-VS-01 event rejected: " + str(result.error)); return
-		state = result.state
-	store.save_campaign(state)
-
+		var event := raw.duplicate(true)
+		event.eventId = "vs-%s-%d-%d" % [step.id, updated.revision, event_serial]
+		var result: Dictionary = Reducer.apply(updated, event)
+		if not result.get("ok", false):
+			push_error("RM-VS-01 event rejected: " + str(result.get("error", "")))
+			return false
+		updated = result.state
+	if clear_vn_cursor:
+		updated.vnCursor = {}
+	if not store.save_campaign(updated):
+		_show_save_error()
+		return false
+	state = updated
+	return true
 
 func _level(id: String) -> Dictionary:
 	for item: Dictionary in content.levels:
