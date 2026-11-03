@@ -1183,6 +1183,159 @@
       ],
       "graphicsDependencies": [],
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-UI-01",
+      "title": "Main menu, pause and session navigation",
+      "domain": "gameplay",
+      "priority": "P0",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-04-01; no duplication or automatic acceptance.",
+      "deliverable": "UPDS main menu/settings UI reused through Raven adapters; New/Continue, pause/restart, return and language/audio work with saved Raven session; no second save authority.",
+      "acceptance": "UPDS main menu/settings UI reused through Raven adapters; New/Continue, pause/restart, return and language/audio work with saved Raven session; no second save authority.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-02-06"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-M3-01",
+      "title": "UPDS level catalogue adaptation and campaign screen",
+      "domain": "gameplay",
+      "priority": "P0",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-02-06; no duplication or automatic acceptance.",
+      "deliverable": "Preserve RM-LVL-001..003 and existing rewards; map 22 UPDS authored mechanics/layouts to stable new Raven IDs after balancing, never import school story or overwrite first three; campaign screen shows lock/replay/next.",
+      "acceptance": "Preserve RM-LVL-001..003 and existing rewards; map 22 UPDS authored mechanics/layouts to stable new Raven IDs after balancing, never import school story or overwrite first three; campaign screen shows lock/replay/next.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-01-03"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-LOOP-01",
+      "title": "Raven integrated game loop and recovery",
+      "domain": "gameplay",
+      "priority": "P0",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-11-01; no duplication or automatic acceptance.",
+      "deliverable": "VN to Match-3 to results to restoration/map and back; exactly-once first-clear reward, atomic save, resume after restart, no second UPDS progression store.",
+      "acceptance": "VN to Match-3 to results to restoration/map and back; exactly-once first-clear reward, atomic save, resume after restart, no second UPDS progression store.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-07-02"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-ONBOARD-01",
+      "title": "First-session onboarding across hub and restoration",
+      "domain": "gameplay",
+      "priority": "P1",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-11-01; no duplication or automatic acceptance.",
+      "deliverable": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
+      "acceptance": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-02-03"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-QA-01",
+      "title": "End-to-end functional and device acceptance",
+      "domain": "gameplay",
+      "priority": "P0",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-11-01; no duplication or automatic acceptance.",
+      "deliverable": "Automated regression and owner real-device walkthrough of menu→VN→map→match3→reward→repair→resume; evidence links required before accepted.",
+      "acceptance": "Automated regression and owner real-device walkthrough of menu→VN→map→match3→reward→repair→resume; evidence links required before accepted.",
+      "status": "proposed",
+      "dependsOn": [
+        "GAME-LOOP-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-BOOST-01",
+      "title": "Boosters inventory and persistence",
+      "domain": "gameplay",
+      "priority": "P1",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-02-03; no duplication or automatic acceptance.",
+      "deliverable": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
+      "acceptance": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
+      "status": "proposed",
+      "dependsOn": [
+        "GAME-M3-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-JOURNAL-01",
+      "title": "Clue journal and objectives UI",
+      "domain": "gameplay",
+      "priority": "P1",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-07-03; no duplication or automatic acceptance.",
+      "deliverable": "Persistent spoiler-safe clue log, current/completed objectives and destination hints, localized RU/EN/BE, no duplication of story authority.",
+      "acceptance": "Persistent spoiler-safe clue log, current/completed objectives and destination hints, localized RU/EN/BE, no duplication of story authority.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-08-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-ENDING-01",
+      "title": "Chapter/season completion and post-ending state",
+      "domain": "gameplay",
+      "priority": "P2",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-12-W5; no duplication or automatic acceptance.",
+      "deliverable": "Defined ending beats, replay/continue and no dead ends, preserve save and avoid unlocking unsafe wings; owner narrative acceptance.",
+      "acceptance": "Defined ending beats, replay/continue and no dead ends, preserve save and avoid unlocking unsafe wings; owner narrative acceptance.",
+      "status": "proposed",
+      "dependsOn": [
+        "CODE-08-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "GAME-RELEASE-01",
+      "title": "Release candidate packaging and regression",
+      "domain": "gameplay",
+      "priority": "P2",
+      "size": "M",
+      "description": "New scoped product completeness package. Coordinate with CODE-10-02; no duplication or automatic acceptance.",
+      "deliverable": "Web/offline/mobile smoke, locale/device matrix, save migration and rollback, versioned artifacts, owner release sign-off.",
+      "acceptance": "Web/offline/mobile smoke, locale/device matrix, save migration and rollback, versioned artifacts, owner release sign-off.",
+      "status": "proposed",
+      "dependsOn": [
+        "GAME-QA-01"
+      ],
+      "graphicsDependencies": [],
+      "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
+      "requiresHumanAcceptance": true
     }
   ]
 }

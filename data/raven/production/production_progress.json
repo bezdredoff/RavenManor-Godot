@@ -425,9 +425,10 @@
       "id": "CODE-02-03",
       "owner": "ChatGPT",
       "status": "ready",
-      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Tutorial/help/tiles require real Web/mobile and UPDS presentation parity; former recovery branch is absent. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Tutorial/help/tiles require real Web/mobile and UPDS presentation parity; former recovery branch is absent. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
       "updated": "2026-11-03",
-      "implementationState": "partial"
+      "implementationState": "partial",
+      "priority": "P0"
     },
     {
       "id": "CODE-02-04",
@@ -984,10 +985,10 @@
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "status": "ready",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
       "implementationState": "partial",
       "qaState": "automated",
-      "priority": "P1"
+      "priority": "P0"
     },
     {
       "id": "CODE-05-01",
@@ -1014,10 +1015,10 @@
       "owner": "ChatGPT",
       "updated": "2026-11-03",
       "status": "ready",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Season-wide progression graph is later scale-out after the current Hall gate; first-slice economy and save contracts remain guarded. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Season-wide progression graph is later scale-out after the current Hall gate; first-slice economy and save contracts remain guarded. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P1 for agreed game completeness; status/QA/acceptance unchanged.",
       "implementationState": "partial",
       "qaState": "automated",
-      "priority": "P2"
+      "priority": "P1"
     },
     {
       "id": "CODE-08-02",
@@ -2307,8 +2308,8 @@
       "implementationState": "not_recorded",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full shared audio/feedback bridge is a follow-on after basic preferences and slice UX, not an immediate Hall vertical-slice blocker. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
-      "priority": "P2"
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full shared audio/feedback bridge is a follow-on after basic preferences and slice UX, not an immediate Hall vertical-slice blocker. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P1 for agreed game completeness; status/QA/acceptance unchanged.",
+      "priority": "P1"
     },
     {
       "id": "CODE-06-01",
@@ -2340,8 +2341,8 @@
       "implementationState": "not_recorded",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
-      "priority": "P1"
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
+      "priority": "P0"
     },
     {
       "id": "CODE-11-01",
@@ -2661,6 +2662,105 @@
       "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Whole-UI final visual harmonization follows approved Hall/Match-3 gameplay/device QA, and is not a separate current P1 artwork gate. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "priority": "P2",
       "updated": "2026-11-03"
+    },
+    {
+      "id": "GAME-UI-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-04-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-M3-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-02-06.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-LOOP-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-ONBOARD-01",
+      "status": "proposed",
+      "priority": "P1",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-QA-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-BOOST-01",
+      "status": "proposed",
+      "priority": "P1",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-02-03.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-JOURNAL-01",
+      "status": "proposed",
+      "priority": "P1",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-07-03.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-ENDING-01",
+      "status": "proposed",
+      "priority": "P2",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-12-W5.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-RELEASE-01",
+      "status": "proposed",
+      "priority": "P2",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-10-02.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
     }
   ],
   "rules": [

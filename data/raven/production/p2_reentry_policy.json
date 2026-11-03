@@ -12,7 +12,6 @@
       "taskIds": [
         "CODE-06-02",
         "CODE-07-03",
-        "CODE-08-01",
         "CODE-12-W1",
         "CODE-12-W2",
         "CODE-12-W3",
@@ -34,7 +33,6 @@
       "trigger": "Появилась конкретная утверждённая сцена или повторяемый артовый дефект, который не устраняется существующими VN composites, простыми editor FX или узким чиби-пилотом.",
       "action": "Require one scoped experiment with measurable before/after, no blanket rerun of VNCCS/model bake-offs.",
       "taskIds": [
-        "CODE-04-02",
         "RM-GAP-005",
         "ART-BATCH-AUTOMATION",
         "ART-PROVENANCE-QA",
@@ -78,6 +76,16 @@
         "GFX-13-T09",
         "GFX-13-T10",
         "GFX-13-T11"
+      ]
+    },
+    {
+      "id": "P2-GAME-RELEASE",
+      "label": "Финал сезона и выпуск",
+      "trigger": "Вертикальный срез принят, сезонная кампания имеет утверждённую карту сцен и критерии выпуска.",
+      "action": "Promote only after owner-approved milestone; no automatic feature completion.",
+      "taskIds": [
+        "GAME-ENDING-01",
+        "GAME-RELEASE-01"
       ]
     }
   ]

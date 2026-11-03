@@ -29,3 +29,16 @@ Updated 2026-10-26. These decisions override conflicting clauses in preserved hi
 | RM-DEC-023 | RM-VS-01 ends on the first-night/next-morning hook toward kitchen and Rowan/conservatory. It establishes memory gaps/returning fragments but does not explain the memory effect or explicitly reveal Ada/Lucas/Rowan's supernatural nature. |
 
 **Outdated known clauses:** older `04_vertical_slice_flow.md`, Stage 2 hotspot/economy CSV/MD and door FSM may require bathroom repair before bedroom access or repeated door animations. Implement latest product decisions without renaming `RM-*` IDs; record any dependency changes in a migration note. Do not claim the archived documents are synchronized to this override.
+
+
+## Owner-approved planning amendments — 2026-11-03
+
+| ID | Decision |
+|---|---|
+| RM-DEC-024 | `work_points` remains the sole restoration currency. Star performance is not a second repair wallet; first-clear awards are idempotent. Preserve the 2/2/2 rewards and 2/4 restoration costs of RM-VS-01. |
+| RM-DEC-025 | Keep `RM-LVL-001..003` stable; UPDS-godot's 22 authored levels are a reusable mechanics/layout pool, not an automatically imported school-themed campaign. Add new Raven IDs after pacing and balance review. |
+| RM-DEC-026 | Single Raven reducer/campaign store authority for progression and save; UI and UPDS components never persist competing authoritative state. |
+| RM-DEC-027 | Scope milestone order: foundation → approved Hall vertical slice → campaign/season → release candidate. Do not equate merged, asset-approved, editor-draft, runtime-integrated and owner-accepted. |
+| RM-DEC-028 | Standalone VN Studio prop catalogue is deferred; map props remain necessary. Historical Stage 1/2 contradictory gates are superseded by RM-DEC-004..013. |
+
+See [canonical progression](production/GAME_PROGRESSION_CONTRACT_RU.md) and [consistency audit](production/GAME_CONSISTENCY_AUDIT_RU.md).

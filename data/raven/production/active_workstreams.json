@@ -308,6 +308,60 @@
         ],
         "decision": "Owner approves playable slice and safe migration/rollback; technical smoke ≠ finished Season 1"
       }
+    },
+    {
+      "id": "WS-GAME-SHELL",
+      "title": "Игровая оболочка и управление сессией",
+      "phase": "Foundation",
+      "gate": "New/Continue/Pause/Settings, no duplicate save owner; complete owner device walkthrough.",
+      "ownerAcceptance": "Separate functional and device evidence required",
+      "taskIds": [
+        "GAME-UI-01",
+        "CODE-04-01"
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "Menu routing, settings persistence, restart/resume regression"
+        ],
+        "ownerChecks": [
+          "New game and Continue on real device; pause/restart and locale/audio"
+        ],
+        "newWorkIfFailed": [
+          "Reuse upstream UI components and correct Raven adapter only"
+        ],
+        "decision": "Owner accepts integrated game shell, not just component smoke"
+      }
+    },
+    {
+      "id": "WS-CAMPAIGN",
+      "title": "Кампания, экономика и игровой цикл",
+      "phase": "Foundation→Campaign",
+      "gate": "Stable RM level IDs, once-only workPoints, restoration dependencies and integrated route to story.",
+      "ownerAcceptance": "Owner approves campaign pacing and real end-to-end run",
+      "taskIds": [
+        "GAME-M3-01",
+        "GAME-LOOP-01",
+        "GAME-ONBOARD-01",
+        "GAME-QA-01",
+        "GAME-BOOST-01",
+        "GAME-JOURNAL-01",
+        "CODE-07-02",
+        "CODE-08-01",
+        "CODE-02-03",
+        "CODE-04-02"
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "Level catalogue schema, ID stability, first-clear idempotency, no double store"
+        ],
+        "ownerChecks": [
+          "Real complete first-session flow, 22-level balance pilot and save reload"
+        ],
+        "newWorkIfFailed": [
+          "Update adapters and canonical content only after decision review"
+        ],
+        "decision": "Do not replace the three canonical VS levels or auto-publish VN drafts"
+      }
     }
   ]
 }
