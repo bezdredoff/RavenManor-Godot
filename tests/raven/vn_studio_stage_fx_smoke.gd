@@ -45,6 +45,13 @@ func _run() -> void:
 	assert(phases["cues"][0]["phase"] == "enter")
 	assert(phases["cues"][1]["phase"] == "idle")
 	assert(phases["cues"][2]["phase"] == "exit")
+	var json_roundtrip: Dictionary = JSON.parse_string(JSON.stringify(phases))
+	assert(StageFx.validate(stage, v2, json_roundtrip).is_empty(),
+		"Integer millisecond values must remain valid after JSON save/reload")
+	var fractional: Dictionary = json_roundtrip.duplicate(true)
+	fractional["cues"][0]["startMs"] = 27.5
+	assert(not StageFx.validate(stage, v2, fractional).is_empty(),
+		"Fractional milliseconds must still fail closed")
 	assert(float(StageFx.sample(phases["cues"][0], 0)["alpha"]) < 0.01)
 	assert(float(StageFx.sample(phases["cues"][0], 900)["alpha"]) == 1.0)
 	assert(float(StageFx.sample(phases["cues"][2], 9000)["alpha"]) < 0.01)

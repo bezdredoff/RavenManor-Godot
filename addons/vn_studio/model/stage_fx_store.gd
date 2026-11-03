@@ -35,6 +35,17 @@ static func target_options(stage: Dictionary, stage_v2: Dictionary) -> Array[Dic
 	return options
 
 
+## Godot JSON.parse_string may decode whole numeric JSON values as float.
+## Accept only finite, mathematically integral numbers; reject 150.5 ms,
+## NaN/Inf and wrong types. This keeps old integer-only semantic bounds.
+static func _whole_number(value: Variant) -> bool:
+	if value is int:
+		return true
+	if value is float:
+		return is_finite(value) and value == floorf(value)
+	return false
+
+
 static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant, valid_line_ids: Array = []) -> String:
 	if not data is Dictionary:
 		return "FX-постановка должна быть объектом."
@@ -87,7 +98,7 @@ static func validate(stage: Dictionary, stage_v2: Dictionary, data: Variant, val
 		var duration: Variant = cue.get("durationMs")
 		var repeat_count: Variant = cue.get("repeat")
 		var intensity: Variant = cue.get("intensity")
-		if not start is int or not duration is int or not repeat_count is int \
+		if not _whole_number(start) or not _whole_number(duration) or not _whole_number(repeat_count) \
 				or start < 0 or start > 15000 or duration < 120 or duration > 4000 \
 				or repeat_count < 1 or repeat_count > 5 or start + duration * repeat_count > MAX_MS:
 			return "Время FX вне лимитов (max 20 секунд)."
