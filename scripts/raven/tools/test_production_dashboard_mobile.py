@@ -132,19 +132,20 @@ class DashboardTests(unittest.TestCase):
         data = dashboard.build()
         by_id = {item["id"]: item for item in data["tasks"]}
         groups = {item["id"]: item for item in data["p2Groups"]}
-        self.assertEqual(len(groups), 4)
+        self.assertEqual(len(groups), 5)
         self.assertEqual(sum(g["taskCount"] for g in groups.values()), 44)
-        self.assertEqual(groups["P2-SEASON-CONTENT"]["taskCount"], 16)
-        self.assertEqual(groups["P2-CONDITIONAL-PIPELINE"]["taskCount"], 14)
+        self.assertEqual(groups["P2-SEASON-CONTENT"]["taskCount"], 15)
+        self.assertEqual(groups["P2-CONDITIONAL-PIPELINE"]["taskCount"], 13)
         self.assertEqual(groups["P2-EXPLICITLY-DEFERRED"]["taskCount"], 2)
         self.assertEqual(groups["P2-FULL-SEASON-RELEASE"]["taskCount"], 12)
+        self.assertEqual(groups["P2-GAME-RELEASE"]["taskCount"], 2)
         for task_id in ["CODE-13-01"] + [f"GFX-13-T{i:02}" for i in range(1, 12)]:
             self.assertEqual(by_id[task_id]["p2ReentryGroup"], "P2-FULL-SEASON-RELEASE")
             self.assertEqual(by_id[task_id]["status"], "proposed")
         self.assertEqual(by_id["VNS5-08"]["p2ReentryGroup"], "P2-EXPLICITLY-DEFERRED")
         self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
         self.assertEqual(by_id["GFX-07-08"]["p2ReentryGroup"], "P2-SEASON-CONTENT")
-        self.assertEqual(len(data["workstreams"]), 10)
+        self.assertEqual(len(data["workstreams"]), 12)
         for stream in data["workstreams"]:
             m = stream["acceptancePlan"]
             self.assertTrue(m["automatedChecks"], stream["id"])
@@ -172,10 +173,10 @@ class DashboardTests(unittest.TestCase):
         active = {task["id"] for task in tasks
                   if task["status"] not in terminal and task["priority"] in {"P0", "P1"}}
         self.assertEqual(grouped, active)
-        self.assertEqual(len(active), 74)
-        self.assertEqual(len(data["workstreams"]), 10)
-        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 13)
-        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 61)
+        self.assertEqual(len(active), 83)
+        self.assertEqual(len(data["workstreams"]), 12)
+        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 21)
+        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 62)
         for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
                     "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
             self.assertEqual(by_id[key]["priority"], "P2", key)
@@ -219,7 +220,7 @@ class DashboardTests(unittest.TestCase):
         streams = {stream["id"]: stream for stream in data["workstreams"]}
         self.assertEqual(streams["WS-LOCALES"]["taskCount"], 1)
         self.assertEqual(streams["WS-MOBILE-HANDOFF"]["taskCount"], 1)
-        self.assertEqual(data["openTaskCount"], 118)
+        self.assertEqual(data["openTaskCount"], 127)
 
     def test_code_gap_p0_only_current_release_gates(self):
         data = dashboard.build()
@@ -227,6 +228,8 @@ class DashboardTests(unittest.TestCase):
         expected_code_gap = {
             "CODE-02-06", "CODE-05-01", "CODE-05-02",
             "CODE-11-01", "RM-GAP-001", "RM-GAP-006",
+            "CODE-04-01", "CODE-02-03", "CODE-07-02",
+            "GAME-UI-01", "GAME-M3-01", "GAME-LOOP-01", "GAME-QA-01",
         }
         live_code_gap = {
             item["id"] for item in data["tasks"]
@@ -237,7 +240,7 @@ class DashboardTests(unittest.TestCase):
             item["id"] for item in data["tasks"]
             if item["priority"] == "P0"
         }
-        self.assertEqual(len(all_current_p0), 13)
+        self.assertEqual(len(all_current_p0), 21)
         for key in expected_code_gap:
             self.assertNotIn(by_id[key]["status"], {
                 "merged", "integrated", "accepted", "device_verified",
