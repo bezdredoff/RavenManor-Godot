@@ -223,8 +223,10 @@ func _advance_vn() -> void:
 		if store.save_campaign(updated):
 			state = updated
 		else:
-			_show_save_error()
 			vn_player.line_index = maxi(0, vn_player.line_index - 1)
+			_render()
+			_show_save_error()
+			return
 	_render()
 
 
