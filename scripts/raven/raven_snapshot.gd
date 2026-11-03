@@ -50,8 +50,11 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 	if cursor is Dictionary:
 		var beat_id := str(cursor.get("beatId", ""))
 		var line_index: Variant = cursor.get("lineIndex", -1)
-		if catalog.storyBeats.has(beat_id) and line_index is int and line_index >= 0 and line_index < 10000 and not result.storyBeatsSeen.has(beat_id):
-			result.vnCursor = {"beatId": beat_id, "lineIndex": line_index}
+		# JSON.parse_string returns numeric values as floats; accept only exact
+		# non-negative integral values, never fractional or string indices.
+		var valid_index: bool = (line_index is int or line_index is float) and is_finite(float(line_index)) and float(line_index) == floor(float(line_index)) and float(line_index) >= 0.0 and float(line_index) < 10000.0
+		if catalog.storyBeats.has(beat_id) and valid_index and not result.storyBeatsSeen.has(beat_id):
+			result.vnCursor = {"beatId": beat_id, "lineIndex": int(line_index)}
 	var checkpoint: Variant = value.get("match3Checkpoint", {})
 	if checkpoint is Dictionary:
 		var level_id := str(checkpoint.get("levelId", ""))

@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 JSON cursor normalization fix (draft)
+
+After #165 merged, GitHub Pages succeeded but blocking Prototype Lab CI failed: persisted VN cursor was empty after JSON save/load. Root cause: Godot JSON parser returns numeric values as float, while RavenSnapshot.normalize accepted only int for vnCursor.lineIndex. Candidate accepts only finite integral numeric values and casts to int, rejecting fractional values; session lifecycle smoke adds JSON roundtrip regression. **CI and device QA pending; GAME-UI-01 remains in_progress.** Separate UI direction: use UPDS-godot full VN screen shell (header/settings, dialogue footer, speaker nameplate, history/Auto/Skip), with Raven theme and data/session adapters; avoid rebuilding the UI from scratch. Visual parity not yet implemented or approved.
+
 # 2026-11-03 · UPDS-first engineering policy and GAME-UI-01 CI investigation (PR #165)
 
 Owner approved mandatory reuse-first workflow for all agents: inspect current UPDS-godot and existing Raven adapters before new VN/Match-3/session/menu/save code; document source provenance and reuse/extract/adapter/new decision, preserve Raven reducer/store, and port donor parity tests. See `AGENTS.md` and `docs/production/UPDS_FIRST_REUSE_AUDIT_20261103_RU.md`. The PR #165 CI still fails on VN cursor Continue after an injected write failure; additional storage-level assertions isolate whether the cursor was persisted or lost during reload. **No CI pass or QA acceptance claimed.**
