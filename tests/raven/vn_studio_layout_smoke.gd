@@ -18,7 +18,7 @@ func _run() -> void:
 	for legacy_tab in range(3):
 		assert(studio._stage_tabs.is_tab_hidden(legacy_tab), "UPDS tools must not be visible in Raven mode")
 	assert(not studio._stage_tabs.is_tab_hidden(3))
-	assert(studio._legacy_mode_button.text.contains("UPDS"))
+	assert(studio._raven_story_view._legacy_tools_button.text.contains("UPDS"))
 	assert(not studio._legacy_scenes_panel.visible, "Legacy UPDS scenes must hide in Raven workspace")
 	assert(not studio._legacy_details_panel.visible, "Legacy UPDS details must hide in Raven workspace")
 	assert(not studio._legacy_toolbar.visible, "UPDS toolbar should not consume Raven height")

@@ -1,6 +1,7 @@
 @tool
 extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
+signal legacy_tools_requested
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
@@ -41,6 +42,7 @@ var _diff: Label
 var _path: LineEdit
 var _recover_button: Button
 var _recover_dialog: ConfirmationDialog
+var _legacy_tools_button: Button
 var _save: Button
 var _export: Button
 var _export_stage: Button
@@ -96,6 +98,11 @@ func _build() -> void:
 	sticky_title.text = "VN Studio · Raven Manor"
 	sticky_title.size_flags_horizontal = SIZE_EXPAND_FILL
 	sticky.add_child(sticky_title)
+	_legacy_tools_button = Button.new()
+	_legacy_tools_button.text = "Инструменты UPDS…"
+	_legacy_tools_button.tooltip_text = "Отдельный донорский инструмент, не обязателен для Raven"
+	_legacy_tools_button.pressed.connect(func(): legacy_tools_requested.emit())
+	sticky.add_child(_legacy_tools_button)
 	# The whole Raven workspace remains vertically reachable in shorter Godot
 	# windows, including heading, toolbar, scene panels and export path.
 	_workspace_scroll = ScrollContainer.new()

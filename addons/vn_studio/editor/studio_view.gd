@@ -120,17 +120,6 @@ func _make_ui() -> void:
 	outer.size_flags_vertical = SIZE_EXPAND_FILL
 	add_child(outer)
 
-	var mode := HFlowContainer.new()
-	outer.add_child(mode)
-	var mode_caption := Label.new()
-	mode_caption.text = "Raven Manor · редактор сценария"
-	mode_caption.size_flags_horizontal = SIZE_EXPAND_FILL
-	mode.add_child(mode_caption)
-	_legacy_mode_button = Button.new()
-	_legacy_mode_button.text = "Инструменты UPDS…"
-	_legacy_mode_button.tooltip_text = "Отдельный legacy-инструмент донорского проекта; не требуется для редактирования Raven"
-	_legacy_mode_button.pressed.connect(_on_toggle_legacy_mode)
-	mode.add_child(_legacy_mode_button)
 	var toolbar := HFlowContainer.new()
 	_legacy_toolbar = toolbar
 	outer.add_child(toolbar)
@@ -139,6 +128,11 @@ func _make_ui() -> void:
 	caption.size_flags_horizontal = SIZE_EXPAND_FILL
 	caption.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(caption)
+	_legacy_mode_button = Button.new()
+	_legacy_mode_button.text = "← Raven Manor"
+	_legacy_mode_button.tooltip_text = "Вернуться из UPDS legacy-инструментов к сценарию Raven Manor"
+	_legacy_mode_button.pressed.connect(_on_toggle_legacy_mode)
+	toolbar.add_child(_legacy_mode_button)
 	var open_button := Button.new()
 	open_button.text = "Выбрать локальную папку UPDS-godot…"
 	open_button.pressed.connect(_on_choose_folder)
@@ -282,6 +276,7 @@ func _make_ui() -> void:
 	_migration_review.analyze_requested.connect(_on_migration_analyze)
 	_migration_scroll.add_child(_migration_review)
 	_raven_story_view = RavenStoryView.new()
+	_raven_story_view.legacy_tools_requested.connect(_on_toggle_legacy_mode)
 	_raven_story_view.name = "Raven Manor"
 	_stage_tabs.add_child(_raven_story_view)
 
@@ -391,7 +386,7 @@ func _on_workspace_changed(index: int) -> void:
 	# cannot distract from the project-owned Raven authoring environment.
 	for legacy_tab in range(3):
 		_stage_tabs.set_tab_hidden(legacy_tab, raven_active)
-	_legacy_mode_button.text = "Инструменты UPDS…" if raven_active else "← Raven Manor"
+	_legacy_mode_button.text = "← Raven Manor"
 	_legacy_toolbar.visible = not raven_active
 	_status.visible = not raven_active
 	_legacy_scenes_panel.visible = not raven_active
