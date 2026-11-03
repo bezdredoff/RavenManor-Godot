@@ -43,7 +43,7 @@
       "description": "Согласовать Raven delta ZIP контракт, read-only validation, защищённые paths, PR candidate и QA; main только вручную",
       "deliverable": "docs/process/MOBILE_ZIP_PIPELINE_RU.md и security pilot",
       "acceptance": "Согласовать Raven delta ZIP контракт, read-only validation, защищённые paths, PR candidate и QA; main только вручную",
-      "status": "ready",
+      "status": "accepted",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -271,7 +271,7 @@
       "description": "RU/BE/EN lines, menu and map popups; native proofread; при смене языка state/page не перескакивают; fallback не выдавать за готовую локализацию",
       "deliverable": "C4/GFX-13",
       "acceptance": "RU/BE/EN lines, menu and map popups; native proofread; при смене языка state/page не перескакивают; fallback не выдавать за готовую локализацию",
-      "status": "ready",
+      "status": "accepted",
       "dependsOn": [],
       "graphicsDependencies": [],
       "source": "past discussions 2026-10-13..27 / paired roadmaps",
@@ -970,7 +970,7 @@
       "description": "Create full draft scene with approved background, 1–3 actors, dialogues in 3 locales, FX and graph transitions. Current release E2E is background + 1–3 accepted character composites (including held objects) + RU/BE/EN text + editor FX + draft Story Map + save/reopen/Undo. Standalone VN prop workflow is not a prerequisite.",
       "deliverable": "Repeatable native Godot scene-authoring scenario with approved plate, 1–3 composite cast images, three locales, editor-only FX and draft choice links; save/reopen/undo/review export. No separate VN prop catalog. CI smoke stored in tests/raven/vn_studio_full_authoring_e2e_smoke.gd; full manual Godot QA remains separate.",
       "acceptance": "Owner can complete the scoped current-version workflow without code edits, all three locale texts plus draft Story Map/FX survive save/reopen and Undo; this does NOT imply executable branching, full HTML pixel parity or production prop catalog.",
-      "status": "merged",
+      "status": "accepted",
       "dependsOn": [
         "VNS5-11",
         "VNS5-12"
@@ -1005,7 +1005,7 @@
       "description": "280 EN dialogue lines and 28 scene titles delivered in #135; no translation production gap.",
       "deliverable": "Proofreading, screenshots, full UI/choices/map/objectives/journal check.",
       "acceptance": "Native reader accepts EN; stable scene/line cursor and no fallback/overflow on supported devices.",
-      "status": "proposed",
+      "status": "accepted",
       "dependsOn": [
         "CODE-04-03"
       ],
@@ -1022,7 +1022,7 @@
       "description": "280 BE lines and 28 scene titles delivered in #136; this task only covers linguistic/UX acceptance.",
       "deliverable": "Proofreading, Belarusian letters ў/і fonts, full UI and scene localization on target devices.",
       "acceptance": "Native reader approval; stable save/locale switches, no missing fallback or text clipping.",
-      "status": "proposed",
+      "status": "accepted",
       "dependsOn": [
         "CODE-04-03"
       ],

@@ -42,7 +42,7 @@ def audit(data: dict) -> list[str]:
     if seen != active:
         errors.append(f"Ungrouped/misgrouped active tasks: {sorted(active ^ seen)}")
 
-    important = {"VNS5-08": ("deferred", "P2"), "VNS5-09": ("merged", "P2")}
+    important = {"VNS5-08": ("deferred", "P2"), "VNS5-09": ("accepted", "P2")}
     for task_id, (state, priority) in important.items():
         task = by_id[task_id]
         if (task["status"], task["priority"]) != (state, priority):

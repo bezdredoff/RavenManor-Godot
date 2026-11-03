@@ -44,12 +44,9 @@
       "id": "WS-LOCALES",
       "title": "RU/EN/BE — полный QA интерфейса",
       "phase": "QA-first",
-      "gate": "Один tri-locale proofreading/font/overflow/device matrix; подтвердить всю UI-копию без повтора уже готового перевода 280 строк и 28 scene titles",
+      "gate": "Remaining: final Hall VN frame RU/EN/BE geometry and viewport screenshot gate (GFX-11-T08). Core RU/EN/BE editorial and scene/UI validation were accepted from owner report 2026-11-03; do not retest those unless regression appears.",
       "ownerAcceptance": "Native linguistic and layout acceptance is separate from registry --release",
       "taskIds": [
-        "RM-GAP-013",
-        "LOC-EN-QA",
-        "LOC-BE-QA",
         "GFX-11-T08"
       ],
       "acceptancePlan": {
@@ -58,13 +55,13 @@
           "tests/raven/vn_english_localization_smoke.gd и vn_belarusian_localization_smoke.gd — сохранение/разрешение переводов"
         ],
         "ownerChecks": [
-          "Пройти одинаковые сцены на RU, EN, BE: переносы, UI-подписи, авторский текст, меню, popup и типографику",
-          "Редакторская сверка звучания реплик и отсутствия fallback там, где требуется локализованный UI"
+          "Record matched Hall VN screenshot geometry at relevant portrait/tablet viewports for RU/EN/BE, without clipping/overlap",
+          "Link actual viewport/device evidence for GFX-11-T08; scoped language/editorial QA already owner-accepted"
         ],
         "newWorkIfFailed": [
           "Только исправления конкретных пропущенных UI-строк/шрифтов/переносов; 280 реплик и 28 заголовков не переводить заново"
         ],
-        "decision": "Owner signs off separate EN and BE editorial + complete native UI layout gates"
+        "decision": "Close GFX-11-T08 only after final Hall text geometry evidence; owner already accepted LOC-EN-QA, LOC-BE-QA and RM-GAP-013."
       }
     },
     {
@@ -102,10 +99,9 @@
       "id": "WS-MOBILE-HANDOFF",
       "title": "Incoming ZIP и безопасная мобильная передача",
       "phase": "QA-first",
-      "gate": "Один phone ZIP→incoming→candidate PR happy/error path с cleanup success/failure, adversarial archive and manual merge control",
+      "gate": "Remaining MOB-04: complete phone security attack matrix, stale-base rejection, scoped preview isolation and post-merge stable release acceptance. PROC-003 secure delta ZIP upload/validation has owner scoped acceptance.",
       "ownerAcceptance": "No claim that synthetic GitHub Actions proves real phone workflow",
       "taskIds": [
-        "PROC-003",
         "MOB-04"
       ],
       "acceptancePlan": {
@@ -114,13 +110,13 @@
           "GitHub Actions candidate pipeline — CI-проверка импортируемого ZIP и независимого PR"
         ],
         "ownerChecks": [
-          "С телефона загрузить небольшой валидный ZIP в incoming; подтвердить candidate PR и удаление ZIP после успеха",
-          "Негативный тест неверного ZIP/manifest: rejection, отсутствие потери данных, cleanup, отсутствие auto-merge"
+          "Review or record complete malicious ZIP matrix: stale-base, zip-slip, symlink, duplicate case-fold, forbidden file and failure cleanup; attach Actions run IDs",
+          "On actual phone verify independent PR and CI, manual merge/post-merge stable build; playable preview must be on a separate origin or remain explicitly unsupported"
         ],
         "newWorkIfFailed": [
           "Правка только подтверждённого дефекта ZIP validation, cleanup или permissions; не менять game scenes"
         ],
-        "decision": "One phone happy path and one intentionally rejected archive proved safe"
+        "decision": "Close MOB-04 only with complete phone/attack/post-merge evidence; PROC-003 secure ZIP workflow was owner-accepted 2026-11-03."
       }
     },
     {
