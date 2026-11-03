@@ -143,6 +143,11 @@ func _render_match3() -> void:
 	var level := _level(str(step.level))
 	if match_game == null or match_game.level_data.id != level.id:
 		match_game = Match3.new(level)
+		var checkpoint: Dictionary = state.get("match3Checkpoint", {})
+		if str(checkpoint.get("levelId", "")) == str(level.id):
+			if not match_game.restore_history(checkpoint.get("actions", [])):
+				push_warning("Invalid Match-3 checkpoint; starting level afresh")
+		match_game.checkpoint_changed.connect(_checkpoint_match3)
 	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
 	var board_view := Match3Board.new()
 	board_view.name = "RavenMatch3Board"
@@ -151,8 +156,23 @@ func _render_match3() -> void:
 	board_view.level_won.connect(_complete_level)
 
 
+func _checkpoint_match3() -> void:
+	if match_game == null or str(match_game.state) == "won":
+		return
+	var updated := state.duplicate(true)
+	updated.match3Checkpoint = {"levelId": str(step.level), "actions": match_game.move_history.duplicate(true)}
+	if store.save_campaign(updated):
+		state = updated
+	else:
+		push_error("Could not save Match-3 checkpoint")
+
 func _complete_level() -> void:
-	_apply_events([{"type":"level_won","levelId":str(step.level)}]); match_game = null; _render()
+	_apply_events([{"type":"level_won","levelId":str(step.level)}])
+	state.match3Checkpoint = {}
+	if not store.save_campaign(state):
+		push_error("Could not clear completed Match-3 checkpoint")
+	match_game = null
+	_render()
 
 
 func _complete_action() -> void:
