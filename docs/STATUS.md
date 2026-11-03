@@ -1,3 +1,7 @@
+# 2026-11-03 · UPDS-UI-REUSE-PLAN (approved documentation; not runtime delivery)
+
+Product owner approved UPDS read-only Skip, maximal UPDS VN shell reuse and **all game UI** scope. New source inventory, migration waves and acceptance gates: `docs/production/UPDS_UI_REUSE_APPROVED_PLAN_20261103_RU.md`. README/AGENTS policy updated. Draft PR #171 superseded as canonical layout. No gameplay code changed; UI parity remains unverified.
+
 # 2026-11-03 · GAME-UI-01 safe VN Skip (draft)
 
 Following merged #169 and green main workflows, add an incremental UPDS-style Skip footer action. In this candidate Skip only reveals the final text page of the **current line**, never invokes Raven's advance callback, story reducer or save flow, and stops Auto. Disabled when the current line has no more pages. Deliberately does not skip full scenes or choose branches. Donor UX reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`; Raven paging remains `scripts/shared/upds/dialogue_paging.gd`. CI and phone UI QA pending. Full scene-aware Skip and VN visual parity remain open.
