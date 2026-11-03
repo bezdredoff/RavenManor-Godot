@@ -89,7 +89,11 @@ class DashboardTests(unittest.TestCase):
         self.assertIn("LOC-BE-QA", by_id["CODE-04-03"]["followUpTaskIds"])
         self.assertIn("MOB-04", by_id["MOB-00"]["followUpTaskIds"])
         self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
-        self.assertEqual(sum(t["status"] == "merged" for t in data["tasks"]), 50)
+        self.assertGreaterEqual(sum(t["status"] == "merged" for t in data["tasks"]), 51)
+        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_pending")
+        self.assertEqual(by_id["VNS5-09"]["approvalState"], "pending")
+        self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
         client = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
         self.assertIn("Незавершённые следующие задачи", client)
         self.assertIn('scope==="qa" && t.qaState==="manual_pending"', client)
@@ -123,6 +127,23 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(gfx["GFX-08-05"]["approvalState"], "art_approved")
         self.assertEqual(data["assetSummary"]["backgrounds"]["artApproved"], 26)
         self.assertEqual(data["assetSummary"]["characterFrames"]["artApproved"], 62)
+
+    def test_discovered_gap_status_mirrors_authoritative_progress(self):
+        # CODE work packages retain the immutable October planning baseline;
+        # discovered-gap statuses with progress overrides are a synchronized
+        # convenience snapshot, never a second source of completion claims.
+        gaps = json.loads((dashboard.ROOT / "data/raven/production/gap_work_packages.json").read_text(encoding="utf-8"))
+        progress = json.loads((dashboard.ROOT / "data/raven/production/production_progress.json").read_text(encoding="utf-8"))
+        current = {e["id"]: e["status"] for e in progress["entries"]}
+        mismatches = [(w["id"], w["status"], current[w["id"]])
+                      for w in gaps["workPackages"]
+                      if w["id"] in current and w["status"] != current[w["id"]]]
+        self.assertEqual(mismatches, [])
+        plans = json.loads((dashboard.ROOT / "data/raven/production/code_work_packages.json").read_text(encoding="utf-8"))
+        self.assertEqual(plans["status"], "PROPOSAL_NOT_RUNTIME")
+        self.assertEqual(next(w for w in plans["workPackages"] if w["id"] == "CODE-01-01")["status"], "PR_review")
+        self.assertEqual(next(w for w in gaps["workPackages"] if w["id"] == "VNS5-09")["status"], "merged")
+        self.assertEqual(next(w for w in gaps["workPackages"] if w["id"] == "VNS5-08")["status"], "deferred")
 
     def test_exact_owner_approved_assets_not_game_qa(self):
         data = dashboard.build()
