@@ -24,3 +24,5 @@ Rollback: revert Wave 2. Older builds ignore the optional field; if an older bui
 Godot 4.7.2 `vn_read_skip_smoke.gd` PASS: old/JSON save normalization, unknown/duplicate IDs, first-read disabled, reread stops at unread/checkpoint, final-scene boundary, choice/Match-3 barriers, atomic line advance, injected write failures for Next and Skip, cursor/history restart, New Game reset, unchanged reducer revision/wallet/beats. Errors during failure injection are expected; PASS marker and no SCRIPT ERROR required.
 
 Full `scripts/check.sh`, exact-head PR CI, native screenshots and physical phone/user checks are tracked in PR/STATUS. No whole-UI or owner parity acceptance implied.
+
+Full scripts/check.sh PASS on Godot 4.7.2 with isolated XDG_DATA_HOME; PR #176 exact-head CI pending at this update.

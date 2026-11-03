@@ -2,7 +2,7 @@
 
 An optional schema-v1 `vnReadLines` field stores canonical completed line IDs in the existing Raven campaign save, atomically with cursor/event writes. Old saves default to empty history; beat flags never fabricate read lines. Skip moves only across already-read lines in the same scene, stops at unread/choice/Match-3 checkpoints and cannot complete a scene. Failed Skip persistence leaves the cursor untouched. Auto uses UPDS normal-speed timing and suspends at checkpoints/overlays; read history now survives scene/reload and is localized from canonical IDs. No new story branch activation, save authority or assets.
 
-Godot 4.7.2 targeted read/Skip smoke PASS: JSON/old saves, invalid IDs, first-read/reread, choice/Match-3 barriers, failed writes, restart/New Game, unchanged wallet/reducer events. Full suite and exact-head CI pending. Stacked on PR #174; merge shell before this increment. Runbook: [Wave 2](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md). Physical device/user acceptance and full choice UI remain separate.
+Godot 4.7.2 targeted read/Skip smoke PASS: JSON/old saves, invalid IDs, first-read/reread, choice/Match-3 barriers, failed writes, restart/New Game, unchanged wallet/reducer events. Full `scripts/check.sh` PASS on Godot 4.7.2 with isolated XDG_DATA_HOME. [PR #176](https://github.com/bezdredoff/RavenManor-Godot/pull/176) exact-head CI pending. Stacked on PR #174; merge shell before this increment. Runbook: [Wave 2](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md). Physical device/user acceptance and full choice UI remain separate.
 
 # 2026-11-03 · GAME-UI-01 Wave 1 — donor-derived VN shell
 
