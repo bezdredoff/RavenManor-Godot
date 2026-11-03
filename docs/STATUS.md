@@ -1,5 +1,10 @@
 # Raven Manor — canonical project status
 
+## 2026-11-02 · historical requirement and next-plan audit (follow-up review)
+
+Legacy `RM-VERTICAL-SLICE-GAP.md` and historical 70-item CSV predate PR #9 and subsequent engineering merges; they cannot be represented as current implementation scores. A new 70-row reconciliation overlay records evidence and explicit verification gaps without overwriting the archived source. `docs/NEXT_PLAN.md` is labeled historical and references current P0 priorities, accepted exact VN art and merged RU/BE/EN dialogue. The following documentation-only PR must run normal governance CI and must not mutate any runtime or save state.
+
+
 ## 2026-11-02 · Dashboard v2 source-aware UI (PR #137 follow-up commit)
 
 The dashboard generator supports new `superseded` / `not_planned` statuses and separate implementation, QA and owner approval axes. The UI defaults to open work, supports all/archived/manual-QA/art filters, and reports 26/26 approved backgrounds and 62/62 approved character frames from exact canonical catalogs. Merged PR/automated tests never automatically equal full device QA. The source-of-truth `production_progress.json` remains required in this change; generated `dashboard/status.json` is not committed. CI must verify on final PR head; manual native/mobile acceptance is still pending.

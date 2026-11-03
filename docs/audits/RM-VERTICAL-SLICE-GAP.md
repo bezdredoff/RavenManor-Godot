@@ -1,10 +1,10 @@
 # RM-VS-01 — gap analysis
 
-> Historical baseline: this table predates the standalone Raven foundation and navigation greybox. PR 1 and PR 2 close part of the component gap, but PR 3 and the end-to-end 13-step flow remain unimplemented. See `docs/STATUS.md` for current status.
+> **Historical pre-PR #9 baseline, NOT current runtime assessment.** PR #9 merged the integrated RM-VS-01 code, reducer/snapshot, authored navigation and smoke tests. The original 0/13 score below is retained only as evidence of the initial problem; native portrait/mobile 13-step owner acceptance remains a separate gate. See `docs/IMPLEMENTATION_PLAN.md`, `tests/raven/vertical_slice_smoke.gd` and `RM-REQUIREMENT-RECONCILIATION_20261102.md`.
 
-## Проверенный текущий статус
+## Историческая оценка до реализации PR #9
 
-Ни один шаг `RM-VS-01` не подтверждён end-to-end в Raven runtime. Отдельные UPDS и spike-компоненты работают, но используют другие данные и не связаны общей Raven session.
+На момент исходного аудита ни один шаг `RM-VS-01` ещё не проходил end-to-end. После него интегрированный код появился в PR #9; приведённая далее таблица **не пересчитана** и не может использоваться как сегодняшний список отсутствующих функций.
 
 | Шаг | Статус | Evidence / первый blocker |
 |---|---|---|
@@ -22,7 +22,7 @@
 | 12. Enter bedroom and first-night beat | MISSING | Нет physical scene, crossing event или Raven beat registry. |
 | 13. Save/exit/resume | PARTIAL | UPDS save работает, Raven snapshot/schema и интеграция отсутствуют. |
 
-Фактически в полном сценарии подтверждено: **0 из 13 шагов**. Компонентно подтверждены Match-3, VN renderer и generic storage, но это не считается прохождением шага.
+Исторически на дату исходной проверки подтверждалось **0 из 13 шагов**; это число **не является актуальным результатом**. Компонентно подтверждены Match-3, VN renderer и generic storage, но это не считается прохождением шага.
 
 ## Минимально необходимый implementation slice
 

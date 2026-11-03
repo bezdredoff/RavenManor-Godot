@@ -1,4 +1,7 @@
-# Next plan — Hall production pipeline (reconciled 2026-10-25)
+# Next plan — Hall production pipeline (historical 2026-10-25)
+
+> **2026-11-02 current priority overlay:** This document preserves the detailed Hall-calibration history; its older “Immediate next PR” recommendations are not current. See production dashboard source for live statuses and [the 70-item reconciliation](audits/RM-REQUIREMENT-RECONCILIATION_20261102.md). Current P0 review: (1) merge PR #137 and verify dashboard/art approval, (2) original HTML vs Godot parity `VNS5-07F2`, prop workflow `VNS5-08`, scene authoring test `VNS5-09`, (3) `CODE-02-06` real touch/hint/help and `CODE-05-01/02` map path/collision/device QA, (4) `VN-RUNTIME-01` reviewed-only playable scene promotion and tri-locale full UI QA. All 26 scene-backed VN plates and 62 character frames are artistically approved by owner; they are NOT map/collision/device approved. Do not generate BG-CORRIDOR without a scene using it.
+
 
 ## Current decision
 
