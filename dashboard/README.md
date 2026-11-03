@@ -54,3 +54,7 @@ The header's **26/26 approved VN backgrounds** and **62/62 approved character fr
 ## Visibility regression / browser test (DASH-RENDER-01, 2026-11-03)
 
 The first section is now a source-derived P0 shortlist, ahead of the long progress panels. Full task listing below renders 24 cards initially, then 24 more per click. Filters reset page size. A visible error directs readers to the canonical status.json when the browser cannot fetch/render the content. On CI the generated Pages artifact is served over local HTTP and opened in real headless Google Chrome or Chromium; the test asserts at least one rendered full task and P0 preview. This prevents "green Python/node syntax but blank visible task list" regressions. Manual iOS/desktop review still required.
+
+### No-JavaScript first-screen task fallback
+
+The Pages build runs `embed_dashboard_priority.py` **after** producing `status.json` and copying the tracked template to `build/web/dashboard/`. It embeds the first six exact P0 open items from the built JSON. A blocked ES module or failed fetch therefore cannot leave the top section completely without task names; each fallback entry links to the canonical backlog. On a normal browser `app.mjs` replaces these links with interactive filters. The tracked source `dashboard/index.html` stays clean; never commit generated dashboard snapshots.

@@ -71,6 +71,17 @@ class DashboardTests(unittest.TestCase):
         self.assertIn('showPriority();', client)
         self.assertIn('cache:"no-store"', client)
 
+    def test_static_p0_fallback_escapes_task_labels(self):
+        embed = mod("embed_dashboard_priority.py", "dashboard_embed")
+        source = '<div class="quick-tasks" id="quick-tasks"></div> Загружаю актуальные задачи из реестра…'
+        data = {"tasks": [{"id": "VNS5-08", "priority": "P0", "status": "proposed",
+                           "title": "<script>Unsafe</script>"}]}
+        output = embed.render(source, data)
+        self.assertIn("VNS5-08", output)
+        self.assertIn("&lt;script&gt;", output)
+        self.assertNotIn("<script>", output)
+        self.assertIn('data-static-snapshot="true"', output)
+
     def test_art_source_is_not_mutated(self):
         source = dashboard.GFX.read_text(encoding="utf-8")
         stages, tasks = dashboard.graphics_items(source)

@@ -160,6 +160,7 @@ jobs:
           python3 scripts/raven/tools/build_production_dashboard.py --check
           python3 scripts/raven/tools/build_production_dashboard.py --output build/web/dashboard/status.json
           cp dashboard/index.html dashboard/style.css dashboard/app.mjs build/web/dashboard/
+          python3 scripts/raven/tools/embed_dashboard_priority.py --root build/web/dashboard
           node --check dashboard/app.mjs
           python3 scripts/raven/tools/test_dashboard_browser.py --root build/web/dashboard
           test -s build/web/dashboard/index.html
