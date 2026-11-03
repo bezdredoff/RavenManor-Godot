@@ -20,3 +20,5 @@ No campaign/save/economy/level changes. Regression uses an isolated copy of the 
 Physical phone/browser QA and full UPDS visual parity remain pending. A headless Viewport is stronger than direct handler calls but is not evidence of browser hit-testing or actual finger hardware.
 
 Rollback: revert this PR; no data migration or new assets. CODE-02-06 remains partial until deployed browser/device acceptance.
+
+Full scripts/check.sh PASS on Godot 4.7.2 with isolated XDG_DATA_HOME, and native Xvfb/Mesa Viewport smoke PASS. Pre-fix presenter reproducibly FAILS at `Esc left Help state locked`. PR #175 exact-head CI pending at this update.
