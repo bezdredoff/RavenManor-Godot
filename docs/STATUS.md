@@ -2,7 +2,7 @@
 
 The game VN uses its own fullscreen/desktop-centred frame rather than the debug scroll wrapper. UPDS `_layout_vn` and `_build_controls` geometry is extracted/adapted into `scripts/shared/upds/vn_shell_layout.gd`, keeping Raven artwork, staging, FX and campaign authority. The view survives line changes; pause/history/locale popups suspend input/Auto. Touch plus emulated mouse is guarded. Skip semantics remain a separate Wave 2 change.
 
-Godot **4.7.2** layout/input tests pass at 320/340/360/390/430, landscape/desktop, long RU/BE/EN and synthetic safe insets. Existing session lifecycle E2E passes with intentional failure injection. Fifteen native Xvfb screenshots were captured; 320 RU inspected. Full check/PR CI pending; physical device, donor screenshot parity and owner acceptance remain open. No art/assets generated or imported. Provenance and verification: [Wave 1 runbook](production/UPDS_UI_WAVE1_VN_SHELL_20261103_RU.md).
+Godot **4.7.2** layout/input tests pass at 320/340/360/390/430, landscape/desktop, long RU/BE/EN and synthetic safe insets. Existing session lifecycle E2E passes with intentional failure injection. Fifteen native Xvfb screenshots were captured; 320 RU inspected. Full `scripts/check.sh` PASS on Godot 4.7.2; [PR #174](https://github.com/bezdredoff/RavenManor-Godot/pull/174) CI queued. Physical device, donor screenshot parity and owner acceptance remain open. No art/assets generated or imported. Provenance and verification: [Wave 1 runbook](production/UPDS_UI_WAVE1_VN_SHELL_20261103_RU.md).
 
 # 2026-11-03 · UPDS UI Wave 0 donor pin (documentation only)
 

@@ -27,7 +27,7 @@ No campaign schema or source art change. Rollback by reverting this PR. Wave 2 w
 - Godot 4.7.2 `vn_shell_layout_smoke.gd`: PASS, widths 320/340/360/390/430, landscape 844×390 (430-wide game frame), desktop 1366×768, RU/BE/EN text stress, safe area, Auto continuity, pause, touch/mouse deduplication.
 - Godot 4.7.2 `session_lifecycle_e2e_smoke.gd`: PASS, including intentional write/delete/corrupt-save failures.
 - Native Xvfb/Mesa Godot 4.7.2 `vn_shell_capture.gd`: 15 actual screenshots in `/tmp/raven-vn-*.png`; 320 RU inspected for no footer/text overlap. Captures are review evidence, not new production assets.
-- Full check and exact-head PR CI: pending at initial authoring, see PR/status updates.
+- Full `scripts/check.sh`: PASS on Godot 4.7.2. PR #174 exact-head GitHub CI: queued at update, see PR checks.
 - Actual Android/iPhone, original donor screenshots, Windows owner acceptance: pending. Xvfb is not physical device QA.
 
 Capture command: `DISPLAY=:99 godot --path . --audio-driver Dummy --script res://tests/raven/vn_shell_capture.gd`. Screenshots are reproducible, not checked into source. Run headless smoke via `scripts/check.sh` or `check.ps1`.
