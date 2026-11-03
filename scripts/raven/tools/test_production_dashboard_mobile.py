@@ -175,8 +175,8 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(grouped, active)
         self.assertEqual(len(active), 83)
         self.assertEqual(len(data["workstreams"]), 12)
-        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 21)
-        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 62)
+        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 20)
+        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 63)
         for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
                     "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
             self.assertEqual(by_id[key]["priority"], "P2", key)
@@ -240,7 +240,7 @@ class DashboardTests(unittest.TestCase):
             item["id"] for item in data["tasks"]
             if item["priority"] == "P0"
         }
-        self.assertEqual(len(all_current_p0), 21)
+        self.assertEqual(len(all_current_p0), 20)
         for key in expected_code_gap:
             self.assertNotIn(by_id[key]["status"], {
                 "merged", "integrated", "accepted", "device_verified",
