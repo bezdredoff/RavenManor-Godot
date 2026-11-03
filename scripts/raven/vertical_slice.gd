@@ -135,9 +135,25 @@ func _render_vn() -> void:
 		vn_player.scene = config
 	vn_view = VNGameView.new()
 	body.add_child(vn_view)
+	# UPDS-first header shell: menu/settings are existing Raven actions;
+	# history contains only lines already reached in this scene.
+	var read_lines: Array[Dictionary] = []
+	var scene_lines: Array = vn_player.scene.get("lines", [])
+	for index in range(mini(vn_player.line_index + 1, scene_lines.size())):
+		var entry: Variant = scene_lines[index]
+		if entry is Dictionary:
+			read_lines.append({"speaker": str(entry.get("speaker", "")), "text": str(entry.get("text", ""))})
+		else:
+			read_lines.append({"speaker": str(vn_player.scene.get("speaker", "")), "text": str(entry)})
+	vn_view.set_header_actions(_open_pause, _open_vn_settings, read_lines)
 	var line_ids: Array = config.get("lineIds", [])
 	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
 	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
+
+
+func _open_vn_settings() -> void:
+	# Reuse the existing locale selector; do not introduce a second preference store.
+	locale_selector.get_popup().popup()
 
 
 func _render_match3() -> void:
