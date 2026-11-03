@@ -1,3 +1,11 @@
+# 2026-11-03 · UPDS-first engineering policy and GAME-UI-01 CI investigation (PR #165)
+
+Owner approved mandatory reuse-first workflow for all agents: inspect current UPDS-godot and existing Raven adapters before new VN/Match-3/session/menu/save code; document source provenance and reuse/extract/adapter/new decision, preserve Raven reducer/store, and port donor parity tests. See `AGENTS.md` and `docs/production/UPDS_FIRST_REUSE_AUDIT_20261103_RU.md`. The PR #165 CI still fails on VN cursor Continue after an injected write failure; additional storage-level assertions isolate whether the cursor was persisted or lost during reload. **No CI pass or QA acceptance claimed.**
+
+# 2026-11-03 · GAME-UI-01 reset failure safety (draft)
+
+Follow-up to merged #164: reset no longer clears the live VN/Match-3 session when the Raven campaign save cannot be removed. The in-memory storage test adapter now supports injected remove failures and the blocking lifecycle smoke verifies session preservation and visible localized error. CI and device QA pending; task remains in_progress.
+
 # 2026-11-03 · GAME-UI-01 atomic VN and map persistence (draft)
 
 Follow-up to merged #163: VN beat completion now saves reducer event and cleared VN cursor in one canonical snapshot write; map multi-event actions are also staged and saved atomically. On a failed VN line write, the visible line is rolled back and localized error shown; failed map/beat writes leave in-memory campaign state unchanged. Blocking scene lifecycle smoke extends failure injection. **CI and device QA pending**; GAME-UI-01 remains in_progress. No new save key or schema.

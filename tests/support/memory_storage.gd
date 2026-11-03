@@ -3,6 +3,7 @@ extends RefCounted
 var last_error: Error = OK
 var values := {}
 var fail_write := false
+var fail_remove := false
 
 
 func get_item(key: String) -> Variant:
@@ -18,6 +19,8 @@ func set_item(key: String, value: String) -> bool:
 
 
 func remove_item(key: String) -> bool:
+	last_error = ERR_FILE_CANT_WRITE if fail_remove else OK
+	if last_error != OK:
+		return false
 	values.erase(key)
-	last_error = OK
 	return true

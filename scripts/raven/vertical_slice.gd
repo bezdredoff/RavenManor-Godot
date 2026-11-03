@@ -223,8 +223,10 @@ func _advance_vn() -> void:
 		if store.save_campaign(updated):
 			state = updated
 		else:
-			_show_save_error()
 			vn_player.line_index = maxi(0, vn_player.line_index - 1)
+			_render()
+			_show_save_error()
+			return
 	_render()
 
 
@@ -296,7 +298,14 @@ func _save() -> void:
 	else:
 		_show_save_error()
 func _reload() -> void: state = store.load_campaign(); match_game = null; vn_player = null; _render()
-func _reset() -> void: store.reset_campaign(); state = Snapshot.fresh(); match_game = null; vn_player = null; _render()
+func _reset() -> void:
+	if not store.reset_campaign():
+		_show_save_error()
+		return
+	state = Snapshot.fresh()
+	match_game = null
+	vn_player = null
+	_render()
 
 
 func _add_button(parent: Container, text: String, action: Callable) -> void:
