@@ -101,6 +101,7 @@ func _render() -> void:
 		if not approved.is_empty():
 			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
 				"scene": approved["beatId"], "title": approved["title"], "config": approved}
+	status.add_theme_color_override("font_color", Color("9fc8bc"))
 	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
 	var display_title: String = str(step.title)
 	if step.get("kind") == "vn":
@@ -164,13 +165,23 @@ func _checkpoint_match3() -> void:
 	if store.save_campaign(updated):
 		state = updated
 	else:
-		push_error("Could not save Match-3 checkpoint")
+		_show_save_error()
 
 func _complete_level() -> void:
-	_apply_events([{"type":"level_won","levelId":str(step.level)}])
-	state.match3Checkpoint = {}
-	if not store.save_campaign(state):
-		push_error("Could not clear completed Match-3 checkpoint")
+	# Persist the reward and checkpoint removal as one canonical snapshot.
+	event_serial += 1
+	var event := {"eventId": "vs-%s-%d-%d" % [step.id, state.revision, event_serial],
+		"type": "level_won", "levelId": str(step.level)}
+	var result: Dictionary = Reducer.apply(state, event)
+	if not result.get("ok", false):
+		push_error("Match-3 completion rejected")
+		return
+	var updated: Dictionary = result.state
+	updated.match3Checkpoint = {}
+	if not store.save_campaign(updated):
+		_show_save_error()
+		return
+	state = updated
 	match_game = null
 	_render()
 
@@ -253,11 +264,21 @@ func _open_pause() -> void:
 
 func _save_and_exit() -> void:
 	if not store.save_campaign(state):
-		push_error(str(PAUSE_COPY.get(preferences.locale, PAUSE_COPY["ru"])[4]))
+		_show_save_error()
 		return
 	get_tree().change_scene_to_file("res://scenes/raven/main_menu.tscn")
 
-func _save() -> void: store.save_campaign(state); _render()
+func _show_save_error() -> void:
+	var message := str(PAUSE_COPY.get(preferences.locale, PAUSE_COPY["ru"])[4])
+	push_error(message)
+	status.text = message
+	status.add_theme_color_override("font_color", Color("ffb8b8"))
+
+func _save() -> void:
+	if store.save_campaign(state):
+		_render()
+	else:
+		_show_save_error()
 func _reload() -> void: state = store.load_campaign(); match_game = null; vn_player = null; _render()
 func _reset() -> void: store.reset_campaign(); state = Snapshot.fresh(); match_game = null; vn_player = null; _render()
 
