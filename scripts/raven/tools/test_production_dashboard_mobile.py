@@ -66,7 +66,7 @@ class DashboardTests(unittest.TestCase):
                         "Active P0 tasks should appear before progress summaries")
         self.assertIn('id="quick-tasks"', html)
         self.assertIn('id="more"', html)
-        self.assertIn('data-rendered', client)
+        self.assertIn('dataset.renderedCount', client)
         self.assertIn('matched.slice(0,shownLimit)', client)
         self.assertIn('showPriority();', client)
         self.assertIn('cache:"no-store"', client)
