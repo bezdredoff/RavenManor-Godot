@@ -203,6 +203,68 @@ static func load_draft(project: Dictionary) -> Dictionary:
 	return {"ok": true, "found": true, "draft": existing}
 
 
+
+## A stale local draft is NEVER auto-rebased. Give the owner a safe, explicit
+## escape hatch: preserve the exact bytes in a separate no-overwrite backup
+## before starting a fresh SHA-locked draft for the current source.
+static func stale_draft_info(project: Dictionary) -> Dictionary:
+	if not bool(project.get("ok", false)):
+		return {"ok": false, "error": "Исходный Raven проект не загружен."}
+	var path: String = draft_path(str(project["root"]))
+	if not FileAccess.file_exists(path):
+		return {"ok": false, "error": "Старого черновика нет."}
+	var raw: String = FileAccess.get_file_as_string(path)
+	var parsed: Variant = JSON.parse_string(raw)
+	if not parsed is Dictionary:
+		return {"ok": false, "error": "Старый черновик повреждён. Сначала сохраните его вручную."}
+	var old: Dictionary = parsed
+	if old.get("format") != FORMAT or old.get("schemaVersion") != 1:
+		return {"ok": false, "error": "Формат черновика неизвестен. Нужен ручной разбор."}
+	if str(old.get("sourceRootFingerprint", "")) != str(project["root"]).sha256_text():
+		return {"ok": false, "error": "Черновик привязан к другому проекту, восстановление запрещено."}
+	var drift: bool = old.get("sourceSha256") != project.get("sha") or\
+			old.get("routeSourceSha256") != project.get("routesSha") or\
+			old.get("stageSourceSha256") != project.get("stagingSha") or\
+			old.get("castSourceSha256") != project.get("castSha")
+	if not drift:
+		return {"ok": false, "error": "Исходные SHA совпадают; это не конфликт обновления сценария. Исправьте ошибку отдельно."}
+	var error: String = validate(project, old)
+	if error.is_empty():
+		return {"ok": false, "error": "Черновик уже совместим с текущим проектом."}
+	return {"ok": true, "path": path, "sha256": raw.sha256_text(),
+		"reason": error,
+		"changes": {"translations": change_count(old), "stage": old.get("stagePatches", {}).size(),
+			"stageV2": old.get("stageV2Patches", {}).size(), "fx": old.get("stageFxPatches", {}).size(),
+			"graph": old.get("storyGraphPatches", {}).size(), "scenes": old.get("authoredScenes", []).size(),
+			"lines": old.get("authoredLines", []).size()}}
+
+
+static func archive_and_start_fresh(project: Dictionary) -> Dictionary:
+	var info: Dictionary = stale_draft_info(project)
+	if not info.get("ok", false):
+		return info
+	# Re-read before writing so a concurrent local edit cannot be silently lost.
+	var path: String = str(info["path"])
+	var raw: String = FileAccess.get_file_as_string(path)
+	if raw.sha256_text() != str(info["sha256"]):
+		return {"ok": false, "error": "Черновик изменился после проверки. Перечитайте проект."}
+	var backup: String = ProjectSettings.globalize_path("user://raven_story_studio/recovery").path_join(
+		str(project["root"]).sha256_text()).path_join("draft-" + str(info["sha256"]) + ".json")
+	if FileAccess.file_exists(backup):
+		if FileAccess.get_file_as_string(backup) != raw:
+			return {"ok": false, "error": "Резервная копия с тем же SHA отличается. Запись запрещена."}
+	else:
+		var archived: Dictionary = _write_new(backup, raw, false)
+		if not archived.get("ok", false) or FileAccess.get_file_as_string(backup) != raw:
+			return {"ok": false, "error": "Старый черновик не удалось надёжно сохранить. Исходный файл не тронут."}
+	var saved: Dictionary = save_local(project, fresh(project))
+	if not saved.get("ok", false):
+		return {"ok": false, "error": "Копия сохранена, но новый черновик не создан: " + str(saved.get("error", "")),
+			"backupPath": backup}
+	return {"ok": true, "backupPath": backup, "draftPath": saved["path"],
+		"notice": "Создан новый черновик. Старые правки НЕ перенесены: сравните резервную копию вручную."}
+
+
 static func validate(project: Dictionary, draft: Dictionary) -> String:
 	if not bool(project.get("ok", false)):
 		return "Сначала откройте источник Raven."

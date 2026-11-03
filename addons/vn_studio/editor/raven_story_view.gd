@@ -1,6 +1,7 @@
 @tool
 extends VBoxContainer
 ## Project-owned Raven scenario editor. Not a replacement for the actual game runtime.
+signal legacy_tools_requested
 const Store = preload("res://addons/vn_studio/editor/raven_story_store.gd")
 const StageDesigner = preload("res://addons/vn_studio/editor/raven_stage_designer.gd")
 const AssetLibrary = preload("res://addons/vn_studio/editor/raven_asset_library.gd")
@@ -39,6 +40,9 @@ var _preview: RichTextLabel
 var _status: Label
 var _diff: Label
 var _path: LineEdit
+var _recover_button: Button
+var _recover_dialog: ConfirmationDialog
+var _legacy_tools_button: Button
 var _save: Button
 var _export: Button
 var _export_stage: Button
@@ -94,6 +98,11 @@ func _build() -> void:
 	sticky_title.text = "VN Studio · Raven Manor"
 	sticky_title.size_flags_horizontal = SIZE_EXPAND_FILL
 	sticky.add_child(sticky_title)
+	_legacy_tools_button = Button.new()
+	_legacy_tools_button.text = "Инструменты UPDS…"
+	_legacy_tools_button.tooltip_text = "Отдельный донорский инструмент, не обязателен для Raven"
+	_legacy_tools_button.pressed.connect(func(): legacy_tools_requested.emit())
+	sticky.add_child(_legacy_tools_button)
 	# The whole Raven workspace remains vertically reachable in shorter Godot
 	# windows, including heading, toolbar, scene panels and export path.
 	_workspace_scroll = ScrollContainer.new()
@@ -153,6 +162,18 @@ func _build() -> void:
 	reload.text = "Перечитать проект"
 	reload.pressed.connect(open_raven)
 	toolbar.add_child(reload)
+	_recover_button = Button.new()
+	_recover_button.text = "Архивировать старый черновик и начать новый…"
+	_recover_button.tooltip_text = "Не переносит правки автоматически; сохраняет неизменённую JSON-копию в user://"
+	_recover_button.pressed.connect(_request_stale_recovery)
+	_recover_button.visible = false
+	toolbar.add_child(_recover_button)
+	_recover_dialog = ConfirmationDialog.new()
+	_recover_dialog.title = "Raven · безопасное восстановление редактирования"
+	_recover_dialog.ok_button_text = "Сохранить копию и начать новый"
+	_recover_dialog.dialog_text = "Старый черновик будет скопирован побайтово в отдельную папку восстановления. Новый пустой черновик привяжется к текущему сценарию. Старые правки НЕ будут автоматически перенесены. Для переноса нужен ручной diff. Игровой сценарий и сохранения не меняются."
+	_recover_dialog.confirmed.connect(_on_confirm_stale_recovery)
+	add_child(_recover_dialog)
 	_save = Button.new()
 	_save.text = "Сохранить Raven-черновик"
 	_save.pressed.connect(_save_local)
@@ -724,6 +745,40 @@ func _on_stage_pane_dragged(offset: int) -> void:
 		EditorInterface.get_editor_settings().set_setting(STAGE_PANE_SETTING, clampi(offset, 390, 900))
 
 
+
+func _request_stale_recovery() -> void:
+	if not _blocked or _project.is_empty():
+		return
+	var info: Dictionary = Store.stale_draft_info(_project)
+	if not info.get("ok", false):
+		_status.text = str(info.get("error", "Нельзя создать резервную копию."))
+		return
+	var counts: Dictionary = info.get("changes", {})
+	_recover_dialog.dialog_text = ("БЛОКИРОВКА: " + str(info["reason"]) +
+		"\nВ старом файле: %d правок перевода, %d сцен, %d новых реплик, %d Story Map, %d FX.\n\n" % [
+			int(counts.get("translations", 0)), int(counts.get("scenes", 0)),
+			int(counts.get("lines", 0)), int(counts.get("graph", 0)), int(counts.get("fx", 0))] +
+		"Сохранить исходный JSON побайтово в папке recovery и начать НОВЫЙ чистый черновик? Старые изменения не переносятся и остаются доступными для ручного diff. Релизный сценарий не меняется.")
+	_recover_dialog.popup_centered(Vector2i(650, 320))
+
+
+func _on_confirm_stale_recovery() -> void:
+	if not _blocked or _project.is_empty():
+		return
+	var outcome: Dictionary = Store.archive_and_start_fresh(_project)
+	if not outcome.get("ok", false):
+		_status.text = "Восстановление остановлено: " + str(outcome.get("error", "ошибка"))
+		if outcome.has("backupPath"):
+			_path.text = str(outcome["backupPath"])
+		return
+	var archived_path: String = str(outcome["backupPath"])
+	_dirty = false
+	open_raven()
+	if not _blocked:
+		_path.text = archived_path
+		_status.text = "Редактирование разблокировано. Старая версия сохранена: " + archived_path + ". Правки не переносились — сравните JSON вручную."
+
+
 func open_raven() -> void:
 	if _dirty:
 		_status.text = "Есть несохранённые изменения. Сначала сохраните Raven-черновик; перечитывание заблокировано."
@@ -741,6 +796,10 @@ func open_raven() -> void:
 		_blocked = true
 		_draft = Store.fresh(candidate)
 		_status.text = "Черновик заблокирован: " + str(loaded.get("error", "конфликт"))
+		var rescue: Dictionary = Store.stale_draft_info(candidate)
+		if rescue.get("ok", false):
+			_status.text += " Для продолжения нажмите «Архивировать старый черновик и начать новый…»; исходный JSON будет сохранён."
+
 	else:
 		_blocked = false
 		_draft = loaded["draft"]
@@ -988,6 +1047,7 @@ func _update_diff() -> void:
 
 
 func _refresh_buttons() -> void:
+	_recover_button.visible = _blocked and not _project.is_empty() and Store.stale_draft_info(_project).get("ok", false)
 	_save.disabled = _blocked or _project.is_empty()
 	var has_additions: bool = not _draft.get("authoredScenes", []).is_empty() or not _draft.get("authoredLines", []).is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions

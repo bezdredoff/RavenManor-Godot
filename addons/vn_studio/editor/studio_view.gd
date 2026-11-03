@@ -70,6 +70,7 @@ var _migration_scroll: ScrollContainer
 var _legacy_toolbar: Control
 var _legacy_scenes_panel: Control
 var _legacy_details_panel: Control
+var _legacy_mode_button: Button
 
 
 func _init() -> void:
@@ -127,6 +128,11 @@ func _make_ui() -> void:
 	caption.size_flags_horizontal = SIZE_EXPAND_FILL
 	caption.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(caption)
+	_legacy_mode_button = Button.new()
+	_legacy_mode_button.text = "← Raven Manor"
+	_legacy_mode_button.tooltip_text = "Вернуться из UPDS legacy-инструментов к сценарию Raven Manor"
+	_legacy_mode_button.pressed.connect(_on_toggle_legacy_mode)
+	toolbar.add_child(_legacy_mode_button)
 	var open_button := Button.new()
 	open_button.text = "Выбрать локальную папку UPDS-godot…"
 	open_button.pressed.connect(_on_choose_folder)
@@ -270,6 +276,7 @@ func _make_ui() -> void:
 	_migration_review.analyze_requested.connect(_on_migration_analyze)
 	_migration_scroll.add_child(_migration_review)
 	_raven_story_view = RavenStoryView.new()
+	_raven_story_view.legacy_tools_requested.connect(_on_toggle_legacy_mode)
 	_raven_story_view.name = "Raven Manor"
 	_stage_tabs.add_child(_raven_story_view)
 
@@ -375,10 +382,26 @@ func _on_workspace_changed(index: int) -> void:
 	if _stage_tabs == null or _raven_story_view == null:
 		return
 	var raven_active: bool = _stage_tabs.get_tab_control(index) == _raven_story_view
+	# Legacy UPDS tabs are still available via an explicit mode switch, but
+	# cannot distract from the project-owned Raven authoring environment.
+	for legacy_tab in range(3):
+		_stage_tabs.set_tab_hidden(legacy_tab, raven_active)
+	_legacy_mode_button.text = "← Raven Manor"
 	_legacy_toolbar.visible = not raven_active
 	_status.visible = not raven_active
 	_legacy_scenes_panel.visible = not raven_active
 	_legacy_details_panel.visible = not raven_active
+
+
+func _on_toggle_legacy_mode() -> void:
+	if _stage_tabs.current_tab == 3:
+		# Reveal legacy tabs before selecting them.
+		for legacy_tab in range(3):
+			_stage_tabs.set_tab_hidden(legacy_tab, false)
+		_stage_tabs.current_tab = 0
+	else:
+		_stage_tabs.current_tab = 3
+	_on_workspace_changed(_stage_tabs.current_tab)
 
 
 func _on_choose_folder() -> void:
