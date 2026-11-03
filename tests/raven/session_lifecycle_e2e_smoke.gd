@@ -72,6 +72,13 @@ func _run() -> void:
 	assert(continued.step.kind == "match3", "Continue lost level")
 	assert(continued.match_game.tiles == tiles and continued.match_game.specials == specials, "Board diverged after Continue")
 	assert(continued.match_game.moves_left == remaining, "Moves diverged after Continue")
+	# Failed New Game reset must preserve the current session and checkpoint.
+	adapter.fail_remove = true
+	var before_reset: Dictionary = continued.state.duplicate(true)
+	continued._reset()
+	assert(continued.state == before_reset, "Failed reset discarded active session")
+	assert(continued.status.text == continued.PAUSE_COPY[continued.preferences.locale][4], "Reset failure not visible")
+	adapter.fail_remove = false
 	# Retry must replace the old checkpoint, not resurrect it.
 	continued.match_game.reset()
 	assert(Store.new(adapter).load_campaign().match3Checkpoint.is_empty(), "Retry retained checkpoint")
