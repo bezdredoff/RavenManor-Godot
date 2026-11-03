@@ -1,12 +1,19 @@
-## 2026-11-03 · GFX P0 re-scope after accepted static VN art (candidate)
+# Raven Manor — canonical project status
+
+## 2026-11-03 · Current backlog and next-plan reconciliation (candidate)
+
+After merged #149, current backlog is being made consistent without starting new art or gameplay development. **40** discovered-gap statuses were reconciled against the authoritative `production_progress.json` (including **VNS5-09 now merged #147**, while its native UI QA remains `manual_pending`). The original 49-package `code_work_packages.json` remains an intentionally historical `PROPOSAL_NOT_RUNTIME` plan, **not** a second live status source. A new Linux/Windows check reports any future status drift. The old 2026-10-25 Hall-only `NEXT_PLAN` is archived, and the current `docs/NEXT_PLAN.md` is reorganized into QA-only, runtime/map work, chibi art and explicit deferrals. Full per-task evidence and duplicate gates: `docs/audits/BACKLOG_RECONCILIATION_20261103.md`.
+
+This is task metadata, test and documentation maintenance only. Neither the accepted 26 VN backgrounds nor 62 character images, canonical routes, game saves, or app/runtime scenes change; pending native QA and separate map props still require explicit acceptance.
+
+## 2026-11-03 · GFX P0 re-scope after accepted static VN art (merged #149)
 
 Owner observes that current static character art exists and remaining main visual gap is chibi map characters. Audit of source production/Godot catalogs: **62 accepted VN character composites** (Evelyn 18, Ada 14, Lucas 14, Rowan 16); **26 accepted background variants** resolve all **28** authored VN scenes. These are *art approvals*, not map walker, Match-3, missing pose×emotion combinations, keyframe animation or phone/device QA. No accepted Raven chibi/map character sheet exists; `assets/prototypes/onoe` remains a technical placeholder.
 
 Dashboard previously forced P0 for whole early GFX stages, producing **63 historical P0** (**57 proposed, 4 ready, 2 superseded**). Detailed ID-level reconciliation in `docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md` records **43 obsolete process tasks as superseded**, **2 exact Hall art-completion tasks accepted**, **1 2-character Hall staging task integrated** and **17 correctly scoped pending tasks**, most P1. The only **7 current GFX P0** are `GFX-07-01/05/06/09/10` plus Hall map staging `GFX-11-T06` and real mobile/resume/reduced-motion QA `GFX-11-T09`. Other character/M3/map/prop work is **not cancelled**; GFX-08 Hall geometry remains separately open.
 
-A guarded per-task GFX `priority` override now separates current severity from roadmap stage order. Regression tests check seven-P0 scope and keep art acceptance separate from scene/device QA. This proposal contains no art/image/generated scene/navigation/save modifications. Owner PR review + full CI required before entry into main.
+A guarded per-task GFX `priority` override now separates current severity from roadmap stage order. Regression tests check seven-P0 scope and keep art acceptance separate from scene/device QA. PR #149 merged with CI; this scope change made no art/image/generated scene/navigation/save modifications.
 
-# Raven Manor — canonical project status
 
 ## 2026-11-03 · GFX-08-06 / GFX-08-07 — archived historical VN background methods
 
@@ -15,7 +22,7 @@ Owner requested a fast reevaluation of `GFX-08-06` and `GFX-08-07`. Scoped close
 - `GFX-08-06`: **superseded by GFX-08-05's scoped archived asset contract**, *not accepted as full original prompt/reference board/seed/edit reproduction*. Missing generation inputs are openly acknowledged; new art should be logged with full inputs when possible.
 - `GFX-08-07`: **superseded by GFX-08-05's already-approved pre-rendered static lighting/state plates**, *not accepted as pixel-registered master+mask/grade production*. Original semantic illustrations may have positional/perspective drift. Only commission a layered state family if an authored future interaction needs it.
 
-These statuses retire obsolete production-method P0 backlog only; preserve artwork `art_approved` status for actual catalog entries and all map/prop/Room Builder/mobile/pixel/geometry QA boundaries. PR-head CI and review must pass before these scope changes enter main.
+These statuses retire obsolete production-method P0 backlog only; preserve artwork `art_approved` status for actual catalog entries and all map/prop/Room Builder/mobile/pixel/geometry QA boundaries. PR #148 merged after exact-head CI; these narrow scope decisions are now reflected in main.
 
 ## 2026-11-03 · VNS5-09 full current-release authoring disk round-trip (candidate)
 
@@ -23,7 +30,7 @@ Following the owner's merge of [#146](https://github.com/bezdredoff/RavenManor-G
 
 New `tests/raven/vn_studio_full_authoring_e2e_smoke.gd` clones all five current source catalogs into a unique test-owned `user://` root and creates a five-scene synthetic QA draft (one authored 3-cast scene + the existing optional four-scene branch fixture), with **11** explicitly translated lines in RU/BE/EN, title translations, stable ID reorder, real BG-HALL/assetIds and 3 different FX. It performs **atomic `Store.save_local` to disk**, new `Store.open_project` and `Store.load_draft`, then validates the graph, poses/FX, all locales and complete review export. Duplicate export and stale-source overwrite must fail; production source SHA checks detect unintended changes. It cleans only its own temporary files. Both OS check runners include the new smoke, with runbook `docs/production/VNS5_09_END_TO_END_QA_RU.md`.
 
-This is **PR review, not accepted** until exact-head Godot CI and separately verified native Windows editor interactions; no user draft, season-one canonical dialogue, runtime route, game save or artwork is changed.
+PR #147 is **merged** and exact-head Godot CI passed. The technical E2E smoke is delivered, but native Windows editor interactions and owner approval remain **manual_pending**; no user draft, season-one canonical dialogue, runtime route, game save or artwork was changed.
 
 ## 2026-11-03 · VN Studio QA follow-up and current-release prop decision (PR candidate)
 
