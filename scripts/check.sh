@@ -73,6 +73,7 @@ run_check 'Raven foundation smoke' 'Raven Manor foundation smoke passed' --scrip
 run_check 'VNS5-06D2A save & rollback rehearsal' 'Raven VN VNS5-06D2A save and rollback projection smoke passed' --script res://tests/raven/vn_release_save_rehearsal_smoke.gd --quit-after 240
 run_check 'VNS5-06D2C canonical-only runtime VN dispatch' 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed' --script res://tests/raven/vn_production_runtime_dispatch_smoke.gd --quit-after 240
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
+run_check 'Match-3 checkpoint smoke' 'Raven Manor Match-3 replay checkpoint smoke passed' --script res://tests/raven/match3_checkpoint_smoke.gd --quit-after 120
 run_check 'VN line checkpoint smoke' 'Raven Manor VN line checkpoint smoke passed' --script res://tests/raven/vn_cursor_smoke.gd --quit-after 120
 run_check 'Gameplay pause smoke' 'Raven Manor save-and-exit pause smoke passed' --script res://tests/raven/game_pause_smoke.gd --quit-after 120
 run_check 'Main menu smoke' 'Raven Manor main menu and Prototype Lab navigation smoke passed' --script res://tests/raven/main_menu_smoke.gd --quit-after 120
