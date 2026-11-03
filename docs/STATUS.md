@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 VN line resume candidate
+
+Optional `vnCursor` (beat ID + line index) is normalized in the existing Raven campaign snapshot; it is not a second save. The vertical slice checkpoints each advanced VN line and restores it for the matching unfinished beat, discarding stale/invalid or completed-beat cursors. New native normalization smoke is blocking. Match-3 board resume, exact page/subline, full device QA and UPDS visual parity remain open; GAME-UI-01 remains in_progress.
+
 # 2026-11-03 · GAME-UI-01 localized pause candidate
 
 After merged #158, player pause confirmation is localized RU/BE/EN, including the save failure message. Native pause smoke now verifies all three locale variants. Still pending CI/device QA and exact mid-scene/mid-level resume; GAME-UI-01 remains in_progress.

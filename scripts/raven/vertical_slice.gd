@@ -126,6 +126,9 @@ func _render_vn() -> void:
 	if vn_player == null or vn_player.scene.get("beatId", "") != config.beatId:
 		vn_player = VN.new()
 		vn_player.open(config)
+		var cursor: Dictionary = state.get("vnCursor", {})
+		if str(cursor.get("beatId", "")) == str(config.beatId):
+			vn_player.line_index = mini(int(cursor.get("lineIndex", 0)), maxi(0, config.get("lines", []).size() - 1))
 	else:
 		# Language changes replace copy only, never rewind line or campaign cursor.
 		vn_player.scene = config
@@ -173,7 +176,17 @@ func _advance_vn() -> void:
 			state = reduced["state"]
 		else:
 			_apply_events([{"type":"story_beat_seen","storyBeatId":str(vn_player.scene.beatId)}])
+		state.vnCursor = {}
+		if not store.save_campaign(state):
+			push_error("Could not persist VN completion cursor cleanup")
 		vn_player = null
+	else:
+		var updated := state.duplicate(true)
+		updated.vnCursor = {"beatId": str(vn_player.scene.beatId), "lineIndex": vn_player.line_index}
+		if store.save_campaign(updated):
+			state = updated
+		else:
+			push_error("Could not persist VN line cursor")
 	_render()
 
 

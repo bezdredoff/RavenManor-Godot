@@ -21,6 +21,7 @@ static func fresh() -> Dictionary:
 		"appliedEventIds": [],
 		"lastRoomId": "RM-ROOM-HALL",
 		"lastSafeAnchorId": "",
+		"vnCursor": {},
 	}
 
 
@@ -44,6 +45,12 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 	var room_id := str(value.get("lastRoomId", "RM-ROOM-HALL"))
 	result.lastRoomId = room_id if catalog.rooms.has(room_id) else "RM-ROOM-HALL"
 	result.lastSafeAnchorId = str(value.get("lastSafeAnchorId", ""))
+	var cursor: Variant = value.get("vnCursor", {})
+	if cursor is Dictionary:
+		var beat_id := str(cursor.get("beatId", ""))
+		var line_index: Variant = cursor.get("lineIndex", -1)
+		if catalog.storyBeats.has(beat_id) and line_index is int and line_index >= 0 and line_index < 10000 and not result.storyBeatsSeen.has(beat_id):
+			result.vnCursor = {"beatId": beat_id, "lineIndex": line_index}
 	var hotspot_states: Variant = value.get("hotspotStates")
 	if hotspot_states is Dictionary:
 		for hotspot_id in hotspot_states:
