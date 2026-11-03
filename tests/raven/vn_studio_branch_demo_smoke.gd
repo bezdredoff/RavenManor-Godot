@@ -69,7 +69,8 @@ func _run() -> void:
 	assert(float(StageFx.sample(cues[0], 0)["alpha"]) < 1.0)
 	assert(not QABranch.build(project, d).get("ok", false), "Demo cannot be duplicated accidentally")
 	var serialized: Dictionary = JSON.parse_string(JSON.stringify(d))
-	assert(Store.validate(project, serialized).is_empty(), "Full graph+FX survives draft JSON serialization")
+	var roundtrip_error: String = Store.validate(project, serialized)
+	assert(roundtrip_error.is_empty(), "Full graph+FX survives draft JSON serialization: " + roundtrip_error)
 	assert(original["authoredScenes"].is_empty() and original["stageFxPatches"].is_empty())
 	# Real UI preview: the user-visible action selects the hub and admits Undo.
 	var view := View.new()
