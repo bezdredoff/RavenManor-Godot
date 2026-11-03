@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 pause/navigation follow-up
+
+Candidate replaces the vertical slice's direct QA launcher exit with a player-facing confirmation: save campaign, then return to main menu; cancellation resumes gameplay. New native Godot smoke checks dialog wiring. This does **not** yet guarantee exact VN-line or in-progress Match-3 board restoration: Continue reloads the latest committed campaign step. No GAME-UI-01 acceptance until CI and device checks.
+
 # 2026-11-03 · Main menu regression coverage (PR candidate)
 
 Following merged #156, this candidate fixes settings centering and adds a native Godot menu smoke to blocking gameplay CI: player menu boot route, required controls, settings open/close and one-tap Prototype Lab availability. Historical task counts remain advisory. GAME-UI-01 stays in_progress pending CI, device QA, audio runtime, pause/resume and UPDS visual parity; no owner acceptance claimed.
