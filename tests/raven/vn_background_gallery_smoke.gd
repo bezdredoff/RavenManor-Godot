@@ -1,5 +1,6 @@
 extends SceneTree
 const Resolver = preload("res://scripts/raven/raven_vn_backgrounds.gd")
+const Staging = preload("res://data/raven/production/vn_staging.json")
 const Gallery = preload("res://scenes/raven/vn_background_gallery.tscn")
 
 
@@ -36,6 +37,18 @@ func _initialize() -> void:
 			and int(original_dimensions[1]) > 0, "Original canvas size missing: " + id)
 		assert(not str(entry.get("sourceType", "")).is_empty(), "Source type missing: " + id)
 		assert(str(entry.get("approved", "")) == "2026-11-02", "Unexpected approval evidence: " + id)
+	# A general ledger-to-scene proof; no extra Corridor image is needed
+	# unless an authored scene starts using the Corridor master.
+	var scene_shots: Array = Staging.data.get("sceneShots", [])
+	assert(scene_shots.size() == 28)
+	for shot: Dictionary in scene_shots:
+		var scene_id: String = str(shot["sceneId"])
+		var expected_id: String = "%s:%s:%s" % [shot["backgroundId"], shot["lighting"], shot["roomState"]]
+		assert(ids.has(expected_id), "Authored VN scene missing exact accepted variant: " + scene_id)
+		assert(str(Resolver.entry_for_scene(scene_id).get("id", "")) == expected_id,
+			"Catalog staged scene maps to an incorrect asset: " + scene_id)
+		assert(Resolver.texture_for_scene(scene_id) != null,
+			"Authored scene has no loadable approved texture: " + scene_id)
 	var baseline_ids := [
 		"BG-HALL:evening:dusty",
 		"BG-HALL:day:habitable",
