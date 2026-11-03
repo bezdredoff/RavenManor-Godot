@@ -70,6 +70,7 @@ var _migration_scroll: ScrollContainer
 var _legacy_toolbar: Control
 var _legacy_scenes_panel: Control
 var _legacy_details_panel: Control
+var _legacy_mode_button: Button
 
 
 func _init() -> void:
@@ -119,6 +120,17 @@ func _make_ui() -> void:
 	outer.size_flags_vertical = SIZE_EXPAND_FILL
 	add_child(outer)
 
+	var mode := HFlowContainer.new()
+	outer.add_child(mode)
+	var mode_caption := Label.new()
+	mode_caption.text = "Raven Manor · редактор сценария"
+	mode_caption.size_flags_horizontal = SIZE_EXPAND_FILL
+	mode.add_child(mode_caption)
+	_legacy_mode_button = Button.new()
+	_legacy_mode_button.text = "Инструменты UPDS…"
+	_legacy_mode_button.tooltip_text = "Отдельный legacy-инструмент донорского проекта; не требуется для редактирования Raven"
+	_legacy_mode_button.pressed.connect(_on_toggle_legacy_mode)
+	mode.add_child(_legacy_mode_button)
 	var toolbar := HFlowContainer.new()
 	_legacy_toolbar = toolbar
 	outer.add_child(toolbar)
@@ -375,10 +387,26 @@ func _on_workspace_changed(index: int) -> void:
 	if _stage_tabs == null or _raven_story_view == null:
 		return
 	var raven_active: bool = _stage_tabs.get_tab_control(index) == _raven_story_view
+	# Legacy UPDS tabs are still available via an explicit mode switch, but
+	# cannot distract from the project-owned Raven authoring environment.
+	for legacy_tab in range(3):
+		_stage_tabs.set_tab_hidden(legacy_tab, raven_active)
+	_legacy_mode_button.text = "Инструменты UPDS…" if raven_active else "← Raven Manor"
 	_legacy_toolbar.visible = not raven_active
 	_status.visible = not raven_active
 	_legacy_scenes_panel.visible = not raven_active
 	_legacy_details_panel.visible = not raven_active
+
+
+func _on_toggle_legacy_mode() -> void:
+	if _stage_tabs.current_tab == 3:
+		# Reveal legacy tabs before selecting them.
+		for legacy_tab in range(3):
+			_stage_tabs.set_tab_hidden(legacy_tab, false)
+		_stage_tabs.current_tab = 0
+	else:
+		_stage_tabs.current_tab = 3
+	_on_workspace_changed(_stage_tabs.current_tab)
 
 
 func _on_choose_folder() -> void:

@@ -15,6 +15,10 @@ func _run() -> void:
 	studio.size = Vector2(1024, 640)
 	await process_frame
 	assert(studio._stage_tabs.current_tab == 3)
+	for legacy_tab in range(3):
+		assert(studio._stage_tabs.is_tab_hidden(legacy_tab), "UPDS tools must not be visible in Raven mode")
+	assert(not studio._stage_tabs.is_tab_hidden(3))
+	assert(studio._legacy_mode_button.text.contains("UPDS"))
 	assert(not studio._legacy_scenes_panel.visible, "Legacy UPDS scenes must hide in Raven workspace")
 	assert(not studio._legacy_details_panel.visible, "Legacy UPDS details must hide in Raven workspace")
 	assert(not studio._legacy_toolbar.visible, "UPDS toolbar should not consume Raven height")
@@ -109,13 +113,17 @@ func _run() -> void:
 	assert(not raven._scene_panel.visible and not raven._line_panel.visible)
 	raven._scene_panel.visible = true
 	raven._line_panel.visible = true
-	studio._stage_tabs.current_tab = 0
-	studio._on_workspace_changed(0)
+	studio._on_toggle_legacy_mode()
+	assert(studio._stage_tabs.current_tab == 0)
+	for legacy_tab in range(3):
+		assert(not studio._stage_tabs.is_tab_hidden(legacy_tab))
 	assert(studio._legacy_scenes_panel.visible and studio._legacy_details_panel.visible)
 	assert(studio._legacy_toolbar.visible)
 	assert(studio._status.visible)
-	studio._stage_tabs.current_tab = 3
-	studio._on_workspace_changed(3)
+	studio._on_toggle_legacy_mode()
+	assert(studio._stage_tabs.current_tab == 3)
+	for legacy_tab in range(3):
+		assert(studio._stage_tabs.is_tab_hidden(legacy_tab))
 	assert(not studio._legacy_scenes_panel.visible and not studio._legacy_details_panel.visible)
 	for scroller: ScrollContainer in [
 		studio._legacy_preview_scroll, studio._legacy_dialogue_scroll,

@@ -210,9 +210,32 @@ func _run() -> void:
 	var empty_ru: Dictionary = draft.duplicate(true)
 	empty_ru["patches"]["RM-TEST-A-L001"]["ru"] = "   "
 	assert(not Store.validate(project, empty_ru).is_empty())
+	# Real disk drift: stale local draft is blocked and must be archived
+	# byte-for-byte BEFORE the user can explicitly start a new one.
+	var saved_before_drift: String = FileAccess.get_file_as_string(Store.draft_path(source))
 	_write(original_path, {"scenes": [], "entries": []})
 	assert(not Store.validate(project, draft).is_empty())
 	assert(not Store.save_local(project, draft)["ok"])
 	assert(not Store.export_candidate(project, draft)["ok"])
+	# Rebuild a *valid* new source (translation changes from another PR).
+	payload["entries"][0]["localized"]["ru"]["text"] = "Новый канон"
+	_write(original_path, payload)
+	var changed_project: Dictionary = Store.open_project(source)
+	assert(changed_project.get("ok", false))
+	var stale: Dictionary = Store.load_draft(changed_project)
+	assert(not stale.get("ok", false))
+	var old_info: Dictionary = Store.stale_draft_info(changed_project)
+	assert(old_info.get("ok", false), JSON.stringify(old_info))
+	assert(old_info["changes"]["translations"] == 2)
+	var recovered: Dictionary = Store.archive_and_start_fresh(changed_project)
+	assert(recovered.get("ok", false), JSON.stringify(recovered))
+	assert(FileAccess.get_file_as_string(str(recovered["backupPath"])) == saved_before_drift)
+	var new_loaded: Dictionary = Store.load_draft(changed_project)
+	assert(new_loaded["ok"] and new_loaded["found"])
+	assert(Store.change_count(new_loaded["draft"]) == 0)
+	assert(new_loaded["draft"]["sourceSha256"] == changed_project["sha"])
+	assert(not Store.stale_draft_info(changed_project).get("ok", false))
+	assert(not Store.archive_and_start_fresh(changed_project).get("ok", false))
+	assert(FileAccess.get_file_as_string(str(recovered["backupPath"])) == saved_before_drift)
 	print("Raven VN Studio local story authoring and safe export smoke passed")
 	quit()

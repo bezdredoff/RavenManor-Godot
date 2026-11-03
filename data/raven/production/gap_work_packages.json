@@ -1118,6 +1118,38 @@
       "graphicsDependencies": [],
       "source": "Owner feedback 2026-11-03 after #137/#138",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "VNS5-10",
+      "title": "Raven VN Studio: safe stale draft escape hatch and separate UPDS legacy tools",
+      "domain": "narrative",
+      "priority": "P0",
+      "size": "S",
+      "status": "proposed",
+      "source": "Owner screenshots, 2026-11-03",
+      "description": "Raven draft blocks after source SHA drift with no user-controlled archive/reset. Legacy UPDS toolbar/nav/tabs distract from Raven-first authoring. Add explicit no-loss backup and clean-start and separate optional legacy tools.",
+      "deliverable": "Manual-confirmation dialog with exact immutable recovery JSON, clean new draft on current SHA only after backup verification; Raven-first workspace hides 3 UPDS tabs but optional mode returns to donor; regression tests.",
+      "acceptance": "Old draft preserved byte-for-byte, old edit data not silently rebased or applied; project/source files remain unchanged. User can edit/save new draft after explicitly agreeing; no accidental overwrite or cross-root recovery. UPDS tabs/toolbars hidden in Raven and accessible explicitly; CI and Windows visual QA.",
+      "dependsOn": [
+        "VNS5-09"
+      ],
+      "graphicsDependencies": [],
+      "requiresHumanAcceptance": true
+    },
+    {
+      "id": "ART-HANDBOOK-01",
+      "title": "Accepted browsable Art Handbook for approved Raven assets",
+      "domain": "art",
+      "priority": "P2",
+      "size": "S",
+      "status": "proposed",
+      "source": "Owner explicit acceptance 2026-11-03; implementation PR #103",
+      "description": "Browsable evidence and documented workflow-replay reference handbook for already approved art. Distinct from future ComfyUI executable batch tool and deterministic regeneration.",
+      "deliverable": "Published Art Handbook UI and manifest references; owner reviews access and organization.",
+      "acceptance": "Owner accepts browsable current handbook/recipes and source index. No claim of GPU reproducibility, missing animation keyframes or per-frame batch/export automation.",
+      "dependsOn": [],
+      "graphicsDependencies": [],
+      "requiresHumanAcceptance": true
     }
   ]
 }
