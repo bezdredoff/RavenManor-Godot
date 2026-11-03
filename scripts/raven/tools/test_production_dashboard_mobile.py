@@ -128,6 +128,41 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(data["assetSummary"]["backgrounds"]["artApproved"], 26)
         self.assertEqual(data["assetSummary"]["characterFrames"]["artApproved"], 62)
 
+    def test_p2_reentry_release_gates_and_owner_qa_matrix(self):
+        data = dashboard.build()
+        by_id = {item["id"]: item for item in data["tasks"]}
+        groups = {item["id"]: item for item in data["p2Groups"]}
+        self.assertEqual(len(groups), 4)
+        self.assertEqual(sum(g["taskCount"] for g in groups.values()), 44)
+        self.assertEqual(groups["P2-SEASON-CONTENT"]["taskCount"], 16)
+        self.assertEqual(groups["P2-CONDITIONAL-PIPELINE"]["taskCount"], 14)
+        self.assertEqual(groups["P2-EXPLICITLY-DEFERRED"]["taskCount"], 2)
+        self.assertEqual(groups["P2-FULL-SEASON-RELEASE"]["taskCount"], 12)
+        for task_id in ["CODE-13-01"] + [f"GFX-13-T{i:02}" for i in range(1, 12)]:
+            self.assertEqual(by_id[task_id]["p2ReentryGroup"], "P2-FULL-SEASON-RELEASE")
+            self.assertEqual(by_id[task_id]["status"], "proposed")
+        self.assertEqual(by_id["VNS5-08"]["p2ReentryGroup"], "P2-EXPLICITLY-DEFERRED")
+        self.assertEqual(by_id["VNS5-08"]["status"], "deferred")
+        self.assertEqual(by_id["GFX-07-08"]["p2ReentryGroup"], "P2-SEASON-CONTENT")
+        self.assertEqual(len(data["workstreams"]), 10)
+        for stream in data["workstreams"]:
+            m = stream["acceptancePlan"]
+            self.assertTrue(m["automatedChecks"], stream["id"])
+            self.assertTrue(m["ownerChecks"], stream["id"])
+            self.assertTrue(m["newWorkIfFailed"], stream["id"])
+            self.assertTrue(m["decision"], stream["id"])
+        html = (dashboard.ROOT / "dashboard/index.html").read_text(encoding="utf-8")
+        js = (dashboard.ROOT / "dashboard/app.mjs").read_text(encoding="utf-8")
+        self.assertIn('id="acceptance-streams"', html)
+        self.assertIn('id="p2-groups"', html)
+        self.assertIn("function renderAcceptance(data)", js)
+        self.assertIn("renderAcceptance(data)", js)
+        self.assertIn("ChatGPT / CI", js)
+        # Old runtime/video/manual QA must not become automatically accepted.
+        self.assertEqual(by_id["VNS5-09"]["status"], "merged")
+        self.assertEqual(by_id["VNS5-09"]["qaState"], "manual_pending")
+        self.assertEqual(by_id["GFX-08-05"]["approvalState"], "art_approved")
+
     def test_p1_workstreams_and_future_scope_are_explicit(self):
         data = dashboard.build()
         tasks = data["tasks"]

@@ -23,7 +23,22 @@
         "GFX-03-05",
         "GFX-05-08",
         "GFX-06-08"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "tests/raven/vn_studio_full_authoring_e2e_smoke.gd — draft save/reopen + RU/BE/EN + review export",
+          "tests/raven/vn_studio_branch_demo_smoke.gd — editor-only branch and FX fixture",
+          "tests/raven/vn_studio_layout_smoke.gd — layout structural smoke"
+        ],
+        "ownerChecks": [
+          "В Godot 4.7.2: создать сцену, поставить 1/2/3 утверждённых героев и narrator-only реплику, переставить строки, сохранить/перезапустить/открыть",
+          "Сравнить реально утверждённый HTML-v5 и Godot при 1024×640, 1366×768 и большом desktop viewport; проверить колонки, высоту, scroll, превью"
+        ],
+        "newWorkIfFailed": [
+          "Исправить обнаруженные несовпадения UX/перетаскивания/анимаций и fallback; не создавать самостоятельную библиотеку VN props"
+        ],
+        "decision": "Owner accepts native editor authoring and visual differences explicitly; technical smoke alone never closes #121/#129"
+      }
     },
     {
       "id": "WS-LOCALES",
@@ -36,7 +51,21 @@
         "LOC-EN-QA",
         "LOC-BE-QA",
         "GFX-11-T08"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "scripts/raven/tools/validate_production_narrative.py --release — наличие RU/BE/EN у реплик/заголовков/popups",
+          "tests/raven/vn_english_localization_smoke.gd и vn_belarusian_localization_smoke.gd — сохранение/разрешение переводов"
+        ],
+        "ownerChecks": [
+          "Пройти одинаковые сцены на RU, EN, BE: переносы, UI-подписи, авторский текст, меню, popup и типографику",
+          "Редакторская сверка звучания реплик и отсутствия fallback там, где требуется локализованный UI"
+        ],
+        "newWorkIfFailed": [
+          "Только исправления конкретных пропущенных UI-строк/шрифтов/переносов; 280 реплик и 28 заголовков не переводить заново"
+        ],
+        "decision": "Owner signs off separate EN and BE editorial + complete native UI layout gates"
+      }
     },
     {
       "id": "WS-DEVICE",
@@ -53,7 +82,21 @@
         "GFX-00-08",
         "GFX-06-09",
         "GFX-11-T09"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "tests/raven/upds_match3_mobile_hud_smoke.gd — safe area/HUD limits",
+          "tests/raven/vn_studio_layout_smoke.gd и vertical_slice_smoke.gd — структурные smoke"
+        ],
+        "ownerChecks": [
+          "На 390×844, 412×915, 430×932 и планшете снять evidence: ориентация, safe area, touch targets, no clipping, motion reduction",
+          "Проверить PWA offline/resume и взаимодействие с Room Builder на реальном устройстве/стилусе, где применимо"
+        ],
+        "newWorkIfFailed": [
+          "Только реальные viewport, accessibility, pointer/stylus и offline regression fixes"
+        ],
+        "decision": "Physical-device evidence; не заменять его эмулятором или headless screenshot"
+      }
     },
     {
       "id": "WS-MOBILE-HANDOFF",
@@ -64,7 +107,21 @@
       "taskIds": [
         "PROC-003",
         "MOB-04"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "scripts/raven/tools/validate_mobile_patch.py и test_production_dashboard_mobile.py — archive manifest/adversarial preflight",
+          "GitHub Actions candidate pipeline — CI-проверка импортируемого ZIP и независимого PR"
+        ],
+        "ownerChecks": [
+          "С телефона загрузить небольшой валидный ZIP в incoming; подтвердить candidate PR и удаление ZIP после успеха",
+          "Негативный тест неверного ZIP/manifest: rejection, отсутствие потери данных, cleanup, отсутствие auto-merge"
+        ],
+        "newWorkIfFailed": [
+          "Правка только подтверждённого дефекта ZIP validation, cleanup или permissions; не менять game scenes"
+        ],
+        "decision": "One phone happy path and one intentionally rejected archive proved safe"
+      }
     },
     {
       "id": "WS-MATCH3",
@@ -85,7 +142,21 @@
         "GFX-10-04",
         "GFX-10-05",
         "GFX-10-07"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "tests/raven/upds_match3_interactive_board_smoke.gd и upds_match3_presentation_states_smoke.gd — board/help/blocker состояния",
+          "tests/raven/upds_match3_mobile_hud_smoke.gd и content_preview_match3_qa_smoke.gd — UI/QA shortcut"
+        ],
+        "ownerChecks": [
+          "Реальные swipe/touch на телефоне и pointer на desktop, один валидный и один невалидный ход",
+          "Hint показывает обе клетки, Help открывается как modal, а не spoiler; 8 tile types и blockers различимы на малом экране"
+        ],
+        "newWorkIfFailed": [
+          "Исправления input, hint, modal Help, tile/blocker visuals с UPDS parity; headless smoke не гарантирует UI"
+        ],
+        "decision": "Owner passes actual Match-3 input and visual parity before CODE-02-06 closure"
+      }
     },
     {
       "id": "WS-HALL",
@@ -104,7 +175,21 @@
         "GFX-08-08",
         "GFX-08-09",
         "GFX-08-10"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "scripts/raven/tools/build_original_hall_layout.py --check + import_room_builder_game.py — детерминированный Hall draft/preview",
+          "tests/raven/manor_navigation_graph_smoke.gd и season1_map_smoke.gd — authored graph/scene smoke"
+        ],
+        "ownerChecks": [
+          "В 65° map viewport проверить лестницу C, двустворчатые двери под площадкой, дверь библиотеки, clock, кресла/стол и коридор",
+          "Пройти authored Hall→Corridor→Bedroom, открыть двери, проверить независимость Bedroom от Bathroom, collisions, occlusion и pivots"
+        ],
+        "newWorkIfFailed": [
+          "Переупорядочить архитектуру Hall, Room Builder projection, map-ready physical pieces и collision/navigation только по утверждённому дефекту"
+        ],
+        "decision": "Single owner Hall geometry/route gate covers CODE-05-01/02 and RM-GAP-001/006; VN background ≠ playable map"
+      }
     },
     {
       "id": "WS-CHIBI",
@@ -123,7 +208,20 @@
         "GFX-07-09",
         "GFX-07-10",
         "GFX-11-T06"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "Текущий CI обеспечивает контракт и визуальную загрузку VN-портретов; утверждённой серии map-chibi для теста пока нет"
+        ],
+        "ownerChecks": [
+          "После небольшого пилота выбрать Эвелин по approved full-body VN ref: identity, фронт/профиль/спина, 65° camera readability",
+          "На Hall-карте проверить Эвелин/Аду idle/walk/footpoints, scale, occlusion и взаимодействие; технический Onoe не принимать как результат"
+        ],
+        "newWorkIfFailed": [
+          "Создать и утвердить новые chibi sprites Evelyn/Ada, затем импортер/анимации, без повторной генерации всех VN portraits"
+        ],
+        "decision": "No task completed until original Raven map chibi art and real movement are approved"
+      }
     },
     {
       "id": "WS-MAP-PROPS",
@@ -141,7 +239,20 @@
         "GFX-09-06",
         "GFX-11-T04",
         "GFX-11-T07"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "scripts/raven/tools/validate_production_narrative.py — registry IDs/scene prop references; не подтверждает map states"
+        ],
+        "ownerChecks": [
+          "Hall-first inspect/repair: письмо, чай, дверь, часы/предметы; связность logical ID map/VN/insert и видимые состояния",
+          "Проверить collision/footprints, interactions, spoiler safety и независимость от отложенного VNS5-08"
+        ],
+        "newWorkIfFailed": [
+          "Новые map prop assets/state variants и restoration interactions по реально используемой сцене, не самостоятельный prop editor VN"
+        ],
+        "decision": "Physical map interactions and state visuals require owner review before individual prop tasks accepted"
+      }
     },
     {
       "id": "WS-ASSET-CONTRACT",
@@ -158,7 +269,22 @@
         "GFX-00-05",
         "GFX-03-07",
         "GFX-05-11"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "tests/raven/vn_background_gallery_smoke.gd — 26 exact WebP hashes and 28 scene background tuples",
+          "tests/raven/vn_character_art_smoke.gd — accepted VN portrait integration",
+          "scripts/raven/tools/build_production_dashboard.py --check — task IDs and approved art counts"
+        ],
+        "ownerChecks": [
+          "Для новых map/chibi/M3 ассетов проверить actual alpha, pivot, sprite bounds, compression, category and provenance",
+          "Подтвердить корректные лицензии/кредиты и честно перечислить потерянные original ChatGPT prompts/seeds; не заявлять pixel-locked overlays"
+        ],
+        "newWorkIfFailed": [
+          "Только конкретные недостающие map/chibi/M3 import contracts; не пересоздавать 26 approved VN plates и 62 cast frames"
+        ],
+        "decision": "Signed manifest/import evidence without conflating immutable binary provenance and full prompt replay"
+      }
     },
     {
       "id": "WS-STORY-RUNTIME",
@@ -170,7 +296,22 @@
         "CODE-11-01",
         "RM-GAP-008",
         "VN-RUNTIME-01"
-      ]
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "tests/raven/vertical_slice_smoke.gd — structural slice assertions",
+          "tests/raven/vn_production_runtime_dispatch_smoke.gd — canonical-only dispatch/locale/art checks",
+          "tests/raven/vn_release_save_rehearsal_smoke.gd — save and rollback projection"
+        ],
+        "ownerChecks": [
+          "На реальном клиенте пройти VN→Match-3→map, выбор порядка доступных ремонтов и сохранение/возобновление",
+          "Убедиться, что demo Story Map A/B/C остаётся draft-only, пока не утверждены ветки; проверять RU/BE/EN и отсутствие преждевременных spoilers"
+        ],
+        "newWorkIfFailed": [
+          "Только reviewed-only branching promotion / gameplay integration, saves and exact route fixes; не продвигать QA fixture в канон автоматически"
+        ],
+        "decision": "Owner approves playable slice and safe migration/rollback; technical smoke ≠ finished Season 1"
+      }
     }
   ]
 }

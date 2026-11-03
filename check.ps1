@@ -12,6 +12,8 @@ py "$projectPath/scripts/raven/tools/validate_backlog_dependencies.py"
 if ($LASTEXITCODE -ne 0) { throw 'Backlog dependency graph audit failed.' }
 py "$projectPath/scripts/raven/tools/validate_active_workstreams.py"
 if ($LASTEXITCODE -ne 0) { throw 'Backlog workstreams audit failed.' }
+py "$projectPath/scripts/raven/tools/validate_backlog_acceptance.py"
+if ($LASTEXITCODE -ne 0) { throw 'P2 reentry/QA matrix audit failed.' }
 
 function Invoke-GodotCheck {
 	param([string]$Stage, [string[]]$Arguments, [string]$ExpectedOutput = '')

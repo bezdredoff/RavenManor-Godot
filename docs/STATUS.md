@@ -1,5 +1,11 @@
 # Raven Manor — canonical project status
 
+## 2026-11-03 · P2 re-entry and current-workstream acceptance matrix (PR candidate)
+
+Owner merged PR #152, confirming **13 active P0, 65 active P1, 44 open P2** and 10 uniquely assigned workstreams across 78 active tasks. P2 is no longer a misleading single bucket: the new `data/raven/production/p2_reentry_policy.json` provides **16 later-season/content, 14 conditional method, 2 explicitly deferred and 12 mandatory full-season release-gate** entries. **All 44** retain exact original task IDs, their statuses/approvals, and explicit re-entry triggers; full-season QA is not described as optional.
+
+Every workstream in `active_workstreams.json` now has a separate machine-readable **automatedChecks / ownerChecks / newWorkIfFailed / decision** matrix, with a matching Russian full reference `docs/production/CURRENT_RELEASE_ACCEPTANCE_MATRIX_RU.md`. Dashboard shows collapsed ten-stream QA and four P2 trigger sections and retains per-task evidence/status filters. A new CI validator checks exact P2 membership and all matrices on Linux/Windows. Existing 26 approved VN backgrounds, 62 approved characters, safe VN draft-only branching, native QA boundaries and current game code remain untouched. This PR records **plans**, not a claim of native screen, device, or owner acceptance.
+
 ## 2026-11-03 · P1 current-release scope and shared QA workstreams (PR candidate)
 
 After owner-merged #151, the source task inventory still contained **13 active P0, 91 active P1 and 18 active P2** among 238 tasks. Reviewed 26 genuinely non-urgent P1 feature/production-method items (later season content waves, nonessential image keyframes, Rowan/Lucas map batches, secondary props, full material/landmark atlases and optional effect polish) and reduced their current `priority` to P2 **without changing their proposed/ready status, evidence, actual art approval, runtime or owner QA**. Current priority inventory: **13 P0, 65 P1, 44 P2**; all remain explicitly tracked.
