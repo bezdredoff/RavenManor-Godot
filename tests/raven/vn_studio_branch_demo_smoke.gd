@@ -109,6 +109,10 @@ func _run() -> void:
 	assert(view._draft["authoredScenes"].is_empty(), "Single-click demo must be one Undo step")
 	view._on_redo()
 	assert(view._draft["authoredScenes"].size() == 4)
+	# Undo may select the previous canonical scene; explicitly refocus the QA hub.
+	view._scene_idx = project["sceneCount"]
+	view._scene_switch()
+	assert(view.selected_context()["sceneId"] == hub)
 
 	# User-visible Story Map: all three orange links exist and are selectable.
 	assert(view._raven_graph._edge_list.item_count == 3)
