@@ -1,3 +1,7 @@
+# 2026-11-03 · GAME-UI-01 UPDS VN Auto footer (draft)
+
+Following merged #168, add UPDS-style Auto control to Raven VN dialogue footer, using a one-shot Timer and page-length-dependent reading delay. Existing Raven pagination and `_advance_vn` remain the only progress path, preserving save behavior. Auto stops when the view is hidden; no Skip (requires choice-aware semantics), no persistent Auto preference. Donor UI/behavior reference: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`. CI, visual/mobile QA and interaction QA pending. This is an incremental shell migration, not full UPDS parity.
+
 # 2026-11-03 · GAME-UI-01 UPDS VN header adaptation (draft)
 
 With #167 merged, Prototype Lab and Pages workflows are green on `68e38e8`. This candidate starts incremental UPDS-godot `scripts/vn/vn_screen.gd` shell adaptation: header menu, history and settings controls; existing Raven dialogue, nameplate, stage, approved backgrounds and FX remain intact. Menu reuses Raven pause/save; settings opens existing locale selector; history is read-only and limited to reached lines in the current scene (not yet a persistent multi-scene log). No Auto/Skip yet. CI and visual/mobile QA pending; not a claim of full UPDS visual parity. Donor: `bezdredoff/UPDS-godot/scripts/vn/vn_screen.gd`; adaptation rather than verbatim import because its StorySession, art registry, and menu dependencies differ.
