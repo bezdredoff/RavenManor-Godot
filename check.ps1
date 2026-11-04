@@ -73,6 +73,7 @@ foreach ($script in @(
 	'res://scripts/raven/raven_match3_theme.gd',
 	'res://scripts/raven/raven_menu_copy.gd',
 	'res://scripts/raven/raven_settings_dialog.gd',
+	'res://scripts/raven/raven_onboarding_dialog.gd',
 	'res://scripts/raven/raven_audio_synthesis.gd',
 	'res://scripts/raven/raven_audio_runtime.gd',
 	'res://scripts/raven/upds_match3_campaign_adapter.gd',
@@ -119,6 +120,7 @@ Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPa
 
 Invoke-GodotCheck 'UPDS VN shell layout and input' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_layout_smoke.gd', '--quit-after', '600') 'Raven UPDS VN shell layout and input smoke passed'
 Invoke-GodotCheck 'Runtime settings persistence and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/runtime_settings_smoke.gd', '--quit-after', '240') 'Raven runtime settings persistence, modal and locale smoke passed'
+Invoke-GodotCheck 'Replayable onboarding' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/onboarding_smoke.gd', '--quit-after', '240') 'Raven first-session and replayable onboarding smoke passed'
 Invoke-GodotCheck 'Procedural audio runtime' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/audio_runtime_smoke.gd', '--quit-after', '240') 'Raven procedural audio runtime, preference gating and focus smoke passed'
 
 Invoke-GodotCheck 'VN persisted read-only Skip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_read_skip_smoke.gd', '--quit-after', '600') 'Raven VN persisted read-only Skip smoke passed'

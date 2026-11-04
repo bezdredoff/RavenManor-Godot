@@ -2,12 +2,13 @@ extends Control
 ## GAME-UI-01: player-facing entry point. Prototype Lab stays one tap away.
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Preferences = preload("res://scripts/shared/upds/player_preferences.gd")
+const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
-	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты"],
-	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты"],
-	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects"]
+	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть"],
+	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць"],
+	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects", "How to play"]
 }
 const BACKDROP := "res://assets/raven/vn_backgrounds/road/dusk_mist.webp"
 var store := Store.new()
@@ -19,6 +20,8 @@ var continue_button: Button
 var settings_panel: Control
 var settings_container: CenterContainer
 var confirm: ConfirmationDialog
+var onboarding_dialog: Window
+var _start_after_guide := false
 
 func _ready() -> void:
 	audio_runtime = get_node("/root/RavenAudio")
@@ -60,6 +63,7 @@ func _ready() -> void:
 	continue_button = _add_action(1, _continue_game)
 	_add_action(2, _show_settings)
 	_add_action(3, func(): get_tree().change_scene_to_file(LAB))
+	_add_action(4, _show_onboarding)
 	message = Label.new()
 	message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -76,7 +80,7 @@ func _tr(index: int) -> String:
 
 func _add_action(index: int, callback: Callable) -> Button:
 	var button := Button.new()
-	button.name = ["NewGame", "Continue", "Settings", "PrototypeLab"][index]
+	button.name = ["NewGame", "Continue", "Settings", "PrototypeLab", "HowToPlay"][index]
 	button.custom_minimum_size.y = 52
 	button.add_theme_font_size_override("font_size", 18)
 	button.pressed.connect(func() -> void: audio_runtime.play_effect("uiClick"))
@@ -91,22 +95,27 @@ func _has_progress() -> bool:
 func _refresh() -> void:
 	for index in range(4):
 		column.get_child(index + 2).text = _tr(index)
+	column.get_child(6).text = _tr(18)
 	continue_button.disabled = not _has_progress()
 	confirm.dialog_text = _tr(4)
 	confirm.ok_button_text = _tr(5)
 	confirm.cancel_button_text = _tr(6)
+	if is_instance_valid(onboarding_dialog):
+		onboarding_dialog.set_locale(prefs.locale)
 
 func _new_game() -> void:
 	if _has_progress():
 		confirm.popup_centered()
 	else:
-		_start()
+		_start_after_guide = true
+		_show_onboarding()
 
 func _reset_and_start() -> void:
 	if not store.reset_campaign():
 		message.text = "Could not reset game progress"
 		return
-	_start()
+	_start_after_guide = true
+	_show_onboarding()
 
 func _start() -> void:
 	audio_runtime.set_scene("vn")
@@ -118,6 +127,26 @@ func _continue_game() -> void:
 		return
 	audio_runtime.set_scene("vn")
 	_start()
+
+func _show_onboarding() -> void:
+	if is_instance_valid(onboarding_dialog):
+		onboarding_dialog.set_locale(prefs.locale)
+		if _start_after_guide and not onboarding_dialog.closed.is_connected(_on_onboarding_closed):
+			onboarding_dialog.closed.connect(_on_onboarding_closed)
+		onboarding_dialog.open_centered()
+		return
+	onboarding_dialog = Onboarding.new()
+	onboarding_dialog.name = "RavenOnboarding"
+	onboarding_dialog.setup(prefs.locale)
+	add_child(onboarding_dialog)
+	if _start_after_guide:
+		onboarding_dialog.closed.connect(_on_onboarding_closed)
+	onboarding_dialog.open_centered()
+
+func _on_onboarding_closed() -> void:
+	if _start_after_guide:
+		_start_after_guide = false
+		_start()
 
 func _show_settings() -> void:
 	column.visible = false

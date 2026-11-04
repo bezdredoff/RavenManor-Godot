@@ -1244,7 +1244,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-11-01; no duplication or automatic acceptance.",
       "deliverable": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
       "acceptance": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
-      "status": "proposed",
+      "status": "in_progress",
       "dependsOn": [
         "CODE-02-03"
       ],

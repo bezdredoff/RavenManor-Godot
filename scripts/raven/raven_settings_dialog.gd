@@ -93,6 +93,7 @@ func setup(source_preferences: RefCounted, runtime: Variant) -> void:
 	preferences.audio_changed.connect(_refresh)
 	preferences.accessibility_changed.connect(_refresh)
 	ready.connect(func() -> void: _refresh())
+	hide()
 
 
 func _label_row(key: String, control: Control) -> VBoxContainer:

@@ -3,6 +3,8 @@ extends SceneTree
 const MENU := "res://scenes/raven/main_menu.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const Preferences = preload("res://scripts/raven/raven_production_localization.gd")
+const Store = preload("res://scripts/raven/raven_campaign_store.gd")
+const MemoryStorage = preload("res://tests/support/memory_storage.gd")
 const SETTINGS_PATH := "user://raven_main_menu_settings_smoke.cfg"
 
 func _initialize() -> void:
@@ -13,6 +15,7 @@ func _run() -> void:
 	var packed: PackedScene = load(MENU)
 	assert(packed != null, "Missing main menu")
 	var instance: Control = packed.instantiate()
+	instance.store = Store.new(MemoryStorage.new())
 	root.add_child(instance)
 	await process_frame
 	assert(instance.audio_runtime == root.get_node("/root/RavenAudio"), "Menu must use the persistent audio autoload")
@@ -23,7 +26,8 @@ func _run() -> void:
 	var continue_game: Button = instance.find_child("Continue", true, false)
 	var settings: Button = instance.find_child("Settings", true, false)
 	var lab: Button = instance.find_child("PrototypeLab", true, false)
-	assert(new_game != null and continue_game != null and settings != null and lab != null, "Required menu actions missing")
+	var how_to_play: Button = instance.find_child("HowToPlay", true, false)
+	assert(new_game != null and continue_game != null and settings != null and lab != null and how_to_play != null, "Required menu actions missing")
 	assert(lab.pressed.get_connections().size() > 0, "Prototype Lab action not connected")
 	assert(ResourceLoader.exists(LAB), "Prototype Lab must stay in the same build")
 	settings.pressed.emit()
@@ -39,7 +43,18 @@ func _run() -> void:
 	await process_frame
 	assert(instance.column.visible, "Back must restore main menu")
 	assert(instance.settings_panel == null, "Settings must close")
-	instance.queue_free()
+	how_to_play.pressed.emit()
+	await process_frame
+	assert(instance.onboarding_dialog.visible, "Replayable guide did not open from the main menu")
+	assert(instance.onboarding_dialog.find_child("RavenOnboardingTopic0", true, false) != null)
+	instance.onboarding_dialog.find_child("RavenOnboardingClose", true, false).pressed.emit()
+	assert(not instance.onboarding_dialog.visible)
+	new_game.pressed.emit()
+	await process_frame
+	assert(instance.onboarding_dialog.visible and instance._start_after_guide, "Fresh game must show onboarding before play")
+	instance.onboarding_dialog.find_child("RavenOnboardingClose", true, false).pressed.emit()
+	assert(not instance._start_after_guide, "Closing first-session guide should continue into the game")
+	assert(instance.audio_runtime._scene == "vn")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(SETTINGS_PATH))
 	print("Raven Manor main menu and Prototype Lab navigation smoke passed")
 	quit()
