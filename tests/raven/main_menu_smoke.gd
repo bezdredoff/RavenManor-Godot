@@ -15,6 +15,8 @@ func _run() -> void:
 	var instance: Control = packed.instantiate()
 	root.add_child(instance)
 	await process_frame
+	assert(instance.audio_runtime == root.get_node("/root/RavenAudio"), "Menu must use the persistent audio autoload")
+	assert(instance.prefs == instance.audio_runtime.preferences, "Menus and audio must share one preference instance")
 	DirAccess.remove_absolute(ProjectSettings.globalize_path(SETTINGS_PATH))
 	instance.prefs = Preferences.new(SETTINGS_PATH)
 	var new_game: Button = instance.find_child("NewGame", true, false)

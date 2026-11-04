@@ -19,6 +19,7 @@ const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd"
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
 
 var preferences := Copy.new()
+var audio_runtime: Variant
 var locale_selector: OptionButton
 var store := Store.new()
 var state := Snapshot.fresh()
@@ -34,7 +35,7 @@ var vn_frame: Control
 var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
-var settings_dialog: AcceptDialog
+var settings_dialog: Window
 const PAUSE_COPY := {
 	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
 	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
@@ -43,6 +44,9 @@ const PAUSE_COPY := {
 
 
 func _ready() -> void:
+	audio_runtime = get_node("/root/RavenAudio")
+	preferences = audio_runtime.preferences
+	audio_runtime.set_scene("vn")
 	content = Content.data
 	state = store.load_campaign()
 	_build_shell()
@@ -110,7 +114,7 @@ func _build_shell() -> void:
 	add_child(pause_dialog)
 	settings_dialog = SettingsDialog.new()
 	settings_dialog.name = "RavenRuntimeSettings"
-	settings_dialog.setup(preferences)
+	settings_dialog.setup(preferences, audio_runtime)
 	settings_dialog.locale_selected.connect(_on_settings_locale_selected)
 	settings_dialog.visibility_changed.connect(_on_settings_visibility_changed)
 	add_child(settings_dialog)
@@ -192,7 +196,9 @@ func _open_vn_settings() -> void:
 
 
 func _open_settings() -> void:
-	settings_dialog.popup_centered_ratio(0.9)
+	audio_runtime.play_effect("uiClick")
+	_on_settings_visibility_changed()
+	settings_dialog.popup_centered(Vector2i(360, 520))
 
 
 func _on_settings_locale_selected(locale: String) -> void:
@@ -236,6 +242,7 @@ func _render_match3() -> void:
 	board_view.setup(match_game, Match3Theme.placeholder())
 	board_view.set_interaction_blocked(is_instance_valid(settings_dialog) and settings_dialog.visible)
 	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
+	board_view.audio_cue.connect(audio_runtime.play_effect)
 	board_view.level_won.connect(_complete_level)
 
 
@@ -276,6 +283,7 @@ func _complete_action() -> void:
 func _advance_vn() -> void:
 	if vn_player == null or ReadHistory.at_checkpoint(vn_player.scene, vn_player.line_index):
 		return
+	audio_runtime.play_effect("vnAdvance")
 	var read_id := ReadHistory.current_id(vn_player.scene, vn_player.line_index)
 	if vn_player.advance():
 		if step.get("kind") == "vn_production":
@@ -319,6 +327,7 @@ func _advance_vn() -> void:
 
 func _skip_read_vn() -> void:
 	if vn_player == null: return
+	audio_runtime.play_effect("vnAdvance")
 	var target := ReadHistory.skip_target(vn_player.scene, vn_player.line_index, state.vnReadLines)
 	if target <= vn_player.line_index: return
 	var updated := state.duplicate(true)
@@ -386,6 +395,7 @@ func _save_and_exit() -> void:
 	if not store.save_campaign(state):
 		_show_save_error()
 		return
+	audio_runtime.set_scene("menu")
 	get_tree().change_scene_to_file("res://scenes/raven/main_menu.tscn")
 
 func _show_save_error() -> void:
