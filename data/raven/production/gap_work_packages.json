@@ -1278,7 +1278,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-02-03; no duplication or automatic acceptance.",
       "deliverable": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
       "acceptance": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
-      "status": "in_progress",
+      "status": "merged",
       "dependsOn": [
         "GAME-M3-01"
       ],

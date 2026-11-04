@@ -173,10 +173,10 @@ class DashboardTests(unittest.TestCase):
         active = {task["id"] for task in tasks
                   if task["status"] not in terminal and task["priority"] in {"P0", "P1"}}
         self.assertEqual(grouped, active)
-        self.assertEqual(len(active), 82)
+        self.assertEqual(len(active), 81)
         self.assertEqual(len(data["workstreams"]), 12)
         self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 19)
-        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 63)
+        self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 62)
         for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
                     "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
             self.assertEqual(by_id[key]["priority"], "P2", key)
@@ -220,7 +220,7 @@ class DashboardTests(unittest.TestCase):
         streams = {stream["id"]: stream for stream in data["workstreams"]}
         self.assertEqual(streams["WS-LOCALES"]["taskCount"], 1)
         self.assertEqual(streams["WS-MOBILE-HANDOFF"]["taskCount"], 1)
-        self.assertEqual(data["openTaskCount"], 126)
+        self.assertEqual(data["openTaskCount"], 125)
 
     def test_code_gap_p0_only_current_release_gates(self):
         data = dashboard.build()

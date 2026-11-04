@@ -339,7 +339,6 @@
         "GAME-LOOP-01",
         "GAME-ONBOARD-01",
         "GAME-QA-01",
-        "GAME-BOOST-01",
         "GAME-JOURNAL-01",
         "CODE-07-02",
         "CODE-08-01",
@@ -358,9 +357,9 @@
         ],
         "decision": "Do not replace the three canonical VS levels or auto-publish VN drafts"
       },
-      "taskCount": 9,
+      "taskCount": 8,
       "p0Count": 4,
-      "p1Count": 5
+      "p1Count": 4
     }
   ]
 }
