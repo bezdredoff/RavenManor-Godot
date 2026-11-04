@@ -3,6 +3,7 @@ extends RefCounted
 ## Versioned, Raven-only campaign state. It deliberately contains no UPDS story indexes.
 const SCHEMA_VERSION := 1
 const GAME_ID := "raven-manor"
+const ReadHistory = preload("res://scripts/raven/raven_vn_read_history.gd")
 
 
 static func fresh() -> Dictionary:
@@ -22,6 +23,7 @@ static func fresh() -> Dictionary:
 		"lastRoomId": "RM-ROOM-HALL",
 		"lastSafeAnchorId": "",
 		"vnCursor": {},
+		"vnReadLines": [],
 		"match3Checkpoint": {},
 	}
 
@@ -42,6 +44,7 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 	result.recordedClues = _known_unique(value.get("recordedClues"), catalog.clues)
 	result.storyFlags = _known_unique(value.get("storyFlags"), catalog.storyFlags)
 	result.storyBeatsSeen = _known_unique(value.get("storyBeatsSeen"), catalog.storyBeats)
+	result.vnReadLines = ReadHistory.normalize(value.get("vnReadLines", []))
 	result.appliedEventIds = _unique_strings(value.get("appliedEventIds"))
 	var room_id := str(value.get("lastRoomId", "RM-ROOM-HALL"))
 	result.lastRoomId = room_id if catalog.rooms.has(room_id) else "RM-ROOM-HALL"

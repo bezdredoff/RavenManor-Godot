@@ -44,3 +44,5 @@
 Where old contracts conflict (especially bedroom gate, door cycling, free movement) follow `DECISIONS.md`. Preserve old files to maintain provenance; update active implementation contracts and record migrations explicitly.
 
 - [GAME-UI-01 Wave 1 donor-derived VN shell](production/UPDS_UI_WAVE1_VN_SHELL_20261103_RU.md)
+
+- [GAME-UI-01 Wave 2 persisted read-only Skip](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md)
