@@ -4,6 +4,7 @@ extends RefCounted
 const SCHEMA_VERSION := 1
 const GAME_ID := "raven-manor"
 const ReadHistory = preload("res://scripts/raven/raven_vn_read_history.gd")
+const BoosterInventory = preload("res://scripts/raven/raven_booster_inventory.gd")
 
 
 static func fresh() -> Dictionary:
@@ -25,6 +26,7 @@ static func fresh() -> Dictionary:
 		"vnCursor": {},
 		"vnReadLines": [],
 		"match3Checkpoint": {},
+		"boosterInventory": BoosterInventory.fresh(),
 	}
 
 
@@ -46,6 +48,7 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 	result.storyBeatsSeen = _known_unique(value.get("storyBeatsSeen"), catalog.storyBeats)
 	result.vnReadLines = ReadHistory.normalize(value.get("vnReadLines", []))
 	result.appliedEventIds = _unique_strings(value.get("appliedEventIds"))
+	result.boosterInventory = BoosterInventory.normalize(value.get("boosterInventory", {}))
 	var room_id := str(value.get("lastRoomId", "RM-ROOM-HALL"))
 	result.lastRoomId = room_id if catalog.rooms.has(room_id) else "RM-ROOM-HALL"
 	result.lastSafeAnchorId = str(value.get("lastSafeAnchorId", ""))
@@ -74,6 +77,10 @@ static func normalize(value: Variant, catalog: Dictionary) -> Variant:
 					safe_actions.append({"kind": "swap", "first": int(action.first), "second": int(action.second)})
 				elif kind == "special" and _valid_board_index(action.get("index")):
 					safe_actions.append({"kind": "special", "index": int(action.index)})
+				elif kind == "booster" and BoosterInventory.KINDS.has(str(action.get("booster", ""))) and _valid_board_index(action.get("index")):
+					safe_actions.append({"kind": "booster", "booster": str(action.booster), "index": int(action.index)})
+				elif kind == "shuffle":
+					safe_actions.append({"kind": "shuffle"})
 				else:
 					valid = false
 					break

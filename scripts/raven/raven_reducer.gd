@@ -2,6 +2,7 @@ extends RefCounted
 
 ## Pure Raven state transitions. UI, Match-3 and VN send commands; only this reducer mutates snapshots.
 const Ids = preload("res://scripts/raven/raven_ids.gd")
+const BoosterInventory = preload("res://scripts/raven/raven_booster_inventory.gd")
 
 
 static func apply(state: Dictionary, event: Dictionary, catalog: Dictionary = Ids.CATALOG.data) -> Dictionary:
@@ -15,6 +16,8 @@ static func apply(state: Dictionary, event: Dictionary, catalog: Dictionary = Id
 	match str(event.get("type", "")):
 		"level_won":
 			outcome = _level_won(next, event, catalog)
+		"booster_spent":
+			outcome = _booster_spent(next, event)
 		"restoration_purchase":
 			outcome = _restoration_purchase(next, event, catalog)
 		"door_unlock":
@@ -72,6 +75,19 @@ static func _restoration_purchase(state: Dictionary, event: Dictionary, catalog:
 		return _error("insufficient-work-points")
 	state.workPoints -= cost
 	state.completedRestorations.append(restoration_id)
+	for reward: Dictionary in item.get("boosterRewards", []):
+		var inventory: Dictionary = BoosterInventory.add(state.boosterInventory, str(reward.get("kind", "")), int(reward.get("amount", 0)))
+		if inventory.is_empty():
+			return _error("invalid-booster-reward")
+		state.boosterInventory = inventory
+	return {"ok": true}
+
+
+static func _booster_spent(state: Dictionary, event: Dictionary) -> Dictionary:
+	var inventory: Dictionary = BoosterInventory.spend(state.boosterInventory, str(event.get("kind", "")))
+	if inventory.is_empty():
+		return _error("booster-unavailable")
+	state.boosterInventory = inventory
 	return {"ok": true}
 
 

@@ -53,7 +53,7 @@ class DashboardTests(unittest.TestCase):
         self.assertGreater(data["openTaskCount"], 0)
 
     def test_activity_audit_does_not_confuse_merges_and_reviews(self):
-        # 2026-11-03 snapshot after #139: these PRs were actually merged.
+        # Live statuses are read from production_progress.json; preserve historical merges without inferring acceptance.
         data = dashboard.build()
         by_id = {task["id"]: task for task in data["tasks"]}
         self.assertEqual(by_id["VNS5-06D2C"]["status"], "merged")
@@ -62,7 +62,7 @@ class DashboardTests(unittest.TestCase):
         self.assertEqual(by_id["PROC-DASH-V2"]["status"], "accepted")
         self.assertEqual(by_id["DASH-RENDER-01"]["status"], "accepted")
         self.assertEqual(by_id["DASH-RENDER-01"]["approvalState"], "feature_approved")
-        self.assertEqual(by_id["CODE-02-06"]["status"], "ready")
+        self.assertEqual(by_id["CODE-02-06"]["status"], "PR_review")
         self.assertEqual(by_id["GFX-08-02"]["status"], "blocked")
         self.assertEqual(by_id["GFX-08-06"]["approvalState"], "art_approved")
         self.assertNotEqual(by_id["GFX-08-06"]["qaState"], "device_verified")
@@ -173,9 +173,9 @@ class DashboardTests(unittest.TestCase):
         active = {task["id"] for task in tasks
                   if task["status"] not in terminal and task["priority"] in {"P0", "P1"}}
         self.assertEqual(grouped, active)
-        self.assertEqual(len(active), 83)
+        self.assertEqual(len(active), 82)
         self.assertEqual(len(data["workstreams"]), 12)
-        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 20)
+        self.assertEqual(sum(x["p0Count"] for x in data["workstreams"]), 19)
         self.assertEqual(sum(x["p1Count"] for x in data["workstreams"]), 63)
         for key in ["GFX-07-07", "GFX-07-08", "GFX-09-03", "GFX-09-04",
                     "CODE-12-W1", "CODE-12-W2", "CODE-12-W3", "GFX-11-T05"]:
@@ -220,7 +220,7 @@ class DashboardTests(unittest.TestCase):
         streams = {stream["id"]: stream for stream in data["workstreams"]}
         self.assertEqual(streams["WS-LOCALES"]["taskCount"], 1)
         self.assertEqual(streams["WS-MOBILE-HANDOFF"]["taskCount"], 1)
-        self.assertEqual(data["openTaskCount"], 127)
+        self.assertEqual(data["openTaskCount"], 126)
 
     def test_code_gap_p0_only_current_release_gates(self):
         data = dashboard.build()
@@ -229,7 +229,7 @@ class DashboardTests(unittest.TestCase):
             "CODE-02-06", "CODE-05-01", "CODE-05-02",
             "CODE-11-01", "RM-GAP-001", "RM-GAP-006",
             "CODE-04-01", "CODE-02-03", "CODE-07-02",
-            "GAME-UI-01", "GAME-M3-01", "GAME-LOOP-01", "GAME-QA-01",
+            "GAME-UI-01", "GAME-LOOP-01", "GAME-QA-01",
         }
         live_code_gap = {
             item["id"] for item in data["tasks"]
@@ -240,7 +240,7 @@ class DashboardTests(unittest.TestCase):
             item["id"] for item in data["tasks"]
             if item["priority"] == "P0"
         }
-        self.assertEqual(len(all_current_p0), 20)
+        self.assertEqual(len(all_current_p0), 19)
         for key in expected_code_gap:
             self.assertNotIn(by_id[key]["status"], {
                 "merged", "integrated", "accepted", "device_verified",

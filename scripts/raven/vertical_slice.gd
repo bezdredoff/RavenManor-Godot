@@ -31,6 +31,8 @@ var vn_view: Control
 var selected := -1
 var event_serial := 0
 var optional_campaign := false
+var active_booster := ""
+var booster_action_saved := true
 var content: Dictionary
 var technical_shell: MarginContainer
 var campaign_backdrop: TextureRect
@@ -47,6 +49,11 @@ const PAUSE_COPY := {
 	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
 	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
 	"en": ["Pause", "Save progress and return to the main menu?", "Save and exit", "Resume", "Could not save progress. Exit cancelled."]
+}
+const BOOSTER_COPY := {
+	"ru": {"hammer":"Молот", "shuffle":"Перемешать", "selected":"Выбран", "target":"Выберите плитку или блокер для молотка.", "saved":"Не удалось сохранить применение бустера", "unavailable":"Перемешивание сейчас недоступно"},
+	"be": {"hammer":"Молат", "shuffle":"Перамяшаць", "selected":"Выбраны", "target":"Абярыце плітку або блакер для молата.", "saved":"Не ўдалося захаваць выкарыстанне бустара", "unavailable":"Перамяшэнне цяпер недаступнае"},
+	"en": {"hammer":"Hammer", "shuffle":"Shuffle", "selected":"Selected", "target":"Select a tile or blocker for the hammer.", "saved":"Could not save booster use", "unavailable":"Shuffle is unavailable right now"}
 }
 
 
@@ -173,7 +180,8 @@ func _render() -> void:
 		vn_view.queue_free()
 		vn_view = null
 	status.add_theme_color_override("font_color", Color("9fc8bc"))
-	status.text = "Прогресс %d/%d · очки %d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, state.revision]
+	var inventory: Dictionary = state.get("boosterInventory", {})
+	status.text = "Прогресс %d/%d · очки %d · %s ×%d · %s ×%d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, _booster_label("hammer"), int(inventory.get("hammer", 0)), _booster_label("shuffle"), int(inventory.get("shuffle", 0)), state.revision]
 	var display_title: String = str(step.title)
 	if step.get("kind") == "vn":
 		var source: Dictionary = content.get("prologueScenes", {}).get(str(step.scene), content.vnScenes.get(str(step.scene), {}))
@@ -286,6 +294,21 @@ func _render_match3() -> void:
 				push_warning("Invalid Match-3 checkpoint; starting level afresh")
 		match_game.checkpoint_changed.connect(_checkpoint_match3)
 	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
+	var booster_bar := HBoxContainer.new()
+	booster_bar.name = "RavenBoosterBar"
+	booster_bar.add_theme_constant_override("separation", 8)
+	body.add_child(booster_bar)
+	var hammer_count := int(state.get("boosterInventory", {}).get("hammer", 0))
+	var shuffle_count := int(state.get("boosterInventory", {}).get("shuffle", 0))
+	var hammer_label := _booster_label("hammer")
+	if active_booster == "hammer":
+		hammer_label += " · " + _booster_copy("selected")
+	var hammer := _add_button(booster_bar, "%s ×%d" % [hammer_label, hammer_count], _toggle_hammer)
+	hammer.name = "RavenHammerBooster"
+	hammer.disabled = not state.get("completedRestorations", []).has("RM-REST-001") or hammer_count <= 0
+	var shuffle := _add_button(booster_bar, "%s ×%d" % [_booster_label("shuffle"), shuffle_count], _use_shuffle)
+	shuffle.name = "RavenShuffleBooster"
+	shuffle.disabled = not state.get("completedRestorations", []).has("RM-REST-002") or shuffle_count <= 0
 	var board_view := Match3Board.new()
 	board_view.name = "RavenMatch3Board"
 	body.add_child(board_view)
@@ -294,16 +317,111 @@ func _render_match3() -> void:
 	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
 	board_view.audio_cue.connect(audio_runtime.play_effect)
 	board_view.level_won.connect(_complete_level)
+	board_view.target_cell_selected.connect(_on_booster_target_selected)
+	board_view.set_target_selection_mode(active_booster == "hammer")
+	if active_booster == "hammer":
+		body.add_child(_paragraph(_booster_copy("target")))
+
+
+func _toggle_hammer() -> void:
+	active_booster = "" if active_booster == "hammer" else "hammer"
+	_render()
+
+
+func _use_shuffle() -> void:
+	if match_game == null or int(state.get("boosterInventory", {}).get("shuffle", 0)) <= 0:
+		return
+	booster_action_saved = true
+	var result: Dictionary = match_game.use_shuffle()
+	if not booster_action_saved:
+		var rolled_back_board: Variant = _board_view()
+		if rolled_back_board != null:
+			rolled_back_board._paint_live()
+		status.text = _booster_copy("saved")
+		return
+	if not result.get("valid", false):
+		status.text = _booster_copy("unavailable")
+		return
+	active_booster = ""
+	var board: Variant = _board_view()
+	if board != null:
+		board.play_booster_result(result, -1)
+
+
+func _on_booster_target_selected(index: int) -> void:
+	if active_booster != "hammer" or match_game == null:
+		return
+	if int(state.get("boosterInventory", {}).get("hammer", 0)) <= 0:
+		active_booster = ""
+		return
+	booster_action_saved = true
+	var result: Dictionary = match_game.use_hammer(index)
+	if not booster_action_saved:
+		var rolled_back_board: Variant = _board_view()
+		if rolled_back_board != null:
+			rolled_back_board._paint_live()
+		status.text = _booster_copy("saved")
+		return
+	if not result.get("valid", false):
+		return
+	active_booster = ""
+	var board: Variant = _board_view()
+	if board != null:
+		board.play_booster_result(result, index)
+
+
+func _board_view() -> Variant:
+	return find_child("RavenMatch3Board", true, false)
+
+
+func _booster_copy(key: String) -> String:
+	return str(BOOSTER_COPY.get(str(preferences.locale), BOOSTER_COPY.en).get(key, key))
+
+
+func _booster_label(kind: String) -> String:
+	return _booster_copy(kind)
+
+
+func _apply_pending_booster_cost(updated: Dictionary) -> bool:
+	if match_game == null or match_game.move_history.is_empty():
+		return true
+	var last: Dictionary = match_game.move_history.back()
+	var kind := "hammer" if str(last.get("kind", "")) == "booster" else "shuffle" if str(last.get("kind", "")) == "shuffle" else ""
+	if kind.is_empty():
+		return true
+	var action_count: int = match_game.move_history.size()
+	var event := {"eventId": "booster-%s-%d-%d" % [step.id, state.revision, action_count], "type": "booster_spent", "kind": kind}
+	var reduced: Dictionary = Reducer.apply(updated, event)
+	if not reduced.get("ok", false):
+		return false
+	updated.clear()
+	updated.merge(reduced.state, true)
+	return true
 
 
 func _checkpoint_match3() -> void:
-	if match_game == null or str(match_game.state) == "won":
+	if match_game == null:
+		return
+	booster_action_saved = false if not match_game.move_history.is_empty() and str(match_game.move_history.back().get("kind", "")) in ["booster", "shuffle"] else true
+	if str(match_game.state) == "won":
+		booster_action_saved = true # _complete_level commits reward, booster spend and checkpoint removal together.
 		return
 	var updated := state.duplicate(true)
 	updated.match3Checkpoint = {"levelId": str(step.level), "actions": match_game.move_history.duplicate(true)}
+	if not _apply_pending_booster_cost(updated):
+		_show_save_error()
+		return
 	if store.save_campaign(updated):
 		state = updated
+		booster_action_saved = true
 	else:
+		match_game._replaying = true
+		var previous_actions: Array = state.get("match3Checkpoint", {}).get("actions", [])
+		match_game.restore_history(previous_actions)
+		match_game._replaying = false
+		var board: Variant = _board_view()
+		if board != null:
+			board._paint_live()
 		_show_save_error()
 
 func _complete_level() -> void:
@@ -313,11 +431,24 @@ func _complete_level() -> void:
 		"type": "level_won", "levelId": str(step.level)}
 	var result: Dictionary = Reducer.apply(state, event)
 	if not result.get("ok", false):
+		var failed_board: Variant = _board_view()
+		if failed_board != null:
+			failed_board._completed = false
 		push_error("Match-3 completion rejected")
 		return
 	var updated: Dictionary = result.state
+	if not _apply_pending_booster_cost(updated):
+		_show_save_error()
+		return
 	updated.match3Checkpoint = {}
 	if not store.save_campaign(updated):
+		match_game._replaying = true
+		match_game.restore_history(state.get("match3Checkpoint", {}).get("actions", []))
+		match_game._replaying = false
+		var board: Variant = _board_view()
+		if board != null:
+			board._paint_live()
+			board._completed = false
 		_show_save_error()
 		return
 	state = updated

@@ -21,6 +21,34 @@ func _initialize() -> void:
 	assert(resumed.tiles == game.tiles and resumed.specials == game.specials, "Tile state diverged")
 	assert(resumed.blocker_layers == game.blocker_layers and resumed.ingredients == game.ingredients, "Board objects diverged")
 	assert(resumed.moves_left == game.moves_left and resumed.collected_by_tile == game.collected_by_tile, "Objectives diverged")
+	# Hammering a tile is free and deterministically replays through checkpoint history.
+	var hammer_game = Game.new(level)
+	var tile_index := 0
+	while tile_index < hammer_game.tiles.size() and hammer_game.tiles[tile_index].is_empty(): tile_index += 1
+	var tile_id: String = hammer_game.tiles[tile_index]
+	var moves_before: int = hammer_game.moves_left
+	var cleared_before: int = int(hammer_game.collected_by_tile.get(tile_id, 0))
+	var hammer_result: Dictionary = hammer_game.use_hammer(tile_index)
+	assert(hammer_result.valid and hammer_game.moves_left == moves_before, "Hammer must not spend a move")
+	assert(int(hammer_game.collected_by_tile.get(tile_id, 0)) == cleared_before + 1, "Hammer must clear the selected tile")
+	var booster_resume = Game.new(level)
+	assert(booster_resume.restore_history(hammer_game.move_history), "Booster checkpoint failed to replay")
+	assert(booster_resume.tiles == hammer_game.tiles and booster_resume.blocker_layers == hammer_game.blocker_layers, "Booster replay diverged")
+	# One-use hammer removes exactly one layer even when a target cell has two.
+	var blocker_level: Dictionary = level.duplicate(true)
+	blocker_level.blockers = [{"index":0, "layers":2}]
+	var blocker_game = Game.new(blocker_level)
+	var blocker_moves: int = blocker_game.moves_left
+	var blocker_result: Dictionary = blocker_game.use_hammer(0)
+	assert(blocker_result.valid and blocker_game.blocker_layers[0] == 1 and blocker_game.moves_left == blocker_moves, "Hammer must remove one blocker layer without a move")
+	var shuffle_game = Game.new(level)
+	var shuffle_moves: int = shuffle_game.moves_left
+	var shuffle_result: Dictionary = shuffle_game.use_shuffle()
+	assert(shuffle_result.valid and shuffle_game.moves_left == shuffle_moves, "Shuffle must be free")
+	var shuffle_resume = Game.new(level)
+	assert(shuffle_resume.restore_history(shuffle_game.move_history), "Shuffle checkpoint failed to replay")
+	assert(shuffle_resume.tiles == shuffle_game.tiles, "Shuffle replay diverged")
+	assert(not shuffle_resume.restore_history([{"kind":"booster", "booster":"hammer", "index":-1}]), "Invalid booster target accepted")
 	state.match3Checkpoint = {"levelId": str(level.id), "actions": [{"kind": "swap", "first": -1, "second": 2}]}
 	assert(Snapshot.normalize(state, Ids.CATALOG.data).match3Checkpoint.is_empty(), "Unsafe checkpoint accepted")
 

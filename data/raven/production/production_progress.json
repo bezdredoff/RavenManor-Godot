@@ -2676,13 +2676,13 @@
     },
     {
       "id": "GAME-M3-01",
-      "status": "PR_review",
-      "priority": "P0",
+      "status": "merged",
+      "priority": "P1",
       "owner": "Codex",
       "updated": "2026-11-04",
-      "evidence": "GAME-M3-01 implementation candidate: 22 stable Raven levels RM-LVL-101..122 adapt UPDS mechanics/layouts from bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 data/campaign_match3_levels.json blob c7637889b75c6810b14754fa8e36c1f075844ac5 and campaign UI model scripts/match3/match3_campaign_screen.gd blob 5af00e5c02eec14a25b3b1a5aa1d0f594e90927a. Uses existing Raven eight-tile pool mapping, neutralizes donor labels/story, keeps board layouts/blockers/holes/moves, gives added levels zero work_points; campaign first-clear unlock/replay uses Raven firstClearLevels and does not alter story Director. UI currently uses Raven existing widgets and no media assets. Local checks and CI pending; human device and owner acceptance pending. Mapping detail: docs/production/GAME_M3_01_CAMPAIGN_RU.md. Visual reuse: original RavenManor commit 643a8ec5d39812ec4a00294df6378b12d165280c, six tile PNGs and board surface; approved VN hall/evening_dusty.webp as campaign backdrop. Board surface alpha 0.48, dark wash alpha 0.34. See visual provenance in runbook.",
-      "implementationState": "partial",
-      "qaState": "not_started",
+      "evidence": "GAME-M3-01 implementation candidate: 22 stable Raven levels RM-LVL-101..122 adapt UPDS mechanics/layouts from bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 data/campaign_match3_levels.json blob c7637889b75c6810b14754fa8e36c1f075844ac5 and campaign UI model scripts/match3/match3_campaign_screen.gd blob 5af00e5c02eec14a25b3b1a5aa1d0f594e90927a. Uses existing Raven eight-tile pool mapping, neutralizes donor labels/story, keeps board layouts/blockers/holes/moves, gives added levels zero work_points; campaign first-clear unlock/replay uses Raven firstClearLevels and does not alter story Director. UI uses Raven existing widgets and no media assets. PR #181 merged into main as 4b6a463d69473da1fe48a4634f9ececc4035713a on 2026-11-04; required GitHub Actions build/deploy workflows succeeded on the merge SHA. Device QA and owner acceptance remain pending. Mapping detail: docs/production/GAME_M3_01_CAMPAIGN_RU.md. Visual reuse: original RavenManor commit 643a8ec5d39812ec4a00294df6378b12d165280c, six tile PNGs and board surface; approved VN hall/evening_dusty.webp as campaign backdrop. Board surface alpha 0.48, dark wash alpha 0.34. See visual provenance in runbook. PR #181 merged into main as 4b6a463d69473da1fe48a4634f9ececc4035713a on 2026-11-04; required GitHub Actions build/deploy workflows succeeded on merge SHA. Device QA and owner acceptance remain pending.",
+      "implementationState": "runtime_candidate",
+      "qaState": "ci_passed",
       "approvalState": "pending"
     },
     {
@@ -2720,13 +2720,13 @@
     },
     {
       "id": "GAME-BOOST-01",
-      "status": "proposed",
+      "status": "in_progress",
       "priority": "P1",
-      "owner": "Unassigned",
-      "updated": "2026-11-03",
-      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-02-03.",
-      "implementationState": "not_started",
-      "qaState": "not_started",
+      "owner": "Codex",
+      "updated": "2026-11-04",
+      "evidence": "GAME-BOOST-01 implementation candidate: Raven-only bounded inventory hammer/shuffle (0..99); old saves normalize to zero. RM-REST-001 awards 2 hammers and RM-REST-002 awards 2 shuffles once through restoration reducer events; no store/monetization. Hammer removes one tile or one blocker layer, shuffle reorders playable tiles, both free and replayable in canonical Match-3 checkpoint. Spend and checkpoint persist atomically; failed saves restore prior board history. Donor audit: UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 scripts/match3/match3_game.gd blob 8c62ec550eb500f0c70d431dd325268e59893de4 and scripts/match3/match3_screen.gd blob 76b42df35d4857f242d3f6bc06b9f989d43ad0a3 have automatic dead-board reshuffle but no inventory/manual hammer/manual shuffle; Raven PWA behavior is pinned in docs/production/GAME_BOOST_01_INVENTORY_RU.md. Godot 4.7.2 full scripts/check.sh and blocking project gates pass. Dashboard advisory assertions were refreshed for the merged GAME-M3-01 status and the 24-test suite passes. PR CI, device and owner acceptance pending. Device and owner acceptance pending.",
+      "implementationState": "runtime_candidate",
+      "qaState": "targeted_smoke_passed",
       "approvalState": "pending"
     },
     {

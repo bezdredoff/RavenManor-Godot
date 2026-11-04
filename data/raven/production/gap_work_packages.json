@@ -1210,7 +1210,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-02-06; no duplication or automatic acceptance.",
       "deliverable": "Preserve RM-LVL-001..003 and existing rewards; map 22 UPDS authored mechanics/layouts to stable new Raven IDs after balancing, never import school story or overwrite first three; campaign screen shows lock/replay/next.",
       "acceptance": "Preserve RM-LVL-001..003 and existing rewards; map 22 UPDS authored mechanics/layouts to stable new Raven IDs after balancing, never import school story or overwrite first three; campaign screen shows lock/replay/next.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "CODE-01-03"
       ],
@@ -1278,7 +1278,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-02-03; no duplication or automatic acceptance.",
       "deliverable": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
       "acceptance": "Audit upstream boosters first; reuse mechanics, define acquisition/consumption/limits, prevent double spending and save across sessions; do not invent monetization.",
-      "status": "proposed",
+      "status": "in_progress",
       "dependsOn": [
         "GAME-M3-01"
       ],

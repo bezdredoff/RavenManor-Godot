@@ -93,6 +93,9 @@
       "requiresRestorations": [],
       "requiresFlags": [
         "RM-FLAG-BEDROOM-ACCESS-CLEARED"
+      ],
+      "boosterRewards": [
+        {"kind": "hammer", "amount": 2}
       ]
     },
     "RM-REST-002": {
@@ -105,6 +108,9 @@
       "requiresRestorations": [],
       "requiresFlags": [
         "service.plumber_available"
+      ],
+      "boosterRewards": [
+        {"kind": "shuffle", "amount": 2}
       ]
     }
   },
