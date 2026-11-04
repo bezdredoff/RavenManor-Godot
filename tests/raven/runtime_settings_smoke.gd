@@ -77,6 +77,23 @@ func _run() -> void:
 	slice.settings_dialog.hide()
 	await process_frame
 	assert(not slice.vn_view._interaction_blocked, "Closing Settings must restore VN input")
+	slice.step = {"kind": "match3", "level": "RM-LVL-001"}
+	slice._render_match3()
+	await process_frame
+	await process_frame
+	var board := slice.find_child("RavenMatch3Board", true, false)
+	slice._open_settings()
+	assert(board.input_locked, "Settings dialog must block the Match-3 board")
+	for child in slice.body.get_children():
+		slice.body.remove_child(child)
+		child.queue_free()
+	await process_frame
+	slice._render_match3() # Locale rerender rebuilds the board while the modal stays open.
+	var rebuilt_board := slice.body.find_child("RavenMatch3Board", true, false)
+	assert(rebuilt_board.input_locked, "Rebuilt board must remain blocked by open Settings")
+	slice.settings_dialog.hide()
+	await process_frame
+	await process_frame
 	slice.queue_free()
 	await process_frame
 	DirAccess.remove_absolute(absolute_path)

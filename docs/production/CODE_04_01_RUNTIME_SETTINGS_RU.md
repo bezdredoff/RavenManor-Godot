@@ -26,6 +26,7 @@
 - `tests/raven/runtime_settings_smoke.gd`: old-config migration, locale/audio/accessibility round-trip, invalid key rejection, viewport 320×568 / 390×844 / 430×932, modal input lock, current VN line/revision preservation и немедленное применение Reduced Motion.
 - `tests/raven/main_menu_smoke.gd`: Reduced Motion toggle из главного меню сохраняется в preference-файл.
 - `tests/raven/match3_viewport_input_smoke.gd`: внешний settings modal блокирует board; восстановление ввода и persistent motion setter.
+- Runtime smoke также пересоздаёт Match-3 board при открытом settings modal и проверяет, что новый board остаётся заблокирован.
 - Полный `scripts/check.sh` PASS на Godot 4.7.2.
 
 Это не подтверждает звук на устройстве, фактическую haptics-вибрацию, физическую клавиатуру/сенсор, визуальную parity с UPDS или owner acceptance. Для отката: `git revert <commit>`; старые preference-файлы сохраняют обратную совместимость.

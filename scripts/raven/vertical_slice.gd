@@ -234,6 +234,7 @@ func _render_match3() -> void:
 	board_view.name = "RavenMatch3Board"
 	body.add_child(board_view)
 	board_view.setup(match_game, Match3Theme.placeholder())
+	board_view.set_interaction_blocked(is_instance_valid(settings_dialog) and settings_dialog.visible)
 	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
 	board_view.level_won.connect(_complete_level)
 
