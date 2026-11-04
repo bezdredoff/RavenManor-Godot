@@ -14,7 +14,9 @@ const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const RuntimeDispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
 const Copy = preload("res://scripts/raven/raven_production_localization.gd")
+const MenuCopy = preload("res://scripts/raven/raven_menu_copy.gd")
 const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
+const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
 
 var preferences := Copy.new()
 var locale_selector: OptionButton
@@ -32,6 +34,7 @@ var vn_frame: Control
 var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
+var settings_dialog: AcceptDialog
 const PAUSE_COPY := {
 	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
 	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
@@ -80,6 +83,7 @@ func _build_shell() -> void:
 	footer.add_theme_constant_override("v_separation", 6)
 	root.add_child(footer)
 	_add_button(footer, "☰ Меню", _open_pause)
+	_add_button(footer, MenuCopy.text("settings", preferences.locale), _open_settings)
 	_add_button(footer, "Save", _save)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
@@ -104,6 +108,13 @@ func _build_shell() -> void:
 	locale_selector.get_popup().visibility_changed.connect(func() -> void:
 		if is_instance_valid(vn_view): vn_view.set_interaction_blocked(locale_selector.get_popup().visible))
 	add_child(pause_dialog)
+	settings_dialog = SettingsDialog.new()
+	settings_dialog.name = "RavenRuntimeSettings"
+	settings_dialog.setup(preferences)
+	settings_dialog.locale_selected.connect(_on_settings_locale_selected)
+	settings_dialog.visibility_changed.connect(_on_settings_visibility_changed)
+	add_child(settings_dialog)
+	preferences.accessibility_changed.connect(_apply_accessibility_settings)
 
 
 func _render() -> void:
@@ -159,13 +170,14 @@ func _render_vn() -> void:
 		vn_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		vn_frame.add_child(vn_view)
 	var read_lines: Array[Dictionary] = ReadHistory.localized_entries(state.vnReadLines, preferences.locale)
-	vn_view.set_header_actions(_open_pause, _open_vn_settings, read_lines)
+	vn_view.set_header_actions(_open_pause, _open_settings, read_lines)
 	vn_view.set_playback_context(_skip_read_vn,
 		ReadHistory.skip_target(config, vn_player.line_index, state.vnReadLines) > vn_player.line_index,
 		ReadHistory.at_checkpoint(config, vn_player.line_index))
 	var line_ids: Array = config.get("lineIds", [])
 	var line_id: String = str(line_ids[vn_player.line_index]) if vn_player.line_index < line_ids.size() else ""
 	vn_view.show_beat(str(config.beatId), vn_player.current_speaker(), vn_player.current_line(), vn_player.progress_text(), _advance_vn, line_id, preferences.locale)
+	_apply_accessibility_settings()
 
 
 func _layout_vn_frame() -> void:
@@ -176,10 +188,36 @@ func _layout_vn_frame() -> void:
 
 
 func _open_vn_settings() -> void:
-	# Reuse the existing locale selector; do not introduce a second preference store.
-	var popup := locale_selector.get_popup()
-	popup.position = Vector2i(get_window().position + Vector2i(vn_frame.position + Vector2(8, 60)))
-	popup.popup()
+	_open_settings()
+
+
+func _open_settings() -> void:
+	settings_dialog.popup_centered_ratio(0.9)
+
+
+func _on_settings_locale_selected(locale: String) -> void:
+	var index := Copy.SUPPORTED_LOCALES.find(locale)
+	if index >= 0:
+		locale_selector.select(index)
+		_switch_locale(index)
+
+
+func _on_settings_visibility_changed() -> void:
+	var blocked := settings_dialog.visible
+	if is_instance_valid(vn_view):
+		vn_view.set_interaction_blocked(blocked)
+	var board := find_child("RavenMatch3Board", true, false)
+	if board != null and board.has_method("set_interaction_blocked"):
+		board.set_interaction_blocked(blocked)
+
+
+func _apply_accessibility_settings() -> void:
+	var reduced_motion := bool(preferences.accessibility.reducedMotion)
+	if is_instance_valid(vn_view):
+		vn_view.set_fx_accessibility(reduced_motion)
+	var board := find_child("RavenMatch3Board", true, false)
+	if board != null and board.has_method("set_reduced_motion"):
+		board.set_reduced_motion(reduced_motion)
 
 
 func _render_match3() -> void:
@@ -196,6 +234,8 @@ func _render_match3() -> void:
 	board_view.name = "RavenMatch3Board"
 	body.add_child(board_view)
 	board_view.setup(match_game, Match3Theme.placeholder())
+	board_view.set_interaction_blocked(is_instance_valid(settings_dialog) and settings_dialog.visible)
+	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
 	board_view.level_won.connect(_complete_level)
 
 

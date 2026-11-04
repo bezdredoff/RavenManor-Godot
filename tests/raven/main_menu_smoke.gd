@@ -2,6 +2,8 @@ extends SceneTree
 ## Player menu regression: real scene, controls, settings, Lab routing and safe save behavior.
 const MENU := "res://scenes/raven/main_menu.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
+const Preferences = preload("res://scripts/raven/raven_production_localization.gd")
+const SETTINGS_PATH := "user://raven_main_menu_settings_smoke.cfg"
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -13,6 +15,8 @@ func _run() -> void:
 	var instance: Control = packed.instantiate()
 	root.add_child(instance)
 	await process_frame
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(SETTINGS_PATH))
+	instance.prefs = Preferences.new(SETTINGS_PATH)
 	var new_game: Button = instance.find_child("NewGame", true, false)
 	var continue_game: Button = instance.find_child("Continue", true, false)
 	var settings: Button = instance.find_child("Settings", true, false)
@@ -24,10 +28,16 @@ func _run() -> void:
 	await process_frame
 	assert(instance.settings_panel != null and is_instance_valid(instance.settings_panel), "Settings did not open")
 	assert(not instance.column.visible, "Main actions must hide while settings open")
+	var reduced_motion: CheckButton = instance.find_child("ReducedMotion", true, false)
+	assert(reduced_motion != null, "Main-menu settings must expose persistent reduced motion")
+	reduced_motion.set_pressed_no_signal(true)
+	reduced_motion.toggled.emit(true)
+	assert(Preferences.new(SETTINGS_PATH).accessibility.reducedMotion, "Main-menu accessibility setting must persist")
 	instance._close_settings()
 	await process_frame
 	assert(instance.column.visible, "Back must restore main menu")
 	assert(instance.settings_panel == null, "Settings must close")
 	instance.queue_free()
+	DirAccess.remove_absolute(ProjectSettings.globalize_path(SETTINGS_PATH))
 	print("Raven Manor main menu and Prototype Lab navigation smoke passed")
 	quit()
