@@ -6,6 +6,7 @@ const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Match3Session = preload("res://scripts/raven/raven_match3_session.gd")
+const BoosterUI = preload("res://scripts/raven/raven_match3_booster_ui.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
@@ -53,11 +54,6 @@ const PAUSE_COPY := {
 	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
 	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
 	"en": ["Pause", "Save progress and return to the main menu?", "Save and exit", "Resume", "Could not save progress. Exit cancelled."]
-}
-const BOOSTER_COPY := {
-	"ru": {"hammer":"Молот", "shuffle":"Перемешать", "selected":"Выбран", "target":"Выберите плитку или блокер для молотка.", "saved":"Не удалось сохранить применение бустера", "unavailable":"Перемешивание сейчас недоступно"},
-	"be": {"hammer":"Молат", "shuffle":"Перамяшаць", "selected":"Выбраны", "target":"Абярыце плітку або блакер для молата.", "saved":"Не ўдалося захаваць выкарыстанне бустара", "unavailable":"Перамяшэнне цяпер недаступнае"},
-	"en": {"hammer":"Hammer", "shuffle":"Shuffle", "selected":"Selected", "target":"Select a tile or blocker for the hammer.", "saved":"Could not save booster use", "unavailable":"Shuffle is unavailable right now"}
 }
 
 
@@ -190,7 +186,7 @@ func _render() -> void:
 		vn_view = null
 	status.add_theme_color_override("font_color", Color("9fc8bc"))
 	var inventory: Dictionary = state.get("boosterInventory", {})
-	status.text = "Прогресс %d/%d · очки %d · %s ×%d · %s ×%d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, _booster_label("hammer"), int(inventory.get("hammer", 0)), _booster_label("shuffle"), int(inventory.get("shuffle", 0)), state.revision]
+	status.text = "Прогресс %d/%d · очки %d · %s ×%d · %s ×%d · save rev.%d" % [_step_index(step.id), Director.STEPS.size() - 1, state.workPoints, _booster_copy("hammer"), int(inventory.get("hammer", 0)), _booster_copy("shuffle"), int(inventory.get("shuffle", 0)), state.revision]
 	var display_title: String = str(step.title)
 	if step.get("kind") == "vn":
 		var source: Dictionary = content.get("prologueScenes", {}).get(str(step.scene), content.vnScenes.get(str(step.scene), {}))
@@ -298,21 +294,8 @@ func _render_match3() -> void:
 	if match_game == null or match_game.level_data.id != level.id:
 		match_game = Match3Session.open(level, state, _checkpoint_match3)
 	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
-	var booster_bar := HBoxContainer.new()
-	booster_bar.name = "RavenBoosterBar"
-	booster_bar.add_theme_constant_override("separation", 8)
-	body.add_child(booster_bar)
-	var hammer_count := int(state.get("boosterInventory", {}).get("hammer", 0))
-	var shuffle_count := int(state.get("boosterInventory", {}).get("shuffle", 0))
-	var hammer_label := _booster_label("hammer")
-	if active_booster == "hammer":
-		hammer_label += " · " + _booster_copy("selected")
-	var hammer := _add_button(booster_bar, "%s ×%d" % [hammer_label, hammer_count], _toggle_hammer)
-	hammer.name = "RavenHammerBooster"
-	hammer.disabled = not state.get("completedRestorations", []).has("RM-REST-001") or hammer_count <= 0
-	var shuffle := _add_button(booster_bar, "%s ×%d" % [_booster_label("shuffle"), shuffle_count], _use_shuffle)
-	shuffle.name = "RavenShuffleBooster"
-	shuffle.disabled = not state.get("completedRestorations", []).has("RM-REST-002") or shuffle_count <= 0
+	BoosterUI.render_bar(body, state, str(preferences.locale), active_booster,
+		_toggle_hammer, _use_shuffle)
 	var board_view := Match3Board.new()
 	board_view.name = "RavenMatch3Board"
 	body.add_child(board_view)
@@ -324,7 +307,7 @@ func _render_match3() -> void:
 	board_view.target_cell_selected.connect(_on_booster_target_selected)
 	board_view.set_target_selection_mode(active_booster == "hammer")
 	if active_booster == "hammer":
-		body.add_child(_paragraph(_booster_copy("target")))
+		BoosterUI.render_target_hint(body, str(preferences.locale))
 
 
 func _toggle_hammer() -> void:
@@ -379,11 +362,9 @@ func _board_view() -> Variant:
 
 
 func _booster_copy(key: String) -> String:
-	return str(BOOSTER_COPY.get(str(preferences.locale), BOOSTER_COPY.en).get(key, key))
+	return BoosterUI.text(key, str(preferences.locale))
 
 
-func _booster_label(kind: String) -> String:
-	return _booster_copy(kind)
 
 
 func _checkpoint_match3() -> void:

@@ -42,3 +42,8 @@
 - `vertical_slice.gd` still owns UI, audio, button flow, scene routing, event serial and board repaint after a failed save. The session component never writes a separate save file and has no permissions to mutate VN/Map campaign state directly.
 - `RavenReducer` and `RavenCampaignStore` remain the sole campaign authorities; schemaVersion stays 1. Tests: `match3_session_smoke.gd`, `game_loop_characterization_smoke.gd`, `match3_checkpoint_smoke.gd`.
 - Further decomposition of Match-3 view/booster presentation is postponed until the current transaction boundary has passed exact-head CI and owner review. No automatic acceptance of gameplay/visual balance.
+
+## 2026-11-04 — Booster UI presentation boundary (R2c)
+- `scripts/raven/raven_match3_booster_ui.gd` owns button labels, enabled/disabled presentation, localized copy RU/BE/EN, selected-hammer caption and target hint. Output controls retain their old node names; callbacks are supplied by the host, and no player state is modified here.
+- `vertical_slice.gd` continues to own button callbacks, Match-3 effects, UI/audio coordination and state updates returned by `raven_match3_session.gd`. Reducer/Store remain the only authority for rewards, booster spending and checkpoint commits.
+- Contract test: `tests/raven/match3_booster_ui_smoke.gd` plus existing session, gameplay and viewport tests. No player-facing UI redesign, schema migration or acceptance status changes in this R2c slice.
