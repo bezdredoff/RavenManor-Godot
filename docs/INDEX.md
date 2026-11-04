@@ -48,3 +48,8 @@ Where old contracts conflict (especially bedroom gate, door cycling, free moveme
 - [GAME-UI-01 Wave 2 persisted read-only Skip](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md)
 
 - [CODE-02-06 viewport pointer and modal recovery](production/CODE_02_06_VIEWPORT_POINTER_QA_20261103_RU.md)
+
+## Мультиагентная подготовка (2026-11-04)
+- [Аудит и очередность](audits/MULTI_AGENT_READINESS_20261104_RU.md)
+- [Контракты и file ownership](architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md)
+- [PR evidence](changes/PROC-006-multi-agent-governance.md)

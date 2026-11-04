@@ -1,6 +1,6 @@
 # Raven Manor — единый протокол ChatGPT / Codex / DeepSeek / human PR
 
-**Version 1.1 — 2026-10-27.** Эти правила не зависят от языка/модели AI и являются частью репозитория. Точка входа — `AGENTS.md`; все платформенные entrypoints ссылаются сюда. **Инструкции в чате не имеют права незаметно переписывать подтверждённые решения `docs/DECISIONS.md`.**
+**Version 1.2 — 2026-11-04.** Эти правила не зависят от языка/модели AI и являются частью репозитория. Точка входа — `AGENTS.md`; все платформенные entrypoints ссылаются сюда. **Инструкции в чате не имеют права незаметно переписывать подтверждённые решения `docs/DECISIONS.md`.**
 
 ## 0. До ответа или правки
 
@@ -37,9 +37,9 @@ Open questions: explicitly identified, no invented approvals:
 1. Небольшая task branch от актуального main или продолжение уже существующей branch/PR; ни один агент не должен перезаписывать чужую dirty checkout.
 2. Изменения только в заявленном scope, модульный интерфейс, стабильные `RM-*` IDs, versioned format, обратная совместимость; seed и labels определяются данными. Никакой free tap-to-move, ванной как гейта спальни, магического ремонта, ранних supernatural reveals.
 3. Рядом с кодом обновить тесты для нового behavior и регрессии; там, где меняется UPDS reusable logic, сравнить canonical donor oracle.
-4. **В том же PR** обновить `data/raven/production/production_progress.json`: task ID, status, owner, date, evidence. Если scope/acceptance/dependencies изменился — поправить соответствующий исходный backlog + обе карты code/art только где нужно; не менять целиком старые утверждённые документы. Обновить `docs/STATUS.md` при фактически новом интегрированном behavior/quality gate, `docs/IMPLEMENTATION_PLAN.md` при существенном изменении delivery gates и `docs/INDEX.md` при новых документах.
+4. **В том же PR** добавить уникальное `docs/changes/<TASK-ID>-<topic>.md` evidence (либо legacy-пару canonical status files). После merge integration owner синхронизирует status/evidence в `production_progress.json`, связанных gap/roadmap статусах и `docs/STATUS.md` с проверкой настоящего PR/CI. Scope и зависимости обновлять в исходных backlogs; новые документы — в INDEX.
 5. Tests: `bash scripts/check.sh` либо `check.ps1 -GodotPath <path>`, targeted Godot tests, `python3 scripts/raven/tools/validate_code_plan.py`, dashboard build checker, target device/browser screenshots если визуальный diff. Указать выполнявшиеся команды **и что не запускалось**.
-6. Опубликовать PR и дождаться actual CI на **последнем head SHA**. Если CI red — диагностика, исправление в той же ветке, повторная проверка. «PR открыт» ≠ «merged» ≠ «deployed» ≠ «device-approved». Не мержить без явного разрешения владельца.
+6. Опубликовать PR и дождаться actual CI на **последнем head SHA**. После merge single integration owner обновляет canonical status по подтверждённым GitHub/QA evidence. При CI red исправлять в той же ветке. «PR открыт» ≠ «merged» ≠ «deployed» ≠ «device-approved». Не мержить без явного разрешения владельца.
 7. Отчёт одним форматом: ID → цель → changed files + reusable upstream source → actual tests/CI → status в прогрессе → open risks/QA → PR/link и next dependency.
 
 ## 3. Протокол статусов / доказательств
@@ -79,13 +79,6 @@ Default — connector/direct branch PR для небольших изменен�
 **Обязательное правило:** после любой правки source/dependencies/script состояние задач и docs остаются консистентными с main. Дашборд не хранит независимую правду.
 
 
-## Строгое обязательное правило для каждого авторского PR — PROC-005
+## PROC-006 — изоляция административных правок
 
-**В каждом PR** от ChatGPT, Codex, DeepSeek или человека (включая docs-only и process PR), в той же ветке должны быть изменены **оба** файла:
-
-- `docs/STATUS.md` — датированное объяснение фактического scope, task IDs, проверок и оставшихся gates.
-- `data/raven/production/production_progress.json` — связанная задача с status/owner/updated/evidence и ссылкой на реальный PR. Для нового ID сначала добавить work package в CODE/GFX/gap backlog. `PR_review` не равно `merged`; в открытом PR не писать, что он уже смержен.
-
-При изменении scope/dependencies/acceptance дополнительно обновить связанные CODE/GFX roadmap и backlog. GitHub Actions вызывает `scripts/raven/tools/check_pr_governance.py` и завершает authored PR с ошибкой, если любой обязательный файл не изменён. `dashboard/status.json` генерируется — не заменяет source of truth.
-
-**Узкое исключение:** автоматически импортируемые ZIP candidate PR `candidate/mobile-<run>`, до human review. Эти архивы могут содержать только ассеты/смоук-файл, но для интеграции в production владелец обязан сверить связанные задачи и документы; ветка candidate не является обходом human acceptance. Не помечать игру accepted от одного green CI.
+Старое PROC-005 принуждало каждый PR менять два общих файла. Теперь достаточна уникальная заметка `docs/changes/<TASK-ID>-<topic>.md` с полями `Task IDs:`, `Changes:`, `Verification:`, `Owner QA:`, `Status impact:`. Legacy-пара canonical status файлов остаётся переходно допустимой. Integration owner в отдельном post-merge closeout проверяет фактический PR merge/CI, обновляет `production_progress.json`, gap status и `docs/STATUS.md`. До сверки dashboard может отставать — это не означает acceptance. Исключение только для `candidate/mobile-<digits>` incoming с независимым security/human gate. Для изменений shared core/API требуется согласованный контрактный PR. Runtime extraction и per-module CI sharding ещё предстоят.

@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "kind": "active_raven_delivery_workstreams",
-  "asOf": "2026-11-03",
-  "authority": "Task statuses and priorities remain authoritative in production_progress.json. Workstreams group overlapping delivery and QA evidence; they do NOT merge, cancel, supersede or accept task IDs. Only active P0/P1 tasks are grouped.",
+  "asOf": "2026-11-04",
+  "authority": "Task status and priority authoritative in central progress after integration-owner merge reconciliation; workstreams group only current P0/P1 tasks. Authored PRs use independent docs/changes evidence; exact source membership is CI-checked.",
   "workstreams": [
     {
       "id": "WS-VN-STUDIO",
@@ -313,8 +313,7 @@
       "gate": "New/Continue/Pause/Settings, no duplicate save owner; complete owner device walkthrough.",
       "ownerAcceptance": "Separate functional and device evidence required",
       "taskIds": [
-        "GAME-UI-01",
-        "CODE-04-01"
+        "GAME-UI-01"
       ],
       "acceptancePlan": {
         "automatedChecks": [
@@ -337,13 +336,11 @@
       "ownerAcceptance": "Owner approves campaign pacing and real end-to-end run",
       "taskIds": [
         "GAME-LOOP-01",
-        "GAME-ONBOARD-01",
         "GAME-QA-01",
         "GAME-JOURNAL-01",
         "CODE-07-02",
         "CODE-08-01",
-        "CODE-02-03",
-        "CODE-04-02"
+        "CODE-02-03"
       ],
       "acceptancePlan": {
         "automatedChecks": [
@@ -360,6 +357,32 @@
       "taskCount": 8,
       "p0Count": 4,
       "p1Count": 4
+    },
+    {
+      "id": "WS-PROCESS",
+      "title": "Мультиагентная инфраструктура и координация",
+      "phase": "Build+QA",
+      "gate": "Per-PR evidence вместо shared STATUS/progress edits; изолированные PR CI runs, single-writer reconciliation, module ownership и контрактные QA gates.",
+      "ownerAcceptance": "Only actual PR CI plus owner merge; no Godot device QA or automatic runtime integration inferred.",
+      "taskIds": [
+        "PROC-006"
+      ],
+      "acceptancePlan": {
+        "automatedChecks": [
+          "scripts/raven/tools/test_pr_governance.py — note/legacy/incoming gates",
+          "scripts/raven/tools/validate_backlog_dependencies.py и validate_active_workstreams.py — exact active task membership",
+          "GitHub Actions exact-head PR build — gameplay regressions still blocking"
+        ],
+        "ownerChecks": [
+          "Review new agent ownership/data contract policy and approve changed PR lifecycle",
+          "Confirm no manual device, art or gameplay acceptance inferred from a merge"
+        ],
+        "newWorkIfFailed": [
+          "Fix governance/source membership in same PR, preserve incoming ZIP candidate security",
+          "Stage runtime extraction and CI job sharding separately after current green baseline"
+        ],
+        "decision": "Owner accepts new parallel-PR governance only after CI and explicit review; no blanket acceptance of all game systems."
+      }
     }
   ]
 }
