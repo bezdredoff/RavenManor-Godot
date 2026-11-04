@@ -112,3 +112,5 @@ Invoke-GodotCheck 'Layered Hall VN pilot smoke' @('--headless', '--path', $proje
 Invoke-GodotCheck 'Live Raven VN gameplay backgrounds' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_runtime_background_smoke.gd', '--quit-after', '240') 'Raven live VN background compositor passed'
 Invoke-GodotCheck 'Hall VN runtime UI smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_ui_smoke.gd', '--quit-after', '240') 'Raven Manor Hall VN UI runtime smoke passed'
 Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/season1_map_smoke.gd', '--quit-after', '120') 'Raven Manor continuous season1 map smoke passed'
+
+Invoke-GodotCheck 'UPDS VN shell layout and input' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_layout_smoke.gd', '--quit-after', '600') 'Raven UPDS VN shell layout and input smoke passed'
