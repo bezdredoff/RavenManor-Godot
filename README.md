@@ -13,7 +13,7 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status (2026-10-26):** RM-HUB-001 and integrated RM-VS-01, Content Preview, continuous season-one map feasibility mode, mobile Room Builder PWA v0.2, and experimental Hall AI1/AI2 art comparison are implemented and published. The game art, true Hall spatial calibration and authoring-to-gameplay bridge are not yet production-approved. Next work: `RM-PIPE-001`.
+**Repository status (2026-11-04, main `c5f286ea`):** UPDS VN shell/read Skip, tri-locale onboarding, shared settings/audio, 25 Match-3 levels (3 story + 22 optional), boosters, and optional campaign menu access are merged technical slices. Hall physical calibration, map chibi, full game-loop/device acceptance and cup/quill candidate-art approval remain open. See `docs/audits/MULTI_AGENT_READINESS_20261104_RU.md`.
 
 Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It links 120 proposed catalog positions across eight rooms, saves room-specific local drafts and exports JSON/PNG. Output is not yet a calibrated gameplay scene.
 
@@ -36,7 +36,7 @@ See `docs/STATUS.md` for canonical current status, `docs/NEXT_PLAN.md` for prior
 
 ## Season 1 production preparation (PR #44)
 
-Full scene/asset/map production shotlist: `docs/production/SEASON1_VISUAL_MAP_AND_PROP_PRODUCTION.md`. RU/BE/EN source review and translation plan: `docs/production/LOCALIZATION_UPDS_ADAPTATION.md`. Machine-readable **planning** registries live under `data/raven/production/`: character performance, 28 scene shots and 280 line cues, 37 prop families, 28 popup translations, 28 narrative routes and full Russian source dialogues. New chapters' event IDs and world-map/NPC anchors are **not yet runtime-authored or art-calibrated**; this PR does not implement the full season. Use `python3 scripts/raven/tools/validate_production_narrative.py` to check contracts, and `--release` to require complete BE/EN translations (not yet supplied). `python3 scripts/raven/tools/export_translation_worklist.py` creates a translator-friendly CSV.
+Full scene/asset/map production shotlist: `docs/production/SEASON1_VISUAL_MAP_AND_PROP_PRODUCTION.md`. RU/BE/EN source review and translation plan: `docs/production/LOCALIZATION_UPDS_ADAPTATION.md`. Machine-readable **planning** registries live under `data/raven/production/`: character performance, 28 scene shots and 280 line cues, 37 prop families, 28 popup translations, 28 narrative routes and full Russian source dialogues. New chapters' event IDs and world-map/NPC anchors are **not yet runtime-authored or art-calibrated**; this PR does not implement the full season. Use `python3 scripts/raven/tools/validate_production_narrative.py --release` for RU/BE/EN catalog coverage; manual editorial/device QA is separate. `python3 scripts/raven/tools/export_translation_worklist.py` creates a translator-friendly CSV.
 
 ## Paired production roadmaps (2026-10-27)
 
@@ -46,7 +46,7 @@ The [graphics plan](docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md) (GFX-00â€
 
 After deployment, the [Raven Manor production dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) displays the current CODE/GFX tasks and additional process/UX gaps, their criteria, dependencies, priority and explicit evidence. Dashboard files are **generated**, while `data/raven/production/production_progress.json` owns ongoing task status/evidence.
 
-All agents (ChatGPT, Codex, DeepSeek) use `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/process/TASK_AND_PR_TEMPLATE_RU.md`; no task PR should omit current status/docs updates. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.
+All agents (ChatGPT, Codex, DeepSeek, Hermes) follow `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md`. Unique per-PR evidence records avoid shared-file conflicts; a single integration owner reconciles canonical status after merge. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.
 
 ### Candidate ZIP review and non-deployed Web artifacts
 

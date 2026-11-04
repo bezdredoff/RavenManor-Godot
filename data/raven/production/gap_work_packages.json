@@ -1244,7 +1244,7 @@
       "description": "New scoped product completeness package. Coordinate with CODE-11-01; no duplication or automatic acceptance.",
       "deliverable": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
       "acceptance": "Teach hotspot routes, preparation points, specialist gates, save/continue and Match-3 without spoilers; replayable help.",
-      "status": "PR_review",
+      "status": "merged",
       "dependsOn": [
         "CODE-02-03"
       ],
@@ -1336,6 +1336,23 @@
       "graphicsDependencies": [],
       "source": "owner-approved 2026-11-03 cross-repository consistency and completeness audit",
       "requiresHumanAcceptance": true
+    },
+    {
+      "id": "PROC-006",
+      "title": "Мультиагентная готовность: evidence, модульные контракты и CI",
+      "domain": "process",
+      "priority": "P1",
+      "size": "M",
+      "description": "Убрать обязательные общие status-файлы в каждом параллельном PR; закрепить module ownership и CI concurrency при сохранении incoming security.",
+      "deliverable": "Independent docs/changes evidence gate, contracts and owner policy, parallel PR CI concurrency; runtime extraction and sharded CI as separate follow-ups.",
+      "acceptance": "Независимый authored PR с уникальной evidence note проходит, missing evidence и spoof incoming отклоняются, canonical status обновляет единственный integration owner; CI PR не блокирует другой PR общей группой pages; main deploy и полный тест сохранены.",
+      "status": "in_progress",
+      "dependsOn": [
+        "PROC-005"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-04 owner request",
+      "requiresHumanAcceptance": false
     }
   ]
 }

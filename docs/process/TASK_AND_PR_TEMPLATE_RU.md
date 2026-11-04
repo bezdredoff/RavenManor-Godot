@@ -15,10 +15,10 @@
 **Acceptance:** функционально, регрессии, визуальные/mobile, save, replay.
 **Tests:** exact commands and expected evidence.
 **Risks & rollback:** обратная совместимость/приватность/preview.
-**Progress update:** fields in production_progress.json.
+**Progress update:** unique docs/changes evidence; status reconciliation after merge.
 ```
 
-**PROC-005 — правило для каждого PR:** обязательно изменить оба источника `docs/STATUS.md` и `data/raven/production/production_progress.json` прямо в PR. GitHub CI проверит их в diff, даже если работа только с документацией. При изменении scope или acceptance обновить CODE/GFX/gap roadmap/backlog. Исключение только для автоматически импортированного `candidate/mobile-<run>` ZIP на этапе triage; дальнейший review и статус обязательны.
+**PROC-006:** каждый authored PR включает уникальный `docs/changes/<TASK-ID>-<topic>.md` с полями `Task IDs:`, `Changes:`, `Verification:`, `Owner QA:`, `Status impact:`. Альтернатива — оба старых canonical status файла. Single integration owner обновляет central status после merge, не заставляя параллельных агентов конкурировать. Numeric incoming candidates по-прежнему проходят отдельный security review.
 
 ## PR description (заполняется автоматически/вручную)
 
@@ -31,7 +31,7 @@
 ## Code/GFX gates; candidate vs accepted assets and permits
 ## Verification run (commands, actual outcome, CI run/head SHA)
 ## Human/device QA required (viewport, platform, screenshots)
-## Production status and documentation updated in this PR
+## Per-PR evidence, post-merge canonical status owner
 ## Open risks, follow-up task ID(s)
 ```
 
@@ -39,4 +39,4 @@
 
 ## Мобильный ZIP handoff
 
-В архиве `patch-manifest.json` должен называть реальные task IDs; PR после импорта сохраняет их и текущий baseline. Данные прогресса/документации входят в сам архив, чтобы не было «код в одной ветке, status в другой». Большие файлы идут только с источником/rights и `accepted` art approvals. Если ZIP превышает безопасные лимиты, делить на независимые reviewable пакеты по 3–4 related images или use Git LFS/proper artifact store **после отдельного технического решения**, без обхода валидатора.
+В архиве `patch-manifest.json` должен называть реальные task IDs; PR после импорта сохраняет их и текущий baseline. Evidence note включается в архив; canonical status после review/merge обновляет integration owner. Большие файлы идут только с источником/rights и `accepted` art approvals. Если ZIP превышает безопасные лимиты, делить на независимые reviewable пакеты по 3–4 related images или use Git LFS/proper artifact store **после отдельного технического решения**, без обхода валидатора.

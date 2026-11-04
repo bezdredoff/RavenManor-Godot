@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-03",
-  "authority": "When a task status/evidence changes, update this file in same PR. Missing IDs imply their source plan's initial proposed state; source plans remain immutable scopes.",
+  "updated": "2026-11-04",
+  "authority": "Canonical task statuses and evidence reconciled after merge by a single integration owner; authored parallel PRs may use docs/changes/<TASK-ID>-<topic>.md instead of concurrent edits to shared progress. Historical source plans remain scope definitions.",
   "entries": [
     {
       "id": "VNS5-05A",
@@ -984,11 +984,16 @@
       "id": "CODE-04-01",
       "owner": "ChatGPT",
       "updated": "2026-11-04",
-      "status": "PR_review",
-      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-03 PR #156 draft: initial settings controls wired to existing UPDS preferences adapter; audio runtime and visual parity not verified, no owner QA acceptance; existing partial status retained.\n2026-11-04 CODE-04-01 runtime settings candidate: the existing UPDS-derived preference file now stores optional accessibility.reducedMotion with old-config defaults and successful-write-only in-memory updates. Localized settings dialog is reachable from VN header and Match-3/main runtime; main menu includes the same toggle. Modal blocks gameplay, locale changes preserve Raven campaign revision and current VN line, and reduced motion reaches existing VN FX / Match-3 presenter APIs. Audio playback and actual haptics remain CODE-04-02; no media assets added.\nUPDS source pin bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781: scripts/ui/player_preferences.gd blob ea81a778c7adf7c0eac2834cd5be577878069153; scripts/ui/settings_screen.gd blob 2373147596c296631e01e43f8958a5e3a9a5fe00; scripts/vn/vn_screen.gd blob c44edec0f4a29f05e128cf2d4005009adca0f842; scripts/core/reduced_motion.gd blob a254137429cc0809cedbd24d8f0b3dd8263e3199. Adapted Raven controls; PWA install/navigation and donor campaign remain excluded. See docs/production/CODE_04_01_RUNTIME_SETTINGS_RU.md.\nGodot 4.7.2 targeted preference/modal/locale, main-menu, and Match-3 modal/motion smokes PASS; full scripts/check.sh PASS with isolated XDG_DATA_HOME. PR #178 OPEN atop #177; exact-head CI and owner/device acceptance pending.\n2026-11-04 follow-up before final push: Match-3 rerender while Settings remained open recreated a board without the external modal lock. New boards now inherit the visible modal lock. Expanded runtime smoke covers that exact lifecycle. Full scripts/check.sh passed again on Godot 4.7.2; first pushed candidate CI run 41786593286 succeeded before this follow-up, latest-head CI will verify the final code.\nExact-head GitHub Actions run 41787094755 succeeded on b3ac76426330f474af3384129210d37abf17f04e. Native/device and owner visual acceptance remain open.",
-      "implementationState": "partial",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS preferences, locale persistence and adapters imported https://github.com/bezdredoff/RavenManor-Godot/pull/46; full shared settings UI parity not evidenced.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Preferences adapters exist since #46; shared settings UI and restart persistence parity not signed off. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-03 PR #156 draft: initial settings controls wired to existing UPDS preferences adapter; audio runtime and visual parity not verified, no owner QA acceptance; existing partial status retained.\n2026-11-04 CODE-04-01 runtime settings candidate: the existing UPDS-derived preference file now stores optional accessibility.reducedMotion with old-config defaults and successful-write-only in-memory updates. Localized settings dialog is reachable from VN header and Match-3/main runtime; main menu includes the same toggle. Modal blocks gameplay, locale changes preserve Raven campaign revision and current VN line, and reduced motion reaches existing VN FX / Match-3 presenter APIs. Audio playback and actual haptics remain CODE-04-02; no media assets added.\nUPDS source pin bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781: scripts/ui/player_preferences.gd blob ea81a778c7adf7c0eac2834cd5be577878069153; scripts/ui/settings_screen.gd blob 2373147596c296631e01e43f8958a5e3a9a5fe00; scripts/vn/vn_screen.gd blob c44edec0f4a29f05e128cf2d4005009adca0f842; scripts/core/reduced_motion.gd blob a254137429cc0809cedbd24d8f0b3dd8263e3199. Adapted Raven controls; PWA install/navigation and donor campaign remain excluded. See docs/production/CODE_04_01_RUNTIME_SETTINGS_RU.md.\nGodot 4.7.2 targeted preference/modal/locale, main-menu, and Match-3 modal/motion smokes PASS; full scripts/check.sh PASS with isolated XDG_DATA_HOME. PR #178 OPEN atop #177; exact-head CI and owner/device acceptance pending.\n2026-11-04 follow-up before final push: Match-3 rerender while Settings remained open recreated a board without the external modal lock. New boards now inherit the visible modal lock. Expanded runtime smoke covers that exact lifecycle. Full scripts/check.sh passed again on Godot 4.7.2; first pushed candidate CI run 41786593286 succeeded before this follow-up, latest-head CI will verify the final code.\nExact-head GitHub Actions run 41787094755 succeeded on b3ac76426330f474af3384129210d37abf17f04e. Native/device and owner visual acceptance remain open.\n2026-11-04 owner-requested technical closure: PR #178 https://github.com/bezdredoff/RavenManor-Godot/pull/178 verified merged into main c5f286ea1da4625da880e27d07c61714cf022a81. Merged is terminal technical delivery, not manual/device/owner QA acceptance. Follow-up: GAME-UI-01, GAME-QA-01.",
+      "implementationState": "delivered",
       "qaState": "automated",
-      "priority": "P0"
+      "priority": "P0",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "GAME-UI-01",
+        "GAME-QA-01"
+      ]
     },
     {
       "id": "CODE-05-01",
@@ -2302,14 +2307,17 @@
     },
     {
       "id": "CODE-04-02",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "Planning",
       "updated": "2026-11-04",
-      "implementationState": "runtime_candidate",
+      "implementationState": "delivered",
       "qaState": "automated_smoke_passed_device_pending",
-      "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full shared audio/feedback bridge is a follow-on after basic preferences and slice UX, not an immediate Hall vertical-slice blocker. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P1 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-04 CODE-04-02 runtime candidate on CODE-04-01 branch: shared RavenAudio autoload ports UPDS procedural music/effects and preference/focus gates, emits Match-3/VN cues, and exposes localized preview controls. Procedural PCM is synthesized at runtime; no audio media files were created/imported. Donor pin UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781: scripts/ui/menu_audio.gd blob 87ab98324dd9e0b552a0ca1daf1f6cb23f10d9ff; scripts/audio_synthesis.gd blob e3b46f30ffae771ef79bd3361286a92a871f88bf; data/menu_audio.json blob b5f67535de3c1fa3d8d6278153311eb462e5abff; tests/ui/audio_smoke.gd blob c483f14231f2b5e16f30129f8e378b72a17d0483. Local targeted audio/settings/menu/match3 and full check reached an unrelated baseline failure: vn_runtime_background_smoke.gd line 30 compares current localized production text against legacy source string; same targeted test passes on main. Hardware audio/haptic acceptance remains pending; no owner acceptance claimed. See docs/production/CODE_04_02_AUDIO_RUNTIME_RU.md.",
-      "priority": "P1"
+      "approvalState": "pending",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full shared audio/feedback bridge is a follow-on after basic preferences and slice UX, not an immediate Hall vertical-slice blocker. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P1 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-04 CODE-04-02 runtime candidate on CODE-04-01 branch: shared RavenAudio autoload ports UPDS procedural music/effects and preference/focus gates, emits Match-3/VN cues, and exposes localized preview controls. Procedural PCM is synthesized at runtime; no audio media files were created/imported. Donor pin UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781: scripts/ui/menu_audio.gd blob 87ab98324dd9e0b552a0ca1daf1f6cb23f10d9ff; scripts/audio_synthesis.gd blob e3b46f30ffae771ef79bd3361286a92a871f88bf; data/menu_audio.json blob b5f67535de3c1fa3d8d6278153311eb462e5abff; tests/ui/audio_smoke.gd blob c483f14231f2b5e16f30129f8e378b72a17d0483. Local targeted audio/settings/menu/match3 and full check reached an unrelated baseline failure: vn_runtime_background_smoke.gd line 30 compares current localized production text against legacy source string; same targeted test passes on main. Hardware audio/haptic acceptance remains pending; no owner acceptance claimed. See docs/production/CODE_04_02_AUDIO_RUNTIME_RU.md.\n2026-11-04 owner-requested technical closure: PR #179 https://github.com/bezdredoff/RavenManor-Godot/pull/179 verified merged into main c5f286ea1da4625da880e27d07c61714cf022a81. Merged is terminal technical delivery, not manual/device/owner QA acceptance. Follow-up: GAME-QA-01.",
+      "priority": "P1",
+      "followUpTaskIds": [
+        "GAME-QA-01"
+      ]
     },
     {
       "id": "CODE-06-01",
@@ -2698,14 +2706,17 @@
     },
     {
       "id": "GAME-ONBOARD-01",
-      "status": "PR_review",
+      "status": "merged",
       "priority": "P1",
       "owner": "Unassigned",
       "updated": "2026-11-04",
-      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.\n2026-11-04 implementation candidate: replayable RU/BE/EN first-session guide opens before fresh campaign start and is available from menu/game HUD; explains route affordances, preparation vs specialist work, Match-3 objectives/hints and saving. Uses modal UI and existing campaign/player state without writing onboarding state. Existing contextual Match-3 tutorial remains separate. UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 donor blobs: scripts/match3/match3_screen.gd 76b42df35d4857f242d3f6bc06b9f989d43ad0a3; scripts/match3/match3_tutorials.gd cda888d62080ec09b16f2617a1eee9604441f3d8; scripts/ui/menu_copy.gd 56772fbfe5b704e406e9dfb833be1ec093a2b939. No media assets added. Targeted onboarding/menu/settings smoke and full scripts/check.sh pass on Godot 4.7.2 with unique XDG_DATA_HOME. PR #180 https://github.com/bezdredoff/RavenManor-Godot/pull/180 OPEN atop #179; exact-head CI run 41792693186 SUCCESS. Human device/owner acceptance pending; no art asset generation/import. See docs/production/GAME_ONBOARD_01_FIRST_SESSION_GUIDE_RU.md.",
-      "implementationState": "runtime_candidate",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.\n2026-11-04 implementation candidate: replayable RU/BE/EN first-session guide opens before fresh campaign start and is available from menu/game HUD; explains route affordances, preparation vs specialist work, Match-3 objectives/hints and saving. Uses modal UI and existing campaign/player state without writing onboarding state. Existing contextual Match-3 tutorial remains separate. UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 donor blobs: scripts/match3/match3_screen.gd 76b42df35d4857f242d3f6bc06b9f989d43ad0a3; scripts/match3/match3_tutorials.gd cda888d62080ec09b16f2617a1eee9604441f3d8; scripts/ui/menu_copy.gd 56772fbfe5b704e406e9dfb833be1ec093a2b939. No media assets added. Targeted onboarding/menu/settings smoke and full scripts/check.sh pass on Godot 4.7.2 with unique XDG_DATA_HOME. PR #180 https://github.com/bezdredoff/RavenManor-Godot/pull/180 OPEN atop #179; exact-head CI run 41792693186 SUCCESS. Human device/owner acceptance pending; no art asset generation/import. See docs/production/GAME_ONBOARD_01_FIRST_SESSION_GUIDE_RU.md.\n2026-11-04 owner-requested technical closure: PR #180 https://github.com/bezdredoff/RavenManor-Godot/pull/180 verified merged into main c5f286ea1da4625da880e27d07c61714cf022a81. Merged is terminal technical delivery, not manual/device/owner QA acceptance. Follow-up: GAME-QA-01.",
+      "implementationState": "delivered",
       "qaState": "full_smoke_passed",
-      "approvalState": "pending"
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "GAME-QA-01"
+      ]
     },
     {
       "id": "GAME-QA-01",
@@ -2761,6 +2772,18 @@
       "implementationState": "not_started",
       "qaState": "not_started",
       "approvalState": "pending"
+    },
+    {
+      "id": "PROC-006",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-04",
+      "implementationState": "process_candidate",
+      "qaState": "not_run",
+      "approvalState": "pending",
+      "priority": "P1",
+      "followUpTaskIds": [],
+      "evidence": "2026-11-04 owner request; process/proc-006-multi-agent-readiness proposed from main c5f286ea1da4625da880e27d07c61714cf022a81. PR/CI pending; runtime extraction and module-specific CI sharding not implemented."
     }
   ],
   "rules": [
