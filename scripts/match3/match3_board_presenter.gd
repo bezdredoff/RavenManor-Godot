@@ -6,6 +6,7 @@ extends VBoxContainer
 ## Holds only transient UI; Raven reducer remains the sole campaign authority.
 signal level_won
 signal board_feedback(message: String)
+signal audio_cue(cue: String)
 
 const Drag = preload("res://scripts/match3/match3_drag_model.gd")
 const Shape = preload("res://scripts/match3/match3_board_shape.gd")
@@ -295,6 +296,7 @@ func apply_available_width(available_width: float) -> void:
 func toggle_help() -> void:
 	if input_locked:
 		return
+	audio_cue.emit("uiClick")
 	help_open = not help_open
 	# Keep the legacy inline help tree hidden; do not expand the board
 	# layout when showing instructions.
@@ -397,6 +399,7 @@ func set_interaction_blocked(blocked: bool) -> void:
 func retry_level() -> void:
 	if input_locked or str(game.state) != "lost":
 		return
+	audio_cue.emit("uiClick")
 	motion_layer.call("cancel_motions")
 	_clear_impacts()
 	game.reset()
@@ -524,6 +527,7 @@ func _commit_swap(first: int, second: int) -> void:
 func show_hint() -> void:
 	if input_locked or help_open or str(game.state) != "playing":
 		return
+	audio_cue.emit("hint")
 	var hint: Dictionary = game.get_hint_move()
 	highlighted.clear()
 	if hint.is_empty():
@@ -587,8 +591,11 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 		_paint_selection()
 		input_locked = false
 		_refresh_controls()
+		audio_cue.emit("invalidSwap")
 		board_feedback.emit(feedback.text)
 		return
+	var primary_feedback := str(result.get("primaryFeedback", "match"))
+	audio_cue.emit("special" if primary_feedback == "special" else "match")
 	feedback.text = str(skin.get("matched", "Комбинация!"))
 	if not reduced_motion:
 		for raw in result.get("frames", []):
@@ -627,12 +634,15 @@ func _play_result(result: Dictionary, first: int, second: int) -> void:
 	_paint_live()
 	if int(result.get("cascades", 0)) >= 2:
 		feedback.text = "%s ×%d" % [str(skin.get("chain", "Цепочка")), int(result.cascades)]
+		audio_cue.emit("cascade")
 	if bool(result.get("won", false)) and not _completed:
 		_completed = true
 		feedback.text = str(skin.get("won", "Подготовка завершена"))
+		audio_cue.emit("win")
 		level_won.emit()
 	elif bool(result.get("lost", false)):
 		feedback.text = str(skin.get("lost", "Попробуйте ещё раз"))
+		audio_cue.emit("lose")
 		# Do not reset the board until the player explicitly requests a retry.
 		# Only the Raven reducer owns first-clear rewards, never this UI.
 	input_locked = false

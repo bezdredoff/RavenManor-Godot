@@ -2,6 +2,7 @@ extends SceneTree
 
 const Preferences = preload("res://scripts/raven/raven_production_localization.gd")
 const Settings = preload("res://scripts/raven/raven_settings_dialog.gd")
+const AudioRuntime = preload("res://scripts/raven/raven_audio_runtime.gd")
 const Slice = preload("res://scripts/raven/vertical_slice.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const MemoryStorage = preload("res://tests/support/memory_storage.gd")
@@ -32,18 +33,21 @@ func _run() -> void:
 	assert(restored.update_accessibility({"unknown": true}) == ERR_INVALID_PARAMETER)
 
 	var dialog := Settings.new()
-	dialog.setup(restored)
+	var audio_runtime := AudioRuntime.new()
+	audio_runtime.preferences = restored
+	root.add_child(audio_runtime)
+	dialog.setup(restored, audio_runtime)
 	root.add_child(dialog)
 	await process_frame
 	for viewport_size in [Vector2i(320, 568), Vector2i(390, 844), Vector2i(430, 932)]:
 		root.size = viewport_size
-		dialog.popup_centered_ratio(0.9)
+		dialog.popup_centered(Vector2i(280, 450))
 		await process_frame
 		assert(dialog.visible and dialog.language.get_item_metadata(dialog.language.selected) == "be")
 		assert(dialog.size.x <= root.size.x and dialog.size.y <= root.size.y, "Settings dialog must fit %s" % viewport_size)
 		dialog.hide()
 		await process_frame
-	dialog.popup_centered_ratio(0.9)
+	dialog.popup_centered(Vector2i(280, 450))
 	await process_frame
 	dialog.reduced_motion.set_pressed_no_signal(false)
 	dialog.reduced_motion.toggled.emit(false)
@@ -51,6 +55,7 @@ func _run() -> void:
 	assert(Preferences.new(SETTINGS_PATH).accessibility.reducedMotion == false)
 	dialog.hide()
 	dialog.queue_free()
+	audio_runtime.queue_free()
 	await process_frame
 
 	# Changing language in live VN settings must not advance or rewind campaign/VN.

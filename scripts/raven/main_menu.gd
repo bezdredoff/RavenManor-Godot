@@ -5,13 +5,14 @@ const Preferences = preload("res://scripts/shared/upds/player_preferences.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
-	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию"],
-	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю"],
-	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion"]
+	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты"],
+	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты"],
+	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects"]
 }
 const BACKDROP := "res://assets/raven/vn_backgrounds/road/dusk_mist.webp"
 var store := Store.new()
 var prefs := Preferences.new()
+var audio_runtime: Variant
 var column: VBoxContainer
 var message: Label
 var continue_button: Button
@@ -20,6 +21,9 @@ var settings_container: CenterContainer
 var confirm: ConfirmationDialog
 
 func _ready() -> void:
+	audio_runtime = get_node("/root/RavenAudio")
+	prefs = audio_runtime.preferences
+	audio_runtime.set_scene("menu")
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var backdrop := TextureRect.new()
 	backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
@@ -75,6 +79,7 @@ func _add_action(index: int, callback: Callable) -> Button:
 	button.name = ["NewGame", "Continue", "Settings", "PrototypeLab"][index]
 	button.custom_minimum_size.y = 52
 	button.add_theme_font_size_override("font_size", 18)
+	button.pressed.connect(func() -> void: audio_runtime.play_effect("uiClick"))
 	button.pressed.connect(callback)
 	column.add_child(button)
 	return button
@@ -104,12 +109,14 @@ func _reset_and_start() -> void:
 	_start()
 
 func _start() -> void:
+	audio_runtime.set_scene("vn")
 	get_tree().change_scene_to_file(SLICE)
 
 func _continue_game() -> void:
 	if not _has_progress():
 		message.text = _tr(14)
 		return
+	audio_runtime.set_scene("vn")
 	_start()
 
 func _show_settings() -> void:
@@ -162,6 +169,21 @@ func _show_settings() -> void:
 		if prefs.update_accessibility({"reducedMotion": value}) != OK:
 			message.text = _tr(13))
 	settings_panel.add_child(reduced_motion)
+	var previews := HBoxContainer.new()
+	previews.add_theme_constant_override("separation", 6)
+	settings_panel.add_child(previews)
+	var preview_music := Button.new()
+	preview_music.name = "PreviewMusic"
+	preview_music.text = _tr(16)
+	preview_music.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_music.pressed.connect(audio_runtime.preview_music)
+	previews.add_child(preview_music)
+	var preview_effects := Button.new()
+	preview_effects.name = "PreviewEffects"
+	preview_effects.text = _tr(17)
+	preview_effects.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	preview_effects.pressed.connect(audio_runtime.preview_effects)
+	previews.add_child(preview_effects)
 	var back := Button.new()
 	back.text = _tr(12)
 	back.custom_minimum_size.y = 52
