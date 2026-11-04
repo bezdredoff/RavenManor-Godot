@@ -18,9 +18,9 @@ const MenuCopy = preload("res://scripts/raven/raven_menu_copy.gd")
 const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
 const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
+const OptionalCampaign = preload("res://scripts/raven/raven_optional_campaign_controller.gd")
 const MAIN_MENU_SCENE := "res://scenes/raven/main_menu.tscn"
 const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
-const CAMPAIGN_RETURN_COPY := {"ru": "В главное меню", "be": "У галоўнае меню", "en": "To Main Menu"}
 
 var preferences := Copy.new()
 var audio_runtime: Variant
@@ -475,25 +475,13 @@ func _open_optional_campaign() -> void:
 
 
 func _render_optional_campaign() -> void:
-	step = {"id": "optional-campaign", "kind": "campaign", "title": "Подготовка имущества"}
+	step = OptionalCampaign.campaign_step()
 	technical_shell.visible = true
 	vn_frame.visible = false
-	status.text = "Дополнительные уровни · награда за подготовку не начисляется"
-	body.add_child(_paragraph("Match-3 помогает осмотреть и подготовить вещи. Ремонт выполняет специалист."))
-	var completed: Array = state.get("firstClearLevels", [])
-	var next_index := -1
-	for index in range(22):
-		if not completed.has("RM-LVL-%03d" % (101 + index)):
-			next_index = index
-			break
-	for index in range(22):
-		var level_id := "RM-LVL-%03d" % (101 + index)
-		var unlocked := index == 0 or completed.has("RM-LVL-%03d" % (100 + index))
-		var done := completed.has(level_id)
-		var prefix := "ДАЛЕЕ · " if index == next_index else ""
-		var button := _add_button(body, "%s%s · %s" % [prefix, "✓ Уровень %02d" % (index + 1) if done else ("Уровень %02d" % (index + 1) if unlocked else "Закрыто"), "Повторить" if done else "Играть"], _start_optional_level.bind(level_id))
-		button.disabled = not unlocked
-	_add_button(body, "Вернуться к истории" if not return_to_main_menu_after_campaign else str(CAMPAIGN_RETURN_COPY.get(preferences.locale, CAMPAIGN_RETURN_COPY.ru)), _leave_optional_campaign)
+	status.text = OptionalCampaign.STATUS_COPY
+	OptionalCampaign.render_list(body, content.levels, state.get("firstClearLevels", []),
+		preferences.locale, return_to_main_menu_after_campaign,
+		_start_optional_level, _leave_optional_campaign)
 
 
 func _leave_optional_campaign() -> void:
@@ -510,7 +498,7 @@ func _start_optional_level(level_id: String) -> void:
 	var level := _level(level_id)
 	if level.is_empty(): return
 	optional_campaign = true
-	step = {"id": "optional-" + level_id, "kind": "match3", "level": level_id, "title": str(level.title)}
+	step = OptionalCampaign.level_step(level)
 	for child in body.get_children():
 		body.remove_child(child)
 		child.queue_free()

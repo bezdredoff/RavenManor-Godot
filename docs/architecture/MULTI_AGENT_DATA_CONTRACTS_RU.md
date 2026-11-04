@@ -30,3 +30,9 @@
 3. Устранить дублирование settings/onboarding UI между `main_menu.gd` и `raven_settings_dialog.gd` без изменения player preferences.
 4. Добавить versioned Room Builder import/manifests contract tests, затем физическую карту и анимации.
 5. Разделить монолитный CI на independent data/lint, targeted Godot, browser/Room Builder, export/deploy jobs, сохранив blocking integrated test перед merge и main-only Pages deploy.
+
+## 2026-11-04 — Optional Match-3 campaign presentation boundary (R2a)
+
+- `scripts/raven/raven_optional_campaign_controller.gd` owns the **read-only** optional-level list, ordering by authored `campaignIndex`, unlock indicators, localized return control, and matching optional step descriptors. Tests: `tests/raven/optional_campaign_controller_smoke.gd` + existing main-menu and game-loop smokes.
+- `vertical_slice.gd` remains the host for scene transitions, state and match3 game lifecycle; **no** reward/save authority moved. `RavenReducer`/`RavenCampaignStore` are the only progression authority.
+- Further separation of board lifecycle and booster persistence is a later task, not included in this controller extraction. Preserve `RM-LVL-101..122` IDs, save schema v1, screen labels, RU/BE/EN return strings and existing mobile incoming flow.
