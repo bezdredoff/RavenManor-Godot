@@ -1,3 +1,11 @@
+# 2026-11-03 · CODE-02-06 — viewport pointer and modal recovery
+
+PR #175 is now stacked on #176 after #174; merge in that order. Check runners and status sources preserve all three increments. Combined regression and rebased-head CI pending.
+
+Match-3 Help now clears its input lock on every hide path, including Esc/system-back; direct cell events reject other fingers and emulated mouse after touch, and hidden boards discard gestures. Existing UPDS rules, drag thresholds, two-cell hint and Raven reducer/save remain authoritative. No art/assets added.
+
+Godot 4.7.2 `match3_viewport_input_smoke.gd` PASS: actual Viewport mouse/touch dispatch inside ScrollContainer, one move per gesture, second finger rejection, hint pair without spending a move, modal blocking without layout expansion, cancel recovery, hidden-board isolation. Full `scripts/check.sh` PASS on Godot 4.7.2 in isolated XDG_DATA_HOME; native Xvfb Viewport smoke PASS. Pre-fix presenter fails the new Esc-state assertion. [PR #175](https://github.com/bezdredoff/RavenManor-Godot/pull/175) exact-head CI pending; real browser/physical touch and full donor screen parity remain open. Provenance/rollback: [pointer recovery runbook](production/CODE_02_06_VIEWPORT_POINTER_QA_20261103_RU.md).
+
 # 2026-11-03 · GAME-UI-01 Wave 2 — persisted read-only Skip
 
 An optional schema-v1 `vnReadLines` field stores canonical completed line IDs in the existing Raven campaign save, atomically with cursor/event writes. Old saves default to empty history; beat flags never fabricate read lines. Skip moves only across already-read lines in the same scene, stops at unread/choice/Match-3 checkpoints and cannot complete a scene. Failed Skip persistence leaves the cursor untouched. Auto uses UPDS normal-speed timing and suspends at checkpoints/overlays; read history now survives scene/reload and is localized from canonical IDs. No new story branch activation, save authority or assets.
