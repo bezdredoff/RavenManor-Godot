@@ -2720,13 +2720,13 @@
     },
     {
       "id": "GAME-BOOST-01",
-      "status": "in_progress",
+      "status": "merged",
       "priority": "P1",
       "owner": "Codex",
       "updated": "2026-11-04",
-      "evidence": "GAME-BOOST-01 implementation candidate: Raven-only bounded inventory hammer/shuffle (0..99); old saves normalize to zero. RM-REST-001 awards 2 hammers and RM-REST-002 awards 2 shuffles once through restoration reducer events; no store/monetization. Hammer removes one tile or one blocker layer, shuffle reorders playable tiles, both free and replayable in canonical Match-3 checkpoint. Spend and checkpoint persist atomically; failed saves restore prior board history. Donor audit: UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 scripts/match3/match3_game.gd blob 8c62ec550eb500f0c70d431dd325268e59893de4 and scripts/match3/match3_screen.gd blob 76b42df35d4857f242d3f6bc06b9f989d43ad0a3 have automatic dead-board reshuffle but no inventory/manual hammer/manual shuffle; Raven PWA behavior is pinned in docs/production/GAME_BOOST_01_INVENTORY_RU.md. Godot 4.7.2 full scripts/check.sh and blocking project gates pass. Dashboard advisory assertions were refreshed for the merged GAME-M3-01 status and the 24-test suite passes. PR CI, device and owner acceptance pending. Device and owner acceptance pending.",
+      "evidence": "GAME-BOOST-01 implementation candidate: Raven-only bounded inventory hammer/shuffle (0..99); old saves normalize to zero. RM-REST-001 awards 2 hammers and RM-REST-002 awards 2 shuffles once through restoration reducer events; no store/monetization. Hammer removes one tile or one blocker layer, shuffle reorders playable tiles, both free and replayable in canonical Match-3 checkpoint. Spend and checkpoint persist atomically; failed saves restore prior board history. Donor audit: UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 scripts/match3/match3_game.gd blob 8c62ec550eb500f0c70d431dd325268e59893de4 and scripts/match3/match3_screen.gd blob 76b42df35d4857f242d3f6bc06b9f989d43ad0a3 have automatic dead-board reshuffle but no inventory/manual hammer/manual shuffle; Raven PWA behavior is pinned in docs/production/GAME_BOOST_01_INVENTORY_RU.md. Godot 4.7.2 full scripts/check.sh and blocking project gates pass. Dashboard advisory assertions were refreshed for the merged GAME-M3-01 status and the 24-test suite passes. PR #182 merged as 6f5168af068a5b7f69c5a658836dab537272ec13 on 2026-11-04; exact-head GitHub Actions run 41829063019 succeeded. Physical device QA and owner acceptance remain pending.",
       "implementationState": "runtime_candidate",
-      "qaState": "targeted_smoke_passed",
+      "qaState": "ci_passed",
       "approvalState": "pending"
     },
     {
