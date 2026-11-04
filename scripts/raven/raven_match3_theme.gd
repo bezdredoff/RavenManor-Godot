@@ -15,7 +15,8 @@ const TILE_IMAGES := {
 	"brooch": preload("res://assets/raven/match3/legacy_art/crystal-v2.png"),
 	"raven": preload("res://assets/raven/match3/legacy_art/bat-v2.png"),
 	"book": preload("res://assets/raven/match3/legacy_art/scroll-v2.png"),
-	"cup": preload("res://assets/raven/match3/generated/cup-chatgpt-candidate-v1.png")
+	"cup": preload("res://assets/raven/match3/generated/cup-chatgpt-candidate-v1.png"),
+	"quill": preload("res://assets/raven/match3/generated/quill-chatgpt-candidate-v1.png")
 }
 
 static func placeholder() -> Dictionary:
