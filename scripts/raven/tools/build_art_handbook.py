@@ -24,6 +24,15 @@ def validate(data, root=ROOT, web=WEB):
     assert len(ids)==len(set(ids)), 'Duplicate image ID'
     assert len(recipes)==len(data['recipes']), 'Duplicate recipe ID'
     represented={a['image'] for a in data['assets'] if a.get('image')}
+    reused=data.get('reusedAssets', [])
+    reused_paths={a['image'] for a in reused}
+    assert len(reused_paths)==len(reused), 'Duplicate reused image path'
+    assert not (represented & reused_paths), 'Image cannot be both generated and reused'
+    for asset in reused:
+        image=confined(root,asset['image'])
+        assert image.is_file() and sha(image)==asset['sha256'], asset['id']+' reused source SHA mismatch'
+        assert asset['sourceCommit'] and asset['sourcePath'], asset['id']+' lacks source provenance'
+    represented |= reused_paths
     existing={p.relative_to(root).as_posix() for p in (root/'assets').rglob('*') if p.suffix.lower() in RASTER}
     assert represented==existing, 'Repository raster coverage mismatch: '+str(sorted(existing^represented))
     active={e['id'] for name in ['vn_character_catalog','vn_background_catalog'] for e in read(root/'data/raven/production'/(name+'.json'))['entries']}

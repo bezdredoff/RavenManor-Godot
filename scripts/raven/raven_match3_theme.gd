@@ -8,12 +8,21 @@ const MARKS := {"raven":"R", "key":"K", "rose":"F", "candle":"C", "book":"B", "c
 const TILE_NAMES := {"raven":"Ворон", "key":"Ключ", "rose":"Роза", "candle":"Свеча", "book":"Книга", "cup":"Чашка", "brooch":"Брошь", "quill":"Перо"}
 const SPECIAL_BADGES := {"flash-row":"--", "flash-column":"|", "evidence":"O", "lead":"+", "insight":"*"}
 const SPECIAL_NAMES := {"flash-row":"линия по горизонтали", "flash-column":"линия по вертикали", "evidence":"область вокруг", "lead":"крест и полезный предмет", "insight":"фишки одного типа"}
+const TILE_IMAGES := {
+	"candle": preload("res://assets/raven/match3/legacy_art/candle-v2.png"),
+	"key": preload("res://assets/raven/match3/legacy_art/key-v2.png"),
+	"rose": preload("res://assets/raven/match3/legacy_art/rose-v2.png"),
+	"brooch": preload("res://assets/raven/match3/legacy_art/crystal-v2.png"),
+	"raven": preload("res://assets/raven/match3/legacy_art/bat-v2.png"),
+	"book": preload("res://assets/raven/match3/legacy_art/scroll-v2.png")
+}
 
 static func placeholder() -> Dictionary:
 	return {
 		"colors": COLORS.duplicate(true),
 		"marks": MARKS.duplicate(true),
 		"tile_names": TILE_NAMES.duplicate(true),
+		"tile_images": TILE_IMAGES.duplicate(),
 		"special_badges": SPECIAL_BADGES.duplicate(true),
 		"special_names": SPECIAL_NAMES.duplicate(true),
 		"moves": "Ходы:",

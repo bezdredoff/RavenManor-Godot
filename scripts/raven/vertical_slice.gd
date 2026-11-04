@@ -30,8 +30,11 @@ var vn_player: RefCounted
 var vn_view: Control
 var selected := -1
 var event_serial := 0
+var optional_campaign := false
 var content: Dictionary
 var technical_shell: MarginContainer
+var campaign_backdrop: TextureRect
+var campaign_backdrop_shade: ColorRect
 var vn_frame: Control
 var body: VBoxContainer
 var status: Label
@@ -60,6 +63,22 @@ func _ready() -> void:
 func _build_shell() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new(); bg.color = Color("0d1118"); bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(bg)
+	campaign_backdrop = TextureRect.new()
+	campaign_backdrop.name = "RavenCampaignBackdrop"
+	campaign_backdrop.texture = load("res://assets/raven/vn_backgrounds/hall/evening_dusty.webp")
+	campaign_backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	campaign_backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	campaign_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	campaign_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	campaign_backdrop.visible = false
+	add_child(campaign_backdrop)
+	campaign_backdrop_shade = ColorRect.new()
+	campaign_backdrop_shade.name = "RavenCampaignBackdropShade"
+	campaign_backdrop_shade.color = Color(0.05, 0.04, 0.08, 0.34)
+	campaign_backdrop_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	campaign_backdrop_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	campaign_backdrop_shade.visible = false
+	add_child(campaign_backdrop_shade)
 	var margin := MarginContainer.new(); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	technical_shell = margin
 	var insets := Vector4.ZERO
@@ -94,6 +113,7 @@ func _build_shell() -> void:
 	_add_button(footer, MenuCopy.text("settings", preferences.locale), _open_settings)
 	onboarding_button = _add_button(footer, str(ONBOARDING_LABEL.get(preferences.locale, ONBOARDING_LABEL.ru)), _open_onboarding)
 	_add_button(footer, "Save", _save)
+	_add_button(footer, "Кампания Match-3", _open_optional_campaign)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
 	locale_selector = OptionButton.new()
@@ -135,6 +155,11 @@ func _render() -> void:
 	for child in body.get_children():
 		body.remove_child(child)
 		child.queue_free()
+	campaign_backdrop.visible = optional_campaign
+	campaign_backdrop_shade.visible = optional_campaign
+	if optional_campaign:
+		_render_optional_campaign()
+		return
 	step = Director.next_step(state)
 	if step.get("kind") == "done":
 		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
@@ -297,7 +322,52 @@ func _complete_level() -> void:
 		return
 	state = updated
 	match_game = null
+	if optional_campaign:
+		_render()
+		return
 	_render()
+
+
+func _open_optional_campaign() -> void:
+	optional_campaign = true
+	match_game = null
+	_render()
+
+
+func _render_optional_campaign() -> void:
+	step = {"id": "optional-campaign", "kind": "campaign", "title": "Подготовка имущества"}
+	technical_shell.visible = true
+	vn_frame.visible = false
+	status.text = "Дополнительные уровни · награда за подготовку не начисляется"
+	body.add_child(_paragraph("Match-3 помогает осмотреть и подготовить вещи. Ремонт выполняет специалист."))
+	var completed: Array = state.get("firstClearLevels", [])
+	var next_index := -1
+	for index in range(22):
+		if not completed.has("RM-LVL-%03d" % (101 + index)):
+			next_index = index
+			break
+	for index in range(22):
+		var level_id := "RM-LVL-%03d" % (101 + index)
+		var unlocked := index == 0 or completed.has("RM-LVL-%03d" % (100 + index))
+		var done := completed.has(level_id)
+		var prefix := "ДАЛЕЕ · " if index == next_index else ""
+		var button := _add_button(body, "%s%s · %s" % [prefix, "✓ Уровень %02d" % (index + 1) if done else ("Уровень %02d" % (index + 1) if unlocked else "Закрыто"), "Повторить" if done else "Играть"], _start_optional_level.bind(level_id))
+		button.disabled = not unlocked
+	_add_button(body, "Вернуться к истории", func():
+		optional_campaign = false
+		match_game = null
+		_render())
+
+
+func _start_optional_level(level_id: String) -> void:
+	var level := _level(level_id)
+	if level.is_empty(): return
+	optional_campaign = true
+	step = {"id": "optional-" + level_id, "kind": "match3", "level": level_id, "title": str(level.title)}
+	for child in body.get_children():
+		body.remove_child(child)
+		child.queue_free()
+	_render_match3()
 
 
 func _complete_action() -> void:
