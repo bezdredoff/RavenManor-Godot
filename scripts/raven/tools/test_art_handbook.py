@@ -16,12 +16,16 @@ book=importlib.util.module_from_spec(spec);spec.loader.exec_module(book)
 class ArtHandbookTests(unittest.TestCase):
     def test_current_published_images_and_artifact_evidence(self):
         p=book.payload();data=p['catalog']
-        self.assertEqual(len(data['assets']),154)
-        self.assertEqual(len(data['recipes']),65)
+        self.assertEqual(len(data['assets']),155)
+        self.assertEqual(len(data['recipes']),66)
         cup=next(a for a in data['assets'] if a['id']=='RM-M3-CUP-CHATGPT-CANDIDATE-V1')
         self.assertEqual(cup['status'],'pending_review')
         self.assertEqual(cup['image'],'assets/raven/match3/generated/cup-chatgpt-candidate-v1.png')
         self.assertEqual(cup['sha256'],'e02cdc758e54d1715d4cdc1bcf1e6db4a5cd46e45aea130dade2d9f7f8fed44d')
+        quill=next(a for a in data['assets'] if a['id']=='RM-M3-QUILL-CHATGPT-CANDIDATE-V1')
+        self.assertEqual(quill['status'],'pending_review')
+        self.assertEqual(quill['image'],'assets/raven/match3/generated/quill-chatgpt-candidate-v1.png')
+        self.assertEqual(quill['sha256'],'0b4074adb4cacbe8fb9cb013777263ce181ff514c09f386f0ba55edd627b1196')
         self.assertEqual(sum(a['kind']=='character' for a in data['assets']),62)
         self.assertEqual(sum(a['kind']=='background' for a in data['assets']),26)
         self.assertEqual(sum(r['stage']=='inpaint' for r in data['recipes']),34)

@@ -25,6 +25,8 @@ func _run() -> void:
 	await process_frame
 	assert(RavenTheme.placeholder().tile_images.has("cup"), "Cup candidate must be connected to the Raven tile theme")
 	assert(RavenTheme.placeholder().tile_images.cup is Texture2D, "Cup image must load as a Godot texture")
+	assert(RavenTheme.placeholder().tile_images.has("quill"), "Quill candidate must be connected to the Raven tile theme")
+	assert(RavenTheme.placeholder().tile_images.quill is Texture2D, "Quill image must load as a Godot texture")
 	assert(board.cells.size() == 36)
 	assert(board.board_area.get_node("UPDSBoardShape") != null)
 	assert(board.board_area.get_node("UPDSTileMotion") != null)

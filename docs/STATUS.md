@@ -6,6 +6,10 @@ Added Raven snapshot/reducer-backed hammer and shuffle inventory, granted once b
 
 Added a transparent, 256×256 ChatGPT-generated teacup candidate and registered it for the existing Raven `cup` tile ID in `raven_match3_theme.gd`. The asset is stored separately from the six legacy RavenManor PNGs; no donor artwork or Match-3 rules changed. A theme smoke assertion checks that `cup` resolves to a loaded Godot texture. This is one tile candidate only: the eight-tile bake-off, small-screen/readability checks and visual owner acceptance remain open. Provenance and SHA: [Match-3 campaign runbook](production/GAME_M3_01_CAMPAIGN_RU.md).
 
+## 2026-11-04 — GFX-10-01 curved quill tile candidate connected
+
+Added the transparent 256×256 ChatGPT-generated burgundy quill candidate for the existing Raven `quill` tile ID. It has a gentle S-curve and warm ivory shaft. The art handbook and theme smoke now record/check both generated tile textures. This remains a pending-review icon; the eight-tile bake-off and readability/owner acceptance gates remain open. Provenance and SHA: [Match-3 campaign runbook](production/GAME_M3_01_CAMPAIGN_RU.md).
+
 # 2026-11-03 · GAME-UI-01 / CODE-02-06 Web glyph/copy repair
 
 Actual Chromium Web export QA of the combined #174 → #176 → #175 stack showed missing Unicode menu/history/gear glyphs (squares). The shared VN now uses existing-font text: `...`, localized history abbreviation and current locale code for the language action. Auto/Skip captions and tooltips are localized RU/BE/EN; active Auto uses a plain plus instead of another missing checkmark. Browser QA also found unwrapped Help text stretching its dialog past the viewport; use a bounded scrollable RichTextLabel (existing engine widget), preserving the modal. The same browser pass found missing cup/brooch/special symbols in the temporary Match-3 skin; distinct ASCII marks and matching help legend replace them. Existing tile names/tooltips remain intact. No fonts, icons or other assets added. This does not claim a full settings screen or donor icon parity.

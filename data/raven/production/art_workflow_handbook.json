@@ -15054,6 +15054,47 @@
       "localSourceRecord": {
         "workflow": "ChatGPT image generation in conversation; exact model/runtime parameters unavailable."
       }
+    },
+    {
+      "id": "chatgpt-m3-quill-candidate",
+      "title": "Match-3 · Перо, кандидат ChatGPT",
+      "stage": "archive",
+      "evidence": "conversation_generated_candidate",
+      "notes": [
+        "Один визуальный кандидат для Raven tile ID quill; не является утверждением GFX-10-01/02/03.",
+        "Сгенерирован ChatGPT по запросу пользователя; неизвестные точная модель и внутренние параметры сохранены как null.",
+        "Перо с мягкой S-образной кривизной и диагональным общим силуэтом; прозрачный PNG подготовлен к холсту 256×256 с центрированием alpha-bounds; исходник был 1254×1254 RGBA."
+      ],
+      "artifacts": [],
+      "inputs": [],
+      "outputs": [
+        "RM-M3-QUILL-CHATGPT-CANDIDATE-V1"
+      ],
+      "sourcePngSha256": "0b4074adb4cacbe8fb9cb013777263ce181ff514c09f386f0ba55edd627b1196",
+      "requires": [],
+      "prompts": [
+        "Create one isolated quill feather for a Raven Manor Match-3 game tile. Match the generated teacup tile’s painterly gothic collectible-object treatment and warm antique palette: one elegant natural feather, gently curved into a relaxed shallow S shape (not straight), deep muted burgundy-red vanes with subtle darker ribbing, a slender warm ivory shaft and small pointed nib at the lower end. Three-quarter view, centered, bold readable silhouette at 64px, restrained soft highlights, crisp clean edges. Transparent background. Exactly one feather; no ink bottle, paper, writing, table, frame, text or extra objects."
+      ],
+      "parameters": {
+        "model": null,
+        "seed": null,
+        "steps": null,
+        "target_size": [
+          1254,
+          1254
+        ],
+        "alpha": true,
+        "normalized_canvas": [
+          256,
+          256
+        ]
+      },
+      "settings": {},
+      "originalApiSha256": null,
+      "nodeTypes": [],
+      "localSourceRecord": {
+        "workflow": "ChatGPT image generation in conversation; exact model/runtime parameters unavailable."
+      }
     }
   ],
   "assets": [
@@ -18873,6 +18914,36 @@
       "evidence": "conversation_generated_candidate",
       "chain": [
         "chatgpt-m3-cup-candidate"
+      ],
+      "originalSourcePNG": {
+        "sandboxRelativePath": "workspace generated image, ChatGPT conversation",
+        "sha256": null
+      },
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": false,
+        "RGBAComparedToSourcePNG": false,
+        "note": "alpha-cropped/resized to 256×256 canvas for tile normalization"
+      }
+    },
+    {
+      "id": "RM-M3-QUILL-CHATGPT-CANDIDATE-V1",
+      "title": "Raven Match-3 · Перо (кандидат)",
+      "kind": "tile_candidate",
+      "group": "Match-3",
+      "status": "pending_review",
+      "image": "assets/raven/match3/generated/quill-chatgpt-candidate-v1.png",
+      "width": 256,
+      "height": 256,
+      "sha256": "0b4074adb4cacbe8fb9cb013777263ce181ff514c09f386f0ba55edd627b1196",
+      "preview": null,
+      "recipeId": "chatgpt-m3-quill-candidate",
+      "pose": "curved_three_quarter_view",
+      "emotion": null,
+      "evidence": "conversation_generated_candidate",
+      "chain": [
+        "chatgpt-m3-quill-candidate"
       ],
       "originalSourcePNG": {
         "sandboxRelativePath": "workspace generated image, ChatGPT conversation",
