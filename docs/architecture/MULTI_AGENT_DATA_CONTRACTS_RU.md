@@ -36,3 +36,9 @@
 - `scripts/raven/raven_optional_campaign_controller.gd` owns the **read-only** optional-level list, ordering by authored `campaignIndex`, unlock indicators, localized return control, and matching optional step descriptors. Tests: `tests/raven/optional_campaign_controller_smoke.gd` + existing main-menu and game-loop smokes.
 - `vertical_slice.gd` remains the host for scene transitions, state and match3 game lifecycle; **no** reward/save authority moved. `RavenReducer`/`RavenCampaignStore` are the only progression authority.
 - Further separation of board lifecycle and booster persistence is a later task, not included in this controller extraction. Preserve `RM-LVL-101..122` IDs, save schema v1, screen labels, RU/BE/EN return strings and existing mobile incoming flow.
+
+## 2026-11-04 — Match-3 session transaction boundary (R2b)
+- `scripts/raven/raven_match3_session.gd` creates/reopens a UPDS-based Raven board from an approved level + `match3Checkpoint`, and prepares reducer-backed snapshot transactions for booster spends, per-move checkpoints and win rewards.
+- `vertical_slice.gd` still owns UI, audio, button flow, scene routing, event serial and board repaint after a failed save. The session component never writes a separate save file and has no permissions to mutate VN/Map campaign state directly.
+- `RavenReducer` and `RavenCampaignStore` remain the sole campaign authorities; schemaVersion stays 1. Tests: `match3_session_smoke.gd`, `game_loop_characterization_smoke.gd`, `match3_checkpoint_smoke.gd`.
+- Further decomposition of Match-3 view/booster presentation is postponed until the current transaction boundary has passed exact-head CI and owner review. No automatic acceptance of gameplay/visual balance.

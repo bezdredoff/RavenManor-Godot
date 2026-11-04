@@ -5,7 +5,7 @@ const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
-const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
+const Match3Session = preload("res://scripts/raven/raven_match3_session.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
@@ -296,12 +296,7 @@ func _apply_accessibility_settings() -> void:
 func _render_match3() -> void:
 	var level := _level(str(step.level))
 	if match_game == null or match_game.level_data.id != level.id:
-		match_game = Match3.new(level)
-		var checkpoint: Dictionary = state.get("match3Checkpoint", {})
-		if str(checkpoint.get("levelId", "")) == str(level.id):
-			if not match_game.restore_history(checkpoint.get("actions", [])):
-				push_warning("Invalid Match-3 checkpoint; starting level afresh")
-		match_game.checkpoint_changed.connect(_checkpoint_match3)
+		match_game = Match3Session.open(level, state, _checkpoint_match3)
 	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
 	var booster_bar := HBoxContainer.new()
 	booster_bar.name = "RavenBoosterBar"
@@ -391,82 +386,44 @@ func _booster_label(kind: String) -> String:
 	return _booster_copy(kind)
 
 
-func _apply_pending_booster_cost(updated: Dictionary) -> bool:
-	if match_game == null or match_game.move_history.is_empty():
-		return true
-	var last: Dictionary = match_game.move_history.back()
-	var kind := "hammer" if str(last.get("kind", "")) == "booster" else "shuffle" if str(last.get("kind", "")) == "shuffle" else ""
-	if kind.is_empty():
-		return true
-	var action_count: int = match_game.move_history.size()
-	var event := {"eventId": "booster-%s-%d-%d" % [step.id, state.revision, action_count], "type": "booster_spent", "kind": kind}
-	var reduced: Dictionary = Reducer.apply(updated, event)
-	if not reduced.get("ok", false):
-		return false
-	updated.clear()
-	updated.merge(reduced.state, true)
-	return true
-
-
 func _checkpoint_match3() -> void:
 	if match_game == null:
 		return
-	booster_action_saved = false if not match_game.move_history.is_empty() and str(match_game.move_history.back().get("kind", "")) in ["booster", "shuffle"] else true
-	if str(match_game.state) == "won":
-		booster_action_saved = true # _complete_level commits reward, booster spend and checkpoint removal together.
+	var result: Dictionary = Match3Session.checkpoint(match_game, state,
+		str(step.id), str(step.level), store)
+	booster_action_saved = bool(result.get("boosterActionSaved", true))
+	if result.get("ok", false):
+		state = result.get("state", state)
 		return
-	var updated := state.duplicate(true)
-	updated.match3Checkpoint = {"levelId": str(step.level), "actions": match_game.move_history.duplicate(true)}
-	if not _apply_pending_booster_cost(updated):
-		_show_save_error()
-		return
-	if store.save_campaign(updated):
-		state = updated
-		booster_action_saved = true
-	else:
-		match_game._replaying = true
-		var previous_actions: Array = state.get("match3Checkpoint", {}).get("actions", [])
-		match_game.restore_history(previous_actions)
-		match_game._replaying = false
+	if str(result.get("reason", "")) == "save":
 		var board: Variant = _board_view()
 		if board != null:
 			board._paint_live()
-		_show_save_error()
+	_show_save_error()
+
 
 func _complete_level() -> void:
-	# Persist the reward and checkpoint removal as one canonical snapshot.
 	event_serial += 1
-	var event := {"eventId": "vs-%s-%d-%d" % [step.id, state.revision, event_serial],
-		"type": "level_won", "levelId": str(step.level)}
-	var result: Dictionary = Reducer.apply(state, event)
+	var result: Dictionary = Match3Session.complete(match_game, state,
+		str(step.id), str(step.level), event_serial, store)
 	if not result.get("ok", false):
-		var failed_board: Variant = _board_view()
-		if failed_board != null:
-			failed_board._completed = false
-		push_error("Match-3 completion rejected")
-		return
-	var updated: Dictionary = result.state
-	if not _apply_pending_booster_cost(updated):
+		var reason: String = str(result.get("reason", ""))
+		if reason == "rejected":
+			var failed_board: Variant = _board_view()
+			if failed_board != null:
+				failed_board._completed = false
+			push_error("Match-3 completion rejected")
+			return
+		if reason == "save":
+			var board: Variant = _board_view()
+			if board != null:
+				board._paint_live()
+				board._completed = false
 		_show_save_error()
 		return
-	updated.match3Checkpoint = {}
-	if not store.save_campaign(updated):
-		match_game._replaying = true
-		match_game.restore_history(state.get("match3Checkpoint", {}).get("actions", []))
-		match_game._replaying = false
-		var board: Variant = _board_view()
-		if board != null:
-			board._paint_live()
-			board._completed = false
-		_show_save_error()
-		return
-	state = updated
+	state = result.state
 	match_game = null
-	if optional_campaign:
-		_render()
-		return
 	_render()
-
 
 func _open_optional_campaign() -> void:
 	optional_campaign = true
