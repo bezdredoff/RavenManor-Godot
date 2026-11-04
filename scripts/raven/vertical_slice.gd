@@ -30,6 +30,7 @@ var vn_player: RefCounted
 var vn_view: Control
 var selected := -1
 var event_serial := 0
+var optional_campaign := false
 var content: Dictionary
 var technical_shell: MarginContainer
 var vn_frame: Control
@@ -94,6 +95,7 @@ func _build_shell() -> void:
 	_add_button(footer, MenuCopy.text("settings", preferences.locale), _open_settings)
 	onboarding_button = _add_button(footer, str(ONBOARDING_LABEL.get(preferences.locale, ONBOARDING_LABEL.ru)), _open_onboarding)
 	_add_button(footer, "Save", _save)
+	_add_button(footer, "Кампания Match-3", _open_optional_campaign)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
 	locale_selector = OptionButton.new()
@@ -135,6 +137,9 @@ func _render() -> void:
 	for child in body.get_children():
 		body.remove_child(child)
 		child.queue_free()
+	if optional_campaign:
+		_render_optional_campaign()
+		return
 	step = Director.next_step(state)
 	if step.get("kind") == "done":
 		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
@@ -297,7 +302,52 @@ func _complete_level() -> void:
 		return
 	state = updated
 	match_game = null
+	if optional_campaign:
+		_render()
+		return
 	_render()
+
+
+func _open_optional_campaign() -> void:
+	optional_campaign = true
+	match_game = null
+	_render()
+
+
+func _render_optional_campaign() -> void:
+	step = {"id": "optional-campaign", "kind": "campaign", "title": "Подготовка имущества"}
+	technical_shell.visible = true
+	vn_frame.visible = false
+	status.text = "Дополнительные уровни · награда за подготовку не начисляется"
+	body.add_child(_paragraph("Match-3 помогает осмотреть и подготовить вещи. Ремонт выполняет специалист."))
+	var completed: Array = state.get("firstClearLevels", [])
+	var next_index := -1
+	for index in range(22):
+		if not completed.has("RM-LVL-%03d" % (101 + index)):
+			next_index = index
+			break
+	for index in range(22):
+		var level_id := "RM-LVL-%03d" % (101 + index)
+		var unlocked := index == 0 or completed.has("RM-LVL-%03d" % (100 + index))
+		var done := completed.has(level_id)
+		var prefix := "ДАЛЕЕ · " if index == next_index else ""
+		var button := _add_button(body, "%s%s · %s" % [prefix, "✓ Уровень %02d" % (index + 1) if done else ("Уровень %02d" % (index + 1) if unlocked else "Закрыто"), "Повторить" if done else "Играть"], _start_optional_level.bind(level_id))
+		button.disabled = not unlocked
+	_add_button(body, "Вернуться к истории", func():
+		optional_campaign = false
+		match_game = null
+		_render())
+
+
+func _start_optional_level(level_id: String) -> void:
+	var level := _level(level_id)
+	if level.is_empty(): return
+	optional_campaign = true
+	step = {"id": "optional-" + level_id, "kind": "match3", "level": level_id, "title": str(level.title)}
+	for child in body.get_children():
+		body.remove_child(child)
+		child.queue_free()
+	_render_match3()
 
 
 func _complete_action() -> void:
