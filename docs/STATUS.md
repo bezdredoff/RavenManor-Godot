@@ -18,6 +18,10 @@ An optional schema-v1 `vnReadLines` field stores canonical completed line IDs in
 
 Godot 4.7.2 targeted read/Skip smoke PASS: JSON/old saves, invalid IDs, first-read/reread, choice/Match-3 barriers, failed writes, restart/New Game, unchanged wallet/reducer events. Full `scripts/check.sh` PASS on Godot 4.7.2 with isolated XDG_DATA_HOME. [PR #176](https://github.com/bezdredoff/RavenManor-Godot/pull/176) exact-head CI pending. Stacked on PR #174; merge shell before this increment. Runbook: [Wave 2](production/UPDS_UI_WAVE2_READ_SKIP_20261103_RU.md). Physical device/user acceptance and full choice UI remain separate.
 
+# 2026-11-04 · CODE-04-01 — runtime language/audio/accessibility settings
+
+PR candidate extends the existing UPDS-derived preference adapter with backward-compatible persistent Reduced Motion, adds localized settings access from the live VN and Match-3 screens, and applies the preference immediately to Raven VN FX and Match-3 motion. Locale changes re-render copy without advancing the current line or changing campaign revision; settings overlay locks game input. The main menu exposes the same Reduced Motion preference. Preference controls store values only; audio/haptics playback remains the separate CODE-04-02 runtime bridge. No art/audio assets added. Full `scripts/check.sh` passed on Godot 4.7.2; owner/device acceptance remains open. Donor pins, tests and rollback: [CODE-04-01 runbook](production/CODE_04_01_RUNTIME_SETTINGS_RU.md).
+
 # 2026-11-03 · GAME-UI-01 Wave 1 — donor-derived VN shell
 
 The game VN uses its own fullscreen/desktop-centred frame rather than the debug scroll wrapper. UPDS `_layout_vn` and `_build_controls` geometry is extracted/adapted into `scripts/shared/upds/vn_shell_layout.gd`, keeping Raven artwork, staging, FX and campaign authority. The view survives line changes; pause/history/locale popups suspend input/Auto. Touch plus emulated mouse is guarded. Skip semantics remain a separate Wave 2 change.

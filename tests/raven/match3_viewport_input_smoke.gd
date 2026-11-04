@@ -39,6 +39,10 @@ func _run() -> void:
 	var game := Game.new(level)
 	board.setup(game, RavenTheme.placeholder())
 	board.reduced_motion = true
+	board.set_reduced_motion(false)
+	assert(not board.reduced_motion)
+	board.set_reduced_motion(true)
+	assert(board.reduced_motion)
 	await process_frame
 	await process_frame
 	var hint: Dictionary = game.get_hint_move()
@@ -71,6 +75,13 @@ func _run() -> void:
 	board.help_dialog.hide()
 	await process_frame
 	assert(not board.help_open and not board.hint_button.disabled, "Esc left Help state locked")
+	board.set_interaction_blocked(true)
+	_mouse(start, true)
+	_mouse(finish, false)
+	await process_frame
+	assert(game.moves_left == blocked_moves and board.hint_button.disabled, "External settings modal failed to block board")
+	board.set_interaction_blocked(false)
+	assert(not board.hint_button.disabled, "Closing external modal did not restore controls")
 	hint = game.get_hint_move()
 	start = board.cells[int(hint.first)].get_global_rect().get_center()
 	finish = board.cells[int(hint.second)].get_global_rect().get_center()

@@ -5,9 +5,9 @@ const Preferences = preload("res://scripts/shared/upds/player_preferences.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
-	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры"],
-	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні"],
-	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game"]
+	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию"],
+	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю"],
+	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion"]
 }
 const BACKDROP := "res://assets/raven/vn_backgrounds/road/dusk_mist.webp"
 var store := Store.new()
@@ -154,6 +154,14 @@ func _show_settings() -> void:
 		toggle.button_pressed = bool(audio[field])
 		toggle.toggled.connect(func(value: bool): _update_audio({field: value}))
 		settings_panel.add_child(toggle)
+	var reduced_motion := CheckButton.new()
+	reduced_motion.name = "ReducedMotion"
+	reduced_motion.text = _tr(15)
+	reduced_motion.button_pressed = bool(prefs.accessibility.reducedMotion)
+	reduced_motion.toggled.connect(func(value: bool) -> void:
+		if prefs.update_accessibility({"reducedMotion": value}) != OK:
+			message.text = _tr(13))
+	settings_panel.add_child(reduced_motion)
 	var back := Button.new()
 	back.text = _tr(12)
 	back.custom_minimum_size.y = 52

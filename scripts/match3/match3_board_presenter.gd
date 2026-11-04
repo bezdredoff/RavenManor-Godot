@@ -370,9 +370,28 @@ func _finish_gesture(position: Vector2) -> void:
 func toggle_motion() -> void:
 	if input_locked:
 		return
-	reduced_motion = not reduced_motion
+	set_reduced_motion(not reduced_motion)
+
+
+func set_reduced_motion(enabled: bool) -> void:
+	reduced_motion = enabled
+	if reduced_motion and is_instance_valid(motion_layer):
+		motion_layer.call("cancel_motions")
+		_clear_impacts()
 	motion_button.text = str(skin.get("motion_off" if reduced_motion else "motion_on", "Анимация"))
 	feedback.text = motion_button.text
+
+
+func set_interaction_blocked(blocked: bool) -> void:
+	input_locked = blocked
+	if blocked:
+		_gesture_index = -1
+		_gesture_kind = ""
+		_gesture_touch = -1
+		selected_index = -1
+		highlighted.clear()
+		_paint_selection()
+	_refresh_controls()
 
 
 func retry_level() -> void:
