@@ -18,6 +18,9 @@ const MenuCopy = preload("res://scripts/raven/raven_menu_copy.gd")
 const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
 const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
+const MAIN_MENU_SCENE := "res://scenes/raven/main_menu.tscn"
+const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
+const CAMPAIGN_RETURN_COPY := {"ru": "В главное меню", "be": "У галоўнае меню", "en": "To Main Menu"}
 
 var preferences := Copy.new()
 var audio_runtime: Variant
@@ -31,6 +34,7 @@ var vn_view: Control
 var selected := -1
 var event_serial := 0
 var optional_campaign := false
+var return_to_main_menu_after_campaign := false
 var active_booster := ""
 var booster_action_saved := true
 var content: Dictionary
@@ -58,6 +62,9 @@ const BOOSTER_COPY := {
 
 
 func _ready() -> void:
+	return_to_main_menu_after_campaign = bool(get_tree().get_meta(CAMPAIGN_ROUTE_META, false))
+	if get_tree().has_meta(CAMPAIGN_ROUTE_META):
+		get_tree().remove_meta(CAMPAIGN_ROUTE_META)
 	audio_runtime = get_node("/root/RavenAudio")
 	preferences = audio_runtime.preferences
 	audio_runtime.set_scene("vn")
@@ -65,6 +72,8 @@ func _ready() -> void:
 	state = store.load_campaign()
 	_build_shell()
 	_render()
+	if return_to_main_menu_after_campaign:
+		_open_optional_campaign()
 
 
 func _build_shell() -> void:
@@ -484,10 +493,17 @@ func _render_optional_campaign() -> void:
 		var prefix := "ДАЛЕЕ · " if index == next_index else ""
 		var button := _add_button(body, "%s%s · %s" % [prefix, "✓ Уровень %02d" % (index + 1) if done else ("Уровень %02d" % (index + 1) if unlocked else "Закрыто"), "Повторить" if done else "Играть"], _start_optional_level.bind(level_id))
 		button.disabled = not unlocked
-	_add_button(body, "Вернуться к истории", func():
-		optional_campaign = false
-		match_game = null
-		_render())
+	_add_button(body, "Вернуться к истории" if not return_to_main_menu_after_campaign else str(CAMPAIGN_RETURN_COPY.get(preferences.locale, CAMPAIGN_RETURN_COPY.ru)), _leave_optional_campaign)
+
+
+func _leave_optional_campaign() -> void:
+	if return_to_main_menu_after_campaign:
+		return_to_main_menu_after_campaign = false
+		get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+		return
+	optional_campaign = false
+	match_game = null
+	_render()
 
 
 func _start_optional_level(level_id: String) -> void:

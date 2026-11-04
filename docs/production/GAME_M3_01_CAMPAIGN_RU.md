@@ -29,13 +29,19 @@ Levels become stable Raven IDs `RM-LVL-101` through `RM-LVL-122`; `RM-LVL-001..0
 
 The optional campaign list is reachable from the existing vertical-slice footer. It unlocks the first level initially and each next level after first clear, shows completed replay and marks the next level. Starting or replaying a bonus level uses the existing Match-3 game/presenter. First-clear completion goes through `RavenReducer`; zero-reward bonus IDs do not satisfy existing story gates, which check `RM-LVL-001..003`. The list and game use the same Raven snapshot; there is no parallel campaign save.
 
+## Main-menu entry and UPDS reuse
+
+UPDS menu reference: `bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781`, `scripts/ui/main_menu.gd` blob `76e47a354b1ca42b4f029278382ad1e0070e7d09`; its Campaign action calls `_open_campaign()` and the screen returns via `back_requested` or starts a level via `level_requested`. Campaign list reference: `scripts/match3/match3_campaign_screen.gd` blob `5af00e5c02eec14a25b3b1a5aa1d0f594e90927a`.
+
+Raven adapts that navigation rather than importing the UPDS menu/session: the localized `Match3Levels` action in `scripts/raven/main_menu.gd` requests the existing optional campaign in `vertical_slice.tscn`. A one-shot SceneTree route flag opens the campaign list without stepping into the VN director. When entered from the player menu, its return action goes back to `main_menu.tscn`; when entered from inside the story slice, the existing return-to-story behavior remains. The test covers opening the 22-level list, launching `RM-LVL-101`, returning to the list and menu, and verifying that browsing/starting the level does not advance the campaign save or story beats. UPDS story/session data and match-3 presentation are not imported; Raven reducer/store remain authoritative.
+
 ## Reuse decision
 
 - Rules: **reuse-as-is**, current imported UPDS Match3Game and Raven facade.
 - Campaign progression: **adapter**, taking donor lock/replay/next behavior and binding it to Raven `firstClearLevels`.
 - Campaign visuals: **adapt**, using existing Raven controls, palette and tile pool. UPDS screen assets, school story, narrative/session identifiers, and source labels are excluded.
 
-Full Godot validation, CI, device QA and owner acceptance remain pending for this candidate.
+The campaign adapter is merged; direct main-menu navigation is a small follow-up. Automated Godot verification does not replace real-device input/art QA or owner acceptance.
 
 ## Existing Match-3 artwork and campaign backdrop
 

@@ -6,17 +6,20 @@ const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
-	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть"],
-	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць"],
-	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects", "How to play"]
+	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть", "Уровни Match-3", "Не удалось открыть уровни Match-3"],
+	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць", "Узроўні Match-3", "Не ўдалося адкрыць узроўні Match-3"],
+	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects", "How to play", "Match-3 Levels", "Could not open Match-3 levels"]
 }
 const BACKDROP := "res://assets/raven/vn_backgrounds/road/dusk_mist.webp"
+const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
 var store := Store.new()
 var prefs := Preferences.new()
 var audio_runtime: Variant
 var column: VBoxContainer
 var message: Label
 var continue_button: Button
+var action_buttons: Array[Button] = []
+var action_copy_indices: Array[int] = []
 var settings_panel: Control
 var settings_container: CenterContainer
 var confirm: ConfirmationDialog
@@ -59,11 +62,12 @@ func _ready() -> void:
 	column.add_child(heading)
 	var rule := HSeparator.new()
 	column.add_child(rule)
-	_add_action(0, _new_game)
-	continue_button = _add_action(1, _continue_game)
-	_add_action(2, _show_settings)
-	_add_action(3, func(): get_tree().change_scene_to_file(LAB))
-	_add_action(4, _show_onboarding)
+	_add_action("NewGame", 0, _new_game)
+	continue_button = _add_action("Continue", 1, _continue_game)
+	_add_action("Match3Levels", 19, _open_match3_levels)
+	_add_action("Settings", 2, _show_settings)
+	_add_action("PrototypeLab", 3, func(): get_tree().change_scene_to_file(LAB))
+	_add_action("HowToPlay", 18, _show_onboarding)
 	message = Label.new()
 	message.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -78,14 +82,17 @@ func _ready() -> void:
 func _tr(index: int) -> String:
 	return COPY.get(prefs.locale, COPY["ru"])[index]
 
-func _add_action(index: int, callback: Callable) -> Button:
+func _add_action(action_name: String, copy_index: int, callback: Callable) -> Button:
 	var button := Button.new()
-	button.name = ["NewGame", "Continue", "Settings", "PrototypeLab", "HowToPlay"][index]
+	button.name = action_name
+	button.text = _tr(copy_index)
 	button.custom_minimum_size.y = 52
 	button.add_theme_font_size_override("font_size", 18)
 	button.pressed.connect(func() -> void: audio_runtime.play_effect("uiClick"))
 	button.pressed.connect(callback)
 	column.add_child(button)
+	action_buttons.append(button)
+	action_copy_indices.append(copy_index)
 	return button
 
 func _has_progress() -> bool:
@@ -93,9 +100,8 @@ func _has_progress() -> bool:
 	return int(snapshot.get("revision", 0)) > 0 or not snapshot.get("firstClearLevels", []).is_empty() or not snapshot.get("storyBeatsSeen", []).is_empty() or not snapshot.get("completedRestorations", []).is_empty() or not snapshot.get("appliedEventIds", []).is_empty()
 
 func _refresh() -> void:
-	for index in range(4):
-		column.get_child(index + 2).text = _tr(index)
-	column.get_child(6).text = _tr(18)
+	for index in action_buttons.size():
+		action_buttons[index].text = _tr(action_copy_indices[index])
 	continue_button.disabled = not _has_progress()
 	confirm.dialog_text = _tr(4)
 	confirm.ok_button_text = _tr(5)
@@ -127,6 +133,13 @@ func _continue_game() -> void:
 		return
 	audio_runtime.set_scene("vn")
 	_start()
+
+func _open_match3_levels() -> void:
+	get_tree().set_meta(CAMPAIGN_ROUTE_META, true)
+	var error := get_tree().change_scene_to_file(SLICE)
+	if error != OK:
+		get_tree().remove_meta(CAMPAIGN_ROUTE_META)
+		message.text = _tr(20)
 
 func _show_onboarding() -> void:
 	if is_instance_valid(onboarding_dialog):
