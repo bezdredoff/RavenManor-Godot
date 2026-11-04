@@ -114,23 +114,25 @@ func _build() -> void:
 	# header, separate from the lower dialogue/nameplate shell.
 	header_menu = Button.new()
 	header_menu.name = "VNHeaderMenu"
-	header_menu.text = "☰"
+	header_menu.text = "..."
 	header_menu.tooltip_text = "Menu"
 	header_menu.pressed.connect(func() -> void:
 		if _menu_callback.is_valid(): _menu_callback.call())
 	add_child(header_menu)
 	header_history = Button.new()
 	header_history.name = "VNHeaderHistory"
-	header_history.text = "▤"
+	header_history.text = "Log"
 	header_history.tooltip_text = "History"
 	header_history.pressed.connect(_show_history)
 	add_child(header_history)
 	header_settings = Button.new()
 	header_settings.name = "VNHeaderSettings"
-	header_settings.text = "⚙"
+	header_settings.text = "RU"
 	header_settings.tooltip_text = "Settings"
 	header_settings.pressed.connect(func() -> void:
 		if _settings_callback.is_valid(): _settings_callback.call())
+	for action in [header_menu, header_history, header_settings]:
+		action.add_theme_font_size_override("font_size", 12)
 	add_child(header_settings)
 
 	dialogue_panel = Panel.new()
@@ -313,6 +315,7 @@ func show_beat(beat_id: String, speaker: String, line_text: String, line_progres
 	scene_id = beat_id
 	_advance_callback = on_next
 	_display_locale = Copy.normalize_locale(locale)
+	_refresh_control_copy()
 	_full_text = line_text
 	_line_progress = line_progress
 	_page_index = 0
@@ -458,14 +461,14 @@ func _skip_read_lines() -> void:
 
 func _toggle_auto() -> void:
 	_auto_mode = not _auto_mode
-	auto_button.text = "Auto ✓" if _auto_mode else "Auto"
+	auto_button.text = _auto_caption()
 	_schedule_auto()
 
 
 func _stop_auto() -> void:
 	_auto_mode = false
 	if _auto_timer != null: _auto_timer.stop()
-	if auto_button != null: auto_button.text = "Auto"
+	if auto_button != null: auto_button.text = _auto_caption()
 
 
 func _schedule_auto() -> void:
@@ -526,3 +529,22 @@ func _unhandled_key_input(event: InputEvent) -> void:
 	if is_visible_in_tree() and not event.is_echo() and event.is_action_pressed("ui_accept"):
 		_advance_from_input()
 		get_viewport().set_input_as_handled()
+
+
+func _auto_caption() -> String:
+	var caption: String = {"ru": "Авто", "be": "Аўта", "en": "Auto"}.get(_display_locale, "Auto")
+	return caption + (" +" if _auto_mode else "")
+
+
+func _refresh_control_copy() -> void:
+	# The existing Web font lacks the old Unicode menu/history/gear glyphs.
+	# Plain text keeps actions legible without adding font or icon assets.
+	header_menu.tooltip_text = {"ru": "Меню", "be": "Меню", "en": "Menu"}.get(_display_locale, "Menu")
+	header_history.text = {"ru": "Ист.", "be": "Гіст.", "en": "Log"}.get(_display_locale, "Log")
+	header_history.tooltip_text = {"ru": "История", "be": "Гісторыя", "en": "History"}.get(_display_locale, "History")
+	header_settings.text = _display_locale.to_upper()
+	header_settings.tooltip_text = {"ru": "Язык", "be": "Мова", "en": "Language"}.get(_display_locale, "Language")
+	skip_button.text = {"ru": "Пропуск", "be": "Пропуск", "en": "Skip"}.get(_display_locale, "Skip")
+	skip_button.tooltip_text = {"ru": "Только прочитанные реплики; остановка перед новым текстом и выбором", "be": "Толькі прачытаныя рэплікі; прыпынак перад новым тэкстам і выбарам", "en": "Previously read lines only; stop at unread text and choices"}.get(_display_locale, "")
+	auto_button.text = _auto_caption()
+	auto_button.tooltip_text = {"ru": "Автоматическое чтение", "be": "Аўтаматычнае чытанне", "en": "Automatic reading"}.get(_display_locale, "Auto")

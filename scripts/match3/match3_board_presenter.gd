@@ -204,12 +204,21 @@ func _build() -> void:
 	help_dialog = AcceptDialog.new()
 	help_dialog.name = "Match3HelpModal"
 	help_dialog.title = str(skin.get("help_title", "Как играть"))
-	help_dialog.dialog_text = "\n\n".join([
+	var help_copy := "\n\n".join([
 		str(skin.get("help_intro", "")),
 		str(skin.get("help_blockers", "")),
 		str(skin.get("help_specials", "")),
 		str(skin.get("help_goal", ""))
 	])
+	# UPDS help is a bounded scrollable card. AcceptDialog.dialog_text uses
+	# an unwrapped Label and can force the Web popup wider than the canvas.
+	var help_text := RichTextLabel.new()
+	help_text.name = "Match3HelpText"
+	help_text.bbcode_enabled = false
+	help_text.text = help_copy
+	help_text.scroll_active = true
+	help_text.custom_minimum_size = Vector2(240, 200)
+	help_dialog.add_child(help_text)
 	help_dialog.min_size = Vector2i(280, 340)
 	# Includes Esc/cancel, window close and programmatic hide. A modal must
 	# never leave the board permanently locked after disappearing.
@@ -426,6 +435,12 @@ func _input(event: InputEvent) -> void:
 	# interpret both streams as two independent tile selections.
 	if kind == "touch":
 		_last_touch_ms = Time.get_ticks_msec()
+		# Web browsers may dispatch a compatibility mouse press immediately
+		# before the real touch event. Let the finger take ownership of that
+		# gesture, then suppress the trailing mouse stream below.
+		if is_press and _gesture_kind == "mouse":
+			_gesture_index = -1
+			_gesture_kind = ""
 	elif Time.get_ticks_msec() - _last_touch_ms < 650:
 		return
 	if is_press:
