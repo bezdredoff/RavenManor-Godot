@@ -144,7 +144,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          python3 -m pip install --quiet numpy
+          # Separate runners no longer inherit Pillow from the Room Builder job.
+          python3 -m pip install --quiet numpy pillow
           python3 scripts/raven/tools/build_art_handbook.py --check
           python3 -m unittest scripts/raven/tools/test_art_handbook.py
           node --check art-handbook/app.js
