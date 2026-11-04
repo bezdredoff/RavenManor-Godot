@@ -36,3 +36,9 @@ The optional campaign list is reachable from the existing vertical-slice footer.
 - Campaign visuals: **adapt**, using existing Raven controls, palette and tile pool. UPDS screen assets, school story, narrative/session identifiers, and source labels are excluded.
 
 Full Godot validation, CI, device QA and owner acceptance remain pending for this candidate.
+
+## Existing Match-3 artwork and campaign backdrop
+
+Six PNGs and the board surface are reused from the original `bezdredoff/RavenManor` repository at commit `643a8ec5d39812ec4a00294df6378b12d165280c` (files under `src/assets/tiles/*-v2.png` and `src/assets/board/board-surface-v2.png`). They are copied to `assets/raven/match3/legacy_art/`; no new images were generated. Raven mappings are candle←candle, key←key, rose←rose, brooch←crystal, raven←bat, book←scroll. Cup and quill retain the existing text fallback because the source set has no corresponding art.
+
+The board surface is drawn beneath cells at 48% opacity so the scene remains visible through it. Campaign mode uses the already approved VN `hall/evening_dusty.webp` background and a 34% dark wash for readable controls. The visual approach follows UPDS campaign background compositing: its source background is modulated to 0.24 opacity; here the VN background is the scene layer while the Raven board surface itself is translucent over it.

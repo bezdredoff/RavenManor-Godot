@@ -84,6 +84,15 @@ func _build() -> void:
 	board_area.size = extent
 	board_area.mouse_filter = Control.MOUSE_FILTER_IGNORE
 	center.add_child(board_area)
+	var board_surface := TextureRect.new()
+	board_surface.name = "RavenBoardSurface"
+	board_surface.texture = load("res://assets/raven/match3/legacy_art/board-surface-v2.png")
+	board_surface.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	board_surface.stretch_mode = TextureRect.STRETCH_SCALE
+	board_surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	board_surface.modulate = Color(1.0, 1.0, 1.0, 0.48)
+	board_area.add_child(board_surface)
+	board_surface.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	grid = GridContainer.new()
 	grid.name = "BoardGrid"
@@ -123,6 +132,18 @@ func _build() -> void:
 		label.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		stack.add_child(label)
 		label.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		var tile_image := TextureRect.new()
+		tile_image.name = "TileImage"
+		tile_image.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+		tile_image.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_CENTERED
+		tile_image.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		tile_image.visible = false
+		stack.add_child(tile_image)
+		tile_image.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		tile_image.offset_left = 3
+		tile_image.offset_top = 3
+		tile_image.offset_right = -3
+		tile_image.offset_bottom = -3
 		var special_badge := Label.new()
 		special_badge.name = "SpecialBadge"
 		special_badge.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -690,6 +711,11 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 		var blocker_layers := int(blockers[i])
 		var glyph := stack.get_node("Glyph") as Label
 		glyph.text = symbol
+		var tile_image := stack.get_node("TileImage") as TextureRect
+		var tile_images: Dictionary = skin.get("tile_images", {})
+		tile_image.texture = tile_images.get(tile, null) as Texture2D
+		tile_image.visible = tile_image.texture != null and not tile.is_empty() and str(ingredients[i]).is_empty()
+		glyph.visible = not tile_image.visible
 		var special_badge := stack.get_node("SpecialBadge") as Label
 		special_badge.text = str(skin.get("special_badges", {}).get(special, "✦"))
 		special_badge.visible = not special.is_empty()

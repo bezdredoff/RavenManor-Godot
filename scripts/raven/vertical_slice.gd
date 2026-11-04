@@ -33,6 +33,8 @@ var event_serial := 0
 var optional_campaign := false
 var content: Dictionary
 var technical_shell: MarginContainer
+var campaign_backdrop: TextureRect
+var campaign_backdrop_shade: ColorRect
 var vn_frame: Control
 var body: VBoxContainer
 var status: Label
@@ -61,6 +63,22 @@ func _ready() -> void:
 func _build_shell() -> void:
 	set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	var bg := ColorRect.new(); bg.color = Color("0d1118"); bg.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT); add_child(bg)
+	campaign_backdrop = TextureRect.new()
+	campaign_backdrop.name = "RavenCampaignBackdrop"
+	campaign_backdrop.texture = load("res://assets/raven/vn_backgrounds/hall/evening_dusty.webp")
+	campaign_backdrop.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	campaign_backdrop.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
+	campaign_backdrop.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	campaign_backdrop.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	campaign_backdrop.visible = false
+	add_child(campaign_backdrop)
+	campaign_backdrop_shade = ColorRect.new()
+	campaign_backdrop_shade.name = "RavenCampaignBackdropShade"
+	campaign_backdrop_shade.color = Color(0.05, 0.04, 0.08, 0.34)
+	campaign_backdrop_shade.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+	campaign_backdrop_shade.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	campaign_backdrop_shade.visible = false
+	add_child(campaign_backdrop_shade)
 	var margin := MarginContainer.new(); margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	technical_shell = margin
 	var insets := Vector4.ZERO
@@ -137,6 +155,8 @@ func _render() -> void:
 	for child in body.get_children():
 		body.remove_child(child)
 		child.queue_free()
+	campaign_backdrop.visible = optional_campaign
+	campaign_backdrop_shade.visible = optional_campaign
 	if optional_campaign:
 		_render_optional_campaign()
 		return
