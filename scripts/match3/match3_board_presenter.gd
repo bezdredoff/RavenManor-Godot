@@ -283,11 +283,18 @@ func _build() -> void:
 
 
 func _on_board_resized() -> void:
+	# Deferred resize notifications can arrive after a board is detached during
+	# level completion or a scene change. The viewport is no longer available.
+	if not is_inside_tree():
+		return
+	var viewport := get_viewport()
+	if viewport == null:
+		return
 	# The VBox/ScrollContainer determines the true available content width.
 	# One deferred reflow avoids reacting to intermediate zero-width layout.
 	var width := size.x
 	if width < 100.0:
-		width = MobileLayout.content_width(get_viewport().get_visible_rect().size.x)
+		width = MobileLayout.content_width(viewport.get_visible_rect().size.x)
 	apply_available_width(width)
 
 
