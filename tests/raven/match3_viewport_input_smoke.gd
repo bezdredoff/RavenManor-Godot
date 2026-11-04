@@ -58,6 +58,8 @@ func _run() -> void:
 	board.toggle_help()
 	await process_frame
 	assert(board.help_open and board.help_dialog.visible and not board.help_panel.visible)
+	assert(board.help_dialog.size.x <= root.size.x, "Help exceeds phone viewport")
+	assert((board.help_dialog.get_node("Match3HelpText") as RichTextLabel).scroll_active)
 	assert(board.size == before_size, "Help changed board layout")
 	var blocked_moves: int = game.moves_left
 	_mouse(start, true)
