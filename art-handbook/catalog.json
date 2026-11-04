@@ -18830,6 +18830,71 @@
       "path": "docs/VN_WATERCOLOR_PILOT.md"
     }
   ],
+  "reusedAssets": [
+    {
+      "id": "RM-M3-LEGACY-CANDLE",
+      "image": "assets/raven/match3/legacy_art/candle-v2.png",
+      "sha256": "c4e9415145237a6671d5cb8e802cc52d3cb34d379c4d456369166e9b083f688b",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/candle-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-KEY",
+      "image": "assets/raven/match3/legacy_art/key-v2.png",
+      "sha256": "6e771fd73545318786e597cb7b6e44fb50575f3ba1935b518eacfbd1ddd3167c",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/key-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-ROSE",
+      "image": "assets/raven/match3/legacy_art/rose-v2.png",
+      "sha256": "9a7714622354d30db2839525e938e089dc72b382883322d50248c5f8a342ab3c",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/rose-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-CRYSTAL",
+      "image": "assets/raven/match3/legacy_art/crystal-v2.png",
+      "sha256": "7ae596ef08362f2629281abc9e413815a0d4755ffc7e9d236852f722f4b92d29",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/crystal-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-BAT",
+      "image": "assets/raven/match3/legacy_art/bat-v2.png",
+      "sha256": "da709024f88018aeb65ec2fc1265198848eda05166abc78b76bdeda68ebd4973",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/bat-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-SCROLL",
+      "image": "assets/raven/match3/legacy_art/scroll-v2.png",
+      "sha256": "98807a0de7d1c2086f8af50d646cf19574b1a1929bbc70709ab515156773a5c1",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/tiles/scroll-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    },
+    {
+      "id": "RM-M3-LEGACY-BOARD-SURFACE",
+      "image": "assets/raven/match3/legacy_art/board-surface-v2.png",
+      "sha256": "9db7488de7c9f248d9f969bded171708a870b7f3263c5b3f3b516cca65a49260",
+      "sourceRepository": "bezdredoff/RavenManor",
+      "sourceCommit": "643a8ec5d39812ec4a00294df6378b12d165280c",
+      "sourcePath": "src/assets/board/board-surface-v2.png",
+      "reuseReason": "Existing Raven Manor Match-3 visual asset reused in the Godot port; no generation or pixel edits."
+    }
+  ],
   "environmentSnapshot": {
     "capturedAt": "2026-11-01T20:38:35.818159+00:00",
     "evidence": "Current workstation snapshot, not a claim that every historic run used the current installed package set.",
