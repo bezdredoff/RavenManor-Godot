@@ -47,3 +47,7 @@
 - `scripts/raven/raven_match3_booster_ui.gd` owns button labels, enabled/disabled presentation, localized copy RU/BE/EN, selected-hammer caption and target hint. Output controls retain their old node names; callbacks are supplied by the host, and no player state is modified here.
 - `vertical_slice.gd` continues to own button callbacks, Match-3 effects, UI/audio coordination and state updates returned by `raven_match3_session.gd`. Reducer/Store remain the only authority for rewards, booster spending and checkpoint commits.
 - Contract test: `tests/raven/match3_booster_ui_smoke.gd` plus existing session, gameplay and viewport tests. No player-facing UI redesign, schema migration or acceptance status changes in this R2c slice.
+
+## 2026-11-04 — CI sharding, PROC-006
+
+Новая политика в `docs/process/CI_SHARDING_20261104_RU.md`: data/governance, Godot runtime, Room Builder, art pipeline и Web packaging — независимые GitHub Actions jobs. Один required check `build` агрегирует их; main deploy возможен только после всех PASS. Godot smoke не удалены. Следующий срез — отдельная VN/Match-3/map разбивка Godot после подтверждённой интеграции.
