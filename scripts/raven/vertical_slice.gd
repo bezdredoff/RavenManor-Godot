@@ -17,6 +17,7 @@ const Copy = preload("res://scripts/raven/raven_production_localization.gd")
 const MenuCopy = preload("res://scripts/raven/raven_menu_copy.gd")
 const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
+const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 
 var preferences := Copy.new()
 var audio_runtime: Variant
@@ -36,6 +37,9 @@ var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
 var settings_dialog: Window
+var onboarding_dialog: Window
+var onboarding_button: Button
+const ONBOARDING_LABEL := {"ru": "Как играть", "be": "Як гуляць", "en": "How to play"}
 const PAUSE_COPY := {
 	"ru": ["Пауза", "Сохранить прогресс и выйти в главное меню?", "Сохранить и выйти", "Продолжить", "Не удалось сохранить прогресс. Выход отменён."],
 	"be": ["Паўза", "Захаваць прагрэс і выйсці ў галоўнае меню?", "Захаваць і выйсці", "Працягнуць", "Не ўдалося захаваць прагрэс. Выхад скасаваны."],
@@ -88,6 +92,7 @@ func _build_shell() -> void:
 	root.add_child(footer)
 	_add_button(footer, "☰ Меню", _open_pause)
 	_add_button(footer, MenuCopy.text("settings", preferences.locale), _open_settings)
+	onboarding_button = _add_button(footer, str(ONBOARDING_LABEL.get(preferences.locale, ONBOARDING_LABEL.ru)), _open_onboarding)
 	_add_button(footer, "Save", _save)
 	_add_button(footer, "Reload", _reload)
 	_add_button(footer, "Reset", _reset)
@@ -118,6 +123,11 @@ func _build_shell() -> void:
 	settings_dialog.locale_selected.connect(_on_settings_locale_selected)
 	settings_dialog.visibility_changed.connect(_on_settings_visibility_changed)
 	add_child(settings_dialog)
+	onboarding_dialog = Onboarding.new()
+	onboarding_dialog.name = "RavenFirstSessionGuide"
+	onboarding_dialog.setup(preferences.locale)
+	onboarding_dialog.visibility_changed.connect(_on_onboarding_visibility_changed)
+	add_child(onboarding_dialog)
 	preferences.accessibility_changed.connect(_apply_accessibility_settings)
 
 
@@ -209,12 +219,27 @@ func _on_settings_locale_selected(locale: String) -> void:
 
 
 func _on_settings_visibility_changed() -> void:
-	var blocked := settings_dialog.visible
+	var blocked := settings_dialog.visible or onboarding_dialog.visible
 	if is_instance_valid(vn_view):
 		vn_view.set_interaction_blocked(blocked)
 	var board := find_child("RavenMatch3Board", true, false)
 	if board != null and board.has_method("set_interaction_blocked"):
 		board.set_interaction_blocked(blocked)
+
+
+func _on_onboarding_visibility_changed() -> void:
+	var blocked := onboarding_dialog.visible or settings_dialog.visible
+	if is_instance_valid(vn_view):
+		vn_view.set_interaction_blocked(blocked)
+	var board := find_child("RavenMatch3Board", true, false)
+	if board != null and board.has_method("set_interaction_blocked"):
+		board.set_interaction_blocked(blocked)
+
+
+func _open_onboarding() -> void:
+	onboarding_dialog.set_locale(preferences.locale)
+	onboarding_dialog.open_centered()
+	_on_onboarding_visibility_changed()
 
 
 func _apply_accessibility_settings() -> void:
@@ -240,7 +265,7 @@ func _render_match3() -> void:
 	board_view.name = "RavenMatch3Board"
 	body.add_child(board_view)
 	board_view.setup(match_game, Match3Theme.placeholder())
-	board_view.set_interaction_blocked(is_instance_valid(settings_dialog) and settings_dialog.visible)
+	board_view.set_interaction_blocked((is_instance_valid(settings_dialog) and settings_dialog.visible) or (is_instance_valid(onboarding_dialog) and onboarding_dialog.visible))
 	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
 	board_view.audio_cue.connect(audio_runtime.play_effect)
 	board_view.level_won.connect(_complete_level)
@@ -377,6 +402,8 @@ func _switch_locale(index: int) -> void:
 		return
 	if preferences.set_locale(Copy.SUPPORTED_LOCALES[index]) == OK:
 		_refresh_pause_copy()
+		onboarding_button.text = str(ONBOARDING_LABEL.get(preferences.locale, ONBOARDING_LABEL.ru))
+		onboarding_dialog.set_locale(preferences.locale)
 		_render()
 
 
@@ -430,8 +457,8 @@ func _reset() -> void:
 	_render()
 
 
-func _add_button(parent: Container, text: String, action: Callable) -> void:
-	var button := Button.new(); button.text = text; button.custom_minimum_size = Vector2(0, MobileLayout.MIN_TAP); button.size_flags_horizontal = Control.SIZE_EXPAND_FILL; button.pressed.connect(action); parent.add_child(button)
+func _add_button(parent: Container, text: String, action: Callable) -> Button:
+	var button := Button.new(); button.text = text; button.custom_minimum_size = Vector2(0, MobileLayout.MIN_TAP); button.size_flags_horizontal = Control.SIZE_EXPAND_FILL; button.pressed.connect(action); parent.add_child(button); return button
 
 
 func _label(text: String, size: int, color: Color) -> Label:
