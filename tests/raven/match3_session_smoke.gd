@@ -27,32 +27,35 @@ func _run() -> void:
 	var level: Dictionary = Content.data.levels[0]
 	var game: RefCounted = Session.open(level, state, _checkpoint_callback)
 	assert(game.level_data.id == "RM-LVL-001" and game.move_history.is_empty())
+	var original_board: RefCounted = Session.open(level, state, Callable())
 	var hint: Dictionary = game.get_hint_move()
 	assert(not hint.is_empty())
 	var move: Dictionary = game.attempt_swap(int(hint.first), int(hint.second))
 	assert(move.get("valid", false) and callback_count >= 1)
+	# Fail the first ordinary checkpoint, before any winning move can suppress
+	# checkpoint writes by design (winning rewards are saved in complete()).
+	adapter.fail_write = true
+	var before_error: Dictionary = state.duplicate(true)
+	var failed: Dictionary = Session.checkpoint(game, state, "level1", "RM-LVL-001", store)
+	assert(not failed.get("ok", false) and failed.get("reason", "") == "save",
+		"First uncommitted move must attempt and fail persistence")
+	assert(state == before_error and Store.new(adapter).load_campaign() == before_error,
+		"Failed checkpoint save must preserve the committed campaign")
+	assert(game.tiles == original_board.tiles and game.move_history == original_board.move_history,
+		"Failed checkpoint must roll board back to last committed replay")
+	adapter.fail_write = false
+	# A retried legal move commits exactly one checkpoint; Continue matches it.
+	hint = game.get_hint_move()
+	move = game.attempt_swap(int(hint.first), int(hint.second))
+	assert(move.get("valid", false))
 	var recorded: Dictionary = Session.checkpoint(game, state, "level1", "RM-LVL-001", store)
 	assert(recorded.ok and recorded.boosterActionSaved)
 	assert(recorded.state.match3Checkpoint.actions.size() == 1 and state.match3Checkpoint.is_empty(),
 		"Checkpoint must not modify caller snapshot")
 	state = recorded.state
 	assert(Store.new(adapter).load_campaign().match3Checkpoint.actions.size() == 1)
-	# Reopening a board replays only persisted actions.
 	var resumed: RefCounted = Session.open(level, Store.new(adapter).load_campaign(), Callable())
 	assert(resumed.tiles == game.tiles and resumed.moves_left == game.moves_left)
-	var next_hint: Dictionary = game.get_hint_move()
-	assert(not next_hint.is_empty())
-	var next_move: Dictionary = game.attempt_swap(int(next_hint.first), int(next_hint.second))
-	assert(next_move.get("valid", false))
-	adapter.fail_write = true
-	var before_error: Dictionary = state.duplicate(true)
-	var failed: Dictionary = Session.checkpoint(game, state, "level1", "RM-LVL-001", store)
-	assert(not failed.ok and failed.reason == "save")
-	assert(state == before_error and Store.new(adapter).load_campaign() == before_error,
-		"Failed checkpoint save must preserve the committed campaign")
-	assert(game.tiles == resumed.tiles and game.move_history == resumed.move_history,
-		"Failed checkpoint must roll board back to committed replay")
-	adapter.fail_write = false
 	# Win and checkpoint removal are one transaction.
 	var win: Dictionary = Session.complete(game, state, "level1", "RM-LVL-001", 1, store)
 	assert(win.ok and win.state.firstClearLevels.has("RM-LVL-001"))
