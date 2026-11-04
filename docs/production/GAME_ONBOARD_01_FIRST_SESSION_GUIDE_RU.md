@@ -22,4 +22,4 @@ UPDS has contextual Match-3 tutorials but no general hub/save/specialist first-s
 
 ## Verification and boundaries
 
-`tests/raven/onboarding_smoke.gd` checks RU/EN copy, narrow-window fit, close signal, VN input blocking and zero campaign revision changes. `main_menu_smoke.gd` checks the replay action and first-new-game gate. Full `scripts/check.sh` passes on Godot 4.7.2 with a unique `XDG_DATA_HOME`. Manual device readability, keyboard focus, PR CI and owner acceptance are pending. This technical delivery does not claim the full authored map, specialist interactions or entire campaign are complete.
+`tests/raven/onboarding_smoke.gd` checks RU/EN copy, narrow-window fit, close signal, VN input blocking and zero campaign revision changes. `main_menu_smoke.gd` checks the replay action and first-new-game gate. Full `scripts/check.sh` passes on Godot 4.7.2 with a unique `XDG_DATA_HOME`. Manual device readability, keyboard focus, Exact-head PR CI run 41792693186 passed. Manual device readability, keyboard focus and owner acceptance are pending. This technical delivery does not claim the full authored map, specialist interactions or entire campaign are complete.
