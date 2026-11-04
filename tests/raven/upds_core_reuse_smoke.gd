@@ -22,6 +22,11 @@ func _initialize() -> void:
 
 	# Raven only owns the level-content conversion. UPDS owns board rules.
 	for source: Dictionary in SourceLevels.data.levels:
+		# This parity fixture covers the original three Raven levels. The later
+		# campaign entries use the normalized objectives schema and have their
+		# own Raven campaign validation path.
+		if source.has("objectives"):
+			continue
 		var normalized := LevelBridge.normalize(source)
 		assert(normalized.activeTiles == source.tiles)
 		assert(normalized.objectives.size() == 1)
@@ -40,6 +45,19 @@ func _initialize() -> void:
 		assert(a.valid == b.valid)
 		assert(a.cascades == b.cascades)
 		assert(raven.tiles == upds.tiles, "Raven's board after a swap must match UPDS's")
+
+	var bonus_count := 0
+	for source: Dictionary in SourceLevels.data.levels:
+		if not str(source.get("id", "")).begins_with("RM-LVL-1"):
+			continue
+		bonus_count += 1
+		var normalized := LevelBridge.normalize(source)
+		assert(normalized.objectives.size() > 0)
+		var bonus_game := RavenMatch3.new(source)
+		assert(bonus_game.find_matches().is_empty(), "Bonus opening board must have no automatic matches")
+		assert(bonus_game.has_available_move(), "Bonus opening board must have a legal move")
+		assert(bonus_game.level_data.id == source.id)
+	assert(bonus_count == 22, "All 22 Raven bonus boards must load")
 
 	# Audio and locale data now use UPDS PlayerPreferences, preserving the
 	# existing Raven user://raven_language.cfg file and Russian default.
