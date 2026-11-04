@@ -5,6 +5,7 @@ extends VBoxContainer
 ## Reuses UPDS game frames, board-shape and motion layer unchanged.
 ## Holds only transient UI; Raven reducer remains the sole campaign authority.
 signal level_won
+signal target_cell_selected(index: int)
 signal board_feedback(message: String)
 signal audio_cue(cue: String)
 
@@ -44,6 +45,7 @@ var _last_touch_ms := -10000
 var _cell_size := 48.0
 var _layout_width := -1.0
 var _completed := false
+var target_selection_mode := false
 
 
 func setup(next_game: RefCounted, theme: Dictionary) -> void:
@@ -360,7 +362,8 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 	# finger that began a gesture can complete it; ignore emulated mouse.
 	if kind == "mouse" and Time.get_ticks_msec() - _last_touch_ms < 650:
 		return
-	if is_press and _gesture_index < 0 and game.can_interact_with_tile(index):
+	var targetable: bool = target_selection_mode and game._is_active(index) and (not game.tiles[index].is_empty() or int(game.blocker_layers[index]) > 0)
+	if is_press and _gesture_index < 0 and (targetable or game.can_interact_with_tile(index)):
 		_gesture_index = index
 		_gesture_start = position
 		_gesture_kind = kind
@@ -376,6 +379,12 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 func _finish_gesture(position: Vector2) -> void:
 	var start := _gesture_index
 	if start < 0:
+		return
+	if target_selection_mode:
+		_gesture_index = -1
+		_gesture_kind = ""
+		_gesture_touch = -1
+		tap_cell(start)
 		return
 	var target := Drag.target_for_drag(start, position - _gesture_start, _cell_size,
 		int(game.level_data.columns), int(game.level_data.rows), Callable(game, "_is_active"))
@@ -415,6 +424,16 @@ func set_interaction_blocked(blocked: bool) -> void:
 		highlighted.clear()
 		_paint_selection()
 	_refresh_controls()
+
+
+func set_target_selection_mode(enabled: bool) -> void:
+	target_selection_mode = enabled
+	selected_index = -1
+	_paint_live()
+
+
+func play_booster_result(result: Dictionary, index: int) -> void:
+	_play_result(result, index, index)
 
 
 func retry_level() -> void:
@@ -490,7 +509,8 @@ func _input(event: InputEvent) -> void:
 		if _gesture_index >= 0 or _gesture_kind == "touch" and kind == "mouse":
 			return
 		var index := _index_at(position)
-		if index < 0 or not game.can_interact_with_tile(index):
+		var targetable: bool = index >= 0 and target_selection_mode and game._is_active(index) and (not game.tiles[index].is_empty() or int(game.blocker_layers[index]) > 0)
+		if index < 0 or not (targetable or game.can_interact_with_tile(index)):
 			return
 		_gesture_index = index
 		_gesture_start = position
@@ -518,8 +538,15 @@ func _index_at(position: Vector2) -> int:
 
 
 func tap_cell(index: int) -> void:
-	if input_locked or help_open or str(game.state) != "playing" or not game.can_interact_with_tile(index):
+	if input_locked or help_open or str(game.state) != "playing":
 		return
+	if target_selection_mode:
+		target_selection_mode = false
+		selected_index = -1
+		_paint_selection()
+		target_cell_selected.emit(index)
+		return
+	if not game.can_interact_with_tile(index): return
 	if selected_index < 0:
 		selected_index = index
 		_paint_selection()
@@ -728,7 +755,10 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 		if blocker_layers > 0:
 			description += " · блокер: %d сл." % blocker_layers
 		cell.tooltip_text = description
-		cell.disabled = not game.can_interact_with_tile(i) or str(game.state) != "playing"
+		var selectable: bool = game.can_interact_with_tile(i)
+		if target_selection_mode:
+			selectable = game._is_active(i) and (not tile.is_empty() or blocker_layers > 0)
+		cell.disabled = not selectable or str(game.state) != "playing"
 		var style := (cell.get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
 		style.bg_color = colors.get(tile, Color("344054"))
 		if blocker_layers > 0:

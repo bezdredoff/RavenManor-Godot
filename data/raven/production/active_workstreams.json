@@ -336,7 +336,6 @@
       "gate": "Stable RM level IDs, once-only workPoints, restoration dependencies and integrated route to story.",
       "ownerAcceptance": "Owner approves campaign pacing and real end-to-end run",
       "taskIds": [
-        "GAME-M3-01",
         "GAME-LOOP-01",
         "GAME-ONBOARD-01",
         "GAME-QA-01",
@@ -358,7 +357,10 @@
           "Update adapters and canonical content only after decision review"
         ],
         "decision": "Do not replace the three canonical VS levels or auto-publish VN drafts"
-      }
+      },
+      "taskCount": 9,
+      "p0Count": 4,
+      "p1Count": 5
     }
   ]
 }

@@ -11,6 +11,7 @@ const Match3 = preload("res://scripts/raven/raven_match3_game.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const MemoryStorage = preload("res://tests/support/memory_storage.gd")
+const BoosterInventory = preload("res://scripts/raven/raven_booster_inventory.gd")
 
 
 func _initialize() -> void:
@@ -58,6 +59,12 @@ func _initialize() -> void:
 		assert(catalog.levels[level_id].reward == 2)
 	assert(catalog.restorations["RM-REST-001"].cost == 2)
 	assert(catalog.restorations["RM-REST-002"].cost == 4)
+	assert(catalog.restorations["RM-REST-001"].boosterRewards.size() == 1 and catalog.restorations["RM-REST-001"].boosterRewards[0].kind == "hammer" and int(catalog.restorations["RM-REST-001"].boosterRewards[0].amount) == 2)
+	assert(catalog.restorations["RM-REST-002"].boosterRewards.size() == 1 and catalog.restorations["RM-REST-002"].boosterRewards[0].kind == "shuffle" and int(catalog.restorations["RM-REST-002"].boosterRewards[0].amount) == 2)
+	assert(BoosterInventory.normalize({"hammer": 1000, "shuffle": -4, "unknown": 7}) == {"hammer":99, "shuffle":0})
+	var legacy_state: Dictionary = Snapshot.fresh()
+	legacy_state.erase("boosterInventory")
+	assert(Snapshot.normalize(legacy_state, catalog).boosterInventory == {"hammer":0, "shuffle":0}, "Old save must get empty booster inventory")
 
 	var vn := VN.new()
 	vn.open(content.prologueScenes.letter)
@@ -101,6 +108,13 @@ func _initialize() -> void:
 			state = reduced.state
 	assert(Director.next_step(state).id == "done")
 	assert(state.workPoints == 0 and state.completedRestorations.size() == 2)
+	assert(state.boosterInventory == {"hammer":2, "shuffle":2}, "Restorations must grant their boosters exactly once")
+	var duplicate_reward := Reducer.apply(state, {"eventId":"duplicate-restoration", "type":"restoration_purchase", "restorationId":"RM-REST-001"}, catalog)
+	assert(duplicate_reward.ok and duplicate_reward.duplicate and duplicate_reward.state.boosterInventory == {"hammer":2, "shuffle":2}, "Restoration replay duplicated booster reward")
+	var spent := Reducer.apply(state, {"eventId":"spend-hammer-once", "type":"booster_spent", "kind":"hammer"}, catalog)
+	assert(spent.ok and spent.state.boosterInventory.hammer == 1, "Booster spend was not applied")
+	var duplicate_spend := Reducer.apply(spent.state, {"eventId":"spend-hammer-once", "type":"booster_spent", "kind":"hammer"}, catalog)
+	assert(duplicate_spend.duplicate and duplicate_spend.state.boosterInventory.hammer == 1, "Duplicate spend event charged twice")
 	assert(state.recordedClues == ["RM-CLUE-01-CHILDHOOD-OBJECT"])
 	assert(state.hotspotStates.get("RM-HS-004") == "recorded")
 	var adapter := MemoryStorage.new(); var store := Store.new(adapter)
