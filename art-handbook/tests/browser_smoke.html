@@ -8,15 +8,15 @@ const tick=()=>new Promise(resolve=>setTimeout(resolve,30));
 frame.onload=async()=>{
  try {
   const w=frame.contentWindow,d=frame.contentDocument;
-  assert(w.RAVEN_HANDBOOK.catalog.assets.length===153,'153 catalog images');
-  assert(w.RAVEN_HANDBOOK.catalog.recipes.length===64,'64 recipe records');
+  assert(w.RAVEN_HANDBOOK.catalog.assets.length===154,'154 catalog images');
+  assert(w.RAVEN_HANDBOOK.catalog.recipes.length===65,'65 recipe records');
   assert(d.querySelectorAll('.asset-card').length===88,'88 default VN images');
   assert(d.documentElement.scrollWidth<=w.innerWidth,'mobile page overflow');
   const input=d.getElementById('search');input.value='Ада';input.dispatchEvent(new Event('input',{bubbles:true}));
   assert([...d.querySelectorAll('.asset-card')].filter(e=>e.textContent.includes('Ada ·')).length===14,'Russian name search');
   input.value='';input.dispatchEvent(new Event('input',{bubbles:true}));
   const archive=d.getElementById('archive');archive.checked=true;archive.dispatchEvent(new Event('input',{bubbles:true}));
-  assert(d.querySelectorAll('.asset-card').length===153,'archive toggle');
+  assert(d.querySelectorAll('.asset-card').length===154,'archive toggle');
   const kind=d.getElementById('kind');kind.value='wall_candidate';kind.dispatchEvent(new Event('change',{bubbles:true}));
   assert(d.querySelectorAll('.asset-card').length===52,'wall candidate filtering');
   d.querySelector('[data-stage="inpaint"]').click();
@@ -31,7 +31,7 @@ frame.onload=async()=>{
   [...d.querySelectorAll('.recipe-card')].find(e=>e.textContent.includes('BG-ROAD ·')).click();
   assert(d.getElementById('detail').textContent.includes('NOT RECORDED'),'unknown prompts stay unknown');
   assert(d.documentElement.scrollWidth<=w.innerWidth,'mobile dialog overflow');
-  result.dataset.result='pass';result.textContent=['PASS','art handbook','153 images','64 recipes','filters/dialogs/API/mobile'].join(' · ');
+  result.dataset.result='pass';result.textContent=['PASS','art handbook','154 images','65 recipes','filters/dialogs/API/mobile'].join(' · ');
  }catch(error){result.dataset.result='fail';result.textContent=error.stack||String(error);}
 };
 frame.src='../index.html';
