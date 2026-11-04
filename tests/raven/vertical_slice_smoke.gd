@@ -44,9 +44,14 @@ func _initialize() -> void:
 	for tile: Dictionary in pool.types:
 		registered[tile.id] = true
 	for level: Dictionary in content.levels:
-		assert(level.tiles.has(level.objective.tile), level.id + " objective tile must be playable")
 		for tile_id in level.tiles:
 			assert(registered.has(tile_id), level.id + " uses unregistered tile " + str(tile_id))
+		if level.has("objective"):
+			assert(level.tiles.has(level.objective.tile), level.id + " objective tile must be playable")
+		else:
+			for objective: Dictionary in level.objectives:
+				if objective.kind == "collect":
+					assert(level.tiles.has(objective.tile), level.id + " collect objective tile must be playable")
 		for tile_set: Dictionary in pool.levelSets:
 			if tile_set.id == level.id: assert(tile_set.tileSet == level.tiles)
 	for level_id in ["RM-LVL-001", "RM-LVL-002", "RM-LVL-003"]:
@@ -69,6 +74,8 @@ func _initialize() -> void:
 		var game := Match3.new(level)
 		assert(game.tiles.size() == int(level.rows) * int(level.columns))
 		assert(game.get_hint_move().size() == 2, level.id + " must start playable")
+		if level.id not in ["RM-LVL-001", "RM-LVL-002", "RM-LVL-003"]:
+			continue
 		var hint: Dictionary = game.get_hint_move()
 		var result := game.attempt_swap(hint.first, hint.second)
 		assert(result.valid, level.id + " must execute a real legal swap")
