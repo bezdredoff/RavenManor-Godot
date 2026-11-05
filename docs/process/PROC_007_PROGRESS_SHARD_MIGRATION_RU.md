@@ -1,6 +1,6 @@
 # PROC-007 — понаправленные статусы задач и единый Dashboard
 
-**Решение владельца:** 2026-11-05. **Stage 1 (текущий PR)**: проверяемые read-only копии; **Stage 2/3 не выполнены**. Старый `production_progress.json` пока authoritative; не редактировать `progress/*.json` вручную.
+**Решение владельца:** 2026-11-05. **Stage 1 #193 merged. Stage 2 (этот PR) переводит dashboard и GAP drift на shards. Stage 3 (независимое управление и workstreams) ещё впереди.**
 
 ## Зачем
 
@@ -18,9 +18,9 @@
 
 ## Этапы миграции
 
-1. **Stage 1 — parity, этот PR.** 214 (213 + PROC-007) записей разложены без изменений в отдельные shards. `progress_shards.py` строго проверяет уникальность ID, содержимое, список файлов и полное соответствие старому JSON, игнорируя лишь порядок записей. `check_data.sh` запускает проверку в обязательном `data-contracts` job. Dashboard пока читает legacy. Нельзя разрешать параллельным агентам редактировать shards в этой фазе.
-2. **Stage 2 — переключение источника.** После merge Stage 1 заменить чтение в `build_production_dashboard.py` и `reconcile_gap_statuses.py` на `load_shards()`; обновить тесты обратной совместимости. Сгенерированный `dashboard/status.json` должен совпадать по ID/статусам/evidence/workstream/dependencies. Перейти от `--check-parity` к структуре+dashboard snapshot verification; legacy JSON больше не authoritative и не должен требовать синхронизации.
-3. **Stage 3 — write ownership и автоматическая группировка.** Удалить старое legacy исключение из governance, научить CI проверять diff paths по workstream, заменить обязательный handwritten `active_workstreams.taskIds` выводимым списком по задаче/отдельным group metadata. Автоматическое обновление dashboard только при сборке; merge/CI доказательства сверять отдельно. Правила статуса: `PR_review` и `merged` — техническая доставка; `accepted`/device QA только при явной приёмке.
+1. **Stage 1 — parity, merged #193.** 214 (213 + PROC-007) записей разложены без изменений в отдельные shards. `progress_shards.py` строго проверяет уникальность ID, содержимое, список файлов и полное соответствие старому JSON, игнорируя лишь порядок записей. `check_data.sh` запускает проверку в обязательном `data-contracts` job. Dashboard пока читает legacy. Нельзя разрешать параллельным агентам редактировать shards в этой фазе.
+2. **Stage 2 — переключение источника (этот PR).** Dashboard и reconcile_gap_statuses используют load_shards(); sourceFiles перечисляет все 15 shard-файлов и индекс. Временный обязательный shadow-render тест сравнивает весь результат со старой базой, кроме единственного намеренного изменения sourceFiles. Старый production_progress.json заморожен; нельзя вносить в него новые статусы. До Stage 3 независимая запись в shards ещё НЕ разрешена из-за общих gap/active workstreams.
+3. **Stage 3 — write ownership и автоматическая группировка (не выполнено).** Удалить старое legacy исключение из governance, научить CI проверять diff paths по workstream, заменить обязательный handwritten `active_workstreams.taskIds` выводимым списком по задаче/отдельным group metadata. Автоматическое обновление dashboard только при сборке; merge/CI доказательства сверять отдельно. Правила статуса: `PR_review` и `merged` — техническая доставка; `accepted`/device QA только при явной приёмке.
 
 ## Инварианты и безопасность
 
@@ -28,3 +28,9 @@
 - История evidence, поля и зависимости не теряются. Отдельные agents никогда не редактируют общий dashboard/status.json, index или чужой shard без контракта.
 - CI не должен ослабить blocking проверки данных/геймплея. `import-mobile-zip.yml`, candidate ZIP cleanup, Games Pages publishing и asset approvals неизменны.
 - Main-прогресс проверяется после каждого merge. Старые незавершённые QA-задачи не должны автоматически стать accepted.
+
+## Приёмка Stage 2
+
+- tests/test_sharded_dashboard: полное сравнение результата legacy shadow-render и sharded-render, кроме намеренно обновлённого sourceFiles.
+- Dashboard теперь реально читает shards; старый production_progress.json сохраняется только для аудита миграции.
+- Правила независимых агентов не меняются до Stage 3: gap статусы и active_workstreams.taskIds пока общие, а QA/accepted требует явного evidence.

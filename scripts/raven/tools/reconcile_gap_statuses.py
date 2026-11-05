@@ -9,7 +9,7 @@ Usage:
     python3 scripts/raven/tools/reconcile_gap_statuses.py --sync
 
 --sync touches *only* status fields of gap work packages having an explicit
-production_progress.json entry; unmatched historical proposals are preserved.
+canonical per-module progress entry; unmatched historical proposals are preserved.
 """
 from __future__ import annotations
 
@@ -17,9 +17,13 @@ import argparse
 import json
 from pathlib import Path
 
+try:
+    from scripts.raven.tools.progress_shards import load_shards
+except ModuleNotFoundError:
+    from progress_shards import load_shards
+
 ROOT = Path(__file__).resolve().parents[3]
 GAPS = ROOT / "data/raven/production/gap_work_packages.json"
-PROGRESS = ROOT / "data/raven/production/production_progress.json"
 
 
 def drift(gaps: dict, progress: dict) -> list[tuple[str, str, str]]:
@@ -41,7 +45,7 @@ def main() -> int:
     mode.add_argument("--sync", action="store_true")
     args = parser.parse_args()
     gaps = json.loads(GAPS.read_text(encoding="utf-8"))
-    progress = json.loads(PROGRESS.read_text(encoding="utf-8"))
+    progress = load_shards()
     differences = drift(gaps, progress)
     if args.sync and differences:
         live = {item["id"]: item["status"] for item in progress["entries"]}

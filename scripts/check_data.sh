@@ -8,11 +8,10 @@ python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py"
 # This registry gate does not certify unrelated in-game UI or manual proofreading.
 python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py" --release
 python3 "$ROOT/scripts/raven/tools/validate_code_plan.py"
-# PROC-007 stage 1: strict 1:1 parity between immutable module shard copies
-# and the still-authoritative legacy progress JSON. No status source switched yet.
-python3 "$ROOT/scripts/raven/tools/progress_shards.py" --check-parity
-python3 -m unittest scripts/raven/tools/test_progress_shards.py
-# Fail if the gap task snapshot drifts from the authoritative live progress file.
+# PROC-007 stage 2: canonical domain shards; legacy JSON is a frozen snapshot.
+python3 "$ROOT/scripts/raven/tools/progress_shards.py"
+python3 -m unittest scripts/raven/tools/test_progress_shards.py scripts/raven/tools/test_sharded_dashboard.py
+# GAP status snapshot must agree with the new canonical progress shards.
 python3 "$ROOT/scripts/raven/tools/reconcile_gap_statuses.py" --check
 python3 "$ROOT/scripts/raven/tools/validate_backlog_dependencies.py"
 python3 "$ROOT/scripts/raven/tools/validate_active_workstreams.py"

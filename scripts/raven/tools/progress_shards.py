@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Read/validate independent Raven task-progress shards.
 
-Migration stage 1: production_progress.json remains authoritative; shards must
-match it record-for-record. In stage 2 this loader becomes the dashboard source.
+Stage 2: progress/*.json is the sole authoritative task status/evidence source.
+The legacy monolith remains a read-only migration snapshot for comparison.
 Do not edit manually generated dashboard/status.json.
 """
 from __future__ import annotations
@@ -83,7 +83,7 @@ def check_parity(sharded: dict, legacy: dict) -> None:
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--check-parity", action="store_true",
-                        help="Stage 1: verify exact parity with authoritative legacy JSON")
+                        help="One-time migration audit against historical legacy snapshot; not permanent CI")
     args = parser.parse_args()
     data = load_shards()
     if args.check_parity:
