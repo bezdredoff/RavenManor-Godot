@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Audit exact active P0/P1 grouping, preserving independent task acceptance.
 
-Live statuses/priorities come only from production_progress.json overrides. 
+Live statuses/priorities and group assignments come only from owner shards. 
 These workstreams are delivery/QA grouping labels, not new implementation
 claims and not a replacement for existing task IDs.
 """
@@ -20,8 +20,8 @@ def audit(data: dict) -> list[str]:
     for stream in data.get("workstreams", []):
         stream_id = stream["id"]
         members = [task for task in tasks if task["workstreamId"] == stream_id]
-        if not members:
-            errors.append(f"Empty workstream: {stream_id}")
+        # An all-merged domain correctly has zero active members. Retain its
+        # QA metadata without blocking a technical task's honest closeout.
         if len(members) != stream["taskCount"]:
             errors.append(f"Wrong workstream member count: {stream_id}")
         if sum(m["priority"] == "P0" for m in members) != stream["p0Count"]:

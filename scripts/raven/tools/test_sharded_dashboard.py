@@ -74,6 +74,21 @@ class ShardedDashboardTests(unittest.TestCase):
         changed = dashboard.build(progress_override=status)
         self.assertEqual(task(changed, p2_id)["workstreamId"], "WS-CAMPAIGN")
 
+    def test_fully_completed_workstream_is_not_a_data_error(self):
+        from scripts.raven.tools.validate_active_workstreams import audit
+        status = copy.deepcopy(load_shards())
+        process_ids = {a["id"] for a in status["assignments"]
+                       if a.get("workstreamId") == "WS-PROCESS"}
+        self.assertTrue(process_ids)
+        for entry in status["entries"]:
+            if entry["id"] in process_ids:
+                entry["status"] = "merged"
+        simulated = dashboard.build(progress_override=status)
+        process_stream = next(w for w in simulated["workstreams"]
+                              if w["id"] == "WS-PROCESS")
+        self.assertEqual(process_stream["taskCount"], 0)
+        self.assertNotIn("Empty workstream: WS-PROCESS", audit(simulated))
+
     def test_missing_assignment_is_blocking(self):
         status = copy.deepcopy(load_shards())
         member = next(a for a in status["assignments"] if "workstreamId" in a)
