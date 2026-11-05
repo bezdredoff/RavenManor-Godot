@@ -62,3 +62,7 @@ Read `docs/architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md` and `docs/audits/MULTI
 ## PROC-007 status shard migration (2026-11-05)
 
 The owner approved per-module task statuses in `data/raven/production/progress/*.json`, assembled into one dashboard. **Stage 1 #193 merged; Stage 2 switches dashboard consumers to canonical progress shards.** The legacy production_progress.json is frozen as a migration snapshot, not an update target. **No parallel shard status editing until Stage 3** removes shared gap/workstream writes and updates governance. Use `python3 scripts/raven/tools/progress_shards.py` and regression tests. Read `docs/process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md` for ownership and migration gates.
+
+## PROC-007 Stage 3a membership staging
+
+The module shards now carry read-only staged `assignments` for 80 live P0/P1 workstream tasks and 44 P2 release/re-entry policy tasks. Membership includes 35 planning-only tasks **without** invented implementation/QA state. Until Stage 3b migrates dashboard consumption and governance, do not independently edit these assignments; current shared registry remains the read path.

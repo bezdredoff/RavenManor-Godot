@@ -36,7 +36,9 @@ def load_shards(directory: Path = SHARDS) -> dict:
     if actual != set(shards):
         raise ValueError(f"Undeclared or missing progress shards: {sorted(actual ^ set(shards))}")
     entries: list[dict] = []
+    assignments: list[dict] = []
     seen: set[str] = set()
+    seen_assignments: set[str] = set()
     for name in shards:
         record = json.loads((directory / name).read_text(encoding="utf-8"))
         if record.get("schemaVersion") != 1 or record.get("kind") != "task_progress_shard":
@@ -52,8 +54,24 @@ def load_shards(directory: Path = SHARDS) -> dict:
                 raise ValueError(f"Task lacks status: {task['id']}")
             seen.add(task["id"])
             entries.append(task)
+        # Owner membership is independent from whether the planning task
+        # has a current progress/status override. It never implies acceptance.
+        members = record.get("assignments", [])
+        if not isinstance(members, list):
+            raise ValueError(f"Invalid assignment list: {name}")
+        for item in members:
+            if not isinstance(item, dict) or not isinstance(item.get("id"), str) or not item["id"]:
+                raise ValueError(f"Invalid assignment record in {name}")
+            key = "workstreamId" if "workstreamId" in item else "p2ReentryGroup"
+            if set(item) != {"id", key} or not isinstance(item[key], str) or not item[key]:
+                raise ValueError(f"Invalid assignment type or value: {item['id']}")
+            if item["id"] in seen_assignments:
+                raise ValueError(f"Duplicate task assignment: {item['id']}")
+            seen_assignments.add(item["id"])
+            assignments.append(item)
     result = {key: index[key] for key in INDEX_KEYS}
     result["entries"] = entries
+    result["assignments"] = assignments
     return result
 
 
@@ -88,7 +106,8 @@ def main() -> int:
     data = load_shards()
     if args.check_parity:
         check_parity(data, json.loads(LEGACY.read_text(encoding="utf-8")))
-    print(f"Raven progress shards PASS: {len(data['entries'])} unique tasks in "
+    print(f"Raven progress shards PASS: {len(data['entries'])} unique task overrides, "
+          f"{len(data['assignments'])} group assignments in "
           f"{len(list(SHARDS.glob('*.json'))) - 1} domains"
           + ("; exact legacy parity" if args.check_parity else ""))
     return 0

@@ -34,3 +34,11 @@
 - tests/test_sharded_dashboard: полное сравнение результата legacy shadow-render и sharded-render, кроме намеренно обновлённого sourceFiles.
 - Dashboard теперь реально читает shards; старый production_progress.json сохраняется только для аудита миграции.
 - Правила независимых агентов не меняются до Stage 3: gap статусы и active_workstreams.taskIds пока общие, а QA/accepted требует явного evidence.
+
+## Stage 3a — перенесённые membership-назначения (candidate PR)
+
+В каждом функциональном shard теперь есть optional `assignments` с `{id,workstreamId}` для актуального P0/P1 или `{id,p2ReentryGroup}` для открытого P2. 80 активных + 44 P2 задач перенесены в 15 владельческих файлов. Из них 35 существовали только в планах: им назначена группа без создания фиктивной записи о статусе, QA или evidence.
+
+Обязательные проверки: `test_workstream_assignment_migration.py` сравнивает 124 назначения с прежними workstream/P2 registry без потерь; loader отклоняет дубли, неправильную структуру и пустые ID. Статусы/evidence не менялись.
+
+**Это только Stage 3a.** Дашборд по-прежнему берёт членство из двух старых registry. После merge Stage 3b должен переключить эти потребители, отделить GAP-плановые статусы и разрешить независимые правки агентов. Пока независимо редактировать `assignments` нельзя.

@@ -10,7 +10,7 @@ python3 "$ROOT/scripts/raven/tools/validate_production_narrative.py" --release
 python3 "$ROOT/scripts/raven/tools/validate_code_plan.py"
 # PROC-007 stage 2: canonical domain shards; legacy JSON is a frozen snapshot.
 python3 "$ROOT/scripts/raven/tools/progress_shards.py"
-python3 -m unittest scripts/raven/tools/test_progress_shards.py scripts/raven/tools/test_sharded_dashboard.py
+python3 -m unittest scripts/raven/tools/test_progress_shards.py scripts/raven/tools/test_sharded_dashboard.py scripts/raven/tools/test_workstream_assignment_migration.py
 # GAP status snapshot must agree with the new canonical progress shards.
 python3 "$ROOT/scripts/raven/tools/reconcile_gap_statuses.py" --check
 python3 "$ROOT/scripts/raven/tools/validate_backlog_dependencies.py"
