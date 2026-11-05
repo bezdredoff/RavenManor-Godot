@@ -57,3 +57,4 @@ Where old contracts conflict (especially bedroom gate, door cycling, free moveme
 - [PROC-007 — independent modular task progress](process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md) (#193–196 merged; current status shards and dynamic workstreams).
 
 - [Multi-agent operations and 15 domain ownership profiles](process/AGENT_ORCHESTRATION_RU.md) — task dispatch, worktrees, local AGENTS, dependencies, CI, merge and real acceptance gates.
+- [Ornith 1.5: bounded procedural execution contract and Hermes routing pilot](process/ORNITH_EXECUTION_CONTRACT_RU.md) — 1–3 file tasks, evidence protocol, UNKNOWN/STOP, independent review and #199/#200 learnings.
