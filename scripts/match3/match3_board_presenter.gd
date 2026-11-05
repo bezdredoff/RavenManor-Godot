@@ -379,8 +379,19 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 			_last_touch_ms = Time.get_ticks_msec()
 		accept_event()
 	elif not is_press and _gesture_index >= 0 and _gesture_kind == kind and (kind != "touch" or event.index == _gesture_touch):
-		_finish_gesture(position)
+		if event is InputEventScreenTouch and event.canceled:
+			_cancel_gesture()
+		else:
+			_finish_gesture(position)
 		accept_event()
+
+
+func _cancel_gesture() -> void:
+	_gesture_index = -1
+	_gesture_kind = ""
+	_gesture_touch = -1
+	highlighted.clear()
+	_paint_selection()
 
 
 func _finish_gesture(position: Vector2) -> void:
@@ -533,7 +544,10 @@ func _input(event: InputEvent) -> void:
 				highlighted.append(target)
 			_paint_selection()
 		elif is_release:
-			_finish_gesture(position)
+			if event is InputEventScreenTouch and event.canceled:
+				_cancel_gesture()
+			else:
+				_finish_gesture(position)
 			get_viewport().set_input_as_handled()
 
 
