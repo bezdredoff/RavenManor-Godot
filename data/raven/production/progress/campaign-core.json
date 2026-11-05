@@ -144,5 +144,47 @@
       "qaState": "not_started",
       "approvalState": "pending"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-08-01",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "CODE-12-W1",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "CODE-12-W2",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "CODE-12-W3",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "CODE-12-W4",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "CODE-12-W5",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GAME-ENDING-01",
+      "p2ReentryGroup": "P2-GAME-RELEASE"
+    },
+    {
+      "id": "GAME-JOURNAL-01",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "GAME-LOOP-01",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "RM-GAP-007",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    }
   ]
 }

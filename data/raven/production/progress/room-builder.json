@@ -48,5 +48,19 @@
       "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
       "priority": "P1"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-05-01",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "RM-GAP-001",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "RM-GAP-002",
+      "workstreamId": "WS-DEVICE"
+    }
   ]
 }

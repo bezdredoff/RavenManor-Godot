@@ -606,5 +606,55 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "ART-BATCH-AUTOMATION",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "ART-PROVENANCE-QA",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "CODE-09-01",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "CODE-09-02",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-00-01",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-00-02",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-00-03",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-00-05",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-00-08",
+      "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "GFX-03-07",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "RM-GAP-004",
+      "p2ReentryGroup": "P2-EXPLICITLY-DEFERRED"
+    },
+    {
+      "id": "RM-GAP-005",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    }
   ]
 }

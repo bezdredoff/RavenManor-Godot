@@ -157,5 +157,67 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-06-01",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "CODE-06-02",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-03-06",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-01",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-02",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-07-03",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-07-04",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-05",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-06",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-07",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-07-08",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-07-09",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-07-10",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "GFX-11-T06",
+      "workstreamId": "WS-CHIBI"
+    },
+    {
+      "id": "RM-GAP-011",
+      "workstreamId": "WS-CHIBI"
+    }
   ]
 }
