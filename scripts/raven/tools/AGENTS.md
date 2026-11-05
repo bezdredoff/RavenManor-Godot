@@ -1,0 +1,5 @@
+# Production tools, status aggregation and CI security — `qa-infrastructure`
+
+Read root `AGENTS.md`, then `docs/process/AGENT_ORCHESTRATION_RU.md` and all relevant local AGENTS. Use the owning `data/raven/production/progress/<domain>.json` and unique `docs/changes/` evidence. Generated dashboard and frozen `production_progress.json` must not be edited. Manual acceptance and merge are not automatic.
+
+This directory has tooling for multiple domains. Dashboard, `progress_shards.py`, PR governance, ZIP candidate security, data schemas and CI orchestration are **integration-owner** changes, not incidental module edits. A domain may own a narrowly declared importer/asset-tool path, but must not loosen global validators or overwrite another agent's task ledger. Check exact-head data CI, Python unit tests, Godot/Room Builder/art/Web checks and preserve numeric `candidate/mobile-<run>` exception. Existing dashboard visual snapshots may be advisory; source data/governance/gameplay tests must remain blocking.
