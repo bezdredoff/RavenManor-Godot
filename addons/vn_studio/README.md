@@ -211,6 +211,8 @@ bash scripts/check.sh
 
 The draft smoke verifies line translations, pose/position, original bytes untouched, save/reopen, repeat save, wrong actor position blocked, separated A/B/C keys and SHA drift fail-closed. Manual acceptance: edit a line in UPDS prologue, pose/drag in the tea/other scene, switch languages and variants, save/restart, inspect no donor differences, check screenshot/font overflow, Undo/Redo. **Do not call acceptance passed from CI alone.**
 
+Coverage inventory of existing semantic-parity tests vs. missing full-donor / visual / old-save gates: see [PARITY_COVERAGE.md](./PARITY_COVERAGE.md).
+
 ## Raven Manor · каталог фонов в постановке (candidate integration, 2026-11-01)
 
 Вкладка **VN Studio → Raven Manor → Постановка** теперь должна использовать тот же `scripts/raven/raven_vn_backgrounds.gd` и `data/raven/production/vn_background_catalog.json`, что и реальная VN-галерея/пилот. Выбор `backgroundId + lighting + roomState` показывает **ровно зарегистрированное** изображение; отсутствие комбинации → **ART PENDING**, без автоматической подмены похожим светом, состоянием или `vn_pilot/hall_morning.webp`. Переключение мастера предпочитает реально существующую комбинацию; кнопка «Просмотреть фоны…» перечисляет все комбинации, разрешённые `vn_staging.json` (✓ — есть в каталоге, · — предстоит нарисовать), а справа показывает вариант и связанные сцены. Выбор применяет **всю тройку**, не меняет актёров и позиции.
