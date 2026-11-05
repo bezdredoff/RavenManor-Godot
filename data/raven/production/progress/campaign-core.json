@@ -1,0 +1,148 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "campaign-core",
+  "entries": [
+    {
+      "id": "CODE-00-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS code source inventory and extraction documented in docs/production/UPDS_CODE_REUSE_ARCHITECTURE.md; source import https://github.com/bezdredoff/RavenManor-Godot/pull/46. No final feature QA claimed.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-00-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: One Raven reducer/save authority with imported UPDS adapters and isolated snapshot: https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Further season runtime gates separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-08-01.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-08-01"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-00-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Baseline Raven smoke and UPDS reuse regression suite in tests/raven, introduced with https://github.com/bezdredoff/RavenManor-Godot/pull/9 and https://github.com/bezdredoff/RavenManor-Godot/pull/46. Device QA separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: RM-GAP-010.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "RM-GAP-010"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-08-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven vertical slice and campaign reducer implemented via https://github.com/bezdredoff/RavenManor-Godot/pull/9; 28-scene full Season 1 progression not yet executable.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Campaign reducer and vertical slice merged #9; 28-scene Season 1 execution not complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Season-wide progression graph is later scale-out after the current Hall gate; first-slice economy and save contracts remain guarded. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P1 for agreed game completeness; status/QA/acceptance unchanged.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-08-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Raven first-clear 2/2/2 work-point reward and 2/4 restoration costs wired to idempotent reducer in RM-VS-01 https://github.com/bezdredoff/RavenManor-Godot/pull/9; full season objective UX separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-13-01.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-13-01"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-12-W1",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-12-W2",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "CODE-12-W3",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Bulk season content wave is deferred until joint Hall pilot approval; do not rewrite already translated source prose or start mass production. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "RM-GAP-007",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Broad chapter/location unresolved-decision list belongs to the later season roadmap, without blocking the existing vertical-slice QA. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GAME-LOOP-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-JOURNAL-01",
+      "status": "proposed",
+      "priority": "P1",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-07-03.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-ENDING-01",
+      "status": "proposed",
+      "priority": "P2",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-12-W5.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    }
+  ]
+}

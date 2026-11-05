@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "vn-runtime",
+  "entries": [
+    {
+      "id": "CODE-03-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Shared paging, VN catalog adapter and game-view/runtime components exist (notably https://github.com/bezdredoff/RavenManor-Godot/pull/46, https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/120); full UPDS scene semantics pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Shared VN components merged; end-to-end UPDS scene semantics and UI parity incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-03-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: 1–3 cast Stage templates and 62 accepted VN frames (https://github.com/bezdredoff/RavenManor-Godot/pull/97, https://github.com/bezdredoff/RavenManor-Godot/pull/123); exact 21 pose/emotion staging matches and microanimations not all satisfied.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: 1–3 character templates and accepted image library merged; exact pose/emotion staging and animations remain gaps. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-03-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Hall Tea/common Raven VN view and FX runtime shipped (https://github.com/bezdredoff/RavenManor-Godot/pull/112); full RU/BE/EN scene edit/play/save parity and owner native QA outstanding.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Hall Tea and common view integrated, but replay/history/full tri-locale save QA not owner-accepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-11-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Joint Hall vertical-slice release gate requires specific scene, map, match-3, localization, save and portrait-device evidence. Original CODE planning scope preserved; priority override=P0. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "priority": "P0"
+    },
+    {
+      "id": "RM-GAP-008",
+      "status": "proposed",
+      "owner": "Planning",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "priority": "P1"
+    },
+    {
+      "id": "VN-RUNTIME-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "priority": "P1"
+    }
+  ]
+}

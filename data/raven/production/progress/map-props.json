@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "map-props",
+  "entries": [
+    {
+      "id": "GFX-06-06",
+      "status": "ready",
+      "owner": "Codex",
+      "updated": "2026-11-03",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Existing accepted cast has approved hand/prop variants; independent map/evidence prop-state families are still GFX-09.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #97 is merged. 8 hand-held prop-image variants and 62 approved character frames do NOT constitute separate stateful prop sprites (e.g., letter/tray/folder/tools). Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: VNS5-08, CODE-07-01.\n2026-11-03 CLARIFICATION: Task-level approval of independent physical prop states is PENDING. The 62 individually imported character images remain accepted in vn_character_catalog.json without revoking any exact image approval.",
+      "approvalState": "pending",
+      "qaState": "manual_pending",
+      "implementationState": "partial",
+      "followUpTaskIds": [
+        "VNS5-08",
+        "CODE-07-01"
+      ]
+    },
+    {
+      "id": "GFX-11-T04",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Approved composite actor-with-prop variants exist, but full real gameplay letter/tea interaction and a visual effect remain to be verified. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-11-T07",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Inspect popups and evidence/prop inserts are planned/partly implemented, with no complete Hall native visual acceptance. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "CODE-07-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "priority": "P1"
+    },
+    {
+      "id": "GFX-09-03",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Secondary prop families are deferred until their authored map/evidence interactions are required; Hall essential map props remain P1. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-09-04",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Tertiary prop families (archive, estate forms, late diary) are deferred to future scenes and states. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    }
+  ]
+}

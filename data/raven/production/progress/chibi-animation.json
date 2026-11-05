@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "chibi-animation",
+  "entries": [
+    {
+      "id": "GFX-03-06",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Cross-scale compatibility cannot be accepted without actual chibi characters and final Match-3 icon art. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-01",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: No approved Raven mildly-chibi assets yet. Limited Evelyn comparative sample can start with ChatGPT generation and accepted full-body reference, not a forced VNCCS migration. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-02",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: No measured chibi generator comparison or stable selected tool; needed only to choose production approach after a first test. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Chibi model/tool evaluation criteria are folded into single GFX-07-01 comparative spike; avoid two parallel bake-offs. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "status": "ready",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-03",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: 3.5/4.0/4.5-head proportion options not approved; minimize to one contact comparison before generating full walker. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): 3.5/4.0/4.5-head proportions are an optional experiment folded into GFX-07-01 selection, not a separate blocking production batch. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "status": "ready",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-04",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Cross-scale identity must be derived from the accepted Evelyn/Ada/Lucas/Rowan portraits; no approved map marker sheet. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-05",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Evelyn complete idle/walk/interaction production family absent; technical Onoe cannot be counted as an Evelyn sprite. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-06",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Ada Hall staging, minimal idle/walk and tray offer chibi family absent; held-prop VN portrait cannot substitute for map animation. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-07",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Rowan chibi walker and work interactions absent; defer until an authored active garden route is ready. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Rowan map animation batch waits for an authored playable gardening encounter; Evelyn/Ada map chibi gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "status": "ready",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-08",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Lucas static/short-approach chibi stage absent; can remain P1 until an authored visit requires it. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Lucas map animation batch waits for an authored playable notary encounter; Evelyn/Ada map chibi gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "status": "ready",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-09",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Map chibi foot pivots, no-flip constraints, frame bounds and footslide cannot be tested without initial real sprite sheets. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-07-10",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Final map 65-degree and 0.74x placement/device occlusion can't be accepted using Onoe technical sprites. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-11-T06",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Map-scaled chibi Evelyn and Ada sprites/walker scenes are not delivered. The map uses technical Onoe placeholders and still needs production characters. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "CODE-06-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "updated": "2026-11-03",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-06-02",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Extended Ada/Rowan/Lucas scheduling is season expansion; prototype walker and authored Hall route remain separate active gates. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    }
+  ]
+}

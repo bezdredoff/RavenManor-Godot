@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "updated": "2026-11-04",
+  "updated": "2026-11-05",
   "authority": "Canonical task statuses and evidence reconciled after merge by a single integration owner; authored parallel PRs may use docs/changes/<TASK-ID>-<topic>.md instead of concurrent edits to shared progress. Historical source plans remain scope definitions.",
   "entries": [
     {
@@ -2784,6 +2784,18 @@
       "priority": "P1",
       "followUpTaskIds": [],
       "evidence": "2026-11-04 owner request; process/proc-006-multi-agent-readiness proposed from main c5f286ea1da4625da880e27d07c61714cf022a81. PR/CI pending; runtime extraction and module-specific CI sharding not implemented."
+    },
+    {
+      "id": "PROC-007",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-05",
+      "evidence": "Owner approval 2026-11-05: modular production task progress per functional owner, immutable task IDs, aggregated single dashboard. Stage 1 introduces read-only shards with strict parity against legacy until consumer/governance migration; future work pending; no runtime/device acceptance.",
+      "implementationState": "migration_stage1_candidate",
+      "qaState": "not_run",
+      "approvalState": "pending",
+      "priority": "P1",
+      "followUpTaskIds": []
     }
   ],
   "rules": [
