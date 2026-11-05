@@ -1,10 +1,10 @@
 # VN Studio — рабочая инструкция для человека и AI-агента
 
-**Дата:** 2026-10-31 · **Статус:** инструкции для будущего плагина, **не** свидетельство его реализации. Авторитетный контракт: [VN_STUDIO_EDITOR_SPEC.md](../VN_STUDIO_EDITOR_SPEC.md), задачи `VN-EDITOR-00..08`, core `CODE-03`.
+**Обновление 2026-11-05:** нативный Godot EditorPlugin реализован; эта инструкция содержит как работающие пути, так и проектные/review-критерии. Проверять фактическую поддержку каждого действия по `addons/vn_studio/`, README и CI, не считать каждый описанный workflow утверждённым. Авторитетный контракт: [VN_STUDIO_EDITOR_SPEC.md](../VN_STUDIO_EDITOR_SPEC.md), задачи `VN-EDITOR-00..08`, core `CODE-03`.
 
 ## Человек — как будет выглядеть рабочий процесс
 
-1. Открыть **Godot Project → VN Studio** (после реализации плагина); выбрать `Open/Import` и игру `UPDS-godot` либо `Raven`. UPDS сначала в read-only `Legacy Viewer`.
+1. Открыть **Godot Project → VN Studio** (в существующем плагине; проверить нужную функцию и текущую сборку); выбрать `Open/Import` и игру `UPDS-godot` либо `Raven`. UPDS сначала в read-only `Legacy Viewer`.
 2. Выбрать сцену по `sceneId`, открыть stage, выбрать `lineId`; переключать RU/BE/EN, variant A/B/C и preview route. Скрытые режиссёрские строки видны редактору, но не игроку.
 3. Для исправления выбрать **Create draft/overlay**; изменить текст, выбрать артиста/эмоцию/позу в библиотеке, перетащить portrait; проверить алерты missing assets или transition. `Undo/Redo` и повторный `Open` должны вернуть тот же результат.
 4. Выбрать **Preview (no progression writes)**: сыграть сцену через реальный VN runtime; затем `Diff` и `Validate`.
@@ -20,7 +20,7 @@
 - **При редактуре сценария:** менять только заданные реплики, локаль, staging или команду; не переписывать весь эпизод. В PR показать before/after IDs и проверку text parity, replay/redo, overflow, branches, no-op preview.
 - **При изменении runtime/editor:** указывать источник UPDS (path + pinned blob SHA), решение `reuse/verbatim/extract/adapter/new` и его причину. Editor UI под `@tool`, core runtime без `EditorInterface` и game-specific save data.
 - **Тесты:** unit schema/normalizer/determinism; imported fixture/no writes; branching/locale/hidden; Godot preview + screenshot parity; old-save migration; проверка ошибок и rollbacks. Не заявлять CI, phone/editor QA или разработанный feature без логов.
-- **В каждом PR:** обновить `docs/STATUS.md` и `data/raven/production/production_progress.json`; новые scope/dependencies — исходный code backlog и дорожную карту. Дашборд генерируется, не редактировать `dashboard/status.json`. Не мержить автоматически.
+- **В каждом PR:** обновить только `data/raven/production/progress/vn-studio.json`, уникальный `docs/changes/` evidence и релевантные docs/тесты; общий legacy JSON заморожен. Прочитать `addons/vn_studio/AGENTS.md`, корневой AGENTS и регламент агентов. Не мержить автоматически.
 
 ## Формат задачи/PR
 
@@ -35,7 +35,7 @@ Mutation scope: read-only / overlay / new converted output / explicit switch
 Parity: scene/line/locale/hidden/choice/M3/ending/save mapping; visual viewports
 Tests executed: command, exit code, CI URL, screenshots (if real)
 Risks/rollback: immutable originals; converter diff and restore
-Status: docs/STATUS + production_progress PR_review vs merged/accepted
+Status: progress/vn-studio.json + unique docs/changes note; PR_review vs merged vs accepted
 ```
 
 **Первый демонстрационный кейс:** импортировать как read-only UPDS prologue и `locker_scene` A/B/C; затем Raven `RM-BEAT-02-01` и изменить staging/эмоцию через draft, не изменяя карту или сохранение.
