@@ -13,7 +13,7 @@ Verification: static review only — test source was read and its assertions ins
 
 Owner QA: not performed — this is a documentation slice, no manual acceptance or device/visual run. Remaining gates (full-donor import parity, visual/portrait-motion acceptance, real old-save round-trip) are unverified and left as missing in the coverage note; they must not be inferred from these three rows.
 
-Status impact: VN-EDITOR-07 stays `in_progress` for local review; broad task kept
+Status impact: VN-EDITOR-07 is `PR_review` for open PR https://github.com/bezdredoff/RavenManor-Godot/pull/200; broad task kept
 incomplete pending full-donor / visual / old-save gates. No code or tests added.
 
 Pilot provenance: authored through Hermes with LM Studio ornith-1.5-9b. The initial broad inventory contained unsupported all-synthetic claims and missed completion checks; review requested corrections. A narrowed three-test retry produced this selected inventory but hit its iteration limit before validators. The orchestrator corrected remaining wording, restored final JSON newline, verified the three source references and runs the validators before publication. This is assisted delivery, not an autonomous Ornith success. README includes the inventory link. No Godot execution or donor/visual/device acceptance is inferred. Reuse: documentation-only inventory of existing implementation.
