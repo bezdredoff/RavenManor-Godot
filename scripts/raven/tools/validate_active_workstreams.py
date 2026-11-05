@@ -7,7 +7,11 @@ claims and not a replacement for existing task IDs.
 """
 from __future__ import annotations
 
-from build_production_dashboard import build
+try:
+    from scripts.raven.tools.build_production_dashboard import build
+except ModuleNotFoundError:
+    # CLI entrypoint from scripts/raven/tools/, invoked by check_data.sh.
+    from build_production_dashboard import build
 
 TERMINAL = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
 
