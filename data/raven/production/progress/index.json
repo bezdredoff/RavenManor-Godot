@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_index",
+  "updated": "2026-11-05",
+  "authority": "Canonical task statuses and evidence reconciled after merge by a single integration owner; authored parallel PRs may use docs/changes/<TASK-ID>-<topic>.md instead of concurrent edits to shared progress. Historical source plans remain scope definitions.",
+  "rules": [
+    "merged requires a concrete PR link",
+    "accepted requires product owner or direct art/device approval and evidence",
+    "never infer task completion from green CI or presence of a document",
+    "evidence must be updated when changing status",
+    "repo main may advance; always verify merged PR state before claiming current status"
+  ],
+  "shards": [
+    "art-pipeline.json",
+    "campaign-core.json",
+    "character-art.json",
+    "chibi-animation.json",
+    "environment-art.json",
+    "localization.json",
+    "manor-map.json",
+    "map-props.json",
+    "match3.json",
+    "qa-infrastructure.json",
+    "restoration.json",
+    "room-builder.json",
+    "ui-shell.json",
+    "vn-runtime.json",
+    "vn-studio.json"
+  ]
+}

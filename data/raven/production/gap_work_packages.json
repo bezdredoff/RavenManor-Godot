@@ -1353,6 +1353,21 @@
       "graphicsDependencies": [],
       "source": "2026-11-04 owner request",
       "requiresHumanAcceptance": false
+    },
+    {
+      "id": "PROC-007",
+      "title": "Modular task progress per workstream and aggregated Raven dashboard",
+      "domain": "process",
+      "priority": "P1",
+      "size": "M",
+      "description": "Разделить единый production_progress.json на независимые функциональные progress/*.json; сохранить 1:1 историю evidence, IDs, статусов и приоритетов; сделать агрегатор единственным источником current progress после проверенной миграции.",
+      "deliverable": "3-phase migration: readonly exact parity shards/validator, dashboard consumer switch, governance/agents update removing shared status writes; unchanged render/data contracts and mobile ZIP checks.",
+      "acceptance": "All 213+ existing task records preserved exactly with no loss of evidence; global ID uniqueness/known planning IDs checked; per-module writable shards do not conflict across independent PRs; generated dashboard same task semantics; CI rejects duplicate, orphan or missing entries; owner/manual QA never inferred from merge.",
+      "status": "in_progress",
+      "dependsOn": [],
+      "graphicsDependencies": [],
+      "source": "Owner-approved modular progress architecture 2026-11-05",
+      "requiresHumanAcceptance": false
     }
   ]
 }

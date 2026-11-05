@@ -1,0 +1,432 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "character-art",
+  "entries": [
+    {
+      "id": "GFX-05-05",
+      "status": "superseded",
+      "owner": "Codex",
+      "updated": "2026-11-03",
+      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #103 is merged. Art Handbook preserves references/recipes but does NOT demonstrate a complete RAW+matte+RGBA master+preview+manifest export workflow for each generated frame. Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: ART-BATCH-AUTOMATION, ART-PROVENANCE-QA. Historical Art Handbook includes archived local-path reference scripts with limited resume and an opt-in single-recipe replay helper; these were not proven as the reusable, deterministic, per-frame production batch/export pipeline required by GFX-05.\n2026-11-03 SCOPE RECONCILIATION: owner confirms all current static art except animations already created and approved. Full evergreen per-frame batch runner/export format is NOT a current gameplay or static art delivery gate. Original wide engineering scope superseded (not completed/accepted); any future animation-specific missing keyframes/replay/provenance remain conditional narrowed ART-BATCH-AUTOMATION / ART-PROVENANCE-QA. Approved 26 VN plates / 62 cast frames unchanged.\n2026-11-03 GFX P0 review: leave already superseded delivery state intact; reduce stale section-inherited P0 priority to P2. See docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md.",
+      "implementationState": "partial",
+      "qaState": "not_recorded",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ],
+      "supersededBy": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "GFX-05-04",
+      "status": "superseded",
+      "owner": "Codex",
+      "updated": "2026-11-03",
+      "evidence": "PR #103 https://github.com/bezdredoff/RavenManor-Godot/pull/103 ; Art Production Handbook candidate: art-handbook/index.html, files/AGENT_GUIDE.md and data/raven/production/art_workflow_handbook.json; 153 images (all 101 repository rasters plus 52 historical wall candidates), 64 recipes, 62 accepted clothed cast frames, 26 candidate VN backgrounds. Executed API/UI evidence, prompts, inputs/masks, SHA256 and environment/model inventory; unknown ChatGPT parameters explicitly null. Local coverage/hash, five unit tests, offline replay preflight and desktop/mobile/file-protocol browser QA, full isolated-user check.ps1 and release Web export passed. Windows test sentinel corrected to match actual staged-import smoke and Linux runner. Replay copies not GPU-retested; no new generation, batch tool completion or device acceptance. Previous-head CI 41351137265 passed on 77b3aa9. PR #104 main 7eb2984 merged into this branch to preserve VNS5-04B stage-v2 code, tests and status entries; post-sync latest-head CI and owner handbook review pending. PR #103 merged into main as 7652a20676bce76e7aead065bdd025b8cee5154b. Handbook code/docs merged, but workflow GPU replay, physical device approval and owner artifact acceptance not implied; previous PR_review evidence retained for audit.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #103 is merged. PR #103's Art Handbook is a read-only evidence/catalog builder, NOT a ComfyUI batch runner with deterministic resume or per-frame regeneration. Reopened to ready because its stated original scope is not fully evidenced. Follow-up IDs: ART-BATCH-AUTOMATION, ART-PROVENANCE-QA. Historical Art Handbook includes archived local-path reference scripts with limited resume and an opt-in single-recipe replay helper; these were not proven as the reusable, deterministic, per-frame production batch/export pipeline required by GFX-05.\n2026-11-03 SCOPE RECONCILIATION: owner confirms all current static art except animations already created and approved. Full evergreen per-frame batch runner/export format is NOT a current gameplay or static art delivery gate. Original wide engineering scope superseded (not completed/accepted); any future animation-specific missing keyframes/replay/provenance remain conditional narrowed ART-BATCH-AUTOMATION / ART-PROVENANCE-QA. Approved 26 VN plates / 62 cast frames unchanged.\n2026-11-03 GFX P0 review: leave already superseded delivery state intact; reduce stale section-inherited P0 priority to P2. See docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md.",
+      "implementationState": "partial",
+      "qaState": "not_recorded",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ],
+      "supersededBy": [
+        "ART-BATCH-AUTOMATION",
+        "ART-PROVENANCE-QA"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "GFX-06-02",
+      "status": "accepted",
+      "owner": "Codex",
+      "updated": "2026-11-02",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Owner explicitly reconfirms all 62 imported VN character images on 2026-11-02; three authored pose families for each of Evelyn, Ada, Lucas and Rowan are included. Acceptance is art only, not game/device QA.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
+    },
+    {
+      "id": "GFX-06-03",
+      "status": "accepted",
+      "owner": "Codex",
+      "updated": "2026-11-02",
+      "evidence": "PR #97: https://github.com/bezdredoff/RavenManor-Godot/pull/97 ; build CI passed on code/art head 886de4f (run 41341651081). Owner accepted current clothed cast/emotions/story poses and prop frames in production chat. Merged integration publishes 62 lossless full-body images in vn_character_catalog.json and assets/raven/characters; shared resolver feeds gameplay VN, Hall Tea and VN Studio exact image selector with safe draft assetId. Local 62-image load/Studio selection/draft/gameplay smoke passed; full isolated-user check.ps1 on Godot 4.7.2, code-plan/dashboard validators and release Web export passed. Studio library exposes all 62 accepted portraits; shared portrait layout fixes central overlap. Windows OpenGL gameplay/Studio controls were rendered and visually inspected; manual editor interaction/mobile QA remains pending. See docs/production/VN_CHARACTER_ART_IMPORT_RU.md. Full G6, intermediate micro keyframes, missing expressions on story poses and mobile visual acceptance remain pending. PR #97 merged into main as 8313a109b708e0ae244f5516d9a80d952bcd508f; owner/device QA still pending. Main build/deploy run 41342566845 passed after PR #97 merge; static images integrated, full task/device acceptance still pending.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Owner explicitly reconfirms all 62 imported character images on 2026-11-02; six expressions represented per character. Pose×emotion matrix has gaps and is tracked independently.",
+      "approvalState": "art_approved",
+      "qaState": "manual_pending",
+      "implementationState": "delivered"
+    },
+    {
+      "id": "GFX-06-08",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Editor-only procedural breath/shake/scale/opacity and phase timeline merged via https://github.com/bezdredoff/RavenManor-Godot/pull/112 and https://github.com/bezdredoff/RavenManor-Godot/pull/132; real keyframe animation and whole-game runtime acceptance pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Editor-only FX timeline and existing runtime phase effects merged #112/#132; complete production animation capability not delivered. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.",
+      "implementationState": "partial"
+    },
+    {
+      "id": "GFX-06-09",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Reduced-motion math and editor preview implemented, needs systematic mobile/accessibility QA.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Reduced-motion preview/math exists, real-device/accessibility acceptance pending. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "implementationState": "partial"
+    },
+    {
+      "id": "GFX-03-05",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Static VN-sized visual review partially exercised by VN Studio/Content Preview; mobile overlap and safe zones require review. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-04-A",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-B",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-C",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-D",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-E",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-F",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-G",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-04-H",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Full multi-angle identity/turnaround package was an upstream production option, not an approved product artifact. Existing approved portraits serve as the VN identity anchor; cross-scale identity markers still required for chibi. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "GFX-06-02",
+        "GFX-07-04"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-04"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-01",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-02",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-03",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Named poses are in 62 accepted frames but true intermediate keyframe generation remains separate animation work. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Dedicated named keyframe generation tooling is a future optional workflow, distinct from existing editor-only FX. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "status": "ready",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-05-06",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-07",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-08",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Character compositor has containment/layout handling, but no full native portrait/device QA proof. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-05-09",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-10",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Legacy general-purpose ComfyUI/VNCCS batch/matte/preflight workflow method is unnecessary to ship the already accepted static portraits. Non-verified local workflow behavior is not claimed implemented; any new chibi generation is separately scoped. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P2. Status proposed -> superseded; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "superseded",
+      "priority": "P2",
+      "updated": "2026-11-03",
+      "supersededBy": [
+        "ART-HANDBOOK-01",
+        "ART-BATCH-AUTOMATION"
+      ],
+      "followUpTaskIds": [
+        "GFX-07-01"
+      ],
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded"
+    },
+    {
+      "id": "GFX-05-11",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: VN character catalog contains approved IDs, dimensions and source SHA; no all-domain duration/pivot/atlas manifest. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P1",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GFX-06-01",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full 280-line cue pose-matrix reauthoring is not a current batch prerequisite; targeted VN-CAST-MATRIX review stays P1. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-04",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Storyboarding all signature keyframe microanimations is optional until a specific approved scene requires actual image swaps. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-05",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Per-keyframe identity-drift QA is deferred with the not-yet-produced physical keyframe sequences; approved static composites unchanged. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-07",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full frame-duration/hold/easing asset manifest is future image-swap animation infrastructure, not the already merged editor FX. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-06-10",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Complete all-poses held-object contradiction matrix is a follow-up after scene-specific VN-CAST-MATRIX QA; does not invalidate accepted art. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    }
+  ]
+}

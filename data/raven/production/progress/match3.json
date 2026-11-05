@@ -1,0 +1,170 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "match3",
+  "entries": [
+    {
+      "id": "CODE-01-01",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/46 (merged; CI success). C1 full release gate still needs review; not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #46 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-01-02.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-01-02"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-02-01",
+      "status": "ready",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Old Match-3 swipe regression work lacks current branch/PR; prior UI and input code does not prove mobile parity. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "partial",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-02-02",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/60 merged 2026-10-27: original UPDS frame-driven clear/special impact and blocker-segment clip boundaries, Godot smoke and CI passing. Device QA and final GFX-10 polish remain open; not accepted.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #60 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-02-00",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/54 merged 2026-10-27T18:07:19Z: byte-identical UPDS Match3 board shape, CSS easing, tile motion GDScript + scene and tutorial predicates; dedicated Godot smoke wired into Raven checks. Not accepted as full Match-3 screen or GFX-10 art.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #54 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-02-03",
+      "owner": "ChatGPT",
+      "status": "ready",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Tutorial/help/tiles require real Web/mobile and UPDS presentation parity; former recovery branch is absent. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "CODE-02-04",
+      "status": "merged",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged 2026-10-27; responsive 320/390/412/430 board, vertical-slice safe-area shell and HUD Godot smoke CI passed. Actual Safari mobile QA not yet accepted; old Content Preview did not use this board until CODE-02-05 candidate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #61 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-02-06, RM-GAP-010.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-02-06",
+        "RM-GAP-010"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-02-05",
+      "status": "ready",
+      "evidence": "USER QA FAILURE 2026-10-27: in deployed Godot #62, touch+mouse swipe not working, hint only apparently highlights 1 cell, help expands inline (UPDS reference uses modal), and overall UI/art diverges sharply from UPDS Godot and original Raven Manor PWA. Prior merged/green CI is not acceptance. Recovery branch fix/code02-input-help-parity-recovery binds tile GUI events, strengthens hint visuals and replaces inline help with a modal; needs actual browser+phone acceptance and full visual parity redesign.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Direct QA route exists in prior work; actual device parity and route validation remain unaccepted. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-02-06",
+      "owner": "Codex",
+      "updated": "2026-11-03",
+      "status": "PR_review",
+      "evidence": "User-reported critical parity regression; recovery branch fixes cell GUI input and modal help/hint style, with tests. Must re-evaluate on actual Web build/phone. Full faithful UPDS Godot or PWA presentation + legacy Raven art parity is a distinct unfinished stage.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: No open recovery PR and old fix/code02-input-help-parity-recovery branch not present; prior PR_review was stale. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Real touch, two-tile hint and modal Help are known vertical-slice regressions, not solved by merged renderer primitives. Current explicit priority P0 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 active recovery: fix Help hide/Esc state, direct cell pointer ownership/emulated mouse and hidden-board gesture isolation. Real Viewport.push_input mouse/touch regression in ScrollContainer PASS on Godot 4.7.2, two-cell hint and modal no-layout-change assertions. Full regression/PR CI and actual browser/phone QA pending; no full UPDS screen/art parity claim.\nPR #175 https://github.com/bezdredoff/RavenManor-Godot/pull/175 OPEN. Full scripts/check.sh PASS on Godot 4.7.2 with isolated XDG_DATA_HOME; native Xvfb Viewport smoke PASS. The same regression on pre-fix presenter FAILS at Esc left Help state locked, confirming coverage. Exact-head CI/device QA pending.\nPR #175 rebased atop #176 (read-only Skip atop #174). Resolved documentation/check runner conflicts preserving both GAME-UI-01 and CODE-02-06 evidence. No Match-3 code change from pre-rebase full PASS; combined stack regression and new-head CI pending.\n2026-11-03 Web font QA follow-up atop #175: Chromium screenshot showed missing cup/brooch and special pictograms in temporary skin. Use distinct ASCII tile/special marks with matching help legend and original names/tooltips, no asset/font generation. Headless/browser verification pending; does not imply final Match-3 artwork parity.\nPR #177 https://github.com/bezdredoff/RavenManor-Godot/pull/177 OPEN atop #175. Local Chromium Web: repaired VN header/footer and tile glyphs, two-cell hint, bounded scrollable Help. Independent CDP touch swipe moves 16→15 and objective 0/6→3/6; mouse swipe independently committed one move; Esc closes Help. Chromium console/page errors: none. Root cause was browser compatibility mouse press claiming a gesture immediately before the real touch press; touch now takes gesture ownership and suppresses the trailing mouse stream. Godot 4.7.2 viewport smoke asserts modal width and scrolling. Physical device/final-art acceptance remains open. Exact-head GitHub Actions run 41784250529 succeeded on code commit b369963c4eeb7cc8b47df83c67cc9d6bcb0f6010; a documentation-only follow-up records this evidence and awaits its own CI.",
+      "implementationState": "partial",
+      "priority": "P0"
+    },
+    {
+      "id": "CODE-01-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: UPDS engine is imported (https://github.com/bezdredoff/RavenManor-Godot/pull/46); full seeded blocker/special/hole parity needs explicit cross-project oracle.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: UPDS engine merged #46, special/blocker/hole parity oracle not yet complete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-01-03",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "merged",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Idempotent Raven rewards, save-state and restoration tests in RM-VS-01 via https://github.com/bezdredoff/RavenManor-Godot/pull/9; broader Season 1 release gates separate.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #9 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: CODE-13-01.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "CODE-13-01"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "GFX-10-06",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Optional Match-3 polish glow/dissolve/bounce is not prerequisite for fixing real touch/hint/help input or approved tile readability. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-10-08",
+      "status": "proposed",
+      "owner": "Planning",
+      "implementationState": "not_recorded",
+      "qaState": "not_recorded",
+      "approvalState": "not_recorded",
+      "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Whole-UI final visual harmonization follows approved Hall/Match-3 gameplay/device QA, and is not a separate current P1 artwork gate. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
+      "priority": "P2",
+      "updated": "2026-11-03"
+    },
+    {
+      "id": "GAME-M3-01",
+      "status": "merged",
+      "priority": "P1",
+      "owner": "Codex",
+      "updated": "2026-11-04",
+      "evidence": "GAME-M3-01 implementation candidate: 22 stable Raven levels RM-LVL-101..122 adapt UPDS mechanics/layouts from bezdredoff/UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 data/campaign_match3_levels.json blob c7637889b75c6810b14754fa8e36c1f075844ac5 and campaign UI model scripts/match3/match3_campaign_screen.gd blob 5af00e5c02eec14a25b3b1a5aa1d0f594e90927a. Uses existing Raven eight-tile pool mapping, neutralizes donor labels/story, keeps board layouts/blockers/holes/moves, gives added levels zero work_points; campaign first-clear unlock/replay uses Raven firstClearLevels and does not alter story Director. UI uses Raven existing widgets and no media assets. PR #181 merged into main as 4b6a463d69473da1fe48a4634f9ececc4035713a on 2026-11-04; required GitHub Actions build/deploy workflows succeeded on the merge SHA. Device QA and owner acceptance remain pending. Mapping detail: docs/production/GAME_M3_01_CAMPAIGN_RU.md. Visual reuse: original RavenManor commit 643a8ec5d39812ec4a00294df6378b12d165280c, six tile PNGs and board surface; approved VN hall/evening_dusty.webp as campaign backdrop. Board surface alpha 0.48, dark wash alpha 0.34. See visual provenance in runbook. PR #181 merged into main as 4b6a463d69473da1fe48a4634f9ececc4035713a on 2026-11-04; required GitHub Actions build/deploy workflows succeeded on merge SHA. Device QA and owner acceptance remain pending.\n2026-11-04 GFX-10-01 follow-up candidate: connected a ChatGPT-generated transparent cup image at assets/raven/match3/generated/cup-chatgpt-candidate-v1.png (SHA-256 e02cdc758e54d1715d4cdc1bcf1e6db4a5cd46e45aea130dade2d9f7f8fed44d) to the existing cup tile ID through Raven theme adapter; added Godot theme texture assertion. This is one unapproved art candidate, not completion of eight-tile bake-off or GFX-10 approval. Details/provenance: docs/production/GAME_M3_01_CAMPAIGN_RU.md. Device QA and owner visual acceptance remain pending.\n2026-11-04 follow-up after PR #184 merged: connected a second ChatGPT-generated transparent candidate for existing tile ID quill at assets/raven/match3/generated/quill-chatgpt-candidate-v1.png (SHA-256 0b4074adb4cacbe8fb9cb013777263ce181ff514c09f386f0ba55edd627b1196) through the Raven theme adapter. Added handbook provenance and Godot Texture2D assertion. Both cup and quill remain pending-review art; the eight-tile GFX-10 bake-off and small-screen/owner acceptance are not complete.\n2026-11-04 main-menu integration follow-up: a localized player-menu action opens the existing Raven 22-level optional Match-3 campaign directly, with a return route to the main menu. Tests verify the first level launches and this navigation does not mutate story/save revision. No parallel session or campaign state. UPDS menu/campaign donor paths and commit/blob pins are in docs/production/GAME_M3_01_CAMPAIGN_RU.md.",
+      "implementationState": "runtime_candidate",
+      "qaState": "ci_passed",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-BOOST-01",
+      "status": "merged",
+      "priority": "P1",
+      "owner": "Codex",
+      "updated": "2026-11-04",
+      "evidence": "GAME-BOOST-01 implementation candidate: Raven-only bounded inventory hammer/shuffle (0..99); old saves normalize to zero. RM-REST-001 awards 2 hammers and RM-REST-002 awards 2 shuffles once through restoration reducer events; no store/monetization. Hammer removes one tile or one blocker layer, shuffle reorders playable tiles, both free and replayable in canonical Match-3 checkpoint. Spend and checkpoint persist atomically; failed saves restore prior board history. Donor audit: UPDS-godot@3deed628efd6c22bcd1717f7c545b7d3ca865781 scripts/match3/match3_game.gd blob 8c62ec550eb500f0c70d431dd325268e59893de4 and scripts/match3/match3_screen.gd blob 76b42df35d4857f242d3f6bc06b9f989d43ad0a3 have automatic dead-board reshuffle but no inventory/manual hammer/manual shuffle; Raven PWA behavior is pinned in docs/production/GAME_BOOST_01_INVENTORY_RU.md. Godot 4.7.2 full scripts/check.sh and blocking project gates pass. Dashboard advisory assertions were refreshed for the merged GAME-M3-01 status and the 24-test suite passes. PR #182 merged as 6f5168af068a5b7f69c5a658836dab537272ec13 on 2026-11-04; exact-head GitHub Actions run 41829063019 succeeded. Physical device QA and owner acceptance remain pending.",
+      "implementationState": "runtime_candidate",
+      "qaState": "ci_passed",
+      "approvalState": "pending"
+    }
+  ]
+}

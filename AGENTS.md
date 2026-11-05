@@ -58,3 +58,7 @@ Never commit credentials, local saves, Godot import caches, unlicensed assets, u
 ## Parallel-agent boundaries
 
 Read `docs/architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md` and `docs/audits/MULTI_AGENT_READINESS_20261104_RU.md`. Each worktree owns explicit paths/tests. Only an integration owner may coordinate concurrent edits of `vertical_slice.gd`, `raven_reducer.gd`, `raven_snapshot.gd`, `raven_campaign_store.gd`, shared IDs, `project.godot`, approved production story registries and GitHub workflows. VN Studio, Room Builder and art pipeline can develop independently behind reviewed data contracts. Controller/booster extraction merged (#189–191). Parallel CI jobs are proposed under PROC-006; all module jobs plus aggregate `build` must pass before owner merge. See `docs/process/CI_SHARDING_20261104_RU.md`.
+
+## PROC-007 status shard migration (2026-11-05)
+
+The owner approved per-module task statuses in `data/raven/production/progress/*.json`, assembled into one dashboard. **Stage 1 is read-only parity only:** `production_progress.json` remains canonical and individual shards are generated copies; do not edit shards or claim parallel ownership until Stage 2/3 migration PRs merge. Run `python3 scripts/raven/tools/progress_shards.py --check-parity` and its regression tests. Read `docs/process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md` for ownership and migration gates.

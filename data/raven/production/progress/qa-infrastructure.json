@@ -1,0 +1,232 @@
+{
+  "schemaVersion": 1,
+  "kind": "task_progress_shard",
+  "domain": "qa-infrastructure",
+  "entries": [
+    {
+      "id": "PROC-001",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "PROC-002",
+      "status": "accepted",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 OWNER QA: Owner explicitly confirms dashboard search, «Все задачи» toggle, statuses, archive, evidence and follow-up links WORK. Scope accepted: Production Dashboard UI. This is not acceptance of game/runtime or every ledger entry.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "manual_verified",
+      "approvalState": "feature_approved",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "PROC-003",
+      "status": "accepted",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Complete phone-to-GitHub ZIP → candidate PR → isolated Godot/Room Builder/Web CI verified after owner phone upload: https://github.com/bezdredoff/RavenManor-Godot/pull/55 ; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 and /actions/runs/40554457157. PR closed unmerged, inbox cleaned. Live malicious ZIP edge cases and optional distinct-origin playable preview still separate gates.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Phone ZIP intake and isolated checks merged in earlier PRs; broader adversarial security acceptance is not active in any current PR. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER-REPORTED MANUAL ACCEPTANCE: In project chat the owner stated requested checks were completed and all passed. Owner reports valid and invalid secure incoming ZIP→candidate PR handoff checks passed; prior #55/#108–110 CI evidence exists. Full MOB-04 threat matrix/post-merge preview origin remains separate. No new screenshots, exact device/resolution list, mobile run IDs, or full visual comparison files accompanied this report. The acceptance is limited to the scoped task; cannot infer whole-season, Hall, Match-3, chibi, or unreleased playable branching acceptance.",
+      "implementationState": "delivered",
+      "priority": "P1",
+      "qaState": "manual_verified",
+      "approvalState": "feature_approved"
+    },
+    {
+      "id": "PROC-004",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "MOB-00",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Merged PR #48: https://github.com/bezdredoff/RavenManor-Godot/pull/48 ; latest main CI and Pages deployment passed. No human/device acceptance implied.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #48 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: MOB-04.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [
+        "MOB-04"
+      ],
+      "priority": "P2"
+    },
+    {
+      "id": "MOB-01",
+      "status": "integrated",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40544933737 — trusted ZIP validation + automatic candidate branch + GitHub Actions-created PR #52 succeeded after owner enabled permission; synthetic smoke PR closed unmerged.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "priority": "P2"
+    },
+    {
+      "id": "MOB-02",
+      "status": "integrated",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376 — independent workflow_dispatch checks succeeded on candidate; UPDS/Godot/Room Builder/Web export and non-deployed 7-day artifact raven-candidate-web-40545034376 passed.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "priority": "P2"
+    },
+    {
+      "id": "RM-GAP-009",
+      "status": "merged",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "evidence": "Merged #48, #49, #51 and successful ZIP smoke #52 reconciled in docs/mob-automation-acceptance-evidence-20261027; other historical status issues remain to audit.\n2026-11-02 reconciliation @ main ea4fc3552c7a: Historical 70-item audit predates implemented PR #9 and later components. Reconciliation initiated; re-score historic coverage as separate QA/documentation work. 2026-11-02 documentation follow-up: audit overlay now enumerates all 70 historic requirement IDs with source evidence, without inventing a new acceptance percentage. Old 0/13 vertical-slice baseline re-labelled historic after merged #9; final criterion-by-criterion native QA remains pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Historical audit reconciled by merged PR #138 (70 requirements overlay); criterion-by-criterion native re-verification remains a separate quality gate. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #138 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "MOB-03",
+      "owner": "ChatGPT",
+      "status": "integrated",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/51 merged; https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40545034376 confirms candidate Web artifact. Trusted /preview/ review portal is NOT a playable candidate site and was not manually tested on phone.",
+      "updated": "2026-10-27"
+    },
+    {
+      "id": "MOB-04",
+      "owner": "ChatGPT",
+      "status": "ready",
+      "evidence": "Phone upload confirmed by owner 2026-10-27: ZIP incoming/RM-MOB04_PHONE_R1.zip (752 B) was committed on incoming branch, importer run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554280539 passed and automatically opened test PR #55 https://github.com/bezdredoff/RavenManor-Godot/pull/55. Independent PR + workflow_dispatch runs passed (https://github.com/bezdredoff/RavenManor-Godot/actions/runs/40554457157), downloadable non-deployed Web artifact raven-candidate-web-40554457157. PR #55 closed unmerged and archive removed. Remaining: adversarial LIVE cases and phone review/download UX, distinct-origin playable preview not implemented. 2026-11-01: Follow-up implementation candidate adds auto cleanup of incoming ZIP for success/failure using always() after validate/candidate/CI, with per-job write token, immutable triggering SHA + content-SHA race guards, manual dispatch scoped to requested ZIP, Node regression tests. See docs/production/MOB04_AUTO_ZIP_CLEANUP_RU.md. Actual live success/failure cleanup acceptance and remaining device/phone review still require independent evidence; do not mark task accepted. 2026-11-02 audit after PR #107 merge: main and incoming had malformed root-level cleanup_incoming_zip YAML, causing no-job importer failures main run 41405224801 / incoming run 41357836990. Correct job indentation and regression test proposed; must merge fix into main AND incoming; live negative/positive ZIP acceptance remains open. 2026-11-02 live proof: PR #108 merged into main SHA d3e300720b4f79f358bff7a274bc7267d49cc8f1; PR #109 merged into incoming. CI main https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41416732259 passed. Negative import https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41417364700: validate failed for missing patch-manifest.json, candidate/test skipped, cleanup_incoming_zip succeeded and deleted incoming/MOB04-cleanup-negative.zip (incoming cleanup commit 86923b531252f9e1f775e0e404fc5551d75acde1), owner confirmed phone steps. Positive-package RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip prepared on main d3e300720b4f79f358bff7a274bc7267d49cc8f1 with docs/process/runbook/status/dashboard, for end-to-end valid import and automatic success-path deletion test. Candidate creation, independent CI, positive cleanup and manual merge MUST be checked after upload; not yet proven. Keep overall MOB-04 in_progress because full adversarial, preview isolation and device follow-up remain incomplete. 2026-11-02 ACTUAL positive live proof: importer https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431240753 succeeded in validate, candidate, test_candidate and cleanup_incoming_zip. Auto-created candidate PR https://github.com/bezdredoff/RavenManor-Godot/pull/110 changes exactly 4 docs/status files, zero deletions, no runtime/workflows/assets. Independent Godot/Room Builder/Web CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41431330573 succeeded, produced a non-deployed Web artifact; Pages deploy skipped. Cleanup log: Removed incoming/RM-MOB04_AUTO_CLEANUP_POSITIVE_R1.zip; incoming cleanup SHA 4c7954578580d96808e934989f6b0ecc3a47c62a; incoming/ contains no ZIP. Together with negative run 41417364700, auto ZIP removal success and failure paths are operationally verified. PR #110 final-head PR CI and manual review/merge remain separate; full MOB-04 stays in_progress for other adversarial/mobile artifact/isolated playable preview acceptance.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Positive and negative cleanup paths evidenced in #108/#109/#110, but no current branch/PR for remaining adversarial/device checks. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. The complete malicious ZIP/stale-base/security matrix, isolated playable preview origin and post-merge stable release proof are separate from valid/invalid phone ZIP smoke. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "updated": "2026-11-03",
+      "implementationState": "partial"
+    },
+    {
+      "id": "PROC-005",
+      "status": "merged",
+      "evidence": "https://github.com/bezdredoff/RavenManor-Godot/pull/61 merged; GitHub Actions now requires authored PRs to update docs/STATUS.md and production_progress.json, tested with numeric incoming candidate exception; no claim of protection against all possible malicious actor branches.\n2026-11-03 MERGED CLOSURE AUDIT @ main 443d8bead924: Verified PR #61 is merged. Merged PR delivers the declared technical slice. This status is terminal for planning, but its unverified full feature, native UI or broader runtime acceptance must be tracked by independent follow-up items where applicable. Retained merged as closed technical delivery, NOT newly user-accepted. Follow-up IDs: none for this narrowly scoped task.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "followUpTaskIds": [],
+      "priority": "P2"
+    },
+    {
+      "id": "CODE-10-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Portrait HUD and Stage responsive/layout smokes exist, including VN Studio https://github.com/bezdredoff/RavenManor-Godot/pull/127; cross-system accessibility and real device checks not accepted.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Responsive smokes and VN Studio height work merged; accessibility/mobile QA across game screens incomplete. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Current explicit priority P1 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "priority": "P1"
+    },
+    {
+      "id": "CODE-10-02",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "ready",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Web export/Pages, incoming ZIP CI and smoke runners exist; offline/mobile full regression and independent preview acceptance pending.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Web export and ZIP CI active in main; offline/resume/mobile full regression is not completed. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Individual device resolutions, pointer/stylus and offline/resume tests are not itemized in this report; owner feedback alone cannot certify each specific acceptance criterion. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "implementationState": "partial",
+      "qaState": "automated"
+    },
+    {
+      "id": "DASH-RECON-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "integrated",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Owner approved reconciliation scope. This PR updates source registries and historical statuses without gameplay/save edits.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Merged PRs #137 and #138 reconcile historical backlog, exact accepted art and 70-requirement audit; documentation is in main. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.\n2026-11-03 P2 AND ACCEPTANCE MATRIX PLANNING ONLY (PR candidate): 44 currently open P2 task IDs categorized with return conditions in data/raven/production/p2_reentry_policy.json (16 future-season/content, 14 conditional pipeline/keyframes, 2 explicitly deferred and 12 mandatory whole-season release QA). Ten active workstreams now have CI/manual/contingent-new-work/owner-decision gates, with Russian copy docs/production/CURRENT_RELEASE_ACCEPTANCE_MATRIX_RU.md. Dashboard view/CI validators added. Existing statuses, approval/QA, art, script/runtime/scene/save, and full-season release gates remain unchanged; no owner device QA or product feature acceptance claimed.",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "pending",
+      "priority": "P2"
+    },
+    {
+      "id": "PROC-DASH-V2",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "status": "accepted",
+      "evidence": "2026-11-02 reconciliation @ main ea4fc3552c7a: Approved follow-up dashboard visualization work; keep separate code change review after source reconciliation. Dashboard v2 client/generator/test changes staged in PR #137 second commit to support reconciled status vocabulary and independently show art approval, implementation, QA. CI fresh head pending; manual phone browser QA not claimed.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: Dashboard v2 shipped to Pages in #137; implementation/QA/art axes and filters are operational; feature-level full acceptance not inferred. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 OWNER QA: Owner explicitly confirms dashboard search, «Все задачи» toggle, statuses, archive, evidence and follow-up links WORK. Scope accepted: Production Dashboard UI. This is not acceptance of game/runtime or every ledger entry.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "implementationState": "delivered",
+      "qaState": "manual_verified",
+      "approvalState": "feature_approved",
+      "priority": "P2"
+    },
+    {
+      "id": "DASH-RENDER-01",
+      "status": "accepted",
+      "owner": "ChatGPT",
+      "updated": "2026-11-03",
+      "implementationState": "delivered",
+      "qaState": "automated",
+      "approvalState": "feature_approved",
+      "evidence": "Owner 2026-11-03 cannot see any dashboard tasks. UI visibility fix, progressive card load and actual headless-Chrome Pages render regression proposed in PR awaiting independent CI. Live iOS visual QA remains unverified.\n2026-11-03 LIVE STATUS AUDIT @ main 82c6f0b64e9b: PR #139 merged 2026-11-03, real Chromium build smoke passed (24 cards + 6 P0), owner explicitly confirmed tasks visible. Scoped visibility accepted; no separate device matrix acceptance. At audit time open GitHub PRs: 0, remote branches: main and incoming. Status expresses present workflow only; prior partial implementation and acceptance gates remain separately recorded.\n2026-11-03 CODE/GAP P0 TRIAGE: Technical delivery/owner-scoped acceptance or supersession already recorded; retained in archive at P2, not a live P0 item. Current explicit priority P2 replaces the historic source-plan P0; status, owner approval and QA unchanged.",
+      "priority": "P2"
+    },
+    {
+      "id": "GFX-11-T09",
+      "owner": "ChatGPT",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Hall pilot still needs real portrait-phone/tablet screenshots, reduced-motion inspection, save/resume and integration acceptance; headless CI alone is not device QA. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P0. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.",
+      "status": "ready",
+      "priority": "P0",
+      "updated": "2026-11-03",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-QA-01",
+      "status": "proposed",
+      "priority": "P0",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "GAME-RELEASE-01",
+      "status": "proposed",
+      "priority": "P2",
+      "owner": "Unassigned",
+      "updated": "2026-11-03",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-10-02.",
+      "implementationState": "not_started",
+      "qaState": "not_started",
+      "approvalState": "pending"
+    },
+    {
+      "id": "PROC-006",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-04",
+      "implementationState": "process_candidate",
+      "qaState": "not_run",
+      "approvalState": "pending",
+      "priority": "P1",
+      "followUpTaskIds": [],
+      "evidence": "2026-11-04 owner request; process/proc-006-multi-agent-readiness proposed from main c5f286ea1da4625da880e27d07c61714cf022a81. PR/CI pending; runtime extraction and module-specific CI sharding not implemented."
+    },
+    {
+      "id": "PROC-007",
+      "status": "in_progress",
+      "owner": "ChatGPT",
+      "updated": "2026-11-05",
+      "evidence": "Owner approval 2026-11-05: modular production task progress per functional owner, immutable task IDs, aggregated single dashboard. Stage 1 introduces read-only shards with strict parity against legacy until consumer/governance migration; future work pending; no runtime/device acceptance.",
+      "implementationState": "migration_stage1_candidate",
+      "qaState": "not_run",
+      "approvalState": "pending",
+      "priority": "P1",
+      "followUpTaskIds": []
+    }
+  ]
+}

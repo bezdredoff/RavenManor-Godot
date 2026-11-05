@@ -53,3 +53,5 @@ Where old contracts conflict (especially bedroom gate, door cycling, free moveme
 - [Аудит и очередность](audits/MULTI_AGENT_READINESS_20261104_RU.md)
 - [Контракты и file ownership](architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md)
 - [PR evidence](changes/PROC-006-multi-agent-governance.md)
+
+- [PROC-007 — modular task progress migration](process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md) (Stage 1 parity; future Stage 2 dashboard switch / Stage 3 ownership)

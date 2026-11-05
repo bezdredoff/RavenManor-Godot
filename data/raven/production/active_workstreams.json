@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "active_raven_delivery_workstreams",
-  "asOf": "2026-11-04",
+  "asOf": "2026-11-05",
   "authority": "Task status and priority authoritative in central progress after integration-owner merge reconciliation; workstreams group only current P0/P1 tasks. Authored PRs use independent docs/changes evidence; exact source membership is CI-checked.",
   "workstreams": [
     {
@@ -365,7 +365,8 @@
       "gate": "Per-PR evidence вместо shared STATUS/progress edits; изолированные PR CI runs, single-writer reconciliation, module ownership и контрактные QA gates.",
       "ownerAcceptance": "Only actual PR CI plus owner merge; no Godot device QA or automatic runtime integration inferred.",
       "taskIds": [
-        "PROC-006"
+        "PROC-006",
+        "PROC-007"
       ],
       "acceptancePlan": {
         "automatedChecks": [
