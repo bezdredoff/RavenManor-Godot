@@ -18,4 +18,5 @@ Owner QA:
 - Pending physical mobile/Web cancellation testing (OS interruption/system gesture), complete CODE-02-01 device coverage, visual/art review and product-owner acceptance.
 
 Status impact:
-- `CODE-02-01` is `in_progress` for this local correctness slice. The broad input/mobile/art task remains incomplete; no PR, merge, device verification or acceptance is claimed.
+- `CODE-02-01` is `PR_review` for open PR https://github.com/bezdredoff/RavenManor-Godot/pull/199, covering this correctness slice only. The broad input/mobile/art task remains partial; no merge, device verification or acceptance is claimed. Hermes executor: configured Codex runtime/model gpt-5.6-sol; orchestrator reviewed and publishes the diff. The existing test path match3_viewport_input_smoke.gd is approved for this slice (initial brief transposed the filename).
+Additional worker verification: full Godot portion of scripts/check.sh passed; shard/dashboard validators passed. Native Windows full data suite remains limited by the existing path-separator assertion. Linux PR-head CI is required.
