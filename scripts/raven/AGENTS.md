@@ -1,0 +1,5 @@
+# Shared Raven runtime — multiple owners, single-writer core
+
+Read repository-root `AGENTS.md` and `docs/process/AGENT_ORCHESTRATION_RU.md` first. These local rules supplement root policy. Update only the owning `data/raven/production/progress/<domain>.json` plus unique `docs/changes/` evidence; never manually edit generated `dashboard/status.json` or frozen `production_progress.json`. Never auto-merge or claim unverified owner/device/art acceptance.
+
+This is **not** one agent's directory. `vn-runtime`: `raven_vn_*.gd`; `match3`: `raven_match3_*.gd` and `raven_optional_campaign_controller.gd`; `manor-map`: `manor_navigation_graph.gd` and greybox; `ui-shell`: menu/settings/onboarding; `localization`: production localization adapter. Declare exact paths in each PR. `vertical_slice.gd`, `raven_reducer.gd`, `raven_snapshot.gd`, `raven_campaign_store.gd`, `raven_ids.gd` are **single-writer shared-core integration files**. Save schema/events/IDs require contract PR and regression tests; avoid free tap-to-move and bathroom-as-bedroom gate. Subfolders `comfyui/` and `tools/` add stricter rules.

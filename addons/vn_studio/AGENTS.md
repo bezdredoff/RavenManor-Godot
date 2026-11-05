@@ -1,0 +1,5 @@
+# VN Studio owner: `vn-studio`
+
+Read repository-root `AGENTS.md` and `docs/process/AGENT_ORCHESTRATION_RU.md` first. These local rules supplement root policy. Update only the owning `data/raven/production/progress/<domain>.json` plus unique `docs/changes/` evidence; never manually edit generated `dashboard/status.json` or frozen `production_progress.json`. Never auto-merge or claim unverified owner/device/art acceptance.
+
+Own `addons/vn_studio/**` editor/model changes and their targeted tests. Read `addons/vn_studio/README.md`, `docs/VN_STUDIO_EDITOR_SPEC.md`, `docs/process/VN_STUDIO_AGENT_GUIDE_RU.md`. Native Godot plugin **exists**; this is not a future-only proposal. Draft assets/scene/FX preview and read-only UPDS imports must never silently promote to canonical runtime. Preserve stable line/scene IDs and RU/BE/EN, branches and no-progression preview. `scripts/raven/raven_vn_*.gd`, `raven_reducer.gd` and canonical story catalogs require VN Runtime/Campaign integration review. Validate VNS5 model/promotion/locale tests and distinguish actual editor/device QA from CI.
