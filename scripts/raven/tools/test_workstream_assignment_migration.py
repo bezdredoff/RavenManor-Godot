@@ -1,48 +1,44 @@
-"""Stage 3a: exact membership parity of owner shards and historical registries.
-
-This one-time migration gate is replaced with independently writable contract
-tests in Stage 3b, before status updates can diverge from static lists.
-"""
+"""Stage 3b: validate stable owner-shard assignment shape, not frozen memberships."""
 import json
 import unittest
 
-from scripts.raven.tools.progress_shards import ROOT, SHARDS, load_shards
+from scripts.raven.tools.progress_shards import SHARDS, load_shards
+from scripts.raven.tools.build_production_dashboard import build
 
 
-class AssignmentMigration(unittest.TestCase):
-    def test_same_80_active_and_44_p2_members(self):
+class AssignmentContracts(unittest.TestCase):
+    def test_all_group_assignments_are_unique_and_known_to_dashboard(self):
         source = load_shards(SHARDS)
-        assignments = {item["id"]: item for item in source["assignments"]}
-        old_work = json.loads((ROOT/"data/raven/production/active_workstreams.json").read_text(encoding="utf-8"))
-        old_p2 = json.loads((ROOT/"data/raven/production/p2_reentry_policy.json").read_text(encoding="utf-8"))
-        expected = {}
-        for stream in old_work["workstreams"]:
-            for task_id in stream["taskIds"]:
-                self.assertNotIn(task_id, expected)
-                expected[task_id] = {"id": task_id, "workstreamId": stream["id"]}
-        for group in old_p2["groups"]:
-            for task_id in group["taskIds"]:
-                self.assertNotIn(task_id, expected)
-                expected[task_id] = {"id": task_id, "p2ReentryGroup": group["id"]}
-        self.assertEqual(assignments, expected)
-        self.assertEqual(len(assignments), 124)
-        self.assertEqual(len(source["entries"]), 214)
+        assignments = source["assignments"]
+        self.assertEqual(len(assignments), len({a["id"] for a in assignments}))
+        dashboard = build()
+        by_id = {t["id"]: t for t in dashboard["tasks"]}
+        self.assertTrue(assignments)
+        for assignment in assignments:
+            self.assertIn(assignment["id"], by_id)
 
-    def test_ownership_same_domain_as_override_and_35_plan_only_members(self):
-        index = json.loads((SHARDS/"index.json").read_text(encoding="utf-8"))
-        owners = {}
+    def test_assignment_shares_domain_with_optional_live_override(self):
+        index = json.loads((SHARDS / "index.json").read_text(encoding="utf-8"))
+        by_id = {}
         for filename in index["shards"]:
-            shard = json.loads((SHARDS/filename).read_text(encoding="utf-8"))
-            owners.update({item["id"]: shard["domain"] for item in shard["entries"]})
-        plan_only = []
+            shard = json.loads((SHARDS / filename).read_text(encoding="utf-8"))
+            for entry in shard["entries"]:
+                self.assertNotIn(entry["id"], by_id)
+                by_id[entry["id"]] = shard["domain"]
         for filename in index["shards"]:
-            shard = json.loads((SHARDS/filename).read_text(encoding="utf-8"))
-            for item in shard.get("assignments", []):
-                if item["id"] not in owners:
-                    plan_only.append(item["id"])
-                else:
-                    self.assertEqual(owners[item["id"]], shard["domain"])
-        self.assertEqual(len(plan_only), 35)
+            shard = json.loads((SHARDS / filename).read_text(encoding="utf-8"))
+            for assignment in shard.get("assignments", []):
+                if assignment["id"] in by_id:
+                    self.assertEqual(by_id[assignment["id"]], shard["domain"])
+
+    def test_shared_metadata_never_owns_membership_lists(self):
+        from scripts.raven.tools.build_production_dashboard import WORKSTREAMS, P2_REENTRY
+        streams = json.loads(WORKSTREAMS.read_text(encoding="utf-8"))
+        groups = json.loads(P2_REENTRY.read_text(encoding="utf-8"))
+        self.assertTrue(streams["workstreams"])
+        self.assertTrue(groups["groups"])
+        self.assertTrue(all("taskIds" not in s for s in streams["workstreams"]))
+        self.assertTrue(all("taskIds" not in g for g in groups["groups"]))
 
 
 if __name__ == "__main__":
