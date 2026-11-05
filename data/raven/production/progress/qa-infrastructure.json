@@ -218,12 +218,12 @@
     },
     {
       "id": "PROC-007",
-      "status": "PR_review",
+      "status": "merged",
       "owner": "ChatGPT",
       "updated": "2026-11-05",
-      "evidence": "Owner approval 2026-11-05: modular production task progress per functional owner, immutable task IDs, aggregated single dashboard. Stage 1 introduces read-only shards with strict parity against legacy until consumer/governance migration; future work pending; no runtime/device acceptance.\n2026-11-05 Stage 1 #193, Stage 2 #194 and Stage 3a #195 confirmed merged. Stage 3b reviewed in https://github.com/bezdredoff/RavenManor-Godot/pull/196; PR still OPEN, CI under review, not yet merged/accepted. Agent shard ownership and dynamic dashboard are pending exact-head green and owner merge.\n2026-11-05 VERIFIED: Stage 3b PR #196 https://github.com/bezdredoff/RavenManor-Godot/pull/196 merged into main a38039801b56114eba203acf44a607943177fedb. Operational nested-AGENTS/15-role runbook follow-up PR #197 https://github.com/bezdredoff/RavenManor-Godot/pull/197 is currently OPEN; status remains PR_review, CI/merge and owner acceptance are not yet claimed.",
-      "implementationState": "agent_runbooks_pr_review",
-      "qaState": "not_run",
+      "evidence": "Owner approval 2026-11-05: modular production task progress per functional owner, immutable task IDs, aggregated single dashboard. Stage 1 introduces read-only shards with strict parity against legacy until consumer/governance migration; future work pending; no runtime/device acceptance.\n2026-11-05 Stage 1 #193, Stage 2 #194 and Stage 3a #195 confirmed merged. Stage 3b reviewed in https://github.com/bezdredoff/RavenManor-Godot/pull/196; PR still OPEN, CI under review, not yet merged/accepted. Agent shard ownership and dynamic dashboard are pending exact-head green and owner merge.\n2026-11-05 VERIFIED: Stage 3b PR #196 https://github.com/bezdredoff/RavenManor-Godot/pull/196 merged into main a38039801b56114eba203acf44a607943177fedb. Operational nested-AGENTS/15-role runbook follow-up PR #197 https://github.com/bezdredoff/RavenManor-Godot/pull/197 is currently OPEN; status remains PR_review, CI/merge and owner acceptance are not yet claimed.\n2026-11-05 VERIFIED TECHNICAL CLOSEOUT @ main 0afbfa871fd3d5e6acfc488b6f6e391035121614: PR #196 https://github.com/bezdredoff/RavenManor-Godot/pull/196 merged as a38039801b56114eba203acf44a607943177fedb; PR #197 https://github.com/bezdredoff/RavenManor-Godot/pull/197 merged as 0afbfa871fd3d5e6acfc488b6f6e391035121614. These verified facts supersede the historical OPEN/PR_review notes above. Main CI https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42015855349 passed data-contracts, godot-runtime, room-builder, art-pipeline, web-package and aggregate build; Pages deploy passed there and in https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42015854564. Technical scope delivered: independent domain progress shards, derived dashboard groups, status governance and agent runbooks. Approval remains pending; no owner/device/gameplay acceptance, installed Hermes/LM Studio or completed two-agent pilot is inferred.",
+      "implementationState": "delivered",
+      "qaState": "ci_passed",
       "approvalState": "pending",
       "priority": "P1",
       "followUpTaskIds": []

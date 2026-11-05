@@ -1,0 +1,11 @@
+# PROC-007 technical merged closeout
+
+Task IDs: PROC-007.
+
+Changes: Reconcile only the qa-infrastructure shard from stale PR_review / agent_runbooks_pr_review / not_run to merged / delivered / ci_passed. Preserve historical evidence, assignments, priority, owner and approvalState=pending. PROC-006 is already merged and is unchanged.
+
+Verification: Baseline main 0afbfa871fd3d5e6acfc488b6f6e391035121614. GitHub confirms [#196](https://github.com/bezdredoff/RavenManor-Godot/pull/196) merged as a38039801b56114eba203acf44a607943177fedb and [#197](https://github.com/bezdredoff/RavenManor-Godot/pull/197) merged as the baseline SHA. [Main CI](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42015855349) passed all six required jobs and deploy; [Pages](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42015854564) build/deploy passed. No open PRs at preflight. Local PASS: progress_shards.py; build_production_dashboard.py --check (249 tasks); narrative validation including --release; code plan; backlog dependencies/acceptance; active workstreams; reconciliation --check; governance/UPDS audit tests; VNS5 contract tests; translation worklist export. Native Windows execution of the Python commands in check_data.sh also found path-separator/encoding and symlink-privilege failures in existing suites, plus advisory stale dashboard snapshot assertions; the shell runner itself cannot locate python3 on this host. These are not claimed as a full local pass. Linux exact-head CI is required and will be recorded in the PR. The sharded-dashboard path-separator failure reproduces on untouched main.
+
+Owner QA: Pending. Technical infrastructure delivery only; no new owner, device, art or gameplay acceptance. Hermes/LM Studio installation and the two-agent pilot are separate, unverified work. Manual merge remains with the owner.
+
+Status impact: PROC-007 becomes terminal merged for the already merged #193-197 infrastructure slice; the dashboard derives active membership automatically. Only this domain shard and this unique evidence note change; generated dashboard and frozen historical progress stay untouched. UPDS reuse is not applicable to this status-only change. No runtime, stable RM IDs, save schema, assets or locale changes. Rollback: revert this closeout commit.
