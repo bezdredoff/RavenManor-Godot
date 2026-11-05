@@ -85,6 +85,17 @@ func _run() -> void:
 	hint = game.get_hint_move()
 	start = board.cells[int(hint.first)].get_global_rect().get_center()
 	finish = board.cells[int(hint.second)].get_global_rect().get_center()
+	var cancelled_moves: int = game.moves_left
+	_touch(start, true, 6)
+	var cancelled_release := InputEventScreenTouch.new()
+	cancelled_release.index = 6
+	cancelled_release.pressed = false
+	cancelled_release.canceled = true
+	cancelled_release.position = finish
+	root.push_input(cancelled_release, true)
+	await process_frame
+	assert(game.moves_left == cancelled_moves, "Cancelled touch drag committed a move")
+	assert(board._gesture_index == -1 and board.highlighted.is_empty(), "Cancelled touch drag retained gesture state")
 	_touch(start, true, 3)
 	_touch(finish, false, 4)
 	assert(board._gesture_index == int(hint.first), "Another finger completed gesture")
