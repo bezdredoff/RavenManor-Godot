@@ -9,7 +9,7 @@
 - `../art-handbook/index.html`: interactive art-production handbook; image-to-recipe links, exact saved ComfyUI settings/prompts, downloads, system/model snapshot and experiment history.
 - `../art-handbook/files/AGENT_GUIDE.md`: human/AI reproduction and evidence rules; companion machine catalog is `../art-handbook/catalog.json`.
 
-- `../AGENTS.md`: instructions for Codex and contributors.
+- `../AGENTS.md`: root mandatory agent rules; [agent roles/orchestration](process/AGENT_ORCHESTRATION_RU.md) + path-specific `AGENTS.md` under modules. `../HERMES.md`, `../CHATGPT.md`, `../CODEX.md`, `../DEEPSEEK.md` are provider entrypoints.
 - `DECISIONS.md`: *current product-owner overrides* of historical stage documents.
 - `PROJECT_CONTEXT.md`: current project snapshot.
 - `IMPLEMENTATION_PLAN.md`: `RM-HUB-001` and gated PR roadmap.
@@ -24,14 +24,14 @@
 - `process/AI_COLLABORATION_RU.md`: shared ChatGPT/Codex/DeepSeek read/propose/implement/PR/status workflow.
 - `process/TASK_AND_PR_TEMPLATE_RU.md`: task proposal and PR format.
 - `process/MOBILE_ZIP_PIPELINE_RU.md`: scoped mobile ZIP delta delivery design, security gates and pending importer activation.
-- `../data/raven/production/production_progress.json`: semantic status owner/date/evidence for the dashboard.
+- `../data/raven/production/progress/`: **15 canonical owner shards** for current task status, evidence and workstream/P2 assignment. Former `production_progress.json` is a frozen migration snapshot.
 - `../data/raven/production/gap_work_packages.json`: missed UX/production/QA work from recent project discussions.
 - `production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`: gated roadmap производства персонажей, VN/map-графики, фонов, реквизита, Match-3 и art QA.
 - `UPDS_VN_CORPUS_AUDIT.md`: pinned UPDS-godot VN 45-scene inventory, reader oracle, migration risks, privacy and next-gate evidence.
 - `../addons/vn_studio/README.md`: native Godot VN Studio Legacy Viewer setup, read-only privacy contract, known limits and manual QA.
 - `VN_STUDIO_EDITOR_SPEC.md`: proposed native Godot VN Studio EditorPlugin, UPDS-godot legacy inspection/controlled conversion, parity gates and CODE-03 work packages.
 - `production/VN_STUDIO_V5_CONTRACT_PROPOSAL.md`: VNS5-00 source baseline, read-only v2 adapter decision and pending format gates.
-- `process/VN_STUDIO_AGENT_GUIDE_RU.md`: future human/AI editing and migration runbook (proposal, not implemented plugin).
+- `process/VN_STUDIO_AGENT_GUIDE_RU.md`: human/AI editing and import runbook for the **existing** native plugin (individual features still require verification).
 - `production/CODE_PRODUCTION_ROADMAP_RU.md`: парный gated engineering roadmap по переносу/переиспользованию UPDS и Raven-only карте, NPC, восстановлению, season flow и QA.
 - `../data/raven/production/code_work_packages.json`: машинный бэклог с P0/P1/P2, оценками S–XL, зависимостями и связями с GFX-этапами.
 - `PRODUCT_QUESTIONS.md`: resolved answers that unblock PR 3; future unresolved decisions should be added explicitly.
@@ -54,4 +54,6 @@ Where old contracts conflict (especially bedroom gate, door cycling, free moveme
 - [Контракты и file ownership](architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md)
 - [PR evidence](changes/PROC-006-multi-agent-governance.md)
 
-- [PROC-007 — modular task progress migration](process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md) (Stage 1 parity; future Stage 2 dashboard switch / Stage 3 ownership)
+- [PROC-007 — independent modular task progress](process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md) (#193–196 merged; current status shards and dynamic workstreams).
+
+- [Multi-agent operations and 15 domain ownership profiles](process/AGENT_ORCHESTRATION_RU.md) — task dispatch, worktrees, local AGENTS, dependencies, CI, merge and real acceptance gates.

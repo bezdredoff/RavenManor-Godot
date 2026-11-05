@@ -13,7 +13,7 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
-**Repository status (2026-11-04, main `c5f286ea`):** UPDS VN shell/read Skip, tri-locale onboarding, shared settings/audio, 25 Match-3 levels (3 story + 22 optional), boosters, and optional campaign menu access are merged technical slices. Hall physical calibration, map chibi, full game-loop/device acceptance and cup/quill candidate-art approval remain open. See `docs/audits/MULTI_AGENT_READINESS_20261104_RU.md`.
+**Game baseline summarized on 2026-11-04 (historical status; consult main/shards for newer implementation evidence):** UPDS VN shell/read Skip, tri-locale onboarding, shared settings/audio, 25 Match-3 levels (3 story + 22 optional), boosters, and optional campaign menu access are merged technical slices. Hall physical calibration, map chibi, full game-loop/device acceptance and cup/quill candidate-art approval remain open. See `docs/audits/MULTI_AGENT_READINESS_20261104_RU.md`.
 
 Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It links 120 proposed catalog positions across eight rooms, saves room-specific local drafts and exports JSON/PNG. Output is not yet a calibrated gameplay scene.
 
@@ -44,9 +44,9 @@ The [graphics plan](docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md) (GFX-00â€
 
 ## Production Dashboard & multi-agent collaboration
 
-After deployment, the [Raven Manor production dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) displays the current CODE/GFX tasks and additional process/UX gaps, their criteria, dependencies, priority and explicit evidence. Dashboard files are **generated**, while `data/raven/production/production_progress.json` owns ongoing task status/evidence.
+After deployment, the [Raven Manor production dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) displays the current CODE/GFX tasks and additional process/UX gaps, their criteria, dependencies, priority and explicit evidence. Dashboard files are **generated**; current task status/evidence lives in `data/raven/production/progress/<domain>.json` (15 owner shards). `production_progress.json` is frozen historical data.
 
-All agents (ChatGPT, Codex, DeepSeek, Hermes) follow `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md`. Unique per-PR evidence records avoid shared-file conflicts; a single integration owner reconciles canonical status after merge. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.
+All agents (ChatGPT, Codex, DeepSeek, Hermes) follow `AGENTS.md`, `docs/process/AI_COLLABORATION_RU.md` and `docs/architecture/MULTI_AGENT_DATA_CONTRACTS_RU.md`. Unique per-PR evidence and domain shards avoid status conflicts; each domain owner closes its **own** verified merged task, while one integration owner handles shared runtime/API/CI changes. Read `docs/process/AGENT_ORCHESTRATION_RU.md` and applicable local `AGENTS.md` before starting an independent agent. For oversized phone-to-GitHub handoffs, see `docs/process/MOBILE_ZIP_PIPELINE_RU.md`: ZIP preflight is present, while upload automation and isolated `/preview/` require a separate security-reviewed production gate.
 
 ### Candidate ZIP review and non-deployed Web artifacts
 
@@ -55,3 +55,5 @@ The trusted [candidate review portal](https://bezdredoff.github.io/RavenManor-Go
 ### Parallel agent task progress (PROC-007, 2026-11-05)
 
 Production task status and evidence now live in independent `data/raven/production/progress/<domain>.json` owner shards; `build_production_dashboard.py` derives active workstreams and P2 memberships by status/priority and that shard's assignments. Shared workstream/P2 JSONs define QA and re-entry **policy only**. `dashboard/status.json` is generated; the historical `production_progress.json` is frozen. Agent-scope branch: `agent/<domain>/<task-id>-topic`, with an updated own shard and `docs/changes/` evidence. CI validates ownership and the full dashboard. See `docs/process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md`.
+
+**Orchestrator entrypoint:** `HERMES.md` describes how an optional external harness can dispatch scoped roles (it is not an installed Hermes service). Codex, ChatGPT and DeepSeek use equivalent provider entrypoints; all inherit root and nested AGENTS instructions.

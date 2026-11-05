@@ -1,6 +1,6 @@
 # Raven Manor — формат задания / PR / handoff
 
-Рекомендованное имя ветки: `code/<task-id>-short-topic`, `gfx/<task-id>-short-topic`, `process/<task-id>-short-topic`. Если ветка уже открыта — продолжать её, не создавая дубликат.
+Рекомендуемая ветка независимого агента: `agent/<domain>/<task-id>-topic` (соответствует своему `progress/<domain>.json`). Для общих контрактов — согласованный `process/` или `integration/` PR с отдельным ревью. Если ветка уже открыта — продолжать её, не создавая дубликат.
 
 ## Task proposal
 
@@ -18,7 +18,7 @@
 **Progress update:** unique docs/changes evidence + current task status in the owning progress/<domain>.json; verified merged status updated by that agent after merge.
 ```
 
-**PROC-006:** каждый authored PR включает уникальный `docs/changes/<TASK-ID>-<topic>.md` с полями `Task IDs:`, `Changes:`, `Verification:`, `Owner QA:`, `Status impact:`. Альтернатива — оба старых canonical status файла. Owning domain agent updates only the corresponding shard after verified merge, не заставляя параллельных агентов конкурировать. Numeric incoming candidates по-прежнему проходят отдельный security review.
+**PROC-006:** каждый authored PR включает уникальный `docs/changes/<TASK-ID>-<topic>.md` с полями `Task IDs:`, `Changes:`, `Verification:`, `Owner QA:`, `Status impact:`. Старые общие status-файлы **не допускаются**. Агент обновляет статус только в своём shard, а после подтверждённого merge добавляет evidence отдельным scoped изменением. Numeric incoming candidates по-прежнему проходят отдельный security review.
 
 ## PR description (заполняется автоматически/вручную)
 
@@ -39,7 +39,7 @@
 
 ## Мобильный ZIP handoff
 
-В архиве `patch-manifest.json` должен называть реальные task IDs; PR после импорта сохраняет их и текущий baseline. Evidence note включается в архив; canonical status после review/merge обновляет integration owner. Большие файлы идут только с источником/rights и `accepted` art approvals. Если ZIP превышает безопасные лимиты, делить на независимые reviewable пакеты по 3–4 related images или use Git LFS/proper artifact store **после отдельного технического решения**, без обхода валидатора.
+В архиве `patch-manifest.json` должен называть реальные task IDs; PR после импорта сохраняет их и текущий baseline. Evidence note включается в архив; статус после реального review/merge обновляет агент соответствующего домена в своём shard. Большие файлы идут только с источником/rights и `accepted` art approvals. Если ZIP превышает безопасные лимиты, делить на независимые reviewable пакеты по 3–4 related images или use Git LFS/proper artifact store **после отдельного технического решения**, без обхода валидатора.
 
 ## PROC-007 Stage 3b — независимый статус в PR
 

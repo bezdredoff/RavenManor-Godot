@@ -1,5 +1,5 @@
 # PROC-007 — независимо обновляемый Production Dashboard
-**2026-11-05, Stage 3b (candidate PR).** Owner approved per-domain task progress. #193, #194, #195 were merged as safe migration stages; this change switches task grouping and agent ownership from shared mutable lists to canonical shard assignments. Do not claim Stage 3b integrated before exact-head CI and user merge.
+**2026-11-05: Stage 3b merged in #196.** Domain-owned shards, dynamic workstream/P2 membership and branch-scoped status governance are live. Full agent role/runbook guide: [AGENT_ORCHESTRATION_RU.md](AGENT_ORCHESTRATION_RU.md). External Hermes/LM Studio launch is not part of this merge.
 
 ## Источники истины
 - `progress/<domain>.json`: актуальные `entries` (статусы, приоритеты, owner, QA, evidence, updated) и `assignments` (workstreamId либо p2ReentryGroup). Файл редактирует агент направления.
@@ -34,4 +34,4 @@
 - Stage 1 #193: 214 live progress overrides распределены без потери.
 - Stage 2 #194: dashboard потребляет canonical shards, исходный монолит заморожен.
 - Stage 3a #195: 80 active + 44 P2 assignments перенесены в соответствующие shards; 35 plan-only ID не получили вымышленных QA/status.
-- Stage 3b (этот PR): группировка, governance и регрессионные тесты для независимого обновления задач.
+- Stage 3b #196 merged: динамическая группировка, governance, регрессионные тесты для независимых статусов.
