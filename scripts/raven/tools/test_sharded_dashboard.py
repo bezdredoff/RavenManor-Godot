@@ -62,7 +62,8 @@ class ShardedDashboardTests(unittest.TestCase):
     def test_reprioritization_requires_only_same_shard_assignment(self):
         status = copy.deepcopy(load_shards())
         p2_id = next(x["id"] for x in status["assignments"] if "p2ReentryGroup" in x
-                     and any(t["id"] == x["id"] for t in status["entries"]))
+                     and any(t["id"] == x["id"] and t["status"] not in dashboard.TERMINAL_STATES
+                             for t in status["entries"]))
         override = next(x for x in status["entries"] if x["id"] == p2_id)
         override["priority"] = "P1"
         with self.assertRaisesRegex(ValueError, "Change group assignment"):

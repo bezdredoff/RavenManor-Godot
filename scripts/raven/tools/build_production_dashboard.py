@@ -28,6 +28,7 @@ CHAR_ART = PRODUCTION / "vn_character_catalog.json"
 WORKSTREAMS = PRODUCTION / "active_workstreams.json"
 P2_REENTRY = PRODUCTION / "p2_reentry_policy.json"
 STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred", "not_planned", "superseded"}
+TERMINAL_STATES = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
 
 
 def load(path: Path) -> dict:
@@ -131,7 +132,7 @@ def build(progress_override: dict | None = None) -> dict:
     # old merged CODE-02 migration can list a not-yet-accepted UI gate without
     # implying it must be implemented again. No original source edges deleted.
     task_by_id = {item["id"]: item for item in plan}
-    terminal = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
+    terminal = TERMINAL_STATES
     for item in plan:
         deps = item.get("dependsOn", [])
         item["openDependsOn"] = (

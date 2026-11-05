@@ -51,3 +51,7 @@
 ## 2026-11-04 — CI sharding, PROC-006
 
 Новая политика в `docs/process/CI_SHARDING_20261104_RU.md`: data/governance, Godot runtime, Room Builder, art pipeline и Web packaging — независимые GitHub Actions jobs. Один required check `build` агрегирует их; main deploy возможен только после всех PASS. Godot smoke не удалены. Следующий срез — отдельная VN/Match-3/map разбивка Godot после подтверждённой интеграции.
+
+## 2026-11-05 — PROC-007 Stage 3b independent status assignments
+
+Agents maintain only `data/raven/production/progress/<domain>.json` for task state/evidence and workstream or P2 ownership. `active_workstreams.json` and `p2_reentry_policy.json` are immutable-by-task metadata, no shared task ID lists. Dashboard membership is computed from shard `assignments` and current priority/status; terminal entries stop appearing active automatically. The legacy monolith and generated dashboard are forbidden edit targets. Domain-agent branches are checked against their matching shard; cross-domain/core PRs require coordinated review. This does not introduce auto-merge or owner/device acceptance. Full CI remains mandatory.

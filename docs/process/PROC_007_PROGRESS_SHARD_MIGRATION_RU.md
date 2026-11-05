@@ -1,44 +1,37 @@
-# PROC-007 — понаправленные статусы задач и единый Dashboard
+# PROC-007 — независимо обновляемый Production Dashboard
+**2026-11-05, Stage 3b (candidate PR).** Owner approved per-domain task progress. #193, #194, #195 were merged as safe migration stages; this change switches task grouping and agent ownership from shared mutable lists to canonical shard assignments. Do not claim Stage 3b integrated before exact-head CI and user merge.
 
-**Решение владельца:** 2026-11-05. **Stage 1 #193 merged. Stage 2 (этот PR) переводит dashboard и GAP drift на shards. Stage 3 (независимое управление и workstreams) ещё впереди.**
+## Источники истины
+- `progress/<domain>.json`: актуальные `entries` (статусы, приоритеты, owner, QA, evidence, updated) и `assignments` (workstreamId либо p2ReentryGroup). Файл редактирует агент направления.
+- `progress/index.json`: только неизменяемый список shard-файлов и migration floor для updated; изменение допустимо лишь через integration PR.
+- `active_workstreams.json`: названия/фазы workstreams и индивидуальные acceptance/QA планы. **Нет** `taskIds`.
+- `p2_reentry_policy.json`: действия/условия возврата P2. **Нет** `taskIds`.
+- `gap_work_packages.json`, `code_work_packages.json`, GFX roadmap: исходные определения/исторические baseline statuses, не ledger текущих изменений.
+- `production_progress.json`: замороженный historical Stage-1 snapshot. Никогда не обновлять.
+- `dashboard/status.json`: только генерация при сборке, никаких ручных правок.
 
-## Зачем
+## Автоматическая группировка
+1. Сборщик объединяет CODE/GFX/GAP определения с live-override из 15 shards. В каждом shard записаны только собственные задачи; переименование или перенос task ID требует отдельного проверяемого PR.
+2. Открытые P0/P1 задачи получают группу из `assignments.workstreamId`; открытые P2 — из `assignments.p2ReentryGroup`. CI отвергает отсутствующие, дублированные и неизвестные назначения.
+3. При `merged`, `accepted` и другом terminal status задача остаётся в своём JSON с history/evidence, но больше не числится активной в workstream/P2. Для перехода P2→P1 нужно в **том же файле** заменить `p2ReentryGroup` на `workstreamId`.
+4. `updated` общего дашборда рассчитывается как максимум между историческим floor индекса и датами изменения отдельных task entries. Не требуется редактирование общей даты/индекса ради каждой задачи.
 
-Исторический `production_progress.json` ~280 KB, 213 записей + PROC-007. Одновременные агенты затрагивают один общий файл. Текущий `build_production_dashboard.py` накладывает его live statuses/evidence на определения `code_work_packages.json`, `gap_work_packages.json` и графический roadmap.
+## Параллельные агенты и evidence
+- Рабочая ветка: `agent/<domain>/<task-id>-topic`; scope: собственный shard + code/docs/tests по согласованной границе + уникальный `docs/changes/<TASK-ID>-<topic>.md`.
+- CI по имени ветки запрещает изменения чужого shard, общего index и QA metadata; для общих контракто́в разрешён только отдельный coordinated integration PR с ручным review.
+- В PR используется правдивый `PR_review` со ссылкой на открытый PR. После подтверждённого merge агент этого направления отдельным маленьким коммитом/следующим PR обновляет `merged`, сохраняя evidence. Это **не фоновый автозапуск**, а обязанности того же владельца. `accepted`/device QA никогда не выводится из CI автоматически.
+- Историческая GAP status drift-синхронизация удалена: GAP baseline может отличаться от текущего shard, это ожидаемо, и CI не требует двух правок.
 
-## Формат и ownership
+## Тесты и безопасность
+- `scripts/raven/tools/progress_shards.py`: структура, уникальные IDs, assignment owner-domain consistency.
+- `scripts/raven/tools/test_sharded_dashboard.py`: выходные группы и автопересчёт при смене статуса, P2→P1 с local assignment edit, missing-group blocking.
+- `test_workstream_assignment_migration.py`: правила принадлежности и metadata без списков.
+- `test_pr_governance.py`: domain branch ограничения, запрет frozen/generated status, сохранение исключения для numeric ZIP candidates.
+- `bash scripts/check_data.sh`: production contracts + весь dashboard, и далее обязательные Godot/Room Builder/Art/Web CI jobs.
+- `import-mobile-zip.yml`, consumer game runtime, save schema, assets и main-only Pages deploy не изменяются.
 
-`data/raven/production/progress/index.json`: schemaVersion, updated, authority, rules, **фиксированный список** независимых shard filenames. Индекс меняется лишь при добавлении нового направления/версии схемы.
-
-`progress/<domain>.json`: `{"schemaVersion":1,"kind":"task_progress_shard","domain":"...","entries":[...]}`. Внутри каждой записи остаются **без изменений** `id`, `status`, `priority`, `owner`, `updated`, `evidence`, `implementationState`, `qaState`, `approvalState` и прочие исторические поля. Категория не зависит от текущего P0/P1/P2 или terminal-status, так что завершённые задачи не переезжают в архив.
-
-Направления: VN Studio, VN Runtime, Match-3, Manor Map, Room Builder, Restoration, UI Shell, Campaign Core, Character Art, Environment Art, Art Pipeline, Chibi/Animation, Map Props, Localization, QA/Infrastructure. Назначение для уже известных ID фиксируется при миграции; новому ID агент должен назначить ровно **одну** область в своём PR.
-
-`active_workstreams.json` пока остаётся группировкой рабочих потоков с собственными QA-gates. Не превращать его в новый источник статусов. На следующем этапе список taskIds станет производным от task.workstream (после проверки совместимости), иначе этот общий файл по-прежнему создаёт конфликты.
-
-## Этапы миграции
-
-1. **Stage 1 — parity, merged #193.** 214 (213 + PROC-007) записей разложены без изменений в отдельные shards. `progress_shards.py` строго проверяет уникальность ID, содержимое, список файлов и полное соответствие старому JSON, игнорируя лишь порядок записей. `check_data.sh` запускает проверку в обязательном `data-contracts` job. Dashboard пока читает legacy. Нельзя разрешать параллельным агентам редактировать shards в этой фазе.
-2. **Stage 2 — переключение источника (этот PR).** Dashboard и reconcile_gap_statuses используют load_shards(); sourceFiles перечисляет все 15 shard-файлов и индекс. Временный обязательный shadow-render тест сравнивает весь результат со старой базой, кроме единственного намеренного изменения sourceFiles. Старый production_progress.json заморожен; нельзя вносить в него новые статусы. До Stage 3 независимая запись в shards ещё НЕ разрешена из-за общих gap/active workstreams.
-3. **Stage 3 — write ownership и автоматическая группировка (не выполнено).** Удалить старое legacy исключение из governance, научить CI проверять diff paths по workstream, заменить обязательный handwritten `active_workstreams.taskIds` выводимым списком по задаче/отдельным group metadata. Автоматическое обновление dashboard только при сборке; merge/CI доказательства сверять отдельно. Правила статуса: `PR_review` и `merged` — техническая доставка; `accepted`/device QA только при явной приёмке.
-
-## Инварианты и безопасность
-
-- Один ID существует только в одном shard; ссылки на все task IDs должны соответствовать CODE/GAP/GFX authoritative planning definitions.
-- История evidence, поля и зависимости не теряются. Отдельные agents никогда не редактируют общий dashboard/status.json, index или чужой shard без контракта.
-- CI не должен ослабить blocking проверки данных/геймплея. `import-mobile-zip.yml`, candidate ZIP cleanup, Games Pages publishing и asset approvals неизменны.
-- Main-прогресс проверяется после каждого merge. Старые незавершённые QA-задачи не должны автоматически стать accepted.
-
-## Приёмка Stage 2
-
-- tests/test_sharded_dashboard: полное сравнение результата legacy shadow-render и sharded-render, кроме намеренно обновлённого sourceFiles.
-- Dashboard теперь реально читает shards; старый production_progress.json сохраняется только для аудита миграции.
-- Правила независимых агентов не меняются до Stage 3: gap статусы и active_workstreams.taskIds пока общие, а QA/accepted требует явного evidence.
-
-## Stage 3a — перенесённые membership-назначения (candidate PR)
-
-В каждом функциональном shard теперь есть optional `assignments` с `{id,workstreamId}` для актуального P0/P1 или `{id,p2ReentryGroup}` для открытого P2. 80 активных + 44 P2 задач перенесены в 15 владельческих файлов. Из них 35 существовали только в планах: им назначена группа без создания фиктивной записи о статусе, QA или evidence.
-
-Обязательные проверки: `test_workstream_assignment_migration.py` сравнивает 124 назначения с прежними workstream/P2 registry без потерь; loader отклоняет дубли, неправильную структуру и пустые ID. Статусы/evidence не менялись.
-
-**Это только Stage 3a.** Дашборд по-прежнему берёт членство из двух старых registry. После merge Stage 3b должен переключить эти потребители, отделить GAP-плановые статусы и разрешить независимые правки агентов. Пока независимо редактировать `assignments` нельзя.
+## История
+- Stage 1 #193: 214 live progress overrides распределены без потери.
+- Stage 2 #194: dashboard потребляет canonical shards, исходный монолит заморожен.
+- Stage 3a #195: 80 active + 44 P2 assignments перенесены в соответствующие shards; 35 plan-only ID не получили вымышленных QA/status.
+- Stage 3b (этот PR): группировка, governance и регрессионные тесты для независимого обновления задач.
