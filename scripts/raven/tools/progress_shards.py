@@ -38,6 +38,8 @@ def load_shards(directory: Path = SHARDS) -> dict:
     entries: list[dict] = []
     assignments: list[dict] = []
     seen: set[str] = set()
+    owner_domain: dict[str, str] = {}
+    assignment_domain: dict[str, str] = {}
     seen_assignments: set[str] = set()
     for name in shards:
         record = json.loads((directory / name).read_text(encoding="utf-8"))
@@ -53,6 +55,7 @@ def load_shards(directory: Path = SHARDS) -> dict:
             if not isinstance(task.get("status"), str) or not task["status"]:
                 raise ValueError(f"Task lacks status: {task['id']}")
             seen.add(task["id"])
+            owner_domain[task["id"]] = record["domain"]
             entries.append(task)
         # Owner membership is independent from whether the planning task
         # has a current progress/status override. It never implies acceptance.
@@ -68,8 +71,19 @@ def load_shards(directory: Path = SHARDS) -> dict:
             if item["id"] in seen_assignments:
                 raise ValueError(f"Duplicate task assignment: {item['id']}")
             seen_assignments.add(item["id"])
+            assignment_domain[item["id"]] = record["domain"]
             assignments.append(item)
+    for task_id, domain in assignment_domain.items():
+        if task_id in owner_domain and owner_domain[task_id] != domain:
+            raise ValueError(f"Assignment for {task_id} is in the wrong shard")
     result = {key: index[key] for key in INDEX_KEYS}
+    # Index carries a migration floor, not a mutable global timestamp.
+    # Agent updates to an individual task are visible in the whole dashboard.
+    latest = [index["updated"]]
+    latest.extend(entry["updated"] for entry in entries
+                  if isinstance(entry.get("updated"), str) and
+                  re.fullmatch(r"\d{4}-\d{2}-\d{2}", entry["updated"]))
+    result["updated"] = max(latest)
     result["entries"] = entries
     result["assignments"] = assignments
     return result
