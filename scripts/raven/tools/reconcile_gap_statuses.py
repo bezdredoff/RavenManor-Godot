@@ -1,15 +1,10 @@
 #!/usr/bin/env python3
-"""Keep discovered-gap status snapshot aligned with authoritative progress.
+"""Validate GAP planning records; live status belongs exclusively to shards.
 
-The CODE planning baseline is intentionally excluded: code_work_packages.json
-is an immutable planning proposal, NOT a live implementation ledger.
-
-Usage:
-    python3 scripts/raven/tools/reconcile_gap_statuses.py --check
-    python3 scripts/raven/tools/reconcile_gap_statuses.py --sync
-
---sync touches *only* status fields of gap work packages having an explicit
-canonical per-module progress entry; unmatched historical proposals are preserved.
+--check is retained for existing CI compatibility. --sync is intentionally
+removed: it would create cross-agent write conflicts and a second status ledger.
+Historical planning 'status' fields are baseline defaults only, overridden in
+the dashboard by the matching per-domain progress entry.
 """
 from __future__ import annotations
 
@@ -26,39 +21,34 @@ ROOT = Path(__file__).resolve().parents[3]
 GAPS = ROOT / "data/raven/production/gap_work_packages.json"
 
 
-def drift(gaps: dict, progress: dict) -> list[tuple[str, str, str]]:
-    work = gaps.get("workPackages", [])
-    entries = progress.get("entries", [])
-    gap_ids = [item["id"] for item in work]
-    live_ids = [item["id"] for item in entries]
-    if len(set(gap_ids)) != len(gap_ids) or len(set(live_ids)) != len(live_ids):
-        raise ValueError("duplicate gap or progress task ID")
-    live = {item["id"]: item["status"] for item in entries}
-    return [(item["id"], item["status"], live[item["id"]])
-            for item in work if item["id"] in live and item["status"] != live[item["id"]]]
+def validate(gaps: dict, progress: dict) -> list[str]:
+    tasks = gaps.get("workPackages", [])
+    if not isinstance(tasks, list):
+        return ["GAP workPackages must be a list"]
+    ids = [t.get("id") for t in tasks]
+    errors = []
+    if len(ids) != len(set(ids)):
+        errors.append("Duplicate GAP planning IDs")
+    if not all(isinstance(t.get("status"), str) and t["status"] for t in tasks):
+        errors.append("GAP baseline task lacks planning status")
+    live_ids = [t["id"] for t in progress["entries"]]
+    if len(live_ids) != len(set(live_ids)):
+        errors.append("Duplicate canonical progress IDs")
+    return errors
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    mode = parser.add_mutually_exclusive_group(required=True)
-    mode.add_argument("--check", action="store_true")
-    mode.add_argument("--sync", action="store_true")
+    parser.add_argument("--check", action="store_true", help="Validate planning baseline only")
     args = parser.parse_args()
     gaps = json.loads(GAPS.read_text(encoding="utf-8"))
     progress = load_shards()
-    differences = drift(gaps, progress)
-    if args.sync and differences:
-        live = {item["id"]: item["status"] for item in progress["entries"]}
-        for item in gaps["workPackages"]:
-            if item["id"] in live:
-                item["status"] = live[item["id"]]
-        GAPS.write_text(json.dumps(gaps, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    for task_id, old, new in differences:
-        print(f"GAP STATUS {'SYNCHRONIZED' if args.sync else 'DRIFT'}: {task_id}: {old} -> {new}")
-    print(f"Gap status audit: {len(gaps['workPackages'])} planning tasks, "
-          f"{len(differences)} discrepant live overrides"
-          + (" synchronized" if args.sync else ""))
-    return 1 if args.check and differences else 0
+    errors = validate(gaps, progress)
+    for error in errors:
+        print("ERROR:", error)
+    print(f"GAP planning audit: {len(gaps.get('workPackages', []))} baseline entries; "
+          f"{len(progress['entries'])} current shard overrides; {len(errors)} structural errors")
+    return int(bool(errors))
 
 
 if __name__ == "__main__":

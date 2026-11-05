@@ -28,6 +28,7 @@ CHAR_ART = PRODUCTION / "vn_character_catalog.json"
 WORKSTREAMS = PRODUCTION / "active_workstreams.json"
 P2_REENTRY = PRODUCTION / "p2_reentry_policy.json"
 STATES = {"proposed", "ready", "in_progress", "PR_review", "merged", "integrated", "device_verified", "accepted", "blocked", "deferred", "not_planned", "superseded"}
+TERMINAL_STATES = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
 
 
 def load(path: Path) -> dict:
@@ -79,7 +80,7 @@ def graphics_items(text: str) -> tuple[list[dict], list[dict]]:
 
 
 def build(progress_override: dict | None = None) -> dict:
-    """Render live shards; legacy progress override is available only for migration QA."""
+    """Render live owner shards (optional synthetic source for pure contract tests)."""
     source = load(CODE)
     gap = load(GAPS)
     progress = load_shards() if progress_override is None else progress_override
@@ -131,64 +132,96 @@ def build(progress_override: dict | None = None) -> dict:
     # old merged CODE-02 migration can list a not-yet-accepted UI gate without
     # implying it must be implemented again. No original source edges deleted.
     task_by_id = {item["id"]: item for item in plan}
-    terminal = {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"}
+    terminal = TERMINAL_STATES
     for item in plan:
         deps = item.get("dependsOn", [])
         item["openDependsOn"] = (
             [dep for dep in deps if dep in task_by_id and task_by_id[dep]["status"] not in terminal]
             if item["status"] not in terminal else []
         )
-    # The active delivery work is grouped by one shared QA/build gate, not
-    # collapsed into a fictitious single task. P2/future tasks stay visible
-    # without a current workstream; the group registry enforces exact coverage.
+    # Live membership belongs to functional shards. Metadata registries only
+    # describe group semantics/QA; they never require concurrent task-ID edits.
     stream_source = load(WORKSTREAMS)
     workstreams = stream_source["workstreams"]
     streams_by_id = {}
+    for group in workstreams:
+        group_id = group["id"]
+        if group_id in streams_by_id:
+            raise ValueError(f"Duplicate workstream ID: {group_id}")
+        if group["phase"] not in {"QA-first", "Audit-first", "Build+QA", "New assets"}:
+            raise ValueError(f"Unknown active workstream phase: {group_id}")
+        if "taskIds" in group:
+            raise ValueError(f"Shared workstream taskIds are no longer authoritative: {group_id}")
+        streams_by_id[group_id] = group
+
+    p2_source = load(P2_REENTRY)
+    p2_groups = p2_source["groups"]
+    p2_by_id = {}
+    for group in p2_groups:
+        group_id = group["id"]
+        if group_id in p2_by_id or not group_id.startswith("P2-"):
+            raise ValueError(f"Invalid/duplicate P2 policy group: {group_id}")
+        if "taskIds" in group:
+            raise ValueError(f"Shared P2 taskIds are no longer authoritative: {group_id}")
+        p2_by_id[group_id] = group
+
     member_to_stream = {}
-    for workstream in workstreams:
-        stream_id = workstream["id"]
-        if stream_id in streams_by_id:
-            raise ValueError(f"Duplicate active workstream ID: {stream_id}")
-        if workstream["phase"] not in {"QA-first", "Audit-first", "Build+QA", "New assets"}:
-            raise ValueError(f"Unknown active workstream phase: {stream_id}")
-        streams_by_id[stream_id] = workstream
-        for task_id in workstream["taskIds"]:
-            if task_id in member_to_stream:
-                raise ValueError(f"Task in two workstreams: {task_id}")
-            if task_id not in task_by_id:
-                raise ValueError(f"Unknown workstream member {task_id}: {stream_id}")
-            member_to_stream[task_id] = stream_id
+    p2_members = {}
+    seen_assignment_ids = set()
+    for assignment in progress.get("assignments", []):
+        task_id = assignment["id"]
+        if task_id in seen_assignment_ids:
+            raise ValueError(f"Duplicate module task assignment: {task_id}")
+        seen_assignment_ids.add(task_id)
+        if task_id not in task_by_id:
+            raise ValueError(f"Unknown module assignment ID: {task_id}")
+        task = task_by_id[task_id]
+        is_terminal = task["status"] in terminal
+        if "workstreamId" in assignment:
+            stream_id = assignment["workstreamId"]
+            if stream_id not in streams_by_id:
+                raise ValueError(f"Unknown workstream ID for {task_id}: {stream_id}")
+            if not is_terminal:
+                if task["priority"] not in {"P0", "P1"}:
+                    raise ValueError(f"Change group assignment when reprioritizing {task_id} to P2")
+                member_to_stream[task_id] = stream_id
+        elif "p2ReentryGroup" in assignment:
+            group_id = assignment["p2ReentryGroup"]
+            if group_id not in p2_by_id:
+                raise ValueError(f"Unknown P2 group for {task_id}: {group_id}")
+            if not is_terminal:
+                if task["priority"] != "P2":
+                    raise ValueError(f"Change group assignment when promoting {task_id} to P0/P1")
+                p2_members[task_id] = group_id
+        else:
+            raise ValueError(f"Missing module group for {task_id}")
+
     active_ids = {item["id"] for item in plan
                   if item["priority"] in {"P0", "P1"} and item["status"] not in terminal}
     if set(member_to_stream) != active_ids:
         raise ValueError(f"Active workstream scope mismatch: "
                          f"missing={sorted(active_ids - set(member_to_stream))}, "
                          f"inactive={sorted(set(member_to_stream) - active_ids)}")
-    for item in plan:
-        stream = streams_by_id.get(member_to_stream.get(item["id"]))
-        item["workstreamId"] = stream["id"] if stream else ""
-        item["workstreamName"] = stream["title"] if stream else ""
-        item["workstreamPhase"] = stream["phase"] if stream else ""
-    p2_source = load(P2_REENTRY)
-    p2_groups = p2_source["groups"]
-    p2_members = {}
     p2_ids = {item["id"] for item in plan
               if item["priority"] == "P2" and item["status"] not in terminal}
-    for group in p2_groups:
-        if not group["id"].startswith("P2-"):
-            raise ValueError(f"Invalid P2 policy group: {group['id']}")
-        for task_id in group["taskIds"]:
-            if task_id in p2_members:
-                raise ValueError(f"Duplicate P2 task in re-entry policy: {task_id}")
-            if task_id not in task_by_id:
-                raise ValueError(f"Unknown P2 task: {task_id}")
-            p2_members[task_id] = group["id"]
     if set(p2_members) != p2_ids:
         raise ValueError(f"P2 re-entry coverage mismatch: "
                          f"missing={sorted(p2_ids - set(p2_members))}, "
                          f"inactive={sorted(set(p2_members) - p2_ids)}")
     for item in plan:
+        stream = streams_by_id.get(member_to_stream.get(item["id"]))
+        item["workstreamId"] = stream["id"] if stream else ""
+        item["workstreamName"] = stream["title"] if stream else ""
+        item["workstreamPhase"] = stream["phase"] if stream else ""
         item["p2ReentryGroup"] = p2_members.get(item["id"], "")
+    members_by_stream = {
+        stream_id: [item for item in plan if member_to_stream.get(item["id"]) == stream_id]
+        for stream_id in streams_by_id
+    }
+    members_by_p2 = {
+        group_id: [item for item in plan if p2_members.get(item["id"]) == group_id]
+        for group_id in p2_by_id
+    }
     for workstream in workstreams:
         matrix = workstream.get("acceptancePlan")
         if not isinstance(matrix, dict) or any(
@@ -225,14 +258,14 @@ def build(progress_override: dict | None = None) -> dict:
             BG, CHAR_ART, WORKSTREAMS, P2_REENTRY)],
         "p2Groups": [
             {**{k: value for k, value in group.items() if k != "taskIds"},
-             "taskCount": len(group["taskIds"])}
+             "taskCount": len(members_by_p2[group["id"]])}
             for group in p2_groups
         ],
         "workstreams": [
             {**{k: value for k, value in workstream.items() if k != "taskIds"},
-             "taskCount": len(workstream["taskIds"]),
-             "p0Count": sum(task_by_id[task_id]["priority"] == "P0" for task_id in workstream["taskIds"]),
-             "p1Count": sum(task_by_id[task_id]["priority"] == "P1" for task_id in workstream["taskIds"])}
+             "taskCount": len(members_by_stream[workstream["id"]]),
+             "p0Count": sum(item["priority"] == "P0" for item in members_by_stream[workstream["id"]]),
+             "p1Count": sum(item["priority"] == "P1" for item in members_by_stream[workstream["id"]])}
             for workstream in workstreams
         ],
         "stateVocabulary": sorted(STATES),

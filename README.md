@@ -51,3 +51,7 @@ All agents (ChatGPT, Codex, DeepSeek, Hermes) follow `AGENTS.md`, `docs/process/
 ### Candidate ZIP review and non-deployed Web artifacts
 
 The trusted [candidate review portal](https://bezdredoff.github.io/RavenManor-Godot/preview/) lists recent independent candidate CI runs. Candidate Web builds are downloadable as GitHub Actions artifacts; they are **not executed under the stable game's Pages origin**. Until a separate-origin preview host is configured, this is a review/download portal, **not a playable /preview/ game**. See `docs/process/MOBILE_ZIP_PIPELINE_RU.md` for the actual upload test, the GitHub Actions PR-creation policy blocker and manual fallback.
+
+### Parallel agent task progress (PROC-007, 2026-11-05)
+
+Production task status and evidence now live in independent `data/raven/production/progress/<domain>.json` owner shards; `build_production_dashboard.py` derives active workstreams and P2 memberships by status/priority and that shard's assignments. Shared workstream/P2 JSONs define QA and re-entry **policy only**. `dashboard/status.json` is generated; the historical `production_progress.json` is frozen. Agent-scope branch: `agent/<domain>/<task-id>-topic`, with an updated own shard and `docs/changes/` evidence. CI validates ownership and the full dashboard. See `docs/process/PROC_007_PROGRESS_SHARD_MIGRATION_RU.md`.
