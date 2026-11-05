@@ -53,7 +53,7 @@ class DashboardTests(unittest.TestCase):
         self.assertGreater(data["openTaskCount"], 0)
 
     def test_activity_audit_does_not_confuse_merges_and_reviews(self):
-        # Live statuses are read from production_progress.json; preserve historical merges without inferring acceptance.
+        # Live status is read from canonical progress shards; do not infer acceptance.
         data = dashboard.build()
         by_id = {task["id"]: task for task in data["tasks"]}
         self.assertEqual(by_id["VNS5-06D2C"]["status"], "merged")
@@ -262,7 +262,7 @@ class DashboardTests(unittest.TestCase):
         # discovered-gap statuses with progress overrides are a synchronized
         # convenience snapshot, never a second source of completion claims.
         gaps = json.loads((dashboard.ROOT / "data/raven/production/gap_work_packages.json").read_text(encoding="utf-8"))
-        progress = json.loads((dashboard.ROOT / "data/raven/production/production_progress.json").read_text(encoding="utf-8"))
+        progress = dashboard.load_shards()
         current = {e["id"]: e["status"] for e in progress["entries"]}
         mismatches = [(w["id"], w["status"], current[w["id"]])
                       for w in gaps["workPackages"]

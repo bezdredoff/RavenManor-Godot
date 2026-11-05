@@ -11,11 +11,16 @@ import json
 import re
 from pathlib import Path
 
+try:
+    from scripts.raven.tools.progress_shards import SHARDS, load_shards
+except ModuleNotFoundError:
+    from progress_shards import SHARDS, load_shards
+
 ROOT = Path(__file__).resolve().parents[3]
 PRODUCTION = ROOT / "data/raven/production"
 CODE = PRODUCTION / "code_work_packages.json"
 GAPS = PRODUCTION / "gap_work_packages.json"
-PROGRESS = PRODUCTION / "production_progress.json"
+LEGACY_PROGRESS = PRODUCTION / "production_progress.json"  # frozen read-only baseline
 GFX = ROOT / "docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md"
 OUT = ROOT / "dashboard/status.json"
 BG = PRODUCTION / "vn_background_catalog.json"
@@ -73,10 +78,11 @@ def graphics_items(text: str) -> tuple[list[dict], list[dict]]:
     return stages, tasks
 
 
-def build() -> dict:
+def build(progress_override: dict | None = None) -> dict:
+    """Render live shards; legacy progress override is available only for migration QA."""
     source = load(CODE)
     gap = load(GAPS)
-    progress = load(PROGRESS)
+    progress = load_shards() if progress_override is None else progress_override
     graphics_stages, graphics_tasks = graphics_items(GFX.read_text(encoding="utf-8"))
     bg_catalog = load(BG)
     character_catalog = load(CHAR_ART)
@@ -213,7 +219,10 @@ def build() -> dict:
         "taskCount": len(plan),
         "assetSummary": approval_summary,
         "openTaskCount": sum(x["status"] not in {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"} for x in plan),
-        "sourceFiles": [str(p.relative_to(ROOT)) for p in (CODE, GFX, GAPS, PROGRESS, BG, CHAR_ART, WORKSTREAMS, P2_REENTRY)],
+        "sourceFiles": [str(p.relative_to(ROOT)) for p in (
+            CODE, GFX, GAPS, *( [SHARDS / "index.json", *[SHARDS / name for name in load(SHARDS / "index.json")["shards"]]]
+                if progress_override is None else [LEGACY_PROGRESS] ),
+            BG, CHAR_ART, WORKSTREAMS, P2_REENTRY)],
         "p2Groups": [
             {**{k: value for k, value in group.items() if k != "taskIds"},
              "taskCount": len(group["taskIds"])}

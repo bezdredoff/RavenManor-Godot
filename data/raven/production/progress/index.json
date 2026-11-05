@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "kind": "task_progress_index",
   "updated": "2026-11-05",
-  "authority": "Canonical task statuses and evidence reconciled after merge by a single integration owner; authored parallel PRs may use docs/changes/<TASK-ID>-<topic>.md instead of concurrent edits to shared progress. Historical source plans remain scope definitions.",
+  "authority": "Canonical current statuses/evidence come from per-domain progress/*.json shards. Aggregated dashboard reads these shards; production_progress.json is a frozen Stage-1 snapshot, not a writable source. No owner/device acceptance may be inferred from CI or merge.",
   "rules": [
     "merged requires a concrete PR link",
     "accepted requires product owner or direct art/device approval and evidence",

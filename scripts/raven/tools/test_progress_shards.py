@@ -27,11 +27,12 @@ def fixture(root: Path, *, duplicate: bool = False, extra: bool = False) -> dict
 
 
 class ShardedProgressTests(unittest.TestCase):
-    def test_project_migration_is_exact(self):
+    def test_current_shards_are_complete_and_unique(self):
         progress = load_shards(SHARDS)
-        old = json.loads(LEGACY.read_text(encoding="utf-8"))
-        check_parity(progress, old)
-        self.assertGreaterEqual(len(progress["entries"]), 213)
+        ids = [e["id"] for e in progress["entries"]]
+        self.assertGreaterEqual(len(ids), 214)
+        self.assertEqual(len(ids), len(set(ids)))
+        self.assertIn("shards", progress["authority"])
 
     def test_roundtrip_ignores_order_not_evidence(self):
         with tempfile.TemporaryDirectory() as path:
