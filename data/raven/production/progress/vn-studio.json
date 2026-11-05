@@ -599,13 +599,13 @@
     },
     {
       "id": "VN-EDITOR-07",
-      "status": "proposed",
-      "owner": "Planning",
-      "updated": "2026-11-03",
-      "implementationState": "not_recorded",
+      "status": "in_progress",
+      "owner": "Hermes/Ornith",
+      "updated": "2026-11-05",
+      "implementationState": "parity_coverage_documentation_review",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n- coverage note: docs/changes/VN-EDITOR-07-hermes-ornith-coverage.md (static review only; owner Hermes/Ornith)",
       "priority": "P1"
     },
     {
