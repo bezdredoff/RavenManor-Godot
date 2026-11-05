@@ -24,5 +24,19 @@
       "evidence": "2026-11-03 CODE/GAP priority audit: Owner map/Hall physical-door, route, collision and 65-degree geometry calibration remains unapproved; overlapping IDs share one gated review. Original GAP planning scope preserved; priority override=P0. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
       "priority": "P0"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-05-02",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "CODE-05-03",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "RM-GAP-006",
+      "workstreamId": "WS-HALL"
+    }
   ]
 }

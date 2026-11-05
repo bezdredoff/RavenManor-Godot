@@ -228,5 +228,91 @@
       "priority": "P1",
       "followUpTaskIds": []
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-10-01",
+      "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "CODE-10-02",
+      "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "CODE-13-01",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GAME-QA-01",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "GAME-RELEASE-01",
+      "p2ReentryGroup": "P2-GAME-RELEASE"
+    },
+    {
+      "id": "GFX-11-T09",
+      "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "GFX-13-T01",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T02",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T03",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T04",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T05",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T06",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T07",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T08",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T09",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T10",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "GFX-13-T11",
+      "p2ReentryGroup": "P2-FULL-SEASON-RELEASE"
+    },
+    {
+      "id": "MOB-04",
+      "workstreamId": "WS-MOBILE-HANDOFF"
+    },
+    {
+      "id": "PROC-006",
+      "workstreamId": "WS-PROCESS"
+    },
+    {
+      "id": "PROC-007",
+      "workstreamId": "WS-PROCESS"
+    },
+    {
+      "id": "RM-GAP-010",
+      "workstreamId": "WS-DEVICE"
+    }
   ]
 }

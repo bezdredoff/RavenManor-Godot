@@ -66,5 +66,31 @@
       "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
       "priority": "P1"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-03-01",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "CODE-03-02",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "CODE-03-03",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "CODE-11-01",
+      "workstreamId": "WS-STORY-RUNTIME"
+    },
+    {
+      "id": "RM-GAP-008",
+      "workstreamId": "WS-STORY-RUNTIME"
+    },
+    {
+      "id": "VN-RUNTIME-01",
+      "workstreamId": "WS-STORY-RUNTIME"
+    }
   ]
 }

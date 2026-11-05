@@ -166,5 +166,63 @@
       "qaState": "ci_passed",
       "approvalState": "pending"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-01-02",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "CODE-02-01",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "CODE-02-03",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "CODE-02-05",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "CODE-02-06",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-01",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-02",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-03",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-04",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-05",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-06",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-10-07",
+      "workstreamId": "WS-MATCH3"
+    },
+    {
+      "id": "GFX-10-08",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "RM-GAP-012",
+      "workstreamId": "WS-MATCH3"
+    }
   ]
 }

@@ -57,5 +57,11 @@
         "GAME-QA-01"
       ]
     }
+  ],
+  "assignments": [
+    {
+      "id": "GAME-UI-01",
+      "workstreamId": "WS-GAME-SHELL"
+    }
   ]
 }

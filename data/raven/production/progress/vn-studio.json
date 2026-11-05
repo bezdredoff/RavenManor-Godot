@@ -630,5 +630,35 @@
       "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Original HTML source, paired screenshots and a control-by-control gap matrix have not been supplied in repo; issue #129 is still a separately evidenced gate. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
       "priority": "P1"
     }
+  ],
+  "assignments": [
+    {
+      "id": "VN-BG-DEVICE-QA",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VN-CAST-MATRIX",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VN-EDITOR-07",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VN-EDITOR-08",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VNS5-07F",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VNS5-07F2",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "VNS5-08",
+      "p2ReentryGroup": "P2-EXPLICITLY-DEFERRED"
+    }
   ]
 }

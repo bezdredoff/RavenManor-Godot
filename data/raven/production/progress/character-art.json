@@ -428,5 +428,51 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "GFX-03-05",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "GFX-05-03",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-05-08",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "GFX-05-11",
+      "workstreamId": "WS-ASSET-CONTRACT"
+    },
+    {
+      "id": "GFX-06-01",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-06-04",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-06-05",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-06-07",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    },
+    {
+      "id": "GFX-06-08",
+      "workstreamId": "WS-VN-STUDIO"
+    },
+    {
+      "id": "GFX-06-09",
+      "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "GFX-06-10",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    }
   ]
 }

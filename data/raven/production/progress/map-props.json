@@ -72,5 +72,47 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-07-01",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-06-06",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-09-01",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-09-02",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-09-03",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-09-04",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-09-05",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-09-06",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-11-T04",
+      "workstreamId": "WS-MAP-PROPS"
+    },
+    {
+      "id": "GFX-11-T07",
+      "workstreamId": "WS-MAP-PROPS"
+    }
   ]
 }

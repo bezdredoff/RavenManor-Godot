@@ -25,5 +25,15 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "CODE-07-02",
+      "workstreamId": "WS-CAMPAIGN"
+    },
+    {
+      "id": "CODE-07-03",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    }
   ]
 }

@@ -127,5 +127,39 @@
       "priority": "P2",
       "updated": "2026-11-03"
     }
+  ],
+  "assignments": [
+    {
+      "id": "GFX-08-01",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "GFX-08-02",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "GFX-08-03",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-08-04",
+      "p2ReentryGroup": "P2-SEASON-CONTENT"
+    },
+    {
+      "id": "GFX-08-08",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "GFX-08-09",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "GFX-08-10",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "GFX-11-T05",
+      "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
+    }
   ]
 }

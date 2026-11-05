@@ -61,5 +61,11 @@
       "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 OWNER-REPORTED MANUAL ACCEPTANCE: In project chat the owner stated requested checks were completed and all passed. Owner reports BE editorial, ў/і glyphs, typography, UI/switch/fallback checks passed; first draft translation from #136 stays unchanged. No new screenshots, exact device/resolution list, mobile run IDs, or full visual comparison files accompanied this report. The acceptance is limited to the scoped task; cannot infer whole-season, Hall, Match-3, chibi, or unreleased playable branching acceptance.",
       "priority": "P1"
     }
+  ],
+  "assignments": [
+    {
+      "id": "GFX-11-T08",
+      "workstreamId": "WS-LOCALES"
+    }
   ]
 }
