@@ -1,5 +1,5 @@
-Task IDs: PROC-007
+Task IDs: PROC-007, PROC-006
 Changes: Stage 3b moves live workstream/P2 membership calculation entirely into progress shard assignments. Remove taskIds arrays from the two global metadata registries. Remove mutable GAP status synchronization and forbid writes to frozen production_progress.json/dashboard/status.json. Add agent/<domain>/... branch ownership/evidence gate. Update docs, migration guide and tests.
 Verification: Blocking tests assert dynamic counts, close/reprioritize without edits to global registries, missing/unknown assignments, shard owner safety, per-agent branch enforcement, and existing Godot/Room Builder/art/Web functionality. Exact-head CI pending.
 Owner QA: User-approved migration architecture; no owner acceptance of gameplay, device or unrelated tasks. Stage 3b not merged until explicit owner approval.
-Status impact: PROC-007 PR_review only while PR is open; merged technical status may be recorded later by domain owner with verified PR URL. Historic statuses/evidence and 214 task records otherwise unchanged.
+Status impact: PROC-007 PR_review while PR #196 is open; still not merged/accepted. PROC-006 technically merged after verified #187 and #192, CI passed, no owner/device acceptance inferred; its status changed only in qa-infrastructure.json. Other task statuses and all 214 task identities/evidence remain unchanged.
