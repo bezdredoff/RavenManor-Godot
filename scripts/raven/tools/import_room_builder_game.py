@@ -26,6 +26,9 @@ SAFE = re.compile(r"[^a-zA-Z0-9_-]+")
 MAX_IMAGE = 16 * 1024 * 1024
 MAX_OBJECTS = 20000
 FLOOR_RATIO = math.sin(math.radians(65))
+# Keep the same traversable-wall cutout contract as Room Builder wall-tools.mjs.
+# Windows and glass sections remain solid wall segments (visual markers only).
+PORTAL_KINDS = frozenset({"door", "double_door", "arch", "stair"})
 
 
 def num(value, label):
@@ -263,7 +266,7 @@ def scene_from_project(project, output_root=ROOT, reference=None, contract=None)
             ax, ay, bx, by = (float(wall[k]) for k in ("ax", "ay", "bx", "by"))
             length = math.hypot(bx-ax, by-ay)
             intervals = []
-            for opening in (o for o in openings if o["wallId"] == wall["id"]):
+            for opening in (o for o in openings if o["wallId"] == wall["id"] and o["kind"] in PORTAL_KINDS):
                 half = min(float(opening["width"])/2, length/2)
                 center = max(half, min(length-half, float(opening["offset"])*length))
                 intervals.append((center-half, center+half))
