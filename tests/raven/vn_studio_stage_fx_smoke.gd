@@ -80,6 +80,47 @@ func _run() -> void:
 	assert(portrait_fx["cues"][1]["phase"] == "exit")
 	assert(portrait_fx["cues"][2]["effect"] == "breathe")
 	assert(portrait_fx["cues"][3]["effect"] == "shake")
+	var breath: Dictionary = portrait_fx["cues"][2]
+	assert(breath["loop"] == true)
+	assert(StageFx.sample(breath, 8400)["scale"] == StageFx.sample(breath, 400)["scale"],
+		"Idle breathing must continue beyond its original five repetitions")
+	assert(StageFx.sample(breath, 8400)["scale"].y > 1.0)
+	var legacy_breath: Dictionary = breath.duplicate(true)
+	legacy_breath.erase("loop")
+	assert(StageFx.sample(legacy_breath, 8400)["scale"] == Vector2.ONE,
+		"Saved legacy repeat-limited breathing must stay unchanged")
+	var invalid_loop: Dictionary = portrait_fx.duplicate(true)
+	invalid_loop["cues"][2]["loop"] = "true"
+	assert(not StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene), invalid_loop).is_empty())
+	invalid_loop = portrait_fx.duplicate(true)
+	invalid_loop["cues"][2]["effect"] = "shake"
+	assert(not StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene), invalid_loop).is_empty())
+	invalid_loop = portrait_fx.duplicate(true)
+	invalid_loop["cues"][2]["targetType"] = "background"
+	invalid_loop["cues"][2]["targetId"] = "background"
+	assert(not StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene), invalid_loop).is_empty())
+	var slide_left: Dictionary = portrait_fx["cues"][6]
+	var slide_right: Dictionary = portrait_fx["cues"][7]
+	var exit_left: Dictionary = portrait_fx["cues"][8]
+	var exit_right: Dictionary = portrait_fx["cues"][9]
+	var hop: Dictionary = portrait_fx["cues"][10]
+	assert(slide_left["effect"] == "slide_in_left" and slide_left["phase"] == "enter")
+	assert(StageFx.sample(slide_left, -1)["offset"] == Vector2.ZERO)
+	assert(StageFx.sample(slide_left, 0)["offset"].x < -40.0)
+	assert(float(StageFx.sample(slide_left, 0)["alpha"]) < 0.01)
+	assert(StageFx.sample(slide_left, 900)["offset"] == Vector2.ZERO)
+	assert(StageFx.sample(slide_right, 0)["offset"].x > 40.0)
+	assert(StageFx.sample(exit_left, 0)["offset"] == Vector2.ZERO)
+	assert(StageFx.sample(exit_left, 2800)["offset"].x < -40.0)
+	assert(float(StageFx.sample(exit_left, 2800)["alpha"]) < 0.01)
+	assert(StageFx.sample(exit_right, 2800)["offset"].x > 40.0)
+	assert(hop["effect"] == "hop" and StageFx.sample(hop, 560)["offset"].y < -10.0)
+	assert(StageFx.sample(hop, 900)["offset"] == Vector2.ZERO)
+	var invalid_motion: Dictionary = portrait_fx.duplicate(true)
+	invalid_motion["cues"][6]["targetType"] = "background"
+	invalid_motion["cues"][6]["targetId"] = "background"
+	assert(not StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene), invalid_motion).is_empty(),
+		"Motion cues must never animate a background or staged prop")
 	assert(StageFx.sample(portrait_fx["cues"][0], 0)["alpha"] < 0.01)
 	assert(is_equal_approx(float(StageFx.sample(portrait_fx["cues"][0], 850)["alpha"]), 1.0))
 	assert(StageFx.sample(portrait_fx["cues"][1], 3000)["alpha"] < 0.01,
@@ -146,6 +187,10 @@ func _run() -> void:
 	timeline.set_timeline(phases["cues"], 2, 0, "")
 	timeline._gui_input(arrow)
 	assert(moved.size() == count_before, "Key release must not change a cue")
+	timeline.set_timeline(portrait_fx["cues"], 2, 19000, "")
+	assert(is_equal_approx(timeline._bar_rect(portrait_fx["cues"][2]).end.x,
+		timeline._x_for_time(StageFx.MAX_MS)),
+		"Looping cue should be drawn until the end of the visible editor timeline")
 	timeline.queue_free()
 	var invalid: Dictionary = fx.duplicate(true)
 	invalid["cues"].append(invalid["cues"][0].duplicate(true))
@@ -224,6 +269,36 @@ func _run() -> void:
 	assert(designer._cards[0].modulate.a < 0.01, "Exit remains invisible in editor")
 	designer._on_fx_undo()
 	assert(designer._fx_data["cues"].size() == before_presets + 1)
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"].size() == before_presets)
+	# The selected Stage actor gets horizontal enter/exit and an isolated hop.
+	designer._on_fx_scrub(0)
+	var neutral_pos: Vector2 = designer._cards[0].position
+	designer._on_fx_add_actor_preset("slide_in_left")
+	assert(designer._fx_data["cues"][-1]["effect"] == "slide_in_left")
+	designer._on_fx_scrub(0)
+	assert(designer._cards[0].position.x < neutral_pos.x - 40.0)
+	designer._on_fx_scrub(1000)
+	assert(is_equal_approx(designer._cards[0].position.x, neutral_pos.x))
+	designer._on_fx_undo()
+	designer._on_fx_add_actor_preset("hop")
+	designer._on_fx_scrub(560)
+	assert(designer._cards[0].position.y < neutral_pos.y - 10.0)
+	designer._on_fx_scrub(900)
+	assert(is_equal_approx(designer._cards[0].position.y, neutral_pos.y))
+	designer._on_fx_undo()
+	designer._on_fx_add_actor_preset("breathe")
+	assert(designer._fx_data["cues"][-1].get("loop", false))
+	assert(designer._fx_loop.button_pressed)
+	assert(not designer._fx_loop.disabled)
+	designer._on_fx_scrub(8400)
+	assert(designer._cards[0].scale.y > 1.0, "Line-idle breathing must continue past eight seconds")
+	designer._on_fx_loop(false)
+	assert(not designer._fx_data["cues"][-1].has("loop"))
+	designer._on_fx_scrub(8400)
+	assert(designer._cards[0].scale == Vector2.ONE)
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"][-1].get("loop", false))
 	designer._on_fx_undo()
 	assert(designer._fx_data["cues"].size() == before_presets)
 	designer.queue_free()

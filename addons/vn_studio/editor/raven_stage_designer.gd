@@ -66,6 +66,7 @@ var _fx_start: SpinBox
 var _fx_duration: SpinBox
 var _fx_repeat: SpinBox
 var _fx_intensity: SpinBox
+var _fx_loop: CheckBox
 var _fx_scrub: HSlider
 var _fx_play: Button
 var _fx_remove: Button
@@ -323,7 +324,12 @@ func _ready() -> void:
 		{"id": "breathe", "label": "Дыхание"},
 		{"id": "twitch", "label": "Подёргивание"},
 		{"id": "emphasis", "label": "Акцент"},
-		{"id": "blink", "label": "Моргание*"}
+		{"id": "blink", "label": "Моргание*"},
+		{"id": "slide_in_left", "label": "Вход слева"},
+		{"id": "slide_in_right", "label": "Вход справа"},
+		{"id": "slide_out_left", "label": "Уход влево"},
+		{"id": "slide_out_right", "label": "Уход вправо"},
+		{"id": "hop", "label": "Подпрыгнуть"}
 	]:
 		var button := Button.new()
 		button.text = "+ " + str(spec["label"])
@@ -383,6 +389,11 @@ func _ready() -> void:
 	_fx_intensity = _numeric(fx_params, 0, 1, 0.05, 0.35)
 	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
 		spinner.value_changed.connect(_on_fx_params)
+	_fx_loop = CheckBox.new()
+	_fx_loop.text = "Дыхание: цикл до конца реплики"
+	_fx_loop.tooltip_text = "Продолжать idle-дыхание выбранного персонажа после Repeat. Превью таймлайна ограничено 20 сек; игровое исполнение требует отдельной интеграции."
+	_fx_loop.toggled.connect(_on_fx_loop)
+	fx_params.add_child(_fx_loop)
 	var fx_playback := HFlowContainer.new()
 	_fx_controls.add_child(fx_playback)
 	_fx_play = Button.new()
@@ -1365,6 +1376,7 @@ func _reload_fx_controls() -> void:
 		_fx_list.add_item("%s · %s/%s · %s @ %dms · %s" % [
 			cue["id"], cue["targetType"], cue["targetId"], cue["effect"], cue["startMs"], anchor_label])
 	_fx_selected = mini(_fx_selected, cues.size() - 1)
+	var loop_allowed: bool = false
 	if _fx_selected >= 0:
 		_fx_list.select(_fx_selected)
 		var cue: Dictionary = cues[_fx_selected]
@@ -1381,6 +1393,11 @@ func _reload_fx_controls() -> void:
 		_fx_repeat.value = int(cue["repeat"])
 		_fx_intensity.value = float(cue["intensity"])
 		_fx_phase.select(maxi(0, StageFx.PHASES.find(StageFx.phase_of(cue))))
+		_fx_loop.button_pressed = bool(cue.get("loop", false))
+		loop_allowed = cue.get("targetType", "") == "actor" and cue.get("effect", "") == "breathe"
+	else:
+		_fx_loop.button_pressed = false
+	_fx_loop.disabled = not loop_allowed
 	for spinner in [_fx_start, _fx_duration, _fx_repeat, _fx_intensity]:
 		spinner.editable = _fx_selected >= 0
 	_fx_anchor.disabled = _fx_selected < 0
@@ -1490,10 +1507,27 @@ func _on_fx_params(_value: Variant) -> void:
 		return
 	var cue: Dictionary = _fx_data["cues"][_fx_selected]
 	cue["effect"] = _fx_kind.get_item_text(_fx_kind.selected)
+	if cue.get("effect") != "breathe":
+		cue.erase("loop")
 	cue["startMs"] = roundi(_fx_start.value)
 	cue["durationMs"] = roundi(_fx_duration.value)
 	cue["repeat"] = roundi(_fx_repeat.value)
 	cue["intensity"] = float(_fx_intensity.value)
+	_commit_fx()
+
+
+## Optional editor-preview loop. Other FX retain bounded timeline semantics.
+func _on_fx_loop(enabled: bool) -> void:
+	if _fx_suppress or _fx_selected < 0 or _fx_selected >= _fx_data.get("cues", []).size():
+		return
+	var cue: Dictionary = _fx_data["cues"][_fx_selected]
+	if cue.get("targetType") != "actor" or cue.get("effect") != "breathe":
+		return
+	if enabled:
+		cue["phase"] = "idle"
+		cue["loop"] = true
+	else:
+		cue.erase("loop")
 	_commit_fx()
 
 
