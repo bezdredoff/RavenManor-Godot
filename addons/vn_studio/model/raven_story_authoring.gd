@@ -240,6 +240,39 @@ static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String
 	return {"ok": true, "draft": candidate, "lineId": line_id}
 
 
+## Remove a scene created in this draft, and all of its own review-only
+## resources. Incoming Story Map links from other scenes must be explicitly
+## removed first: silently removing those edges would lose authored choices.
+## All source scenes and lines remain immutable.
+static func delete_scene(project: Dictionary, draft: Dictionary, scene_id: String) -> Dictionary:
+	if not is_authored_scene(draft, scene_id):
+		return {"ok": false, "error": "Only a draft-authored scene may be deleted."}
+	for source_id in draft.get("storyGraphPatches", {}):
+		if str(source_id) == scene_id:
+			continue
+		var graph: Variant = draft["storyGraphPatches"][source_id]
+		if not graph is Dictionary:
+			continue
+		for edge in graph.get("edges", []):
+			if edge is Dictionary and str(edge.get("targetId", "")) == scene_id:
+				return {"ok": false, "error": "Scene is referenced by a Story Map edge from " + str(source_id) + ". Remove the incoming edge first."}
+	var candidate: Dictionary = draft.duplicate(true)
+	for index in range(candidate.get("authoredScenes", []).size() - 1, -1, -1):
+		if str(candidate["authoredScenes"][index].get("sceneId", "")) == scene_id:
+			candidate["authoredScenes"].remove_at(index)
+	for index in range(candidate.get("authoredLines", []).size() - 1, -1, -1):
+		var line: Dictionary = candidate["authoredLines"][index]
+		if str(line.get("sceneId", "")) == scene_id:
+			candidate.get("patches", {}).erase(str(line.get("id", "")))
+			candidate["authoredLines"].remove_at(index)
+	for key in ["stagePatches", "stageV2Patches", "stageFxPatches", "storyGraphPatches", "promotionSceneIdMap"]:
+		candidate.get(key, {}).erase(scene_id)
+	var error: String = validate(project, candidate)
+	if not error.is_empty():
+		return {"ok": false, "error": error}
+	return {"ok": true, "draft": candidate, "sceneId": scene_id}
+
+
 static func _line(id: String, scene_id: String, text_ru: String, speaker_id: String) -> Dictionary:
 	return {"id": id, "sceneId": scene_id, "speakerId": speaker_id,
 		"delivery": "narration" if speaker_id == NARRATOR_ID else "speech",

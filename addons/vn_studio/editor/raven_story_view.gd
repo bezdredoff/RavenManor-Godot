@@ -67,7 +67,9 @@ var _scene_first_line_input: TextEdit
 var _line_up: Button
 var _line_down: Button
 var _line_delete: Button
+var _scene_delete: Button
 var _confirm_delete_line: ConfirmationDialog
+var _confirm_delete_scene: ConfirmationDialog
 var _new_line_input: TextEdit
 var _scene_speaker: OptionButton
 var _line_speaker: OptionButton
@@ -144,6 +146,11 @@ func _build() -> void:
 	new_scene_button.tooltip_text = "Создать локальную draft-сцену с одной репликой. Не runtime."
 	new_scene_button.pressed.connect(_show_create_scene)
 	toolbar.add_child(new_scene_button)
+	_scene_delete = Button.new()
+	_scene_delete.text = "− Сцена"
+	_scene_delete.tooltip_text = "Удалить только новую локальную сцену и её черновые данные. Входящие Story Map связи блокируют удаление."
+	_scene_delete.pressed.connect(_request_delete_scene)
+	toolbar.add_child(_scene_delete)
 	var new_line_button := Button.new()
 	new_line_button.text = "+ Реплика"
 	new_line_button.tooltip_text = "Добавить реплику в выбранную сцену, не изменяя production JSON."
@@ -569,6 +576,11 @@ func _build_authoring_dialogs() -> void:
 	_confirm_delete_line.dialog_text = "Только локальная реплика; исходный сценарий не изменится. Можно отменить в редакторе."
 	_confirm_delete_line.confirmed.connect(_delete_selected_line)
 	add_child(_confirm_delete_line)
+	_confirm_delete_scene = ConfirmationDialog.new()
+	_confirm_delete_scene.title = "Удалить черновую сцену?"
+	_confirm_delete_scene.ok_button_text = "Удалить из черновика"
+	_confirm_delete_scene.confirmed.connect(_delete_selected_scene)
+	add_child(_confirm_delete_scene)
 	_qa_demo_dialog = ConfirmationDialog.new()
 	_qa_demo_dialog.title = "Raven · QA Story Map + FX"
 	_qa_demo_dialog.dialog_text = "Добавить в КОНЕЦ локального черновика 4 сцены: выбор Эвелин / Ада / Роуэн, по одному возврату к выбору, три разных эффекта анимации. Существующие сцены и реплики не изменяются. Новые сцены не подключены к игре. Все данные создаются только в памяти до нажатия «Сохранить Raven-черновик»."
@@ -763,6 +775,41 @@ func _on_confirm_qa_demo() -> void:
 	_scene_switch()
 	_workspace_tabs.current_tab = 3 # Open Story Map for this draft hub
 	_status.text = "QA · 3 выбора + 3 возврата + FX добавлены в конец черновика. Сохраните черновик вручную; это не игра."
+	_refresh_buttons()
+
+
+func _request_delete_scene() -> void:
+	if _blocked or _project.is_empty() or _scene_delete.disabled:
+		return
+	var scene_id: String = str(Store.scene_records(_project, _draft)[_scene_idx].get("sceneId", ""))
+	# Run the same fail-closed validation before displaying a destructive dialog.
+	var allowed: Dictionary = Store.delete_scene(_project, _draft, scene_id)
+	if not allowed.get("ok", false):
+		_status.text = "Сцена не может быть удалена: " + str(allowed.get("error", "ошибка"))
+		return
+	var line_count: int = Store.entries_for(_project, _draft, scene_id).size()
+	_confirm_delete_scene.dialog_text = "Удалить только черновую сцену %s и %d её реплик? Связанные локальные переводы, постановка, FX и исходящие draft-связи удалятся вместе с ней. Исходный сценарий неизменен. Undo доступен." % [scene_id, line_count]
+	_confirm_delete_scene.popup_centered()
+
+
+func _delete_selected_scene() -> void:
+	if _blocked or _project.is_empty():
+		return
+	var scene_id: String = str(Store.scene_records(_project, _draft)[_scene_idx].get("sceneId", ""))
+	var result: Dictionary = Store.delete_scene(_project, _draft, scene_id)
+	if not result.get("ok", false):
+		_status.text = "Сцена не удалена: " + str(result.get("error", "ошибка"))
+		return
+	_undo.append(_draft.duplicate(true))
+	_redo.clear()
+	_draft = result["draft"]
+	_dirty = true
+	_scene_idx = mini(_scene_idx, Store.scene_records(_project, _draft).size() - 1)
+	_line_idx = 0
+	_scene_search.clear()
+	_refresh_scene_items()
+	_scene_switch()
+	_status.text = "Черновая сцена %s удалена вместе с локальными данными; Undo доступен." % scene_id
 	_refresh_buttons()
 
 
@@ -1183,6 +1230,8 @@ func _refresh_buttons() -> void:
 	_recover_button.visible = _blocked and not _project.is_empty() and Store.stale_draft_info(_project).get("ok", false)
 	_qa_demo_button.disabled = _blocked or _project.is_empty()
 	_save.disabled = _blocked or _project.is_empty()
+	var scene_id_for_delete: String = str(_current_entry().get("sceneId", "")) if not _project.is_empty() else ""
+	_scene_delete.disabled = _blocked or not Store.Author.is_authored_scene(_draft, scene_id_for_delete)
 	var has_additions: bool = not _draft.get("authoredScenes", []).is_empty() or not _draft.get("authoredLines", []).is_empty()
 	_export.disabled = _blocked or _project.is_empty() or Store.change_count(_draft) == 0 or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions
 	_export_stage.disabled = _blocked or _project.is_empty() or _draft.get("stagePatches", {}).is_empty() or not _draft.get("stageV2Patches", {}).is_empty() or not _draft.get("stageFxPatches", {}).is_empty() or not _draft.get("storyGraphPatches", {}).is_empty() or has_additions

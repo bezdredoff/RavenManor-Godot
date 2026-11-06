@@ -144,6 +144,40 @@ func _run() -> void:
 	assert(found_en, "Candidate carries edits to authored lines")
 	assert(not Store.export_story_graph_candidate(project, draft).get("ok", false), "No overwrite")
 	assert(DirAccess.remove_absolute(str(artifact["path"])) == OK)
+	# VN-EDITOR-07: deleting an authored scene is complete but never silently
+	# removes an incoming edge from another scene or mutates canonical content.
+	var remove_plates: Array[Dictionary] = Store.background_variants(project)
+	assert(not remove_plates.is_empty())
+	var temp: Dictionary = Store.add_scene(project, Store.fresh(project),
+		"Временная сцена", "Черновая строка", speaker, "02", remove_plates[0])
+	assert(temp.get("ok", false), str(temp.get("error", "")))
+	var temp_id: String = str(temp["sceneId"])
+	var temp_line: String = str(temp["lineId"])
+	var temp_draft: Dictionary = temp["draft"]
+	Store.edit(temp_draft, temp_line, "be", "Часовая рэпліка")
+	var incoming: Dictionary = Graph.next_edge(Graph.fresh(original_scene),
+		"scene", temp_id, "Войти в черновую сцену")
+	assert(Store.set_story_graph(project, temp_draft, incoming).is_empty())
+	assert(not Store.delete_scene(project, temp_draft, temp_id).get("ok", false),
+		"Incoming links must block a destructive draft scene delete")
+	assert(temp_draft["authoredScenes"].size() == 1, "A denied deletion must not mutate input")
+	temp_draft["storyGraphPatches"].erase(original_scene)
+	var outgoing: Dictionary = Graph.next_edge(Graph.fresh(temp_id),
+		"scene", original_scene, "Вернуться")
+	assert(Store.set_story_graph(project, temp_draft, outgoing).is_empty())
+	temp_draft["promotionSceneIdMap"][temp_id] = "RM-BEAT-99-99"
+	assert(Store.validate(project, temp_draft).is_empty())
+	var removed: Dictionary = Store.delete_scene(project, temp_draft, temp_id)
+	assert(removed.get("ok", false), str(removed.get("error", "")))
+	var after_remove: Dictionary = removed["draft"]
+	assert(after_remove["authoredScenes"].is_empty() and after_remove["authoredLines"].is_empty())
+	assert(after_remove["stagePatches"].is_empty() and after_remove["storyGraphPatches"].is_empty())
+	assert(after_remove["promotionSceneIdMap"].is_empty() and after_remove["patches"].is_empty())
+	assert(Store.validate(project, after_remove).is_empty(), "Deleted scene draft remains serializable")
+	assert(not Store.delete_scene(project, after_remove, original_scene).get("ok", false),
+		"Canonical scenes are immutable")
+	assert(temp_draft["authoredScenes"].size() == 1 and temp_draft["authoredLines"].size() == 1,
+		"Successful deletion must not mutate the original snapshot")
 	# VNS5-07F3: wizard atomically produces scene/chapter/exact background.
 	var plates: Array[Dictionary] = Store.background_variants(project)
 	assert(not plates.is_empty(), "Scene wizard needs at least one imported plate")
@@ -338,6 +372,20 @@ func _run() -> void:
 	assert(view._lines.item_count == 2)
 	view._on_scene(0)
 	assert(view._stage_scroll.visible and not view._draft_stage_hint.visible)
+	assert(view._scene_delete.disabled, "Canonical scenes cannot be deleted")
+	var before_scene_delete: int = Store.scene_records(view._project, view._draft).size()
+	view._on_scene(before_scene_delete - 1)
+	assert(not view._scene_delete.disabled, "New authored scene can be deleted")
+	view._request_delete_scene()
+	assert(view._confirm_delete_scene.dialog_text.contains("Undo"),
+		"Editor must explain destructive scope and Undo before confirmation")
+	view._delete_selected_scene()
+	assert(Store.scene_records(view._project, view._draft).size() == before_scene_delete - 1)
+	assert(view._scene_delete.disabled, "Deleting the last authored scene returns to canonical context")
+	view._on_undo()
+	assert(Store.scene_records(view._project, view._draft).size() == before_scene_delete)
+	view._on_redo()
+	assert(Store.scene_records(view._project, view._draft).size() == before_scene_delete - 1)
 	view.queue_free()
 	for path in paths:
 		assert(FileAccess.get_sha256(root_path.path_join(path)) == hashes[path], "Canonical file mutated: " + path)
