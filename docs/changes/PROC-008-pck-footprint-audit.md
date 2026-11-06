@@ -2,6 +2,14 @@
 
 Task IDs: PROC-008 (qa-infrastructure; size and export scope follow-up). Base main `99c4032d44f02f8537d6ce48c232c44ca5a7b1ca`; gameplay source/asset art unmodified. One concurrent VN Studio PR owns a different domain.
 
+Changes: Exclude editor-only VN Studio plugin, production status/backlog metadata and proposed Builder example from the Godot Web PCK; add measured import/size report and strict runtime-only exclusions in web-package CI. No source/asset deletion.
+
+Verification: Baseline last-main CI and Pages deploy succeeded; new PR exact-head CI pending after documentation fix. Python audit unit tests and real export log assertions run in web-package. Local Godot/Python not run.
+
+Owner QA: Native Godot Editor plugin loads from source; web app menu, VN portraits/dialogue, Match-3, Hall map, save and locales on desktop/mobile after merge. Not yet performed.
+
+Status impact: PROC-008 stays P1/partial/PR_review; only QA-infrastructure shard updated with verified past merges and current PR. No game-task completion implied.
+
 ## Verified baseline
 - After PR #215, real main GitHub Pages `github-pages` artifact **136,484,446 bytes**; run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42279414770, all six functional jobs and deploy PASS.
 - Previous artifact: **258,885,612 bytes** before #215. This measures full compressed Pages tar artifact, **not** standalone `index.pck`.
