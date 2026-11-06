@@ -12,6 +12,7 @@ const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const VNBackgrounds = preload("res://scripts/raven/raven_vn_backgrounds.gd")
 const Characters = preload("res://scripts/raven/raven_vn_characters.gd")
 const FxRuntime = preload("res://scripts/raven/raven_vn_fx_runtime.gd")
+const FxCatalog = preload("res://scripts/raven/raven_vn_fx_catalog.gd")
 const BACK_TO_MAP := "res://scenes/raven/manor_greybox.tscn"
 
 var preferences := Copy.new()
@@ -53,6 +54,15 @@ func _ready() -> void:
 	_build_ui()
 	resized.connect(_layout)
 	_layout()
+	# Only explicit, reviewed res:// FX are enabled on this live scene.
+	# The owner reviews the first Hall Tea choreography when merging this PR.
+	var reviewed: Dictionary = FxCatalog.reviewed_for_scene(SceneId)
+	if not reviewed.is_empty():
+		var fx_error: String = configure_reviewed_fx(reviewed)
+		if not fx_error.is_empty():
+			push_warning("Hall Tea reviewed FX was rejected: " + fx_error)
+	preferences.accessibility_changed.connect(_sync_fx_motion_preference)
+	_sync_fx_motion_preference()
 	_render(true)
 
 
@@ -71,6 +81,10 @@ func configure_reviewed_fx(bundle: Dictionary) -> String:
 		_fx.enter_line(SceneId, str(lines[line_index].get("id", "")))
 		_apply_fx_samples(_fx.step(0.0, _fx_skipping, _fx_reduced_motion))
 	return error
+
+
+func _sync_fx_motion_preference() -> void:
+	set_fx_accessibility(bool(preferences.accessibility.get("reducedMotion", false)))
 
 
 func set_fx_accessibility(reduced_motion: bool, skipping: bool = false) -> void:

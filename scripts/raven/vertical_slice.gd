@@ -15,6 +15,7 @@ const ReadHistory = preload("res://scripts/raven/raven_vn_read_history.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const VNGameView = preload("res://scripts/raven/raven_vn_game_view.gd")
 const RuntimeDispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
+const FxCatalog = preload("res://scripts/raven/raven_vn_fx_catalog.gd")
 const Copy = preload("res://scripts/raven/raven_production_localization.gd")
 const MenuCopy = preload("res://scripts/raven/raven_menu_copy.gd")
 const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd")
@@ -233,10 +234,21 @@ func _render_vn() -> void:
 	else:
 		# Language changes replace copy only, never rewind line or campaign cursor.
 		vn_player.scene = config
+	var new_vn_context: bool = not is_instance_valid(vn_view) or str(vn_view.scene_id) != str(config.beatId)
 	if not is_instance_valid(vn_view):
 		vn_view = VNGameView.new()
 		vn_view.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		vn_frame.add_child(vn_view)
+	if new_vn_context:
+		# Only approved canonical production scenes opt in. Legacy gameplay
+		# and changed locale/pages do not reconfigure/reset their FX clocks.
+		var reviewed: Dictionary = FxCatalog.reviewed_for_scene(str(config.beatId)) if step.get("kind") == "vn_production" else {}
+		if reviewed.is_empty():
+			vn_view.clear_reviewed_fx()
+		else:
+			var fx_error: String = vn_view.configure_reviewed_fx(str(config.beatId), config.get("lineIds", []), reviewed)
+			if not fx_error.is_empty():
+				push_warning("Production VN reviewed FX rejected: " + fx_error)
 	var read_lines: Array[Dictionary] = ReadHistory.localized_entries(state.vnReadLines, preferences.locale)
 	vn_view.set_header_actions(_open_pause, _open_settings, read_lines)
 	vn_view.set_playback_context(_skip_read_vn,
