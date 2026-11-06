@@ -1101,6 +1101,7 @@ func _on_scene(index: int) -> void:
 	_scene_idx = _visible_scene_indices[index]
 	_line_idx = 0
 	_scene_switch()
+	_refresh_buttons() # Action enablement follows the newly selected scene.
 
 
 func _on_line(index: int) -> void:
