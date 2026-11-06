@@ -259,6 +259,15 @@ static func delete_line(project: Dictionary, draft: Dictionary, scene_id: String
 	return result
 
 
+static func delete_scene(project: Dictionary, draft: Dictionary, scene_id: String) -> Dictionary:
+	var result: Dictionary = Author.delete_scene(project, draft, scene_id)
+	if result.get("ok", false):
+		var error: String = validate(project, result["draft"])
+		if not error.is_empty():
+			return {"ok": false, "error": error}
+	return result
+
+
 ## Editor-scene FX may target freshly authored line IDs. The canonical
 ## line_ids(project, scene) helper remains immutable for production callers.
 static func draft_line_ids(project: Dictionary, draft: Dictionary, scene_id: String) -> Array:
