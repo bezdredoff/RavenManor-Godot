@@ -9,13 +9,15 @@ Cozy gothic-anime, portrait-first narrative restoration game.
 
 [Launch the interactive Prototype Lab](https://bezdredoff.github.io/RavenManor-Godot/)
 
-[Art Production Handbook](https://bezdredoff.github.io/RavenManor-Godot/art-handbook/) — image-to-workflow reference, recorded prompts/settings, system/model fingerprints, downloadable ComfyUI files and production history. Open `art-handbook/index.html` locally or read `art-handbook/files/AGENT_GUIDE.md` and the machine catalog. New documentation is published by the Pages workflow after its PR is merged.
+**Pages scope (2026-11-06):** only the Godot Web game and the lightweight `/dashboard/` are deployed. Art Handbook, Room Builder and candidate preview source stay in GitHub and are tested where appropriate, without being published. The dashboard may be removed from Pages later without changing the game.
+
+Art production handbook is retained as [repository source](art-handbook/) with ComfyUI evidence and download tooling, but **not deployed to GitHub Pages**. Run `art-handbook/index.html` locally or see [its agent guide](art-handbook/files/AGENT_GUIDE.md). Its source validation remains part of CI.
 
 Game bible, narrative/design source and production materials live in [bezdredoff/RavenManor](https://github.com/bezdredoff/RavenManor). This repository contains the Godot runtime, tests and Web deployment.
 
 **Game baseline summarized on 2026-11-04 (historical status; consult main/shards for newer implementation evidence):** UPDS VN shell/read Skip, tri-locale onboarding, shared settings/audio, 25 Match-3 levels (3 story + 22 optional), boosters, and optional campaign menu access are merged technical slices. Hall physical calibration, map chibi, full game-loop/device acceptance and cup/quill candidate-art approval remain open. See `docs/audits/MULTI_AGENT_READINESS_20261104_RU.md`.
 
-Open the [touch-first Room Builder PWA](https://bezdredoff.github.io/RavenManor-Godot/builder/index.html) for draft room layout (Android/tablet/desktop). It links 120 proposed catalog positions across eight rooms, saves room-specific local drafts and exports JSON/PNG. Output is not yet a calibrated gameplay scene.
+The touch-first [Room Builder PWA](tools/room-builder/) remains available for **local development** and CI browser checks, but is no longer copied into the public Pages deployment. It exports draft JSON/PNG; output is not approved gameplay geometry.
 
 Read `AGENTS.md`, `docs/PROJECT_CONTEXT.md`, and `docs/IMPLEMENTATION_PLAN.md` before changes.
 
@@ -50,7 +52,7 @@ All agents (ChatGPT, Codex, DeepSeek, Hermes) follow `AGENTS.md`, `docs/process/
 
 ### Candidate ZIP review and non-deployed Web artifacts
 
-The trusted [candidate review portal](https://bezdredoff.github.io/RavenManor-Godot/preview/) lists recent independent candidate CI runs. Candidate Web builds are downloadable as GitHub Actions artifacts; they are **not executed under the stable game's Pages origin**. Until a separate-origin preview host is configured, this is a review/download portal, **not a playable /preview/ game**. See `docs/process/MOBILE_ZIP_PIPELINE_RU.md` for the actual upload test, the GitHub Actions PR-creation policy blocker and manual fallback.
+Candidate Web builds remain downloadable from [GitHub Actions](https://github.com/bezdredoff/RavenManor-Godot/actions) when explicitly requested by the candidate workflow. **No `/preview/` portal is deployed** to the stable game origin, and candidate code is never executed there. See `docs/process/MOBILE_ZIP_PIPELINE_RU.md` for the secure review and phone ZIP handoff.
 
 ### Parallel agent task progress (PROC-007, 2026-11-05)
 
