@@ -127,6 +127,31 @@ class GamePreviewImportTests(unittest.TestCase):
             # One opening splits a straight wall into two visible runs.
             self.assertEqual(text.count('metadata/builder_wall_id = "wall-north"'),2)
 
+    def test_windows_and_glass_keep_solid_wall_in_draft_preview(self):
+        # Room Builder's solidWallRuns() only removes traversable portals.
+        # Importing a window or glass section must not falsely advertise a passage.
+        altered = deepcopy(FIXTURE)
+        altered["walls"] = [
+            {"id": "north", "ax": 0, "ay": 0, "bx": 300, "by": 0, "style": "grand", "thickness": 18},
+            {"id": "west", "ax": 0, "ay": 0, "bx": 0, "by": 300, "style": "grand", "thickness": 18},
+            {"id": "south", "ax": 0, "ay": 300, "bx": 300, "by": 300, "style": "glass", "thickness": 18},
+        ]
+        altered["openings"] = [
+            {"id": "real-door", "wallId": "north", "kind": "door", "width": 80, "offset": 0.5},
+            {"id": "not-a-door-window", "wallId": "west", "kind": "window", "width": 80, "offset": 0.5},
+            {"id": "not-a-door-glass", "wallId": "south", "kind": "glass", "width": 80, "offset": 0.5},
+        ]
+        with tempfile.TemporaryDirectory() as temp:
+            path, counts = scene_from_project(altered, Path(temp))
+            text = path.read_text(encoding="utf-8")
+            self.assertEqual(counts["openings"], 3)
+            self.assertEqual(text.count('metadata/builder_wall_id = "north"'), 2)
+            self.assertEqual(text.count('metadata/builder_wall_id = "west"'), 1)
+            self.assertEqual(text.count('metadata/builder_wall_id = "south"'), 1)
+            self.assertIn('metadata/opening_kind = "window"', text)
+            self.assertIn('metadata/opening_kind = "glass"', text)
+            self.assertNotIn("StaticBody2D", text)
+
     def test_overlapping_openings_are_rejected(self):
         altered=deepcopy(FIXTURE)
         altered["walls"]=[{"id":"wall","ax":0,"ay":0,"bx":300,"by":0,"style":"grand","thickness":18}]
