@@ -54,3 +54,74 @@ export function gameRoomReference(project,map){
    props:(map.props||[]).filter(p=>p.room===map.rooms.indexOf(room))
      .map(p=>({id:p.id,x:p.rect[0]-x,y:p.rect[1]-y,w:p.rect[2],h:p.rect[3]}))};
 }
+
+
+/**
+ * Compare measured pilot painting with the PROPOSED Hall world map in world
+ * plan-space units. Review-only: never move doors, sprites, or collision.
+ * Fail closed if either copied reference drifts from the expected map.
+ */
+export function hallCalibrationReview(project,map,measurement,contract,threshold=12){
+ const ref=gameRoomReference(project,map);
+ const invalid=reason=>({ready:false,reason,doors:[],stairs:[],items:[],seating:null});
+ if(!ref?.aligned||ref.roomId!=='RM-ROOM-HALL')return invalid('Нужен черновик Hall с геометрией Godot 700×690');
+ if(measurement?.schemaVersion!==1||measurement.status!=='MEASURED_DRAFT_NOT_APPROVED')
+  return invalid('Недоступны измерения пилотного фона Hall');
+ if(!Array.isArray(measurement.openings)||measurement.openings.length!==ref.doors.length
+    ||!Array.isArray(measurement.staircases)||!Array.isArray(measurement.seatingFootprints)
+    ||measurement.staircases.length!==2||measurement.seatingFootprints.length!==3)
+  return invalid('Неполный набор измерений Hall');
+ const point=(xy)=>({x:xy[0]-ref.origin.x,y:xy[1]-ref.origin.y});
+ const rect=(xy)=>({x:xy[0]-ref.origin.x,y:xy[1]-ref.origin.y,w:xy[2],h:xy[3]});
+ const validPoint=a=>Array.isArray(a)&&a.length===2&&a.every(Number.isFinite);
+ const validRect=a=>Array.isArray(a)&&a.length===4&&a.every(Number.isFinite)&&a[2]>0&&a[3]>0;
+ const diff=(a,b)=>({dx:b.x-a.x,dy:b.y-a.y,distance:Math.hypot(b.x-a.x,b.y-a.y)});
+ const doors=[],seen=new Set();
+ for(const raw of measurement.openings){
+  if(seen.has(raw.id)||!validPoint(raw.mapPoint)||!validPoint(raw.paintedPoint))
+   return invalid('Некорректные измерения двери Hall');
+  const official=ref.doors.find(d=>d.id===raw.id);
+  if(!official||Math.hypot(raw.mapPoint[0]-ref.origin.x-official.x,raw.mapPoint[1]-ref.origin.y-official.y)>0.01)
+   return invalid('Дверь изменилась в карте; измерения устарели: '+raw.id);
+  const painted=point(raw.paintedPoint),mapPoint={x:official.x,y:official.y},delta=diff(mapPoint,painted);
+  doors.push({id:raw.id,mapPoint,painted,...delta,needsReview:delta.distance>threshold});
+  seen.add(raw.id);
+ }
+ const stairs=[];
+ for(const raw of measurement.staircases){
+  if(!validRect(raw.mapRect)||!validRect(raw.paintedApproxRect))
+   return invalid('Некорректный контур лестницы');
+  const official=ref.props.find(p=>p.id===raw.id);
+  const expected=rect(raw.mapRect);
+  if(!official||Math.max(Math.abs(official.x-expected.x),Math.abs(official.y-expected.y),Math.abs(official.w-expected.w),Math.abs(official.h-expected.h))>0.01)
+   return invalid('Размеры лестницы изменились в карте: '+raw.id);
+  const painted=rect(raw.paintedApproxRect);
+  const boundsDelta={dx:painted.x-official.x,dy:painted.y-official.y,dw:painted.w-official.w,dh:painted.h-official.h};
+  stairs.push({id:raw.id,mapRect:official,paintedRect:painted,...boundsDelta,needsReview:Object.values(boundsDelta).some(x=>Math.abs(x)>threshold)});
+ }
+ const items=[];
+ if(Array.isArray(contract?.sprites)){
+  const grouped=new Map();
+  for(const s of contract.sprites){
+   if(!s.mapPropId)continue;
+   grouped.set(s.mapPropId,[...(grouped.get(s.mapPropId)||[]),s]);
+  }
+  for(const p of ref.props){
+   const sprites=grouped.get(p.id)||[];
+   if(sprites.length!==1)continue; // the three independent seats have one shared legacy footprint
+   const objects=(project.objects||[]).filter(o=>o.assetRefId===sprites[0].assetRefId);
+   if(objects.length!==1)continue; // user can intentionally duplicate a cutout; do not guess
+   const o=objects[0],delta={dx:o.x-p.x,dy:o.y-p.y,dw:o.w-p.w,dh:o.h-p.h};
+   items.push({id:p.id,assetRefId:o.assetRefId,mapRect:p,draftRect:{x:o.x,y:o.y,w:o.w,h:o.h},...delta,needsReview:Object.values(delta).some(x=>Math.abs(x)>threshold)});
+  }
+ }
+ const legacy=ref.props.find(p=>p.id==='RM-ASSET-HALL-SEATS');
+ if(!legacy)return invalid('Физический контур кресел отсутствует в карте');
+ const footprints=[];
+ for(const item of measurement.seatingFootprints){
+  if(!validRect(item.rect))return invalid('Некорректный тестовый контур мебели');
+  footprints.push({id:item.id,rect:rect(item.rect)});
+ }
+ return {ready:true,reason:'',threshold,origin:ref.origin,doors,stairs,items,
+  seating:{legacy,footprints,status:'CANDIDATE_NOT_APPROVED'}};
+}
