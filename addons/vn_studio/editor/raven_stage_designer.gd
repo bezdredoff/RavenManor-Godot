@@ -70,6 +70,7 @@ var _fx_scrub: HSlider
 var _fx_play: Button
 var _fx_remove: Button
 var _fx_undo_button: Button
+var _fx_actor_preset_buttons: Array[Button] = []
 var _selected_actor: int = -1
 var _dragging_actor: int = -1
 var _grab_delta: Vector2 = Vector2.ZERO
@@ -311,6 +312,26 @@ func _ready() -> void:
 		preset.tooltip_text = "Создать FX-клип %s для выбранной цели/реплики, без применения в игровом runtime" % phase
 		preset.pressed.connect(_on_fx_add_phase.bind(phase))
 		phases_row.add_child(preset)
+	var actor_fx_row := HFlowContainer.new()
+	_fx_controls.add_child(actor_fx_row)
+	var actor_fx_caption := Label.new()
+	actor_fx_caption.text = "Быстрые FX персонажа:"
+	actor_fx_row.add_child(actor_fx_caption)
+	for spec in [
+		{"id": "appear", "label": "Появление"},
+		{"id": "disappear", "label": "Исчезновение"},
+		{"id": "breathe", "label": "Дыхание"},
+		{"id": "twitch", "label": "Подёргивание"},
+		{"id": "emphasis", "label": "Акцент"},
+		{"id": "blink", "label": "Моргание*"}
+	]:
+		var button := Button.new()
+		button.text = "+ " + str(spec["label"])
+		button.tooltip_text = ("Добавить редактируемый FX выбранному персонажу. " +
+			"Точное время/сила — ниже. Моргание* пока сжимает весь портрет, а не глаза.")
+		button.pressed.connect(_on_fx_add_actor_preset.bind(str(spec["id"])))
+		actor_fx_row.add_child(button)
+		_fx_actor_preset_buttons.append(button)
 	var fx_title := Label.new()
 	fx_title.text = "Микроанимации (FX draft)"
 	fx_row.add_child(fx_title)
@@ -1319,6 +1340,11 @@ func _process(delta: float) -> void:
 
 func _reload_fx_controls() -> void:
 	_fx_suppress = true
+	var remembered_target: Dictionary = {}
+	if _fx_target.selected >= 0 and _fx_target.selected < _fx_target.item_count:
+		var selected_metadata: Variant = _fx_target.get_item_metadata(_fx_target.selected)
+		if selected_metadata is Dictionary:
+			remembered_target = selected_metadata.duplicate()
 	_fx_anchor.clear()
 	_fx_anchor.add_item("Вся сцена")
 	_fx_anchor.set_item_metadata(0, "")
@@ -1330,6 +1356,8 @@ func _reload_fx_controls() -> void:
 	for target in StageFx.target_options(_stage_data, _stage_v2):
 		_fx_target.add_item(str(target["label"]))
 		_fx_target.set_item_metadata(_fx_target.item_count - 1, target)
+		if target == remembered_target:
+			_fx_target.select(_fx_target.item_count - 1)
 	_fx_list.clear()
 	var cues: Array = _fx_data.get("cues", [])
 	for cue in cues:
@@ -1359,6 +1387,8 @@ func _reload_fx_controls() -> void:
 	_fx_kind.disabled = _fx_selected < 0
 	_fx_phase.disabled = _fx_selected < 0
 	_fx_remove.disabled = _fx_selected < 0
+	for button in _fx_actor_preset_buttons:
+		button.disabled = _stage_data.get("cast", []).is_empty() or cues.size() >= StageFx.MAX_CUES
 	_fx_undo_button.disabled = _fx_undo.is_empty()
 	_fx_timeline.set_timeline(cues, _fx_selected, roundi(_fx_scrub.value), _active_line_id)
 	_fx_suppress = false
@@ -1379,6 +1409,31 @@ func _on_fx_add_phase(phase: String) -> void:
 	var target: Dictionary = _fx_target.get_item_metadata(_fx_target.selected)
 	_fx_data = StageFx.new_phase_cue(_fx_data, str(target["type"]),
 		str(target["id"]), phase, _active_line_id)
+	_fx_selected = _fx_data["cues"].size() - 1
+	_commit_fx()
+
+
+## Use an actor explicitly chosen as FX target, otherwise the Stage-selected
+## actor. Never apply a character animation to the background/prop.
+func _on_fx_add_actor_preset(preset: String) -> void:
+	if _stage_data.is_empty() or preset not in StageFx.ACTOR_PRESETS or _fx_data.get("cues", []).size() >= StageFx.MAX_CUES:
+		return
+	var actor_id: String = ""
+	if _fx_target.selected >= 0 and _fx_target.selected < _fx_target.item_count:
+		var chosen: Variant = _fx_target.get_item_metadata(_fx_target.selected)
+		if chosen is Dictionary and chosen.get("type") == "actor":
+			actor_id = str(chosen.get("id", ""))
+	if actor_id.is_empty() and _selected_actor >= 0 and _selected_actor < _stage_data.get("cast", []).size():
+		actor_id = str(_stage_data["cast"][_selected_actor].get("characterId", ""))
+	if actor_id.is_empty():
+		_status.text = "FX: выберите персонажа на Stage или в списке целей FX."
+		return
+	for index in range(_fx_target.item_count):
+		var target: Variant = _fx_target.get_item_metadata(index)
+		if target is Dictionary and target.get("type") == "actor" and target.get("id") == actor_id:
+			_fx_target.select(index)
+			break
+	_fx_data = StageFx.new_actor_preset(_fx_data, actor_id, preset, _active_line_id)
 	_fx_selected = _fx_data["cues"].size() - 1
 	_commit_fx()
 

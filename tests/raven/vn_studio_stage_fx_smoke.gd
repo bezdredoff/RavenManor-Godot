@@ -59,6 +59,36 @@ func _run() -> void:
 	var invalid_phase: Dictionary = phases.duplicate(true)
 	invalid_phase["cues"][0]["phase"] = "execute_code"
 	assert(not StageFx.validate(stage, v2, invalid_phase).is_empty())
+	# VNS5-07F: one-click character presets reuse validated micro-FX.
+	var portrait_scene: String = ""
+	var portrait_stage: Dictionary = {}
+	for candidate_id in project["shots"].keys():
+		var candidate_stage: Dictionary = Store.effective_stage(project, draft, str(candidate_id))
+		if not candidate_stage.get("cast", []).is_empty():
+			portrait_scene = str(candidate_id)
+			portrait_stage = candidate_stage
+			break
+	assert(not portrait_scene.is_empty(), "Need a staged actor for FX presets")
+	var portrait_id: String = str(portrait_stage["cast"][0]["characterId"])
+	var portrait_fx: Dictionary = StageFx.fresh(portrait_scene)
+	for name in StageFx.ACTOR_PRESETS:
+		portrait_fx = StageFx.new_actor_preset(portrait_fx, portrait_id, str(name))
+	assert(portrait_fx["cues"].size() == StageFx.ACTOR_PRESETS.size())
+	assert(StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene), portrait_fx).is_empty())
+	assert(portrait_fx["cues"][0]["targetId"] == portrait_id)
+	assert(portrait_fx["cues"][0]["phase"] == "enter")
+	assert(portrait_fx["cues"][1]["phase"] == "exit")
+	assert(portrait_fx["cues"][2]["effect"] == "breathe")
+	assert(portrait_fx["cues"][3]["effect"] == "shake")
+	assert(StageFx.sample(portrait_fx["cues"][0], 0)["alpha"] < 0.01)
+	assert(is_equal_approx(float(StageFx.sample(portrait_fx["cues"][0], 850)["alpha"]), 1.0))
+	assert(StageFx.sample(portrait_fx["cues"][1], 3000)["alpha"] < 0.01,
+		"Editor exit preset must stay hidden after its fade")
+	assert(StageFx.sample(portrait_fx["cues"][2], 400)["scale"].y > 1.0)
+	assert(StageFx.sample(portrait_fx["cues"][3], 600)["offset"] != Vector2.ZERO)
+	assert(StageFx.new_actor_preset(portrait_fx, portrait_id, "unknown") == portrait_fx)
+	assert(StageFx.validate(portrait_stage, StageV2.fresh(portrait_scene),
+		JSON.parse_string(JSON.stringify(portrait_fx))).is_empty())
 	# Old cues do not gain phase and keep the exact legacy preview.
 	assert(not fx["cues"][0].has("phase"))
 	assert(StageFx.phase_of(fx["cues"][0]) == "idle")
@@ -174,6 +204,28 @@ func _run() -> void:
 	assert(designer._fx_data["cues"][2]["startMs"] == 8000)
 	designer._on_fx_undo()
 	assert(designer._fx_data["cues"].size() == 2)
+	# Live native Animation tab uses the same actor preview and undo model.
+	designer.set_scene(project, draft, portrait_scene)
+	assert(designer._fx_actor_preset_buttons.size() == StageFx.ACTOR_PRESETS.size())
+	assert(not designer._fx_actor_preset_buttons[0].disabled)
+	var before_presets: int = designer._fx_data["cues"].size()
+	designer._on_fx_add_actor_preset("appear")
+	assert(designer._fx_data["cues"].size() == before_presets + 1)
+	var actor_cue: Dictionary = designer._fx_data["cues"][-1]
+	assert(actor_cue["targetType"] == "actor" and actor_cue["targetId"] == portrait_id)
+	assert(actor_cue["effect"] == "fade_in" and actor_cue["phase"] == "enter")
+	assert(actor_cue.get("lineId", "") == "")
+	designer._on_fx_scrub(0)
+	assert(designer._cards[0].modulate.a < 0.01, "Appearance starts invisible in editor")
+	designer._on_fx_scrub(1000)
+	assert(is_equal_approx(designer._cards[0].modulate.a, 1.0))
+	designer._on_fx_add_actor_preset("disappear")
+	designer._on_fx_scrub(3000)
+	assert(designer._cards[0].modulate.a < 0.01, "Exit remains invisible in editor")
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"].size() == before_presets + 1)
+	designer._on_fx_undo()
+	assert(designer._fx_data["cues"].size() == before_presets)
 	designer.queue_free()
 	assert(FileAccess.get_sha256(staging_path) == staging_sha)
 	assert(FileAccess.get_sha256(source_path) == source_sha)
