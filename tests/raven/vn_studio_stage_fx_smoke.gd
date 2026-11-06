@@ -89,6 +89,33 @@ func _run() -> void:
 	timeline._gui_input(click)
 	assert(selected == [2] and moved.size() == 2 and moved[0] == 2)
 	assert(moved[1] > 8000)
+	# Keyboard editing follows the same commit signal as drag and leaves data
+	# untouched until StageDesigner accepts the cue_moved event.
+	timeline.set_timeline(phases["cues"], 2, 8000, "")
+	var arrow := InputEventKey.new()
+	arrow.pressed = true
+	arrow.keycode = KEY_RIGHT
+	timeline._gui_input(arrow)
+	assert(moved[-2] == 2 and moved[-1] == 8050, "Right arrow must nudge the selected FX cue by 50ms")
+	arrow.keycode = KEY_LEFT
+	timeline._gui_input(arrow)
+	assert(moved[-2] == 2 and moved[-1] == 7950, "Left arrow must nudge the selected FX cue by 50ms")
+	# No signal at the start/end of the valid interval, or without selection.
+	var near_end: Array = phases["cues"].duplicate(true)
+	near_end[2]["startMs"] = 15000
+	timeline.set_timeline(near_end, 2, 0, "")
+	var count_before: int = moved.size()
+	arrow.keycode = KEY_RIGHT
+	timeline._gui_input(arrow)
+	assert(moved.size() == count_before, "Keyboard nudge must not exceed the FX time limit")
+	timeline.set_timeline(phases["cues"], -1, 0, "")
+	arrow.keycode = KEY_LEFT
+	timeline._gui_input(arrow)
+	assert(moved.size() == count_before, "Keyboard nudge requires an explicitly selected cue")
+	arrow.pressed = false
+	timeline.set_timeline(phases["cues"], 2, 0, "")
+	timeline._gui_input(arrow)
+	assert(moved.size() == count_before, "Key release must not change a cue")
 	timeline.queue_free()
 	var invalid: Dictionary = fx.duplicate(true)
 	invalid["cues"].append(invalid["cues"][0].duplicate(true))
