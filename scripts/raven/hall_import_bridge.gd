@@ -4,6 +4,8 @@ extends RefCounted
 ## collision footprints, room topology, campaign state, or actor positions.
 
 const ROOM_ID := "RM-ROOM-HALL"
+const HALL_WALL_PLAN = preload("res://data/raven/hall_wall_plan.json")
+const PORTAL_KINDS := ["door", "double_door", "arch", "stair"]
 const CAMERA_ELEVATION := 65.0
 const PROJECTION_RATIO := 0.9063077870366499
 
@@ -12,6 +14,19 @@ static func _rect_value(origin: Vector2, size: Vector2) -> Rect2:
 
 static func _near(a: Vector2, b: Vector2, tolerance: float = 0.12) -> bool:
 	return a.distance_to(b) <= tolerance
+
+## Guard against a Builder door marker that actually represents a solid window/glass
+## wall. Exact five-portal draft semantics come from the existing Hall wall plan,
+## not the experimental artwork; this check never promotes draft navigation.
+static func _opening_matches_contract(marker: Node, expected: Dictionary) -> bool:
+	var width: Variant = marker.get_meta("opening_width", null)
+	if not (width is float or width is int):
+		return false
+	return str(marker.get_meta("builder_opening_id", "")) == str(expected.get("id", "")) \
+		and str(marker.get_meta("wall_id", "")) == str(expected.get("wallId", "")) \
+		and str(marker.get_meta("opening_kind", "")) == str(expected.get("kind", "")) \
+		and absf(float(width) - float(expected.get("width", -1))) <= 0.12
+
 
 static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionary:
 	var result := {"ready": false, "reason": "", "items": [], "background": null,
@@ -90,6 +105,26 @@ static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionar
 			continue
 		expected_doors[str(door.id)] = Vector2(
 			float(door.point[0]), float(door.point[1]))
+	# Preview-only wall plan must identify exactly the same five map door intents.
+	# A window or glass section with a forged RM-DOOR ID is not a portal.
+	var wall_plan: Dictionary = HALL_WALL_PLAN.data
+	var expected_openings := {}
+	if int(wall_plan.get("schemaVersion", -1)) != 1 or str(wall_plan.get("roomId", "")) != ROOM_ID:
+		source.free()
+		result.reason = "Hall wall-plan identity/schema mismatch"
+		return result
+	for opening in wall_plan.get("openings", []):
+		var door_id := str(opening.get("doorId", ""))
+		if not expected_doors.has(door_id) or expected_openings.has(door_id) \
+			or str(opening.get("kind", "")) not in PORTAL_KINDS:
+			source.free()
+			result.reason = "Invalid or duplicate Hall portal in wall plan: " + door_id
+			return result
+		expected_openings[door_id] = opening
+	if expected_openings.size() != expected_doors.size():
+		source.free()
+		result.reason = "Hall wall plan must represent all five map doors"
+		return result
 	var doors_verified := {}
 	for child in source.get_children():
 		if not (child is Marker2D):
@@ -135,6 +170,10 @@ static func load_render_data(scene: PackedScene, world: Dictionary) -> Dictionar
 				if not expected_doors.has(door_id) or openings_verified.has(door_id):
 					source.free()
 					result.reason = "Unknown or duplicate draft opening: " + door_id
+					return result
+				if not _opening_matches_contract(child, expected_openings[door_id]):
+					source.free()
+					result.reason = "Draft opening semantic mismatch: " + door_id
 					return result
 				var local := Vector2(child.position.x, child.position.y / PROJECTION_RATIO)
 				if not _near(local + world_rect.position, expected_doors[door_id], 0.2):
