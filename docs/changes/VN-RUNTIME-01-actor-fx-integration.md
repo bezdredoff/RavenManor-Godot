@@ -39,3 +39,7 @@ No explicit exit scheduled because the actual scene transition time is player-co
 - Run `bash scripts/check.sh` and/or `check.ps1`; exact PR-head workflow must pass `godot-runtime` and all six required jobs.
 - Manual: on first Hall Tea line actors enter from two sides; breathe subtly while reading; inspect on 3rd+ line, locale and text pagination; toggle reduced motion, re-enable, Skip/read-only checkpoint; verify saved game/screenshot UI unchanged beyond presentation.
 - Full approval to generalize FX to other scenes requires separate curated registry entries and owner review.
+
+## Dependency closeout before runtime merge
+
+2026-11-06: #226 verified **merged** into main as `a5a340fab8dc920e9e48a7bbef6fb78f8127e673` (editor loop + slide/hop capabilities). The runtime branch now includes updated main via an explicit two-parent integration commit; no conflicting changed paths were found. This resolves the initially observed open dependency; owner/manual FX choreography review of this PR remains pending. CI must be verified again at the new integrated PR head, independent of earlier green runs.
