@@ -124,6 +124,40 @@ func _run() -> void:
 	assert(board._gesture_index == -1 and game.moves_left == after_touch, "Hidden board consumed gesture")
 	board.show()
 	assert(board.selected_index == -1)
+	await process_frame
+	# A tab/app switch can drop the owning touch release without a canceled event.
+	# Simulate Window.focus_exited, then deliver the old release via the viewport.
+	hint = game.get_hint_move()
+	assert(not hint.is_empty())
+	start = board.cells[int(hint.first)].get_global_rect().get_center()
+	finish = board.cells[int(hint.second)].get_global_rect().get_center()
+	var focus_moves: int = game.moves_left
+	_touch(start, true, 11)
+	assert(board._gesture_index == int(hint.first) and board._gesture_touch == 11)
+	board.get_window().focus_exited.emit()
+	assert(board._gesture_index == -1 and board._gesture_kind.is_empty() and board._gesture_touch == -1)
+	assert(board.highlighted.is_empty(), "Focus loss retained drag preview")
+	_touch(finish, false, 11)
+	await process_frame
+	assert(game.moves_left == focus_moves, "Stale release after focus loss committed a move")
+	# The next, fresh gesture must still work without any reload/reset.
+	_touch(start, true, 11)
+	_touch(finish, false, 11)
+	await process_frame
+	assert(game.moves_left == focus_moves - 1, "Fresh swipe after focus loss failed")
+	# Simulate a mobile application pause while a second finger owns a swipe.
+	hint = game.get_hint_move()
+	assert(not hint.is_empty())
+	start = board.cells[int(hint.first)].get_global_rect().get_center()
+	finish = board.cells[int(hint.second)].get_global_rect().get_center()
+	var pause_moves: int = game.moves_left
+	_touch(start, true, 12)
+	assert(board._gesture_touch == 12)
+	board.notification(Node.NOTIFICATION_APPLICATION_PAUSED)
+	assert(board._gesture_index == -1 and board._gesture_touch == -1, "Pause retained pointer ownership")
+	_touch(finish, false, 12)
+	await process_frame
+	assert(game.moves_left == pause_moves, "Release after app pause committed a move")
 	scroll.queue_free()
 	print("Raven Match-3 viewport pointer and modal smoke passed")
 	quit()

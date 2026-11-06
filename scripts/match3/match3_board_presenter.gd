@@ -48,6 +48,21 @@ var _completed := false
 var target_selection_mode := false
 
 
+# The OS/browser may swallow the release event while this window loses focus.
+# Never let a stale swipe finish after returning to the game.
+func _ready() -> void:
+	var window := get_window()
+	if window != null and not window.focus_exited.is_connected(_cancel_gesture):
+		window.focus_exited.connect(_cancel_gesture)
+
+
+func _notification(what: int) -> void:
+	# Mobile suspension and app switching may not emit a touch cancellation.
+	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_APPLICATION_FOCUS_OUT:
+		if _gesture_index >= 0:
+			_cancel_gesture()
+
+
 func setup(next_game: RefCounted, theme: Dictionary) -> void:
 	game = next_game
 	skin = theme.duplicate(true)
