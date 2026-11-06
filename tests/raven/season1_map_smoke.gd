@@ -2,6 +2,8 @@ extends SceneTree
 ## Geometry/topology smoke; scene remains non-production and physically reviewed separately.
 const MAP = preload("res://data/raven/season1_world_map.json")
 const SCENE = preload("res://scenes/raven/season1_map_greybox.tscn")
+const HALL_PREVIEW = preload("res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn")
+const HallImportBridge = preload("res://scripts/raven/hall_import_bridge.gd")
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -65,6 +67,37 @@ func _run() -> void:
 	assert(scene.imported_hall.world_rect == Rect2(500, 150, 700, 690))
 	assert(scene.imported_hall.door_count == 5)
 	assert(scene.imported_hall.opening_count == 5)
+	# A seemingly valid RM-DOOR marker must not turn a solid window/glass
+	# section into a map portal. The importer now keeps those wall runs solid.
+	var original_preview: Node2D = HALL_PREVIEW.instantiate()
+	var corridor_marker: Marker2D = null
+	for marker in original_preview.get_node("DraftWalls").get_children():
+		if marker is Marker2D and str(marker.get_meta("door_id", "")) == "RM-DOOR-HALL-CORRIDOR":
+			corridor_marker = marker
+			break
+	assert(corridor_marker != null)
+	var wall_plan: Dictionary = load("res://data/raven/hall_wall_plan.json").data
+	var corridor_contract: Dictionary = {}
+	for opening in wall_plan.openings:
+		if str(opening.doorId) == "RM-DOOR-HALL-CORRIDOR":
+			corridor_contract = opening
+			break
+	assert(not corridor_contract.is_empty())
+	assert(HallImportBridge._opening_matches_contract(corridor_marker, corridor_contract))
+	corridor_marker.set_meta("opening_width", 40.0)
+	assert(not HallImportBridge._opening_matches_contract(corridor_marker, corridor_contract), "incorrect opening width must fail closed")
+	corridor_marker.set_meta("opening_width", 110.0)
+	corridor_marker.set_meta("wall_id", "hall-south")
+	assert(not HallImportBridge._opening_matches_contract(corridor_marker, corridor_contract), "wrong wall attachment must fail closed")
+	corridor_marker.set_meta("wall_id", "hall-east")
+	corridor_marker.set_meta("opening_kind", "window")
+	assert(not HallImportBridge._opening_matches_contract(corridor_marker, corridor_contract), "a window cannot masquerade as a corridor door")
+	var tampered_preview := PackedScene.new()
+	assert(tampered_preview.pack(original_preview) == OK)
+	var import_result: Dictionary = HallImportBridge.load_render_data(tampered_preview, data)
+	assert(not import_result.ready, "solid window pretending to be door must disable imported Hall art")
+	assert(str(import_result.reason).contains("opening semantic mismatch"), "wrong opening type must be the rejection reason")
+	original_preview.free()
 	assert(scene.imported_hall.wall_runs.size() == 15)
 	assert(scene.imported_hall.wall_runs.filter(func(run): return str(run.role) == "balustrade-review").size() == 4)
 	assert(scene.imported_hall.footprint_count == 6)
