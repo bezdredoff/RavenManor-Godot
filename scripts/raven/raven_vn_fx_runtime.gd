@@ -19,6 +19,17 @@ var _scene_ms: float = 0.0
 var _line_ms: float = 0.0
 
 
+## Godot JSON loader can decode integer-valued JSON numbers as floats.
+## Match Studio's strict whole-millisecond validator without allowing 12.5,
+## NaN/Inf, strings or silently truncated values into approved runtime cues.
+static func _whole_number(value: Variant) -> bool:
+	if value is int:
+		return true
+	if value is float:
+		return is_finite(value) and value == floorf(value)
+	return false
+
+
 func clear() -> void:
 	_bundle.clear()
 	_scene_id = ""
@@ -106,7 +117,7 @@ func configure(scene_id: String, line_ids: Array, actor_ids: Array, bundle: Dict
 		var duration: Variant = cue.get("durationMs")
 		var repeats: Variant = cue.get("repeat")
 		var strength: Variant = cue.get("intensity")
-		if not start is int or not duration is int or not repeats is int or start < 0 or start > 15000 or duration < 120 or duration > 4000 or repeats < 1 or repeats > 5 or start + duration * repeats > 20000:
+		if not _whole_number(start) or not _whole_number(duration) or not _whole_number(repeats) or start < 0 or start > 15000 or duration < 120 or duration > 4000 or repeats < 1 or repeats > 5 or start + duration * repeats > 20000:
 			return "Runtime FX timing is out of bounds."
 		if not (strength is float or strength is int) or not is_finite(float(strength)) or float(strength) < 0.0 or float(strength) > 1.0:
 			return "Runtime FX intensity is invalid."
