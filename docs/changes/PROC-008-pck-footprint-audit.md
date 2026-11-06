@@ -26,6 +26,17 @@ Exclude from the Web PCK (source remains in GitHub and all CI/editor checks rema
 
 The existing game JSON, authored routes, source imagery, imported Hall preview and Match-3/VN runtime remain included. This is a narrow export change, not a content deletion or approval of fewer assets.
 
+## Measured PR-head results
+
+[Exact-head CI 42283202713](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42283202713) PASS: data-contracts, godot-runtime, room-builder, art-pipeline, web-package and aggregate build. This is **PR CI only**, with deploy skipped. Post-merge Pages-size delta still unverified.
+
+- After bounded PCK exclusions: `index.pck` **121.27 MiB** and `index.wasm` **37.68 MiB**.
+- 395 packed entries vs 477 baseline entries; 82 editor/ledger/example entries no longer shipped.
+- 116 imported textures: **120.01 MiB raw** (not directly equal to compressed PCK contribution); characters **57.82 MiB**, VN backgrounds **49.06 MiB**, Hall **8.70 MiB**, prototypes **2.51 MiB**, Match-3 **1.43 MiB**, others **0.50 MiB**.
+- Largest individual images: `entry/day_overgrown.webp` 2.74 MiB, `conservatory/day_partially_safe.webp` 2.64 MiB, `garden/day_unsafe_path.webp` 2.54 MiB. These are catalogued approved art; removal/recompression would need separate owner-approved visual QA.
+- About **89%** of imported texture bytes are character portraits and VN backgrounds. Excluding small editor/production files is not a substitute for later Web-only image-format/resolution benchmarking.
+- The first report ran before Dashboard generation and therefore showed its size as 0 MiB; the workflow step has been moved **after** dashboard generation. This is a diagnostics-order correction, not a gameplay modification.
+
 ## New CI instrumentation
 `scripts/raven/tools/report_web_pck.py` parses *actual* Godot export log entries and imports. Reports exact `index.pck` bytes, `index.wasm` bytes, whole Web package bytes, dashboard bytes, number of packed entries, raw imported `.ctex` byte sizes by original source category, and top imported textures. Fails if excluded editor/progress/draft paths still appear in the PCK. The `.ctex` source breakdown is an **estimate of import contribution**, not compressed per-file PCK bytes. Prints in workflow log and job summary, creates no new uploaded artifact.
 
