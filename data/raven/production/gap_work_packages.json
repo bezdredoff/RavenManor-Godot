@@ -1385,7 +1385,7 @@
       ],
       "graphicsDependencies": [],
       "source": "2026-11-06 owner request: integration PR after main Pages deployment timeout; observed overlapping legacy + custom Pages workflows",
-      "requiresHumanAcceptance": false
+      "requiresHumanAcceptance": true
     }
   ]
 }
