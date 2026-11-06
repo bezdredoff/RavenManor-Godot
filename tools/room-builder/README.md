@@ -108,3 +108,11 @@ Use **Стена** to drag grid-snapped orthogonal runs in four shared first-act
 ## Room JSON → actual Godot game-projection scene
 
 For the newly supported Godot 65° visual importer, transfer the Room Builder JSON to your development computer and run `python3 scripts/raven/tools/import_room_builder_game.py /path/to/export.json`; it creates `scenes/raven/generated/RM_ROOM_*_GamePreview.tscn`, with real pilot and embedded textures and placeholders for unfinished items. Open the scene with F6 or entry 6 of Prototype Lab when generated. No character gameplay positions or canonical navigation are imported. Details: `docs/ROOM_BUILDER_TO_GODOT_IMPORT.md`.
+
+## Hall calibration review (draft-only)
+
+In a **700×690 RM-ROOM-HALL draft**, open **Свойства и слои → Сравнить проёмы, лестницы и мебель с пилотным фоном** while using **Игровой 65°**. The report compares all five authoritative Hall doorway points and both staircase rectangles with the measured *unapproved* painting. It shows ΔX/ΔY in original plan-space world units (not perspective-adjusted screen pixels), plus ΔW/ΔH for stairs and one-to-one PNG envelopes for the clock, console and gallery. On the canvas, **green squares** are map doorway anchors, **pink circles** are estimated painted centres, and the connecting line shows the discrepancy; stairs show map/pilot rectangles, and three thin cyan seating shapes are *proposed* footprints, not accepted collision.
+
+A 12-unit threshold is a **visual triage aid**, not collision/path approval. It does not change project JSON, move doors, modify navigation or turn the three seat footprints into gameplay collision. The two huge Archive/Corridor offsets are existing background geometry defects, not proof that the map door coordinates should move. The comparison is hidden for mis-sized Hall drafts, other rooms, stale calibration data or absent offline reference; export remains unannotated.
+
+The local reference copy `reference/hall_render_calibration.json` mirrors `data/raven/hall_render_calibration.json`; Node regression verifies source parity and refuses mismatched map door/stair positions. The service-worker cache includes the new JSON after the first successful online install/load. Keep exported JSON backups before any owner-approved new Hall layout.
