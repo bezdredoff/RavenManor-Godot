@@ -6,6 +6,18 @@ const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const RETURN_COPY := {"ru": "В главное меню", "be": "У галоўнае меню", "en": "To Main Menu"}
 const STATUS_COPY := "Дополнительные уровни · награда за подготовку не начисляется"
 const INTRO_COPY := "Match-3 помогает осмотреть и подготовить вещи. Ремонт выполняет специалист."
+# Mirror the locale-keyed presentation map of UPDS Match3CampaignScreen.
+# The game/save/level state is intentionally not owned by these strings.
+const UI_COPY := {
+	"ru": {"intro": INTRO_COPY, "next": "ДАЛЕЕ · ", "level": "Уровень %02d",
+		"locked": "Закрыто", "play": "Играть", "replay": "Повторить", "return_story": "Вернуться к истории"},
+	"be": {"intro": "Match-3 дапамагае агледзець і падрыхтаваць рэчы. Рамонт выконвае спецыяліст.",
+		"next": "ДАЛЕЙ · ", "level": "Узровень %02d", "locked": "Заблакавана",
+		"play": "Гуляць", "replay": "Паўтарыць", "return_story": "Вярнуцца да гісторыі"},
+	"en": {"intro": "Match-3 helps inspect and prepare belongings. A specialist handles repairs.",
+		"next": "NEXT · ", "level": "Level %02d", "locked": "Locked",
+		"play": "Play", "replay": "Replay", "return_story": "Return to story"}
+}
 
 
 static func campaign_step() -> Dictionary:
@@ -42,8 +54,9 @@ static func entries(levels: Array, completed: Array) -> Array[Dictionary]:
 
 static func render_list(body: VBoxContainer, levels: Array, completed: Array,
 		locale: String, from_main_menu: bool, on_level: Callable, on_leave: Callable) -> void:
+	var copy: Dictionary = UI_COPY.get(locale, UI_COPY.ru)
 	var intro := Label.new()
-	intro.text = INTRO_COPY
+	intro.text = str(copy.intro)
 	intro.add_theme_font_size_override("font_size", 14)
 	intro.add_theme_color_override("font_color", Color("d4ccbe"))
 	intro.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
@@ -54,14 +67,14 @@ static func render_list(body: VBoxContainer, levels: Array, completed: Array,
 		var entry: Dictionary = campaign[position]
 		var completed_level := bool(entry.completed)
 		var unlocked := bool(entry.unlocked)
-		var prefix := "ДАЛЕЕ · " if bool(entry.isNext) else ""
-		var title := "✓ Уровень %02d" % (position + 1) if completed_level else (
-			"Уровень %02d" % (position + 1) if unlocked else "Закрыто")
-		var action := "Повторить" if completed_level else "Играть"
+		var prefix := str(copy.next) if bool(entry.isNext) else ""
+		var level_caption := str(copy.level) % (position + 1)
+		var title := "✓ " + level_caption if completed_level else (level_caption if unlocked else str(copy.locked))
+		var action := str(copy.replay) if completed_level else str(copy.play)
 		var button := _button(body, "%s%s · %s" % [prefix, title, action],
 			on_level.bind(str(entry.levelId)))
 		button.disabled = not unlocked
-	_button(body, str(RETURN_COPY.get(locale, RETURN_COPY.ru)) if from_main_menu else "Вернуться к истории", on_leave)
+	_button(body, str(RETURN_COPY.get(locale, RETURN_COPY.ru)) if from_main_menu else str(copy.return_story), on_leave)
 
 
 static func _button(parent: Container, label: String, callback: Callable) -> Button:
