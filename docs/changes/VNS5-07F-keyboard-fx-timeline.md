@@ -1,6 +1,10 @@
 # VNS5-07F — precise keyboard nudge in FX timeline
 
 Task IDs: VNS5-07F (narrow editor UX increment); related VN-EDITOR-07 and VNS5-07F2 remain open.
+Changes: Add left/right keyboard 50ms cue nudges to the editor-only FX timeline, targeted smoke regression and VN Studio shard PR_review evidence.
+Verification: Source inspected; FX smoke is included in scripts/check.sh; local Godot NOT_RUN; exact-head GitHub CI pending after governance note correction.
+Owner QA: Pending native Godot 4.7.2 Windows testing, matched HTML screenshots and actual manual keyboard/Undo/save/reopen verification.
+Status impact: VNS5-07F set to PR_review/partial only for PR #207; broad VNS5-07F2 and VN-EDITOR-07 remain open, no device or parity acceptance.
 
 Base: `bezdredoff/RavenManor-Godot@ff8760946da7bc3b0250eac1dbaad37d8b832abb`. Domain: `vn-studio`.
 Scope: `addons/vn_studio/editor/raven_fx_timeline.gd`, `tests/raven/vn_studio_stage_fx_smoke.gd`, the VN Studio progress shard and this unique change note.
