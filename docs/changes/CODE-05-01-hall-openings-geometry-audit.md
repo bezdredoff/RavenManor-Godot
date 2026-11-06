@@ -1,6 +1,6 @@
 # CODE-05-01 — Hall geometry & import opening parity (2026-11-06)
 
-**Task IDs:** CODE-05-01 (room-builder, P0). Read-only integration dependencies: CODE-05-02 and RM-GAP-001/006 (manor-map).  
+Task IDs: CODE-05-01 (room-builder, P0). Read-only integration dependencies: CODE-05-02 and RM-GAP-001/006 (manor-map).  
 **Baseline:** `main@ff8760946da7bc3b0250eac1dbaad37d8b832abb`; zero open PRs on initial check; main workflow run 42256204532 succeeded.  
 **Authority separation:** `examples/room_builder_hall_original.json` is a reproducible PROPOSED Builder fixture; `scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn` is DRAFT_ONLY. The live Whole Manor Map is a separate runtime. No geometry promotion or state changes.
 
@@ -35,13 +35,13 @@ Coordinates in the table are Builder local (room top-left); world coordinates ad
 
 ## One deliberately scoped correction
 
-**Changes:** In `scripts/raven/tools/import_room_builder_game.py`, only traverse `door`, `double_door`, `arch`, and `stair` when cutting visual wall runs. `window` / `glass` still retain opening metadata/markers, but the wall is solid. This matches `tools/room-builder/wall-tools.mjs:isPortal/solidWallRuns`. No Builder schema, canonical scene or collision modifications. Existing five Hall openings are all portals, so the committed Hall fixture should remain byte-identical.
+Changes: In `scripts/raven/tools/import_room_builder_game.py`, only traverse `door`, `double_door`, `arch`, and `stair` when cutting visual wall runs. `window` / `glass` still retain opening metadata/markers, but the wall is solid. This matches `tools/room-builder/wall-tools.mjs:isPortal/solidWallRuns`. No Builder schema, canonical scene or collision modifications. Existing five Hall openings are all portals, so the committed Hall fixture should remain byte-identical.
 
-**Verification:** New `test_windows_and_glass_keep_solid_wall_in_draft_preview` in `scripts/raven/tools/test_room_builder_game_import.py` checks a real door (2 runs), window (1 run), glass (1 run), all three markers and no `StaticBody2D`. Existing importer, node/browser and Godot smoke are expected to run in GitHub CI. **Local EXECUTED status: NOT_RUN** (the environment cannot clone GitHub); record actual PR head/check link after CI rather than inventing test output. Baseline main CI (not this change): [run 42256204532](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42256204532) = success.
+Verification: New `test_windows_and_glass_keep_solid_wall_in_draft_preview` in `scripts/raven/tools/test_room_builder_game_import.py` checks a real door (2 runs), window (1 run), glass (1 run), all three markers and no `StaticBody2D`. Existing importer, node/browser and Godot smoke are expected to run in GitHub CI. **Local EXECUTED status: NOT_RUN** (the environment cannot clone GitHub); record actual PR head/check link after CI rather than inventing test output. Baseline main CI (not this change): [run 42256204532](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42256204532) = success.
 
-**Owner QA:** Pending: Android tablet/S-Pen/touch, portrait 390×844 / 412×915 / 430×932 with `Импорт` + `Габариты`; five distinct visible portal intents, two stair runs, archive/corridor jambs, foreground rail/actor overlap and default vs three-piece seating test routes. Author approval of physical Hall geometry remains explicitly pending.
+Owner QA: Pending: Android tablet/S-Pen/touch, portrait 390×844 / 412×915 / 430×932 with `Импорт` + `Габариты`; five distinct visible portal intents, two stair runs, archive/corridor jambs, foreground rail/actor overlap and default vs three-piece seating test routes. Author approval of physical Hall geometry remains explicitly pending.
 
-**Status impact:** `CODE-05-01` remains P0/partial; PR review is not a merge or game-map acceptance. `room-builder` progress shard only. No `manor-map` shard update. Follow-on `CODE-05-02`, `RM-GAP-001/006` require separate owner-approved integration branch/PR.
+Status impact: `CODE-05-01` remains P0/partial; PR review is not a merge or game-map acceptance. `room-builder` progress shard only. No `manor-map` shard update. Follow-on `CODE-05-02`, `RM-GAP-001/006` require separate owner-approved integration branch/PR.
 
 ## Unresolved technical questions (no silent fixes)
 
