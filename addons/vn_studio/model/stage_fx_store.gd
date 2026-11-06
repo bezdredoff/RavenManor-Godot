@@ -5,6 +5,24 @@ extends RefCounted
 const MathFx = preload("res://scripts/shared/vn/micro_fx_math.gd")
 const FORMAT := "raven-vn-stage-fx-v1"
 const EFFECTS := ["breathe", "blink", "shake", "pulse", "fade_in", "fade_out"]
+# User-facing actor presets intentionally map onto existing validated v1 FX.
+# No new art layers, renderer, scriptable cue kind or runtime promotion.
+const ACTOR_PRESETS := ["appear", "disappear", "breathe", "twitch", "emphasis", "blink"]
+const ACTOR_PRESET_VALUES := {
+	"appear": {"effect": "fade_in", "phase": "enter", "startMs": 0,
+		"durationMs": 650, "repeat": 1, "intensity": 1.0},
+	"disappear": {"effect": "fade_out", "phase": "exit", "startMs": 1800,
+		"durationMs": 500, "repeat": 1, "intensity": 1.0},
+	"breathe": {"effect": "breathe", "phase": "idle", "startMs": 0,
+		"durationMs": 1600, "repeat": 5, "intensity": 0.45},
+	"twitch": {"effect": "shake", "phase": "idle", "startMs": 550,
+		"durationMs": 220, "repeat": 1, "intensity": 0.45},
+	"emphasis": {"effect": "pulse", "phase": "idle", "startMs": 250,
+		"durationMs": 400, "repeat": 1, "intensity": 0.45},
+	# The existing blink squeezes the entire portrait, not actual eyelids.
+	"blink": {"effect": "blink", "phase": "idle", "startMs": 950,
+		"durationMs": 200, "repeat": 1, "intensity": 0.55}
+}
 const TARGET_TYPES := ["actor", "prop", "background"]
 const PHASES := ["enter", "idle", "exit"]
 const MAX_CUES := 32
@@ -153,6 +171,19 @@ static func new_phase_cue(data: Dictionary, target_type: String, target_id: Stri
 			cue["durationMs"] = 650
 			cue["repeat"] = 1
 			cue["intensity"] = 1.0
+	return result
+
+
+## One-click character presets. Existing v1 cue schema/validation and
+## deterministic preview are preserved for old drafts and exports.
+static func new_actor_preset(data: Dictionary, actor_id: String,
+		preset: String, line_id: String = "") -> Dictionary:
+	if preset not in ACTOR_PRESETS or actor_id.is_empty():
+		return data.duplicate(true)
+	var result: Dictionary = new_cue(data, "actor", actor_id, line_id)
+	var cue: Dictionary = result["cues"][-1]
+	for key in ACTOR_PRESET_VALUES[preset]:
+		cue[key] = ACTOR_PRESET_VALUES[preset][key]
 	return result
 
 
