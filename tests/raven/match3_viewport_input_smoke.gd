@@ -158,6 +158,68 @@ func _run() -> void:
 	_touch(finish, false, 12)
 	await process_frame
 	assert(game.moves_left == pause_moves, "Release after app pause committed a move")
+	# Direct tile GUI regression: Web compatibility mouse press may precede
+	# the true touch press. The finger must supersede it, and delayed mouse
+	# release must not end the swipe or count as an extra move.
+	hint = game.get_hint_move()
+	assert(not hint.is_empty(), "Direct GUI pointer fixture has no hint")
+	var gui_first: int = int(hint.first)
+	var gui_second: int = int(hint.second)
+	var gui_local_start: Vector2 = board.cells[gui_first].size * 0.5
+	var gui_delta: Vector2 = board.cells[gui_second].get_global_rect().get_center() - board.cells[gui_first].get_global_rect().get_center()
+	var gui_moves: int = game.moves_left
+	# Previous injected touch activity is very recent; reset the suppression
+	# timestamp ONLY for this synthetic independent mouse-first sequence.
+	board._last_touch_ms = -10000
+	var compat_press := InputEventMouseButton.new()
+	compat_press.button_index = MOUSE_BUTTON_LEFT
+	compat_press.pressed = true
+	compat_press.position = gui_local_start
+	board._on_cell_gui_input(compat_press, gui_first)
+	assert(board._gesture_kind == "mouse" and board._gesture_index == gui_first)
+	var owning_touch := InputEventScreenTouch.new()
+	owning_touch.index = 17
+	owning_touch.pressed = true
+	owning_touch.position = gui_local_start
+	board._on_cell_gui_input(owning_touch, gui_first)
+	assert(board._gesture_kind == "touch" and board._gesture_touch == 17 and board._gesture_index == gui_first, "Real touch failed to replace compatibility mouse in cell GUI path")
+	var compat_release := compat_press.duplicate() as InputEventMouseButton
+	compat_release.pressed = false
+	compat_release.position = gui_local_start + gui_delta
+	board._on_cell_gui_input(compat_release, gui_first)
+	assert(board._gesture_kind == "touch" and game.moves_left == gui_moves, "Compatibility mouse release stole touch swipe")
+	var other_finger_release := owning_touch.duplicate() as InputEventScreenTouch
+	other_finger_release.index = 18
+	other_finger_release.pressed = false
+	other_finger_release.position = gui_local_start + gui_delta
+	board._on_cell_gui_input(other_finger_release, gui_first)
+	assert(board._gesture_touch == 17 and game.moves_left == gui_moves, "Other finger completed direct GUI gesture")
+	var touch_release := owning_touch.duplicate() as InputEventScreenTouch
+	touch_release.pressed = false
+	touch_release.position = gui_local_start + gui_delta
+	board._on_cell_gui_input(touch_release, gui_first)
+	await process_frame
+	assert(game.moves_left == gui_moves - 1 and board._gesture_index == -1, "Direct GUI touch did not make exactly one legal move")
+	# A synthetic mouse click after the real touch must not start a new move.
+	board._on_cell_gui_input(compat_press, gui_first)
+	board._on_cell_gui_input(compat_release, gui_first)
+	assert(game.moves_left == gui_moves - 1 and board._gesture_index == -1, "Trailing compatibility mouse started a phantom gesture")
+	# Desktop direct GUI mouse input still has its own valid path.
+	hint = game.get_hint_move()
+	assert(not hint.is_empty())
+	gui_first = int(hint.first)
+	gui_second = int(hint.second)
+	gui_local_start = board.cells[gui_first].size * 0.5
+	gui_delta = board.cells[gui_second].get_global_rect().get_center() - board.cells[gui_first].get_global_rect().get_center()
+	board._last_touch_ms = -10000
+	compat_press.position = gui_local_start
+	compat_release.position = gui_local_start + gui_delta
+	var mouse_before: int = game.moves_left
+	board._on_cell_gui_input(compat_press, gui_first)
+	assert(board._gesture_kind == "mouse")
+	board._on_cell_gui_input(compat_release, gui_first)
+	await process_frame
+	assert(game.moves_left == mouse_before - 1 and board._gesture_index == -1, "Direct GUI mouse stopped working after touch ownership fix")
 	scroll.queue_free()
 	print("Raven Match-3 viewport pointer and modal smoke passed")
 	quit()

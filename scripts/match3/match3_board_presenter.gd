@@ -380,9 +380,14 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 		position = cells[index].get_global_transform_with_canvas() * event.position
 	else:
 		return
-	# Mirror the common pointer path for direct GUI dispatch too. Only the
-	# finger that began a gesture can complete it; ignore emulated mouse.
-	if kind == "mouse" and Time.get_ticks_msec() - _last_touch_ms < 650:
+	# Match _input ownership for direct GUI dispatch. A Web compatibility
+	# mouse press can arrive before the real touch press; the finger must take
+	# ownership, and any trailing synthetic mouse release must be ignored.
+	if kind == "touch":
+		_last_touch_ms = Time.get_ticks_msec()
+		if is_press and _gesture_kind == "mouse":
+			_cancel_gesture()
+	elif Time.get_ticks_msec() - _last_touch_ms < 650:
 		return
 	var targetable: bool = target_selection_mode and game._is_active(index) and (not game.tiles[index].is_empty() or int(game.blocker_layers[index]) > 0)
 	if is_press and _gesture_index < 0 and (targetable or game.can_interact_with_tile(index)):
@@ -390,8 +395,6 @@ func _on_cell_gui_input(event: InputEvent, index: int) -> void:
 		_gesture_start = position
 		_gesture_kind = kind
 		_gesture_touch = event.index if event is InputEventScreenTouch else -1
-		if kind == "touch":
-			_last_touch_ms = Time.get_ticks_msec()
 		accept_event()
 	elif not is_press and _gesture_index >= 0 and _gesture_kind == kind and (kind != "touch" or event.index == _gesture_touch):
 		if event is InputEventScreenTouch and event.canceled:
