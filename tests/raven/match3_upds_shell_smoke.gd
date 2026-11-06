@@ -3,7 +3,7 @@ extends SceneTree
 const Shell = preload("res://scripts/match3/match3_screen_shell.gd")
 const Board = preload("res://scripts/match3/match3_board_presenter.gd")
 const Game = preload("res://scripts/raven/raven_match3_game.gd")
-const Theme = preload("res://scripts/raven/raven_match3_theme.gd")
+const RavenTheme = preload("res://scripts/raven/raven_match3_theme.gd")
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 
 
@@ -21,7 +21,7 @@ func _run() -> void:
 	var board := Board.new()
 	board.name = "RavenMatch3Board"
 	slots.board_slot.add_child(board)
-	board.setup(game, Theme.placeholder())
+	board.setup(game, RavenTheme.placeholder())
 	Shell.adopt_board(board, slots, host)
 	board.set_reduced_motion(true)
 	await process_frame
