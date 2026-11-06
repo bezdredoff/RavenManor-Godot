@@ -34,7 +34,7 @@ func _ready() -> void:
 	size_flags_horizontal = SIZE_EXPAND_FILL
 	mouse_filter = MOUSE_FILTER_STOP
 	focus_mode = Control.FOCUS_ALL
-	tooltip_text = "Клик: выбрать FX; перетащить полоску: сдвинуть начало (50 мс); клик по шкале: scrub"
+	tooltip_text = "Клик: выбрать FX; перетащить: сдвинуть начало; ←/→: шаг 50 мс; клик по шкале: scrub"
 	queue_redraw()
 
 
@@ -82,6 +82,26 @@ func _hit_cue(where: Vector2) -> int:
 
 
 func _gui_input(event: InputEvent) -> void:
+	# Timeline is focusable, so allow precise cue adjustments without mouse
+	# dragging. Share the same bounds and StageDesigner commit/Undo signal.
+	if event is InputEventKey:
+		var key: InputEventKey = event
+		if not key.pressed or key.echo or key.ctrl_pressed or key.alt_pressed or key.meta_pressed:
+			return
+		if key.keycode != KEY_LEFT and key.keycode != KEY_RIGHT:
+			return
+		if _selected < 0 or _selected >= _cues.size():
+			return
+		var cue: Dictionary = _cues[_selected]
+		var start: int = int(cue.get("startMs", 0))
+		var length: int = int(cue.get("durationMs", 1400)) * int(cue.get("repeat", 1))
+		var maximum: int = mini(15000, StageFx.MAX_MS - length)
+		var step: int = SNAP_MS if key.keycode == KEY_RIGHT else -SNAP_MS
+		var next_start: int = clampi(start + step, 0, maxi(0, maximum))
+		if next_start != start:
+			cue_moved.emit(_selected, next_start)
+		accept_event()
+		return
 	if event is InputEventMouseButton:
 		var mouse: InputEventMouseButton = event
 		if mouse.button_index != MOUSE_BUTTON_LEFT:
