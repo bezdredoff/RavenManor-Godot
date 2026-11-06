@@ -227,6 +227,17 @@
       "approvalState": "pending",
       "priority": "P1",
       "followUpTaskIds": []
+    },
+    {
+      "id": "PROC-008",
+      "owner": "ChatGPT",
+      "updated": "2026-11-06",
+      "status": "PR_review",
+      "implementationState": "partial",
+      "qaState": "pending",
+      "approvalState": "pending",
+      "priority": "P1",
+      "evidence": "2026-11-06 integration branch agent/qa-infrastructure/PROC-008-pages-deploy-ownership from main f79e2097787ed3bde14236fd2e475ab1e12ee519. Current main run 42260437644 and native pages run 42260438358 both failed Pages deploy after 600-second status polling timeout, but all six custom build checks passed. Two independent workflows target github-pages on same main SHA; artifacts ~278 MB vs ~134 MB. A previous pair of releases also ran together and both succeeded, so competition is a likely contributor, not proven sole root cause. Scope: preflight Pages build_type=workflow, serialized custom deploy, deploy-pages@v5 and bounded 30m wait; production configuration Settings > Pages > Source=GitHub Actions requires owner action. Unique evidence docs/changes/PROC-008-pages-single-publisher.md. Exact PR-head CI and post-merge deployment not yet verified; no device/owner acceptance claim.\n2026-11-06 PR OPEN https://github.com/bezdredoff/RavenManor-Godot/pull/213, branch agent/qa-infrastructure/PROC-008-pages-deploy-ownership; exact-head CI pending. Repo Pages publishing source must be set to GitHub Actions in Settings before real deployment can pass; owner action and post-merge live production QA pending."
     }
   ],
   "assignments": [
@@ -313,6 +324,10 @@
     {
       "id": "RM-GAP-010",
       "workstreamId": "WS-DEVICE"
+    },
+    {
+      "id": "PROC-008",
+      "workstreamId": "WS-PROCESS"
     }
   ]
 }

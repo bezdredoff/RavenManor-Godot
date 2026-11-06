@@ -1368,6 +1368,24 @@
       "graphicsDependencies": [],
       "source": "Owner-approved modular progress architecture 2026-11-05",
       "requiresHumanAcceptance": false
+    },
+    {
+      "id": "PROC-008",
+      "title": "Exclusive GitHub Pages publication source and deployment timeout guard",
+      "domain": "process",
+      "priority": "P1",
+      "size": "S",
+      "description": "Prevent the repo's custom Pages workflow from competing with GitHub's branch/legacy pages-build-deployment publisher; serialize custom production deploys, validate configured build_type=workflow, and provide a bounded extended Pages sync timeout with an owner settings runbook.",
+      "deliverable": "Single-source Pages deploy guard in .github/workflows/pages.yml; documented Settings > Pages > Source=GitHub Actions requirement and current run evidence; no game/runtime changes.",
+      "acceptance": "PR exact-head data-contracts, godot-runtime, room-builder, art-pipeline, web-package, build PASS; after merge and owner Pages source switch, one production Pages deploy reaches success and no dynamic legacy Pages workflow runs from that push. Fails fast with actionable error if branch source is retained. Distinguish initial CI from post-merge production publication.",
+      "status": "proposed",
+      "dependsOn": [
+        "PROC-006",
+        "PROC-007"
+      ],
+      "graphicsDependencies": [],
+      "source": "2026-11-06 owner request: integration PR after main Pages deployment timeout; observed overlapping legacy + custom Pages workflows",
+      "requiresHumanAcceptance": true
     }
   ]
 }
