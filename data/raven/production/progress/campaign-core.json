@@ -113,13 +113,13 @@
     },
     {
       "id": "GAME-LOOP-01",
-      "status": "proposed",
+      "status": "ready",
       "priority": "P0",
       "owner": "Unassigned",
-      "updated": "2026-11-03",
-      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
-      "implementationState": "not_started",
-      "qaState": "not_started",
+      "updated": "2026-11-06",
+      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.\n2026-11-06 SOURCE RECONCILIATION @ main d9b3cacca: targeted game-loop characterization https://github.com/bezdredoff/RavenManor-Godot/pull/188 MERGED as 9476ed9d13eddeec180fef000edb98b828f74276; exact PR-head CI PASS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/41918123347 at 2146fb8ebead5f67817af4815cc723d589e29b54. Covers first story Match-3 win and failed-save rollback/retry; atomic rewards/checkpoint removal; bedroom restoration once/booster resume; optional level has no story progress. Subsequent #189–191 extracted optional campaign/controller/session/booster UI technical slices. This is only automated characterization and partial architecture, not full GAME-LOOP-01 implementation, physical Hall/device QA, season delivery or owner acceptance. Keep task open as ready/partial; no new runtime changes in this reconciliation.",
+      "implementationState": "partial",
+      "qaState": "automated",
       "approvalState": "pending"
     },
     {
