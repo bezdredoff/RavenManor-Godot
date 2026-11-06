@@ -45,8 +45,9 @@ func _run() -> void:
 		"Never animate unrelated story scenes from local Studio drafts")
 	assert(live["cues"][0]["loop"] == true)
 	var live_runtime := FX.new()
-	assert(live_runtime.configure("RM-BEAT-02-01", ids,
-		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], live).is_empty())
+	var load_error: String = live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], live)
+	assert(load_error.is_empty(), "Preloaded approved JSON FX must validate: " + load_error)
 	assert(live_runtime.enter_line("RM-BEAT-02-01", first))
 	var live_entry: Dictionary = live_runtime.step(0.0)
 	assert(live_entry["actor/RM-CHAR-EVELYN"]["offset"].x < -40.0)
@@ -67,6 +68,11 @@ func _run() -> void:
 		"First-line entrance must not recur on later dialogue")
 	assert(live_runtime.step(0.0, false, true).is_empty(),
 		"Reduced motion must suppress reviewed loops and slides")
+	var invalid_fraction: Dictionary = live.duplicate(true)
+	invalid_fraction["cues"][0]["durationMs"] = 1600.5
+	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], invalid_fraction).is_empty(),
+		"Fractional JSON milliseconds must still fail closed")
 	var bad_loop: Dictionary = live.duplicate(true)
 	bad_loop["cues"][0]["loop"] = "yes"
 	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
