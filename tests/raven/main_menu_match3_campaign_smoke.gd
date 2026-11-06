@@ -65,6 +65,20 @@ func _run() -> void:
 	first_level.pressed.emit()
 	await process_frame
 	assert(slice.match_game != null and slice.match_game.level_data.id == "RM-LVL-101", "First optional level must start from this route")
+	var match3_surface := slice.find_child("UPDSMatch3FullScreen", true, false) as Control
+	assert(match3_surface != null and slice.match3_frame.visible, "Match-3 must use the UPDS full-screen layout")
+	assert(not slice.technical_shell.visible and not slice.vn_frame.visible, "Technical footer or VN frame leaked into Match-3 view")
+	assert(match3_surface.find_child("UPDSMatch3Header", true, false) != null)
+	assert(match3_surface.find_child("UPDSGoalCard", true, false) != null)
+	assert(match3_surface.find_child("UPDSMovesCard", true, false) != null)
+	assert(match3_surface.find_child("UPDSMatch3BoardFrame", true, false) != null)
+	assert(match3_surface.find_child("UPDSMatch3Bark", true, false) != null)
+	var board_presenter: Variant = slice.find_child("RavenMatch3Board", true, false)
+	assert(board_presenter != null and board_presenter.separate_hud, "Goal/Moves card split must retain original board presenter")
+	assert(board_presenter.moves_label.text == str(slice.match_game.moves_left), "Move counter must reflect the real UPDS board game")
+	assert(board_presenter.objective.get_parent().name == "UPDSGoalContent")
+	assert(board_presenter.hint_button.get_parent().name == "UPDSMatch3Hint")
+	assert(board_presenter.help_button.get_parent().name == "UPDSHelpSlot")
 	var campaign_button: Button
 	for node in slice.find_children("*", "Button", true, false):
 		var button := node as Button

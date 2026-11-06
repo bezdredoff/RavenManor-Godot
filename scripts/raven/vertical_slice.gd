@@ -8,6 +8,7 @@ const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Match3Session = preload("res://scripts/raven/raven_match3_session.gd")
 const BoosterUI = preload("res://scripts/raven/raven_match3_booster_ui.gd")
 const Match3Board = preload("res://scripts/match3/match3_board_presenter.gd")
+const Match3ScreenShell = preload("res://scripts/match3/match3_screen_shell.gd")
 const Match3Theme = preload("res://scripts/raven/raven_match3_theme.gd")
 const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 const ReadHistory = preload("res://scripts/raven/raven_vn_read_history.gd")
@@ -43,6 +44,7 @@ var technical_shell: MarginContainer
 var campaign_backdrop: TextureRect
 var campaign_backdrop_shade: ColorRect
 var vn_frame: Control
+var match3_frame: Control
 var body: VBoxContainer
 var status: Label
 var pause_dialog: ConfirmationDialog
@@ -141,6 +143,12 @@ func _build_shell() -> void:
 	add_child(vn_frame)
 	resized.connect(_layout_vn_frame)
 	_layout_vn_frame()
+	match3_frame = Control.new()
+	match3_frame.name = "UPDSMatch3Frame"
+	match3_frame.visible = false
+	add_child(match3_frame)
+	resized.connect(_layout_match3_frame)
+	_layout_match3_frame()
 	pause_dialog = ConfirmationDialog.new()
 	_refresh_pause_copy()
 	pause_dialog.confirmed.connect(_save_and_exit)
@@ -169,6 +177,7 @@ func _render() -> void:
 		child.queue_free()
 	campaign_backdrop.visible = optional_campaign
 	campaign_backdrop_shade.visible = optional_campaign
+	match3_frame.visible = false
 	if optional_campaign:
 		_render_optional_campaign()
 		return
@@ -179,8 +188,10 @@ func _render() -> void:
 			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
 				"scene": approved["beatId"], "title": approved["title"], "config": approved}
 	var is_vn: bool = step.get("kind") in ["vn", "vn_production"]
-	technical_shell.visible = not is_vn
+	var is_match3: bool = step.get("kind") == "match3"
+	technical_shell.visible = not is_vn and not is_match3
 	vn_frame.visible = is_vn
+	match3_frame.visible = is_match3
 	if not is_vn and is_instance_valid(vn_view):
 		vn_view.queue_free()
 		vn_view = null
@@ -239,6 +250,15 @@ func _layout_vn_frame() -> void:
 	vn_frame.size = frame_size
 
 
+func _layout_match3_frame() -> void:
+	if match3_frame == null:
+		return
+	# Source UPDS PhoneFrame is portrait-first, centred on desktop.
+	var frame_size := Vector2(minf(size.x, 430.0), minf(size.y, 932.0))
+	match3_frame.position = (size - frame_size) * 0.5
+	match3_frame.size = frame_size
+
+
 func _open_vn_settings() -> void:
 	_open_settings()
 
@@ -293,13 +313,24 @@ func _render_match3() -> void:
 	var level := _level(str(step.level))
 	if match_game == null or match_game.level_data.id != level.id:
 		match_game = Match3Session.open(level, state, _checkpoint_match3)
-	body.add_child(_paragraph(str(level.get("fiction", "Подготовить работу в комнате."))))
-	BoosterUI.render_bar(body, state, str(preferences.locale), active_booster,
-		_toggle_hammer, _use_shuffle)
+	# Both the story gate and optional levels get the same full-screen native
+	# UPDS-derived composition. The Raven technical shell remains available
+	# for non-Match-3 screens, but never competes for the Match-3 viewport.
+	technical_shell.visible = false
+	vn_frame.visible = false
+	match3_frame.visible = true
+	for child in match3_frame.get_children():
+		match3_frame.remove_child(child)
+		child.queue_free()
+	var slots: Dictionary = Match3ScreenShell.build(match3_frame, level,
+		str(preferences.locale), _open_pause, _open_settings)
+	BoosterUI.render_bar(slots.booster_slot, state, str(preferences.locale),
+		active_booster, _toggle_hammer, _use_shuffle)
 	var board_view := Match3Board.new()
 	board_view.name = "RavenMatch3Board"
-	body.add_child(board_view)
+	slots.board_slot.add_child(board_view)
 	board_view.setup(match_game, Match3Theme.placeholder())
+	Match3ScreenShell.adopt_board(board_view, slots, match3_frame)
 	board_view.set_interaction_blocked((is_instance_valid(settings_dialog) and settings_dialog.visible) or (is_instance_valid(onboarding_dialog) and onboarding_dialog.visible))
 	board_view.set_reduced_motion(bool(preferences.accessibility.reducedMotion))
 	board_view.audio_cue.connect(audio_runtime.play_effect)
@@ -307,7 +338,7 @@ func _render_match3() -> void:
 	board_view.target_cell_selected.connect(_on_booster_target_selected)
 	board_view.set_target_selection_mode(active_booster == "hammer")
 	if active_booster == "hammer":
-		BoosterUI.render_target_hint(body, str(preferences.locale))
+		BoosterUI.render_target_hint(slots.booster_slot, str(preferences.locale))
 
 
 func _toggle_hammer() -> void:
