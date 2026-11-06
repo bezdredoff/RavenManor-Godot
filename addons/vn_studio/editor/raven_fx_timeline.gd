@@ -65,7 +65,7 @@ func _lane_for(cue: Dictionary) -> int:
 
 func _bar_rect(cue: Dictionary) -> Rect2:
 	var start: int = int(cue.get("startMs", 0))
-	var end: int = start + int(cue.get("durationMs", 1400)) * int(cue.get("repeat", 1))
+	var end: int = StageFx.MAX_MS if cue.get("loop", false) else start + int(cue.get("durationMs", 1400)) * int(cue.get("repeat", 1))
 	var lane: int = _lane_for(cue)
 	return Rect2(Vector2(_x_for_time(start), TOP + lane * LANE_HEIGHT + 8.0),
 		Vector2(maxf(3.0, _x_for_time(end) - _x_for_time(start)), BAR_HEIGHT))
@@ -162,7 +162,7 @@ func _draw() -> void:
 		draw_rect(rect, color, true)
 		if index == _selected:
 			draw_rect(rect.grow(2.0), Color.WHITE, false, 2.0)
-		var text: String = str(cue.get("id", "")) + " · " + str(cue.get("effect", ""))
+		var text: String = str(cue.get("id", "")) + " · " + str(cue.get("effect", "")) + (" ∞" if cue.get("loop", false) else "")
 		if rect.size.x >= 65:
 			draw_string(font, rect.position + Vector2(4, 15), text,
 				HORIZONTAL_ALIGNMENT_LEFT, rect.size.x - 6, 12, Color(0.09, 0.11, 0.14))
