@@ -1,5 +1,5 @@
 # PROC-006 — независимые CI jobs Raven Manor
-Дата: 2026-11-04. Статус: proposed до actual exact-head CI и merge.
+Дата плана: 2026-11-04. **Фактический статус на 2026-11-06: merged** — [PR #192](https://github.com/bezdredoff/RavenManor-Godot/pull/192), merge commit `c4399560ff9aa579541ff6a6cfcc825521e13ec9`. Шесть проверок подтверждены на свежем main `d9b3cacca`: [Actions run 42246686535](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42246686535), Pages [42246685672](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42246685672) PASS. Последующие PR должны снова проходить CI на своём exact head; технический CI не означает owner/device acceptance.
 
 ## Обязательные jobs
 - `data-contracts`: PR evidence/governance + полный прежний non-Godot блок `scripts/check.sh` (отдельно `scripts/check_data.sh`); все production/release/backlog валидаторы по-прежнему blocking, визуальные snapshot-тесты dashboard остаются advisory.
