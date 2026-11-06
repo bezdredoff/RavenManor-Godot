@@ -184,7 +184,12 @@ func _run() -> void:
 	root.add_child(tea)
 	await process_frame
 	assert(tea._fx.configured(), "Playable Hall Tea scene must auto-load reviewed res:// FX")
-	assert(tea.actor_left.position.x < -tea.size.x * 0.20 + 1.0,
+	# Earlier settings tests may persist reducedMotion in user://. Explicitly
+	# choose normal playback for the visual checks; separately assert that the
+	# live user preference is honored and motion can be suppressed below.
+	tea.set_fx_accessibility(false)
+	tea._process(0.0)
+	assert(tea.actor_left.position.x < -tea.size.x * 0.20 - 40.0,
 		"Live Hall Tea should begin with Evelyn entering from the left")
 	assert(tea.configure_reviewed_fx(bundle).is_empty())
 	tea._process(0.35)
