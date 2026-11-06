@@ -8,7 +8,7 @@ Verification: Baseline main `e36161b2725516d9e8f1c8830556276f383af385`, zero ope
 
 Owner QA: After merge, open the game root and `/dashboard/`, confirm locale and assets work. `/builder/`, `/art-handbook/` and `/preview/` are **intentionally not deployed**; source/tools remain available via GitHub or locally. Validate candidate workflow explicitly when needed. No mobile-device artistic acceptance implied.
 
-Status impact: No gameplay/story/task closure; no status shards touched. This is a bounded Pages/publishing policy update owned by integration/QA infrastructure.
+Status impact: No gameplay/story/task closure; only qa-infrastructure shard updated with real #213 merge and #215 partial review evidence. This is a bounded Pages/publishing policy update owned by integration/QA infrastructure.
 
 Risk: Old public links to the three tool pages will no longer serve those pages. Dashboard stays public for now and is independent of Godot. If a separate authoring-tool site is wanted later, deploy it under a separate, explicit hosting plan; do not silently reintroduce duplicate assets to the main Pages artifact.
 
