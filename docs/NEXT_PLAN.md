@@ -1,16 +1,19 @@
 # Raven Manor — актуальный план и очередь задач
 
-> **2026-11-03 owner-approved planning reconciliation (proposed PR):** see [consistency audit](production/GAME_CONSISTENCY_AUDIT_RU.md), [feature coverage](production/GAME_FEATURE_COVERAGE_RU.md), [progression contract](production/GAME_PROGRESSION_CONTRACT_RU.md) and [UPDS reuse matrix](production/UPDS_REUSE_IMPLEMENTATION_MATRIX.md). The historical counts below are snapshots before this plan change; current authority is `production_progress.json`. No runtime/asset changes in this PR.
+> **Операционное обновление 2026-11-06 (main `d9b3cacc`):** ниже сохранён срез планирования от 2026-11-03, включая исторические количества задач и решения QA. Он **не является источником текущих статусов**. Актуальные задачи/приоритеты/evidence и назначения workstream/P2 ведутся в 15 файлах [`data/raven/production/progress/<domain>.json`](../data/raven/production/progress/index.json), а [Production Dashboard](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) агрегируется автоматически. `production_progress.json` заморожен. Разделение CI #192, status shards #193–196, agent runbooks #197 и Hermes policy #201 уже смержены. Игровые технические срезы #174–177 и #188–191 также смержены; это **не** подтверждение полного UPDS UI, игрового цикла или device QA. Начинать новую задачу с [AGENTS.md](../AGENTS.md) и [регламента 15 доменов](process/AGENT_ORCHESTRATION_RU.md); собственный shard + уникальный `docs/changes/` note вместо общей status-синхронизации.
+
+
+> **2026-11-03 owner-approved planning reconciliation (proposed PR):** see [consistency audit](production/GAME_CONSISTENCY_AUDIT_RU.md), [feature coverage](production/GAME_FEATURE_COVERAGE_RU.md), [progression contract](production/GAME_PROGRESSION_CONTRACT_RU.md) and [UPDS reuse matrix](production/UPDS_REUSE_IMPLEMENTATION_MATRIX.md). The historical counts below are snapshots before this plan change; current authority is `data/raven/production/progress/<domain>.json` (15 shards); `production_progress.json` is frozen. No runtime/asset changes in this PR.
 
 **New foundation packages:** GAME-UI-01, GAME-M3-01, GAME-LOOP-01, GAME-QA-01; P1 GAME-ONBOARD-01, GAME-BOOST-01, GAME-JOURNAL-01; deferred GAME-ENDING-01, GAME-RELEASE-01. Two new workstreams WS-GAME-SHELL and WS-CAMPAIGN. Existing CODE tasks remain separate; no task accepted by priority change.
 **Срез:** 2026-11-03, `main` после смерженного PR #153 и owner-отчёта о пройденной QA.  
-**Режим работы сейчас:** очередь поддерживается через 10 проверяемых рабочих потоков и независимые ID; пока готовим QA batches и актуализируем планы, **не начинаем новую генерацию арта или игровую разработку без следующего решения владельца**.
+**Режим работы на 2026-11-03 (историческая запись):** очередь поддерживалась через 10 рабочих потоков; на тот момент новая генерация арта и разработка ожидали отдельного решения владельца. Для текущей очереди сверяйте live dashboard и последние owner-решения.
 
-> Этот файл — текущая точка входа. Предыдущий длинный Hall/Room Builder `NEXT_PLAN` сохранён в [архиве](audits/NEXT_PLAN_HALL_PIPELINE_ARCHIVE_20261025.md). Текущий статус/owner evidence живёт в [`production_progress.json`](../data/raven/production/production_progress.json), а не в исторических описаниях `code_work_packages.json`. Отчёт о сверке: [BACKLOG_RECONCILIATION_20261103.md](audits/BACKLOG_RECONCILIATION_20261103.md).
+> Этот файл — текущая точка входа. Предыдущий длинный Hall/Room Builder `NEXT_PLAN` сохранён в [архиве](audits/NEXT_PLAN_HALL_PIPELINE_ARCHIVE_20261025.md). Текущий статус/owner evidence живёт в [`progress/<domain>.json`](../data/raven/production/progress/index.json) (см. индекс 15 shards), а не в замороженном `production_progress.json` или исторических описаниях `code_work_packages.json`. Отчёт о сверке: [BACKLOG_RECONCILIATION_20261103.md](audits/BACKLOG_RECONCILIATION_20261103.md).
 
 ## Обновление очереди 2026-11-03 · CODE/GAP P0 и зависимости
 
-После GFX-сверки (#149) и source/status-cleanup (#150) обнаружены **88 исторических CODE/GAP P0**, из них **58** уже закрытых/заменённых пакетов либо иных архивных элементов и **24** неэкстренных задач. Приоритеты конкретных tasks теперь переопределяются в `production_progress.json` и проверяются CI; кодовые и процессные планы остаются документальным baseline.
+После GFX-сверки (#149) и source/status-cleanup (#150) обнаружены **88 исторических CODE/GAP P0**, из них **58** уже закрытых/заменённых пакетов либо иных архивных элементов и **24** неэкстренных задач. Приоритеты конкретных tasks теперь переопределяются в соответствующем `progress/<domain>.json` и проверяются CI; кодовые и процессные планы остаются документальным baseline.
 
 **Шесть CODE/GAP P0:** `CODE-02-06` (touch/hint/help Match-3), `CODE-05-01/02` (Hall importer/path/collision), `CODE-11-01` (joint vertical slice), `RM-GAP-001/006` (те же Hall physical gates, не отдельная параллельная разработка). Вкупе с **семью GFX P0** текущая очередь содержит **13 P0 всего**. Это не 13 независимых PR — один Hall QA может покрывать несколько ID.
 
@@ -18,7 +21,7 @@
 
 ## Актуализация P1: 10 рабочих потоков вместо десятков параллельных списков
 
-После #151 выполнена следующая сверка: **13 активных P0, 65 активных P1 и 44 открытых P2**. Из прежних 91 P1 **26 перенесены в P2 без изменения статуса** (future season waves, необязательные keyframe/storyboard workflows, chibi Rowan/Lucas без нужной сцены, всеобъемлющие room/material libraries, второстепенные props и effects polish). Все **78 текущих P0/P1** распределены по **10 общим потокам** в [`active_workstreams.json`](../data/raven/production/active_workstreams.json); в дашборде можно фильтровать по потоку. [Подробная сверка и критерии](audits/P1_WORKSTREAMS_SCOPE_20261103.md).
+После #151 выполнена следующая сверка: **13 активных P0, 65 активных P1 и 44 открытых P2**. Из прежних 91 P1 **26 перенесены в P2 без изменения статуса** (future season waves, необязательные keyframe/storyboard workflows, chibi Rowan/Lucas без нужной сцены, всеобъемлющие room/material libraries, второстепенные props и effects polish). Все **78 P0/P1 на дату среза** были распределены по **10 общим потокам**; теперь членство вычисляется из live shard assignments, а [`active_workstreams.json`](../data/raven/production/active_workstreams.json) содержит только правила потоков; в дашборде можно фильтровать по потоку. [Подробная сверка и критерии](audits/P1_WORKSTREAMS_SCOPE_20261103.md).
 
 Вместо отдельных параллельных приёмок одних и тех же экранов начинаем с трёх групп **QA-first**: `WS-VN-STUDIO` (оригинальный HTML-v5 и сохранение/FX), `WS-LOCALES` (RU/EN/BE whole-UI), `WS-MOBILE-HANDOFF` (ZIP incoming/device). `WS-DEVICE` перекрывает hardware matrices других групп и должен переиспользовать скриншоты/метрики, не создавать второй тест для каждой задачи.
 
@@ -70,7 +73,7 @@
 ## 4. Порядок принятия решений и правила для следующего PR
 
 1. Сначала фиксируем факты: merged PR / CI / approved art / нативное QA. **Ничего не закрывать только по наличию файла или зелёному тесту**.
-2. Работа в одном релевантном task ID: включить `docs/STATUS.md`, `production_progress.json` и, если ID есть в discovery gap-реестре, согласовать его `status`. `reconcile_gap_statuses.py --check` проверяется Linux и Windows CI.
+2. Работа в одном релевантном task ID: обновить только свой `data/raven/production/progress/<domain>.json` и уникальный `docs/changes/<TASK-ID>-topic.md`; для общей схемы/канонического runtime — отдельный integration PR. Проверить `progress_shards.py`, `build_production_dashboard.py --check` и обязательные CI jobs. Не синхронизировать historical GAP status с live shard и не редактировать замороженный `production_progress.json`.
 3. Любая статичная графика остаётся `art_approved` только для точных ранее утверждённых файлов. Новые keyframes, chibi, UV/pivots, физические состояния и мобильная приёмка — другие gates.
 4. Сохраняем ID/route/save contracts, отдельно проверяем RU/BE/EN, не меняем игровые сцены ради косметического статуса.
 5. Не редактировать generated `dashboard/status.json` вручную: он строится из code/gap/GFX и authoritative progress.
