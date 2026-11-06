@@ -5,6 +5,8 @@ const FX = preload("res://scripts/raven/raven_vn_fx_runtime.gd")
 const GameVN = preload("res://scripts/raven/raven_vn_game_view.gd")
 const TeaScene = preload("res://scenes/raven/hall_tea_vn.tscn")
 const Story = preload("res://data/raven/production/season1_dialogue_catalog.json")
+const FxCatalog = preload("res://scripts/raven/raven_vn_fx_catalog.gd")
+const MathFx = preload("res://scripts/shared/vn/micro_fx_math.gd")
 
 func _initialize() -> void:
 	call_deferred("_run")
@@ -36,6 +38,72 @@ func _run() -> void:
 	assert(ids.size() == 12)
 	var first: String = str(ids[0])
 	var second: String = str(ids[1])
+	var live: Dictionary = FxCatalog.reviewed_for_scene("RM-BEAT-02-01")
+	assert(not live.is_empty() and live["cues"].size() == 4,
+		"Live Hall Tea FX must be a minimal, explicit, reviewed resource")
+	assert(FxCatalog.reviewed_for_scene("RM-BEAT-00-01").is_empty(),
+		"Never animate unrelated story scenes from local Studio drafts")
+	assert(live["cues"][0]["loop"] == true)
+	var live_runtime := FX.new()
+	var load_error: String = live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], live)
+	assert(load_error.is_empty(), "Preloaded approved JSON FX must validate: " + load_error)
+	assert(live_runtime.enter_line("RM-BEAT-02-01", first))
+	var live_entry: Dictionary = live_runtime.step(0.0)
+	assert(live_entry["actor/RM-CHAR-EVELYN"]["offset"].x < -40.0)
+	assert(float(live_entry["actor/RM-CHAR-EVELYN"]["alpha"]) < 0.01)
+	assert(live_entry["actor/RM-CHAR-ADA"]["offset"].x > 40.0)
+	var live_end: Dictionary = live_runtime.step(1.05)
+	assert(live_end["actor/RM-CHAR-EVELYN"]["offset"] == Vector2.ZERO)
+	assert(float(live_end["actor/RM-CHAR-EVELYN"]["alpha"]) == 1.0)
+	# The old runtime clock stopped at 20s. Loop must not freeze after it.
+	live_runtime.step(20.0)
+	var live_after_twenty: Dictionary = live_runtime.step(2.1)
+	assert(live_after_twenty["actor/RM-CHAR-EVELYN"]["scale"].y !=
+		live_end["actor/RM-CHAR-EVELYN"]["scale"].y,
+		"Breath must still evolve after 20 seconds")
+	assert(live_runtime.enter_line("RM-BEAT-02-01", second))
+	var live_second: Dictionary = live_runtime.step(0.25)
+	assert(live_second["actor/RM-CHAR-EVELYN"]["offset"] == Vector2.ZERO,
+		"First-line entrance must not recur on later dialogue")
+	assert(live_runtime.step(0.0, false, true).is_empty(),
+		"Reduced motion must suppress reviewed loops and slides")
+	var invalid_fraction: Dictionary = live.duplicate(true)
+	invalid_fraction["cues"][0]["durationMs"] = 1600.5
+	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], invalid_fraction).is_empty(),
+		"Fractional JSON milliseconds must still fail closed")
+	var bad_loop: Dictionary = live.duplicate(true)
+	bad_loop["cues"][0]["loop"] = "yes"
+	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], bad_loop).is_empty())
+	assert(not live_runtime.configured(), "Malformed approval must be fail-closed")
+	bad_loop = live.duplicate(true)
+	bad_loop["cues"][0]["effect"] = "hop"
+	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], bad_loop).is_empty())
+	bad_loop = live.duplicate(true)
+	bad_loop["cues"][2]["targetType"] = "background"
+	bad_loop["cues"][2]["targetId"] = "background"
+	assert(not live_runtime.configure("RM-BEAT-02-01", ids,
+		["RM-CHAR-EVELYN", "RM-CHAR-ADA"], bad_loop).is_empty())
+	for effect in ["slide_in_left", "slide_in_right", "slide_out_left", "slide_out_right", "hop"]:
+		var synthetic: Dictionary = live.duplicate(true)
+		synthetic["cues"][2]["effect"] = effect
+		assert(FX.EFFECTS.has(effect))
+		assert(live_runtime.configure("RM-BEAT-02-01", ids,
+			["RM-CHAR-EVELYN", "RM-CHAR-ADA"], synthetic).is_empty())
+	var exit_cue: Dictionary = live["cues"][2].duplicate(true)
+	exit_cue["effect"] = "slide_out_left"
+	exit_cue["phase"] = "exit"
+	assert(MathFx.sample_reviewed(exit_cue, 1500)["offset"].x < -40.0)
+	assert(MathFx.sample_reviewed(exit_cue, 1500)["alpha"] == 0.0,
+		"Exit must hold the hidden end pose")
+	var fade_exit: Dictionary = {"effect": "fade_out", "phase": "exit",
+		"startMs": 0, "durationMs": 500, "repeat": 1, "intensity": 1.0}
+	assert(MathFx.sample_reviewed(fade_exit, 800)["alpha"] == 0.0)
+	assert(MathFx.sample(fade_exit, 800)["alpha"] == 1.0,
+		"Legacy sampler must keep its old neutral-after-cue semantics")
 	var bundle: Dictionary = _bundle("RM-BEAT-02-01", second)
 	var runtime := FX.new()
 	assert(runtime.configure("RM-BEAT-02-01", ids, ["RM-CHAR-EVELYN", "RM-CHAR-ADA"], bundle).is_empty())
@@ -93,11 +161,36 @@ func _run() -> void:
 	assert(game.background.modulate.a == 1.0, "Reduced motion resets visuals immediately")
 	game.clear_reviewed_fx()
 	assert(game.background.scale == Vector2.ONE)
+	assert(game.configure_reviewed_fx("RM-BEAT-02-01", ids, live).is_empty())
+	game.set_fx_accessibility(false)
+	game.show_beat("RM-BEAT-02-01", "Evelyn", "synthetic", "1/12", Callable(), first)
+	game._process(0.0)
+	var evelyn_x: float = 0.0
+	var evelyn_visual: Control = null
+	for cast in game.actors:
+		if cast["characterId"] == "RM-CHAR-EVELYN":
+			evelyn_visual = cast["node"]
+			evelyn_x = evelyn_visual.position.x
+			break
+	assert(evelyn_visual != null, "Canonical production portrait must be present")
+	game._process(0.75)
+	assert(evelyn_visual.position.x > evelyn_x, "Shared VN must render approved enter motion")
+	game.set_fx_accessibility(true)
+	assert(evelyn_visual.modulate.a == 1.0, "Reduced motion immediately restores portrait")
+	game.clear_reviewed_fx()
 	game.queue_free()
 	await process_frame
 	var tea := TeaScene.instantiate()
 	root.add_child(tea)
 	await process_frame
+	assert(tea._fx.configured(), "Playable Hall Tea scene must auto-load reviewed res:// FX")
+	# Earlier settings tests may persist reducedMotion in user://. Explicitly
+	# choose normal playback for the visual checks; separately assert that the
+	# live user preference is honored and motion can be suppressed below.
+	tea.set_fx_accessibility(false)
+	tea._process(0.0)
+	assert(tea.actor_left.position.x < -tea.size.x * 0.20 - 40.0,
+		"Live Hall Tea should begin with Evelyn entering from the left")
 	assert(tea.configure_reviewed_fx(bundle).is_empty())
 	tea._process(0.35)
 	assert(tea.background.scale.x > 1.0, "Playable Hall Tea uses reviewed FX")

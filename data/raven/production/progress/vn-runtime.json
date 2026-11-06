@@ -57,13 +57,13 @@
     },
     {
       "id": "VN-RUNTIME-01",
-      "status": "proposed",
+      "status": "PR_review",
       "owner": "Planning",
-      "updated": "2026-11-03",
-      "implementationState": "not_recorded",
-      "qaState": "not_recorded",
+      "updated": "2026-11-06",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original GAP planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-06 VN-RUNTIME-01 scoped FX integration PR: User explicitly requested to integrate Studio actor FX into the playable novel. Reviewed-only runtime adds phase-aware persistent fades, five horizontal/hop motion effects and idle actor breathing loop (scene/line clocks continuing >20 sec) with strict schema, actor/line target validation, fail-closed unknown fields, Skip and reduced-motion neutrality. Reuse existing shared micro_fx_math.gd via opt-in sample_reviewed; legacy sampler unchanged; UPDS-godot donor portrait_motion_rig.gd pinned fcef111542a0d4bbef7ac50743a3f362efbd4782, approach adapted. Explicit canon res:// FX catalog includes two looped breaths + first-line entrance of Evelyn/Ada ONLY on RM-BEAT-02-01, opt-in Hall Tea and canonical production VN path; review of this exact choreography is required by owner before merge. No user:// draft import or story/save/reducer writes. #226 editor motion PR remained OPEN despite user merge statement at branch creation (headless CI green); merge it before this dependent runtime PR. Headless Godot CI and native/device QA pending; no runtime acceptance yet.",
       "priority": "P1"
     }
   ],

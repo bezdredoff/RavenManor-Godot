@@ -1,0 +1,63 @@
+{
+  "format": "raven-vn-reviewed-fx-catalog-v1",
+  "schemaVersion": 1,
+  "bundles": [
+    {
+      "format": "raven-vn-runtime-fx-v1",
+      "schemaVersion": 1,
+      "sceneId": "RM-BEAT-02-01",
+      "approvalStatus": "approved",
+      "approvalRef": "VN-RUNTIME-01-owner-reviewed-Hall-Tea-PR-merge",
+      "cues": [
+        {
+          "id": "fx-0001",
+          "targetType": "actor",
+          "targetId": "RM-CHAR-EVELYN",
+          "effect": "breathe",
+          "phase": "idle",
+          "loop": true,
+          "startMs": 0,
+          "durationMs": 1600,
+          "repeat": 5,
+          "intensity": 0.35
+        },
+        {
+          "id": "fx-0002",
+          "targetType": "actor",
+          "targetId": "RM-CHAR-ADA",
+          "effect": "breathe",
+          "phase": "idle",
+          "loop": true,
+          "startMs": 0,
+          "durationMs": 1600,
+          "repeat": 5,
+          "intensity": 0.35
+        },
+        {
+          "id": "fx-0003",
+          "targetType": "actor",
+          "targetId": "RM-CHAR-EVELYN",
+          "effect": "slide_in_left",
+          "phase": "enter",
+          "lineId": "RM-BEAT-02-01-L001",
+          "startMs": 0,
+          "durationMs": 650,
+          "repeat": 1,
+          "intensity": 1
+        },
+        {
+          "id": "fx-0004",
+          "targetType": "actor",
+          "targetId": "RM-CHAR-ADA",
+          "effect": "slide_in_right",
+          "phase": "enter",
+          "lineId": "RM-BEAT-02-01-L001",
+          "startMs": 0,
+          "durationMs": 650,
+          "repeat": 1,
+          "intensity": 1
+        }
+      ]
+    }
+  ]
+}
