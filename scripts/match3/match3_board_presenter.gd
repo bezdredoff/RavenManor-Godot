@@ -24,6 +24,8 @@ var impact_layer: Control
 var outline: Control
 var feedback: Label
 var objective: Label
+var moves_label: Label
+var separate_hud := false
 var hint_button: Button
 var help_button: Button
 var help_panel: PanelContainer
@@ -751,7 +753,13 @@ func _paint_live() -> void:
 		var target := int(entry.get("target", 0))
 		var value := int(game.objective_value(index))
 		descriptions.append("%s %d/%d" % [label, mini(target, value), target])
-	objective.text = "  ·  ".join(descriptions) + "\n%s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
+	if separate_hud and is_instance_valid(moves_label):
+		objective.text = "  ·  ".join(descriptions)
+		moves_label.text = str(game.moves_left)
+	else:
+		# Preserve the isolated presenter/QA contract; the full-screen
+		# UPDS-style shell alone opts into separate Goal and Moves cards.
+		objective.text = "  ·  ".join(descriptions) + "\n%s %d" % [str(skin.get("moves", "Ходы:")), int(game.moves_left)]
 	_paint_selection()
 	_refresh_controls()
 
