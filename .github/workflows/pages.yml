@@ -183,10 +183,20 @@ jobs:
       - name: Export Web build
         run: |
           mkdir -p build/web
-          godot --headless --path . --export-release "GitHub Pages Web" build/web/index.html
+          set -euo pipefail
+          godot --headless --path . --export-release "GitHub Pages Web" build/web/index.html 2>&1 | tee "$RUNNER_TEMP/raven-web-export.log"
           test -f build/web/index.html
           test -f build/web/index.wasm
           test -f build/web/index.pck
+      - name: Audit PCK footprint and editor-only resource exclusions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest scripts.raven.tools.test_report_web_pck
+          python3 scripts/raven/tools/report_web_pck.py \
+            --project-root . --web-root build/web \
+            --export-log "$RUNNER_TEMP/raven-web-export.log" \
+            --summary "$GITHUB_STEP_SUMMARY"
       - name: Build production dashboard from tracked status sources
         run: |
           python3 scripts/raven/tools/build_production_dashboard.py --check
