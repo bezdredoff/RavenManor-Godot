@@ -599,13 +599,13 @@
     },
     {
       "id": "VN-EDITOR-07",
-      "status": "PR_review",
+      "status": "ready",
       "owner": "Hermes/Ornith",
-      "updated": "2026-11-05",
-      "implementationState": "parity_coverage_documentation_review",
+      "updated": "2026-11-06",
+      "implementationState": "partial",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n- coverage note: docs/changes/VN-EDITOR-07-hermes-ornith-coverage.md (static review only; owner Hermes/Ornith)\n2026-11-05 scoped documentation pilot: https://github.com/bezdredoff/RavenManor-Godot/pull/200 OPEN. Hermes/ornith-1.5-9b drafted selected coverage; orchestrator reviewed/corrected claims and ran validators after worker iteration limits. Broad VN-EDITOR-07 remains incomplete; donor/runtime/old-save/visual/device acceptance not inferred.",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n- coverage note: docs/changes/VN-EDITOR-07-hermes-ornith-coverage.md (static review only; owner Hermes/Ornith)\n2026-11-05 scoped documentation pilot: https://github.com/bezdredoff/RavenManor-Godot/pull/200 OPEN. Hermes/ornith-1.5-9b drafted selected coverage; orchestrator reviewed/corrected claims and ran validators after worker iteration limits. Broad VN-EDITOR-07 remains incomplete; donor/runtime/old-save/visual/device acceptance not inferred.\n2026-11-06 POST-MERGE RECONCILIATION @ main d9b3cacca: documentation-only selected parity inventory https://github.com/bezdredoff/RavenManor-Godot/pull/200 MERGED as a0c15d2b115cf7782169ffc19ada0e96424877cd; exact-head six-job CI PASS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42090155105. Pilot Ornith work was ASSISTED by orchestrator. Inspection of three test sources is READ_ONLY and is not a Godot test execution claim; private UPDS donor parity, real old saves, HTML-v5 pixel comparison, native device UX and owner QA remain open. Clear stale PR_review to ready while keeping the broad VN-EDITOR-07 parent incomplete.",
       "priority": "P1"
     },
     {
