@@ -180,6 +180,127 @@ jobs:
           mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
           unzip -q templates.tpz -d template-unpack
           mv template-unpack/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
+      - name: Prepare Web-only 1024px VN portrait imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest scripts.raven.tools.test_prepare_web_portrait_imports
+          python3 scripts/raven/tools/prepare_web_portrait_imports.py --project-root .
+          # Only .import descriptors change in this throwaway CI checkout.
+          git diff --name-only -- assets/raven/characters/ > "$RUNNER_TEMP/web-portrait-import-diff.txt"
+          test "$(wc -l < "$RUNNER_TEMP/web-portrait-import-diff.txt")" -eq 62
+          if grep -Ev '^assets/raven/characters/[^/]+/[^/]+\.webp\.import      - name: Build production dashboard from tracked status sources
+        run: |
+          python3 scripts/raven/tools/build_production_dashboard.py --check
+          python3 scripts/raven/tools/build_production_dashboard.py --output build/web/dashboard/status.json
+          cp dashboard/index.html dashboard/style.css dashboard/app.mjs build/web/dashboard/
+          python3 scripts/raven/tools/embed_dashboard_priority.py --root build/web/dashboard
+          node --check dashboard/app.mjs
+          python3 scripts/raven/tools/test_dashboard_browser.py --root build/web/dashboard
+          test -s build/web/dashboard/index.html
+          test -s build/web/dashboard/status.json
+      - name: Audit PCK footprint and editor-only resource exclusions
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest scripts.raven.tools.test_report_web_pck
+          python3 scripts/raven/tools/report_web_pck.py \
+            --project-root . --web-root build/web \
+            --export-log "$RUNNER_TEMP/raven-web-export.log" \
+            --summary "$GITHUB_STEP_SUMMARY"
+      - name: Verify minimal Pages publishing scope and report sizes
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -s build/web/index.html
+          test -s build/web/index.wasm
+          test -s build/web/index.pck
+          test -s build/web/dashboard/index.html
+          test -s build/web/dashboard/status.json
+          # Static authoring tools are checked separately in CI but never
+          # duplicated in the public game site's deployment payload.
+          test ! -e build/web/art-handbook
+          test ! -e build/web/builder
+          test ! -e build/web/preview
+          echo '=== Pages game+dashboard payload ==='
+          du -sh build/web build/web/index.pck build/web/dashboard
+          {
+            echo '### Production Pages footprint (game + dashboard only)'
+            echo '~~~'
+            du -sh build/web build/web/index.pck build/web/dashboard
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload non-deployed candidate Web artifact
+        if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/candidate/mobile-')
+        uses: actions/upload-artifact@v4
+        with:
+          name: raven-candidate-web-${{ github.run_id }}
+          path: build/web/
+          retention-days: 7
+          if-no-files-found: error
+      - name: Configure Pages
+        if: github.ref == 'refs/heads/main'
+        uses: actions/configure-pages@v5
+      - name: Upload Pages artifact
+        if: github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: build/web
+
+  build:
+    name: build
+    runs-on: ubuntu-latest
+    needs: [data, runtime, room-builder, art, web-package]
+    if: ${{ success() }}
+    steps:
+      - name: All module and Web jobs passed
+        run: echo 'Raven full required CI passed.'
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    # Only one custom Pages deploy at once. This cannot serialize GitHub's
+    # separate legacy/branch Pages workflow: set Settings > Pages > Source to
+    # GitHub Actions before attempting publication.
+    concurrency:
+      group: raven-pages-production
+      cancel-in-progress: false
+    timeout-minutes: 40
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: [build, web-package]
+    steps:
+      - name: Require GitHub Actions as the only Pages publishing source
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          if ! pages_source="$(gh api "repos/${GITHUB_REPOSITORY}/pages" --jq '.build_type')"; then
+            echo '::error title=Pages configuration unreadable::Unable to read GitHub Pages settings; check the Pages site and token permissions.'
+            exit 1
+          fi
+          if [[ "$pages_source" != "workflow" ]]; then
+            echo "::error title=Conflicting Pages publishers::Pages build_type=$pages_source. Change repository Settings > Pages > Build and deployment > Source to GitHub Actions; the legacy branch publisher and this workflow must not compete."
+            exit 1
+          fi
+          echo 'Pages source verified: GitHub Actions; no legacy branch publisher expected.'
+      - name: Deploy Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+        with:
+          # Prior deploys timed out in deployment_queued/syncing_files at the
+          # action's default 10 minutes. Do not indefinitely mask a real outage.
+          timeout: 1800000
+ "$RUNNER_TEMP/web-portrait-import-diff.txt"; then
+            echo "::error::Non-import character file modified by Web preparation"
+            exit 1
+          fi
       - name: Export Web build
         run: |
           mkdir -p build/web
@@ -188,6 +309,10 @@ jobs:
           test -f build/web/index.html
           test -f build/web/index.wasm
           test -f build/web/index.pck
+      - name: Verify actual imported Web portraits and alpha
+        run: |
+          set -euo pipefail
+          godot --headless --path . --script res://tests/raven/web_portrait_import_smoke.gd
       - name: Build production dashboard from tracked status sources
         run: |
           python3 scripts/raven/tools/build_production_dashboard.py --check
