@@ -57,7 +57,7 @@ func _run() -> void:
 	assert(float(live_end["actor/RM-CHAR-EVELYN"]["alpha"]) == 1.0)
 	# The old runtime clock stopped at 20s. Loop must not freeze after it.
 	live_runtime.step(20.0)
-	var live_after_twenty: Dictionary = live_runtime.step(2.4)
+	var live_after_twenty: Dictionary = live_runtime.step(2.1)
 	assert(live_after_twenty["actor/RM-CHAR-EVELYN"]["scale"].y !=
 		live_end["actor/RM-CHAR-EVELYN"]["scale"].y,
 		"Breath must still evolve after 20 seconds")
@@ -65,7 +65,7 @@ func _run() -> void:
 	var live_second: Dictionary = live_runtime.step(0.25)
 	assert(live_second["actor/RM-CHAR-EVELYN"]["offset"] == Vector2.ZERO,
 		"First-line entrance must not recur on later dialogue")
-	assert(not live_runtime.step(0.0, false, true).size(),
+	assert(live_runtime.step(0.0, false, true).is_empty(),
 		"Reduced motion must suppress reviewed loops and slides")
 	var bad_loop: Dictionary = live.duplicate(true)
 	bad_loop["cues"][0]["loop"] = "yes"
