@@ -193,6 +193,27 @@ jobs:
             echo "::error::Non-import character file modified by Web preparation"
             exit 1
           fi
+      - name: Generate untracked Godot VN background import descriptors
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Unlike portraits, VN backgrounds do not have tracked .webp.import files.
+          godot --headless --editor --path . --import
+          test "$(find assets/raven/vn_backgrounds -type f -name '*.webp.import' | wc -l)" -eq 26
+      - name: Apply Web-only 1080px VN background import limits
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest scripts.raven.tools.test_prepare_web_background_imports
+          python3 -m scripts.raven.tools.prepare_web_background_imports --project-root .
+          # Only Godot-generated untracked .import files may change, not art/catalog.
+          test -z "$(git diff --name-only -- assets/raven/vn_backgrounds/ data/raven/production/vn_background_catalog.json)"
+          test "$(find assets/raven/vn_backgrounds -type f -name '*.webp.import' -exec grep -l '^process/size_limit=1080$' {} \; | wc -l)" -eq 26
+      - name: Reimport optimized Web backgrounds using Godot
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --editor --path . --import
       - name: Export Web build
         run: |
           mkdir -p build/web
@@ -205,6 +226,11 @@ jobs:
         run: |
           set -euo pipefail
           godot --headless --path . --script res://tests/raven/web_portrait_import_smoke.gd
+      - name: Verify Web-imported VN backgrounds, dimensions and aspect ratios
+        shell: bash
+        run: |
+          set -euo pipefail
+          godot --headless --path . --script res://tests/raven/web_background_import_smoke.gd
       - name: Build production dashboard from tracked status sources
         run: |
           python3 scripts/raven/tools/build_production_dashboard.py --check
