@@ -150,7 +150,6 @@ jobs:
           python3 -m unittest scripts/raven/tools/test_art_handbook.py
           node --check art-handbook/app.js
           node --check art-handbook/data.js
-          python3 scripts/raven/tools/build_art_handbook.py --bundle-to build/web/art-handbook
           BROWSER="$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)"
           test -n "$BROWSER"
           python3 -m http.server 4175 --bind 127.0.0.1 > /tmp/art-handbook-server.log 2>&1 &
@@ -159,7 +158,6 @@ jobs:
           sleep 2
           timeout 50 "$BROWSER" --headless --no-sandbox --disable-gpu --disable-dev-shm-usage --no-first-run --user-data-dir="/tmp/art-handbook-$GITHUB_RUN_ID" --virtual-time-budget=20000 --dump-dom http://127.0.0.1:4175/art-handbook/tests/browser_smoke.html > /tmp/art-handbook-smoke.html 2>/tmp/art-handbook-chrome.log
           grep -q 'data-result="pass"' /tmp/art-handbook-smoke.html || { cat /tmp/art-handbook-smoke.html; cat /tmp/art-handbook-chrome.log; exit 1; }
-          test -s build/web/art-handbook/downloads/workflow-pack.zip
 
   web-package:
     name: web-package
@@ -189,29 +187,6 @@ jobs:
           test -f build/web/index.html
           test -f build/web/index.wasm
           test -f build/web/index.pck
-      - name: Bundle art production handbook
-        run: |
-          python3 -m pip install --quiet numpy
-          python3 scripts/raven/tools/build_art_handbook.py --bundle-to build/web/art-handbook
-          test -s build/web/art-handbook/downloads/workflow-pack.zip
-      - name: Bundle standalone Room Builder PWA
-        run: |
-          mkdir -p build/web/builder/icons build/web/builder/catalog build/web/builder/reference/sprites build/web/builder/reference/wall_tileset
-          cp tools/room-builder/index.html tools/room-builder/style.css tools/room-builder/app.mjs tools/room-builder/model.mjs tools/room-builder/wall-tools.mjs tools/room-builder/room-shell.mjs tools/room-builder/catalog.mjs tools/room-builder/projection.mjs tools/room-builder/visual-contract.mjs tools/room-builder/hall-pilot.mjs tools/room-builder/sw.js tools/room-builder/manifest.webmanifest build/web/builder/
-          cp tools/room-builder/catalog/room-items.json build/web/builder/catalog/
-          cp tools/room-builder/reference/season1_world_map.json tools/room-builder/reference/season1_wall_kit.json tools/room-builder/reference/hall_twin_staircases.png tools/room-builder/reference/hall_visual_contract.json build/web/builder/reference/
-          cp tools/room-builder/reference/wall_tileset/grand_module.png build/web/builder/reference/wall_tileset/
-          cp -r tools/room-builder/reference/wall_kit build/web/builder/reference/
-          cp tools/room-builder/reference/sprites/*.png build/web/builder/reference/sprites/
-          cp tools/room-builder/icons/icon.svg tools/room-builder/icons/icon-192.png tools/room-builder/icons/icon-512.png build/web/builder/icons/
-          test -f build/web/builder/index.html
-          test -f build/web/builder/catalog/room-items.json
-          test -f build/web/builder/reference/hall_twin_staircases.png
-          test -f build/web/builder/reference/hall_visual_contract.json
-          test -f build/web/builder/reference/season1_wall_kit.json
-          test -f build/web/builder/reference/wall_tileset/grand_module.png
-          test -f build/web/builder/reference/sprites/onoe_walk_sheet_v1.png
-          test -f build/web/builder/icons/icon-512.png
       - name: Build production dashboard from tracked status sources
         run: |
           python3 scripts/raven/tools/build_production_dashboard.py --check
@@ -222,12 +197,28 @@ jobs:
           python3 scripts/raven/tools/test_dashboard_browser.py --root build/web/dashboard
           test -s build/web/dashboard/index.html
           test -s build/web/dashboard/status.json
-      - name: Bundle trusted candidate-review portal
+      - name: Verify minimal Pages publishing scope and report sizes
+        shell: bash
         run: |
-          mkdir -p build/web/preview
-          cp preview/index.html preview/style.css preview/app.mjs build/web/preview/
-          node --check preview/app.mjs
-          test -s build/web/preview/index.html
+          set -euo pipefail
+          test -s build/web/index.html
+          test -s build/web/index.wasm
+          test -s build/web/index.pck
+          test -s build/web/dashboard/index.html
+          test -s build/web/dashboard/status.json
+          # Static authoring tools are checked separately in CI but never
+          # duplicated in the public game site's deployment payload.
+          test ! -e build/web/art-handbook
+          test ! -e build/web/builder
+          test ! -e build/web/preview
+          echo '=== Pages game+dashboard payload ==='
+          du -sh build/web build/web/index.pck build/web/dashboard
+          {
+            echo '### Production Pages footprint (game + dashboard only)'
+            echo '~~~'
+            du -sh build/web build/web/index.pck build/web/dashboard
+            echo '~~~'
+          } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload non-deployed candidate Web artifact
         if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/candidate/mobile-')
         uses: actions/upload-artifact@v4
