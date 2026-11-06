@@ -288,8 +288,21 @@ func _run() -> void:
 	view._on_line_up()
 	assert(view.selected_context()["lineId"] == id_three)
 	assert(view._lines.item_count == 3 and view._line_idx == 1)
+	# Regression: Undo/Redo used to retain the numeric index and focus a
+	# different line after the authored line order changed.
+	view._on_undo()
+	assert(Store.entries_for(view._project, view._draft, scene_id)[2]["id"] == id_three)
+	assert(view.selected_context()["lineId"] == id_three,
+		"Undo reorder must preserve selected stable line ID")
+	assert(view._line_idx == 2)
+	view._on_redo()
+	assert(Store.entries_for(view._project, view._draft, scene_id)[1]["id"] == id_three)
+	assert(view.selected_context()["lineId"] == id_three,
+		"Redo reorder must preserve selected stable line ID")
+	assert(view._line_idx == 1)
 	view._on_line_down()
 	assert(view._line_idx == 2)
+	assert(view.selected_context()["lineId"] == id_three)
 	view._delete_selected_line()
 	assert(view._lines.item_count == 2)
 	view._on_undo()

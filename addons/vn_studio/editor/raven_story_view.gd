@@ -1092,27 +1092,48 @@ func _on_title_changed(value: String, language: String) -> void:
 	_refresh_buttons()
 
 
+## History snapshots store drafts, not UI list indices. Restore the same stable
+## scene/line ID when it exists on both sides of an Undo/Redo operation;
+## otherwise keep the old nearest-index fallback (e.g. undoing a new scene).
+func _restore_history_selection(scene_id: String, line_id: String) -> void:
+	var scenes: Array = Store.scene_records(_project, _draft)
+	if scenes.is_empty():
+		return
+	for index in range(scenes.size()):
+		if str(scenes[index].get("sceneId", "")) == scene_id:
+			_scene_idx = index
+			break
+	_scene_idx = clampi(_scene_idx, 0, scenes.size() - 1)
+	var active_scene_id: String = str(scenes[_scene_idx].get("sceneId", ""))
+	var entries: Array = Store.entries_for(_project, _draft, active_scene_id)
+	for index in range(entries.size()):
+		if str(entries[index].get("id", "")) == line_id:
+			_line_idx = index
+			break
+	_scene_switch()
+
+
 func _on_undo() -> void:
 	if _undo.is_empty() or _blocked:
 		return
+	var selection: Dictionary = selected_context()
 	_redo.append(_draft.duplicate(true))
 	_draft = _undo.pop_back()
 	_dirty = true
 	_refresh_scene_items()
-	_scene_idx = mini(_scene_idx, Store.scene_records(_project, _draft).size() - 1)
-	_scene_switch()
+	_restore_history_selection(str(selection.get("sceneId", "")), str(selection.get("lineId", "")))
 	_refresh_buttons()
 
 
 func _on_redo() -> void:
 	if _redo.is_empty() or _blocked:
 		return
+	var selection: Dictionary = selected_context()
 	_undo.append(_draft.duplicate(true))
 	_draft = _redo.pop_back()
 	_dirty = true
 	_refresh_scene_items()
-	_scene_idx = mini(_scene_idx, Store.scene_records(_project, _draft).size() - 1)
-	_scene_switch()
+	_restore_history_selection(str(selection.get("sceneId", "")), str(selection.get("lineId", "")))
 	_refresh_buttons()
 
 
