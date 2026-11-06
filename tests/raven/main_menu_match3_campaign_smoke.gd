@@ -79,6 +79,16 @@ func _run() -> void:
 	assert(board_presenter.objective.get_parent().name == "UPDSGoalContent")
 	assert(board_presenter.hint_button.get_parent().name == "UPDSMatch3Hint")
 	assert(board_presenter.help_button.get_parent().name == "UPDSHelpSlot")
+	# Rebuilding for a locale switch must not eject an in-progress bonus level
+	# back to the campaign list, reset the board or grant a free move.
+	var game_before_locale: Variant = slice.match_game
+	var moves_before_locale: int = game_before_locale.moves_left
+	slice._switch_locale(2)
+	assert(slice.optional_campaign and slice.step.kind == "match3")
+	assert(slice.match3_frame.visible and not slice.technical_shell.visible)
+	assert(slice.match_game == game_before_locale and slice.match_game.moves_left == moves_before_locale, "Locale switch reset an optional level")
+	assert(slice.find_child("UPDSMatch3FullScreen", true, false) != null)
+	slice._switch_locale(0)
 	var campaign_button: Button
 	for node in slice.find_children("*", "Button", true, false):
 		var button := node as Button

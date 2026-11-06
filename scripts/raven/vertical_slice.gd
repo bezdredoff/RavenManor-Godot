@@ -179,7 +179,12 @@ func _render() -> void:
 	campaign_backdrop_shade.visible = optional_campaign
 	match3_frame.visible = false
 	if optional_campaign:
-		_render_optional_campaign()
+		# Keep an active bonus board alive while changing locale or selecting
+		# boosters. Only show the level list when no stage is in progress.
+		if match_game != null and step.get("kind") == "match3":
+			_render_match3()
+		else:
+			_render_optional_campaign()
 		return
 	step = Director.next_step(state)
 	if step.get("kind") == "done":

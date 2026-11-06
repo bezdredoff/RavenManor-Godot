@@ -40,3 +40,6 @@ Status impact: CODE-02-06 remains P0, partial and not owner/device approved. Thi
 - Updated the settings smoke to search the actual full-screen descendant, assert the board was rebuilt as a new instance, keep the Settings modal open, and assert input_locked remains true. No save/input behavioral checks removed.
 - Registered the new responsive shell smoke in scripts/check.sh and root check.ps1, including direct shell script parse. Both are strictly additive checks and were absent from the initial run.
 - CI must be rerun on the new exact PR head before merge.
+
+## Optional-stage re-render safety
+- A live optional Match-3 level uses optional_campaign=true and a retained match_game. Previously _render() always replaced it with the optional level list, including when Settings changed locale or the user selected a booster. The full-screen integration routes the active stage back to _render_match3() without re-opening or reseeding its game; after completion match_game=null and the normal list returns. Route smoke asserts locale toggling retains the same game object and move count.
