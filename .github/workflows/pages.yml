@@ -205,7 +205,7 @@ jobs:
         run: |
           set -euo pipefail
           python3 -m unittest scripts.raven.tools.test_prepare_web_background_imports
-          python3 scripts/raven/tools/prepare_web_background_imports.py --project-root .
+          python3 -m scripts.raven.tools.prepare_web_background_imports --project-root .
           # Only Godot-generated untracked .import files may change, not art/catalog.
           test -z "$(git diff --name-only -- assets/raven/vn_backgrounds/ data/raven/production/vn_background_catalog.json)"
           test "$(find assets/raven/vn_backgrounds -type f -name '*.webp.import' -exec grep -l '^process/size_limit=1080$' {} \; | wc -l)" -eq 26
