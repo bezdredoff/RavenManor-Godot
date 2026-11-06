@@ -1,5 +1,15 @@
 # CODE-02-06 — cancel in-flight Match-3 gestures on app/window focus loss
 
+Task IDs: CODE-02-06 (P0, targeted incomplete input sub-slice).
+
+Changes: cancel active swipe ownership on window focus loss or app pause; extend the existing real Viewport/ScrollContainer regression without touching UPDS game rules.
+
+Verification: Godot not installed locally (NOT_RUN); exact-head GitHub Actions mandatory CI pending after correcting change-record format. Simulated focus/pause does not constitute real-device QA.
+
+Owner QA: pending browser and physical mobile interrupted-swipe checks.
+
+Status impact: CODE-02-06 remains P0, partial, PR_review for https://github.com/bezdredoff/RavenManor-Godot/pull/208; owner acceptance still pending.
+
 ## Task IDs
 - `CODE-02-06` (P0 broad Match-3 input/UI parity, still **partial**).
 - Related `CODE-02-01` (P1; #199 already fixed canceled `InputEventScreenTouch` releases; **not duplicated**).
