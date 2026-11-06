@@ -43,3 +43,6 @@ Status impact: CODE-02-06 remains P0, partial and not owner/device approved. Thi
 
 ## Optional-stage re-render safety
 - A live optional Match-3 level uses optional_campaign=true and a retained match_game. Previously _render() always replaced it with the optional level list, including when Settings changed locale or the user selected a booster. The full-screen integration routes the active stage back to _render_match3() without re-opening or reseeding its game; after completion match_game=null and the normal list returns. Route smoke asserts locale toggling retains the same game object and move count.
+
+## Second CI discovery: new shell smoke parser
+- Full required run 42287772776 passed main-menu and campaign tests but failed the newly registered shell smoke at parse time: local const name Theme shadowed native Godot class Theme. Renamed test fixture constant to RavenTheme; no production change and no skipped assertion. Await latest-head rerun.
