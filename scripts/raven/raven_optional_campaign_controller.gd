@@ -9,19 +9,27 @@ const INTRO_COPY := "Match-3 помогает осмотреть и подгот
 # Mirror the locale-keyed presentation map of UPDS Match3CampaignScreen.
 # The game/save/level state is intentionally not owned by these strings.
 const UI_COPY := {
-	"ru": {"intro": INTRO_COPY, "next": "ДАЛЕЕ · ", "level": "Уровень %02d",
+	"ru": {"intro": INTRO_COPY, "status": STATUS_COPY, "title": "Подготовка имущества", "next": "ДАЛЕЕ · ", "level": "Уровень %02d",
 		"locked": "Закрыто", "play": "Играть", "replay": "Повторить", "return_story": "Вернуться к истории"},
 	"be": {"intro": "Match-3 дапамагае агледзець і падрыхтаваць рэчы. Рамонт выконвае спецыяліст.",
+		"status": "Дадатковыя ўзроўні · ачкі за падрыхтоўку не налічваюцца", "title": "Падрыхтоўка маёмасці",
 		"next": "ДАЛЕЙ · ", "level": "Узровень %02d", "locked": "Заблакавана",
 		"play": "Гуляць", "replay": "Паўтарыць", "return_story": "Вярнуцца да гісторыі"},
 	"en": {"intro": "Match-3 helps inspect and prepare belongings. A specialist handles repairs.",
+		"status": "Bonus levels · no preparation points awarded", "title": "Preparing the estate",
 		"next": "NEXT · ", "level": "Level %02d", "locked": "Locked",
 		"play": "Play", "replay": "Replay", "return_story": "Return to story"}
 }
 
 
-static func campaign_step() -> Dictionary:
-	return {"id": "optional-campaign", "kind": "campaign", "title": "Подготовка имущества"}
+static func status_text(locale: String = "ru") -> String:
+	var copy: Dictionary = UI_COPY.get(locale, UI_COPY.ru)
+	return str(copy.status)
+
+
+static func campaign_step(locale: String = "ru") -> Dictionary:
+	var copy: Dictionary = UI_COPY.get(locale, UI_COPY.ru)
+	return {"id": "optional-campaign", "kind": "campaign", "title": str(copy.title)}
 
 
 static func level_step(level: Dictionary) -> Dictionary:

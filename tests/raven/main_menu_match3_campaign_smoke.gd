@@ -4,6 +4,7 @@ const MENU := "res://scenes/raven/main_menu.tscn"
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Preferences = preload("res://scripts/shared/upds/player_preferences.gd")
+const Campaign = preload("res://scripts/raven/raven_optional_campaign_controller.gd")
 const PREFS_PATH := "user://raven_main_menu_match3_campaign_smoke.cfg"
 
 
@@ -33,6 +34,23 @@ func _run() -> void:
 	assert(not has_meta("raven_open_match3_campaign_from_main_menu"), "One-shot route metadata must be consumed")
 	assert(slice.state.revision == before.revision)
 	assert(slice.state.storyBeatsSeen == before.storyBeatsSeen, "Opening level selection must not advance story state")
+	# Integration proof: locale selection in the shared shell must rerender
+	# the campaign status and metadata without changing progress or routing.
+	var localized_states := [
+		{"index": 0, "locale": "ru", "level_prefix": "ДАЛЕЕ · Уровень 01"},
+		{"index": 1, "locale": "be", "level_prefix": "ДАЛЕЙ · Узровень 01"},
+		{"index": 2, "locale": "en", "level_prefix": "NEXT · Level 01"},
+	]
+	for locale_state: Dictionary in localized_states:
+		slice._switch_locale(int(locale_state.index))
+		assert(slice.preferences.locale == str(locale_state.locale))
+		assert(slice.status.text == Campaign.status_text(str(locale_state.locale)), "Campaign status header did not follow selected language")
+		assert(slice.step.title == str(Campaign.campaign_step(str(locale_state.locale)).title), "Campaign metadata title did not follow locale")
+		var locale_buttons: Array[Node] = slice.body.find_children("*", "Button", true, false)
+		assert(locale_buttons.size() >= 23 and (locale_buttons[0] as Button).text.begins_with(str(locale_state.level_prefix)), "Campaign list did not re-localize alongside header")
+		assert(slice.state.revision == before.revision and slice.state.storyBeatsSeen == before.storyBeatsSeen, "Changing locale must not advance campaign state")
+	# Restore RU for the legacy main-menu smoke and its exact-ID assertions.
+	slice._switch_locale(0)
 	var level_buttons: Array[Node] = slice.body.find_children("*", "Button", true, false)
 	var first_level: Button
 	# Route assertion must not depend on current RU/BE/EN caption text.

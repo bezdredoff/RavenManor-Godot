@@ -38,6 +38,16 @@ func _render(completed: Array, locale: String = "ru", from_menu: bool = false) -
 func _run() -> void:
 	assert(Campaign.campaign_step().kind == "campaign")
 	assert(Campaign.campaign_step().id == "optional-campaign")
+	# The integration consumer is vertical_slice.gd; the controller is the
+	# single source of locale text for the status header and metadata title.
+	assert(Campaign.status_text("ru") == Campaign.STATUS_COPY)
+	assert(Campaign.status_text("be") == "Дадатковыя ўзроўні · ачкі за падрыхтоўку не налічваюцца")
+	assert(Campaign.status_text("en") == "Bonus levels · no preparation points awarded")
+	assert(Campaign.status_text("de") == Campaign.STATUS_COPY, "Unknown locale must fall back to Russian")
+	assert(Campaign.campaign_step("ru").title == "Подготовка имущества")
+	assert(Campaign.campaign_step("be").title == "Падрыхтоўка маёмасці")
+	assert(Campaign.campaign_step("en").title == "Preparing the estate")
+	assert(Campaign.campaign_step("de").title == Campaign.campaign_step("ru").title)
 	var level: Dictionary = Content.data.levels[3]
 	assert(Campaign.level_step(level).id == "optional-RM-LVL-101")
 	var completed: Array = []

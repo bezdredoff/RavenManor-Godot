@@ -413,10 +413,10 @@ func _open_optional_campaign() -> void:
 
 
 func _render_optional_campaign() -> void:
-	step = OptionalCampaign.campaign_step()
+	step = OptionalCampaign.campaign_step(preferences.locale)
 	technical_shell.visible = true
 	vn_frame.visible = false
-	status.text = OptionalCampaign.STATUS_COPY
+	status.text = OptionalCampaign.status_text(preferences.locale)
 	OptionalCampaign.render_list(body, content.levels, state.get("firstClearLevels", []),
 		preferences.locale, return_to_main_menu_after_campaign,
 		_start_optional_level, _leave_optional_campaign)
