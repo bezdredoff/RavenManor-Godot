@@ -228,23 +228,6 @@ jobs:
           cp preview/index.html preview/style.css preview/app.mjs build/web/preview/
           node --check preview/app.mjs
           test -s build/web/preview/index.html
-      - name: Report Web payload sizes (advisory, no artifact retained)
-        shell: bash
-        run: |
-          set -euo pipefail
-          test -s build/web/index.pck
-          echo "=== Published Web package: top-level files and directories ==="
-          du -sh build/web/* | sort -h
-          echo "=== Largest individual Web files ==="
-          find build/web -type f -printf '%s %p\\n' | sort -rn | head -n 15 || true
-          {
-            echo "### Raven Pages payload (advisory, not owner QA)"
-            echo 'Published static tools remain on the site, but should not be embedded in the Godot PCK.'
-            echo '~~~'
-            du -h build/web/index.pck
-            du -sh build/web/assets build/web/art-handbook build/web/builder build/web/dashboard build/web
-            echo '~~~'
-          } >> "$GITHUB_STEP_SUMMARY"
       - name: Upload non-deployed candidate Web artifact
         if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/candidate/mobile-')
         uses: actions/upload-artifact@v4
