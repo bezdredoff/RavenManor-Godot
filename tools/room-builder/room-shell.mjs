@@ -55,11 +55,27 @@ export function detectRooms(walls=[]){
  return rooms;
 }
 
-function sourceFor(segments,a,b){
+// Room detection accepts a wall boundary covered by several touching strokes.
+// Render the same underlying strokes rather than requiring one wall to span
+// the entire face. Clip a long shared wall to the current room's boundary so
+// an attached smaller room gets the correct partial-height face and sockets.
+function boundaryParts(segments,a,b){
  const horizontal=a.y===b.y;
- return segments.find(s=>horizontal
-  ?s.a.y===a.y&&s.b.y===a.y&&s.a.x<=a.x+EPS&&s.b.x>=b.x-EPS
-  :s.a.x===a.x&&s.b.x===a.x&&s.a.y<=a.y+EPS&&s.b.y>=b.y-EPS);
+ const from=horizontal?a.x:a.y,to=horizontal?b.x:b.y;
+ const parts=[];
+ for(const source of segments){
+  if(horizontal
+   ?Math.abs(source.a.y-a.y)>EPS||Math.abs(source.b.y-a.y)>EPS
+   :Math.abs(source.a.x-a.x)>EPS||Math.abs(source.b.x-a.x)>EPS)continue;
+  const start=horizontal?source.a.x:source.a.y;
+  const end=horizontal?source.b.x:source.b.y;
+  const lo=Math.max(from,start),hi=Math.min(to,end);
+  if(hi-lo<=EPS)continue;
+  const clippedA=horizontal?{x:lo,y:a.y}:{x:a.x,y:lo};
+  const clippedB=horizontal?{x:hi,y:b.y}:{x:b.x,y:hi};
+  parts.push({...source,a:clippedA,b:clippedB});
+ }
+ return parts.sort((u,v)=>(horizontal?u.a.x-v.a.x:u.a.y-v.a.y));
 }
 
 /** Cutaway convention: north and west faces are visible; near south/east faces are omitted. */
@@ -70,8 +86,9 @@ export function shellSegments(walls=[]){
  for(const room of rooms){
   for(const [a,b] of [[{x:room.x0,y:room.y0},{x:room.x1,y:room.y0}],
                       [{x:room.x0,y:room.y0},{x:room.x0,y:room.y1}]]){
-   const source=sourceFor(base,a,b);if(!source)continue;
-   result.set(segmentKey(a,b),{...source,a,b});
+   for(const source of boundaryParts(base,a,b)){
+    result.set(segmentKey(source.a,source.b),source);
+   }
   }
  }
  return [...result.values()];
