@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "status": "MEASURED_DRAFT_NOT_APPROVED",
+  "sourceImage": "assets/raven/hall/generated_pilot/backgrounds/hall_twin_staircases.png",
+  "sourceImageSize": [1254, 1254],
+  "method": "Manual visible-opening estimates from the unretouched PNG; image coordinates linearly mapped to the 700x690 Hall drawing rectangle. These are review guides, not portal or collision inputs.",
+  "openings": [
+    {"id": "RM-DOOR-ENTRY-HALL", "mapPoint": [850, 840], "paintedPoint": [850, 833], "paintedImagePoint": [627, 1241], "interpretation": "front threshold"},
+    {"id": "RM-DOOR-HALL-ARCHIVE", "mapPoint": [500, 550], "paintedPoint": [527, 343], "paintedImagePoint": [48, 350], "interpretation": "left arch is far above the mapped west doorway"},
+    {"id": "RM-DOOR-HALL-CORRIDOR", "mapPoint": [1200, 585], "paintedPoint": [1173, 343], "paintedImagePoint": [1206, 350], "interpretation": "right arch is far above the mapped corridor doorway"},
+    {"id": "RM-DOOR-HALL-EAST-WING", "mapPoint": [850, 350], "paintedPoint": [850, 343], "paintedImagePoint": [627, 350], "interpretation": "same single central painted doorway as upper-floor marker"},
+    {"id": "RM-DOOR-HALL-UPPER-FLOOR", "mapPoint": [850, 320], "paintedPoint": [850, 343], "paintedImagePoint": [627, 350], "interpretation": "upper-floor access is a stair approach, not a second hinged doorway"}
+  ],
+  "staircases": [
+    {"id": "RM-ASSET-HALL-STAIRS-L", "mapRect": [640, 190, 115, 195], "paintedApproxRect": [643, 150, 109, 234], "paintedImageRect": [257, 0, 195, 425]},
+    {"id": "RM-ASSET-HALL-STAIRS-R", "mapRect": [945, 190, 115, 195], "paintedApproxRect": [947, 150, 109, 234], "paintedImageRect": [801, 0, 195, 425]}
+  ],
+  "seatingFootprints": [
+    {"id": "chair-left", "rect": [642, 637, 58, 31]},
+    {"id": "chair-right", "rect": [741, 637, 58, 31]},
+    {"id": "round-table", "rect": [698, 644, 46, 15]}
+  ]
+}
