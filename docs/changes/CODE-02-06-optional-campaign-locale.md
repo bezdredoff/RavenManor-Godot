@@ -13,7 +13,7 @@ Status impact: reconciled merged #211 with exact merge SHA and passing CI. CODE-
 ## Baseline and exact file scope
 - Raven main: a7b2b8375055873c684a17beb76bb5fb80db6808 (2026-11-06); unrelated Room Builder merged since first audit, no open Match-3 PR.
 - Branch: agent/match3/CODE-02-06-optional-campaign-locale.
-- Files: scripts/raven/raven_optional_campaign_controller.gd, tests/raven/optional_campaign_controller_smoke.gd, data/raven/production/progress/match3.json and this unique note.
+- Files: scripts/raven/raven_optional_campaign_controller.gd, tests/raven/optional_campaign_controller_smoke.gd, tests/raven/main_menu_match3_campaign_smoke.gd, data/raven/production/progress/match3.json and this unique note.
 - Do not modify vertical_slice.gd, store/reducer/snapshot, shared UPDS, canonical IDs, art, Hall or VN Studio.
 
 ## UPDS first: provenance and reuse decision
@@ -32,3 +32,8 @@ Status impact: reconciled merged #211 with exact merge SHA and passing CI. CODE-
 - python3 scripts/raven/tools/build_production_dashboard.py --check
 - Required checks: data-contracts, godot-runtime, room-builder, art-pipeline, web-package, build.
 - Rollback: revert this UI-only PR; no save-schema migration or asset changes.
+
+## First CI failure and correction
+- First head 2765a2ab45b18ff35d814f40aa66f33d253d0ced: godot-runtime FAIL because the existing main-menu campaign route smoke selected the first level only when its caption began with Russian text, while localized captions legitimately differ.
+- Added the route smoke to this owned test allowlist. It now selects the first enabled campaign button (existing catalog is ordered by campaignIndex), then still asserts the started level ID is exactly RM-LVL-101, menu return, and unchanged save/revision.
+- Functional routing assertions were preserved; no gameplay test disabled. All six checks need rerun on the new exact head.

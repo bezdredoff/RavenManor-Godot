@@ -35,12 +35,15 @@ func _run() -> void:
 	assert(slice.state.storyBeatsSeen == before.storyBeatsSeen, "Opening level selection must not advance story state")
 	var level_buttons: Array[Node] = slice.body.find_children("*", "Button", true, false)
 	var first_level: Button
+	# Route assertion must not depend on current RU/BE/EN caption text.
+	# The list is authored in campaignIndex order; the first enabled level
+	# is RM-LVL-101 on a fresh campaign, verified after press below.
 	for node in level_buttons:
 		var button := node as Button
-		if button != null and button.text.begins_with("ДАЛЕЕ · Уровень 01"):
+		if button != null and not button.disabled:
 			first_level = button
 			break
-	assert(first_level != null and not first_level.disabled, "First campaign level should be available from the menu")
+	assert(first_level != null, "First campaign level should be available from the menu in any locale")
 	first_level.pressed.emit()
 	await process_frame
 	assert(slice.match_game != null and slice.match_game.level_data.id == "RM-LVL-101", "First optional level must start from this route")
