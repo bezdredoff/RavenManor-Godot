@@ -35,3 +35,47 @@ test('opening on a shared wall remains attached to the rendered segment',()=>{
  const result=segmentOpenings(segment,walls,openings);
  assert.equal(result.length,1);assert.equal(result[0].start,45);assert.equal(result[0].end,105);
 });
+
+test('cutaway renders every connected stroke of a closed wall face, including its own portal',()=>{
+ const walls=[
+  wall('north-left',0,0,80,0),wall('north-right',200,0,80,0),
+  wall('east',200,0,200,150),wall('south',200,150,0,150),
+  wall('west-top',0,70,0,0),wall('west-bottom',0,70,0,150)
+ ];
+ assert.deepEqual(detectRooms(walls),[{x0:0,y0:0,x1:200,y1:150}]);
+ const shell=shellSegments(walls);
+ assert.deepEqual(shell.map(s=>[s.a,s.b]),[
+  [{x:0,y:0},{x:80,y:0}],
+  [{x:80,y:0},{x:200,y:0}],
+  [{x:0,y:0},{x:0,y:70}],
+  [{x:0,y:70},{x:0,y:150}]
+ ]);
+ assert.deepEqual(shell.map(s=>s.wallIds),[
+  ['north-left'],['north-right'],['west-top'],['west-bottom']
+ ]);
+ const openings=[{id:'north-door',wallId:'north-right',kind:'door',width:40,offset:0.5}];
+ const socket=segmentOpenings(shell[1],walls,openings);
+ assert.equal(socket.length,1);
+ assert.deepEqual([socket[0].start,socket[0].end],[40,80]);
+});
+
+test('a smaller attached room clips a long shared wall and preserves its opening coordinates',()=>{
+ const walls=[
+  wall('main-north',0,0,300,0),
+  wall('shared-long',300,0,300,300),
+  wall('main-south',300,300,0,300),wall('main-west',0,300,0,0),
+  wall('small-north',300,100,500,100),
+  wall('small-east',500,100,500,240),
+  wall('small-south',500,240,300,240)
+ ];
+ assert.equal(detectRooms(walls).length,2);
+ const cut=shellSegments(walls);
+ const shared=cut.filter(s=>s.wallIds.includes('shared-long'));
+ assert.equal(shared.length,1,'shared wall appears once in the cutaway');
+ assert.deepEqual(shared[0].a,{x:300,y:100});
+ assert.deepEqual(shared[0].b,{x:300,y:240});
+ const openings=[{id:'arch',wallId:'shared-long',kind:'arch',width:50,offset:0.5}];
+ const socket=segmentOpenings(shared[0],walls,openings);
+ assert.equal(socket.length,1);
+ assert.deepEqual([socket[0].start,socket[0].end],[25,75]);
+});
