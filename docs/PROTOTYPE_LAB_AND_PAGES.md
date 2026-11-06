@@ -42,7 +42,7 @@ Godot export templates for 4.7.2 must be installed.
 - uploads the Web artifact;
 - deploys only for non-PR runs.
 
-The repository Pages build type is `workflow`. A push to `main` publishes the latest verified Prototype Lab.
+The repository Pages build type is `workflow`. A push to `main` publishes **only the Godot Web game and the lightweight `/dashboard/`**. The dashboard is kept as the current project review surface, not a game dependency. Art Handbook, Room Builder and candidate preview are retained in the repository for local use and/or CI tests, **not bundled into the Pages artifact**. The `web-package` job asserts this publishing boundary. Candidate workflows may still upload separate short-lived review artifacts on an explicit dispatch; those are not Pages.
 
 ## Adding another prototype
 
