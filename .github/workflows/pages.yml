@@ -180,6 +180,19 @@ jobs:
           mkdir -p "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
           unzip -q templates.tpz -d template-unpack
           mv template-unpack/templates/* "$HOME/.local/share/godot/export_templates/${GODOT_VERSION}.stable/"
+      - name: Prepare Web-only 1024px VN portrait imports
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 -m unittest scripts.raven.tools.test_prepare_web_portrait_imports
+          python3 scripts/raven/tools/prepare_web_portrait_imports.py --project-root .
+          # Only .import descriptors change in this throwaway CI checkout.
+          git diff --name-only -- assets/raven/characters/ > "$RUNNER_TEMP/web-portrait-import-diff.txt"
+          test "$(wc -l < "$RUNNER_TEMP/web-portrait-import-diff.txt")" -eq 62
+          if grep -Ev '^assets/raven/characters/[^/]+/[^/]+\.webp\.import$' "$RUNNER_TEMP/web-portrait-import-diff.txt"; then
+            echo "::error::Non-import character file modified by Web preparation"
+            exit 1
+          fi
       - name: Export Web build
         run: |
           mkdir -p build/web
@@ -188,6 +201,10 @@ jobs:
           test -f build/web/index.html
           test -f build/web/index.wasm
           test -f build/web/index.pck
+      - name: Verify actual imported Web portraits and alpha
+        run: |
+          set -euo pipefail
+          godot --headless --path . --script res://tests/raven/web_portrait_import_smoke.gd
       - name: Build production dashboard from tracked status sources
         run: |
           python3 scripts/raven/tools/build_production_dashboard.py --check
