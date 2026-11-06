@@ -27,6 +27,8 @@ var _suppress: bool = false
 var _undo: Array[Dictionary] = []
 var _redo: Array[Dictionary] = []
 var _scenes: ItemList
+var _scene_search: LineEdit
+var _visible_scene_indices: Array[int] = []
 var _lines: ItemList
 var _locale: OptionButton
 var _text_edit: TextEdit
@@ -259,6 +261,11 @@ func _build() -> void:
 		if settings.has_setting(PANE_SETTING):
 			panel.split_offset = clampi(int(settings.get_setting(PANE_SETTING)), 120, 420)
 	panel.dragged.connect(_on_pane_dragged)
+	_scene_search = LineEdit.new()
+	_scene_search.placeholder_text = "Найти сцену / ID…"
+	_scene_search.clear_button_enabled = true
+	_scene_search.text_changed.connect(func(_value: String): _refresh_scene_items())
+	left.add_child(_scene_search)
 	_scenes = ItemList.new()
 	_scenes.size_flags_vertical = SIZE_EXPAND_FILL
 	_scenes.item_selected.connect(_on_scene)
@@ -635,6 +642,7 @@ func _on_create_scene() -> void:
 	_redo.clear()
 	_draft = result["draft"]
 	_dirty = true
+	_scene_search.clear() # Ensure the just-created scene is visible.
 	_refresh_scene_items()
 	_scene_idx = Store.scene_records(_project, _draft).size() - 1
 	_scene_switch()
@@ -804,9 +812,33 @@ func _sync_line_actions() -> void:
 
 func _refresh_scene_items() -> void:
 	_scenes.clear()
-	for scene in Store.scene_records(_project, _draft):
+	_visible_scene_indices.clear()
+	if _project.is_empty():
+		return
+	var needle: String = _scene_search.text.strip_edges().to_lower()
+	var scenes: Array = Store.scene_records(_project, _draft)
+	for index in range(scenes.size()):
+		var scene: Dictionary = scenes[index]
+		var titles: Dictionary = scene.get("title", {})
+		var searchable: String = str(scene.get("sceneId", ""))
+		for language in LOCALES:
+			searchable += " " + str(titles.get(language, ""))
+		if not needle.is_empty() and not searchable.to_lower().contains(needle):
+			continue
+		_visible_scene_indices.append(index)
 		_scenes.add_item("%s · %s" % [
-			str(scene.get("sceneId", "")), str(scene.get("title", {}).get("ru", ""))])
+			str(scene.get("sceneId", "")), str(titles.get("ru", ""))])
+	_sync_scene_list_selection()
+
+
+func _sync_scene_list_selection() -> void:
+	# Filtering is presentation only: the selected scene always remains the
+	# canonical scene index, never a positional index in filtered ItemList.
+	var visible_index: int = _visible_scene_indices.find(_scene_idx)
+	if visible_index >= 0:
+		_scenes.select(visible_index)
+	else:
+		_scenes.deselect_all()
 
 
 func _on_pane_dragged(offset: int) -> void:
@@ -898,7 +930,7 @@ func _scene_switch() -> void:
 		return
 	var scenes: Array = Store.scene_records(_project, _draft)
 	_scene_idx = clampi(_scene_idx, 0, scenes.size() - 1)
-	_scenes.select(_scene_idx)
+	_sync_scene_list_selection()
 	var scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var id: String = str(scene["sceneId"])
 	var title: Dictionary = scene.get("title", {})
@@ -1017,7 +1049,9 @@ func _refresh_preview() -> void:
 
 
 func _on_scene(index: int) -> void:
-	_scene_idx = index
+	if index < 0 or index >= _visible_scene_indices.size():
+		return
+	_scene_idx = _visible_scene_indices[index]
 	_line_idx = 0
 	_scene_switch()
 
@@ -1082,7 +1116,6 @@ func _on_title_changed(value: String, language: String) -> void:
 			break
 	_dirty = true
 	_refresh_scene_items()
-	_scenes.select(_scene_idx)
 	var current_scene: Dictionary = Store.scene_records(_project, _draft)[_scene_idx]
 	var title: Dictionary = current_scene.get("title", {})
 	_heading.text = "%s · %s\nСтатус: %s" % [scene_id,

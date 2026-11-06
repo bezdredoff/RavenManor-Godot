@@ -73,6 +73,29 @@ func _run() -> void:
 	assert(raven._promotion_view._summary != null)
 	assert(raven._raven_graph._scene_id == "RM-BEAT-00-01")
 	assert(raven._raven_graph._name_map.has("RM-BEAT-00-01"))
+	# HTML v5 Director has a case-insensitive scene/ID finder. Filtering may
+	# change visible list positions but must never change stable scene IDs.
+	var full_scene_count: int = raven._scenes.item_count
+	raven._scene_search.text = "RM-BEAT-01-01"
+	raven._refresh_scene_items()
+	assert(raven._scenes.item_count == 1)
+	assert(raven._visible_scene_indices[0] == 3)
+	raven._on_scene(0)
+	assert(raven.selected_context()["sceneId"] == "RM-BEAT-01-01",
+		"Selecting filtered list index 0 must resolve the actual scene ID")
+	assert(raven._raven_graph._scene_id == "RM-BEAT-01-01")
+	raven._scene_search.text = "НЕСУЩЕСТВУЮЩИЙ-ID"
+	raven._refresh_scene_items()
+	assert(raven._scenes.item_count == 0)
+	assert(raven.selected_context()["sceneId"] == "RM-BEAT-01-01",
+		"No-match filtering must leave stage/scene context unchanged")
+	raven._scene_search.text = ""
+	raven._refresh_scene_items()
+	assert(raven._scenes.item_count == full_scene_count)
+	assert(raven._scenes.get_selected_items()[0] == 3,
+		"Clearing finder must reselect the canonical scene")
+	raven._on_scene(0)
+	assert(raven.selected_context()["sceneId"] == "RM-BEAT-00-01")
 	assert(raven._context_views.size() == 1)
 	assert(raven._context_views[0].text.contains("Animation"))
 	# VNS5-07F1: the Animation tab must contain the *working* StageDesigner
