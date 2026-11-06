@@ -13,7 +13,7 @@ Status impact: CODE-02-06 remains P0, partial and not owner/device approved. Thi
 ## Branch and exact boundaries
 - Raven stack base: integration/CODE-02-06-campaign-status-locale at 2d420e7bf5131a3abbeec2c1f1829392c49d5e93 (PR #222; latest head CI success).
 - Branch: integration/CODE-02-06-upds-match3-screen-shell. Open this as stacked PR against the #222 branch, not main.
-- Paths: scripts/match3/match3_screen_shell.gd, scripts/match3/match3_board_presenter.gd, integration-owned scripts/raven/vertical_slice.gd, tests/raven/main_menu_match3_campaign_smoke.gd, tests/raven/match3_upds_shell_smoke.gd, data/raven/production/progress/match3.json and this note.
+- Paths: scripts/match3/match3_screen_shell.gd, scripts/match3/match3_board_presenter.gd, integration-owned scripts/raven/vertical_slice.gd, tests/raven/main_menu_match3_campaign_smoke.gd, tests/raven/match3_upds_shell_smoke.gd, tests/raven/runtime_settings_smoke.gd, scripts/check.sh, check.ps1, data/raven/production/progress/match3.json and this note.
 - Explicitly excluded: shared UPDS engine, raven reducer/campaign store/snapshot, stable RM IDs, art assets, narrative, VN Studio, Hall, project.godot or GitHub workflows.
 
 ## UPDS-first reuse classification
@@ -34,3 +34,9 @@ Status impact: CODE-02-06 remains P0, partial and not owner/device approved. Thi
 - godot --headless --path . --script res://tests/raven/main_menu_match3_campaign_smoke.gd --quit-after 180
 - bash scripts/check.sh and six mandatory exact-head GitHub CI jobs.
 - Rollback this UI-only PR; no save schema migration. After #222 merges, retarget stacked PR to main before final review.
+
+## First CI discovery (not suppressed)
+- Initial head 2565c6d45e229601568487f819597a3bfb3ceb52: godot-runtime failed at runtime_settings_smoke.gd:98, which searched for rebuilt board under the now-hidden technical body. The genuine modal locking contract remains valid.
+- Updated the settings smoke to search the actual full-screen descendant, assert the board was rebuilt as a new instance, keep the Settings modal open, and assert input_locked remains true. No save/input behavioral checks removed.
+- Registered the new responsive shell smoke in scripts/check.sh and root check.ps1, including direct shell script parse. Both are strictly additive checks and were absent from the initial run.
+- CI must be rerun on the new exact PR head before merge.

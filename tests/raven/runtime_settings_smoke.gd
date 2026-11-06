@@ -89,12 +89,12 @@ func _run() -> void:
 	var board := slice.find_child("RavenMatch3Board", true, false)
 	slice._open_settings()
 	assert(board.input_locked, "Settings dialog must block the Match-3 board")
-	for child in slice.body.get_children():
-		slice.body.remove_child(child)
-		child.queue_free()
-	await process_frame
+	# Match-3 now has its own UPDS-style full-screen frame, not the
+	# diagnostic body. Rerender without manually detaching UI nodes.
 	slice._render_match3() # Locale rerender rebuilds the board while the modal stays open.
-	var rebuilt_board := slice.body.find_child("RavenMatch3Board", true, false)
+	var rebuilt_board := slice.find_child("RavenMatch3Board", true, false)
+	assert(rebuilt_board != null and rebuilt_board != board, "Match-3 must recreate its board in the full-screen frame")
+	assert(rebuilt_board.get_parent() != null and slice.match3_frame.visible)
 	assert(rebuilt_board.input_locked, "Rebuilt board must remain blocked by open Settings")
 	slice.settings_dialog.hide()
 	await process_frame

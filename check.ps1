@@ -70,6 +70,7 @@ foreach ($script in @(
 	'res://scripts/match3/match3_mobile_layout.gd',
 	'res://scripts/match3/match3_frame_visuals.gd',
 	'res://scripts/match3/match3_board_presenter.gd',
+	'res://scripts/match3/match3_screen_shell.gd',
 	'res://scripts/raven/raven_match3_theme.gd',
 	'res://scripts/raven/raven_menu_copy.gd',
 	'res://scripts/raven/raven_settings_dialog.gd',
@@ -92,6 +93,7 @@ Invoke-GodotCheck 'Raven navigation graph smoke' @('--headless', '--path', $proj
 Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/prototype_lab_smoke.gd', '--quit-after', '120') 'Raven Manor Prototype Lab smoke passed'
 Invoke-GodotCheck 'UPDS engine port parity smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_core_reuse_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS core reuse smoke passed'
 Invoke-GodotCheck 'UPDS M3 visual primitives' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_visual_primitives_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 visual primitives smoke passed'
+Invoke-GodotCheck 'UPDS Match-3 full-screen layout' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_upds_shell_smoke.gd', '--quit-after', '180') 'Raven UPDS-style Match-3 full-screen layout smoke passed'
 Invoke-GodotCheck 'UPDS Match3 interactive board' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_interactive_board_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS interactive Match-3 board smoke passed'
 Invoke-GodotCheck 'UPDS M3 help, blockers and retry' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_presentation_states_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS Match-3 help, objectives, special/blocker and retry smoke passed'
 Invoke-GodotCheck 'UPDS Match3 frame FX / blocker segments' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_match3_frame_fx_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS special-impact and blocker-segment settle smoke passed'
