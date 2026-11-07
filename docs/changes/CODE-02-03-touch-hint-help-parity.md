@@ -1,6 +1,6 @@
 # CODE-02-03 — Match-3 touch / hint / help presentation parity
 
-**Task IDs:** CODE-02-03 (parent tracking entry). Prerequisites already merged on main: CODE-02-01 (cancelled-touch, PR #199) and CODE-02-06 (viewport pointer + modal recovery, PR #175).
+Task IDs: CODE-02-03 (parent tracking entry). Prerequisites already merged on main: CODE-02-01 (cancelled-touch, PR #199) and CODE-02-06 (viewport pointer + modal recovery, PR #175).
 
 **Base SHA:** 17cf9d913f51921206765017d87b91d9bde083bf
 
@@ -24,14 +24,14 @@ This change is therefore the minimal remaining fix: make the two hinted tiles vi
 
 **Decision: adapter.** The distinct hint visual is adapted into the existing Raven `match3_board_presenter.gd` (`_build` + `_paint_selection`) rather than adding a second rules/rendering engine. No donor art/fonts imported; the donor's looping hint pulse animation is deferred (motion polish, GFX-10-06 scope) — a static teal glow + inner ring is sufficient for two-tile visibility.
 
-## Changes
+Changes:
 
 - `scripts/match3/match3_board_presenter.gd`
   - `_build`: each cell now carries a `HintRing` `Panel` (white-gold `#fff8d7`, 2px, `z_index 20`, hidden by default, `MOUSE_FILTER_IGNORE`).
   - `_paint_selection`: split the single `chosen` style into `selected` (gold `#f5e8c8`, 5px, lightened) vs `hinted` (teal `#7ddfd8`, 3px, teal glow `shadow_size 15`) vs blocker/neutral (unchanged). Hides/shows `HintRing` per `highlighted`. `highlighted` continues to serve both the persistent hint and the live drag preview (both are "would-swap" indicators, matching UPDS semantics).
 - `tests/raven/match3_viewport_input_smoke.gd` (extended): after `show_hint()`, asserts both hinted tiles use the teal border + glow + visible `HintRing`, and a neutral tile uses no hint decoration.
 
-## Verification (actually executed on Godot 4.7.2)
+Verification:
 
 - `READ_ONLY`: `data/raven/production/progress/match3.json` entry CODE-02-03 (pre-fix evidence), root/`scripts/match3`/`scripts/raven` AGENTS, orchestration + data-contracts + CODE-02-06 QA docs, donor `match3_screen.gd`/`match3_help_overlay.gd`.
 - `EXECUTED_PASS`: `godot --headless --path . --editor --quit` (asset import).
@@ -42,9 +42,9 @@ This change is therefore the minimal remaining fix: make the two hinted tiles vi
 - `NOT_RUN` as-is: `bash scripts/check.sh` is environment-blocked on this host — the native Windows `python3`/Godot binaries cannot resolve the git-bash POSIX `$ROOT` path (`Invalid project path ... /c/Users/...`). The equivalent `check.ps1` (Windows-native paths) was run instead and passes.
 - Note: the first `check.ps1` attempt failed at `vn_studio_migration_smoke.gd` because a prior session left a deterministic export bundle under `user://vn_studio_conversions/...` (dated 2026-11-05, unrelated to Match-3). After removing that stale bundle the full check passed.
 
-## Owner QA / device acceptance
+Owner QA: Not claimed. This is a presentation-only fix with automated smoke coverage. Physical iPhone/desktop browser swipe, two-tile hint legibility and the full UPDS help overlay still require owner/device QA. CODE-02-03 remains non-accepted.
 
-**Not claimed.** This is a presentation-only fix with automated smoke coverage. Physical iPhone/desktop browser swipe, two-tile hint legibility and the full UPDS help overlay still require owner/device QA. CODE-02-03 remains non-accepted.
+Status impact: CODE-02-03 -> PR_review in the match3 shard (evidence appended; qaState automated; approvalState pending).
 
 ## Rollback
 
