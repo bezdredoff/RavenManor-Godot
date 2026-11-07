@@ -87,6 +87,10 @@ func _run() -> void:
 	assert(cues[0]["effect"] == "fade_in")
 	assert(cues[1]["effect"] == "breathe")
 	assert(cues[2]["effect"] == "shake")
+	for cue in cues:
+		assert(StageFx.EFFECTS.has(cue["effect"]), "Preview FX must already exist: " + str(cue["effect"]))
+	assert(cues[0]["effect"] != cues[1]["effect"] and cues[1]["effect"] != cues[2]["effect"] and
+		cues[0]["effect"] != cues[2]["effect"], "The three previews must be DISTINCT animation FX")
 	assert(StageFx.validate(stage, StageV2.effective(d, hub), d["stageFxPatches"][hub],
 		Store.draft_line_ids(project, d, hub)).is_empty())
 	assert(float(StageFx.sample(cues[0], 0)["alpha"]) < 1.0)
@@ -162,6 +166,91 @@ func _run() -> void:
 	view._on_redo()
 	assert(int(view._draft["stageFxPatches"][hub]["cues"][1]["startMs"]) == 1750)
 	assert(Store.validate(view._project, JSON.parse_string(JSON.stringify(view._draft))).is_empty())
+	# 1) Fail-closed cross-project guard on the SAME VNS5-12 fixture: a stale
+	# draft that belongs to another Raven root must never be archived, cleared
+	# or imported, and a draft carrying another project's source SHA must never
+	# have its edits applied.
+	var suffix: String = str(Time.get_ticks_usec())
+	var foreign_root: String = ProjectSettings.globalize_path("user://vns5_12_foreign_project_" + suffix)
+	var foreign_files: Array = [Store.RELATIVE, Store.STAGING, Store.ROUTES, Store.CUES, Store.CAST]
+	var foreign_hashes: Dictionary = {}
+	for rel in foreign_files:
+		var source_file: String = root_path.path_join(rel)
+		var copied_file: String = foreign_root.path_join(rel)
+		foreign_hashes[rel] = FileAccess.get_sha256(source_file)
+		assert(not str(foreign_hashes[rel]).is_empty(), "Missing canonical source " + rel)
+		assert(DirAccess.make_dir_recursive_absolute(copied_file.get_base_dir()) == OK)
+		var copy: FileAccess = FileAccess.open(copied_file, FileAccess.WRITE)
+		assert(copy != null)
+		copy.store_string(FileAccess.get_file_as_string(source_file))
+		copy.close()
+		assert(FileAccess.get_sha256(copied_file) == foreign_hashes[rel], "Fixture copy is not byte-identical: " + rel)
+	var foreign_project: Dictionary = Store.open_project(foreign_root)
+	assert(foreign_project.get("ok", false), str(foreign_project.get("error", "")))
+	assert(str(foreign_project["root"]) != str(project["root"]), "This must be a different project root")
+	assert(foreign_project["sha"] == project["sha"], "Second root reuses the same canonical registries")
+	var foreign_draft: String = Store.draft_path(foreign_root)
+	assert(not FileAccess.file_exists(foreign_draft), "Synthetic root must not start with a local draft")
+	var foreign_recovery: String = ProjectSettings.globalize_path("user://raven_story_studio/recovery").path_join(
+		str(foreign_project["root"]).sha256_text())
+	assert(not DirAccess.dir_exists_absolute(foreign_recovery))
+	# (a) A valid VNS5-12 draft locked to THIS root, dropped into another root.
+	assert(DirAccess.make_dir_recursive_absolute(foreign_draft.get_base_dir()) == OK)
+	var placed: FileAccess = FileAccess.open(foreign_draft, FileAccess.WRITE)
+	assert(placed != null)
+	placed.store_string(JSON.stringify(d, "	") + "\n")
+	placed.close()
+	var placed_bytes: String = FileAccess.get_file_as_string(foreign_draft)
+	assert(not Store.load_draft(foreign_project).get("ok", false), "Another project's draft must not load")
+	var refused: Dictionary = Store.stale_draft_info(foreign_project)
+	assert(not refused.get("ok", false), "Cross-project stale draft must be refused")
+	assert("другому проекту" in str(refused.get("error", "")), str(refused.get("error", "")))
+	assert(not Store.archive_and_start_fresh(foreign_project).get("ok", false),
+		"Cross-project recovery must be refused, not repaired")
+	assert(FileAccess.get_file_as_string(foreign_draft) == placed_bytes,
+		"Refused cross-project recovery must not rewrite the foreign draft")
+	assert(not DirAccess.dir_exists_absolute(foreign_recovery),
+		"Refused cross-project recovery must not write a backup")
+	# (b) Own root fingerprint, but a source SHA from another project: the
+	# edits are never imported; recovery only archives the exact bytes.
+	var foreign_sha: Dictionary = d.duplicate(true)
+	foreign_sha["sourceRootFingerprint"] = str(foreign_project["root"]).sha256_text()
+	foreign_sha["sourceSha256"] = "another-raven-project".sha256_text()
+	var stale_write: FileAccess = FileAccess.open(foreign_draft, FileAccess.WRITE)
+	assert(stale_write != null)
+	stale_write.store_string(JSON.stringify(foreign_sha, "	") + "\n")
+	stale_write.close()
+	var stale_bytes: String = FileAccess.get_file_as_string(foreign_draft)
+	assert(not Store.load_draft(foreign_project).get("ok", false), "Foreign source SHA must block draft load")
+	assert(not Store.save_local(foreign_project, foreign_sha).get("ok", false),
+		"Editing must not resurrect a draft bound to another project's source")
+	var stale_info: Dictionary = Store.stale_draft_info(foreign_project)
+	assert(stale_info.get("ok", false), JSON.stringify(stale_info))
+	assert(stale_info["changes"]["scenes"] == 4 and stale_info["changes"]["lines"] == 7,
+		"Recovery must report the preserved fixture instead of importing it")
+	var recovered: Dictionary = Store.archive_and_start_fresh(foreign_project)
+	assert(recovered.get("ok", false), JSON.stringify(recovered))
+	assert(FileAccess.get_file_as_string(str(recovered["backupPath"])) == stale_bytes,
+		"Recovery backup must preserve the stale bytes exactly")
+	var clean: Dictionary = Store.load_draft(foreign_project)
+	assert(clean.get("ok", false) and clean.get("found", false))
+	assert(Store.change_count(clean["draft"]) == 0, "Another project's edits must never be imported")
+	assert(clean["draft"]["authoredScenes"].is_empty() and clean["draft"]["storyGraphPatches"].is_empty())
+	assert(clean["draft"]["stageFxPatches"].is_empty() and clean["draft"]["authoredLines"].is_empty())
+	assert(clean["draft"]["sourceSha256"] == foreign_project["sha"])
+	assert(not Store.stale_draft_info(foreign_project).get("ok", false))
+	for rel in foreign_files:
+		assert(FileAccess.get_sha256(foreign_root.path_join(rel)) == foreign_hashes[rel],
+			"Cross-project guard must not touch a canonical registry: " + rel)
+	# Remove only the synthetic files created by this check.
+	assert(DirAccess.remove_absolute(str(recovered["backupPath"])) == OK)
+	assert(DirAccess.remove_absolute(foreign_recovery) == OK)
+	assert(DirAccess.remove_absolute(foreign_draft) == OK)
+	assert(DirAccess.remove_absolute(foreign_draft.get_base_dir()) == OK)
+	for rel in foreign_files:
+		assert(DirAccess.remove_absolute(foreign_root.path_join(rel)) == OK)
+	for rel_dir in ["data/raven/production", "data/raven", "data", ""]:
+		assert(DirAccess.remove_absolute(foreign_root.path_join(rel_dir)) == OK)
 	assert(FileAccess.file_exists(user_path) == user_exists,
 		"Preview/Undo/FX must not implicitly save a local draft")
 	if user_exists:
