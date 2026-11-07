@@ -187,6 +187,24 @@ func _build() -> void:
 		blocker_badge.offset_top = 0.0
 		blocker_badge.offset_right = 23.0
 		blocker_badge.offset_bottom = 23.0
+		# UPDS parity: hinted tiles draw a distinct white-gold inner ring above
+		# the tile art, inside the teal glow border set by _paint_selection.
+		var hint_ring := Panel.new()
+		hint_ring.name = "HintRing"
+		hint_ring.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		hint_ring.z_index = 20
+		hint_ring.visible = false
+		hint_ring.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
+		hint_ring.offset_left = 2.0
+		hint_ring.offset_top = 2.0
+		hint_ring.offset_right = -2.0
+		hint_ring.offset_bottom = -2.0
+		var ring_style := StyleBoxFlat.new()
+		ring_style.bg_color = Color(0, 0, 0, 0)
+		ring_style.border_color = Color("fff8d7")
+		ring_style.set_border_width_all(2)
+		hint_ring.add_theme_stylebox_override("panel", ring_style)
+		cell.add_child(hint_ring)
 		cells.append(cell)
 		stacks.append(stack)
 
@@ -821,13 +839,31 @@ func _paint_board(tiles: Array, specials: Array, blockers: Array, ingredients: A
 func _paint_selection() -> void:
 	for i in cells.size():
 		var style := (cells[i].get_theme_stylebox("normal") as StyleBoxFlat).duplicate() as StyleBoxFlat
-		var chosen := i == selected_index or highlighted.has(i)
+		var selected := i == selected_index
+		var hinted := highlighted.has(i)
 		var blocked := int(game.blocker_layers[i]) > 0
-		style.border_color = Color("f5e8c8") if chosen else Color("d5aa79") if blocked else Color.TRANSPARENT
-		style.set_border_width_all(5 if chosen else 2 if blocked else 0)
-		if chosen:
+		# UPDS parity (donor match3_screen.gd _render_board): selection is a
+		# gold lift, while the hint and live drag preview use a distinct teal
+		# glow plus inner ring so the two hinted tiles are unmistakable.
+		style.shadow_color = Color(0, 0, 0, 0)
+		style.shadow_size = 0
+		style.shadow_offset = Vector2.ZERO
+		if selected:
+			style.border_color = Color("f5e8c8")
+			style.set_border_width_all(5)
 			style.bg_color = style.bg_color.lightened(0.30)
+		elif hinted:
+			style.border_color = Color("7ddfd8")
+			style.set_border_width_all(3)
+			style.shadow_color = Color("7ddfd8")
+			style.shadow_size = 15
+		else:
+			style.border_color = Color("d5aa79") if blocked else Color.TRANSPARENT
+			style.set_border_width_all(2 if blocked else 0)
 		cells[i].add_theme_stylebox_override("normal", style)
 		cells[i].add_theme_stylebox_override("hover", style)
 		cells[i].add_theme_stylebox_override("pressed", style)
 		cells[i].add_theme_stylebox_override("disabled", style)
+		var ring := cells[i].get_node_or_null("HintRing") as Panel
+		if ring != null:
+			ring.visible = hinted

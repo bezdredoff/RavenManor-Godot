@@ -58,6 +58,25 @@ func _run() -> void:
 	board.show_hint()
 	assert(board.highlighted.size() == 2 and board.highlighted[0] != board.highlighted[1])
 	assert(game.moves_left == moves - 1, "Hint spent a move")
+	# UPDS two-tile hint parity: both hinted tiles render the distinct teal
+	# glow plus white-gold inner ring (never the gold selection style), and a
+	# neutral tile keeps no hint decoration.
+	for idx in board.highlighted:
+		var hint_style := board.cells[int(idx)].get_theme_stylebox("normal") as StyleBoxFlat
+		assert(hint_style.border_color.is_equal_approx(Color("7ddfd8")), "Hinted tile must use UPDS teal border")
+		assert(hint_style.shadow_size >= 15.0, "Hinted tile must glow")
+		var hint_ring := board.cells[int(idx)].get_node_or_null("HintRing") as Panel
+		assert(hint_ring != null and hint_ring.visible, "Hinted tile must show inner ring")
+	var neutral_idx := -1
+	for i in board.cells.size():
+		if not board.highlighted.has(i):
+			neutral_idx = i
+			break
+	assert(neutral_idx >= 0, "Fixture must contain a non-hinted tile")
+	var neutral_style := board.cells[neutral_idx].get_theme_stylebox("normal") as StyleBoxFlat
+	assert(not neutral_style.border_color.is_equal_approx(Color("7ddfd8")), "Non-hinted tile must not use hint teal")
+	var neutral_ring := board.cells[neutral_idx].get_node_or_null("HintRing") as Panel
+	assert(neutral_ring != null and not neutral_ring.visible, "Non-hinted tile must hide inner ring")
 	var before_size: Vector2 = board.size
 	board.toggle_help()
 	await process_frame
