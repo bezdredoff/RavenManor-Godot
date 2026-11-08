@@ -136,8 +136,16 @@ def validate_first_floor(project, reference=None):
         raise ValueError("Calibration imageRect must cover full PNG; image crop is not supported by v2 importer")
     if not point_in_rect(image_rect[:2], [0, 0, pw, ph]) or not point_in_rect([image_rect[0]+image_rect[2], image_rect[1]+image_rect[3]], [0, 0, pw, ph]):
         raise ValueError("Calibration imageRect lies outside base image")
+    registration = draft.get("registration")
+    unregistered = isinstance(registration, dict) and registration.get("status") == "unresolved"
+    if registration is not None:
+        if not unregistered or registration.get("imageSpace") != "image-pixel" or registration.get("referenceSpace") != "world-plan" or registration.get("previewSpace") != "screen-projected" or registration.get("pixelToWorld") is not None or registration.get("navigationAllowed") is not False:
+            raise ValueError("Unsupported/unsafe registration: no inferred image-pixel to world-plan transform")
     controls = records(calib.get("controlPoints"), "calibration.controlPoints")
-    if len(controls) < 2:
+    if unregistered:
+        if calib.get("status") != "unresolved" or controls:
+            raise ValueError("Unregistered art must not declare calibration control points")
+    elif len(controls) < 2:
         raise ValueError("At least two calibration controlPoints are required")
     for i, item in enumerate(controls):
         if not isinstance(item, dict):
@@ -202,6 +210,8 @@ def validate_first_floor(project, reference=None):
         if key in visited:
             raise ValueError("Duplicate navigation point coordinates in " + rid)
         visited.add(key)
+    if unregistered and (anchors or foreground):
+        raise ValueError("Unregistered image cannot claim world-plan navigation anchors or foreground pivots")
     for item in foreground:
         pos = numbers(item.get("position"), 2, item["id"] + ".position")
         size = numbers(item.get("size"), 2, item["id"] + ".size")
@@ -250,6 +260,9 @@ def scene_from_first_floor(project, output_root=ROOT, reference=None):
     cal = draft["calibration"]
     ix, iy, iw, ih = cal["imageRect"]
     wx, wy, ww, wh = cal["worldRect"]
+    unregistered = draft.get("registration", {}).get("status") == "unresolved"
+    image_x, image_y = (0, 0) if unregistered else (wx, wy)
+    image_w, image_h = (iw, ih) if unregistered else (ww, wh)
     lines = [f"[gd_scene load_steps={len(paths)+1} format=3]", ""]
     lines += [f'[ext_resource type="Texture2D" path={q(p)} id={q(ids[p])}]' for p in paths]
     lines += ["", '[node name="RM_FIRST_FLOOR_DRAFT_v2" type="Node2D"]',
@@ -257,18 +270,21 @@ def scene_from_first_floor(project, output_root=ROOT, reference=None):
               'metadata/import_kind = "FIRST_FLOOR_IMAGE_REVIEW_ONLY"',
               'metadata/import_schema_version = 2',
               'metadata/physics_authority = "NONE"',
-              'metadata/navigation_authority = "NONE"', ""]
+              'metadata/navigation_authority = "NONE"',
+              f'metadata/registration_status = {q("UNREGISTERED_IMAGE_PIXEL" if unregistered else "ILLUSTRATIVE_VISUAL_ONLY")}', ""]
     lines += ['[node name="ReviewCamera" type="Camera2D" parent="."]',
-              f'position = {v(wx+ww/2, wy+wh/2)}', 'zoom = Vector2(0.7400, 0.7400)',
+              f'position = {v(image_x+image_w/2, image_y+image_h/2)}', 'zoom = Vector2(0.7400, 0.7400)',
               'enabled = true', ""]
     # Image is already painted/projected; DO NOT apply the old 65-degree floor compression twice.
     lines += ['[node name="BasePainting" type="TextureRect" parent="."]',
               f'texture = ExtResource({q(ids[bg_path])})',
               'expand_mode = 1', 'stretch_mode = 0',
-              f'offset_left = {wx:.4f}', f'offset_top = {wy:.4f}',
-              f'offset_right = {wx+ww:.4f}', f'offset_bottom = {wy+wh:.4f}',
+              f'offset_left = {image_x:.4f}', f'offset_top = {image_y:.4f}',
+              f'offset_right = {image_x+image_w:.4f}', f'offset_bottom = {image_y+image_h:.4f}',
               'z_index = -3000', 'metadata/approval = "OWNER_ART_REFERENCE_NOT_RUNTIME"', ""]
     lines += ['[node name="ReviewGuides" type="Node2D" parent="."]',
+              *(['visible = false'] if unregistered else []),
+              f'metadata/coordinate_space = {q("world-plan" if unregistered else "illustrative-world-plan")}',
               'metadata/status = "VISUAL_REVIEW_ONLY_NO_PHYSICS"', ""]
     for room in draft["roomRegions"]:
         x, y, w, h = room["rect"]
@@ -309,7 +325,10 @@ def scene_from_first_floor(project, output_root=ROOT, reference=None):
                   f'metadata/pivot_world = {v(x, y)}', f'metadata/occlusion_mode = {q(mode)}',
                   'metadata/collision = "NOT_GENERATED"', ""]
     manifest = {"kind": "raven_first_floor_draft_export", "schemaVersion": 2,
-                "approval": "DRAFT_ONLY", "source": draft, "comparison": report}
+                "approval": "DRAFT_ONLY", "source": draft, "comparison": report,
+                "coordinateSpaces": {"baseImage": "image-pixel" if unregistered else "illustrative-screen-preview",
+                                     "roomRegions": "world-plan", "doorPlacements": "world-plan",
+                                     "navigation": "NONE", "screenProjectedToNavigation": "FORBIDDEN"}}
     serialized = json.dumps(manifest, ensure_ascii=False, sort_keys=True, indent=2) + "\n"
     scene_dir.mkdir(parents=True, exist_ok=True)
     if "dataUri" in base:
