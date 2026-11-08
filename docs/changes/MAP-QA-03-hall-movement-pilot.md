@@ -10,3 +10,7 @@ Status impact: MAP-QA-03 is a scoped technical slice linked to canonical CODE-05
 - Reuse in Raven: `onoe_visual.gd` direction frames (**reuse-as-is**), `onoe_segment_mover.gd` single physical executor (**reuse-as-is**), `manor_navigation_graph.gd` AStar2D authoring and `manor_route_session.gd` arrival protocol (**reuse-as-is**). **Adapter/new:** only QA data conversion, presentation host and test-specific pointer/overlay/camera, because canonical world-plan mapping cannot be made authoritative yet.
 - Boundary: `scripts/raven/prototype_launcher.gd` and `scripts/check.sh` changed minimally as explicit integration-owned registration surfaces. No shared campaign save, IDs, reducer, default main menu, manifest, artwork or Room Builder mutation.
 - Confirm CI exact head and manual QA separately in PR; do not mark geometry production ready.
+
+## CI diagnostic and fix (PR #243)
+
+Initial PR head `13e3757946264f922ed92b97dd6fd933ea5f8814`, run [42518231137](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42518231137): data-contracts, room-builder, art-pipeline PASS; godot-runtime FAIL in previously unregistered MAP-QA-01 smoke at `tests/raven/map_qa_01_hall_smoke.gd:15` because Godot JSON parser yields numeric floats and the test compared a numeric JSON array to a literal int array. Fix: compare integer-cast dimension components, apply the same safe fix to MAP-QA-03 adapter, and lock exact seven authored edge pairs. New head CI pending. No production geometry/data changed.

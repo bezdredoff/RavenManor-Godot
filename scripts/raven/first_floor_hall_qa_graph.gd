@@ -13,6 +13,15 @@ const PILOT_IDS := [
 	"QA-HALL-PORTAL-APPROACH", "QA-HALL-RETURN-SAFE"
 ]
 const PORTAL_ID := "QA-PORTAL-HALL-CORRIDOR"
+const EXPECTED_EDGES := [
+	"QA-HALL-SPAWN|QA-HALL-CENTRE",
+	"QA-HALL-CENTRE|QA-HALL-WEST",
+	"QA-HALL-CENTRE|QA-HALL-EAST",
+	"QA-HALL-CENTRE|QA-HALL-TABLE-APPROACH",
+	"QA-HALL-EAST|QA-HALL-PORTAL-APPROACH",
+	"QA-HALL-EAST|QA-HALL-RETURN-SAFE",
+	"QA-HALL-RETURN-SAFE|QA-HALL-PORTAL-APPROACH"
+]
 
 var graph = NavigationGraph.new()
 var data: Dictionary = {}
@@ -40,7 +49,10 @@ func load_pilot() -> bool:
 	if coordinate.get("apply65DegreeProjectionToBaseImage") != false:
 		return _reject("The approved illustration is already perspectival")
 	var art: Dictionary = candidate.get("source", {})
-	if art.get("path") != ART_PATH.trim_prefix("res://") or art.get("dimensionsPx") != [1672, 941]:
+	var dimensions: Variant = art.get("dimensionsPx", [])
+	if art.get("path") != ART_PATH.trim_prefix("res://") or not dimensions is Array or dimensions.size() != 2:
+		return _reject("Source image path/dimensions changed")
+	if int(dimensions[0]) != ART_SIZE.x or int(dimensions[1]) != ART_SIZE.y:
 		return _reject("Source image path/dimensions changed")
 	if art.get("sha256") != ART_SHA256 or art.get("gitBlobSha") != "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563":
 		return _reject("Approved source image identity changed")
@@ -90,7 +102,7 @@ func load_pilot() -> bool:
 		var a := str(raw.get("from", ""))
 		var b := str(raw.get("to", ""))
 		var key := a + "|" + b
-		if not seen.has(a) or not seen.has(b) or a == b or seen_edges.has(key):
+		if not seen.has(a) or not seen.has(b) or a == b or seen_edges.has(key) or not EXPECTED_EDGES.has(key):
 			return _reject("Missing, duplicate or invalid edge endpoint")
 		if raw.get("bidirectional") != true or raw.has("doorId") or raw.has("restorationId"):
 			return _reject("QA edges must be bidirectional and ungated")
