@@ -22,9 +22,9 @@ class GamePreviewImportTests(unittest.TestCase):
         path = ROOT / "a_detailed_top_down_isometric_game_map_illustratio.png"
         raw = path.read_bytes()
         self.assertEqual(len(raw), 3126732)
-        self.assertEqual(hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest(),
+        self.assertEqual(hashlib.sha1(f"blob {len(raw)}".encode("ascii") + bytes([0]) + raw).hexdigest(),
                          "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563")
-        self.assertEqual(raw[:8], b"\\x89PNG\\r\\n\\x1a\\n")
+        self.assertEqual(raw[:8], bytes([137,80,78,71,13,10,26,10]))
         self.assertEqual(raw[12:16], b"IHDR")
         width, height = struct.unpack(">II", raw[16:24])
         self.assertTrue(0 < width <= 16384 and 0 < height <= 16384)
