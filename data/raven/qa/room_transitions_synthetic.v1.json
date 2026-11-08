@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-authored-room-transitions",
+  "approval": "TEST_ONLY",
+  "description": "MAP-QA-06 synthetic-only rectangles, NOT Hall/Corridor/Bedroom geometry",
+  "doors": [
+    {
+      "id": "QA-DOOR-A-B",
+      "status": "open"
+    },
+    {
+      "id": "QA-DOOR-APPROACH",
+      "status": "open"
+    },
+    {
+      "id": "QA-DOOR-LOCKED",
+      "status": "gated"
+    },
+    {
+      "id": "QA-DOOR-FUTURE",
+      "status": "future"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "QA-ROOM-A",
+      "label": "SYNTHETIC ROOM A",
+      "graph": {
+        "provenance": {
+          "productionReady": false,
+          "geometryStatus": "synthetic-qa"
+        },
+        "anchors": [
+          {
+            "id": "QA-A-ENTRY",
+            "roomId": "QA-ROOM-A",
+            "kind": "safe",
+            "position": [
+              100,
+              270
+            ]
+          },
+          {
+            "id": "QA-A-MID",
+            "roomId": "QA-ROOM-A",
+            "kind": "safe",
+            "position": [
+              220,
+              270
+            ]
+          },
+          {
+            "id": "QA-A-DOOR",
+            "roomId": "QA-ROOM-A",
+            "kind": "transition",
+            "hotspotId": "QA-HS-A-DOOR",
+            "position": [
+              380,
+              270
+            ]
+          },
+          {
+            "id": "QA-A-VIRTUAL",
+            "roomId": "QA-ROOM-A",
+            "kind": "transition",
+            "hotspotId": "QA-HS-A-VIRTUAL",
+            "position": [
+              335,
+              105
+            ]
+          },
+          {
+            "id": "QA-A-LOCKED",
+            "roomId": "QA-ROOM-A",
+            "kind": "transition",
+            "hotspotId": "QA-HS-A-LOCKED",
+            "position": [
+              165,
+              90
+            ]
+          },
+          {
+            "id": "QA-A-FUTURE",
+            "roomId": "QA-ROOM-A",
+            "kind": "transition",
+            "hotspotId": "QA-HS-A-FUTURE",
+            "position": [
+              280,
+              90
+            ]
+          },
+          {
+            "id": "QA-A-SIDE",
+            "roomId": "QA-ROOM-A",
+            "kind": "interaction",
+            "hotspotId": "QA-HS-A-SIDE",
+            "position": [
+              105,
+              155
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "QA-A-ENTRY",
+            "to": "QA-A-MID"
+          },
+          {
+            "from": "QA-A-MID",
+            "to": "QA-A-DOOR",
+            "doorId": "QA-DOOR-APPROACH"
+          },
+          {
+            "from": "QA-A-MID",
+            "to": "QA-A-VIRTUAL"
+          },
+          {
+            "from": "QA-A-MID",
+            "to": "QA-A-LOCKED"
+          },
+          {
+            "from": "QA-A-MID",
+            "to": "QA-A-FUTURE"
+          },
+          {
+            "from": "QA-A-ENTRY",
+            "to": "QA-A-SIDE"
+          }
+        ]
+      }
+    },
+    {
+      "id": "QA-ROOM-B",
+      "label": "SYNTHETIC ROOM B",
+      "graph": {
+        "provenance": {
+          "productionReady": false,
+          "geometryStatus": "synthetic-qa"
+        },
+        "anchors": [
+          {
+            "id": "QA-B-ENTRY",
+            "roomId": "QA-ROOM-B",
+            "kind": "safe",
+            "position": [
+              100,
+              270
+            ]
+          },
+          {
+            "id": "QA-B-MID",
+            "roomId": "QA-ROOM-B",
+            "kind": "safe",
+            "position": [
+              235,
+              270
+            ]
+          },
+          {
+            "id": "QA-B-DOOR",
+            "roomId": "QA-ROOM-B",
+            "kind": "transition",
+            "hotspotId": "QA-HS-B-DOOR",
+            "position": [
+              380,
+              270
+            ]
+          },
+          {
+            "id": "QA-B-SIDE",
+            "roomId": "QA-ROOM-B",
+            "kind": "interaction",
+            "hotspotId": "QA-HS-B-SIDE",
+            "position": [
+              235,
+              125
+            ]
+          }
+        ],
+        "edges": [
+          {
+            "from": "QA-B-ENTRY",
+            "to": "QA-B-MID"
+          },
+          {
+            "from": "QA-B-MID",
+            "to": "QA-B-DOOR"
+          },
+          {
+            "from": "QA-B-MID",
+            "to": "QA-B-SIDE"
+          }
+        ]
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "QA-TR-A-B",
+      "sourceRoomId": "QA-ROOM-A",
+      "destinationRoomId": "QA-ROOM-B",
+      "approachAnchorId": "QA-A-DOOR",
+      "destinationEntryAnchorId": "QA-B-ENTRY",
+      "reverseTransitionId": "QA-TR-B-A",
+      "doorId": "QA-DOOR-A-B",
+      "authority": "TEST_ONLY"
+    },
+    {
+      "id": "QA-TR-B-A",
+      "sourceRoomId": "QA-ROOM-B",
+      "destinationRoomId": "QA-ROOM-A",
+      "approachAnchorId": "QA-B-DOOR",
+      "destinationEntryAnchorId": "QA-A-ENTRY",
+      "reverseTransitionId": "QA-TR-A-B",
+      "doorId": "QA-DOOR-A-B",
+      "authority": "TEST_ONLY"
+    },
+    {
+      "id": "QA-TR-A-LOCKED",
+      "sourceRoomId": "QA-ROOM-A",
+      "destinationRoomId": "QA-ROOM-B",
+      "approachAnchorId": "QA-A-LOCKED",
+      "destinationEntryAnchorId": "QA-B-ENTRY",
+      "reverseTransitionId": "",
+      "doorId": "QA-DOOR-LOCKED",
+      "authority": "TEST_ONLY"
+    },
+    {
+      "id": "QA-TR-A-FUTURE",
+      "sourceRoomId": "QA-ROOM-A",
+      "destinationRoomId": "QA-ROOM-B",
+      "approachAnchorId": "QA-A-FUTURE",
+      "destinationEntryAnchorId": "QA-B-ENTRY",
+      "reverseTransitionId": "",
+      "doorId": "QA-DOOR-FUTURE",
+      "authority": "TEST_ONLY"
+    },
+    {
+      "id": "QA-TR-A-VIRTUAL",
+      "sourceRoomId": "QA-ROOM-A",
+      "destinationRoomId": "QA-ROOM-B",
+      "approachAnchorId": "QA-A-VIRTUAL",
+      "destinationEntryAnchorId": "",
+      "reverseTransitionId": "",
+      "doorId": "",
+      "authority": "QA_VIRTUAL"
+    }
+  ]
+}
