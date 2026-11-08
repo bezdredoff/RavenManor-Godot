@@ -1,5 +1,7 @@
 extends SceneTree
 
+const RouteEditorChecks = preload("res://tests/raven/map_edit_01_routes_checks.gd")
+
 ## Isolated Room Builder → Godot scene smoke; does not open gameplay or write saves.
 func _initialize() -> void:
 	call_deferred("_check")
@@ -40,5 +42,6 @@ func _check() -> void:
 	assert(found_clock)
 	assert(pilot_count == 7, "All seven authored pilot art objects must survive import")
 	root.free()
+	RouteEditorChecks.run()
 	print("Room Builder 65-degree Godot visual import smoke passed")
 	quit(0)
