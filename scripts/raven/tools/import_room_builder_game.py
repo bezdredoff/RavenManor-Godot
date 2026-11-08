@@ -17,7 +17,13 @@ import math
 import re
 from pathlib import Path
 
-from scripts.raven.tools.import_first_floor_draft import scene_from_first_floor
+try:
+    from scripts.raven.tools.import_first_floor_draft import scene_from_first_floor
+except ModuleNotFoundError as error:
+    # python3 scripts/raven/tools/import_room_builder_game.py is the documented CLI.
+    if error.name != "scripts":
+        raise
+    from import_first_floor_draft import scene_from_first_floor
 
 ROOT = Path(__file__).resolve().parents[3]
 WORLD_MAP = ROOT / "data/raven/season1_world_map.json"
