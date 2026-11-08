@@ -1,0 +1,323 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-grid-route-draft",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "canonicalNavigationAuthority": false,
+  "coordinateSpace": "image-pixel",
+  "source": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a"
+  },
+  "sourceQaPath": "res://assets/raven/map/qa/first_floor_hall_pilot.v1.json",
+  "grid": {
+    "cellWidth": 32,
+    "cellHeight": 32,
+    "origin": [
+      0,
+      0
+    ],
+    "visible": true,
+    "showCoordinates": false
+  },
+  "waypoints": [
+    {
+      "id": "QA-HALL-SPAWN",
+      "label": "QA-HALL-SPAWN",
+      "type": "Spawn",
+      "pointPx": [
+        836,
+        746
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-CENTRE",
+      "label": "QA-HALL-CENTRE",
+      "type": "Waypoint",
+      "pointPx": [
+        835,
+        697
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-WEST",
+      "label": "QA-HALL-WEST",
+      "type": "Waypoint",
+      "pointPx": [
+        759,
+        719
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-EAST",
+      "label": "QA-HALL-EAST",
+      "type": "Waypoint",
+      "pointPx": [
+        925,
+        716
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-TABLE-APPROACH",
+      "label": "QA-HALL-TABLE-APPROACH",
+      "type": "Interaction",
+      "pointPx": [
+        835,
+        645
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-PORTAL-APPROACH",
+      "label": "QA-HALL-PORTAL-APPROACH",
+      "type": "Door Approach",
+      "pointPx": [
+        959,
+        746
+      ],
+      "provisional": true
+    },
+    {
+      "id": "QA-HALL-RETURN-SAFE",
+      "label": "QA-HALL-RETURN-SAFE",
+      "type": "Return Spawn",
+      "pointPx": [
+        932,
+        746
+      ],
+      "provisional": true
+    }
+  ],
+  "routes": [
+    {
+      "id": "QA-ROUTE-001",
+      "from": "QA-HALL-SPAWN",
+      "to": "QA-HALL-CENTRE",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-002",
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-WEST",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-003",
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-EAST",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-004",
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-TABLE-APPROACH",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-005",
+      "from": "QA-HALL-EAST",
+      "to": "QA-HALL-PORTAL-APPROACH",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-006",
+      "from": "QA-HALL-EAST",
+      "to": "QA-HALL-RETURN-SAFE",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-007",
+      "from": "QA-HALL-RETURN-SAFE",
+      "to": "QA-HALL-PORTAL-APPROACH",
+      "bidirectional": true,
+      "cells": [],
+      "provisional": true
+    }
+  ],
+  "blockedCells": [],
+  "walkablePolygons": [
+    {
+      "id": "QA-HALL-FLOOR-LOWER",
+      "roomId": "RM-ROOM-HALL",
+      "pointsPx": [
+        [
+          801,
+          639
+        ],
+        [
+          874,
+          639
+        ],
+        [
+          890,
+          659
+        ],
+        [
+          945,
+          660
+        ],
+        [
+          980,
+          698
+        ],
+        [
+          976,
+          769
+        ],
+        [
+          744,
+          769
+        ],
+        [
+          708,
+          706
+        ],
+        [
+          734,
+          661
+        ],
+        [
+          783,
+          661
+        ]
+      ],
+      "status": "visual_estimate_unapproved",
+      "purpose": "Conservative lower Hall walking corridor only; exclude stairs and table"
+    }
+  ],
+  "noGoPolygons": [
+    {
+      "id": "QA-HALL-NOGO-STAIR-L",
+      "pointsPx": [
+        [
+          655,
+          418
+        ],
+        [
+          791,
+          418
+        ],
+        [
+          791,
+          648
+        ],
+        [
+          655,
+          648
+        ]
+      ],
+      "reason": "Left stair/banister, multiple elevations"
+    },
+    {
+      "id": "QA-HALL-NOGO-STAIR-R",
+      "pointsPx": [
+        [
+          886,
+          418
+        ],
+        [
+          1039,
+          418
+        ],
+        [
+          1039,
+          646
+        ],
+        [
+          886,
+          646
+        ]
+      ],
+      "reason": "Right stair/banister, multiple elevations"
+    },
+    {
+      "id": "QA-HALL-NOGO-TEA-TABLE",
+      "pointsPx": [
+        [
+          790,
+          532
+        ],
+        [
+          882,
+          532
+        ],
+        [
+          882,
+          623
+        ],
+        [
+          790,
+          623
+        ]
+      ],
+      "reason": "Tea table and nearby chairs; proxy collision only"
+    },
+    {
+      "id": "QA-HALL-NOGO-PLANT-LEFT",
+      "pointsPx": [
+        [
+          651,
+          666
+        ],
+        [
+          700,
+          666
+        ],
+        [
+          700,
+          732
+        ],
+        [
+          651,
+          732
+        ]
+      ],
+      "reason": "Lower Hall planter/edge proxy"
+    },
+    {
+      "id": "QA-HALL-NOGO-PLANT-RIGHT",
+      "pointsPx": [
+        [
+          990,
+          661
+        ],
+        [
+          1040,
+          661
+        ],
+        [
+          1040,
+          736
+        ],
+        [
+          990,
+          736
+        ]
+      ],
+      "reason": "Lower Hall planter/edge proxy"
+    }
+  ],
+  "nextWaypointSerial": 1,
+  "nextRouteSerial": 8
+}
