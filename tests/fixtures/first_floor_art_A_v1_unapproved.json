@@ -1,0 +1,967 @@
+{
+  "schemaVersion": 1,
+  "contractId": "raven.first-floor-art",
+  "contractRevision": "1.0.0-draft",
+  "created": "2026-11-08",
+  "ownerDomain": "environment-art",
+  "productionReady": false,
+  "integrationAllowed": false,
+  "approval": {
+    "composition": "owner_selected_source",
+    "pixelCalibration": "pending",
+    "topology": "pending",
+    "foreground": "pending",
+    "masks": "pending",
+    "manualGodotQA": "pending",
+    "rightsReview": "not_documented"
+  },
+  "source": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "byteSize": 3126732,
+    "format": "PNG",
+    "sha256": null,
+    "dimensionsPx": null,
+    "artStatus": "owner_selected",
+    "metadataStatus": "requires_binary_read"
+  },
+  "referenceSources": [
+    {
+      "path": "data/raven/season1_world_map.json",
+      "gitBlobSha": "fd291c8ec02ca72442a553b57eda7ca30a2ea150",
+      "authority": "draft_world_plan_not_approved"
+    },
+    {
+      "path": "data/raven/manor_greybox_graph.json",
+      "gitBlobSha": "4505a5478969e9d3c5b5c74f09770ee1ea6d9187",
+      "authority": "vertical_slice_graph_not_artistically_calibrated"
+    }
+  ],
+  "coordinateSystems": {
+    "sourcePixel": {
+      "origin": "upper_left",
+      "positiveX": "right",
+      "positiveY": "down",
+      "unit": "px",
+      "dimensions": "source.dimensionsPx; pending byte inspection",
+      "coordinatePrecision": "float"
+    },
+    "worldPlan": {
+      "origin": "reference_season1_world_map",
+      "positiveX": "right",
+      "positiveY": "down",
+      "unit": "provisional_world_unit",
+      "extent": [
+        2150,
+        2250
+      ]
+    },
+    "greyboxGraph": {
+      "origin": "independent_vertical_slice_greybox",
+      "unit": "greybox_unit",
+      "directMappingToWorldPlan": false
+    },
+    "worldPlanToSourcePixel": {
+      "status": "unresolved",
+      "model": "piecewise_floor_projective_or_homography_after_artist_review",
+      "matrix": null,
+      "controlPoints": [],
+      "inverse": null,
+      "allowInterpolation": false
+    },
+    "worldPlanToPrototypeScreen": {
+      "status": "documented_prototype_not_source_image_calibration",
+      "elevationDeg": 65,
+      "azimuthNote": "Room Builder volumetric preview uses 45deg azimuth; floor XY implementation is axis aligned with Y compressed",
+      "formula": "screenX=offsetX+zoom*worldX; screenY=offsetY+zoom*sin(65deg)*worldY",
+      "inverse": "worldX=(screenX-offsetX)/zoom; worldY=(screenY-offsetY)/(zoom*sin(65deg))",
+      "zoom": "positive runtime/editor parameter",
+      "screenOffset": "per-view parameter"
+    }
+  },
+  "rooms": [
+    {
+      "id": "RM-ROOM-ENTRY",
+      "displayName": "Вход",
+      "referenceWorldPlanRect": [
+        760,
+        840,
+        180,
+        150
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-HALL",
+      "displayName": "Холл",
+      "referenceWorldPlanRect": [
+        500,
+        150,
+        700,
+        690
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-ARCHIVE",
+      "displayName": "Библиотека",
+      "referenceWorldPlanRect": [
+        80,
+        340,
+        420,
+        420
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "Library/Archive naming alias",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-CORRIDOR",
+      "displayName": "Коридор",
+      "referenceWorldPlanRect": [
+        1200,
+        370,
+        250,
+        930
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-BEDROOM",
+      "displayName": "Спальня",
+      "referenceWorldPlanRect": [
+        1450,
+        420,
+        490,
+        340
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-BATHROOM",
+      "displayName": "Ванная",
+      "referenceWorldPlanRect": [
+        1450,
+        790,
+        490,
+        260
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "corridor_vignette_initial_slice",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-KITCHEN",
+      "displayName": "Кухня",
+      "referenceWorldPlanRect": [
+        1200,
+        1300,
+        740,
+        420
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ROOM-CONSERVATORY",
+      "displayName": "Оранжерея",
+      "referenceWorldPlanRect": [
+        1200,
+        1720,
+        740,
+        390
+      ],
+      "sourcePixelPolygon": null,
+      "sourceVisible": "not_verified_from_pixels",
+      "intendedRole": "world_plan_reference",
+      "calibrationStatus": "reference_only"
+    }
+  ],
+  "doors": [
+    {
+      "id": "RM-DOOR-ENTRY-HALL",
+      "roomIds": [
+        "RM-ROOM-ENTRY",
+        "RM-ROOM-HALL"
+      ],
+      "referenceWorldPlanPoint": [
+        850,
+        840
+      ],
+      "referenceState": "open",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-HALL-ARCHIVE",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-ARCHIVE"
+      ],
+      "referenceWorldPlanPoint": [
+        500,
+        550
+      ],
+      "referenceState": "gated",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-CORRIDOR"
+      ],
+      "referenceWorldPlanPoint": [
+        1200,
+        585
+      ],
+      "referenceState": "open",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BEDROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BEDROOM"
+      ],
+      "referenceWorldPlanPoint": [
+        1450,
+        585
+      ],
+      "referenceState": "gated",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BATHROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BATHROOM"
+      ],
+      "referenceWorldPlanPoint": [
+        1450,
+        920
+      ],
+      "referenceState": "gated",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-KITCHEN",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-KITCHEN"
+      ],
+      "referenceWorldPlanPoint": [
+        1325,
+        1300
+      ],
+      "referenceState": "gated",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-CONSERVATORY",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        "RM-ROOM-CONSERVATORY"
+      ],
+      "referenceWorldPlanPoint": [
+        1580,
+        1720
+      ],
+      "referenceState": "gated",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-HALL-EAST-WING",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "referenceWorldPlanPoint": [
+        850,
+        350
+      ],
+      "referenceState": "future",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-HALL-UPPER-FLOOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "referenceWorldPlanPoint": [
+        850,
+        320
+      ],
+      "referenceState": "future",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-SERVICE",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        null
+      ],
+      "referenceWorldPlanPoint": [
+        1940,
+        1460
+      ],
+      "referenceState": "future",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    },
+    {
+      "id": "RM-DOOR-CONSERVATORY-GARDEN",
+      "roomIds": [
+        "RM-ROOM-CONSERVATORY",
+        null
+      ],
+      "referenceWorldPlanPoint": [
+        1600,
+        2110
+      ],
+      "referenceState": "future",
+      "sourcePixelPoint": null,
+      "nearFarFootpointsPx": null,
+      "calibrationStatus": "reference_only",
+      "authoritativeForMovement": false
+    }
+  ],
+  "navigationReferenceAnchors": [
+    {
+      "id": "RM-NAV-HALL-SPAWN",
+      "roomId": "RM-ROOM-HALL",
+      "referenceGreyboxPoint": [
+        400,
+        300
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "safe"
+    },
+    {
+      "id": "RM-NAV-HS-001",
+      "roomId": "RM-ROOM-HALL",
+      "referenceGreyboxPoint": [
+        220,
+        300
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    },
+    {
+      "id": "RM-NAV-HALL-CORRIDOR-NEAR",
+      "roomId": "RM-ROOM-HALL",
+      "referenceGreyboxPoint": [
+        400,
+        440
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "transition"
+    },
+    {
+      "id": "RM-NAV-HALL-CORRIDOR-FAR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "referenceGreyboxPoint": [
+        400,
+        540
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "transition"
+    },
+    {
+      "id": "RM-NAV-HS-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "referenceGreyboxPoint": [
+        190,
+        820
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    },
+    {
+      "id": "RM-NAV-CORRIDOR-CENTER",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "referenceGreyboxPoint": [
+        400,
+        820
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "safe"
+    },
+    {
+      "id": "RM-NAV-HS-005",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "referenceGreyboxPoint": [
+        400,
+        1030
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-NEAR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "referenceGreyboxPoint": [
+        400,
+        1070
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "transition"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-FAR",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceGreyboxPoint": [
+        400,
+        1170
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "transition"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-CENTER",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceGreyboxPoint": [
+        400,
+        1330
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "safe"
+    },
+    {
+      "id": "RM-NAV-HS-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceGreyboxPoint": [
+        560,
+        1390
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    },
+    {
+      "id": "RM-NAV-HS-004",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceGreyboxPoint": [
+        620,
+        1260
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    },
+    {
+      "id": "RM-NAV-HALL-TEA",
+      "roomId": "RM-ROOM-HALL",
+      "referenceGreyboxPoint": [
+        290,
+        340
+      ],
+      "sourcePixelFootpoint": null,
+      "referenceSpace": "independent_greybox",
+      "calibrationStatus": "unresolved",
+      "kind": "interaction"
+    }
+  ],
+  "objects": [
+    {
+      "id": "RM-ASSET-HALL-CLOCK",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        575,
+        460,
+        60,
+        90
+      ],
+      "referencePlanFloorPivot": [
+        605,
+        550
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-HALL-SEATS",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        640,
+        560,
+        160,
+        125
+      ],
+      "referencePlanFloorPivot": [
+        720,
+        685
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-L",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        640,
+        190,
+        115,
+        195
+      ],
+      "referencePlanFloorPivot": [
+        697.5,
+        385
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-HALL-STAIRS-R",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        945,
+        190,
+        115,
+        195
+      ],
+      "referencePlanFloorPivot": [
+        1002.5,
+        385
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-HALL-CONSOLE",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        1110,
+        720,
+        70,
+        65
+      ],
+      "referencePlanFloorPivot": [
+        1145,
+        785
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-HALL-GALLERY",
+      "roomId": "RM-ROOM-HALL",
+      "referenceWorldPlanRect": [
+        525,
+        220,
+        65,
+        165
+      ],
+      "referencePlanFloorPivot": [
+        557.5,
+        385
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-DESK",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "referenceWorldPlanRect": [
+        240,
+        490,
+        150,
+        85
+      ],
+      "referencePlanFloorPivot": [
+        315,
+        575
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-ARCHIVE-SHELF",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "referenceWorldPlanRect": [
+        100,
+        365,
+        290,
+        55
+      ],
+      "referencePlanFloorPivot": [
+        245,
+        420
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-BED",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceWorldPlanRect": [
+        1615,
+        460,
+        205,
+        150
+      ],
+      "referencePlanFloorPivot": [
+        1717.5,
+        610
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-BEDROOM-WARDROBE",
+      "roomId": "RM-ROOM-BEDROOM",
+      "referenceWorldPlanRect": [
+        1480,
+        460,
+        75,
+        130
+      ],
+      "referencePlanFloorPivot": [
+        1517.5,
+        590
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-BATHROOM-PLUMBING",
+      "roomId": "RM-ROOM-BATHROOM",
+      "referenceWorldPlanRect": [
+        1670,
+        830,
+        180,
+        100
+      ],
+      "referencePlanFloorPivot": [
+        1760,
+        930
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-COUNTER",
+      "roomId": "RM-ROOM-KITCHEN",
+      "referenceWorldPlanRect": [
+        1480,
+        1350,
+        375,
+        80
+      ],
+      "referencePlanFloorPivot": [
+        1667.5,
+        1430
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-KITCHEN-TABLE",
+      "roomId": "RM-ROOM-KITCHEN",
+      "referenceWorldPlanRect": [
+        1520,
+        1535,
+        180,
+        85
+      ],
+      "referencePlanFloorPivot": [
+        1610,
+        1620
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-PLANTS",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "referenceWorldPlanRect": [
+        1610,
+        1870,
+        245,
+        92
+      ],
+      "referencePlanFloorPivot": [
+        1732.5,
+        1962
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    },
+    {
+      "id": "RM-ASSET-CONSERVATORY-BENCH",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "referenceWorldPlanRect": [
+        1235,
+        2000,
+        150,
+        65
+      ],
+      "referencePlanFloorPivot": [
+        1310,
+        2065
+      ],
+      "pivotMeaning": "proposed bottom-center of plan rectangle, NOT a painted sprite pivot",
+      "sourcePixelPivot": null,
+      "sourcePixelSilhouette": null,
+      "foregroundCutoutPath": null,
+      "candidateOccluder": true,
+      "calibrationStatus": "reference_only"
+    }
+  ],
+  "layers": [
+    {
+      "id": "base-composite",
+      "kind": "base_raster",
+      "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+      "state": "available",
+      "pivotPx": [
+        0,
+        0
+      ],
+      "sortMode": "static_backdrop",
+      "note": "Unmodified, single flat PNG; no alpha-extracted foreground promised"
+    },
+    {
+      "id": "foreground-architecture",
+      "kind": "foreground_rgba",
+      "path": null,
+      "state": "not_extracted",
+      "pivotPx": null,
+      "sortMode": "foot_depth_pending",
+      "note": "Walls, arches, stair rails need reviewed cutouts/inpainting"
+    },
+    {
+      "id": "foreground-furniture",
+      "kind": "foreground_rgba",
+      "path": null,
+      "state": "not_extracted",
+      "pivotPx": null,
+      "sortMode": "foot_depth_pending",
+      "note": "Chairs, tall clocks, desks, counters require image-specific segmentation"
+    },
+    {
+      "id": "occlusion-depth",
+      "kind": "occlusion_mask",
+      "path": null,
+      "state": "not_extracted",
+      "pivotPx": null,
+      "sortMode": "not_usable",
+      "note": "Do not infer alpha from the flat painting"
+    },
+    {
+      "id": "door-visual-states",
+      "kind": "optional_state",
+      "path": null,
+      "state": "not_authored",
+      "pivotPx": null,
+      "sortMode": "not_usable",
+      "note": "No new states without explicit fiction and art approval"
+    }
+  ],
+  "unresolvedQuestions": [
+    {
+      "id": "ART-Q-001",
+      "severity": "blocking",
+      "topic": "Pixel access",
+      "question": "Record exact PNG dimensions/SHA256 after byte-level read; manually inspect and mark actual rooms, floors, occluders",
+      "owners": [
+        "environment-art"
+      ]
+    },
+    {
+      "id": "ART-Q-002",
+      "severity": "blocking",
+      "topic": "Composition versus walkable graph",
+      "question": "Which painted doors/room connections genuinely exist and which cannot align with authored Hall→Corridor→Bedroom route?",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-003",
+      "severity": "blocking",
+      "topic": "Library naming and position",
+      "question": "Does the painted Library correspond to RM-ROOM-ARCHIVE and is its connecting door physically present?",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-004",
+      "severity": "blocking",
+      "topic": "Stairs and upper floor",
+      "question": "Which stair landings are walkable on floor one? Confirm closed upper wing and avoid accidental upper-level path",
+      "owners": [
+        "environment-art",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-005",
+      "severity": "blocking",
+      "topic": "Foreground restoration",
+      "question": "Approve image-space masks and inpainting of newly exposed pixels before cutouts; no destructive extraction from approved composite",
+      "owners": [
+        "environment-art",
+        "room-builder"
+      ]
+    },
+    {
+      "id": "ART-Q-006",
+      "severity": "blocking",
+      "topic": "Projection and room polygons",
+      "question": "Agree four or more non-collinear floor fiducials and per-room polygons; perspective drawing may require piecewise mappings",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-007",
+      "severity": "blocking",
+      "topic": "Rights/source",
+      "question": "Confirm documented provenance and redistribution permission for the actual GitHub PNG, independent of approval of composition",
+      "owners": [
+        "environment-art"
+      ]
+    },
+    {
+      "id": "ART-Q-008",
+      "severity": "review",
+      "topic": "Visual states",
+      "question": "No extra door, lighting or repair raster states until tied to a concrete current-game interaction",
+      "owners": [
+        "environment-art",
+        "room-builder"
+      ]
+    }
+  ]
+}

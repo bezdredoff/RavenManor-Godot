@@ -1,0 +1,281 @@
+{
+  "schemaVersion": 1,
+  "roomId": "RM-ROOM-HALL",
+  "title": "Map draft test carrier",
+  "width": 700,
+  "height": 690,
+  "grid": 25,
+  "assets": [],
+  "layers": [],
+  "objects": [],
+  "walls": [],
+  "openings": [],
+  "anchors": [],
+  "firstFloorDraft": {
+    "schemaVersion": 2,
+    "kind": "raven-first-floor-draft",
+    "provenance": "TEST FIXTURE ONLY / no approved map artwork",
+    "baseImage": {
+      "pixelSize": [
+        1,
+        1
+      ],
+      "dataUri": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aC1sAAAAASUVORK5CYII="
+    },
+    "calibration": {
+      "imageRect": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "worldRect": [
+        0,
+        0,
+        2150,
+        2250
+      ],
+      "controlPoints": [
+        {
+          "pixel": [
+            0,
+            0
+          ],
+          "world": [
+            0,
+            0
+          ]
+        },
+        {
+          "pixel": [
+            1,
+            1
+          ],
+          "world": [
+            2150,
+            2250
+          ]
+        }
+      ]
+    },
+    "roomRegions": [
+      {
+        "id": "RM-ROOM-ENTRY",
+        "rect": [
+          760,
+          840,
+          180,
+          150
+        ]
+      },
+      {
+        "id": "RM-ROOM-HALL",
+        "rect": [
+          500,
+          150,
+          700,
+          690
+        ]
+      },
+      {
+        "id": "RM-ROOM-ARCHIVE",
+        "rect": [
+          80,
+          340,
+          420,
+          420
+        ]
+      },
+      {
+        "id": "RM-ROOM-CORRIDOR",
+        "rect": [
+          1200,
+          370,
+          250,
+          930
+        ]
+      },
+      {
+        "id": "RM-ROOM-BEDROOM",
+        "rect": [
+          1450,
+          420,
+          490,
+          340
+        ]
+      },
+      {
+        "id": "RM-ROOM-BATHROOM",
+        "rect": [
+          1450,
+          790,
+          490,
+          260
+        ]
+      },
+      {
+        "id": "RM-ROOM-KITCHEN",
+        "rect": [
+          1200,
+          1300,
+          740,
+          420
+        ]
+      },
+      {
+        "id": "RM-ROOM-CONSERVATORY",
+        "rect": [
+          1200,
+          1720,
+          740,
+          390
+        ]
+      }
+    ],
+    "doorPlacements": [
+      {
+        "id": "RM-DOOR-ENTRY-HALL",
+        "rooms": [
+          "RM-ROOM-ENTRY",
+          "RM-ROOM-HALL"
+        ],
+        "point": [
+          850,
+          840
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-HALL-ARCHIVE",
+        "rooms": [
+          "RM-ROOM-HALL",
+          "RM-ROOM-ARCHIVE"
+        ],
+        "point": [
+          500,
+          550
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-HALL-CORRIDOR",
+        "rooms": [
+          "RM-ROOM-HALL",
+          "RM-ROOM-CORRIDOR"
+        ],
+        "point": [
+          1200,
+          585
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-CORRIDOR-BEDROOM",
+        "rooms": [
+          "RM-ROOM-CORRIDOR",
+          "RM-ROOM-BEDROOM"
+        ],
+        "point": [
+          1450,
+          585
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-CORRIDOR-BATHROOM",
+        "rooms": [
+          "RM-ROOM-CORRIDOR",
+          "RM-ROOM-BATHROOM"
+        ],
+        "point": [
+          1450,
+          920
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-CORRIDOR-KITCHEN",
+        "rooms": [
+          "RM-ROOM-CORRIDOR",
+          "RM-ROOM-KITCHEN"
+        ],
+        "point": [
+          1325,
+          1300
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-KITCHEN-CONSERVATORY",
+        "rooms": [
+          "RM-ROOM-KITCHEN",
+          "RM-ROOM-CONSERVATORY"
+        ],
+        "point": [
+          1580,
+          1720
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-HALL-EAST-WING",
+        "rooms": [
+          "RM-ROOM-HALL",
+          null
+        ],
+        "point": [
+          850,
+          350
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-HALL-UPPER-FLOOR",
+        "rooms": [
+          "RM-ROOM-HALL",
+          null
+        ],
+        "point": [
+          850,
+          320
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-KITCHEN-SERVICE",
+        "rooms": [
+          "RM-ROOM-KITCHEN",
+          null
+        ],
+        "point": [
+          1940,
+          1460
+        ],
+        "width": 80
+      },
+      {
+        "id": "RM-DOOR-CONSERVATORY-GARDEN",
+        "rooms": [
+          "RM-ROOM-CONSERVATORY",
+          null
+        ],
+        "point": [
+          1600,
+          2110
+        ],
+        "width": 80
+      }
+    ],
+    "navigationAnchors": [
+      {
+        "id": "RM-NAV-HALL-CHECK",
+        "roomId": "RM-ROOM-HALL",
+        "point": [
+          900,
+          700
+        ]
+      }
+    ],
+    "foregroundObjects": []
+  }
+}
