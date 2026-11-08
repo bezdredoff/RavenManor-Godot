@@ -24,11 +24,22 @@ func _initialize() -> void:
         assert(not known.has(point.id))
         known[point.id] = foot
     assert(known.has(candidate.actor.initialPointId))
+    assert(candidate.actor.initialPointId == "QA-HALL-SPAWN")
+    assert(not candidate.productionReady and not candidate.canonicalNavigationAuthority)
+    var refs: Dictionary = {}
+    for anchor in candidate.canonicalReferences.anchorIdentities:
+        assert(not refs.has(anchor.id))
+        assert(anchor.keys().size() == 3, "Canonical identities cannot carry pixel XY")
+        refs[anchor.id] = true
+    assert(candidate.canonicalReferences.transferredCoordinateCount == 0)
     for edge in candidate.edges:
         assert(known.has(edge["from"]) and known.has(edge["to"]))
     assert(known.has(candidate.virtualPortal.approachPointId))
     assert(known.has(candidate.virtualPortal.returnSpawnPointId))
     assert(not candidate.virtualPortal.physicalDoorConfirmed)
+    assert(candidate.virtualPortal.farSideSpawnPointPx == null)
+    assert(candidate.virtualPortal.activateOnArrivalOnly)
+    assert(candidate.virtualPortal.status == "QA_VIRTUAL_NOT_VISIBLE_PHYSICAL_DOOR")
     var png_texture: Texture2D = load("res://a_detailed_top_down_isometric_game_map_illustratio.png")
     assert(png_texture != null and png_texture.get_width() == 1672 and png_texture.get_height() == 941)
     print("MAP-QA-01 Hall pilot Godot JSON/image smoke passed (QA-only pixel coordinates).")
