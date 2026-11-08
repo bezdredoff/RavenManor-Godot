@@ -41,8 +41,12 @@ export function validateFirstFloorDraft(input,reference){
  if(!c||typeof c!=='object')throw Error('Отсутствует calibration');
  const imageRect=values(c.imageRect,4,'calibration.imageRect'),worldRect=values(c.worldRect,4,'calibration.worldRect');
  if(imageRect[2]<=0||imageRect[3]<=0||worldRect[2]<=0||worldRect[3]<=0||!inside(imageRect.slice(0,2),[0,0,...base.pixelSize])||!inside([imageRect[0]+imageRect[2],imageRect[1]+imageRect[3]],[0,0,...base.pixelSize])||imageRect[0]!==0||imageRect[1]!==0||imageRect[2]!==base.pixelSize[0]||imageRect[3]!==base.pixelSize[1])throw Error('Размеры calibration не совпадают с полным PNG (crop не поддерживается v2)');
+ const reg=d.registration,unregistered=reg?.status==='unresolved';
+ if(reg!==undefined&&(!unregistered||reg.imageSpace!=='image-pixel'||reg.referenceSpace!=='world-plan'||reg.previewSpace!=='screen-projected'||reg.pixelToWorld!==null||reg.navigationAllowed!==false))throw Error('Запрещено неявное преобразование image-pixel / screen-projected в world-plan или навигацию');
  const cp=items(c.controlPoints,'controlPoints');
- if(cp.length<2)throw Error('Нужно минимум две контрольные точки калибровки');
+ if(unregistered){
+  if(c.status!=='unresolved'||cp.length)throw Error('Неоткалиброванная карта не может содержать контрольные точки регистрации');
+ }else if(cp.length<2)throw Error('Нужно минимум две контрольные точки калибровки');
  cp.forEach((p,i)=>{
   if(!p||typeof p!=='object')throw Error('Неверная controlPoint #'+i);
   const pixel=values(p.pixel,2,'controlPoint.pixel'),world=values(p.world,2,'controlPoint.world');
@@ -70,6 +74,7 @@ export function validateFirstFloorDraft(input,reference){
   if(!inside(p,worldRect)||d.rooms.filter(Boolean).some(id=>!inside(p,roomRects.get(id),16)))throw Error('Некорректное положение двери '+d.id);
   if(typeof d.width!=='number'||!Number.isFinite(d.width)||d.width<1||d.width>500)throw Error('Некорректная ширина двери '+d.id);
  });
+ if(unregistered&&(anchors.length||fg.length))throw Error('Без регистрации image-pixel в world-plan нельзя добавлять navigation anchors или foreground pivots');
  const visited=new Set();
  anchors.forEach(a=>{
   if(!roomIds.has(a.roomId))throw Error('Неизвестная комната anchor '+a.id);
@@ -95,9 +100,9 @@ export function makeFirstFloorDraft(map,baseImage){
  return validateFirstFloorDraft({
   kind:'raven-first-floor-draft',schemaVersion:2,
   provenance:'Room Builder DRAFT; world map reference is a provisional feasibility plan, not approved art/geometry.',
-  baseImage,calibration:{imageRect:[0,0,w,h],worldRect,controlPoints:[
-   {pixel:[0,0],world:[0,0]},{pixel:[w,h],world:[worldRect[2],worldRect[3]]}
-  ]},
+  baseImage,registration:{status:'unresolved',imageSpace:'image-pixel',referenceSpace:'world-plan',
+   previewSpace:'screen-projected',pixelToWorld:null,navigationAllowed:false},
+  calibration:{status:'unresolved',imageRect:[0,0,w,h],worldRect,controlPoints:[]},
   roomRegions:map.rooms.map(r=>({id:r.id,rect:[...r.rect]})),
   doorPlacements:map.doors.map(d=>({id:d.id,rooms:[map.rooms[d.a].id,d.b<0?null:map.rooms[d.b].id],point:[...d.point],width:80})),
   navigationAnchors:[],foregroundObjects:[]
@@ -107,6 +112,7 @@ export function comparison(d,map){
  if(!map)return ['Не загружена схема предлагаемых координат Godot'];
  const regions=new Map(map.rooms.map(x=>[x.id,x.rect])),doors=new Map(map.doors.map(x=>[x.id,x.point]));
  const lines=['Сравнение с ПРОЕКТНОЙ геометрией Godot (не approved):'];
+ if(d.registration?.status==='unresolved')lines.push('PIXEL REGISTRATION UNRESOLVED: ниже только координаты world-plan, НЕ положение на PNG. Перекрытие изображения запрещено.');
  for(const r of d.roomRegions){const delta=r.rect.map((x,i)=>Math.round(x-regions.get(r.id)[i]));lines.push(r.id+': Δ[X,Y,W,H] '+delta.join(', ')+(delta.some(x=>Math.abs(x)>12)?'  ⚠ REVIEW':''));}
  for(const o of d.doorPlacements){const delta=o.point.map((x,i)=>Math.round(x-doors.get(o.id)[i]));lines.push(o.id+': Δ[X,Y] '+delta.join(', ')+(Math.hypot(...delta)>12?'  ⚠ REVIEW':''));}
  lines.push('Нет автоматического изменения навигации, коллизий или campaign state.');
