@@ -126,6 +126,16 @@
       "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Full all-room landmark/safe-zone matrices are season expansion; Hall authoring gates remain P0. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "priority": "P2",
       "updated": "2026-11-03"
+    },
+    {
+      "id": "GFX-08-08",
+      "status": "ready",
+      "owner": "ChatGPT Agent A",
+      "updated": "2026-11-08",
+      "evidence": "Agent A draft map-art manifest/calibration scaffold authored against main 4c4145a9 and approved root image blob b50bc36c. Pixel dimensions/SHA256/masks/scene calibration pending actual source-byte access; B/C contract review and owner QA pending. Proposed scoped PR; no runtime integration or production readiness claimed.",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending"
     }
   ],
   "assignments": [
