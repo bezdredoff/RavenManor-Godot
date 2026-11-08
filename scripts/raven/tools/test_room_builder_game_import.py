@@ -12,6 +12,7 @@ from scripts.raven.tools.import_room_builder_game import ROOT, scene_from_projec
 
 # Included by the existing CI test command; no workflow file changes required.
 from scripts.raven.tools.test_first_floor_draft_import import FirstFloorDraftImportTests
+from scripts.raven.tools.test_first_floor_art_adapter import FirstFloorArtAdapterTests
 
 FIXTURE = json.loads((ROOT/"tests/fixtures/hall_room_builder_export_sample.json").read_text(encoding="utf-8"))
 WORLD = json.loads((ROOT/"data/raven/season1_world_map.json").read_text(encoding="utf-8"))
