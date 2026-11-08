@@ -55,6 +55,7 @@ run_check 'VNS5-06D2C canonical-only runtime VN dispatch' 'Raven VN VNS5-06D2C a
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600
+run_check 'VN game frame safe-area and locale overflow' 'Raven VN game frame safe-area and locale overflow smoke passed' --script res://tests/raven/vn_shell_safe_area_smoke.gd --quit-after 240
 run_check 'Runtime settings persistence and modal' 'Raven runtime settings persistence, modal and locale smoke passed' --script res://tests/raven/runtime_settings_smoke.gd --quit-after 240
 run_check 'Replayable onboarding' 'Raven first-session and replayable onboarding smoke passed' --script res://tests/raven/onboarding_smoke.gd --quit-after 240
 run_check 'Procedural audio runtime' 'Raven procedural audio runtime, preference gating and focus smoke passed' --script res://tests/raven/audio_runtime_smoke.gd --quit-after 240

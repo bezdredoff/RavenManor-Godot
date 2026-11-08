@@ -121,6 +121,7 @@ Invoke-GodotCheck 'Hall VN runtime UI smoke' @('--headless', '--path', $projectP
 Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/season1_map_smoke.gd', '--quit-after', '120') 'Raven Manor continuous season1 map smoke passed'
 
 Invoke-GodotCheck 'UPDS VN shell layout and input' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_layout_smoke.gd', '--quit-after', '600') 'Raven UPDS VN shell layout and input smoke passed'
+Invoke-GodotCheck 'VN game frame safe-area and locale overflow' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_safe_area_smoke.gd', '--quit-after', '240') 'Raven VN game frame safe-area and locale overflow smoke passed'
 Invoke-GodotCheck 'Runtime settings persistence and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/runtime_settings_smoke.gd', '--quit-after', '240') 'Raven runtime settings persistence, modal and locale smoke passed'
 Invoke-GodotCheck 'Replayable onboarding' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/onboarding_smoke.gd', '--quit-after', '240') 'Raven first-session and replayable onboarding smoke passed'
 Invoke-GodotCheck 'Procedural audio runtime' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/audio_runtime_smoke.gd', '--quit-after', '240') 'Raven procedural audio runtime, preference gating and focus smoke passed'
