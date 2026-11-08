@@ -95,6 +95,186 @@
         746
       ],
       "provisional": true
+    },
+    {
+      "id": "QA-HALL-CIRCULATION-W",
+      "label": "Hall west circulation",
+      "type": "Waypoint",
+      "pointPx": [
+        784,
+        720
+      ],
+      "roomId": "RM-ROOM-HALL",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-HALL-CIRCULATION-E",
+      "label": "Hall east circulation",
+      "type": "Waypoint",
+      "pointPx": [
+        912,
+        720
+      ],
+      "roomId": "RM-ROOM-HALL",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-CORRIDOR-WEST",
+      "label": "Corridor west",
+      "type": "Waypoint",
+      "pointPx": [
+        784,
+        336
+      ],
+      "roomId": "RM-ROOM-CORRIDOR",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-CORRIDOR-CENTRE",
+      "label": "Corridor centre",
+      "type": "Waypoint",
+      "pointPx": [
+        880,
+        336
+      ],
+      "roomId": "RM-ROOM-CORRIDOR",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-CORRIDOR-EAST",
+      "label": "Corridor east",
+      "type": "Waypoint",
+      "pointPx": [
+        976,
+        336
+      ],
+      "roomId": "RM-ROOM-CORRIDOR",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-CORRIDOR-LOWER",
+      "label": "Corridor south carpet edge",
+      "type": "Interaction",
+      "pointPx": [
+        880,
+        368
+      ],
+      "roomId": "RM-ROOM-CORRIDOR",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-BEDROOM-RUG",
+      "label": "Bedroom bedside",
+      "type": "Waypoint",
+      "pointPx": [
+        432,
+        336
+      ],
+      "roomId": "RM-ROOM-BEDROOM",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-BEDROOM-WINDOW",
+      "label": "Bedroom east carpet",
+      "type": "Interaction",
+      "pointPx": [
+        464,
+        304
+      ],
+      "roomId": "RM-ROOM-BEDROOM",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-BEDROOM-SOUTH",
+      "label": "Bedroom south aisle",
+      "type": "Waypoint",
+      "pointPx": [
+        464,
+        368
+      ],
+      "roomId": "RM-ROOM-BEDROOM",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-NORTH",
+      "label": "Library west north",
+      "type": "Waypoint",
+      "pointPx": [
+        336,
+        560
+      ],
+      "roomId": "RM-ROOM-ARCHIVE",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-CENTRE",
+      "label": "Library west centre",
+      "type": "Waypoint",
+      "pointPx": [
+        336,
+        592
+      ],
+      "roomId": "RM-ROOM-ARCHIVE",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-SOUTH",
+      "label": "Library west south",
+      "type": "Interaction",
+      "pointPx": [
+        336,
+        624
+      ],
+      "roomId": "RM-ROOM-ARCHIVE",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-NORTH",
+      "label": "Kitchen east north",
+      "type": "Waypoint",
+      "pointPx": [
+        1360,
+        560
+      ],
+      "roomId": "RM-ROOM-KITCHEN",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-SOUTH",
+      "label": "Kitchen east south",
+      "type": "Waypoint",
+      "pointPx": [
+        1360,
+        656
+      ],
+      "roomId": "RM-ROOM-KITCHEN",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-ISLAND-APPROACH",
+      "label": "Island east side",
+      "type": "Interaction",
+      "pointPx": [
+        1328,
+        592
+      ],
+      "roomId": "RM-ROOM-KITCHEN",
+      "provisional": true,
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
     }
   ],
   "routes": [
@@ -153,6 +333,176 @@
       "bidirectional": true,
       "cells": [],
       "provisional": true
+    },
+    {
+      "id": "QA-ROUTE-008",
+      "from": "QA-HALL-WEST",
+      "to": "QA-HALL-CIRCULATION-W",
+      "bidirectional": true,
+      "cells": [
+        "X23",
+        "Y23"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-HALL",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-009",
+      "from": "QA-HALL-CIRCULATION-W",
+      "to": "QA-HALL-CIRCULATION-E",
+      "bidirectional": true,
+      "cells": [
+        "Y23",
+        "Z23",
+        "AA23",
+        "AB23",
+        "AC23"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-HALL",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-010",
+      "from": "QA-HALL-CIRCULATION-E",
+      "to": "QA-HALL-SPAWN",
+      "bidirectional": true,
+      "cells": [
+        "AC23",
+        "AB23",
+        "AA23",
+        "AA24"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-HALL",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-011",
+      "from": "QA-CORRIDOR-WEST",
+      "to": "QA-CORRIDOR-CENTRE",
+      "bidirectional": true,
+      "cells": [
+        "Y11",
+        "Z11",
+        "AA11",
+        "AB11"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-CORRIDOR",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-012",
+      "from": "QA-CORRIDOR-CENTRE",
+      "to": "QA-CORRIDOR-EAST",
+      "bidirectional": true,
+      "cells": [
+        "AB11",
+        "AC11",
+        "AD11",
+        "AE11"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-CORRIDOR",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-013",
+      "from": "QA-CORRIDOR-CENTRE",
+      "to": "QA-CORRIDOR-LOWER",
+      "bidirectional": true,
+      "cells": [
+        "AB11",
+        "AB12"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-CORRIDOR",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-014",
+      "from": "QA-BEDROOM-RUG",
+      "to": "QA-BEDROOM-WINDOW",
+      "bidirectional": true,
+      "cells": [
+        "N11",
+        "O11",
+        "O10"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-BEDROOM",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-015",
+      "from": "QA-BEDROOM-RUG",
+      "to": "QA-BEDROOM-SOUTH",
+      "bidirectional": true,
+      "cells": [
+        "N11",
+        "O11",
+        "O12"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-BEDROOM",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-016",
+      "from": "QA-LIBRARY-NORTH",
+      "to": "QA-LIBRARY-CENTRE",
+      "bidirectional": true,
+      "cells": [
+        "K18",
+        "K19"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-ARCHIVE",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-017",
+      "from": "QA-LIBRARY-CENTRE",
+      "to": "QA-LIBRARY-SOUTH",
+      "bidirectional": true,
+      "cells": [
+        "K19",
+        "K20"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-ARCHIVE",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-018",
+      "from": "QA-KITCHEN-NORTH",
+      "to": "QA-KITCHEN-SOUTH",
+      "bidirectional": true,
+      "cells": [
+        "AQ18",
+        "AQ19",
+        "AQ20",
+        "AQ21"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-KITCHEN",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
+    },
+    {
+      "id": "QA-ROUTE-019",
+      "from": "QA-KITCHEN-NORTH",
+      "to": "QA-KITCHEN-ISLAND-APPROACH",
+      "bidirectional": true,
+      "cells": [
+        "AQ18",
+        "AQ19",
+        "AP19"
+      ],
+      "provisional": false,
+      "roomId": "RM-ROOM-KITCHEN",
+      "calibrationStatus": "AI_PROVISIONAL_UNAPPROVED"
     }
   ],
   "blockedCells": [],
@@ -204,6 +554,102 @@
       ],
       "status": "visual_estimate_unapproved",
       "purpose": "Conservative lower Hall walking corridor only; exclude stairs and table"
+    },
+    {
+      "id": "QA-CORRIDOR-INNER-FLOOR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "pointsPx": [
+        [
+          740,
+          304
+        ],
+        [
+          999,
+          304
+        ],
+        [
+          999,
+          383
+        ],
+        [
+          740,
+          383
+        ]
+      ],
+      "purpose": "Upper corridor centre, no guessed portals",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-BEDROOM-EAST-FLOOR",
+      "roomId": "RM-ROOM-BEDROOM",
+      "pointsPx": [
+        [
+          408,
+          283
+        ],
+        [
+          497,
+          283
+        ],
+        [
+          497,
+          388
+        ],
+        [
+          408,
+          388
+        ]
+      ],
+      "purpose": "Bedside floor right of canopy",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-WEST-AISLE",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "pointsPx": [
+        [
+          308,
+          529
+        ],
+        [
+          366,
+          529
+        ],
+        [
+          366,
+          645
+        ],
+        [
+          308,
+          645
+        ]
+      ],
+      "purpose": "Narrow left walkable aisle, away from chair and desk",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-EAST-AISLE",
+      "roomId": "RM-ROOM-KITCHEN",
+      "pointsPx": [
+        [
+          1309,
+          522
+        ],
+        [
+          1379,
+          522
+        ],
+        [
+          1379,
+          677
+        ],
+        [
+          1309,
+          677
+        ]
+      ],
+      "purpose": "Island-to-hearth circulation strip",
+      "status": "AI_ESTIMATE_UNAPPROVED"
     }
   ],
   "noGoPolygons": [
@@ -316,8 +762,414 @@
         ]
       ],
       "reason": "Lower Hall planter/edge proxy"
+    },
+    {
+      "id": "QA-BEDROOM-NOGO-BED",
+      "roomId": "RM-ROOM-BEDROOM",
+      "pointsPx": [
+        [
+          230,
+          173
+        ],
+        [
+          392,
+          173
+        ],
+        [
+          392,
+          372
+        ],
+        [
+          230,
+          372
+        ]
+      ],
+      "reason": "Bed/canopy clearance",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-NOGO-ARMCHAIR",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "pointsPx": [
+        [
+          391,
+          509
+        ],
+        [
+          470,
+          509
+        ],
+        [
+          470,
+          608
+        ],
+        [
+          391,
+          608
+        ]
+      ],
+      "reason": "Chair body and clearance",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-LIBRARY-NOGO-DESK",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "pointsPx": [
+        [
+          397,
+          623
+        ],
+        [
+          520,
+          623
+        ],
+        [
+          520,
+          700
+        ],
+        [
+          397,
+          700
+        ]
+      ],
+      "reason": "Desk and its chair",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-NOGO-ISLAND",
+      "roomId": "RM-ROOM-KITCHEN",
+      "pointsPx": [
+        [
+          1155,
+          533
+        ],
+        [
+          1301,
+          533
+        ],
+        [
+          1301,
+          659
+        ],
+        [
+          1155,
+          659
+        ]
+      ],
+      "reason": "Kitchen island and stools",
+      "status": "AI_ESTIMATE_UNAPPROVED"
+    },
+    {
+      "id": "QA-KITCHEN-NOGO-HEARTH",
+      "roomId": "RM-ROOM-KITCHEN",
+      "pointsPx": [
+        [
+          1391,
+          515
+        ],
+        [
+          1462,
+          515
+        ],
+        [
+          1462,
+          658
+        ],
+        [
+          1391,
+          658
+        ]
+      ],
+      "reason": "Fireplace and counter",
+      "status": "AI_ESTIMATE_UNAPPROVED"
     }
   ],
   "nextWaypointSerial": 1,
-  "nextRouteSerial": 8
+  "nextRouteSerial": 20,
+  "roomCoverage": [
+    {
+      "id": "RM-ROOM-ENTRY",
+      "sourceImageBoundsPx": [
+        705,
+        791,
+        946,
+        941
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "UNRESOLVED",
+      "walkablePolygonIds": []
+    },
+    {
+      "id": "RM-ROOM-HALL",
+      "sourceImageBoundsPx": [
+        630,
+        405,
+        1090,
+        804
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "ISOLATED_WALKABLE_AI_DRAFT",
+      "walkablePolygonIds": [
+        "QA-HALL-FLOOR-LOWER"
+      ]
+    },
+    {
+      "id": "RM-ROOM-ARCHIVE",
+      "sourceImageBoundsPx": [
+        177,
+        407,
+        619,
+        777
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "ISOLATED_WALKABLE_AI_DRAFT",
+      "walkablePolygonIds": [
+        "QA-LIBRARY-WEST-AISLE"
+      ]
+    },
+    {
+      "id": "RM-ROOM-CORRIDOR",
+      "sourceImageBoundsPx": [
+        680,
+        231,
+        1059,
+        410
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "ISOLATED_WALKABLE_AI_DRAFT",
+      "walkablePolygonIds": [
+        "QA-CORRIDOR-INNER-FLOOR"
+      ]
+    },
+    {
+      "id": "RM-ROOM-BEDROOM",
+      "sourceImageBoundsPx": [
+        193,
+        140,
+        527,
+        420
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "ISOLATED_WALKABLE_AI_DRAFT",
+      "walkablePolygonIds": [
+        "QA-BEDROOM-EAST-FLOOR"
+      ]
+    },
+    {
+      "id": "RM-ROOM-BATHROOM",
+      "sourceImageBoundsPx": [
+        534,
+        162,
+        693,
+        360
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "UNRESOLVED",
+      "walkablePolygonIds": []
+    },
+    {
+      "id": "RM-ROOM-KITCHEN",
+      "sourceImageBoundsPx": [
+        1065,
+        469,
+        1498,
+        757
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "ISOLATED_WALKABLE_AI_DRAFT",
+      "walkablePolygonIds": [
+        "QA-KITCHEN-EAST-AISLE"
+      ]
+    },
+    {
+      "id": "RM-ROOM-CONSERVATORY",
+      "sourceImageBoundsPx": [
+        1230,
+        0,
+        1639,
+        212
+      ],
+      "roomBoundaryAuthority": "coarse_manifest_region_not_walkable_polygon",
+      "status": "UNRESOLVED",
+      "walkablePolygonIds": []
+    }
+  ],
+  "unresolvedLocations": [
+    {
+      "id": "MAP-QA-05-RM-DOOR-ENTRY-HALL",
+      "doorId": "RM-DOOR-ENTRY-HALL",
+      "roomIds": [
+        "RM-ROOM-ENTRY",
+        "RM-ROOM-HALL"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "visible_threshold_candidate",
+      "notes": "front double entrance visible; floor contact visually estimated, not calibrated; source-pixel approx [833,801] moved to RM-ART-FID-ENTRY for visual review only"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-HALL-ARCHIVE",
+      "doorId": "RM-DOOR-HALL-ARCHIVE",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-ARCHIVE"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "apparent_solid_wall",
+      "notes": "Hall↔Library west wall does not show an unambiguous opening in the supplied painting"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-HALL-CORRIDOR",
+      "doorId": "RM-DOOR-HALL-CORRIDOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-CORRIDOR"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_visible_at_reference_position",
+      "notes": "Upper horizontal corridor is behind Hall's staircase/landing, not a confirmed first-floor right-wall portal"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-CORRIDOR-BEDROOM",
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BEDROOM"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_visible",
+      "notes": "Bedroom has no clear approved opening onto the upper corridor; apparent partitions/windows are not doorways"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-CORRIDOR-BATHROOM",
+      "doorId": "RM-DOOR-CORRIDOR-BATHROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BATHROOM"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "ambiguous",
+      "notes": "Small light seam around lower bathroom threshold may be decorative; cannot certify as walking portal"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-CORRIDOR-KITCHEN",
+      "doorId": "RM-DOOR-CORRIDOR-KITCHEN",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-KITCHEN"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_visible",
+      "notes": "Kitchen sits below dark northeast room; old Corridor↔Kitchen adjacency not observed"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-KITCHEN-CONSERVATORY",
+      "doorId": "RM-DOOR-KITCHEN-CONSERVATORY",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        "RM-ROOM-CONSERVATORY"
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_contiguous",
+      "notes": "Glasshouse is outside far northeast, visually separated from kitchen by intervening covered room and garden"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-HALL-EAST-WING",
+      "doorId": "RM-DOOR-HALL-EAST-WING",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_visible",
+      "notes": "Covered dark room northeast not connected to Hall by verified ground-floor opening"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-HALL-UPPER-FLOOR",
+      "doorId": "RM-DOOR-HALL-UPPER-FLOOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "stair_landing_ambiguous",
+      "notes": "Two curved stair flights and central landing observed; level elevation/destination cannot be derived from flat art"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-KITCHEN-SERVICE",
+      "doorId": "RM-DOOR-KITCHEN-SERVICE",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "not_visible",
+      "notes": "No unambiguous service exterior door in kitchen's right/south walls"
+    },
+    {
+      "id": "MAP-QA-05-RM-DOOR-CONSERVATORY-GARDEN",
+      "doorId": "RM-DOOR-CONSERVATORY-GARDEN",
+      "roomIds": [
+        "RM-ROOM-CONSERVATORY",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "sourcePixelFootpoints": null,
+      "reason": "garden_connection_ambiguous",
+      "notes": "Greenhouse and garden adjacent; exact glasshouse door/threshold cannot be resolved"
+    },
+    {
+      "id": "MAP-QA-05-DARK-ROOM",
+      "roomId": null,
+      "status": "UNRESOLVED",
+      "reason": "Covered northeast room unregistered; no safe floor evidence"
+    },
+    {
+      "id": "MAP-QA-05-GARDEN",
+      "roomId": null,
+      "status": "UNRESOLVED",
+      "reason": "No approved garden room ID, ground clearance/portals"
+    },
+    {
+      "id": "MAP-QA-05-SPRITE-CLEARANCE",
+      "roomId": null,
+      "status": "UNRESOLVED",
+      "reason": "Onoe footprint cannot be certified from source artwork alone"
+    },
+    {
+      "id": "MAP-QA-05-BATHROOM-VIGNETTE",
+      "roomId": "RM-ROOM-BATHROOM",
+      "status": "UNRESOLVED",
+      "reason": "Initial slice uses corridor vignette, no full walkable room"
+    },
+    {
+      "id": "MAP-QA-05-GLASSHOUSE",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "status": "UNRESOLVED",
+      "reason": "Roof hides floor; no verified walkable aisle"
+    },
+    {
+      "id": "MAP-QA-05-ENTRY-STEPS",
+      "roomId": "RM-ROOM-ENTRY",
+      "status": "UNRESOLVED",
+      "reason": "Stairs are not a single ground-plane region"
+    }
+  ],
+  "qaTaskId": "MAP-QA-05",
+  "geometryReview": "AI_PROVISIONAL_UNAPPROVED",
+  "aiDraftPolicy": "New routes have fully authored orthogonal cells (provisional=false is schema-required); calibrationStatus marks geometry as AI provisional. Original seven Hall edges remain immutable provisional imports.",
+  "virtualHallPortal": {
+    "kind": "VIRTUAL_QA_ONLY_NOT_PHYSICAL",
+    "doorApproachId": "QA-HALL-PORTAL-APPROACH",
+    "returnSpawnId": "QA-HALL-RETURN-SAFE"
+  }
 }
