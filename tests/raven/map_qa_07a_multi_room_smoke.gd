@@ -56,7 +56,7 @@ func _run() -> void:
 	assert(host.route_overlay.visible)
 	host.toggle_routes()
 	assert(not host.route_overlay.visible)
-	var snapshot_before := host.state_proposal()
+	var snapshot_before: Dictionary = host.state_proposal()
 	assert(snapshot_before["roomId"] == "RM-ROOM-HALL")
 	assert(snapshot_before["transitionComplete"] == false)
 
@@ -149,7 +149,7 @@ func _run() -> void:
 	assert(JSON.stringify(Snapshot.fresh()) == saved_before)
 	assert(JSON.stringify(fixture) == original_fixture, "Host cannot mutate fixture graph/visual records")
 	assert(host.state_proposal()["roomId"] == "QA-F7-CORRIDOR")
-	var proposal := host.state_proposal()
+	var proposal: Dictionary = host.state_proposal()
 	proposal["roomId"] = "FAKE"
 	assert(host.state_proposal()["roomId"] == "QA-F7-CORRIDOR")
 	host.queue_free()
