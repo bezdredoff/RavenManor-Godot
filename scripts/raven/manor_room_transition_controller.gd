@@ -265,7 +265,7 @@ func request_transition(transition_id: String, actor) -> Dictionary:
 func next_segment(actor) -> Dictionary:
 	if _session == null or _safe_hold or _active_token != 0 or not is_instance_valid(actor) or actor.has_active_segment():
 		return {}
-	var at_rest := actor.position.distance_to(_graph.position(_session.current_anchor())) <= FOOT_TOLERANCE
+	var at_rest: bool = actor.position.distance_to(_graph.position(_session.current_anchor())) <= FOOT_TOLERANCE
 	if not at_rest:
 		_reject(_pending_id, "physical-position-not-at-anchor")
 		return {}
