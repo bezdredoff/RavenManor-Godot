@@ -218,7 +218,7 @@ export function installFirstFloorPanel({getProject,checkpoint,changed,getWorldRe
   const d=draft();calibration.replaceChildren();edit.replaceChildren();selector.replaceChildren();preview.style.display=d?'block':'none';
   if(!d){status.textContent='Нет firstFloorDraft. Старые проекты v1 не изменены.';report.textContent='';return;}
   lastDraft=d;
-  try{validateFirstFloorDraft(d,getWorldReference());status.textContent='DRAFT_ONLY · v2 · '+d.roomRegions.length+' комнат · '+d.doorPlacements.length+' дверей · '+d.navigationAnchors.length+' anchors. Для полного asset check нужен Python importer.';}
+  try{validateFirstFloorDraft(d,getWorldReference());status.textContent='DRAFT_ONLY · v2 · '+d.roomRegions.length+' комнат · '+d.doorPlacements.length+' дверей · '+d.navigationAnchors.length+' anchors. '+(d.registration?.status==='unresolved'?'IMAGE-PIXEL UNREGISTERED: PNG и world-plan нельзя накладывать друг на друга. ':'ILLUSTRATIVE preview only. ')+'Для полного asset check нужен Python importer.';}
   catch(e){status.textContent='VALIDATION ERROR: '+e.message;}
   if(d.baseImage.dataUri)readImage(d.baseImage.dataUri);
   else{image=null;const url='../'+d.baseImage.path;readImage(url);}
@@ -227,9 +227,13 @@ export function installFirstFloorPanel({getProject,checkpoint,changed,getWorldRe
   boxes.forEach(([label])=>calibration.append(label));
   b.onclick=()=>{
    const v=boxes.map(([,input])=>Number(input.value));
-   update(next=>{next.calibration.worldRect=v;const [ix,iy,iw,ih]=next.calibration.imageRect;next.calibration.controlPoints=[
-    {pixel:[ix,iy],world:[v[0],v[1]]},{pixel:[ix+iw,iy+ih],world:[v[0]+v[2],v[1]+v[3]]}
-   ];return next;});
+   update(next=>{next.calibration.worldRect=v;
+    if(next.registration?.status!=='unresolved'){
+     const [ix,iy,iw,ih]=next.calibration.imageRect;next.calibration.controlPoints=[
+      {pixel:[ix,iy],world:[v[0],v[1]]},{pixel:[ix+iw,iy+ih],world:[v[0]+v[2],v[1]+v[3]]}
+     ];
+    }
+    return next;});
   };calibration.append(b);
   const choices=[...d.roomRegions.map(o=>({name:'Комната: '+o.id,id:'r:'+o.id})),
    ...d.doorPlacements.map(o=>({name:'Дверь: '+o.id,id:'d:'+o.id})),
@@ -258,6 +262,8 @@ export function installFirstFloorPanel({getProject,checkpoint,changed,getWorldRe
   const anchorRoom=el('select',null);
   for(const r of d.roomRegions)anchorRoom.append(el('option',r.id,{value:r.id}));
   const add=el('button','Добавить navigation anchor',{type:'button'});
+  add.disabled=d.registration?.status==='unresolved';
+  add.title=add.disabled?'Нужно получить подтверждённые pixel-to-world fiducials от Agent A/C':'Добавить world-plan anchor';
   add.onclick=()=>update(next=>{
    const room=next.roomRegions.find(r=>r.id===anchorRoom.value);
    const [x,y,w,h]=room.rect;
@@ -272,6 +278,17 @@ export function installFirstFloorPanel({getProject,checkpoint,changed,getWorldRe
   c.clearRect(0,0,s,s);if(!d)return;
   const [wx,wy,ww,wh]=d.calibration.worldRect,scale=Math.min(s/ww,s/wh),ox=(s-ww*scale)/2,oy=(s-wh*scale)/2;
   const pos=p=>[ox+(p[0]-wx)*scale,oy+(p[1]-wy)*scale];
+  if(d.registration?.status==='unresolved'){
+   // Show the PNG in its own image-pixel space. Provisional plan markers are
+   // listed in the report, NEVER overlaid or reverse-projected into this raster.
+   if(image?.complete&&image.naturalWidth){
+    const factor=Math.min(s/image.naturalWidth,s/image.naturalHeight),w=image.naturalWidth*factor,h=image.naturalHeight*factor;
+    c.drawImage(image,(s-w)/2,(s-h)/2,w,h);
+   }
+   c.fillStyle='#ffe9a6';c.font='bold 10px system-ui';c.fillText('IMAGE PIXELS ONLY · NO PLAN REGISTRATION',4,s-10);
+   preview.onclick=()=>notify('Отклонено: image-pixel не является world-plan. Нужны проверенные fiducials.');
+   return;
+  }
   if(image?.complete&&image.naturalWidth){
    const [ix,iy,iw,ih]=d.calibration.imageRect;
    c.drawImage(image,ix,iy,iw,ih,ox,oy,ww*scale,wh*scale);
@@ -317,7 +334,9 @@ export function installFirstFloorPanel({getProject,checkpoint,changed,getWorldRe
    if(f.size>45*1024*1024)throw Error('JSON превышает 45 MB');
    const json=JSON.parse(await f.text());
    const source=json.kind==='raven_first_floor_draft_export'?json.source:(json.firstFloorDraft||json);
-   const next=validateFirstFloorDraft(source,getWorldReference());
+   const next=source?.contractId==='raven.first-floor-art'
+    ?await adaptFirstFloorArtManifestV1(source,getWorldReference(),draft()?.baseImage)
+    :validateFirstFloorDraft(source,getWorldReference());
    checkpoint();getProject().firstFloorDraft=next;changed();selection='';refresh();
   }catch(e){onError(e);}finally{loadManifest.value='';}
  };
