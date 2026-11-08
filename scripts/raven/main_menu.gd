@@ -6,10 +6,13 @@ const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
-	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть", "Уровни Match-3", "Не удалось открыть уровни Match-3"],
-	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць", "Узроўні Match-3", "Не ўдалося адкрыць узроўні Match-3"],
-	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects", "How to play", "Match-3 Levels", "Could not open Match-3 levels"]
+	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть", "Уровни Match-3", "Не удалось открыть уровни Match-3", "Не удалось прочитать сохранение. Сохранённые данные не изменены.", "Сохранение повреждено. При возможности сохранена резервная копия.", "Не удалось сбросить прогресс игры"],
+	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць", "Узроўні Match-3", "Не ўдалося адкрыць узроўні Match-3", "Не ўдалося прачытаць захаванне. Захаваныя даныя не змененыя.", "Захаванне пашкоджанае. Пры магчымасці захаваная рэзервовая копія.", "Не ўдалося скінуць прагрэс гульні"],
+	"en": ["New game", "Continue", "Settings", "Prototype Lab", "Starting a new game will erase your progress. Continue?", "Start", "Cancel", "Language", "Music", "Effects", "Mute", "Haptics", "Back", "Could not save settings", "No saved game", "Reduce motion", "Preview music", "Preview effects", "How to play", "Match-3 Levels", "Could not open Match-3 levels", "Could not read the save. Stored data has not been changed.", "The save could not be loaded. A recovery copy was kept when storage allowed it.", "Could not reset game progress"]
 }
+const COPY_SAVE_READ_FAILED := 21
+const COPY_SAVE_RECOVERED := 22
+const DISABLED_ACTION_ALPHA := 0.38
 const BACKDROP := "res://assets/raven/vn_backgrounds/road/dusk_mist.webp"
 const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
 var store := Store.new()
@@ -17,6 +20,8 @@ var prefs := Preferences.new()
 var audio_runtime: Variant
 var column: VBoxContainer
 var message: Label
+var save_status: Label
+var save_report := {"status": "fresh", "detail": "not-loaded"}
 var continue_button: Button
 var action_buttons: Array[Button] = []
 var action_copy_indices: Array[int] = []
@@ -73,6 +78,15 @@ func _ready() -> void:
 	message.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	message.add_theme_color_override("font_color", Color("#e5c59b"))
 	column.add_child(message)
+	# UPDS main_menu.gd keeps a persistent save-status line below the actions.
+	save_status = Label.new()
+	save_status.name = "SaveStatus"
+	save_status.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	save_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	save_status.add_theme_font_size_override("font_size", 13)
+	save_status.add_theme_color_override("font_color", Color("#c9a86a"))
+	save_status.visible = false
+	column.add_child(save_status)
 	confirm = ConfirmationDialog.new()
 	add_child(confirm)
 	confirm.confirmed.connect(_reset_and_start)
@@ -91,26 +105,53 @@ func _add_action(action_name: String, copy_index: int, callback: Callable) -> Bu
 	button.pressed.connect(func() -> void: audio_runtime.play_effect("uiClick"))
 	button.pressed.connect(callback)
 	column.add_child(button)
+	# UPDS menu_theme keeps a disabled action on its normal surface and only
+	# dims the whole control, so a locked Continue stays readable.
+	button.add_theme_stylebox_override("disabled", button.get_theme_stylebox("normal"))
 	action_buttons.append(button)
 	action_copy_indices.append(copy_index)
 	return button
 
 func _has_progress() -> bool:
+	# One probe per refresh: store.last_load_report is the donor-style source of
+	# truth for "no save / loaded / corrupt-recovered / read failed".
 	var snapshot: Dictionary = store.load_campaign()
+	save_report = store.last_load_report.duplicate()
+	return _snapshot_has_progress(snapshot)
+
+func _snapshot_has_progress(snapshot: Dictionary) -> bool:
 	return int(snapshot.get("revision", 0)) > 0 or not snapshot.get("firstClearLevels", []).is_empty() or not snapshot.get("storyBeatsSeen", []).is_empty() or not snapshot.get("completedRestorations", []).is_empty() or not snapshot.get("appliedEventIds", []).is_empty()
+
+func _save_is_unknown() -> bool:
+	# Donor menu confirms New Game not only on progress, but also when the save
+	# could not be read at all: overwriting an unreadable save must be explicit.
+	return str(save_report.get("detail", "")) == "storage-read-failed" or str(save_report.get("status", "")) == "recovered-corrupt"
 
 func _refresh() -> void:
 	for index in action_buttons.size():
 		action_buttons[index].text = _tr(action_copy_indices[index])
 	continue_button.disabled = not _has_progress()
+	continue_button.modulate = Color(1, 1, 1, DISABLED_ACTION_ALPHA) if continue_button.disabled else Color.WHITE
+	_refresh_save_status()
 	confirm.dialog_text = _tr(4)
 	confirm.ok_button_text = _tr(5)
 	confirm.cancel_button_text = _tr(6)
 	if is_instance_valid(onboarding_dialog):
 		onboarding_dialog.set_locale(prefs.locale)
 
+func _refresh_save_status() -> void:
+	if not is_instance_valid(save_status):
+		return
+	var text := ""
+	if str(save_report.get("detail", "")) == "storage-read-failed":
+		text = _tr(COPY_SAVE_READ_FAILED)
+	elif str(save_report.get("status", "")) == "recovered-corrupt":
+		text = _tr(COPY_SAVE_RECOVERED)
+	save_status.text = text
+	save_status.visible = not text.is_empty()
+
 func _new_game() -> void:
-	if _has_progress():
+	if _has_progress() or _save_is_unknown():
 		confirm.popup_centered()
 	else:
 		_start_after_guide = true
@@ -118,7 +159,7 @@ func _new_game() -> void:
 
 func _reset_and_start() -> void:
 	if not store.reset_campaign():
-		message.text = "Could not reset game progress"
+		message.text = _tr(23)
 		return
 	_start_after_guide = true
 	_show_onboarding()
@@ -249,3 +290,9 @@ func _close_settings() -> void:
 		settings_panel = null
 	column.visible = true
 	_refresh()
+	# Donor menu returns focus to the Settings action so keyboard/gamepad users
+	# resume where they left off instead of losing the focus owner.
+	for button in action_buttons:
+		if button.name == "Settings":
+			button.grab_focus()
+			break

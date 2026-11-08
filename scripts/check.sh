@@ -70,6 +70,7 @@ run_check 'VN line checkpoint smoke' 'Raven Manor VN line checkpoint smoke passe
 run_check 'Gameplay pause smoke' 'Raven Manor save-and-exit pause smoke passed' --script res://tests/raven/game_pause_smoke.gd --quit-after 120
 run_check 'Main menu smoke' 'Raven Manor main menu and Prototype Lab navigation smoke passed' --script res://tests/raven/main_menu_smoke.gd --quit-after 120
 run_check 'Main menu Match-3 campaign entry' 'Raven main menu Match-3 campaign entry smoke passed' --script res://tests/raven/main_menu_match3_campaign_smoke.gd --quit-after 180
+run_check 'Main menu UPDS failure-mode parity' 'Raven main menu UPDS failure-mode parity smoke passed' --script res://tests/raven/main_menu_upds_parity_smoke.gd --quit-after 180
 run_check 'Optional Match-3 campaign controller' 'Raven optional Match-3 campaign controller smoke passed' --script res://tests/raven/optional_campaign_controller_smoke.gd --quit-after 180
 run_check 'UPDS Match-3 full-screen layout' 'Raven UPDS-style Match-3 full-screen layout smoke passed' --script res://tests/raven/match3_upds_shell_smoke.gd --quit-after 180
 run_check 'Prototype Lab smoke' 'Raven Manor Prototype Lab smoke passed' --script res://tests/raven/prototype_lab_smoke.gd --quit-after 120
