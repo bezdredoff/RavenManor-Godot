@@ -40,7 +40,7 @@ export function validateFirstFloorDraft(input,reference){
  const c=d.calibration;
  if(!c||typeof c!=='object')throw Error('Отсутствует calibration');
  const imageRect=values(c.imageRect,4,'calibration.imageRect'),worldRect=values(c.worldRect,4,'calibration.worldRect');
- if(imageRect[2]<=0||imageRect[3]<=0||worldRect[2]<=0||worldRect[3]<=0||!inside(imageRect.slice(0,2),[0,0,...base.pixelSize])||!inside([imageRect[0]+imageRect[2],imageRect[1]+imageRect[3]],[0,0,...base.pixelSize]))throw Error('Размеры calibration не совпадают с PNG');
+ if(imageRect[2]<=0||imageRect[3]<=0||worldRect[2]<=0||worldRect[3]<=0||!inside(imageRect.slice(0,2),[0,0,...base.pixelSize])||!inside([imageRect[0]+imageRect[2],imageRect[1]+imageRect[3]],[0,0,...base.pixelSize])||imageRect[0]!==0||imageRect[1]!==0||imageRect[2]!==base.pixelSize[0]||imageRect[3]!==base.pixelSize[1])throw Error('Размеры calibration не совпадают с полным PNG (crop не поддерживается v2)');
  const cp=items(c.controlPoints,'controlPoints');
  if(cp.length<2)throw Error('Нужно минимум две контрольные точки калибровки');
  cp.forEach((p,i)=>{
