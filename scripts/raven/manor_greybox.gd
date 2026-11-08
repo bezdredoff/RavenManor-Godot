@@ -7,8 +7,7 @@ const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const ProductionLocale = preload("res://scripts/raven/raven_production_localization.gd")
 const HALL_TEA_SCENE := "res://scenes/raven/hall_tea_vn.tscn"
-const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
-const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
+const OnoeVisual = preload("res://scripts/raven/onoe_visual.gd")
 const WORLD_SIZE := Vector2(800, 1600)
 const MAP_SIZE := Vector2(370, 664)
 const SCALE := 0.52
@@ -102,17 +101,22 @@ func _add_hotspot(hotspot_id: String) -> void:
 
 
 func _make_actor() -> Control:
-	var holder := Control.new(); holder.size = Vector2(80, 118); holder.pivot_offset = Vector2(40, 100); holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	var frames := SpriteFrames.new(); frames.remove_animation("default")
-	for data in [["down", 0], ["up", 3]]:
-		frames.add_animation(data[0]); frames.set_animation_speed(data[0], 7); frames.set_animation_loop(data[0], true)
-		for column in 4:
-			var atlas := AtlasTexture.new(); atlas.atlas = ONOE_WALK; atlas.region = Rect2(column * 256, data[1] * 384, 256, 384); frames.add_frame(data[0], atlas)
-	frames.add_animation("side"); frames.set_animation_speed("side", 10); frames.set_animation_loop("side", true)
-	for column in 8:
-		var atlas := AtlasTexture.new(); atlas.atlas = ONOE_SIDE; atlas.region = Rect2(column * 272, 0, 272, 724); frames.add_frame("side", atlas)
-	actor_sprite = AnimatedSprite2D.new(); actor_sprite.sprite_frames = frames; actor_sprite.animation = "down"; actor_sprite.position = Vector2(0, -44); actor_sprite.scale = Vector2.ONE * 0.27; holder.add_child(actor_sprite)
-	var label := _label("ОНОЭ · PLACEHOLDER", 11, Color("fff0c9")); label.position = Vector2(-72, 20); label.size = Vector2(144, 18); label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER; holder.add_child(label)
+	var holder := Control.new()
+	holder.size = Vector2(80, 118)
+	holder.pivot_offset = Vector2(40, 100)
+	holder.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	# Shared exact Onoe sheet definition; retain old Hall holder and Tween pilot.
+	actor_sprite = AnimatedSprite2D.new()
+	actor_sprite.sprite_frames = OnoeVisual.build_sprite_frames()
+	actor_sprite.animation = "down"
+	actor_sprite.position = Vector2(0, -44)
+	actor_sprite.scale = Vector2.ONE * 0.27
+	holder.add_child(actor_sprite)
+	var label := _label("ОНОЭ · PLACEHOLDER", 11, Color("fff0c9"))
+	label.position = Vector2(-72, 20)
+	label.size = Vector2(144, 18)
+	label.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	holder.add_child(label)
 	return holder
 
 
@@ -171,11 +175,9 @@ func _show_tea_popup() -> void:
 
 
 func _start_animation(delta: Vector2) -> void:
-	if absf(delta.x) > absf(delta.y):
-		actor_sprite.animation = "side"; actor_sprite.flip_h = delta.x < 0; actor_sprite.scale = Vector2.ONE * 0.135
-	else:
-		actor_sprite.animation = "down" if delta.y > 0 else "up"; actor_sprite.flip_h = false; actor_sprite.scale = Vector2.ONE * 0.27
-	actor_sprite.play()
+	OnoeVisual.play_sprite_direction(actor_sprite, delta)
+	# Preserve the calibrated Hall preview size from the original implementation.
+	actor_sprite.scale = Vector2.ONE * (0.135 if actor_sprite.animation == "side" else 0.27)
 
 
 func _unlock_bedroom() -> void:
