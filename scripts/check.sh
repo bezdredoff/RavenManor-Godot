@@ -32,6 +32,9 @@ run_check() {
 }
 
 run_check 'Project import' '' --editor --quit
+# TEMPORARY GFX-08-08 binary measurement; remove this hook after retrieving CI evidence.
+"$GODOT_BIN" --headless --path "$ROOT" --script res://assets/raven/map/tools/probe_first_floor_png.gd --quit-after 30
+
 run_check 'VN Studio Legacy Viewer synthetic' 'Raven VN Studio read-only legacy viewer smoke passed' --script res://tests/raven/vn_studio_legacy_smoke.gd --quit-after 120
 run_check 'VN Studio draft overlay round-trip' 'Raven VN Studio draft overlay round-trip smoke passed' --script res://tests/raven/vn_studio_drafts_smoke.gd --quit-after 120
 run_check 'VN Studio character catalog' 'Raven VN Studio character library smoke passed' --script res://tests/raven/vn_studio_catalog_smoke.gd --quit-after 120
