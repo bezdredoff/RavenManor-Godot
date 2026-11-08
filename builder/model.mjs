@@ -1,4 +1,5 @@
 import {validateWalls} from './wall-tools.mjs';
+import {validateFirstFloorDraft} from './first-floor.mjs';
 
 export const SCHEMA_VERSION = 1;
 export const CATEGORIES = ['all', 'tile', 'architecture', 'furniture', 'decor', 'character', 'interaction'];
@@ -68,6 +69,7 @@ export function validateProject(input) {
   p.walls=Array.isArray(p.walls)?p.walls:[];
   p.openings=Array.isArray(p.openings)?p.openings:[];
   validateWalls(p);
+  if(p.firstFloorDraft!==undefined)validateFirstFloorDraft(p.firstFloorDraft);
   return p;
 }
 export function pointInObject(x,y,o){const ang=-(o.rotation||0)*Math.PI/180,dx=x-(o.x+o.w/2),dy=y-(o.y+o.h/2); const rx=dx*Math.cos(ang)-dy*Math.sin(ang),ry=dx*Math.sin(ang)+dy*Math.cos(ang);return Math.abs(rx)<=o.w/2 && Math.abs(ry)<=o.h/2;}
