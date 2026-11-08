@@ -400,7 +400,7 @@ func _on_cell_clicked(cell: String) -> void:
 	selected_cell = cell
 	if cell.is_empty():
 		return
-	var blocked := document.get("blockedCells", []).has(cell)
+	var blocked: bool = document.get("blockedCells", []).has(cell)
 	var point := Routes.cell_to_pixel(cell, document)
 	cell_inspection.text = "%s · centre %s · blocked: %s" % [cell, str(point), str(blocked)]
 	if current_mode == "Routes" and not selected_route.is_empty():
