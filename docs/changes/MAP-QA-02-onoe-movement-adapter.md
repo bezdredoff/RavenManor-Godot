@@ -1,3 +1,9 @@
+Task IDs: MAP-QA-02
+Changes: Extract common Onoe SpriteFrames/direction helper; introduce one-segment move_toward actor and standalone Godot demo; refactor legacy greybox animation callsites without changing their movement; tests and own manor-map shard.
+Verification: New Godot smoke and existing map regressions added; first CI 42514965832 is in progress. Governance format corrected; final head CI still pending.
+Owner QA: F6 res://scenes/raven/tests/onoe_movement_lab.tscn, watch four directions, left flip, pause, queued replacement, physical arrival; NOT_RUN manually.
+Status impact: MAP-QA-02 PR_review / partial; no approval of map geometry, collision, art or game flow.
+
 # MAP-QA-02 — Reusable Onoe movement & animation adapter
 
 **Domain:** manor-map (isolated map-character integration); related character art stays separate.  
