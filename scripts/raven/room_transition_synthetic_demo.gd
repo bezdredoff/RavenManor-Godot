@@ -128,9 +128,16 @@ func _pump() -> void:
 
 
 func _on_segment_completed(arrived_id: String, physical_feet: Vector2) -> void:
+	var before_room := controller.room_id()
 	var result: Dictionary = controller.accept_segment_arrival(_active_token, arrived_id, physical_feet, actor)
 	if not bool(result.get("ok", false)):
-		_show("Arrival rejected: " + str(result.get("error", "?")))
+		if not bool(result.get("diagnostic", false)):
+			_show("Arrival rejected: " + str(result.get("error", "?")))
+		# The diagnostic callback already explained virtual QA portals.
+		return
+	if controller.room_id() != before_room:
+		# Keep the explicit SWITCHED feedback from the transition_ready host handoff.
+		_refresh()
 		return
 	_show("Reached %s. %s" % [arrived_id, str(result.get("status", ""))])
 	_pump()
