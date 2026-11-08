@@ -102,3 +102,4 @@ run_check 'Layered Hall VN pilot smoke' 'Raven Manor Hall tea VN pilot smoke pas
 run_check 'Live Raven VN gameplay backgrounds' 'Raven live VN background compositor passed' --script res://tests/raven/vn_runtime_background_smoke.gd --quit-after 240
 run_check 'Hall VN runtime UI smoke' 'Raven Manor Hall VN UI runtime smoke passed' --script res://tests/raven/hall_tea_vn_ui_smoke.gd --quit-after 240
 run_check 'Whole season1 map smoke' 'Raven Manor continuous season1 map smoke passed' --script res://tests/raven/season1_map_smoke.gd --quit-after 120
+run_check 'Campaign Season 1 executability audit' 'Raven Manor campaign Season 1 audit passed' --script res://tests/raven/campaign_season1_audit_smoke.gd --quit-after 240
