@@ -8,6 +8,7 @@ var _anchors := {}
 var _point_ids := {}
 var _anchor_ids := {}
 var _active_edges: Array[Dictionary] = []
+var _door_gate_ids := {}
 
 
 func rebuild(snapshot: Dictionary, graph_data: Dictionary = GRAPH_DATA.data) -> void:
@@ -16,6 +17,7 @@ func rebuild(snapshot: Dictionary, graph_data: Dictionary = GRAPH_DATA.data) -> 
 	_point_ids.clear()
 	_anchor_ids.clear()
 	_active_edges.clear()
+	_door_gate_ids.clear()
 	var index := 1
 	for raw_anchor in graph_data.anchors:
 		var anchor: Dictionary = raw_anchor
@@ -28,6 +30,9 @@ func rebuild(snapshot: Dictionary, graph_data: Dictionary = GRAPH_DATA.data) -> 
 		index += 1
 	for raw_edge in graph_data.edges:
 		var edge: Dictionary = raw_edge
+		var door_id := str(edge.get("doorId", ""))
+		if not door_id.is_empty():
+			_door_gate_ids[door_id] = true
 		if not _edge_available(edge, snapshot):
 			continue
 		var from_id: int = _point_ids.get(str(edge.from), 0)
@@ -76,6 +81,79 @@ func active_edges() -> Array[Dictionary]:
 
 func anchors() -> Dictionary:
 	return _anchors.duplicate(true)
+
+
+
+## Query-only API for hotspot-driven movement. Never interprets a screen tap as a destination.
+func has_anchor(anchor_id: String) -> bool:
+	return _anchors.has(anchor_id)
+
+
+func has_door_gate(door_id: String) -> bool:
+	return _door_gate_ids.has(door_id)
+
+
+func route_to_hotspot(from_anchor_id: String, hotspot_id: String) -> Array[String]:
+	var target_id := interaction_anchor(hotspot_id)
+	if target_id.is_empty():
+		return []
+	return route(from_anchor_id, target_id)
+
+
+## Check the *direct* authored segment, not an alternate A* route between its endpoints.
+func segment_available(from_anchor_id: String, to_anchor_id: String) -> bool:
+	if not has_anchor(from_anchor_id) or not has_anchor(to_anchor_id):
+		return false
+	for edge in _active_edges:
+		var source := str(edge.get("from", ""))
+		var destination := str(edge.get("to", ""))
+		if source == from_anchor_id and destination == to_anchor_id:
+			return true
+		if bool(edge.get("bidirectional", true)) and source == to_anchor_id and destination == from_anchor_id:
+			return true
+	return false
+
+
+func _safe_and_reachable(anchor_id: String, fallback_id: String) -> bool:
+	if not _anchors.has(anchor_id) or str(_anchors[anchor_id].get("kind", "")) != "safe":
+		return false
+	return not route(fallback_id, anchor_id).is_empty()
+
+
+## Never trust a persisted anchor string as geometry. Fall back to a connected room-safe point.
+func safe_checkpoint_anchor(snapshot: Dictionary, fallback_id: String = "RM-NAV-HALL-SPAWN") -> String:
+	if not _anchors.has(fallback_id) or str(_anchors[fallback_id].get("kind", "")) != "safe":
+		fallback_id = ""
+		for anchor_id in _anchors:
+			if str(_anchors[anchor_id].get("kind", "")) == "safe":
+				fallback_id = str(anchor_id)
+				break
+	if fallback_id.is_empty():
+		return ""
+	var room_id := str(snapshot.get("lastRoomId", ""))
+	var saved_id := str(snapshot.get("lastSafeAnchorId", ""))
+	if _safe_and_reachable(saved_id, fallback_id) and str(_anchors[saved_id].get("roomId", "")) == room_id:
+		return saved_id
+	for anchor_id in _anchors:
+		var candidate_id := str(anchor_id)
+		if str(_anchors[candidate_id].get("roomId", "")) == room_id and _safe_and_reachable(candidate_id, fallback_id):
+			return candidate_id
+	return fallback_id
+
+
+## Call only after reaching a safe anchor. Reducer/store remain the sole save authority.
+func checkpoint_event(anchor_id: String, event_id: String) -> Dictionary:
+	if event_id.is_empty() or not _anchors.has(anchor_id):
+		return {}
+	var item: Dictionary = _anchors[anchor_id]
+	if str(item.get("kind", "")) != "safe":
+		return {}
+	return {
+		"eventId": event_id,
+		"type": "position_checkpoint",
+		"roomId": str(item.get("roomId", "")),
+		"anchorId": anchor_id
+	}
 
 
 static func _edge_available(edge: Dictionary, snapshot: Dictionary) -> bool:
