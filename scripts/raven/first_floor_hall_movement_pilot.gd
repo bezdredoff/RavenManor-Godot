@@ -297,7 +297,7 @@ func _build_debug_geometry() -> void:
 	for edge in qa.graph.active_edges():
 		var line := Line2D.new()
 		line.width = 2.0
-		line.default_color = Color(0.27, 0.88, 1.0, 0.9)
+		line.default_color = Color("#efa45b") if bool(edge.get("provisional", false)) else Color(0.27, 0.88, 1.0, 0.9)
 		line.points = PackedVector2Array([
 			qa.graph.position(str(edge["from"])),
 			qa.graph.position(str(edge["to"]))
