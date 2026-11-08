@@ -126,5 +126,6 @@ Invoke-GodotCheck 'Replayable onboarding' @('--headless', '--path', $projectPath
 Invoke-GodotCheck 'Procedural audio runtime' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/audio_runtime_smoke.gd', '--quit-after', '240') 'Raven procedural audio runtime, preference gating and focus smoke passed'
 
 Invoke-GodotCheck 'VN persisted read-only Skip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_read_skip_smoke.gd', '--quit-after', '600') 'Raven VN persisted read-only Skip smoke passed'
+Invoke-GodotCheck 'VN tri-locale save/reload parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_locale_save_parity_smoke.gd', '--quit-after', '240') 'Raven tri-locale VN save/reload parity smoke passed'
 
 Invoke-GodotCheck 'Match-3 viewport pointer and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_viewport_input_smoke.gd', '--quit-after', '240') 'Raven Match-3 viewport pointer and modal smoke passed'
