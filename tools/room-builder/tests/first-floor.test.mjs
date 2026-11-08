@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {validateFirstFloorDraft,makeFirstFloorDraft,comparison} from '../first-floor.mjs';
+import {validateFirstFloorDraft,makeFirstFloorDraft,comparison,adaptFirstFloorArtManifestV1} from '../first-floor.mjs';
 import {validateProject,exampleProject} from '../model.mjs';
 
 const file=new URL('../../../tests/fixtures/first_floor_draft_valid.json',import.meta.url);
@@ -64,4 +64,35 @@ test('duplicate navigation points fail',()=>{
  const a=copy();
  a.navigationAnchors.push({...a.navigationAnchors[0],id:'RM-NAV-SECOND'});
  assert.throws(()=>validateFirstFloorDraft(a,map),/Дублирующиеся navigation points/);
+});
+
+test('real Agent A v1 manifest with owner PNG uploads into unregistered v2 and survives roundtrip',async()=>{
+ const art=JSON.parse(readFileSync(new URL('../../../tests/fixtures/first_floor_art_A_v1_unapproved.json',import.meta.url),'utf8'));
+ const png=readFileSync(new URL('../../../a_detailed_top_down_isometric_game_map_illustratio.png',import.meta.url));
+ const width=png.readUInt32BE(16),height=png.readUInt32BE(20);
+ const uri='data:image/png;base64,'+png.toString('base64');
+ const original=structuredClone(art);
+ const result=await adaptFirstFloorArtManifestV1(art,map,{pixelSize:[width,height],dataUri:uri});
+ assert.equal(result.registration.status,'unresolved');
+ assert.equal(result.registration.navigationAllowed,false);
+ assert.deepEqual(result.calibration.controlPoints,[]);
+ assert.equal(result.baseImage.pixelSize[0],width);
+ assert.equal(result.baseImage.pixelSize[1],height);
+ assert.deepEqual(result.producerManifest,original);
+ assert.deepEqual(art,original);
+ assert.equal(result.navigationAnchors.length,0);
+ assert.equal(result.foregroundObjects.length,0);
+ assert.equal(result.doorPlacements.length,11);
+ assert.deepEqual(validateFirstFloorDraft(JSON.parse(JSON.stringify(result)),map),result);
+});
+test('Agent A v1 rejects wrong PNG, duplicate IDs and false raster registration',async()=>{
+ const art=JSON.parse(readFileSync(new URL('../../../tests/fixtures/first_floor_art_A_v1_unapproved.json',import.meta.url),'utf8'));
+ const png=readFileSync(new URL('../../../a_detailed_top_down_isometric_game_map_illustratio.png',import.meta.url));
+ const base={pixelSize:[png.readUInt32BE(16),png.readUInt32BE(20)],dataUri:'data:image/png;base64,'+png.toString('base64')};
+ const invalid=structuredClone(art);invalid.source.gitBlobSha='0'.repeat(40);
+ await assert.rejects(()=>adaptFirstFloorArtManifestV1(invalid,map,base),/Git blob/);
+ const duplicated=structuredClone(art);duplicated.doors.push(structuredClone(duplicated.doors[0]));
+ await assert.rejects(()=>adaptFirstFloorArtManifestV1(duplicated,map,base),/дублирующийся/);
+ const wrongPlan=structuredClone(art);wrongPlan.coordinateSystems.worldPlanToSourcePixel.matrix=[1,0,0,1];
+ await assert.rejects(()=>adaptFirstFloorArtManifestV1(wrongPlan,map,base),/неподтверждённое/);
 });
