@@ -56,6 +56,7 @@ run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph 
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'VN tri-locale save/reload parity' 'Raven tri-locale VN save/reload parity smoke passed' --script res://tests/raven/vn_locale_save_parity_smoke.gd --quit-after 240
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600
+run_check 'VN game frame safe-area and locale overflow' 'Raven VN game frame safe-area and locale overflow smoke passed' --script res://tests/raven/vn_shell_safe_area_smoke.gd --quit-after 240
 run_check 'Runtime settings persistence and modal' 'Raven runtime settings persistence, modal and locale smoke passed' --script res://tests/raven/runtime_settings_smoke.gd --quit-after 240
 run_check 'Replayable onboarding' 'Raven first-session and replayable onboarding smoke passed' --script res://tests/raven/onboarding_smoke.gd --quit-after 240
 run_check 'Procedural audio runtime' 'Raven procedural audio runtime, preference gating and focus smoke passed' --script res://tests/raven/audio_runtime_smoke.gd --quit-after 240
