@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/raven/onoe_movement_lab.gd" id="1_lab"]
+[ext_resource type="PackedScene" path="res://scenes/raven/tests/onoe_segment_actor.tscn" id="2_actor"]
+
+[node name="OnoeMovementLab" type="Node2D"]
+script = ExtResource("1_lab")
+
+[node name="Onoe" parent="." instance=ExtResource("2_actor")]
