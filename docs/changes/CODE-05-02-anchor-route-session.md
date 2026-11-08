@@ -1,5 +1,11 @@
 # CODE-05-02 — authored anchor navigation session and fixture geometry adapter
 
+Task IDs: CODE-05-02 (primary); RM-GAP-001 / RM-GAP-006 related, not closed.
+Changes: Map-only AStar2D anchor queries, route session, preview coordinate adapter and navigation regression tests.
+Verification: Local Godot NOT_RUN; exact-head PR #238 CI initially failed on evidence-field formatting and is being corrected in this branch; full functional CI required.
+Owner QA: PENDING — Hall art/geometry, door and stairs, physical collisions, occlusion, 65-degree projection and device playthrough.
+Status impact: CODE-05-02 remains P0 / partial / PR_review for #238; no acceptance or closed related GAP.
+
 **Task IDs:** CODE-05-02 (P0); related RM-GAP-001 / RM-GAP-006 are **not** closed.
 **Baseline:** `bezdredoff/RavenManor-Godot@4c4145a935419b5cfaa69e8e1bde90a71717ed7a`. Predecessor #212 merged; zero open PRs at audit start.
 **Domain:** `manor-map`. Reviewed source: `manor_navigation_graph.gd`, `manor_greybox.gd`, `season1_map_greybox.gd`, both map JSONs, snapshot/reducer/store, map and navigation tests, data contracts.
