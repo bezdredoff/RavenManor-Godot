@@ -1,0 +1,15 @@
+# MAP-QA-05 — First Floor Authored Navigation Draft
+
+Task IDs: MAP-QA-05 scoped technical QA slice; linked GFX-08-08 (environment-art art/composition contract). MAP-QA-05 is not registered as an independent production backlog task; do not invent shared index assignments.
+
+Changes: Extend the MAP-EDIT-01 project draft in `assets/raven/map/qa/drafts/hall_routes_draft.v1.json` from 7 original Hall points/7 imported provisional edges to 22 QA waypoints/19 total routes. Add 12 orthogonally cell-authored bidirectional route segments through five isolated room candidates (Hall, Corridor, Bedroom, Library/Archive, Kitchen); preserve Hall's seven point IDs/coordinates/edge endpoints/ordering and original no-go regions. Four new narrow walkable floor proposals, five no-go furniture proxies. Explicit 11 unverified manifest door records and six further unresolved features; no invented physical portal. Add dedicated native MAP-EDIT-01 draft validation smoke, single runner registration, five-room coverage and calibration workflow report. No game-world or editor code changes.
+
+Baseline: `main@0afb155e8f0528f9bd91760e4c76f38ed61a1e34`; #245 and #246 confirmed merged. Source-approved art SHA-256 `5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a` and unchanged Hall source pilot remain the authority.
+
+Verification: JS structural/geometry sampling over all 22 waypoints and 12 new authored routes PASS (438 samples, zero blocked/out-of-bounds hits); not a Godot execution. Native smoke `tests/raven/map_qa_05_first_floor_draft_smoke.gd` tests MAP-EDIT-01 read/round-trip/compiled preview, stable Hall baseline, no-op canonical data, route adjacency/clearance, internal room connectivity, unresolved door completeness. Exact-head GitHub Actions CI pending at initial PR creation. Godot executable unavailable locally. All six required CI jobs, especially the registered MAP-QA-05 Godot step, must pass before merge.
+
+Owner QA: NOT_RUN. Manually verify full-size painted floor, Onoe visual footprint and occlusion, each narrow candidate polygon and route in native editor; no assertion of actual Hall→Corridor→Bedroom door, kitchen access or exterior stairs. Open project via Godot 4.7.2 plugin, Load project draft, inspect/adjust, save local first. Do not promote candidate into production scene.
+
+Status impact: Environment-art GFX-08-08 remains partial, reference contract approved but geometry/portal/physical QA pending. This PR records technical DRAFT_ONLY QA progress only. Other domain shards, Room Builder plugin, room transitions, canonical manifest and runtime remain unchanged.
+
+Risk/rollback: Editor currently treats `provisional:false` as “ordered cells authored,” not “owner-approved.” Every new route separately records AI_PROVISIONAL_UNAPPROVED. Native graph compiler currently labels all QA anchors as Hall; its Test Route only checks isolated connectivity, not true multi-room runtime routing. Roll back only the project QA draft, test runner line, test file and documentation. Shared `scripts/check.sh` has exactly one necessary QA test callsite and requires integration-owner review.
