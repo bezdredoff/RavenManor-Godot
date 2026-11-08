@@ -41,3 +41,9 @@ Owner QA:
 
 Status impact:
 - `GFX-08-08`: PR_review / partial, technical metadata measured; geometry, art layer extraction, A↔B/C consumer approvals remain pending; no productionReady or merged/accepted claim.
+
+### Exact test execution — 2026-11-08
+- Diagnostic GitHub Actions run [42504664754](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42504664754), source commit `6ef6bf45e433cbd6371dcd6d83ba572f5c9cb90b`: **7/7 Python tests PASS** in Godot Runner, strict real-source PNG/manifest check PASS (CRC, 3,126,732 byte length, source Git blob, SHA-256, dimensions, IDs, link references, 65° projection roundtrip). Adapter summary returns 11 blocked/uncalibrated doors and 13 unapproved anchors. This is tool/data QA, not gameplay/geometry QA.
+- Original source PNG load and two review crops executed in [42503148980](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980).
+- Temporary `scripts/check.sh` invocation and one-time `probe_first_floor_png.gd` are intentionally removed from final diff after capturing evidence. All persistent code stays in `assets/raven/map/tools/`; regular CI wiring, if desired, belongs to integration/QA owner.
+- **Agent B/C schema acceptance:** comments requested on #238/#240; C provided full 13-anchor requirement via #240, implemented here. Neither agent has signed off on painted door geometry.

@@ -132,7 +132,7 @@
       "status": "PR_review",
       "owner": "ChatGPT Agent A",
       "updated": "2026-11-08",
-      "evidence": "Draft PR #239: source exact 1672x941 PNG, 3,126,732 bytes, SHA256 5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a via runner 42503148980. Reviewed preview source and recorded 10 room/exterior bounds and 11 unresolved portal relations. Added source image SVG visual annotation and fail-closed B v2/C v1 adapters. Geometry/pivots/masks not owner accepted; physical doors and scene transitions clash with old portrait world plan. No runtime, no foreign shard changes. Pending cross-agent approvals, exact-head test and device geometry review.",
+      "evidence": "Draft PR https://github.com/bezdredoff/RavenManor-Godot/pull/239: exact approved PNG 1672x941 / SHA256 5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a from runner 42503148980. Review-only annotated SVG with 10 visible regions, 11 unconfirmed portal connections, 6 candidate control points, 6 occlusion candidates. Exact source validation PASS and 7 Python tests PASS in GitHub runner 42504664754 (temporary test invocation reverted from final diff). B firstFloorDraft v2/C world-plan v1 fail-closed exports; C full 13 anchors required. PR_review only: owner geometry, B/C sign-off, masks, scene/mobile QA unresolved.",
       "implementationState": "partial",
       "qaState": "manual_pending",
       "approvalState": "pending"

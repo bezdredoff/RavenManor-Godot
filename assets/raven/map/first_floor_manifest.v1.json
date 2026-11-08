@@ -1177,6 +1177,17 @@
         "room-builder",
         "manor-map"
       ]
+    },
+    {
+      "id": "ART-Q-013",
+      "severity": "review",
+      "topic": "Landscape source versus portrait mobile game",
+      "question": "1672×941 landscape map cannot show entire floor legibly in portrait mobile 390×844 without authored camera panning/zoom/room focus; approve responsive map framing before runtime.",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
     }
   ],
   "imageObservations": [
@@ -1503,7 +1514,8 @@
       "risk": "B linear full-image worldRect cannot represent mismatched authored topology without owner-reviewed calibration",
       "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
       "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target builder --output /tmp/first_floor_room_builder_project.json",
-      "exportStatus": "fail_closed_until_reviewed_linear_controls_and_room_rectangles"
+      "exportStatus": "fail_closed_until_reviewed_linear_mapping_room_rectangles_and_all_13_anchors",
+      "requireCompleteAnchorsForConsumerNav": 13
     },
     "navigation": {
       "targetPr": 238,
@@ -1512,7 +1524,8 @@
       "rule": "Only separately approved calibratedWorldPlanPoint; never copy referenceGreyboxPoint or project image pixels directly",
       "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
       "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target navigation --output /tmp/first_floor_nav_preview.json",
-      "exportStatus": "fail_closed_until_independently_approved_world_plan_anchors"
+      "exportStatus": "fail_closed_until_all_13_canonical_world_plan_anchors_approved",
+      "requireCompleteAnchors": 13
     }
   },
   "resolvedMeasurements": [

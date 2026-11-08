@@ -9,7 +9,7 @@ The raster remains at the **repository root** on purpose. Moving it would break 
 
 ## Audit findings and facts versus unknowns
 - Verified from GitHub **metadata**: a PNG path is present, its Git blob SHA matches the approved SHA, the byte length is 3,126,732.
-- **Not verified:** exact pixel dimensions, SHA-256, rendered room count and shapes, individual furniture/doors visible in that raster, pixel landmarks, surface masks, perspective and gameplay-safe scale. The connector currently exposes only the metadata of this >1-MB binary. The manifest deliberately uses `null` for those fields.
+- **Updated 2026-11-08:** source bytes, **1672×941** dimensions and SHA-256 are now verified through GitHub Runner (see detailed audit below). Coarse room identities are visually reviewed; precise painted door centres, floor paths, foreground alpha/masks and gameplay-safe scale remain **unapproved**. The original initial-draft metadata limitation is resolved.
 - Existing `season1_world_map.json` supplies eight candidate rooms, eleven doors and proposal rectangles. The visible *Library* is represented as `RM-ROOM-ARCHIVE` there. It is NOT an approved physical extraction of this artwork.
 - Existing `manor_greybox_graph.json` supplies separate initial-slice foot anchors. Example: `RM-NAV-HALL-SPAWN=[400,300]` in the old greybox while Hall in the world plan is `[500,150,700,690]`. These coordinate spaces must not be linked by identity.
 - Hall's twin stairs, clock, chairs/table, Gallery, and doors appear in old production references. This does **not** prove these objects occupy those locations in the approved source painting.
@@ -104,3 +104,6 @@ python3 assets/raven/map/tools/export_first_floor_contracts.py --target review
 \`\`\`
 
 Current release remains \`productionReady=false\` and \`integrationAllowed=false\`. Godot source-image load was tested in the CI measurement run, but **in-game character occlusion, physical movement, door thresholds, mobile viewport and owner geometry QA remain NOT_RUN**. CI workflow ownership remains integration-only; temporary diagnostic invocation will be removed from this branch after tests.
+
+**C strict contract clarification (2026-11-08):** C requested all **13** established anchor IDs (not partial candidate overlays) for production-facing Room Builder transfer, each in its original room and with independent, reviewed world-plan XY. The source-owned export adapter now refuses B v2 and C v1 when even one of the 13 is unapproved. The connected C preview adapter may permit partial sets as debug inputs, but A's *producer contract* deliberately does not.
+**Mobile framing unresolved:** Original source is 16:9 landscape while primary runtime screen is portrait. Focused room camera/pan/zoom and portal framing need human mobile QA, not a silent stretch.
