@@ -286,7 +286,8 @@ func _verify_producer_contracts(canonical: Dictionary) -> void:
 	assert(not valid.runtimeApproved and not valid.data.provenance.productionReady)
 	assert(valid.data.provenance.coordinateSpace == "world-plan")
 	assert(valid.data.edges == canonical.edges, "Never rewrite canonical route topology")
-	assert(valid.data.anchors[0].position == _world_plan_points()["RM-NAV-HALL-SPAWN"])
+	var imported_point: Array = valid.data.anchors[0].position
+	assert(Vector2(float(imported_point[0]), float(imported_point[1])) == Vector2(850, 700), "Imported world-plan XY must not be transformed")
 	assert(canonical == source_copy, "World-plan overlay must not modify original greybox data")
 	var graph := Graph.new()
 	graph.rebuild(Snapshot.fresh(), valid.data)
