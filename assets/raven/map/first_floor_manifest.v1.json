@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "contractId": "raven.first-floor-art",
-  "contractRevision": "1.1.0-visual-review-draft",
+  "contractRevision": "1.2.0-annotated-draft-consumer-handoff",
   "created": "2026-11-08",
   "ownerDomain": "environment-art",
   "productionReady": false,
@@ -79,7 +79,9 @@
         "imageRatio": 1.7768331562167907,
         "referenceWorldRatio": 0.9555555555555556,
         "reason": "Old proposed world map 2150x2250 does not match landscape original; unreviewed direct stretch would have axis scale ratio approx 1.86"
-      }
+      },
+      "builderLinearWorldRect": null,
+      "builderLinearCalibrationStatus": "not_reviewed_nonplanar_painting"
     },
     "worldPlanToPrototypeScreen": {
       "status": "documented_prototype_not_source_image_calibration",
@@ -120,7 +122,9 @@
         946,
         941
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-HALL",
@@ -141,7 +145,9 @@
         1090,
         804
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-ARCHIVE",
@@ -162,7 +168,9 @@
         619,
         777
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-CORRIDOR",
@@ -183,7 +191,9 @@
         1059,
         410
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-BEDROOM",
@@ -204,7 +214,9 @@
         527,
         420
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-BATHROOM",
@@ -225,7 +237,9 @@
         693,
         360
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-KITCHEN",
@@ -246,7 +260,9 @@
         1498,
         757
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     },
     {
       "id": "RM-ROOM-CONSERVATORY",
@@ -267,7 +283,9 @@
         1639,
         212
       ],
-      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon",
+      "approvedWorldPlanRect": null,
+      "geometryStatus": "not_owner_accepted"
     }
   ],
   "doors": [
@@ -290,7 +308,9 @@
       "calibrationStatus": "approx_visual_estimate_not_collision",
       "authoritativeForMovement": false,
       "visualPortalStatus": "visible_threshold_candidate",
-      "visualNotes": "front double entrance visible; floor contact visually estimated, not calibrated"
+      "visualNotes": "front double entrance visible; floor contact visually estimated, not calibrated",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-HALL-ARCHIVE",
@@ -308,7 +328,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "apparent_solid_wall",
-      "visualNotes": "Hall↔Library west wall does not show an unambiguous opening in the supplied painting"
+      "visualNotes": "Hall↔Library west wall does not show an unambiguous opening in the supplied painting",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-HALL-CORRIDOR",
@@ -326,7 +348,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_visible_at_reference_position",
-      "visualNotes": "Upper horizontal corridor is behind Hall's staircase/landing, not a confirmed first-floor right-wall portal"
+      "visualNotes": "Upper horizontal corridor is behind Hall's staircase/landing, not a confirmed first-floor right-wall portal",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-CORRIDOR-BEDROOM",
@@ -344,7 +368,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_visible",
-      "visualNotes": "Bedroom has no clear approved opening onto the upper corridor; apparent partitions/windows are not doorways"
+      "visualNotes": "Bedroom has no clear approved opening onto the upper corridor; apparent partitions/windows are not doorways",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-CORRIDOR-BATHROOM",
@@ -362,7 +388,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "ambiguous",
-      "visualNotes": "Small light seam around lower bathroom threshold may be decorative; cannot certify as walking portal"
+      "visualNotes": "Small light seam around lower bathroom threshold may be decorative; cannot certify as walking portal",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-CORRIDOR-KITCHEN",
@@ -380,7 +408,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_visible",
-      "visualNotes": "Kitchen sits below dark northeast room; old Corridor↔Kitchen adjacency not observed"
+      "visualNotes": "Kitchen sits below dark northeast room; old Corridor↔Kitchen adjacency not observed",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-KITCHEN-CONSERVATORY",
@@ -398,7 +428,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_contiguous",
-      "visualNotes": "Glasshouse is outside far northeast, visually separated from kitchen by intervening covered room and garden"
+      "visualNotes": "Glasshouse is outside far northeast, visually separated from kitchen by intervening covered room and garden",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-HALL-EAST-WING",
@@ -416,7 +448,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_visible",
-      "visualNotes": "Covered dark room northeast not connected to Hall by verified ground-floor opening"
+      "visualNotes": "Covered dark room northeast not connected to Hall by verified ground-floor opening",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-HALL-UPPER-FLOOR",
@@ -434,7 +468,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "stair_landing_ambiguous",
-      "visualNotes": "Two curved stair flights and central landing observed; level elevation/destination cannot be derived from flat art"
+      "visualNotes": "Two curved stair flights and central landing observed; level elevation/destination cannot be derived from flat art",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-KITCHEN-SERVICE",
@@ -452,7 +488,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "not_visible",
-      "visualNotes": "No unambiguous service exterior door in kitchen's right/south walls"
+      "visualNotes": "No unambiguous service exterior door in kitchen's right/south walls",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     },
     {
       "id": "RM-DOOR-CONSERVATORY-GARDEN",
@@ -470,7 +508,9 @@
       "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "garden_connection_ambiguous",
-      "visualNotes": "Greenhouse and garden adjacent; exact glasshouse door/threshold cannot be resolved"
+      "visualNotes": "Greenhouse and garden adjacent; exact glasshouse door/threshold cannot be resolved",
+      "approvedWorldPlanPoint": null,
+      "approvedOpeningWidth": null
     }
   ],
   "navigationReferenceAnchors": [
@@ -1024,15 +1064,6 @@
   ],
   "unresolvedQuestions": [
     {
-      "id": "ART-Q-001",
-      "severity": "blocking",
-      "topic": "Pixel access",
-      "question": "Record exact PNG dimensions/SHA256 after byte-level read; manually inspect and mark actual rooms, floors, occluders",
-      "owners": [
-        "environment-art"
-      ]
-    },
-    {
       "id": "ART-Q-002",
       "severity": "blocking",
       "topic": "Composition versus walkable graph",
@@ -1102,6 +1133,49 @@
       "owners": [
         "environment-art",
         "room-builder"
+      ]
+    },
+    {
+      "id": "ART-Q-009",
+      "severity": "blocking",
+      "topic": "Physical missing portals",
+      "question": "Painting does not show unambiguous walkable Hall↔Library, Hall↔Corridor, Corridor↔Bedroom or Hall↔Kitchen openings. Should art gain restored openings with clean plate, or use explicitly non-physical scene transitions?",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-010",
+      "severity": "blocking",
+      "topic": "Dark room identity",
+      "question": "Confirm identity and story gate of covered dark upper-right room (unmapped in eight-room world plan): closed wing, archive, storage or alternate room?",
+      "owners": [
+        "environment-art",
+        "room-builder"
+      ]
+    },
+    {
+      "id": "ART-Q-011",
+      "severity": "blocking",
+      "topic": "Conservatory outside garden",
+      "question": "Greenhouse is located outdoors northeast with garden-path connection visually suggested, not the old Kitchen→Conservatory threshold; decide canonical route.",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
+      ]
+    },
+    {
+      "id": "ART-Q-012",
+      "severity": "blocking",
+      "topic": "Aspect and coordinate authority",
+      "question": "Landscape source 1672x941 differs greatly from 2150x2250 world-plan; approve new landscape world-plane calibration, room polygons and portal anchor pairs before 65° overlay.",
+      "owners": [
+        "environment-art",
+        "room-builder",
+        "manor-map"
       ]
     }
   ],
@@ -1426,13 +1500,27 @@
       "status": "explicit_adapter_required_not_consumer_approved",
       "sourceRule": "baseImage.path exact original PNG; pixelSize [1672,941]; no forced portrait worldRect",
       "noImplicitCopy": "Reference room rectangles/door points cannot be interpreted as painted coordinates",
-      "risk": "B linear full-image worldRect cannot represent mismatched authored topology without owner-reviewed calibration"
+      "risk": "B linear full-image worldRect cannot represent mismatched authored topology without owner-reviewed calibration",
+      "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
+      "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target builder --output /tmp/first_floor_room_builder_project.json",
+      "exportStatus": "fail_closed_until_reviewed_linear_controls_and_room_rectangles"
     },
     "navigation": {
       "targetPr": 238,
       "targetFormat": "schemaVersion 1 coordinateSpace world-plan productionReady false anchors[]",
       "status": "explicit_adapter_required_not_consumer_approved",
-      "rule": "Only separately approved calibratedWorldPlanPoint; never copy referenceGreyboxPoint or project image pixels directly"
+      "rule": "Only separately approved calibratedWorldPlanPoint; never copy referenceGreyboxPoint or project image pixels directly",
+      "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
+      "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target navigation --output /tmp/first_floor_nav_preview.json",
+      "exportStatus": "fail_closed_until_independently_approved_world_plan_anchors"
     }
-  }
+  },
+  "resolvedMeasurements": [
+    {
+      "id": "ART-Q-001",
+      "resolved": "2026-11-08",
+      "evidence": "GitHub Runner PNG SHA-256, dimensions, byte count and original-size crop visual audit",
+      "url": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980"
+    }
+  ]
 }

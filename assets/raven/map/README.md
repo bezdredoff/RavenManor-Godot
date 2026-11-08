@@ -41,3 +41,66 @@ python3 assets/raven/map/tools/validate_first_floor_manifest.py --strict
 
 ## Open product-owner decisions
 See `unresolvedQuestions` in the JSON (including Library vs Archive, actual corridor connectivity, stair access, perspective registration, and rights/provenance); Agent B and C should review the proposed schema and report incompatibilities before finalizing v1.0.
+
+
+## 2026-11-08 — actual PNG measurements and visual audit
+
+**Exact approved root source:** 1672×941 px (~1.777:1), 3,126,732 bytes. SHA-256:
+\`5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a\`.
+Git blob SHA: \`b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563\`.
+Read using Godot 4.7.2 in a temporary read-only GitHub Runner diagnostic: [source-byte measurements](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42502763198) and [full-image + source-resolution cropped views](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980). Original PNG bytes and path **never changed**.
+
+**Visual annotation:** \`docs/audits/GFX-08-08-first-floor-visual-review.svg\` embeds a *reduced review JPEG* derived from this exact PNG and outlines **coarse visible regions**, not collision/walkable polygons. Source-pixel XY origin is top left. Boxes and target marks are *visual estimates* from the 1200px overview and original-sized crops. The exact filename, SHA, format and dimensions are byte-verified; individual art object boundaries/portal centres are NOT owner-accepted measurements.
+
+The painting shows the Bedroom upper-left, adjoining Bathroom to its right, an upper horizontal Corridor, Library/Archive lower-left, central/lower grand Hall with two curved stairs, Kitchen lower-right, an additional **dark covered room** northeast, exterior Garden top, Orangery/greenhouse far northeast and front entry steps. The dark room is **not** one of eight independent proposed world-map rooms. Entry appears as exterior steps rather than a freestanding indoor room. No inference about a closed-wing gate or story assignment is accepted.
+
+### Physical mismatch with the old room-plan proposal
+
+\`season1_world_map.json.worldSize=[2150,2250]\` is nearly portrait (~0.956:1); source art is 16:9 landscape (~1.777:1). Unconditionally stretching it into the existing full-floor worldRect creates approximately **1.86x unequal axis scales** and visibly wrong doors/rooms. The image is a finished perspectival painting, not an engineered plan; a single linear mapping may never fit all architectural surfaces.
+
+The visible Library–Hall partition shows no clear traversable opening; the upper Corridor cannot yet be physically connected to the Bedroom or Hall at first-floor elevation; Hall–Kitchen opening is also unconfirmed. The Garden/Orangery appears outside at the top-right, separated from kitchen by the dark room. The twin stairs and central landing have unclear elevation/connection. The actual front main entrance is visible near pixel **[833,801] ±15**. Small threshold-like seams at roughly **[629,335]** (near Bathroom) and **[1144,474]** (Kitchen/Dark room) are ambiguous and must not be taken as working doors.
+
+These are **pixel observations**, not restored route/collision coordinates. The approved gameplay rule Hall→Corridor→Bedroom, bedroom independent of bathroom repair, remains authoritative in fiction, but **the painting cannot currently support that physical movement without explicit art/topology review**. Do not move gameplay graph anchors or silently add physical doors to solve it.
+
+### Three independent coordinate spaces
+
+| Space | Meaning | Status |
+|---|---|---|
+| \`image-pixel\` | source PNG 1672×941, top-left 0,0, downward y | **exact dimensions**, rough region estimates only |
+| \`world-plan\` | non-projected authoring XY and floor-contact positions | old 2150×2250 map is reference only; new landscape registration not approved |
+| \`screen-projected\` | Godot/Builder prototype display | \`sx=offsetX + zoom*x\`, \`sy=offsetY+zoom*sin(65°)*y\`; this is **not applied to the already painted PNG** |
+
+A usable planar transform requires at least four independent, non-collinear **same-floor** pixel↔world correspondences and held-out door/feature residual checks. Current \`pixelLandmarkCandidates\` include only pixel estimates with \`worldPlanPoint:null\`; stair landings cannot calibrate first-floor floor plane without elevation. \`worldPlanToSourcePixel\` deliberately remains unresolved with null matrix and empty approved control points.
+
+### Graphics and occlusion masks (NOT EXTRACTED)
+
+The approved raster is one composited PNG. The annotation is **not** a mask. Separate foreground candidate families are documented in \`occlusionCandidates\`: curved stair rails/treads (multi-height), Library bookcase/desk/armchair, Bedroom bed, Kitchen island/stools/hearth, dark-room covered furniture. Cutouts require accurate alpha, a reconstructed **clean plate** behind removed objects, confirmed floor-contact pivots, separate depth sorting/geometry where multiple elevations occur and phone-size visual acceptance. Never publish crude cutouts that expose holes or sample painted shadows as collision. Main architecture walls require independently reviewed openings and sometimes no occlusion at all if they bound a physically unreachable region.
+
+### Agent B / Agent C handoff contract
+
+\`assets/raven/map/tools/export_first_floor_contracts.py\` is the sole **explicit** export gate from Agent A's JSON:
+
+\`\`\`sh
+# Always safe: summary of blocked reference-only geometry
+python3 assets/raven/map/tools/export_first_floor_contracts.py --target review
+
+# Both currently intentionally BLOCK (exit code 2), no guessed coordinates:
+python3 assets/raven/map/tools/export_first_floor_contracts.py --target builder --output /tmp/room-builder-draft.json
+python3 assets/raven/map/tools/export_first_floor_contracts.py --target navigation --output /tmp/manor-map-preview.json
+\`\`\`
+
+For **Agent B PR #240**: explicit nested \`firstFloorDraft schemaVersion=2\` export is allowed only after reviewed linear full-image worldRect, ≥4 reviewed independent non-collinear pixel/world controls, and individually reviewed room rectangles. It uses real \`baseImage.path\` and \`pixelSize=[1672,941]\`. Missing doors/widths are OMITTED, not given guessed defaults. Old plan rectangles must not silently fill approved geometry. Image is already painted: no second 65° compression. If v2's linear model fails, update B's proposed schema via separate reviewed owner branch, not a hidden fallback.
+
+For **Agent C PR #238**: \`schemaVersion:1\`, \`coordinateSpace:"world-plan"\`, \`productionReady:false\`, \`anchors:[{id,roomId,position}]\`. Output only explicitly \`approved_for_preview\` \`calibratedWorldPlanPoint\`; **never** reinterpret \`referenceGreyboxPoint\` as landscape coordinates, project pixels into the graph, or copy runtime edges/gates. Current anchor count approved for preview: **zero**.
+
+The interface mapping has been proposed in PR comments to B/C; their explicit approvals or incompatibility notes are **still required**. Until then, the final contract is NOT agreed, though the adapters have deterministic fail-closed schemas. Only A's asset paths/shard are modified.
+
+### Current tests
+
+\`\`\`sh
+python3 -m unittest discover -s assets/raven/map/tools -p 'test_*.py' -v
+python3 assets/raven/map/tools/validate_first_floor_manifest.py --strict
+python3 assets/raven/map/tools/export_first_floor_contracts.py --target review
+\`\`\`
+
+Current release remains \`productionReady=false\` and \`integrationAllowed=false\`. Godot source-image load was tested in the CI measurement run, but **in-game character occlusion, physical movement, door thresholds, mobile viewport and owner geometry QA remain NOT_RUN**. CI workflow ownership remains integration-only; temporary diagnostic invocation will be removed from this branch after tests.

@@ -20,3 +20,24 @@ Owner QA:
 Status impact:
 - New `environment-art` entry GFX-08-08: draft partial delivery; no geometry completion or productionReady.
 - No other progress shard, scene, navigation, reducer, runtime, CI workflow or root original image changed.
+
+## Visual follow-up 2026-11-08
+
+Changes:
+- Measured approved PNG exactly through Godot Runner: 1672×941, SHA-256 `5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a`; Git blob `b50bc36c...` unchanged.
+- Added self-contained annotated reduced JPEG SVG `docs/audits/GFX-08-08-first-floor-visual-review.svg`, 10 coarse regions / 4 tentative visual fiducials. No physical pixel polygons or foreground masks claimed.
+- Recorded 11 door/transition audit verdicts, six candidate fiducials, six occlusion review targets and critical 16:9 versus near-portrait old-world mismatch.
+- Added fail-closed candidate-only export to Agent B v2 and Agent C v1 in `assets/raven/map/tools/export_first_floor_contracts.py`; no source pixels automatically become world-plan anchors.
+
+Verification:
+- Measured source by Godot 4.7.2 CI-run on exact original checkout: https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980
+- Unit tests and strict PNG/manifest validation: see exact-head CI evidence; do not claim runtime acceptance.
+- Foreground masks, true character/player collision, floor navigation and user approval: NOT_RUN.
+
+Owner QA:
+- Confirm missing/unambiguous Hall↔Library, Hall↔Corridor, Corridor↔Bedroom, Hall↔Kitchen physical doors; decide whether art repairs are allowed.
+- Confirm covered northeast room identity, stairs/elevation and Kitchen↔Orangery path.
+- Approve landscape world-plan calibration with independently matched planar floor points.
+
+Status impact:
+- `GFX-08-08`: PR_review / partial, technical metadata measured; geometry, art layer extraction, A↔B/C consumer approvals remain pending; no productionReady or merged/accepted claim.
