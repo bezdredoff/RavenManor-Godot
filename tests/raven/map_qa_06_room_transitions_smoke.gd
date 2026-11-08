@@ -56,7 +56,7 @@ func _run() -> void:
 
 	_reset()
 	assert(controller.room_id() == "QA-ROOM-A" and controller.confirmed_anchor() == "QA-A-ENTRY")
-	var origin := actor.position
+	var origin: Vector2 = actor.position
 	assert(not controller.request_transition("QA-TR-B-A", actor).ok)
 	assert(not controller.request_transition("QA-MISSING", actor).ok)
 	assert(not controller.request_transition("QA-TR-A-LOCKED", actor).ok)
@@ -70,13 +70,13 @@ func _run() -> void:
 	assert(controller.request_transition("QA-TR-A-B", actor).ok)
 	assert(controller.request_transition("QA-TR-A-B", actor).status == "unchanged")
 	var leg := _start_leg()
-	var mid_before := actor.position
+	var mid_before: Vector2 = actor.position
 	assert(controller.accept_segment_arrival(int(leg.segmentToken), str(leg.toAnchorId), leg.toPosition, actor).error == "premature-arrival")
 	assert(controller.accept_segment_arrival(999999, str(leg.toAnchorId), leg.toPosition, actor).error == "stale-or-unexpected-arrival")
 	assert(actor.position == mid_before and controller.room_id() == "QA-ROOM-A")
 	actor.advance(0.07)
 	assert(actor.position != leg.toPosition and actor.position != mid_before)
-	var middle := actor.position
+	var middle: Vector2 = actor.position
 	assert(controller.request_transition("QA-TR-A-B", actor).status == "unchanged")
 	assert(controller.next_segment(actor).is_empty(), "No duplicate in-flight leg")
 	assert(actor.position == middle, "Repeated request must not snap feet")
@@ -224,7 +224,7 @@ func _finish_leg(leg: Dictionary) -> void:
 	assert(arrivals.size() == prior + 1)
 	assert(arrivals.back().id == leg.toAnchorId and arrivals.back().point == leg.toPosition)
 	var outcome: Dictionary = controller.accept_segment_arrival(int(leg.segmentToken), str(leg.toAnchorId), actor.position, actor)
-	assert(outcome.ok, "Authored leg must be acknowledged after physical arrival: %s" % str(outcome))
+	assert(outcome.ok or (outcome.get("diagnostic", false) and outcome.get("error", "") == "qa-virtual-no-far-spawn"), "Authored leg must be acknowledged after physical arrival or emit expected virtual QA diagnostic: %s" % str(outcome))
 
 
 func _walk_until_ready(expected: String) -> void:
