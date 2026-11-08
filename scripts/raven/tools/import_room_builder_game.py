@@ -25,6 +25,13 @@ except ModuleNotFoundError as error:
         raise
     from import_first_floor_draft import scene_from_first_floor
 
+try:
+    from scripts.raven.tools.first_floor_art_adapter import adapt_art_manifest
+except ModuleNotFoundError as error:
+    if error.name != "scripts":
+        raise
+    from first_floor_art_adapter import adapt_art_manifest
+
 ROOT = Path(__file__).resolve().parents[3]
 WORLD_MAP = ROOT / "data/raven/season1_world_map.json"
 HALL_CONTRACT = ROOT / "data/raven/hall_visual_contract.json"
@@ -174,6 +181,10 @@ def piloted_hall_texture(obj, asset, contract):
 
 def scene_from_project(project, output_root=ROOT, reference=None, contract=None):
     """Write an isolated game-projected scene. Return (scene path, metrics)."""
+    # Agent A's v1 is a separate producer contract. An explicit, byte-checked
+    # adapter retains the original manifest and does NOT register raster pixels.
+    if isinstance(project, dict) and project.get("contractId") == "raven.first-floor-art":
+        project = adapt_art_manifest(project, reference)
     # The optional whole-floor extension is opt-in. Legacy room v1 exports
     # continue through the unchanged room-specific validation and rendering.
     if isinstance(project, dict) and "firstFloorDraft" in project:
