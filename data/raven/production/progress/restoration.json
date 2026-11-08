@@ -7,11 +7,11 @@
       "id": "CODE-07-02",
       "status": "proposed",
       "owner": "Planning",
-      "updated": "2026-11-03",
+      "updated": "2026-11-08",
       "implementationState": "not_recorded",
       "qaState": "not_recorded",
       "approvalState": "not_recorded",
-      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.",
+      "evidence": "2026-11-03 CODE/GAP priority audit: Feature/device QA or future work remains open, but not an immediate vertical-slice P0. Reassess on a concrete release dependency. Original CODE planning scope preserved; priority override=P1. No runtime implementation, PR merge, owner acceptance or device QA inferred.\n2026-11-03 PRODUCT PLAN RECONCILIATION: priority raised to P0 for agreed game completeness; status/QA/acceptance unchanged.\n2026-11-08 CODE-07-02 RESTORE/SNAPSHOT CHARACTERIZATION (status/QA/approval unchanged): new headless smoke tests/raven/restoration_restore_smoke.gd registered in scripts/check.sh and check.ps1 locks the existing path (reducer restoration gates incl. insufficient-work-points, save->reload->re-gate with no second charge, hotspot/position round-trip, restoration-gated route from a loaded snapshot, snapshot normalization of unknown RM-* IDs, corrupt/unsupported-save recovery into the single recovery slot). EXECUTED_PASS locally; no runtime/save-schema change, no PR merge, no owner or device QA. Gap record docs/changes/CODE-07-02-restore-gap.md lists G1 strict JSON grammar, G2 recovery reasons, G3 missing schema migration, G4 save metadata, G5 recovery-slot hygiene (reset_campaign keeps the stale backup), G6 no restore-from-backup path (get_recovery_backup has zero consumers), G7 lastRoomId/lastSafeAnchorId never applied on Continue, G8 unused restorationId navigation branch, G9 no restoration overlay/visual states; fixes belong to campaign-core integration (raven_campaign_store.gd/raven_snapshot.gd) plus ui-shell/vertical_slice, so they were NOT attempted here.",
       "priority": "P0"
     },
     {

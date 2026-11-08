@@ -50,6 +50,7 @@ for script in core/save_storage.gd raven/raven_ids.gd raven/raven_snapshot.gd ra
 	run_check "Parse $script" '' --check-only --script "res://scripts/$script"
 done
 run_check 'Raven foundation smoke' 'Raven Manor foundation smoke passed' --script res://tests/raven/raven_foundation_smoke.gd --quit-after 120
+run_check 'CODE-07-02 restoration restore/snapshot' 'Raven Manor restoration restore/snapshot characterization smoke passed' --script res://tests/raven/restoration_restore_smoke.gd --quit-after 120
 run_check 'VNS5-06D2A save & rollback rehearsal' 'Raven VN VNS5-06D2A save and rollback projection smoke passed' --script res://tests/raven/vn_release_save_rehearsal_smoke.gd --quit-after 240
 run_check 'VNS5-06D2C canonical-only runtime VN dispatch' 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed' --script res://tests/raven/vn_production_runtime_dispatch_smoke.gd --quit-after 240
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
