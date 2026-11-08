@@ -34,6 +34,11 @@ run_check() {
 run_check 'Project import' '' --editor --quit
 # TEMPORARY GFX-08-08 binary measurement; remove this hook after retrieving CI evidence.
 "$GODOT_BIN" --headless --path "$ROOT" --script res://assets/raven/map/tools/probe_first_floor_png.gd --quit-after 30
+# TEMPORARY: exact-head execution evidence for A-owned art validation, then revert this hook.
+python3 -m unittest discover -s "$ROOT/assets/raven/map/tools" -p 'test_*.py' -v
+python3 "$ROOT/assets/raven/map/tools/validate_first_floor_manifest.py" --strict
+python3 "$ROOT/assets/raven/map/tools/export_first_floor_contracts.py" --manifest "$ROOT/assets/raven/map/first_floor_manifest.v1.json" --target review
+
 
 run_check 'VN Studio Legacy Viewer synthetic' 'Raven VN Studio read-only legacy viewer smoke passed' --script res://tests/raven/vn_studio_legacy_smoke.gd --quit-after 120
 run_check 'VN Studio draft overlay round-trip' 'Raven VN Studio draft overlay round-trip smoke passed' --script res://tests/raven/vn_studio_drafts_smoke.gd --quit-after 120
