@@ -32,6 +32,26 @@ def source_check(m):
     return s
 
 
+def reviewed_full_anchor_set(m):
+    """C's strict consumer requires the full 13 canonical anchor IDs and rooms."""
+    originals = m["navigationReferenceAnchors"]
+    if len(originals) != 13:
+        raise ContractNotReady("Exactly 13 canonical navigation anchors required")
+    seen = set()
+    result = []
+    for a in originals:
+        if a["id"] in seen or not a["id"].startswith("RM-NAV-"):
+            raise ContractNotReady("Duplicate or noncanonical navigation anchor ID")
+        seen.add(a["id"])
+        if a.get("calibratedWorldPlanStatus") != "approved_for_preview":
+            raise ContractNotReady("All 13 world-plan footpoints must be independently reviewed")
+        result.append({
+            "id": a["id"], "roomId": a["roomId"],
+            "point": numbers(a.get("calibratedWorldPlanPoint"), 2, a["id"])
+        })
+    return result
+
+
 def builder_v2(m):
     """Only reviewed linear source-pixel↔world controls and explicit room geometry."""
     s = source_check(m)
@@ -62,6 +82,9 @@ def builder_v2(m):
     if not rooms:
         raise ContractNotReady("No independently reviewed walkable room regions")
     room_ids = {r["id"] for r in rooms}
+    anchors = reviewed_full_anchor_set(m)
+    if any(a["roomId"] not in room_ids for a in anchors):
+        raise ContractNotReady("An anchor room is missing from reviewed Builder regions")
     doors = []
     for d in m["doors"]:
         if d.get("approvedWorldPlanPoint") is None or d.get("approvedOpeningWidth") is None:
@@ -81,26 +104,17 @@ def builder_v2(m):
         "baseImage": {"path": s["path"], "pixelSize": size},
         "calibration": {"imageRect": [0, 0, *size], "worldRect": world, "controlPoints": controls},
         "roomRegions": rooms, "doorPlacements": doors,
-        "foregroundObjects": [], "navigationAnchors": []
+        "foregroundObjects": [], "navigationAnchors": anchors
     }}
 
 
 def navigation_v1(m):
     source_check(m)
-    anchors = []
-    seen = set()
-    for a in m["navigationReferenceAnchors"]:
-        p = a.get("calibratedWorldPlanPoint")
-        if p is None:
-            continue
-        if a.get("calibratedWorldPlanStatus") != "approved_for_preview" or a["id"] in seen:
-            raise ContractNotReady("Unapproved or repeated anchor coordinate")
-        seen.add(a["id"])
-        anchors.append({"id": a["id"], "roomId": a["roomId"], "position": numbers(p, 2, a["id"])})
-    if not anchors:
-        raise ContractNotReady("No approved-for-preview world-plan anchors; greybox is not a fallback")
+    checked = reviewed_full_anchor_set(m)
     return {"schemaVersion": 1, "coordinateSpace": "world-plan",
-            "productionReady": False, "anchors": anchors}
+            "productionReady": False,
+            "anchors": [{"id": a["id"], "roomId": a["roomId"], "position": a["point"]}
+                        for a in checked]}
 
 
 def review(m):

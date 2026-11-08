@@ -11,10 +11,13 @@ def fixture():
         "rooms": [{"id": "RM-ROOM-HALL", "approvedWorldPlanRect": None}],
         "doors": [{"id": "RM-DOOR-ENTRY-HALL", "roomIds": ["RM-ROOM-HALL", None],
                    "approvedWorldPlanPoint": None, "approvedOpeningWidth": None}],
-        "navigationReferenceAnchors": [{"id": "RM-NAV-HALL-SPAWN", "roomId": "RM-ROOM-HALL",
-                                        "referenceGreyboxPoint": [400, 300],
-                                        "calibratedWorldPlanPoint": None,
-                                        "calibratedWorldPlanStatus": "unresolved"}]
+        "navigationReferenceAnchors": [
+            {"id": f"RM-NAV-HALL-{i:02d}", "roomId": "RM-ROOM-HALL",
+             "referenceGreyboxPoint": [400, 300],
+             "calibratedWorldPlanPoint": None,
+             "calibratedWorldPlanStatus": "unresolved"}
+            for i in range(13)
+        ]
     }
 
 
@@ -35,11 +38,14 @@ class BridgeTests(unittest.TestCase):
             "controlPoints": [{"imagePixel": a, "worldPlan": b, "status": "reviewed"} for a,b in pairs]
         }
         d["rooms"][0]["approvedWorldPlanRect"] = [0,0,400,200]
+        for i, a in enumerate(d["navigationReferenceAnchors"]):
+            a["calibratedWorldPlanPoint"] = [10 + i*20, 100]
+            a["calibratedWorldPlanStatus"] = "approved_for_preview"
         v = builder_v2(d)["firstFloorDraft"]
         self.assertEqual(v["schemaVersion"], 2)
         self.assertEqual(v["baseImage"]["pixelSize"], [200,100])
         self.assertEqual(v["doorPlacements"], [])
-        self.assertEqual(v["navigationAnchors"], [])
+        self.assertEqual(len(v["navigationAnchors"]), 13)
         self.assertFalse(v["provenance"]["productionReady"])
         d["coordinateSystems"]["worldPlanToSourcePixel"]["controlPoints"][3]["worldPlan"]=[390,200]
         with self.assertRaisesRegex(ContractNotReady,"mismatch"):
@@ -51,8 +57,11 @@ class BridgeTests(unittest.TestCase):
         a["calibratedWorldPlanPoint"]=[700,900]
         with self.assertRaises(ContractNotReady):
             navigation_v1(d)
-        a["calibratedWorldPlanStatus"]="approved_for_preview"
+        for i, item in enumerate(d["navigationReferenceAnchors"]):
+            item["calibratedWorldPlanPoint"]=[700+i,900]
+            item["calibratedWorldPlanStatus"]="approved_for_preview"
         v=navigation_v1(d)
+        self.assertEqual(len(v["anchors"]),13)
         self.assertEqual(v["anchors"][0]["position"],[700.0,900.0])
         self.assertNotEqual(v["anchors"][0]["position"],a["referenceGreyboxPoint"])
         self.assertFalse(v["productionReady"])
