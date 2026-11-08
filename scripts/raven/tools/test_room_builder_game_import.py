@@ -1,4 +1,6 @@
 import base64
+import hashlib
+import struct
 import json
 import math
 import tempfile
@@ -15,6 +17,19 @@ FIXTURE = json.loads((ROOT/"tests/fixtures/hall_room_builder_export_sample.json"
 WORLD = json.loads((ROOT/"data/raven/season1_world_map.json").read_text(encoding="utf-8"))
 
 class GamePreviewImportTests(unittest.TestCase):
+    def test_owner_selected_first_floor_png_fingerprint(self):
+        # Read-only Agent A source inventory on CI. Do not edit/duplicate the art.
+        path = ROOT / "a_detailed_top_down_isometric_game_map_illustratio.png"
+        raw = path.read_bytes()
+        self.assertEqual(len(raw), 3126732)
+        self.assertEqual(hashlib.sha1(f"blob {len(raw)}\\0".encode("ascii") + raw).hexdigest(),
+                         "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563")
+        self.assertEqual(raw[:8], b"\\x89PNG\\r\\n\\x1a\\n")
+        self.assertEqual(raw[12:16], b"IHDR")
+        width, height = struct.unpack(">II", raw[16:24])
+        self.assertTrue(0 < width <= 16384 and 0 < height <= 16384)
+        print(f"FIRST_FLOOR_SOURCE: dimensionsPx=[{width},{height}] sha256={hashlib.sha256(raw).hexdigest()} bytes={len(raw)} gitBlob=b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563", flush=True)
+
     def test_fixture_to_godot_art_scene(self):
         with tempfile.TemporaryDirectory() as temp:
             path, counts=scene_from_project(FIXTURE,Path(temp))
