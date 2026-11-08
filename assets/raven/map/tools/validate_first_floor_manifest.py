@@ -115,6 +115,9 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
         "rooms", "doors", "navigationReferenceAnchors", "objects",
         "layers", "unresolvedQuestions"
     )}
+    for optional in ("imageObservations", "pixelLandmarkCandidates", "occlusionCandidates"):
+        if optional in data:
+            groups[optional] = data[optional]
     for key, items in groups.items():
         _unique(items, key)
     all_ids = [item["id"] for objects in groups.values() for item in objects]
@@ -123,12 +126,23 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
     room_ids = {x["id"] for x in data["rooms"]}
     if len(room_ids) != 8:
         raise ContractError("Expected eight reference rooms")
+    def pixel_point(point: list, label: str) -> None:
+        if (not isinstance(point, list) or len(point) != 2
+                or any(isinstance(n, bool) or not isinstance(n, (int, float)) or not math.isfinite(n)
+                       for n in point)
+                or not (0 <= point[0] < width and 0 <= point[1] < height)):
+            raise ContractError(f"Invalid source-pixel point: {label}")
+
     for door in data["doors"]:
         for rid in door["roomIds"]:
             if rid is not None and rid not in room_ids:
                 raise ContractError(f'Unknown room in {door["id"]}: {rid}')
-        if door["sourcePixelPoint"] is not None:
-            raise ContractError("Unapproved painted door pixels must remain null in v1 draft")
+        if door.get("authoritativeForMovement") is True:
+            raise ContractError("Artwork cannot grant navigation or collision authority")
+        if door.get("sourcePixelPoint") is not None:
+            if door.get("calibrationStatus") != "approx_visual_estimate_not_collision":
+                raise ContractError("Visual estimate cannot silently become a calibrated doorway")
+            pixel_point(door["sourcePixelPoint"], door["id"])
     for anchor in data["navigationReferenceAnchors"]:
         if anchor["roomId"] not in room_ids:
             raise ContractError(f'Unknown anchor room: {anchor["id"]}')
@@ -175,6 +189,31 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
             original = source_objects.get(obj["id"])
             if original is None or obj["referenceWorldPlanRect"] != original["rect"]:
                 raise ContractError("World plan object footprint drifted")
+    for observation in data.get("imageObservations", []):
+        if observation.get("roomId") is not None and observation["roomId"] not in room_ids:
+            raise ContractError("Unknown visual observation room ID")
+        bounds = observation.get("boundsPx")
+        if (not isinstance(bounds, list) or len(bounds) != 4
+                or not all(isinstance(x, (float, int)) and not isinstance(x, bool) and math.isfinite(x) for x in bounds)
+                or not (0 <= bounds[0] < bounds[2] <= width and 0 <= bounds[1] < bounds[3] <= height)):
+            raise ContractError("Invalid visual bounds")
+        if observation.get("walkablePolygon") is not None or observation.get("ownerGeometryApproval") != "pending":
+            raise ContractError("Unapproved visual observation promoted to gameplay")
+    for landmark in data.get("pixelLandmarkCandidates", []):
+        if landmark.get("worldPlanPoint") is not None:
+            raise ContractError("No painted reference may silently adopt provisional world XY")
+        if landmark.get("imagePixelEstimate") is not None:
+            pixel_point(landmark["imagePixelEstimate"], landmark["id"])
+    for occ in data.get("occlusionCandidates", []):
+        if occ.get("status") != "unsegmented":
+            raise ContractError("Unreviewed occlusion candidate cannot assert a cutout")
+        bounds = occ.get("approxBoundsPx")
+        if (not isinstance(bounds, list) or len(bounds) != 4
+                or not (0 <= bounds[0] < bounds[2] <= width and 0 <= bounds[1] < bounds[3] <= height)):
+            raise ContractError("Invalid occlusion review bound")
+    annotation = source.get("previewOnlyAnnotationPath")
+    if annotation is not None and not _path(root, annotation).is_file():
+        raise ContractError("Missing art-audit annotation")
     mapping = data["coordinateSystems"]["worldPlanToSourcePixel"]
     if mapping["status"] != "unresolved" or mapping["matrix"] is not None:
         raise ContractError("Draft must not assert unverified world-to-raster calibration")
