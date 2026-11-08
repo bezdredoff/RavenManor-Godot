@@ -20,6 +20,17 @@ func _initialize() -> void:
     var byte_length := file.get_length()
     file.close()
     print("RAVEN_FIRST_FLOOR_IMAGE_METADATA|", size.x, "|", size.y, "|", sha256, "|", byte_length)
+    # Two independent source-pixel crops for an accurate door/seam audit.
+    var crops := [
+        {"name": "LEFT_AND_HALL", "rect": Rect2i(140, 100, 980, 780)},
+        {"name": "RIGHT_AND_GARDEN", "rect": Rect2i(920, 40, 740, 800)}
+    ]
+    for item in crops:
+        var crop_image: Image = img.get_region(item["rect"])
+        var crop_jpeg: PackedByteArray = crop_image.save_jpg_to_buffer(0.84)
+        print("RAVEN_FIRST_FLOOR_CROP_" + str(item["name"]) + "_BEGIN")
+        print(Marshalls.raw_to_base64(crop_jpeg))
+        print("RAVEN_FIRST_FLOOR_CROP_" + str(item["name"]) + "_END")
     var scale: float = minf(1.0, 1200.0 / float(maxi(size.x, size.y)))
     var tw := maxi(1, roundi(float(size.x) * scale))
     var th := maxi(1, roundi(float(size.y) * scale))
