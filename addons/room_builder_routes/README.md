@@ -12,4 +12,4 @@ Files:
 - `route_editor_view.gd`: grid/waypoint/route/obstacle tools, undo/redo, draft persistence, route preview.
 - `assets/raven/map/qa/drafts/hall_routes_draft.v1.json`: first import of the original Hall QA geometry, preserving seven original stable IDs and seven **provisional** edges.
 
-**No promotion:** runtime `first_floor_hall_movement_pilot.gd` still reads its immutable legacy QA dataset. Pressing Open Hall Pilot launches that **original** test scene; it does not inject unsaved/editor routes. Test Route inside the editor is a compiled-graph line preview, not an animated Onoe simulation.
+**MAP-EDIT-02 playable QA preview:** the Hall movement scene now supports explicit **Original**, **Saved user** and **Project export** choices. The editor supplies separate **Play** buttons; unsaved changes are refused, not injected. A saved/exported DRAFT_ONLY route graph is compiled in-memory and followed by the existing `ManorRouteSession` and Onoe segment mover. See [MAP-EDIT-02 manual guide](../../docs/MAP_EDIT_02_PLAYABLE_PREVIEW.md). Original Hall remains the regression baseline. No promotion to production.
