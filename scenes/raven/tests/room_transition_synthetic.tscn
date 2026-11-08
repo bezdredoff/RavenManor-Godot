@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://scripts/raven/room_transition_synthetic_demo.gd" id="1_demo"]
+[ext_resource type="PackedScene" path="res://scenes/raven/tests/onoe_segment_actor.tscn" id="2_onoe"]
+
+[node name="MAPQA06SyntheticRooms" type="Node2D"]
+script = ExtResource("1_demo")
+
+[node name="Onoe" parent="." instance=ExtResource("2_onoe")]
+z_index = 8
