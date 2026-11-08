@@ -119,3 +119,16 @@ PRs [#238](https://github.com/bezdredoff/RavenManor-Godot/pull/238) (navigation)
 One sample entrance coordinate, estimated `[833,801]`, is kept only under `pixelLandmarkCandidates[].imagePixelEstimate` and the annotated SVG. **All eleven** `doors[].sourcePixelPoint` remain null, compatible with B's unregistered importer. A's observations can evolve as review-only fields without supplying collision geometry.
 
 **Decision accepted now:** freeze producer/consumer shapes and reference-only diagnostics, mark contract A→B→C `approved_reference_data_contract`; allow PR #239 to merge as a repository tool-and-documentation change. **Not approved:** source-to-world projection, doorway topology, physical walkable polygons, 13 actual world-space positions, extracted furniture/foreground/masks, and manual Godot/mobile QA. `GFX-08-08` implementation remains PARTIAL; the metadata/schema milestone is done, not the map itself.
+
+### A→B→C contract acceptance evidence
+
+- Real merged-consumer smoke: [GitHub Actions run 42506170859](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42506170859). 11 Python tests + C Godot identity-only smoke PASS; full CI green. The direct A v1→B v2 import and round-trip explicitly have **unregistered** pixel/world spaces, preserve `producerManifest`, and contain no navigation/foreground assets.
+- Run independently in a full checkout containing the approved PNG and merged B/C:
+
+```sh
+python3 -m unittest discover -s assets/raven/map/tools -p 'test_*.py' -v
+python3 assets/raven/map/tools/validate_first_floor_manifest.py --strict
+godot --headless --path . --script res://assets/raven/map/tools/test_first_floor_consumer_bridge.gd --quit-after 60
+```
+
+These are persistent domain-local test sources; they are **not yet automatically invoked by the permanent CI scripts**. That wiring would be a separate integration/QA scope, not an art-owned workflow edit.
