@@ -108,6 +108,64 @@ export function makeFirstFloorDraft(map,baseImage){
   navigationAnchors:[],foregroundObjects:[]
  },map);
 }
+
+/* Agent A v1 adapter: requires the owner-selected PNG to be uploaded first.
+   Browser verifies bytes, SHA-256 and git blob SHA. Never maps greybox points. */
+export async function adaptFirstFloorArtManifestV1(art,map,uploadedBase){
+ const fail=message=>{throw Error('Agent A v1: '+message);};
+ if(!art||art.schemaVersion!==1||art.contractId!=='raven.first-floor-art')fail('несовместимая схема / contractId');
+ if(art.productionReady!==false||art.integrationAllowed!==false)fail('производственная интеграция запрещена');
+ if(!map||map.schemaVersion!==1)fail('нет reference world-plan');
+ if(!uploadedBase||typeof uploadedBase.dataUri!=='string')fail('сначала загрузите оригинальный PNG (чтобы проверить байты и Git blob SHA)');
+ const png=uploadedBase.dataUri,base64=png.match(/^data:image\/png;base64,([A-Za-z0-9+/=]+)$/);
+ if(!base64)fail('встроенный PNG повреждён');
+ const bytes=Uint8Array.from(atob(base64[1]),ch=>ch.charCodeAt(0));
+ if(bytes.length<24||bytes[0]!==137||bytes[1]!==80||bytes[2]!==78||bytes[3]!==71)fail('некорректная PNG signature');
+ const view=new DataView(bytes.buffer,bytes.byteOffset,bytes.byteLength),pixels=[view.getUint32(16),view.getUint32(20)];
+ if(pixels.some(v=>v<1||v>16384)||pixels.some((v,i)=>v!==uploadedBase.pixelSize[i]))fail('неверные размеры PNG');
+ if(!globalThis.crypto?.subtle)fail('WebCrypto SHA недоступен: используйте Python CLI');
+ const digest=async(algorithm,data)=>Array.from(new Uint8Array(await globalThis.crypto.subtle.digest(algorithm,data))).map(v=>v.toString(16).padStart(2,'0')).join('');
+ const sha=await digest('SHA-256',bytes),prefix=new TextEncoder().encode('blob '+bytes.length+'\0');
+ const gitInput=new Uint8Array(prefix.length+bytes.length);gitInput.set(prefix);gitInput.set(bytes,prefix.length);
+ const blob=await digest('SHA-1',gitInput),source=art.source;
+ if(!source||source.format!=='PNG'||source.byteSize!==bytes.length||source.gitBlobSha!==blob)fail('PNG не совпадает с Git blob/byteSize Agent A');
+ if(source.sha256!=null&&source.sha256!==sha)fail('SHA256 не совпадает с Agent A');
+ if(source.dimensionsPx!=null&&JSON.stringify(source.dimensionsPx)!==JSON.stringify(pixels))fail('pixelSize не совпадает с Agent A');
+ if(!art.coordinateSystems||JSON.stringify(art.coordinateSystems.worldPlan?.extent)!==JSON.stringify(map.worldSize))fail('world-plan extent drift');
+ const mapping=art.coordinateSystems.worldPlanToSourcePixel;
+ if(!mapping||mapping.status!=='unresolved'||mapping.matrix!==null||mapping.allowInterpolation!==false||JSON.stringify(mapping.controlPoints)!=='[]')fail('неподтверждённое преобразование pixel→world-plan');
+ if(art.coordinateSystems.greyboxGraph?.directMappingToWorldPlan!==false)fail('greybox и world-plan нельзя смешивать');
+ const checkUnique=(rows,label)=>{
+  if(!Array.isArray(rows)||new Set(rows.map(x=>x?.id)).size!==rows.length||rows.some(x=>typeof x?.id!=='string'))fail('дублирующийся/неверный ID '+label);
+ };
+ for(const label of ['rooms','doors','objects','navigationReferenceAnchors','layers'])checkUnique(art[label],label);
+ const rooms=art.rooms.map(r=>{
+  const ref=map.rooms.find(x=>x.id===r.id);
+  if(!ref||JSON.stringify(ref.rect)!==JSON.stringify(r.referenceWorldPlanRect)||r.sourcePixelPolygon!==null)fail('room ID, plan rect or unreviewed pixel polygon '+r.id);
+  return {id:r.id,rect:[...r.referenceWorldPlanRect],coordinateSpace:'world-plan',referenceOnly:true};
+ });
+ if(rooms.length!==map.rooms.length)fail('не все комнаты предоставлены');
+ const doors=art.doors.map(d=>{
+  const ref=map.doors.find(x=>x.id===d.id);
+  if(!ref||JSON.stringify(d.referenceWorldPlanPoint)!==JSON.stringify(ref.point)||d.sourcePixelPoint!==null)fail('door ID/point '+d.id);
+  const expected=[map.rooms[ref.a].id,ref.b<0?null:map.rooms[ref.b].id];
+  if(JSON.stringify(expected)!==JSON.stringify(d.roomIds))fail('door room pair '+d.id);
+  return {id:d.id,rooms:[...expected],point:[...d.referenceWorldPlanPoint],width:80,widthAuthority:'editor_placeholder_not_art',coordinateSpace:'world-plan',referenceOnly:true};
+ });
+ if(doors.length!==map.doors.length)fail('не все двери предоставлены');
+ for(const a of art.navigationReferenceAnchors)if(a.referenceSpace!=='independent_greybox'||a.sourcePixelFootpoint!==null||!map.rooms.some(r=>r.id===a.roomId))fail('unsupported greybox anchor '+a.id);
+ for(const o of art.objects)if(!o.id.startsWith('RM-ASSET-')||o.sourcePixelPivot!==null||o.foregroundCutoutPath!==null)fail('foreground/pivot not measured '+o.id);
+ return validateFirstFloorDraft({
+  kind:'raven-first-floor-draft',schemaVersion:2,
+  provenance:'Agent A raven.first-floor-art v1 · unresolved image registration',
+  baseImage:{dataUri:png,pixelSize:pixels,sha256:sha,gitBlobSha:blob},
+  registration:{status:'unresolved',imageSpace:'image-pixel',referenceSpace:'world-plan',previewSpace:'screen-projected',pixelToWorld:null,navigationAllowed:false},
+  calibration:{status:'unresolved',imageRect:[0,0,...pixels],worldRect:[0,0,...map.worldSize],controlPoints:[]},
+  roomRegions:rooms,doorPlacements:doors,foregroundObjects:[],navigationAnchors:[],
+  producerManifest:clone(art)
+ },map);
+}
+
 export function comparison(d,map){
  if(!map)return ['Не загружена схема предлагаемых координат Godot'];
  const regions=new Map(map.rooms.map(x=>[x.id,x.rect])),doors=new Map(map.doors.map(x=>[x.id,x.point]));
