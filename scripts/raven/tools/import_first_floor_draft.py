@@ -132,6 +132,8 @@ def validate_first_floor(project, reference=None):
     world_rect = numbers(calib.get("worldRect"), 4, "calibration.worldRect")
     if any(v <= 0 for v in [image_rect[2], image_rect[3], world_rect[2], world_rect[3]]):
         raise ValueError("Calibration dimensions must be positive")
+    if image_rect != [0, 0, pw, ph]:
+        raise ValueError("Calibration imageRect must cover full PNG; image crop is not supported by v2 importer")
     if not point_in_rect(image_rect[:2], [0, 0, pw, ph]) or not point_in_rect([image_rect[0]+image_rect[2], image_rect[1]+image_rect[3]], [0, 0, pw, ph]):
         raise ValueError("Calibration imageRect lies outside base image")
     controls = records(calib.get("controlPoints"), "calibration.controlPoints")
