@@ -12,7 +12,7 @@ signal segment_started(from_anchor_id: String, to_anchor_id: String)
 @export_range(0.0, 10.0, 0.1) var start_tolerance: float = 0.75
 @export_range(24.0, 300.0, 1.0) var sprite_height: float = 104.0
 
-var _visual: Node2D
+var _visual
 var _active := false
 var _paused := false
 var _to_point := Vector2.ZERO

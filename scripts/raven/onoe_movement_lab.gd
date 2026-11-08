@@ -4,7 +4,7 @@ extends Node2D
 ## Arrow keys queue a direction *for after* the current segment. Space = pause.
 const DIRECTIONS := [Vector2(150, 0), Vector2(-150, 0), Vector2(0, -120), Vector2(0, 120)]
 
-@onready var onoe = $Onoe
+var onoe
 var _next_direction := Vector2.ZERO
 var _demo_index := 0
 var _number := 0
@@ -12,6 +12,7 @@ var _hud: Label
 
 
 func _ready() -> void:
+	onoe = $Onoe
 	var camera := Camera2D.new()
 	camera.enabled = true
 	add_child(camera)

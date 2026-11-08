@@ -23,6 +23,17 @@
       "approvalState": "not_recorded",
       "evidence": "2026-11-03 CODE/GAP priority audit: Owner map/Hall physical-door, route, collision and 65-degree geometry calibration remains unapproved; overlapping IDs share one gated review. Original GAP planning scope preserved; priority override=P0. No runtime implementation, PR merge, owner acceptance or device QA inferred.",
       "priority": "P0"
+    },
+    {
+      "id": "MAP-QA-02",
+      "status": "PR_review",
+      "owner": "Agent B / ChatGPT",
+      "updated": "2026-11-08",
+      "priority": "P1",
+      "implementationState": "partial",
+      "qaState": "manual_pending",
+      "approvalState": "pending",
+      "evidence": "Scoped reusable Onoe map preview component created from merged main 8d0207f; legacy Hall/Whole Manor animation clips extracted to shared visual and old route systems left intact; new Node2D footpoint single-leg move_toward executor, isolated lab scene, dedicated RouteSession integration smoke and manual guide. GitHub Actions exact-head and manual Godot F6 not yet verified. No story/map geometry/campaign changes."
     }
   ],
   "assignments": [
@@ -36,6 +47,10 @@
     },
     {
       "id": "RM-GAP-006",
+      "workstreamId": "WS-HALL"
+    },
+    {
+      "id": "MAP-QA-02",
       "workstreamId": "WS-HALL"
     }
   ]

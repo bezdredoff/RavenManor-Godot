@@ -14,7 +14,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 
-func _leg(actor: Node2D, direction: Vector2, label: String, sprite: AnimatedSprite2D) -> void:
+func _leg(actor, direction: Vector2, label: String, sprite: AnimatedSprite2D) -> void:
 	var source: Vector2 = actor.position
 	var segment := {
 		"fromAnchorId": label + "-FROM", "toAnchorId": label,
@@ -44,7 +44,7 @@ func _leg(actor: Node2D, direction: Vector2, label: String, sprite: AnimatedSpri
 
 func _run() -> void:
 	assert(LAB != null, "Standalone lab must load")
-	var actor := ACTOR.instantiate()
+	var actor = ACTOR.instantiate()
 	root.add_child(actor)
 	await process_frame
 	var sprite: AnimatedSprite2D = actor.get_sprite()
