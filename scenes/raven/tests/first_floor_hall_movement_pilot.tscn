@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://scripts/raven/first_floor_hall_movement_pilot.gd" id="1_pilot"]
+[ext_resource type="Texture2D" path="res://a_detailed_top_down_isometric_game_map_illustratio.png" id="2_art"]
+[ext_resource type="PackedScene" path="res://scenes/raven/tests/onoe_segment_actor.tscn" id="3_actor"]
+
+[node name="FirstFloorHallMovementPilot" type="Node2D"]
+script = ExtResource("1_pilot")
+
+[node name="Art" type="Sprite2D" parent="."]
+texture = ExtResource("2_art")
+centered = false
+
+[node name="Hotspots" type="Node2D" parent="."]
+z_index = 25
+
+[node name="Onoe" parent="." instance=ExtResource("3_actor")]
+z_index = 20
+
+[node name="QAOverlay" type="Node2D" parent="."]
+z_index = 30
+visible = false
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(836, 695)
+zoom = Vector2(0.9, 0.9)
+enabled = true
