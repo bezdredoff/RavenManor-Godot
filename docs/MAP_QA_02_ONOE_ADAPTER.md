@@ -94,3 +94,7 @@ godot --headless --path . --script res://tests/raven/prototype_lab_smoke.gd --qu
 The dedicated smoke checks sprites, frame counts/speeds, left flip, all four directions, first-frame idle, footpoint at 0, height scaling, pause/resume, physical completion, busy/replacement refusal, Session queued target, cancel/finish semantics, and no premature checkpoint. The existing Hall/Whole Manor tests must pass unchanged. **CI must be inspected at exact PR head**; visual/device acceptance remains owner's responsibility.
 
 No \`project.godot\`, campaign/reducer/store/snapshot, canonical map, data graph, storyboard or geometry changes.
+
+## Verified CI (2026-11-08)
+
+[Godot diagnostic run #42515189603](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42515189603): new `onoe_segment_movement_smoke.gd` **PASS**; old Hall-authored navigation, Whole Manor and Prototype Lab smokes **PASS**; all required build jobs **PASS**. The final PR excludes temporary `scripts/check.sh` changes. Full first-floor movement, real map art/occlusion and interactive F6 **not** manually accepted.

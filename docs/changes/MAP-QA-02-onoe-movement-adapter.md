@@ -1,6 +1,6 @@
 Task IDs: MAP-QA-02
 Changes: Extract common Onoe SpriteFrames/direction helper; introduce one-segment move_toward actor and standalone Godot demo; refactor legacy greybox animation callsites without changing their movement; tests and own manor-map shard.
-Verification: New Godot smoke and existing map regressions added; first CI 42514965832 is in progress. Governance format corrected; final head CI still pending.
+Verification: Diagnostic head 2c6ab8bbf5255d1900961ea331feff63c25dff8d passed CI run 42515189603: all required jobs PASS, including new Onoe movement headless smoke, previous Hall navigation, Whole Manor map and Prototype Lab regressions. Final clean exact-head CI pending after restoring shared check.sh.
 Owner QA: F6 res://scenes/raven/tests/onoe_movement_lab.tscn, watch four directions, left flip, pause, queued replacement, physical arrival; NOT_RUN manually.
 Status impact: MAP-QA-02 PR_review / partial; no approval of map geometry, collision, art or game flow.
 
@@ -30,3 +30,10 @@ Status impact: MAP-QA-02 PR_review / partial; no approval of map geometry, colli
 Open \`scenes/raven/tests/onoe_movement_lab.tscn\` with **F6**. Confirm all directions, mirroring, interruption queue, pause/resume, and no position teleport. Integration with approved first-floor geometry is a **future** PR, after owner and Agent A/C mapping acceptance. No acceptance of first-floor geometry, final Onoe art or campaign checkpoint claimed.
 
 MAP-QA-02 remains \`PR_review\` until merge and scene/manual QA. Scope is an independent technical component; DO NOT mark global manor-map story or physical routes complete.
+
+## Verified automated evidence — 2026-11-08
+
+- Temporary in-branch call in `scripts/check.sh` explicitly ran the dedicated Godot CLI smoke; **successful** result [GitHub Actions #42515189603](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42515189603), source head `2c6ab8bbf5255d1900961ea331feff63c25dff8d`.
+- `godot-runtime` green with printed `MAP-QA-02 Onoe movement passed`; existing navigation smoke, Whole season1 map, Prototype Lab and original Hall import all green; data-contracts, room-builder, art-pipeline, web-package and aggregate build PASS. Art/device manual QA **NOT_RUN**.
+- This shared check-script insertion was **diagnostic only** and is removed from the final diff to obey the map-agent scoped file ownership. New test remains available as `tests/raven/onoe_segment_movement_smoke.gd`; repeat it manually or through a future integration-owned permanent CI hook.
+- MAP-QA-02 is a *scoped internal task label* not present in the shared canonical work package registry. Updating that central catalog is deliberately **out of scope**; live status/evidence is appended to existing map-domain `CODE-05-02`, which remains P0 partial rather than inventing a live task override that fails dashboard checks.
