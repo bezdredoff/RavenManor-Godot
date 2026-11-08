@@ -1,3 +1,9 @@
+Task IDs: MAP-QA-07A (technical integration slice; parent CODE-05-02)
+Changes: Reusable multi-room host, Hall QA plus synthetic room fixture, F6 demo, isolated Godot smoke and contract documentation.
+Verification: Local Godot NOT_AVAILABLE; new smoke NOT_RUN; exact-head CI pending, baseline regression commands documented.
+Owner QA: HUMAN_PENDING for doorway physics, portrait UI, camera scale and all room visuals.
+Status impact: CODE-05-02 remains partial and PR_review; no campaign/geometry approval or RM-GAP-006 closure.
+
 # MAP-QA-07A — Multi-room playable integration foundation
 
 Date: 2026-11-08
