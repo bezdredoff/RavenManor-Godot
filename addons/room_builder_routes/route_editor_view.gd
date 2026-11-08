@@ -325,6 +325,8 @@ func _refresh() -> void:
 		var item: Dictionary = document["waypoints"][wp_index]
 		name_edit.text = str(item["label"])
 		kind_picker.select(Routes.TYPES.find(str(item["type"])))
+		var feet := Routes._vector(item["pointPx"])
+		cell_inspection.text = "%s · feet (%.2f, %.2f) px · cell %s" % [selected_waypoint, feet.x, feet.y, Routes.pixel_to_cell(feet, document)]
 	else:
 		selected_waypoint = ""
 		name_edit.clear()
@@ -412,7 +414,11 @@ func _on_cell_clicked(cell: String) -> void:
 func _on_canvas_waypoint(id: String) -> void:
 	if id.is_empty():
 		return
+	selected_waypoint = id
+	_refresh()
 	if current_mode == "Routes":
+		# Refreshing the current route inspector may restore its own endpoints:
+		# apply an explicit user pick AFTER the refresh.
 		for i in range(route_from.item_count):
 			if route_from.get_item_text(i) == id:
 				if click_route_from:
@@ -422,9 +428,6 @@ func _on_canvas_waypoint(id: String) -> void:
 				click_route_from = not click_route_from
 				_message("Selected %s as %s" % [id, "from" if not click_route_from else "to"])
 				break
-	selected_waypoint = id
-	_refresh()
-
 
 func _on_drop_waypoint(id: String, point: Vector2) -> void:
 	var result := Routes.move_waypoint(document, id, _snap_point(point))

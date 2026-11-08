@@ -15,3 +15,7 @@ Status impact: MAP-EDIT-01 is an independent scoped technical slice, absent from
 ## Exact-head verification follow-up
 
 Initial CI run https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42523486759 passed all six jobs at head dea91e7c24496f3f9df81b4c9077d1a31a75d5b5 but did NOT execute the new Room Builder native smoke: existing test file was not listed in scripts/check.sh. To avoid a false PASS claim, the follow-up commit registers precisely that test in blocking Godot checks, adds actual View instantiation / Undo/Redo checks, preserves waypoint dropdown state and avoids accidental drag movement from a plain click. This shared callsite needs an explicit integration-owner review. New exact-head CI pending; not merged or device-accepted.
+
+## Verified native editor CI (before final UX touch-up)
+
+PR head `3c5589303c3810974e2e784cbf01c121a80735a5` passed all 6 required jobs in [run 42524211997](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42524211997). Godot logs printed `MAP-EDIT-01 native route editor passed` and `MAP-EDIT-01 native Room Builder route document smoke passed`; existing MAP-QA-01/02/03, navigation, Prototype Lab and Whole Manor smokes passed. Follow-up UI polish adds precise waypoint feet readout and reselects route endpoints on click after inspector refresh, with regression. Final exact-head CI pending; manual visual acceptance NOT_RUN.
