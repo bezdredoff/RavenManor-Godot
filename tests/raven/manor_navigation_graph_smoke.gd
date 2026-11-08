@@ -164,12 +164,14 @@ func _verify_session_and_adapter(source_data: Dictionary) -> void:
 		"schemaVersion": 1, "coordinateSpace": "world-plan", "productionReady": false,
 		"anchors": [{"id": "RM-NAV-HALL-SPAWN", "roomId": "RM-ROOM-HALL", "position": [410.0, 315.0]}]
 	}
+	var original_start: Array = source_data["anchors"][0]["position"].duplicate(true)
+	assert(Vector2(float(original_start[0]), float(original_start[1])) == Vector2(400, 300), "Fixture baseline coordinates")
 	var preview: Dictionary = GeometryAdapter.apply_preview(source_data, candidate)
 	assert(preview.ok)
 	assert(preview.updatedAnchorCount == 1)
 	assert(not preview.data.provenance.productionReady)
 	assert(preview.data.provenance.geometryStatus == "candidate-preview")
-	assert(source_data.anchors[0].position == [400, 300], "Source graph may not be modified")
+	assert(source_data["anchors"][0]["position"] == original_start, "Source graph may not be modified by preview overlay")
 	assert(preview.data.edges == source_data.edges, "Fixture must not rewrite gates or topology")
 	graph.rebuild(state, preview.data)
 	assert(graph.position("RM-NAV-HALL-SPAWN") == Vector2(410, 315))
