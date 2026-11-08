@@ -89,6 +89,7 @@ foreach ($script in @(
 	Invoke-GodotCheck "Parse $script" @('--headless', '--check-only', '--path', $projectPath, '--script', $script)
 }
 Invoke-GodotCheck 'Raven foundation smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/raven_foundation_smoke.gd', '--quit-after', '120') 'Raven Manor foundation smoke passed'
+Invoke-GodotCheck 'CODE-07-02 restoration restore/snapshot' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/restoration_restore_smoke.gd', '--quit-after', '120') 'Raven Manor restoration restore/snapshot characterization smoke passed'
 Invoke-GodotCheck 'Raven navigation graph smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/manor_navigation_graph_smoke.gd', '--quit-after', '120') 'Raven Manor authored navigation graph smoke passed'
 Invoke-GodotCheck 'Prototype Lab smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/prototype_lab_smoke.gd', '--quit-after', '120') 'Raven Manor Prototype Lab smoke passed'
 Invoke-GodotCheck 'UPDS engine port parity smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/upds_core_reuse_smoke.gd', '--quit-after', '120') 'Raven Manor UPDS core reuse smoke passed'
