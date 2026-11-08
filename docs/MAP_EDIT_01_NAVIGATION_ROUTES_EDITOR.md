@@ -36,14 +36,15 @@ The data contract contains: schemaVersion/kind/approval/authority flags, source 
 
 ```sh
 godot --headless --editor --path . --import
-godot --headless --path . --script res://tests/raven/room_builder_game_import_smoke.gd --quit-after 120
+godot --headless --path . --script res://tests/raven/map_edit_01_routes_smoke.gd --quit-after 120
+# Existing Room Builder import scene smoke is invoked separately in pages.yml
 godot --headless --path . --script res://tests/raven/map_qa_03_hall_movement_smoke.gd --quit-after 120
 godot --headless --path . --script res://tests/raven/onoe_segment_movement_smoke.gd --quit-after 120
 godot --headless --path . --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
 bash scripts/check.sh
 ```
 
-The existing Room Builder import smoke now invokes `tests/raven/map_edit_01_routes_checks.gd`; an explicit one-line integration-owned `scripts/check.sh` registration is required because this smoke was previously not included in standard CI. It verifies import/identities, cell-to-pixel/offset/AA... columns, source bounds, waypoint edits/dependency deletion, orthogonal route parsing, ordered cells, no-go/blocked rejection, one-way/bidirectional compiled AStar connectivity, JSON save/reopen, immutable source/canonical graph and non-promotion. No new workflow or job; one narrowly scoped callsite in shared `scripts/check.sh` requires integration-owner review.
+The isolated `tests/raven/map_edit_01_routes_smoke.gd` invokes `tests/raven/map_edit_01_routes_checks.gd` exactly once in `scripts/check.sh`; the original `room_builder_game_import_smoke.gd` remains unmodified and runs separately in the existing `pages.yml` Godot import step. The shared runner also contains MAP-QA-06 exactly once. The integration-owned `scripts/check.sh` entry is necessary for blocking Godot CI. It verifies import/identities, cell-to-pixel/offset/AA... columns, source bounds, waypoint edits/dependency deletion, orthogonal route parsing, ordered cells, no-go/blocked rejection, one-way/bidirectional compiled AStar connectivity, JSON save/reopen, immutable source/canonical graph and non-promotion. No new workflow or job; one narrowly scoped callsite in shared `scripts/check.sh` requires integration-owner review.
 
 ## Limitations and owner QA
 
@@ -51,4 +52,4 @@ Headless tests validate geometry contracts, not actual sprite occlusion or edito
 
 **Follow-up candidates:** MAP-EDIT-02 (arbitrary-room image selection + polygon editor), MAP-EDIT-03 (runtime draft-preview adapter with physical Onoe, only after owner review), MAP-EDIT-04 (PWA Room Builder import/export of versioned image-pixel route drafts). These are not automatically registered production tasks.
 
-Rollback: delete `addons/room_builder_routes/`, its draft fixture, narrow Room Builder smoke hook and its check.sh registration, documentation and own shard evidence. No canonical assets, `project.godot`, campaign or runtime scene changes were made.
+Rollback: delete `addons/room_builder_routes/`, its draft fixture, dedicated MAP-EDIT-01 smoke wrapper and check.sh registration, documentation and own shard evidence; leave independent MAP-QA-06 and existing Room Builder import smoke unchanged. No canonical assets, `project.godot`, campaign or runtime scene changes were made.
