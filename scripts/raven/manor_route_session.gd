@@ -89,6 +89,15 @@ func next_segment() -> Dictionary:
 func finish_segment(arrived_anchor_id: String) -> Dictionary:
 	if _in_flight_to.is_empty() or arrived_anchor_id != _in_flight_to:
 		return {"ok": false, "error": "unexpected-arrival"}
+	# Gates may change while a scene Tween is moving. Never acknowledge
+	# a crossing after its direct authored edge has become unavailable.
+	# Host must stop its Tween and place feet back at rollbackAnchorId;
+	# the graph itself never teleports or writes a checkpoint.
+	if not _graph.segment_available(_confirmed_anchor, _in_flight_to):
+		var rollback_id := _confirmed_anchor
+		_in_flight_to = ""
+		_target_hotspot = ""
+		return {"ok": false, "error": "segment-blocked", "rollbackAnchorId": rollback_id}
 	_confirmed_anchor = arrived_anchor_id
 	_in_flight_to = ""
 	var item: Dictionary = _graph.anchor(_confirmed_anchor)

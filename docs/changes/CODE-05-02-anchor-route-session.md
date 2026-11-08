@@ -55,3 +55,15 @@ Status impact: CODE-05-02 remains P0 / partial / PR_review for #238; no acceptan
 - **Human QA:** PENDING for physical collisions, actors/masks, 65° Hall/door seams, room thresholds, phone/tablet, imported art and story-flow transitions.
 
 **Status impact:** `CODE-05-02` remains `P0 / partial / PR_review` while PR open. `RM-GAP-001/006` remain open; no geometry or owner acceptance implied. Only `progress/manor-map.json` touched. No `project.godot`, canonical map, core save/reducer, VN, Match-3, scripts/check.sh or other domain changes.
+
+## 2026-11-08 — A/B contract reconciliation and mid-route gate hardening
+
+- Rechecked baseline `main@4c4145a935419b5cfaa69e8e1bde90a71717ed7a`, C PR #238 and current A #239 (`a7ef2257`) / B #240 (`8ca6b957`). Previous C head `9bb65623` passed Actions run 42497556598. A's 13 IDs agree with C, as do A/B room (8) and door (11) identity lists; A still has **0 calibrated world-plan navigation anchor positions** and unresolved pixel registration. B's `RM-NAV-HALL-CHECK` fixture is not a stable gameplay anchor.
+- Cross-agent comments recorded on PR [#239](https://github.com/bezdredoff/RavenManor-Godot/pull/239#issuecomment-6724324582) and [#240](https://github.com/bezdredoff/RavenManor-Godot/pull/240#issuecomment-6724324900); these are **proposed consumer requirements, not owner-approved geometry**.
+- `manor_navigation_geometry_adapter.gd` adds two read-only producer guards: Agent A `audit_art_reference` (IDs/room/door pair parity only, never converting `referenceGreyboxPoint` into navigation coordinates), and Agent B `from_builder_draft` (exact nested v2 shape, worldRect identity, 8 room/11 door parity, complete 13 canonical anchors with correct room, finite in-room world-plan XY, no image/projected coordinate fallback).
+- `manor_route_session.gd` refuses `finish_segment` if the direct edge was disabled since dispatch; returns `segment-blocked` and previous confirmed anchor for host rollback. No movement controller or reducer schema was changed.
+- Synthetic isolated navigation smoke fixtures cover full B overlay, A art-reference audit, invalid/missing/unknown/duplicate IDs, wrong doors/room pairs, invalid numeric/room/world frames, no bathroom gate, restored saves and mid-segment door gate closure. A/B PR files are **not imported by CI** while those PRs remain unmerged.
+- New `docs/architecture/MANOR_NAVIGATION_INTEGRATION_CONTRACT_RU.md` supplies exact host API calls, final Godot scene patch plan, coordinate-space authority and human/device QA gates.
+
+**Verification for this follow-up:** new head CI **PENDING** at commit time; previous exact-head CI on `9bb65623` passed, but that does **not** prove this follow-up. Local Godot **NOT_RUN**; require new Actions godot-runtime and aggregate build PASS. No production art/collision/occlusion, physical movement or device QA accepted.
+**Owner QA:** PENDING. **Status impact:** `CODE-05-02` P0 partial/PR_review, `RM-GAP-001/006` remain open, no integration approval.
