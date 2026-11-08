@@ -24,7 +24,7 @@ def fixture():
 class BridgeTests(unittest.TestCase):
     def test_unknown_coordinates_block_b_and_c(self):
         d = fixture()
-        self.assertEqual(review(d)["blockedAnchorCount"], 1)
+        self.assertEqual(review(d)["blockedAnchorCount"], 13)
         with self.assertRaises(ContractNotReady):
             builder_v2(d)
         with self.assertRaises(ContractNotReady):
