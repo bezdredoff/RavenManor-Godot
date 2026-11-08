@@ -12,7 +12,8 @@ func _initialize() -> void:
     assert(candidate.coordinateSpaces.pilot == "image-pixel")
     assert(candidate.coordinateSpaces.pixelToWorldPlan == null)
     assert(not candidate.coordinateSpaces.apply65DegreeProjectionToBaseImage)
-    assert(candidate.source.dimensionsPx == [1672, 941])
+    assert(candidate.source.dimensionsPx is Array and candidate.source.dimensionsPx.size() == 2)
+    assert(float(candidate.source.dimensionsPx[0]) == 1672.0 and float(candidate.source.dimensionsPx[1]) == 941.0, "Hall source image must be 1672x941")
     assert(candidate.canonicalReferences.anchorIdentities.size() == 13)
     assert(candidate.waypoints.size() == 7)
     var known: Dictionary = {}
