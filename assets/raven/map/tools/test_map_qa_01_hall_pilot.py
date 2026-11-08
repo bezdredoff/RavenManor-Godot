@@ -72,7 +72,7 @@ def audit(data: dict, manifest: dict, graph: dict, check_png: bool = True) -> li
         else:
             blob = png.read_bytes()
             require(len(blob) == image["byteSize"] and hashlib.sha256(blob).hexdigest() == image["sha256"], "approved PNG bytes changed")
-            require(len(blob) >= 24 and blob[:8] == b"\\x89PNG\\r\\n\\x1a\\n"
+            require(len(blob) >= 24 and blob[:8] == bytes((137, 80, 78, 71, 13, 10, 26, 10))
                     and struct.unpack(">II", blob[16:24]) == (1672, 941), "PNG dimensions changed")
     coords = data.get("coordinateSpaces", {})
     require(coords.get("pilot") == "image-pixel" and coords.get("pixelToWorldPlan") is None
