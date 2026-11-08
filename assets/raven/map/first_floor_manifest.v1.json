@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "contractId": "raven.first-floor-art",
-  "contractRevision": "1.2.0-annotated-draft-consumer-handoff",
+  "contractRevision": "1.3.0-reference-contract-approved",
   "created": "2026-11-08",
   "ownerDomain": "environment-art",
   "productionReady": false,
@@ -14,7 +14,11 @@
     "masks": "not_authored",
     "manualGodotQA": "not_run",
     "rightsReview": "not_documented",
-    "sourceBytes": "verified"
+    "sourceBytes": "verified",
+    "dataContract": "approved_reference_only_on_2026-11-08",
+    "geometry": "not_approved",
+    "navigationCoordinates": "not_approved",
+    "foregroundMasks": "not_authored"
   },
   "source": {
     "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
@@ -300,15 +304,12 @@
         840
       ],
       "referenceState": "open",
-      "sourcePixelPoint": [
-        833,
-        801
-      ],
+      "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "approx_visual_estimate_not_collision",
+      "calibrationStatus": "reference_only_unmapped_to_painting",
       "authoritativeForMovement": false,
       "visualPortalStatus": "visible_threshold_candidate",
-      "visualNotes": "front double entrance visible; floor contact visually estimated, not calibrated",
+      "visualNotes": "front double entrance visible; floor contact visually estimated, not calibrated; source-pixel approx [833,801] moved to RM-ART-FID-ENTRY for visual review only",
       "approvedWorldPlanPoint": null,
       "approvedOpeningWidth": null
     },
@@ -1508,24 +1509,44 @@
     "builder": {
       "targetPr": 240,
       "targetFormat": "firstFloorDraft nested schemaVersion 2",
-      "status": "explicit_adapter_required_not_consumer_approved",
+      "status": "accepted_in_main_unregistered_read_only_adapter",
       "sourceRule": "baseImage.path exact original PNG; pixelSize [1672,941]; no forced portrait worldRect",
       "noImplicitCopy": "Reference room rectangles/door points cannot be interpreted as painted coordinates",
       "risk": "B linear full-image worldRect cannot represent mismatched authored topology without owner-reviewed calibration",
       "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
       "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target builder --output /tmp/first_floor_room_builder_project.json",
       "exportStatus": "fail_closed_until_reviewed_linear_mapping_room_rectangles_and_all_13_anchors",
-      "requireCompleteAnchorsForConsumerNav": 13
+      "requireCompleteAnchorsForConsumerNav": 13,
+      "implementation": "scripts/raven/tools/first_floor_art_adapter.py",
+      "handoffMode": "source_manifest_preserved_verbatim_in_firstFloorDraft.producerManifest",
+      "previewOnly": true,
+      "referenceRooms": 8,
+      "referenceDoors": 11,
+      "builderNavigationAnchorsExported": 0,
+      "exportRule": "Use merged B read-only unresolved registration adapter for current v1. A's gated builder_v2 exporter is future calibrated geometry only, not used by B preview."
     },
     "navigation": {
       "targetPr": 238,
       "targetFormat": "schemaVersion 1 coordinateSpace world-plan productionReady false anchors[]",
-      "status": "explicit_adapter_required_not_consumer_approved",
+      "status": "accepted_in_main_identity_audit_only",
       "rule": "Only separately approved calibratedWorldPlanPoint; never copy referenceGreyboxPoint or project image pixels directly",
       "adapterPath": "assets/raven/map/tools/export_first_floor_contracts.py",
       "adapterCommand": "python3 assets/raven/map/tools/export_first_floor_contracts.py --target navigation --output /tmp/first_floor_nav_preview.json",
       "exportStatus": "fail_closed_until_all_13_canonical_world_plan_anchors_approved",
-      "requireCompleteAnchors": 13
+      "requireCompleteAnchors": 13,
+      "implementation": "scripts/raven/manor_navigation_geometry_adapter.gd",
+      "handoffMode": "audit_art_reference_now; from_builder_draft gated after 13 world-plan coordinates and approved common frame",
+      "previewOnly": true,
+      "referenceAnchorIds": 13,
+      "exportedWorldPlanAnchors": 0,
+      "expectedWorldRectCurrent": [
+        0,
+        0,
+        2150,
+        2250
+      ],
+      "nextContractRevisionRequiredForNewWorldFrame": true,
+      "artAgreementDoesNotAcceptPhysicalPortals": true
     }
   },
   "resolvedMeasurements": [
@@ -1535,5 +1556,41 @@
       "evidence": "GitHub Runner PNG SHA-256, dimensions, byte count and original-size crop visual audit",
       "url": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980"
     }
-  ]
+  ],
+  "contractFreeze": {
+    "status": "accepted_reference_data_contract_only",
+    "acceptedDate": "2026-11-08",
+    "acceptedAfter": [
+      "PR #238 merged",
+      "PR #240 merged",
+      "Agent B read-only v1 -> v2 converter published",
+      "Agent C audit-only 13 reference IDs consumer published"
+    ],
+    "immutableCore": [
+      "schemaVersion:1",
+      "contractId:raven.first-floor-art",
+      "source.path",
+      "source.gitBlobSha",
+      "source.sha256",
+      "source.dimensionsPx",
+      "doors[].roomIds",
+      "navigationReferenceAnchors[].id/roomId",
+      "coordinateSystems.*.referenceSpace"
+    ],
+    "allowedUnapprovedExtras": [
+      "imageObservations",
+      "pixelLandmarkCandidates",
+      "occlusionCandidates",
+      "visualNotes"
+    ],
+    "forbids": [
+      "productionReady:true",
+      "integrationAllowed:true",
+      "implicit image-pixel to world-plan mapping",
+      "copy greybox coordinates as world-plan",
+      "assume pixelLandmarkCandidates as canonical door contacts",
+      "automatic image segmentation / masks"
+    ],
+    "nextMilestone": "manual geometry and control-point approval separate versioned contract"
+  }
 }

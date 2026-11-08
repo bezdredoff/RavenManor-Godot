@@ -47,3 +47,7 @@ Status impact:
 - Original source PNG load and two review crops executed in [42503148980](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980).
 - Temporary `scripts/check.sh` invocation and one-time `probe_first_floor_png.gd` are intentionally removed from final diff after capturing evidence. All persistent code stays in `assets/raven/map/tools/`; regular CI wiring, if desired, belongs to integration/QA owner.
 - **Agent B/C schema acceptance:** comments requested on #238/#240; C provided full 13-anchor requirement via #240, implemented here. Neither agent has signed off on painted door geometry.
+
+### Reference contract approval after B/C merge (2026-11-08)
+
+User approved contract reconciliation, not physical level geometry. Main now contains #238 navigation identity audit and #240 read-only Agent A v1 art import. A freezes original source SHA256/size, the eight room/eleven door/thirteen anchor identities and the absence of pixel→world transforms. `RM-DOOR-ENTRY-HALL.sourcePixelPoint` was nullified to meet merged B adapter; estimated front entrance [833,801] remains only in independent review landmarks. Production flags remain `false`. See `assets/raven/map/README.md` for exact handoff and explicitly deferred world-frame and physical map acceptance.
