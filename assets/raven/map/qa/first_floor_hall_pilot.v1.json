@@ -1,0 +1,404 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-first-floor-hall-qa-pilot",
+  "taskId": "MAP-QA-01",
+  "ownerDomain": "environment-art",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "integrationAllowed": false,
+  "canonicalNavigationAuthority": false,
+  "notes": "Coordinates are candidate foot contacts traced against approved image overview; not owner-accepted floor geometry. No canonical graph import.",
+  "source": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a"
+  },
+  "coordinateSpaces": {
+    "pilot": "image-pixel",
+    "origin": "top-left",
+    "axes": "x-right y-down",
+    "unit": "source-pixel",
+    "pixelToWorldPlan": null,
+    "worldPlanAuthority": false,
+    "screenProjectedIsOnlyDisplay": true,
+    "alreadyPaintedPerspective": true,
+    "apply65DegreeProjectionToBaseImage": false
+  },
+  "canonicalReferences": {
+    "roomId": "RM-ROOM-HALL",
+    "logicalDoorId": "RM-DOOR-HALL-CORRIDOR",
+    "transferredCoordinateCount": 0,
+    "anchorIdentities": [
+      {
+        "id": "RM-NAV-HALL-SPAWN",
+        "roomId": "RM-ROOM-HALL",
+        "kind": "safe"
+      },
+      {
+        "id": "RM-NAV-HS-001",
+        "roomId": "RM-ROOM-HALL",
+        "kind": "interaction"
+      },
+      {
+        "id": "RM-NAV-HALL-CORRIDOR-NEAR",
+        "roomId": "RM-ROOM-HALL",
+        "kind": "transition"
+      },
+      {
+        "id": "RM-NAV-HALL-CORRIDOR-FAR",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "kind": "transition"
+      },
+      {
+        "id": "RM-NAV-HS-003",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "kind": "interaction"
+      },
+      {
+        "id": "RM-NAV-CORRIDOR-CENTER",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "kind": "safe"
+      },
+      {
+        "id": "RM-NAV-HS-005",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "kind": "interaction"
+      },
+      {
+        "id": "RM-NAV-BEDROOM-NEAR",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "kind": "transition"
+      },
+      {
+        "id": "RM-NAV-BEDROOM-FAR",
+        "roomId": "RM-ROOM-BEDROOM",
+        "kind": "transition"
+      },
+      {
+        "id": "RM-NAV-BEDROOM-CENTER",
+        "roomId": "RM-ROOM-BEDROOM",
+        "kind": "safe"
+      },
+      {
+        "id": "RM-NAV-HS-002",
+        "roomId": "RM-ROOM-BEDROOM",
+        "kind": "interaction"
+      },
+      {
+        "id": "RM-NAV-HS-004",
+        "roomId": "RM-ROOM-BEDROOM",
+        "kind": "interaction"
+      },
+      {
+        "id": "RM-NAV-HALL-TEA",
+        "roomId": "RM-ROOM-HALL",
+        "kind": "interaction"
+      }
+    ]
+  },
+  "actor": {
+    "coordinateMeaning": "standing foot contact at pointPx, not sprite center or texture top-left",
+    "spriteReference": "assets/prototypes/onoe/onoe_walk_sheet_v1.png",
+    "spriteAuthority": "prototype_only",
+    "animationAndControllerAuthority": "existing runtime; not part of this data",
+    "initialPointId": "QA-HALL-SPAWN"
+  },
+  "walkablePolygons": [
+    {
+      "id": "QA-HALL-FLOOR-LOWER",
+      "roomId": "RM-ROOM-HALL",
+      "pointsPx": [
+        [
+          801,
+          639
+        ],
+        [
+          874,
+          639
+        ],
+        [
+          890,
+          659
+        ],
+        [
+          945,
+          660
+        ],
+        [
+          980,
+          698
+        ],
+        [
+          976,
+          769
+        ],
+        [
+          744,
+          769
+        ],
+        [
+          708,
+          706
+        ],
+        [
+          734,
+          661
+        ],
+        [
+          783,
+          661
+        ]
+      ],
+      "status": "visual_estimate_unapproved",
+      "purpose": "Conservative lower Hall walking corridor only; exclude stairs and table"
+    }
+  ],
+  "noGoPolygons": [
+    {
+      "id": "QA-HALL-NOGO-STAIR-L",
+      "pointsPx": [
+        [
+          655,
+          418
+        ],
+        [
+          791,
+          418
+        ],
+        [
+          791,
+          648
+        ],
+        [
+          655,
+          648
+        ]
+      ],
+      "reason": "Left stair/banister, multiple elevations"
+    },
+    {
+      "id": "QA-HALL-NOGO-STAIR-R",
+      "pointsPx": [
+        [
+          886,
+          418
+        ],
+        [
+          1039,
+          418
+        ],
+        [
+          1039,
+          646
+        ],
+        [
+          886,
+          646
+        ]
+      ],
+      "reason": "Right stair/banister, multiple elevations"
+    },
+    {
+      "id": "QA-HALL-NOGO-TEA-TABLE",
+      "pointsPx": [
+        [
+          790,
+          532
+        ],
+        [
+          882,
+          532
+        ],
+        [
+          882,
+          623
+        ],
+        [
+          790,
+          623
+        ]
+      ],
+      "reason": "Tea table and nearby chairs; proxy collision only"
+    },
+    {
+      "id": "QA-HALL-NOGO-PLANT-LEFT",
+      "pointsPx": [
+        [
+          651,
+          666
+        ],
+        [
+          700,
+          666
+        ],
+        [
+          700,
+          732
+        ],
+        [
+          651,
+          732
+        ]
+      ],
+      "reason": "Lower Hall planter/edge proxy"
+    },
+    {
+      "id": "QA-HALL-NOGO-PLANT-RIGHT",
+      "pointsPx": [
+        [
+          990,
+          661
+        ],
+        [
+          1040,
+          661
+        ],
+        [
+          1040,
+          736
+        ],
+        [
+          990,
+          736
+        ]
+      ],
+      "reason": "Lower Hall planter/edge proxy"
+    }
+  ],
+  "waypoints": [
+    {
+      "id": "QA-HALL-SPAWN",
+      "kind": "spawn",
+      "pointPx": [
+        836,
+        746
+      ],
+      "review": "Inside lower Hall, in front of front entrance; inspect foot contact"
+    },
+    {
+      "id": "QA-HALL-CENTRE",
+      "kind": "movement",
+      "pointPx": [
+        835,
+        697
+      ],
+      "review": "Central lower carpet walking route"
+    },
+    {
+      "id": "QA-HALL-WEST",
+      "kind": "movement",
+      "pointPx": [
+        759,
+        719
+      ],
+      "review": "West lower floor clear of left staircase"
+    },
+    {
+      "id": "QA-HALL-EAST",
+      "kind": "movement",
+      "pointPx": [
+        925,
+        716
+      ],
+      "review": "East lower floor clear of right staircase"
+    },
+    {
+      "id": "QA-HALL-TABLE-APPROACH",
+      "kind": "interaction",
+      "pointPx": [
+        835,
+        645
+      ],
+      "hotspotRef": "RM-HS-TEA-TABLE",
+      "review": "Approach south of table; owner must approve clearance"
+    },
+    {
+      "id": "QA-HALL-PORTAL-APPROACH",
+      "kind": "portal_approach",
+      "pointPx": [
+        959,
+        746
+      ],
+      "review": "Virtual QA portal trigger in lower east Hall; NOT a painted Corridor door"
+    },
+    {
+      "id": "QA-HALL-RETURN-SAFE",
+      "kind": "return_spawn",
+      "pointPx": [
+        932,
+        746
+      ],
+      "review": "Hall-side safe spawn after abstract Corridor→Hall area switch"
+    }
+  ],
+  "edges": [
+    {
+      "from": "QA-HALL-SPAWN",
+      "to": "QA-HALL-CENTRE",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-WEST",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-EAST",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-CENTRE",
+      "to": "QA-HALL-TABLE-APPROACH",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-EAST",
+      "to": "QA-HALL-PORTAL-APPROACH",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-EAST",
+      "to": "QA-HALL-RETURN-SAFE",
+      "bidirectional": true
+    },
+    {
+      "from": "QA-HALL-RETURN-SAFE",
+      "to": "QA-HALL-PORTAL-APPROACH",
+      "bidirectional": true
+    }
+  ],
+  "virtualPortal": {
+    "id": "QA-PORTAL-HALL-CORRIDOR",
+    "status": "QA_VIRTUAL_NOT_VISIBLE_PHYSICAL_DOOR",
+    "physicalDoorConfirmed": false,
+    "canonicalDoorRef": "RM-DOOR-HALL-CORRIDOR",
+    "fromRoomId": "RM-ROOM-HALL",
+    "toRoomId": "RM-ROOM-CORRIDOR",
+    "approachPointId": "QA-HALL-PORTAL-APPROACH",
+    "returnSpawnPointId": "QA-HALL-RETURN-SAFE",
+    "farSideSpawnPointPx": null,
+    "activateOnArrivalOnly": true,
+    "transition": "switch-active-area",
+    "requiresSeparateCorridorPilot": true,
+    "liveDoorGateWrites": false
+  },
+  "visualReview": {
+    "basis": "approved-first-floor source + 2026-11-08 GFX-08-08 reduced overview, not pixel-exact floor measurements",
+    "pixelAccuracy": "approximate_manual_review_required",
+    "unverified": [
+      "All foot locations, collision extents and turn clearance require Godot overlay and owner approval",
+      "Hall→Corridor opening is not visually identified; virtual portal is NOT a painted door",
+      "Upper landing and both stair treads are intentionally non-walkable in this floor pilot",
+      "Tea table approach must be checked against composite furniture pixels",
+      "No physical wall mask or clean plate exists; foreground occlusion is unavailable",
+      "No pixel-to-world-plan registration; the 13 canonical anchors remain in independent-greybox coordinates",
+      "Far-side Corridor spawn intentionally absent; do not treat portal as complete cross-room navigation",
+      "Phone 390×844, 412×915, 430×932 and tablet foot contact/zoom not yet manually tested"
+    ]
+  }
+}
