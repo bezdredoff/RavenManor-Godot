@@ -21,6 +21,8 @@ python3 "$ROOT/scripts/raven/tools/build_production_dashboard.py" --check
 if ! python3 -m unittest scripts/raven/tools/test_production_dashboard_mobile.py; then
   echo "::warning title=Dashboard regression advisory::Dashboard snapshot assertions failed; review separately."
 fi
+# MAP-QA-04: functional source image, authored Hall route and virtual-portal gate.
+python3 -m unittest assets.raven.map.tools.test_map_qa_01_hall_pilot
 python3 -m unittest scripts/raven/tools/test_pr_governance.py scripts/raven/tools/test_audit_upds_vn.py
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_contract.py'
 python3 -m unittest discover -s "$ROOT/tests/raven" -p 'test_vns5_promotion_staging.py'
