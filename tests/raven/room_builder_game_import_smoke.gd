@@ -42,6 +42,6 @@ func _check() -> void:
 	assert(found_clock)
 	assert(pilot_count == 7, "All seven authored pilot art objects must survive import")
 	root.free()
-	RouteEditorChecks.run(root)
+	RouteEditorChecks.run(self.root)
 	print("Room Builder 65-degree Godot visual import smoke passed")
 	quit(0)
