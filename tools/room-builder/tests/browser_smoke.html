@@ -17,6 +17,9 @@
   assert(d.querySelector('#previewMode')?.value==='game','default view must be game');
   assert(d.querySelector('#previewMode option[value="room"]')?.textContent.includes('65°/45°'),'volumetric room view must be available');
   assert(d.querySelector('#seedRoomShell'),'two-room example action must be available');
+  await waitUntil(()=>!!d.querySelector('.first-floor-panel'));
+  assert(d.querySelector('.first-floor-panel').textContent.includes('DRAFT v2'),'whole-floor v2 panel must exist');
+  assert(d.querySelector('.first-floor-panel').textContent.includes('Загрузить PNG карты'),'PNG map import action must be present');
   d.querySelector('#exportMenu').click();
   d.querySelector('#newRoom').click();
   await waitUntil(()=>d.querySelector('#objectCount')?.textContent?.includes('8 объектов'));

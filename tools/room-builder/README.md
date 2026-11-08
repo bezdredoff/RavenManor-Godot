@@ -116,3 +116,15 @@ In a **700×690 RM-ROOM-HALL draft**, open **Свойства и слои → С
 A 12-unit threshold is a **visual triage aid**, not collision/path approval. It does not change project JSON, move doors, modify navigation or turn the three seat footprints into gameplay collision. The two huge Archive/Corridor offsets are existing background geometry defects, not proof that the map door coordinates should move. The comparison is hidden for mis-sized Hall drafts, other rooms, stale calibration data or absent offline reference; export remains unannotated.
 
 The local reference copy `reference/hall_render_calibration.json` mirrors `data/raven/hall_render_calibration.json`; Node regression verifies source parity and refuses mismatched map door/stair positions. The service-worker cache includes the new JSON after the first successful online install/load. Keep exported JSON backups before any owner-approved new Hall layout.
+
+## First-floor image draft v2 (CODE-05-01)
+
+The existing editor now has **Свойства и слои → Карта первого этажа · DRAFT v2**. Upload the approved PNG from the owner's repository or import a separately prepared Agent A/C manifest, calibrate its full-image rectangle to world-space, inspect/edit room rectangles and door/navigation anchor positions, and export a standalone map draft JSON. The normal Room Builder v1 project export also preserves this optional firstFloorDraft extension, its original PNG bytes and all room objects; existing projects remain v1.
+
+Use `python3 scripts/raven/tools/import_room_builder_game.py path/to/export.json` to produce an isolated v2 Godot visual scene and machine-readable manifest, not canonical gameplay. Reference room/door coordinates are provisional and must not replace approved geometry. Full contract, CLI, accepted vs draft boundaries, tests and review requirements: [docs/ROOM_BUILDER_FIRST_FLOOR_DRAFT.md](../../docs/ROOM_BUILDER_FIRST_FLOOR_DRAFT.md). The full source PNG and final navigation data are owned by Agent A / Agent C, not copied by this tool PR.
+
+### Agent A manifest v1 interoperability — unregistered by design
+
+Agent A PR #239 publishes `assets/raven/map/first_floor_manifest.v1.json` (producer contract `raven.first-floor-art`, schemaVersion=1). Room Builder **does not redefine or edit** that schema. Import it directly via `python3 scripts/raven/tools/import_room_builder_game.py path/to/first_floor_manifest.v1.json` on a checkout containing the original root PNG; the standalone read-only adapter verifies its Git blob, SHA-256, actual pixels, IDs and room/door relations. In the browser, first upload the exact original PNG and then select the producer JSON; WebCrypto confirms the source binary matches.
+
+The resulting v2 is `registration.status=unresolved`: image pixels are separate from provisional world-plan positions and projected preview; no raster-to-navigation transform, superimposed room/door geometry, fake fiducials, alpha cutouts or route mutation. The scene shows native PNG pixels while world-plan review guides are hidden; legacy v1 room projects still work. See [full import contract](../../docs/ROOM_BUILDER_FIRST_FLOOR_DRAFT.md).

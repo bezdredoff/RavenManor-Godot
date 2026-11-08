@@ -5,6 +5,7 @@ import {BUILTIN_HALL_VISUALS} from './hall-pilot.mjs';
 import {GODOT_CAMERA_DEGREES,GODOT_DEFAULT_ZOOM,FLOOR_DEPTH_RATIO,depthRatio,toScreen,toWorld,worldDragDelta,fitProjectedRoom,projectedPixelHeight,gameRoomReference,hallCalibrationReview} from './projection.mjs';
 import {WALL_STYLES,OPENING_KINDS,normalizeWall,nearestWall,solidWallRuns,openingInterval,isPortal,chooseWallPiece,wallLength,wallBand} from './wall-tools.mjs';
 import {detectRooms,shellSegments,segmentOpenings} from './room-shell.mjs';
+import {installFirstFloorPanel} from './first-floor.mjs';
 const $=s=>document.querySelector(s);
 const canvas=$('#canvas'),ctx=canvas.getContext('2d');
 let project=exampleProject(),selected=null,selectedAsset='armchair',selectedLayer='objects',tool='select',category='all',showGrid=true;
@@ -13,7 +14,7 @@ let productionCatalog=null;
 let past=[],future=[],view={x:0,y:0,scale:1},ready=false,gesture=null,dirty=false,saveTimer=null,importFile=null;
 let editRevision=0,onlyMissing=false,catalogScope='all',viewMode='game',worldReference=null,showDoorGuides=true,showHallCalibration=false,hallCalibrationData=null,referenceImage=null,visualContract=validateVisualContract(BUILTIN_HALL_VISUALS),actorImage=null;
 const pointers=new Map(),imageCache=new Map(),pilotImages=new Map(),wallKitImages=new Map();
-let wallKit=null;
+let wallKit=null,firstFloorPanel=null;
 function kitSprite(style,name){
  if(!wallKit)return null;
  const entry=wallKit.pieces.find(item=>item.style===style);
@@ -662,7 +663,7 @@ function renderProperties(){const el=$('#properties'),o=project.objects.find(o=>
  el.append(makeField('X',o.x,v=>o.x=v,'number'),makeField('Y',o.y,v=>o.y=v,'number'),makeField('Ширина',o.w,v=>o.w=Math.max(1,v),'number'),makeField('Высота',o.h,v=>o.h=Math.max(1,v),'number'),makeField('Поворот (°)',o.rotation,v=>o.rotation=v,'number'),makeStateField(o,a),makeAssetReferenceField(o,a),makeField('Hotspot ID',o.hotspotId||'',v=>o.hotspotId=v));
  const wrapper=document.createElement('div');wrapper.className='field';wrapper.textContent='Слой';const select=document.createElement('select');for(const l of project.layers){const opt=document.createElement('option');opt.value=l.id;opt.textContent=l.name;select.append(opt);}select.value=o.layerId;select.onchange=()=>{checkpoint();o.layerId=select.value;changed();renderLayers();};wrapper.append(select);el.append(wrapper);const row=document.createElement('div');row.className='action-row';for(const [name,action] of [['Дублировать',()=>{checkpoint();const copy=clone(o);copy.id=uid();copy.x+=20;copy.y+=20;project.objects.push(copy);selected=copy.id;changed();renderProperties();}],['Удалить',()=>{checkpoint();project.objects=project.objects.filter(p=>p.id!==o.id);selected=null;changed();renderProperties();}]]){const b=document.createElement('button');b.textContent=name;b.onclick=action;row.append(b);}el.append(row);}
 function renderSettings(){$('#populateHall').disabled=!canPopulateHall(project,visualContract);$('#title').value=project.title;$('#roomId').value=project.roomId;$('#roomWidth').value=project.width;$('#roomHeight').value=project.height;$('#gridSize').value=project.grid;$('#objectCount').textContent=`${project.objects.length} объектов • ${project.walls?.length||0} стен • ${project.openings?.length||0} проёмов`;}
-function refresh(){imageCache.clear();renderSettings();renderPalette();renderLayers();renderProperties();draw();}
+function refresh(){imageCache.clear();renderSettings();renderPalette();renderLayers();renderProperties();draw();firstFloorPanel?.refresh();}
 function togglePanel(id){for(const p of [$('#palette'),$('#inspector')])p.classList.toggle('open',p.id===id);}
 function toggleSidebar(side){
  if(window.matchMedia('(max-width:760px)').matches){togglePanel(null);return;}
@@ -725,7 +726,7 @@ function wire(){document.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()
  canvas.addEventListener('pointerdown',pointerDown);canvas.addEventListener('pointermove',pointerMove);canvas.addEventListener('pointerup',pointerUp);canvas.addEventListener('pointercancel',pointerUp);canvas.addEventListener('contextmenu',e=>e.preventDefault());canvas.addEventListener('wheel',e=>{e.preventDefault();const p=toLocal(e);zoomAt(p.x,p.y,e.deltaY<0?1.1:1/1.1);},{passive:false});window.addEventListener('resize',draw);window.addEventListener('keydown',e=>{if(['INPUT','TEXTAREA'].includes(document.activeElement?.tagName)||document.querySelector('dialog[open]'))return;if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'){e.preventDefault();e.shiftKey?redo():undo();}if(e.key==='Delete'&&selected){checkpoint();project.objects=project.objects.filter(o=>o.id!==selected);selected=null;refresh();changed();}});
  window.addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='';}});
 }
-async function start(){installRoomViewOption();wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();await loadHallCalibration();await loadWallKit();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
+async function start(){installRoomViewOption();wire();await restore();ready=true;refresh();fit();historyButtons();await loadProductionCatalog();await loadGameReference();firstFloorPanel=installFirstFloorPanel({getProject:()=>project,checkpoint,changed,getWorldReference:()=>worldReference,notify});await loadHallCalibration();await loadWallKit();await loadHallVisuals();if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(console.warn);}
 window.addEventListener('error',event=>{console.error(event.error||event.message);notify('Ошибка интерфейса: '+(event.error?.message||event.message));});
 window.addEventListener('unhandledrejection',event=>{console.error(event.reason);notify('Ошибка загрузки: '+(event.reason?.message||event.reason));});
 start().catch(error=>{console.error(error);notify('Ошибка запуска: '+error.message);});
