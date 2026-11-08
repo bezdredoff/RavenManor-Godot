@@ -198,6 +198,27 @@ func _run() -> void:
 	assert(JSON.stringify(saved) == saved_before)
 	assert(complete_count == 2, "Only forward and reverse produced switches")
 	assert(rejection_count > 0)
+
+	# F6 host integration is exercised, not merely preloaded. Its scene owns
+	# buttons/visual swap and wires the exact Onoe segment_completed signal.
+	var demo = DemoScene.instantiate()
+	root.add_child(demo)
+	await process_frame
+	assert(demo.controller.room_id() == "QA-ROOM-A")
+	assert(demo.actor.position == Vector2(100, 270))
+	demo._request("QA-TR-A-B")
+	_drive_demo_room(demo, "QA-ROOM-B")
+	assert(demo.actor.position == Vector2(100, 270))
+	demo._walk_side()
+	_drive_demo_anchor(demo, "QA-B-SIDE")
+	demo._request("QA-TR-B-A")
+	_drive_demo_room(demo, "QA-ROOM-A")
+	assert(demo.controller.confirmed_anchor() == "QA-A-ENTRY")
+	assert(demo.actor.position == Vector2(100, 270))
+	demo._request("QA-TR-A-LOCKED")
+	assert(demo.controller.room_id() == "QA-ROOM-A")
+	assert(not demo.actor.has_active_segment())
+	demo.queue_free()
 	actor.queue_free()
 	print("Raven MAP-QA-06 authored room transition smoke passed")
 	quit()
@@ -255,3 +276,20 @@ func _walk_until_idle() -> void:
 
 func _on_physical_arrival(anchor_id: String, point: Vector2) -> void:
 	arrivals.append({"id": anchor_id, "point": point})
+
+func _drive_demo_room(demo, expected_room_id: String) -> void:
+	for i in range(12):
+		if demo.controller.room_id() == expected_room_id:
+			return
+		assert(demo.actor.has_active_segment(), "Demo must walk before room switching")
+		demo.actor.advance(10.0)
+	assert(demo.controller.room_id() == expected_room_id)
+
+
+func _drive_demo_anchor(demo, expected_anchor_id: String) -> void:
+	for i in range(12):
+		if demo.controller.confirmed_anchor() == expected_anchor_id and not demo.actor.has_active_segment():
+			return
+		assert(demo.actor.has_active_segment(), "Demo room hotspot must animate")
+		demo.actor.advance(10.0)
+	assert(demo.controller.confirmed_anchor() == expected_anchor_id)
