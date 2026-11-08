@@ -54,6 +54,9 @@ run_check 'CODE-07-02 restoration restore/snapshot' 'Raven Manor restoration res
 run_check 'VNS5-06D2A save & rollback rehearsal' 'Raven VN VNS5-06D2A save and rollback projection smoke passed' --script res://tests/raven/vn_release_save_rehearsal_smoke.gd --quit-after 240
 run_check 'VNS5-06D2C canonical-only runtime VN dispatch' 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed' --script res://tests/raven/vn_production_runtime_dispatch_smoke.gd --quit-after 240
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
+# MAP-QA-02 TEMPORARY CI TEST: restore this shared script after capturing evidence.
+run_check 'MAP-QA-02 Onoe movement' 'Raven MAP-QA-02 Onoe animated segment movement smoke passed' --script res://tests/raven/onoe_segment_movement_smoke.gd --quit-after 120
+
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'VN tri-locale save/reload parity' 'Raven tri-locale VN save/reload parity smoke passed' --script res://tests/raven/vn_locale_save_parity_smoke.gd --quit-after 240
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600
