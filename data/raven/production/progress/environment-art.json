@@ -129,10 +129,10 @@
     },
     {
       "id": "GFX-08-08",
-      "status": "ready",
+      "status": "PR_review",
       "owner": "ChatGPT Agent A",
       "updated": "2026-11-08",
-      "evidence": "Agent A draft map-art manifest/calibration scaffold authored against main 4c4145a9 and approved root image blob b50bc36c. Pixel dimensions/SHA256/masks/scene calibration pending actual source-byte access; B/C contract review and owner QA pending. Proposed scoped PR; no runtime integration or production readiness claimed.",
+      "evidence": "Draft PR https://github.com/bezdredoff/RavenManor-Godot/pull/239 opened at da1f5d3 against main 4c4145a9; versioned source-art references and 3 locally executed unit tests, no PNG bytes available through connector. SHA256/size pixel inspection, B/C schema review, masks, Godot/phone QA pending. No productionReady and no geometry acceptance.",
       "implementationState": "partial",
       "qaState": "manual_pending",
       "approvalState": "pending"
