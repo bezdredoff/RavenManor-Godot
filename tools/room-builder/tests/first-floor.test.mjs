@@ -25,7 +25,7 @@ test('new draft seeds provisional reference without approved geometry claims',()
  assert.equal(result.schemaVersion,2);
  assert.deepEqual(result.roomRegions[0].rect,map.rooms[0].rect);
  assert.equal(result.provenance.includes('not approved'),true);
- assert.ok(comparison(result,map).some(x=>x.includes('PROЕКТНОЙ')));
+ assert.ok(comparison(result,map).some(x=>x.includes('геометрией Godot')));
 });
 test('schema mismatch, corrupted dataURI and invalid dimensions rejected',()=>{
  const bad=copy();bad.schemaVersion=4;
