@@ -102,6 +102,7 @@ Invoke-GodotCheck 'Match3 direct QA Content Preview' @('--headless', '--path', $
 Invoke-GodotCheck 'Device matrix reachability' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/device_matrix_reachability_smoke.gd', '--quit-after', '240') 'Raven Manor device matrix 320/390/430 reachability smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 Invoke-GodotCheck 'Main menu settings smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_smoke.gd', '--quit-after', '120') 'Raven Manor main menu and Prototype Lab navigation smoke passed'
+Invoke-GodotCheck 'Main menu UPDS failure-mode parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_upds_parity_smoke.gd', '--quit-after', '180') 'Raven main menu UPDS failure-mode parity smoke passed'
 
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
 
