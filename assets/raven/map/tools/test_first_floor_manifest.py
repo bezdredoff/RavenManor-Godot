@@ -50,7 +50,8 @@ class MapManifestTests(unittest.TestCase):
             data = {
                 "schemaVersion": 1, "contractId": "raven.first-floor-art",
                 "source": {"path": "approved.png", "byteSize": len(raw),
-                           "sha256": hashlib.sha256(raw).hexdigest(), "dimensionsPx": [4, 6]},
+                           "sha256": hashlib.sha256(raw).hexdigest(), "dimensionsPx": [4, 6],
+                           "gitBlobSha": hashlib.sha1(f"blob {len(raw)}\0".encode("ascii") + raw).hexdigest()},
                 "rooms": rooms,
                 "doors": [{"id": "RM-DOOR-ENTRY-HALL", "roomIds": [rooms[0]["id"], rooms[1]["id"]], "sourcePixelPoint": None}],
                 "objects": [{"id": "RM-ASSET-HALL-CLOCK", "roomId": rooms[0]["id"], "sourcePixelPivot": None}],

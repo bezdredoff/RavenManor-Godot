@@ -100,6 +100,9 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
     if source.get("byteSize") != len(raw):
         raise ContractError("Source byte size drifted")
     observed_sha = hashlib.sha256(raw).hexdigest()
+    git_blob_sha = hashlib.sha1(f"blob {len(raw)}\0".encode("ascii") + raw).hexdigest()
+    if source.get("gitBlobSha") != git_blob_sha:
+        raise ContractError("Source Git blob SHA mismatch")
     warnings = []
     if source.get("sha256") is None or source.get("dimensionsPx") is None:
         warnings.append(f"SOURCE_METADATA_PENDING: SHA256={observed_sha} size={width}x{height}")
@@ -114,6 +117,9 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
     )}
     for key, items in groups.items():
         _unique(items, key)
+    all_ids = [item["id"] for objects in groups.values() for item in objects]
+    if len(all_ids) != len(set(all_ids)):
+        raise ContractError("Cross-domain duplicate IDs")
     room_ids = {x["id"] for x in data["rooms"]}
     if len(room_ids) != 8:
         raise ContractError("Expected eight reference rooms")
@@ -137,6 +143,38 @@ def verify(root: Path, data: dict, require_hash: bool = False) -> list[str]:
                 raise ContractError(f'Missing referenced asset: {layer["path"]}')
         elif layer["state"] == "available":
             raise ContractError(f'Available layer without path: {layer["id"]}')
+    if data.get("referenceSources"):
+        refs = {ref["path"]: ref for ref in data["referenceSources"]}
+        world_path = "data/raven/season1_world_map.json"
+        graph_path = "data/raven/manor_greybox_graph.json"
+        if set(refs) != {world_path, graph_path}:
+            raise ContractError("Unexpected geometry source references")
+        world = json.loads(_path(root, world_path).read_text("utf-8"))
+        graph = json.loads(_path(root, graph_path).read_text("utf-8"))
+        if world.get("worldSize") != data["coordinateSystems"]["worldPlan"]["extent"]:
+            raise ContractError("World plan extent drifted")
+        source_rooms = {r["id"]: r for r in world["rooms"]}
+        for room in data["rooms"]:
+            if room["id"] not in source_rooms or room["referenceWorldPlanRect"] != source_rooms[room["id"]]["rect"]:
+                raise ContractError("World plan room geometry drifted")
+        source_doors = {d["id"]: d for d in world["doors"]}
+        for door in data["doors"]:
+            original = source_doors.get(door["id"])
+            if original is None or door["referenceWorldPlanPoint"] != original["point"]:
+                raise ContractError("World plan doorway drifted")
+            expected = [world["rooms"][i]["id"] if i >= 0 else None for i in (original["a"], original["b"])]
+            if door["roomIds"] != expected:
+                raise ContractError("World plan door-to-room relation drifted")
+        source_anchors = {a["id"]: a for a in graph["anchors"]}
+        for anchor in data["navigationReferenceAnchors"]:
+            original = source_anchors.get(anchor["id"])
+            if original is None or anchor["referenceGreyboxPoint"] != original["position"] or anchor["roomId"] != original["roomId"]:
+                raise ContractError("Greybox graph anchor drifted")
+        source_objects = {o["id"]: o for o in world["props"]}
+        for obj in data["objects"]:
+            original = source_objects.get(obj["id"])
+            if original is None or obj["referenceWorldPlanRect"] != original["rect"]:
+                raise ContractError("World plan object footprint drifted")
     mapping = data["coordinateSystems"]["worldPlanToSourcePixel"]
     if mapping["status"] != "unresolved" or mapping["matrix"] is not None:
         raise ContractError("Draft must not assert unverified world-to-raster calibration")
