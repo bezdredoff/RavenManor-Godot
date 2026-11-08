@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/raven/onoe_segment_mover.gd" id="1_mover"]
+
+[node name="Onoe" type="Node2D"]
+script = ExtResource("1_mover")

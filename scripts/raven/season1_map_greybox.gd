@@ -8,8 +8,7 @@ const HALL_IMPORT_BRIDGE = preload("res://scripts/raven/hall_import_bridge.gd")
 const IMPORTED_HALL = preload("res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn")
 const HALL_PREVIEW_FILE := "res://data/raven/hall_builder_preview.json"
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
-const ONOE_WALK = preload("res://assets/prototypes/onoe/onoe_walk_sheet_v1.png")
-const ONOE_SIDE = preload("res://assets/prototypes/onoe/onoe_side_walk_v2.png")
+const OnoeVisual = preload("res://scripts/raven/onoe_visual.gd")
 const HALL_SHELL = preload("res://assets/prototypes/map_calibration/hall_shell.svg")
 const HALL_RUG = preload("res://assets/prototypes/map_calibration/hall_rug.svg")
 const HALL_CLOCK = preload("res://assets/prototypes/map_calibration/grandfather_clock.svg")
@@ -312,32 +311,16 @@ func _button(t: String, pos: Vector2, dims: Vector2, callback: Callable, target_
 
 
 func _make_onoe() -> void:
-	var frames := SpriteFrames.new()
-	frames.remove_animation("default")
-	for clip in [["down", 0], ["up", 3]]:
-		frames.add_animation(clip[0])
-		frames.set_animation_speed(clip[0], 7)
-		frames.set_animation_loop(clip[0], true)
-		for column in 4:
-			var atlas := AtlasTexture.new()
-			atlas.atlas = ONOE_WALK
-			atlas.region = Rect2(column * 256, int(clip[1]) * 384, 256, 384)
-			frames.add_frame(clip[0], atlas)
-	frames.add_animation("side")
-	frames.set_animation_speed("side", 10)
-	frames.set_animation_loop("side", true)
-	for column in 8:
-		var side_atlas := AtlasTexture.new()
-		side_atlas.atlas = ONOE_SIDE
-		side_atlas.region = Rect2(column * 272, 0, 272, 724)
-		frames.add_frame("side", side_atlas)
+	# Share frame layout with Hall and reusable actor, keeping this map's
+	# established viewport projection, actor_pos and camera unchanged.
 	actor_sprite = AnimatedSprite2D.new()
-	actor_sprite.sprite_frames = frames
+	actor_sprite.sprite_frames = OnoeVisual.build_sprite_frames()
 	actor_sprite.animation = "down"
 	actor_sprite.stop()
 	actor_sprite.frame = 0
 	actor_sprite.z_index = 5
 	add_child(actor_sprite)
+
 
 func _update_actor_screen() -> void:
 	if not is_instance_valid(actor_sprite):
@@ -352,14 +335,9 @@ func _update_actor_screen() -> void:
 	if is_instance_valid(foreground_overlay): foreground_overlay.queue_redraw()
 
 func _set_actor_motion(delta: Vector2) -> void:
-	if delta.length_squared() < 0.01:
-		return
-	var clip := "side" if absf(delta.x) > absf(delta.y) else ("down" if delta.y >= 0 else "up")
-	if actor_sprite.animation != clip:
-		actor_sprite.animation = clip
-	actor_sprite.flip_h = clip == "side" and delta.x < 0
-	if not actor_sprite.is_playing():
-		actor_sprite.play()
+	# Same directional frame/flip choice as Hall; movement stays move_toward().
+	OnoeVisual.play_sprite_direction(actor_sprite, delta)
+
 
 func _zoom_in() -> void:
 	_set_zoom(zoom * 1.17)
