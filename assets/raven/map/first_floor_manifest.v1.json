@@ -1,29 +1,36 @@
 {
   "schemaVersion": 1,
   "contractId": "raven.first-floor-art",
-  "contractRevision": "1.0.0-draft",
+  "contractRevision": "1.1.0-visual-review-draft",
   "created": "2026-11-08",
   "ownerDomain": "environment-art",
   "productionReady": false,
   "integrationAllowed": false,
   "approval": {
     "composition": "owner_selected_source",
-    "pixelCalibration": "pending",
-    "topology": "pending",
-    "foreground": "pending",
-    "masks": "pending",
-    "manualGodotQA": "pending",
-    "rightsReview": "not_documented"
+    "pixelCalibration": "pixel_regions_visual_audit_only_not_geometry_approved",
+    "topology": "visual_mismatches_identified_not_approved",
+    "foreground": "not_authored",
+    "masks": "not_authored",
+    "manualGodotQA": "not_run",
+    "rightsReview": "not_documented",
+    "sourceBytes": "verified"
   },
   "source": {
     "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
     "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
     "byteSize": 3126732,
     "format": "PNG",
-    "sha256": null,
-    "dimensionsPx": null,
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
     "artStatus": "owner_selected",
-    "metadataStatus": "requires_binary_read"
+    "metadataStatus": "verified_exact_bytes_on_github_runner",
+    "byteVerificationRunUrl": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42502763198",
+    "previewEvidenceRunUrl": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/42503148980",
+    "previewOnlyAnnotationPath": "docs/audits/GFX-08-08-first-floor-visual-review.svg"
   },
   "referenceSources": [
     {
@@ -43,7 +50,7 @@
       "positiveX": "right",
       "positiveY": "down",
       "unit": "px",
-      "dimensions": "source.dimensionsPx; pending byte inspection",
+      "dimensions": "source.dimensionsPx = [1672, 941]",
       "coordinatePrecision": "float"
     },
     "worldPlan": {
@@ -63,11 +70,16 @@
     },
     "worldPlanToSourcePixel": {
       "status": "unresolved",
-      "model": "piecewise_floor_projective_or_homography_after_artist_review",
+      "model": "not yet determined: original 16:9 painting is nonlinearly composed, proposed world plan is near portrait",
       "matrix": null,
       "controlPoints": [],
       "inverse": null,
-      "allowInterpolation": false
+      "allowInterpolation": false,
+      "aspectConflict": {
+        "imageRatio": 1.7768331562167907,
+        "referenceWorldRatio": 0.9555555555555556,
+        "reason": "Old proposed world map 2150x2250 does not match landscape original; unreviewed direct stretch would have axis scale ratio approx 1.86"
+      }
     },
     "worldPlanToPrototypeScreen": {
       "status": "documented_prototype_not_source_image_calibration",
@@ -77,6 +89,15 @@
       "inverse": "worldX=(screenX-offsetX)/zoom; worldY=(screenY-offsetY)/(zoom*sin(65deg))",
       "zoom": "positive runtime/editor parameter",
       "screenOffset": "per-view parameter"
+    },
+    "screenProjected": {
+      "status": "existing_godot_65deg_pilot_only_not_png_calibration",
+      "unit": "screen_pixels",
+      "forward": "screenX = viewportOffsetX + zoom * worldPlanX; screenY = viewportOffsetY + zoom * sin(65deg) * worldPlanY",
+      "inverse": "worldPlanX = (screenX - viewportOffsetX)/zoom; worldPlanY = (screenY - viewportOffsetY)/(zoom*sin(65deg))",
+      "sourceImageAlreadyPainted": true,
+      "applyToCompositePNG": false,
+      "cameraComment": "Volumetric Room Builder includes an independent 45deg azimuth; do not double-project painted flat image"
     }
   },
   "rooms": [
@@ -90,9 +111,16 @@
         150
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "exterior_front_approach_not_enclosed_room",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        705,
+        791,
+        946,
+        941
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-HALL",
@@ -104,9 +132,16 @@
         690
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        630,
+        405,
+        1090,
+        804
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-ARCHIVE",
@@ -118,9 +153,16 @@
         420
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "Library/Archive naming alias",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        177,
+        407,
+        619,
+        777
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-CORRIDOR",
@@ -132,9 +174,16 @@
         930
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        680,
+        231,
+        1059,
+        410
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-BEDROOM",
@@ -146,9 +195,16 @@
         340
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        193,
+        140,
+        527,
+        420
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-BATHROOM",
@@ -160,9 +216,16 @@
         260
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "corridor_vignette_initial_slice",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        534,
+        162,
+        693,
+        360
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-KITCHEN",
@@ -174,9 +237,16 @@
         420
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_region_not_geometry_accepted",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        1065,
+        469,
+        1498,
+        757
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     },
     {
       "id": "RM-ROOM-CONSERVATORY",
@@ -188,9 +258,16 @@
         390
       ],
       "sourcePixelPolygon": null,
-      "sourceVisible": "not_verified_from_pixels",
+      "sourceVisible": "observed_glass_orangery_external_north_east",
       "intendedRole": "world_plan_reference",
-      "calibrationStatus": "reference_only"
+      "calibrationStatus": "reference_only",
+      "visualApproxBoundsPx": [
+        1230,
+        0,
+        1639,
+        212
+      ],
+      "visualApproxBoundsStatus": "review_preview_coarse_not_walkable_polygon"
     }
   ],
   "doors": [
@@ -205,10 +282,15 @@
         840
       ],
       "referenceState": "open",
-      "sourcePixelPoint": null,
+      "sourcePixelPoint": [
+        833,
+        801
+      ],
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "approx_visual_estimate_not_collision",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "visible_threshold_candidate",
+      "visualNotes": "front double entrance visible; floor contact visually estimated, not calibrated"
     },
     {
       "id": "RM-DOOR-HALL-ARCHIVE",
@@ -223,8 +305,10 @@
       "referenceState": "gated",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "apparent_solid_wall",
+      "visualNotes": "Hall↔Library west wall does not show an unambiguous opening in the supplied painting"
     },
     {
       "id": "RM-DOOR-HALL-CORRIDOR",
@@ -239,8 +323,10 @@
       "referenceState": "open",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_visible_at_reference_position",
+      "visualNotes": "Upper horizontal corridor is behind Hall's staircase/landing, not a confirmed first-floor right-wall portal"
     },
     {
       "id": "RM-DOOR-CORRIDOR-BEDROOM",
@@ -255,8 +341,10 @@
       "referenceState": "gated",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_visible",
+      "visualNotes": "Bedroom has no clear approved opening onto the upper corridor; apparent partitions/windows are not doorways"
     },
     {
       "id": "RM-DOOR-CORRIDOR-BATHROOM",
@@ -271,8 +359,10 @@
       "referenceState": "gated",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "ambiguous",
+      "visualNotes": "Small light seam around lower bathroom threshold may be decorative; cannot certify as walking portal"
     },
     {
       "id": "RM-DOOR-CORRIDOR-KITCHEN",
@@ -287,8 +377,10 @@
       "referenceState": "gated",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_visible",
+      "visualNotes": "Kitchen sits below dark northeast room; old Corridor↔Kitchen adjacency not observed"
     },
     {
       "id": "RM-DOOR-KITCHEN-CONSERVATORY",
@@ -303,8 +395,10 @@
       "referenceState": "gated",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_contiguous",
+      "visualNotes": "Glasshouse is outside far northeast, visually separated from kitchen by intervening covered room and garden"
     },
     {
       "id": "RM-DOOR-HALL-EAST-WING",
@@ -319,8 +413,10 @@
       "referenceState": "future",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_visible",
+      "visualNotes": "Covered dark room northeast not connected to Hall by verified ground-floor opening"
     },
     {
       "id": "RM-DOOR-HALL-UPPER-FLOOR",
@@ -335,8 +431,10 @@
       "referenceState": "future",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "stair_landing_ambiguous",
+      "visualNotes": "Two curved stair flights and central landing observed; level elevation/destination cannot be derived from flat art"
     },
     {
       "id": "RM-DOOR-KITCHEN-SERVICE",
@@ -351,8 +449,10 @@
       "referenceState": "future",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "not_visible",
+      "visualNotes": "No unambiguous service exterior door in kitchen's right/south walls"
     },
     {
       "id": "RM-DOOR-CONSERVATORY-GARDEN",
@@ -367,8 +467,10 @@
       "referenceState": "future",
       "sourcePixelPoint": null,
       "nearFarFootpointsPx": null,
-      "calibrationStatus": "reference_only",
-      "authoritativeForMovement": false
+      "calibrationStatus": "reference_only_unmapped_to_painting",
+      "authoritativeForMovement": false,
+      "visualPortalStatus": "garden_connection_ambiguous",
+      "visualNotes": "Greenhouse and garden adjacent; exact glasshouse door/threshold cannot be resolved"
     }
   ],
   "navigationReferenceAnchors": [
@@ -382,7 +484,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "safe"
+      "kind": "safe",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HS-001",
@@ -394,7 +499,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HALL-CORRIDOR-NEAR",
@@ -406,7 +514,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "transition"
+      "kind": "transition",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HALL-CORRIDOR-FAR",
@@ -418,7 +529,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "transition"
+      "kind": "transition",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HS-003",
@@ -430,7 +544,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-CORRIDOR-CENTER",
@@ -442,7 +559,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "safe"
+      "kind": "safe",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HS-005",
@@ -454,7 +574,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-BEDROOM-NEAR",
@@ -466,7 +589,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "transition"
+      "kind": "transition",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-BEDROOM-FAR",
@@ -478,7 +604,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "transition"
+      "kind": "transition",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-BEDROOM-CENTER",
@@ -490,7 +619,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "safe"
+      "kind": "safe",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HS-002",
@@ -502,7 +634,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HS-004",
@@ -514,7 +649,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     },
     {
       "id": "RM-NAV-HALL-TEA",
@@ -526,7 +664,10 @@
       "sourcePixelFootpoint": null,
       "referenceSpace": "independent_greybox",
       "calibrationStatus": "unresolved",
-      "kind": "interaction"
+      "kind": "interaction",
+      "calibratedWorldPlanPoint": null,
+      "calibratedWorldPlanStatus": "unresolved",
+      "coordinateAuthority": "independent_draft_only"
     }
   ],
   "objects": [
@@ -963,5 +1104,335 @@
         "room-builder"
       ]
     }
-  ]
+  ],
+  "imageObservations": [
+    {
+      "id": "RM-ART-REGION-01",
+      "label": "Bedroom",
+      "boundsPx": [
+        193,
+        140,
+        527,
+        420
+      ],
+      "roomId": "RM-ROOM-BEDROOM",
+      "kind": "interior",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-02",
+      "label": "Bathroom",
+      "boundsPx": [
+        534,
+        162,
+        693,
+        360
+      ],
+      "roomId": "RM-ROOM-BATHROOM",
+      "kind": "interior",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-03",
+      "label": "Upper horizontal corridor",
+      "boundsPx": [
+        680,
+        231,
+        1059,
+        410
+      ],
+      "roomId": "RM-ROOM-CORRIDOR",
+      "kind": "interior",
+      "confidence": "likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-04",
+      "label": "Library / Archive",
+      "boundsPx": [
+        177,
+        407,
+        619,
+        777
+      ],
+      "roomId": "RM-ROOM-ARCHIVE",
+      "kind": "interior",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-05",
+      "label": "Twin-stair Hall",
+      "boundsPx": [
+        630,
+        405,
+        1090,
+        804
+      ],
+      "roomId": "RM-ROOM-HALL",
+      "kind": "interior",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-06",
+      "label": "Kitchen",
+      "boundsPx": [
+        1065,
+        469,
+        1498,
+        757
+      ],
+      "roomId": "RM-ROOM-KITCHEN",
+      "kind": "interior",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-07",
+      "label": "Covered dark room",
+      "boundsPx": [
+        1042,
+        168,
+        1498,
+        483
+      ],
+      "roomId": null,
+      "kind": "unmapped_in_world_plan",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-08",
+      "label": "Garden upper court",
+      "boundsPx": [
+        595,
+        0,
+        1250,
+        236
+      ],
+      "roomId": null,
+      "kind": "exterior_garden",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-09",
+      "label": "Orangery / glasshouse",
+      "boundsPx": [
+        1230,
+        0,
+        1639,
+        212
+      ],
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "kind": "exterior_garden_structure",
+      "confidence": "very_likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    },
+    {
+      "id": "RM-ART-REGION-10",
+      "label": "Front entry steps",
+      "boundsPx": [
+        705,
+        791,
+        946,
+        941
+      ],
+      "roomId": "RM-ROOM-ENTRY",
+      "kind": "exterior_approach",
+      "confidence": "likely",
+      "coordinateAccuracy": "estimated from 1200px overall preview and source-sized regional crops; edges not a floor polygon",
+      "walkablePolygon": null,
+      "ownerGeometryApproval": "pending"
+    }
+  ],
+  "pixelLandmarkCandidates": [
+    {
+      "id": "RM-ART-FID-ENTRY",
+      "label": "Front Hall double door threshold centre",
+      "imagePixelEstimate": [
+        833,
+        801
+      ],
+      "pixelToleranceApprox": 15,
+      "worldPlanPoint": null,
+      "confidence": "medium",
+      "status": "image_estimate_only",
+      "mustReview": "Which exact foot floor contact lies inside Hall after threshold?"
+    },
+    {
+      "id": "RM-ART-FID-STAIR",
+      "label": "Hall centre stair landing centre",
+      "imagePixelEstimate": [
+        831,
+        444
+      ],
+      "pixelToleranceApprox": 25,
+      "worldPlanPoint": null,
+      "confidence": "medium",
+      "status": "image_estimate_only",
+      "mustReview": "Landing elevation unknown: cannot use as ground-floor control"
+    },
+    {
+      "id": "RM-ART-FID-LIBRARY-WALL",
+      "label": "Hall west library partition no confirmed door",
+      "imagePixelEstimate": null,
+      "worldPlanPoint": null,
+      "confidence": "none",
+      "status": "no_visible_control",
+      "mustReview": "Owner-approved opening/transition needed"
+    },
+    {
+      "id": "RM-ART-FID-HALL-KITCHEN",
+      "label": "Hall east kitchen partition no confirmed door",
+      "imagePixelEstimate": null,
+      "worldPlanPoint": null,
+      "confidence": "none",
+      "status": "no_visible_control",
+      "mustReview": "Doorway missing; do not synthesize"
+    },
+    {
+      "id": "RM-ART-FID-BATH-SEAM",
+      "label": "Bathroom south/east threshold-like decorative light",
+      "imagePixelEstimate": [
+        629,
+        335
+      ],
+      "pixelToleranceApprox": 25,
+      "worldPlanPoint": null,
+      "confidence": "low",
+      "status": "ambiguous_visual_mark",
+      "mustReview": "Check if this is an actual walkable bathroom doorway"
+    },
+    {
+      "id": "RM-ART-FID-KITCHEN-DARK",
+      "label": "Dark room / kitchen wall light seam",
+      "imagePixelEstimate": [
+        1144,
+        474
+      ],
+      "pixelToleranceApprox": 25,
+      "worldPlanPoint": null,
+      "confidence": "low",
+      "status": "ambiguous_visual_mark",
+      "mustReview": "Verify actual opening; may be trim/light"
+    }
+  ],
+  "occlusionCandidates": [
+    {
+      "id": "RM-ART-OCC-STAIRS-L",
+      "label": "Left curved stairs/banister",
+      "approxBoundsPx": [
+        655,
+        418,
+        791,
+        649
+      ],
+      "status": "unsegmented",
+      "depth": "multiple_tread_heights_not_single_foot_y",
+      "requires": "separate balustrade foreground alpha + stair collision and landing review"
+    },
+    {
+      "id": "RM-ART-OCC-STAIRS-R",
+      "label": "Right curved stairs/banister",
+      "approxBoundsPx": [
+        886,
+        418,
+        1039,
+        646
+      ],
+      "status": "unsegmented",
+      "depth": "multiple_tread_heights_not_single_foot_y",
+      "requires": "separate balustrade foreground alpha + stair collision and landing review"
+    },
+    {
+      "id": "RM-ART-OCC-LIBRARY",
+      "label": "Library walls/bookcases/armchair and desk",
+      "approxBoundsPx": [
+        186,
+        424,
+        609,
+        772
+      ],
+      "status": "unsegmented",
+      "depth": "furniture_bottom_pivot_pending",
+      "requires": "hand cutouts plus background reconstruction"
+    },
+    {
+      "id": "RM-ART-OCC-BED",
+      "label": "Bedroom bed with canopy/headboards",
+      "approxBoundsPx": [
+        235,
+        177,
+        374,
+        372
+      ],
+      "status": "unsegmented",
+      "depth": "upright",
+      "requires": "backfill and specific floor-contact pivot"
+    },
+    {
+      "id": "RM-ART-OCC-KITCHEN",
+      "label": "Kitchen island, stools and hearth",
+      "approxBoundsPx": [
+        1096,
+        477,
+        1488,
+        737
+      ],
+      "status": "unsegmented",
+      "depth": "foot_y_pending",
+      "requires": "alpha separation, shadows and re-painted exposed floor"
+    },
+    {
+      "id": "RM-ART-OCC-DARK",
+      "label": "Covered objects in dark room",
+      "approxBoundsPx": [
+        1092,
+        199,
+        1457,
+        462
+      ],
+      "status": "unsegmented",
+      "depth": "upright_pending",
+      "requires": "owner identification and gameplay scope"
+    }
+  ],
+  "consumerContracts": {
+    "builder": {
+      "targetPr": 240,
+      "targetFormat": "firstFloorDraft nested schemaVersion 2",
+      "status": "explicit_adapter_required_not_consumer_approved",
+      "sourceRule": "baseImage.path exact original PNG; pixelSize [1672,941]; no forced portrait worldRect",
+      "noImplicitCopy": "Reference room rectangles/door points cannot be interpreted as painted coordinates",
+      "risk": "B linear full-image worldRect cannot represent mismatched authored topology without owner-reviewed calibration"
+    },
+    "navigation": {
+      "targetPr": 238,
+      "targetFormat": "schemaVersion 1 coordinateSpace world-plan productionReady false anchors[]",
+      "status": "explicit_adapter_required_not_consumer_approved",
+      "rule": "Only separately approved calibratedWorldPlanPoint; never copy referenceGreyboxPoint or project image pixels directly"
+    }
+  }
 }
