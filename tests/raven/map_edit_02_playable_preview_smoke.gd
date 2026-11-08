@@ -75,7 +75,7 @@ func _run() -> void:
 	assert(not FileAccess.file_exists(Launch.FILE), "One-shot selection is consumed")
 	assert(pilot.request_waypoint("QA-HALL-CENTRE"))
 	assert(pilot.actor.segment_destination() == "QA-ROUTE-001-STEP-001", "Must NOT shortcut to Centre")
-	var initial := pilot.actor.position
+	var initial: Vector2 = pilot.actor.position
 	pilot.actor.advance(0.04)
 	assert(pilot.actor.position != initial and pilot.session.current_anchor() == "QA-HALL-SPAWN")
 	assert(pilot.pause_movement())
