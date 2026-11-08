@@ -287,7 +287,7 @@ static func _check_route(route: Dictionary, doc: Dictionary) -> String:
 	else:
 		if cells.size() < 2:
 			return "Authored route needs an ordered sequence of cells"
-		var parsed := parse_route_text(" → ".join(cells), doc)
+		var parsed := parse_route_text(" → ".join(PackedStringArray(cells)), doc)
 		if not parsed.ok:
 			return str(parsed.error)
 		var first := pixel_to_cell(_vector(by_id[a]["pointPx"]), doc)

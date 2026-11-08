@@ -43,7 +43,7 @@ godot --headless --path . --script res://tests/raven/manor_navigation_graph_smok
 bash scripts/check.sh
 ```
 
-The existing Room Builder import smoke now invokes `tests/raven/map_edit_01_routes_checks.gd`; it verifies import/identities, cell-to-pixel/offset/AA... columns, source bounds, waypoint edits/dependency deletion, orthogonal route parsing, ordered cells, no-go/blocked rejection, one-way/bidirectional compiled AStar connectivity, JSON save/reopen, immutable source/canonical graph and non-promotion. No shared runner/workflow edit.
+The existing Room Builder import smoke now invokes `tests/raven/map_edit_01_routes_checks.gd`; an explicit one-line integration-owned `scripts/check.sh` registration is required because this smoke was previously not included in standard CI. It verifies import/identities, cell-to-pixel/offset/AA... columns, source bounds, waypoint edits/dependency deletion, orthogonal route parsing, ordered cells, no-go/blocked rejection, one-way/bidirectional compiled AStar connectivity, JSON save/reopen, immutable source/canonical graph and non-promotion. No new workflow or job; one narrowly scoped callsite in shared `scripts/check.sh` requires integration-owner review.
 
 ## Limitations and owner QA
 
@@ -51,4 +51,4 @@ Headless tests validate geometry contracts, not actual sprite occlusion or edito
 
 **Follow-up candidates:** MAP-EDIT-02 (arbitrary-room image selection + polygon editor), MAP-EDIT-03 (runtime draft-preview adapter with physical Onoe, only after owner review), MAP-EDIT-04 (PWA Room Builder import/export of versioned image-pixel route drafts). These are not automatically registered production tasks.
 
-Rollback: delete `addons/room_builder_routes/`, its draft fixture, narrow Room Builder smoke hook, documentation and own shard evidence. No canonical assets, `project.godot`, campaign or runtime scene changes were made.
+Rollback: delete `addons/room_builder_routes/`, its draft fixture, narrow Room Builder smoke hook and its check.sh registration, documentation and own shard evidence. No canonical assets, `project.godot`, campaign or runtime scene changes were made.

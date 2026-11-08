@@ -19,6 +19,8 @@ var zoom := 0.75
 var image_origin := Vector2(28, 28)
 var _drag_point := ""
 var _drag_preview := Vector2.ZERO
+var _drag_origin := Vector2.ZERO
+var _did_drag := false
 var _pan_active := false
 var _last_mouse := Vector2.ZERO
 var _painting := false
@@ -233,11 +235,17 @@ func _gui_input(event: InputEvent) -> void:
 					waypoint_chosen.emit(hit)
 					if mode == "Waypoints" and not hit.is_empty():
 						_drag_point = hit
-						_drag_preview = pixel
+						_did_drag = false
+						for waypoint in document.get("waypoints", []):
+							if waypoint["id"] == hit:
+								_drag_origin = Routes._vector(waypoint["pointPx"])
+								break
+						_drag_preview = _drag_origin
 				queue_redraw()
 			else:
 				if not _drag_point.is_empty():
-					waypoint_dropped.emit(_drag_point, _drag_preview)
+					if _did_drag:
+						waypoint_dropped.emit(_drag_point, _drag_preview)
 					_drag_point = ""
 				_painting = false
 				_painted.clear()
@@ -251,8 +259,11 @@ func _gui_input(event: InputEvent) -> void:
 		elif not _drag_point.is_empty() and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			var pixel := screen_to_image(event.position)
 			if Routes._inside_art(pixel, document):
-				_drag_preview = pixel
-				queue_redraw()
+				if pixel.distance_to(_drag_origin) > 3.0:
+					_did_drag = true
+				if _did_drag:
+					_drag_preview = pixel
+					queue_redraw()
 		elif _painting and Input.is_mouse_button_pressed(MOUSE_BUTTON_LEFT):
 			var cell := Routes.pixel_to_cell(screen_to_image(event.position), document)
 			_paint(cell)

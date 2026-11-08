@@ -57,6 +57,8 @@ run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph 
 run_check 'MAP-QA-02 Onoe movement adapter' 'Raven MAP-QA-02 Onoe animated segment movement smoke passed' --script res://tests/raven/onoe_segment_movement_smoke.gd --quit-after 120
 run_check 'MAP-QA-01 Hall source geometry' 'MAP-QA-01 Hall pilot Godot JSON/image smoke passed' --script res://tests/raven/map_qa_01_hall_smoke.gd --quit-after 120
 run_check 'MAP-QA-03 Hall movement pilot' 'Raven MAP-QA-03 Hall movement pilot smoke passed' --script res://tests/raven/map_qa_03_hall_movement_smoke.gd --quit-after 120
+# MAP-EDIT-01 uses the existing Room Builder import smoke to exercise the native editor model.
+run_check 'MAP-EDIT-01 native route editor' 'MAP-EDIT-01 native Room Builder route document smoke passed' --script res://tests/raven/room_builder_game_import_smoke.gd --quit-after 120
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'VN tri-locale save/reload parity' 'Raven tri-locale VN save/reload parity smoke passed' --script res://tests/raven/vn_locale_save_parity_smoke.gd --quit-after 240
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600

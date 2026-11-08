@@ -291,6 +291,8 @@ func _refresh() -> void:
 	if document.is_empty():
 		return
 	_suppress = true
+	var remembered_from := route_from.get_item_text(route_from.selected) if route_from.selected >= 0 else ""
+	var remembered_to := route_to.get_item_text(route_to.selected) if route_to.selected >= 0 else ""
 	var g: Dictionary = document["grid"]
 	grid_width.set_value_no_signal(float(g["cellWidth"]))
 	grid_height.set_value_no_signal(float(g["cellHeight"]))
@@ -313,6 +315,11 @@ func _refresh() -> void:
 		if id == selected_waypoint:
 			wp_index = i
 		i += 1
+	for pos in range(route_from.item_count):
+		if route_from.get_item_text(pos) == remembered_from:
+			route_from.select(pos)
+		if route_to.get_item_text(pos) == remembered_to:
+			route_to.select(pos)
 	if wp_index >= 0:
 		waypoint_list.select(wp_index)
 		var item: Dictionary = document["waypoints"][wp_index]
@@ -356,7 +363,7 @@ func _show_route_details(route: Dictionary) -> void:
 		var wp: Dictionary = by_id.get(str(route["from"]), {})
 		route_cells.text = Routes.pixel_to_cell(Routes._vector(wp.get("pointPx", [0, 0])), document) if not wp.is_empty() else ""
 	else:
-		route_cells.text = " → ".join(cells)
+		route_cells.text = " → ".join(PackedStringArray(cells))
 	route_hint.text = "%s · %s → %s · %s" % [
 		route["id"], route["from"], route["to"],
 		"PROVISIONAL straight edge (no cells authored)" if route["provisional"] else "Authored cell route"
@@ -495,7 +502,7 @@ func _remove_last_cell() -> void:
 	var split := route_cells.text.replace("->", "→").split("→", false)
 	if split.size() > 1:
 		split.remove_at(split.size() - 1)
-		route_cells.text = " → ".join(split)
+		route_cells.text = " → ".join(PackedStringArray(split))
 		_on_route_text_changed(route_cells.text)
 
 

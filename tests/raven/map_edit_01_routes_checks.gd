@@ -3,10 +3,11 @@ extends RefCounted
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const View = preload("res://addons/room_builder_routes/route_editor_view.gd")
 const Canvas = preload("res://addons/room_builder_routes/route_canvas.gd")
+const Plugin = preload("res://addons/room_builder_routes/plugin.gd")
 const Graph = preload("res://scripts/raven/manor_navigation_graph.gd")
 
 
-static func run() -> void:
+static func run(test_root: Window) -> void:
 	var original_qa := FileAccess.get_file_as_string(Routes.HALL_SOURCE)
 	var canonical := FileAccess.get_file_as_string("res://data/raven/manor_greybox_graph.json")
 	assert(not original_qa.is_empty() and not canonical.is_empty())
@@ -24,6 +25,7 @@ static func run() -> void:
 	assert(original_ids.has("QA-HALL-SPAWN"))
 	assert(original_ids.has("QA-HALL-PORTAL-APPROACH"))
 	assert(Routes.validate(doc).ok)
+	assert(Routes._check_segment(Vector2(759, 719), Vector2(835, 570), doc) != "", "Provisional geometry crossing no-go must be rejected")
 
 	# Column labels and deterministic grid with arbitrary pixel origin.
 	assert(Routes.column_label(0) == "A")
@@ -132,5 +134,20 @@ static func run() -> void:
 	graph.rebuild({})
 	assert(graph.anchors().size() == 13)
 	# Plugin and visual classes must parse and load under Godot without enabling gameplay.
-	assert(View != null and Canvas != null)
+	assert(View != null and Canvas != null and Plugin != null)
+	# Exercise actual native view history controls with a real Control tree.
+	var native_view = View.new()
+	test_root.add_child(native_view)
+	assert(native_view.document.get("kind") == "raven-grid-route-draft")
+	var untouched := JSON.stringify(native_view.document)
+	var extra := Routes.add_waypoint(native_view.document, Vector2(840, 730))
+	assert(extra.ok)
+	native_view._set_document(extra.document)
+	assert(native_view.history.size() == 1)
+	assert(native_view.dirty_label.text.contains("UNSAVED"))
+	native_view._undo()
+	assert(JSON.stringify(native_view.document) == untouched)
+	native_view._redo()
+	assert(JSON.stringify(native_view.document) == JSON.stringify(extra.document))
+	native_view.queue_free()
 	print("MAP-EDIT-01 native Room Builder route document smoke passed (grid, cells, geometry, one-way, persistence and immutable source).")
