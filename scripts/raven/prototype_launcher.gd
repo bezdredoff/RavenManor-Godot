@@ -8,6 +8,7 @@ const CONTENT_PREVIEW_SCENE := "res://scenes/raven/content_preview.tscn"
 const HALL_TEA_PILOT := "res://scenes/raven/hall_tea_vn.tscn"
 const VN_BACKGROUND_GALLERY := "res://scenes/raven/vn_background_gallery.tscn"
 const BUILDER_GAME_PREVIEW_SCENE := "res://scenes/raven/generated/RM_ROOM_HALL_GamePreview.tscn"
+const HALL_MOVEMENT_PILOT := "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 
 
 func _ready() -> void:
@@ -27,6 +28,12 @@ func _ready() -> void:
 		"Открыть RM-LVL-001 сразу, без вступления и прогулки по карте. Это тот же UPDS Match-3 интерфейс, что в RM-VS-01: свайпы, цели, блокеры, спецфишки, подсказки и справка. Режим QA не меняет Raven-save.",
 		"ТЕСТИРОВАТЬ MATCH-3 БЕЗ СЮЖЕТА",
 		_open_match3_qa
+	))
+	column.add_child(_card(
+		"9 · MAP-QA-03 · Hall movement on approved first-floor image",
+		"Семь DRAFT_ONLY точек на утверждённом PNG; Onoe идёт по заданным рёбрам. QA-оверлей, пауза, zoom/pan, виртуальный Corridor-портал БЕЗ перехода и сохранений.",
+		"ПРОВЕРИТЬ ДВИЖЕНИЕ ONOE",
+		_open.bind(HALL_MOVEMENT_PILOT)
 	))
 	column.add_child(_card(
 		"5 · Whole Manor Map · S1 GREYBOX",
