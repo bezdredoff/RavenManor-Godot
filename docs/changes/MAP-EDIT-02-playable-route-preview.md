@@ -1,3 +1,9 @@
+Task IDs: MAP-EDIT-02 (scoped runtime-preview slice); linked CODE-05-01 (canonical P0 Room Builder parent, remains partial)
+Changes: Fail-closed read-only Hall QA selector (original/user/project), strict v1 image hash/schema/coordinateSpace/approval validation, compiled authored-cell anchors and directed routes via existing graph/session/Onoe mover, explicit editor Play actions, one-shot source ticket, pause/resume/stop and QA overlay; no canonical graph/save/transition mutations.
+Verification: Local Godot executable unavailable; tests NOT_RUN locally. New Godot MAP-EDIT-02 deterministic smoke registered exactly once in scripts/check.sh with existing MAP-EDIT-01, MAP-QA-03 and movement tests retained; exact-head GitHub Actions PENDING.
+Owner QA: NOT_RUN — Godot editor-to-play route roundtrip, changed turns/feet, pause/stop, mobile/touch panel, F3 and source warning require manual confirmation.
+Status impact: Scoped MAP-EDIT-02 technical QA PR #247 remains PR_review, linked CODE-05-01 still partial P0. No production first-floor geometry or owner/device acceptance.
+
 # MAP-EDIT-02 — Playable preview of editor-authored Hall routes
 
 **Task:** MAP-EDIT-02 (scoped Room Builder QA, not approval of CODE-05-01).
