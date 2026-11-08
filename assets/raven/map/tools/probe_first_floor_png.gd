@@ -20,7 +20,7 @@ func _initialize() -> void:
     var byte_length := file.get_length()
     file.close()
     print("RAVEN_FIRST_FLOOR_IMAGE_METADATA|", size.x, "|", size.y, "|", sha256, "|", byte_length)
-    var scale := min(1.0, 1200.0 / float(max(size.x, size.y)))
+    var scale: float = minf(1.0, 1200.0 / float(maxi(size.x, size.y)))
     var tw := maxi(1, roundi(float(size.x) * scale))
     var th := maxi(1, roundi(float(size.y) * scale))
     img.resize(tw, th, Image.INTERPOLATE_LANCZOS)
