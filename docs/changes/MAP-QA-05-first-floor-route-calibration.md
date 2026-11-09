@@ -13,3 +13,9 @@ Owner QA: NOT_RUN. Manually verify full-size painted floor, Onoe visual footprin
 Status impact: Environment-art GFX-08-08 remains partial, reference contract approved but geometry/portal/physical QA pending. This PR records technical DRAFT_ONLY QA progress only. Other domain shards, Room Builder plugin, room transitions, canonical manifest and runtime remain unchanged.
 
 Risk/rollback: Editor currently treats `provisional:false` as “ordered cells authored,” not “owner-approved.” Every new route separately records AI_PROVISIONAL_UNAPPROVED. Native graph compiler currently labels all QA anchors as Hall; its Test Route only checks isolated connectivity, not true multi-room runtime routing. Roll back only the project QA draft, test runner line, test file and documentation. Shared `scripts/check.sh` has exactly one necessary QA test callsite and requires integration-owner review.
+
+## Post-#247 integration reconciliation (2026-11-09)
+
+- #247 MAP-EDIT-02 merged into main at `edaf72b08b99cad02bab5460261418d229dad1ba`; PR #249 originally branched from the earlier #246 main. The only overlapping file is `scripts/check.sh`. Retain the new #247 playable-preview smoke, prior Hall/Room Builder/transition smokes, and the one MAP-QA-05 geometry smoke, each registered exactly once.
+- The project-export draft now feeds Onoe's MAP-EDIT-02 QA preview; this PR deliberately contains five isolated room route islands. Added contract test verifying that the project preview loader accepts the 22-point draft but Hall spawn cannot navigate to Corridor/Bedroom/Library/Kitchen without real room transitions. Editor/runtime/production controllers remain untouched; this is intentional fail-closed behavior, not a gameplay-ready multi-room host.
+- Exact-head merge CI must be re-run; previous PR #249 passing run 42533586430 predates #247 merge and does not prove combined integration. Owner visual calibration remains pending.

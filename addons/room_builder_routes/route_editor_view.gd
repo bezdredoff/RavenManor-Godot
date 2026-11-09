@@ -4,6 +4,8 @@ extends Control
 ## Writes ONLY explicit QA drafts, never the source pilot or production state.
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const RouteCanvas = preload("res://addons/room_builder_routes/route_canvas.gd")
+const PreviewSource = preload("res://addons/room_builder_routes/route_preview_source.gd")
+const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_launch.gd")
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 
@@ -104,7 +106,9 @@ func _make_ui() -> void:
 	redo_button = _button("↷ Redo", _redo)
 	toolbar.add_child(redo_button)
 	toolbar.add_child(_button("Fit", _fit))
-	toolbar.add_child(_button("Open Hall Pilot (original)", _open_pilot))
+	toolbar.add_child(_button("Play original Hall", _open_pilot.bind(PreviewSource.BASELINE)))
+	toolbar.add_child(_button("Play saved user (Onoe)", _open_pilot.bind(PreviewSource.USER)))
+	toolbar.add_child(_button("Play project export (Onoe)", _open_pilot.bind(PreviewSource.PROJECT)))
 	dirty_label = Label.new()
 	dirty_label.text = "Saved"
 	toolbar.add_child(dirty_label)
@@ -212,7 +216,7 @@ func _make_ui() -> void:
 	inspector.add_child(_button("Unblock selected cell", _clear_selected_cell))
 	inspector.add_child(_button("Test Route: selected from → to", _test_route))
 	inspector.add_child(_button("Clear route preview", _clear_preview))
-	inspector.add_child(_paragraph("Test Route uses a DRAFT_ONLY compiled NavigationGraph with intermediate cell anchors; Hall Pilot runs the original source QA, not the unsaved draft."))
+	inspector.add_child(_paragraph("Test Route draws a compiled path in the editor. Play saved user / Play project export runs physical Onoe on the chosen persisted DRAFT_ONLY geometry. Unsaved edits are never launched."))
 
 
 func _button(caption: String, callback: Callable) -> Button:
@@ -657,6 +661,18 @@ func _load_project() -> void:
 	_message("Opened project QA draft: " + path)
 
 
-func _open_pilot() -> void:
+func _open_pilot(kind: String = PreviewSource.BASELINE) -> void:
+	if kind != PreviewSource.BASELINE and JSON.stringify(document) != last_saved:
+		_message("ERROR: Unsaved editor edits are NOT in the preview. Save or export the draft first.")
+		return
+	# Probe the persisted disk version, not the in-memory editor document.
+	var preview = PreviewSource.new()
+	if not preview.load_source(kind):
+		_message("ERROR: Cannot play %s: %s" % [kind, preview.error_text])
+		return
+	var staged := PreviewLaunch.stage(kind)
+	if not staged.get("ok", false):
+		_message("ERROR: Could not select preview: " + str(staged.get("error", "unknown")))
+		return
 	EditorInterface.play_custom_scene(PILOT)
-	_message("Opened MAP-QA-03 Hall Pilot using its ORIGINAL QA JSON (draft is not auto-promoted)")
+	_message("Playing %s: %s · DRAFT_ONLY · %d provisional edges. Only saved files are loaded." % [kind, preview.source_path, preview.provisional_routes.size()])

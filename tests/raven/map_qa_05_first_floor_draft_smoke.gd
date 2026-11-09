@@ -1,6 +1,7 @@
 extends SceneTree
 ## MAP-QA-05: independent geometry contract smoke; no production map writes.
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
+const PreviewSource = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const DRAFT := "res://assets/raven/map/qa/drafts/hall_routes_draft.v1.json"
 const MANIFEST := "res://assets/raven/map/first_floor_manifest.v1.json"
 const CANONICAL := "res://data/raven/manor_greybox_graph.json"
@@ -112,6 +113,18 @@ func _run() -> void:
 	assert(points_by_id[doc["virtualHallPortal"]["doorApproachId"]]["type"] == "Door Approach")
 	assert(points_by_id[doc["virtualHallPortal"]["returnSpawnId"]]["type"] == "Return Spawn")
 
+	# MAP-EDIT-02 now plays persisted exported drafts. Disconnected islands
+	# must remain unreachable from Hall spawn, not virtual room transitions.
+	var playable = PreviewSource.new()
+	assert(playable.load_source(PreviewSource.PROJECT), playable.error_text)
+	assert(playable.data.get("qaTaskId") == "MAP-QA-05")
+	assert(playable.graph.has_anchor("QA-CORRIDOR-CENTRE"))
+	assert(playable.graph.has_anchor("QA-BEDROOM-RUG"))
+	assert(playable.graph.has_anchor("QA-KITCHEN-NORTH"))
+	assert(not playable.graph.route("QA-HALL-SPAWN", "QA-HALL-CIRCULATION-W").is_empty())
+	for distant in ["QA-CORRIDOR-WEST", "QA-BEDROOM-RUG", "QA-LIBRARY-NORTH", "QA-KITCHEN-NORTH"]:
+		assert(playable.graph.route("QA-HALL-SPAWN", distant).is_empty(), "No fictional Hall crossing to " + distant)
+	assert(playable.provisional_routes.size() == 7, "Seven original uncalibrated Hall edges remain explicitly provisional")
 	# Editor graph and actual disk serialization round trip without production write.
 	assert(Routes.compile_qa_graph(doc).ok)
 	assert(Routes.route_preview(doc, "QA-CORRIDOR-WEST", "QA-CORRIDOR-EAST").ok)
