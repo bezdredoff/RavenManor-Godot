@@ -190,8 +190,21 @@ func _draw() -> void:
 				Color("#d5ff61"), 5.0, true)
 		if freehand_invalid.is_finite():
 			var rejected := image_to_screen(freehand_invalid)
-			if freehand_raw.size() > 1:
-				draw_line(image_to_screen(freehand_raw[freehand_raw.size() - 2]), rejected, Color("#ff4141"), 4.0, true)
+			# Locate the actual offending source-stroke segment, not always
+			# the last drag segment (which may be in another corridor).
+			var nearest := INF
+			var from_pixel := Vector2.INF
+			var to_pixel := Vector2.INF
+			for i in range(1, freehand_raw.size()):
+				var closest: Vector2 = Geometry2D.get_closest_point_to_segment(
+					freehand_invalid, freehand_raw[i - 1], freehand_raw[i])
+				var distance: float = closest.distance_to(freehand_invalid)
+				if distance < nearest:
+					nearest = distance
+					from_pixel = freehand_raw[i - 1]
+					to_pixel = freehand_raw[i]
+			if from_pixel.is_finite() and to_pixel.is_finite():
+				draw_line(image_to_screen(from_pixel), image_to_screen(to_pixel), Color("#ff4141"), 4.0, true)
 			draw_circle(rejected, 11.0, Color("#ff4141"))
 			draw_arc(rejected, 14.0, 0, TAU, 24, Color.WHITE, 2.0)
 		if freehand_cursor.is_finite():
