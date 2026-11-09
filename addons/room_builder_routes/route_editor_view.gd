@@ -9,9 +9,9 @@ const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_la
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
-const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan"]
+const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones"]
 const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
-	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map"]
+	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones"]
 const ROOM_LABELS := ["Hall", "Corridor", "Bedroom", "Library / Archive", "Kitchen"]
 
 var document: Dictionary = {}
@@ -29,6 +29,16 @@ var click_route_from := true
 var connect_from := ""
 var active_room := "RM-ROOM-HALL"
 var _suppress := false
+var zone_pending_group := ""
+var zone_pending_corner := Vector2.INF
+var selected_zone_id := ""
+var selected_zone_group := ""
+var zone_ids: Array[Dictionary] = []
+var show_constraints_checkbox: CheckBox
+var constraint_feedback: Label
+var zone_list: ItemList
+var zone_delete_confirmation: ConfirmationDialog
+var inspector_scroll: ScrollContainer
 
 var canvas: Control
 var status: Label
@@ -101,23 +111,32 @@ func _make_ui() -> void:
 	outer.size_flags_vertical = SIZE_EXPAND_FILL
 	outer.size_flags_horizontal = SIZE_EXPAND_FILL
 	add_child(outer)
-	var toolbar := HFlowContainer.new()
+	# A single-row toolbar with non-wrapping labels. HFlowContainer previously
+	# squeezed _paragraph() labels to one character per line (300px high).
+	var toolbar := HBoxContainer.new()
+	toolbar.add_theme_constant_override("separation", 8)
 	outer.add_child(toolbar)
 	var title := Label.new()
 	title.text = "Navigation / Routes · DRAFT_ONLY"
 	title.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(title)
-	toolbar.add_child(_paragraph("Active tool:"))
+	var tool_caption := Label.new()
+	tool_caption.text = "Tool:"
+	toolbar.add_child(tool_caption)
 	mode_picker = OptionButton.new()
 	mode_picker.name = "ToolPicker"
+	mode_picker.custom_minimum_size = Vector2(195, 30)
 	for i in range(MODES.size()):
 		mode_picker.add_item(MODE_LABELS[i])
 		mode_picker.set_item_metadata(i, MODES[i])
 	mode_picker.item_selected.connect(func(i: int): _set_mode(str(mode_picker.get_item_metadata(i))))
 	toolbar.add_child(mode_picker)
-	toolbar.add_child(_paragraph("Editing room:"))
+	var room_caption := Label.new()
+	room_caption.text = "Room:"
+	toolbar.add_child(room_caption)
 	room_picker = OptionButton.new()
 	room_picker.name = "RoomPicker"
+	room_picker.custom_minimum_size = Vector2(160, 30)
 	for i in range(Routes.ROOM_IDS.size()):
 		room_picker.add_item(ROOM_LABELS[i])
 		room_picker.set_item_metadata(i, Routes.ROOM_IDS[i])
@@ -125,6 +144,9 @@ func _make_ui() -> void:
 	toolbar.add_child(room_picker)
 	active_tool_label = Label.new()
 	active_tool_label.name = "ActiveTool"
+	active_tool_label.clip_text = true
+	active_tool_label.custom_minimum_size.x = 140
+	active_tool_label.size_flags_horizontal = SIZE_EXPAND_FILL
 	toolbar.add_child(active_tool_label)
 	var actions := HFlowContainer.new()
 	outer.add_child(actions)
@@ -155,7 +177,7 @@ func _make_ui() -> void:
 	split.size_flags_vertical = SIZE_EXPAND_FILL
 	outer.add_child(split)
 	canvas = RouteCanvas.new()
-	canvas.custom_minimum_size = Vector2(650, 480)
+	canvas.custom_minimum_size = Vector2(400, 240)
 	canvas.size_flags_horizontal = SIZE_EXPAND_FILL
 	canvas.size_flags_vertical = SIZE_EXPAND_FILL
 	split.add_child(canvas)
@@ -165,14 +187,17 @@ func _make_ui() -> void:
 	canvas.image_pixel_chosen.connect(_on_image_clicked)
 	canvas.cell_chosen.connect(_on_cell_clicked)
 	canvas.obstacle_paint.connect(_on_paint_cell)
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.x = 355
-	scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	split.add_child(scroll)
+	inspector_scroll = ScrollContainer.new()
+	inspector_scroll.custom_minimum_size.x = 365
+	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	inspector_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	inspector_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	inspector_scroll.follow_focus = true
+	split.add_child(inspector_scroll)
 	var inspector := VBoxContainer.new()
 	inspector.custom_minimum_size.x = 340
 	inspector.add_theme_constant_override("separation", 7)
-	scroll.add_child(inspector)
+	inspector_scroll.add_child(inspector)
 	selection_label = _paragraph("Selected room: Hall · Selected waypoint: —")
 	selection_label.name = "SelectionInfo"
 	inspector.add_child(selection_label)
@@ -201,6 +226,40 @@ func _make_ui() -> void:
 	grid_section.add_child(_button("Apply grid settings", _apply_grid))
 	cell_inspection = _paragraph("Selected cell: —")
 	grid_section.add_child(cell_inspection)
+	# Grid controls must be near the top of the scrollable inspector, not
+	# hidden below the entire route and obstacle editor.
+	inspector.add_child(_heading("GRID SETTINGS · image pixels"))
+	inspector.add_child(grid_section)
+	inspector.add_child(HSeparator.new())
+	inspector.add_child(_heading("WALKABLE / NO-GO ZONES · DRAFT_ONLY"))
+	show_constraints_checkbox = CheckBox.new()
+	show_constraints_checkbox.name = "ShowConstraints"
+	show_constraints_checkbox.text = "Show walkable (green) / no-go (red) / excluded (dark)"
+	show_constraints_checkbox.button_pressed = true
+	show_constraints_checkbox.toggled.connect(func(checked: bool): canvas.set_show_constraints(checked))
+	inspector.add_child(show_constraints_checkbox)
+	constraint_feedback = _paragraph("Click the map to inspect a cell restriction.")
+	constraint_feedback.name = "ConstraintFeedback"
+	inspector.add_child(constraint_feedback)
+	inspector.add_child(_paragraph("Dark: outside all WALKABLE polygons. Red: NO-GO polygons. Orange: blocked cells. Green outline: walkable. These are distinct; unblocking a cell cannot override a polygon."))
+	zone_list = ItemList.new()
+	zone_list.name = "ZoneList"
+	zone_list.custom_minimum_size.y = 108
+	zone_list.item_selected.connect(_on_zone_selected)
+	inspector.add_child(zone_list)
+	var zone_actions := HFlowContainer.new()
+	inspector.add_child(zone_actions)
+	zone_actions.add_child(_button("+ WALKABLE rectangle", _begin_walkable_zone))
+	zone_actions.add_child(_button("+ NO-GO rectangle", _begin_nogo_zone))
+	zone_actions.add_child(_button("Cancel zone drawing", _cancel_zone))
+	zone_actions.add_child(_button("Remove selected draft zone…", _request_delete_zone))
+	inspector.add_child(_paragraph("To expand walkable floor: click + WALKABLE rectangle, then two opposite corners on the map. To adjust an existing polygon, select it, remove with confirmation, then redraw. Undo works. Changes affect QA drafts only."))
+	zone_delete_confirmation = ConfirmationDialog.new()
+	zone_delete_confirmation.title = "Remove DRAFT_ONLY navigation polygon?"
+	zone_delete_confirmation.dialog_text = "This removes the selected polygon from the editable QA draft only. Existing route/waypoint constraints will be validated. The original source and production map stay unchanged."
+	zone_delete_confirmation.confirmed.connect(_delete_selected_zone)
+	add_child(zone_delete_confirmation)
+	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("WAYPOINTS · stable IDs"))
 	waypoint_list = ItemList.new()
 	waypoint_list.custom_minimum_size.y = 155
@@ -269,9 +328,7 @@ func _make_ui() -> void:
 	inspector.add_child(_button("Test Route: selected from → to", _test_route))
 	inspector.add_child(_button("Clear route preview", _clear_preview))
 	inspector.add_child(_paragraph("Test Route shows the in-editor path. Play integrated first floor reads the SAVED user / project draft, never unsaved changes. Real doors are still unresolved: transitions are TEST_ONLY."))
-	inspector.add_child(HSeparator.new())
-	inspector.add_child(_heading("ADVANCED · grid / image pixels"))
-	inspector.add_child(grid_section)
+	# No advanced grid controls at the bottom: see GRID SETTINGS above.
 
 
 func _button(caption: String, callback: Callable) -> Button:
@@ -312,8 +369,10 @@ func _spin(parent: BoxContainer, caption: String, low: float, high: float, initi
 
 func _message(text: String) -> void:
 	status.text = text
-	if text.begins_with("ERROR:"):
-		push_warning(text)
+	status.add_theme_color_override("font_color",
+		Color("#ff8585") if text.begins_with("ERROR:") else Color("#d7e2ee"))
+	# User-action validation is expected feedback. Do not flood Godot's Output
+	# dock with repeated push_warning() on every invalid click.
 
 
 func _set_mode(mode: String) -> void:
