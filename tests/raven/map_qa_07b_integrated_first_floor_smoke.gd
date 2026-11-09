@@ -61,8 +61,9 @@ func _run() -> void:
 	assert(not Routes.validate(invalid).get("ok", false))
 	invalid = source["document"].duplicate(true)
 	invalid["waypoints"][9].erase("roomId")
-	var invalid_path := Routes.save_draft(EDIT_PATH, invalid)
-	assert(not invalid_path.get("ok", false), "Cannot save invalid schema")
+	assert(Routes.save_draft(EDIT_PATH, invalid).get("ok", false))
+	assert(not Adapter.load_source(Preview.USER, EDIT_PATH).get("ok", false),
+		"Integrated adapter must reject legacy editor points without room ownership")
 	# One-way authored edge remains one-way (no hidden automatic reverse).
 	invalid = source["document"].duplicate(true)
 	for r in invalid["routes"]:
