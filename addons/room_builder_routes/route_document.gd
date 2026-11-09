@@ -251,7 +251,7 @@ static func restriction_at(point: Vector2, doc: Dictionary) -> Dictionary:
 # Changes stay on a versioned DRAFT_ONLY copy; the compiler/adapter validate
 # every existing waypoint and route after each edit. No runtime override.
 static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, b: Vector2) -> Dictionary:
-	if group not in ["walkablePolygons", "noGoPolygons"]:
+	if not ["walkablePolygons", "noGoPolygons"].has(group):
 		return _bad("Choose WALKABLE or NO-GO polygon for draft editing")
 	if not _inside_art(a, original) or not _inside_art(b, original):
 		return _bad("Zone corner outside approved image")
@@ -282,7 +282,7 @@ static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, 
 
 
 static func delete_zone(original: Dictionary, group: String, id: String) -> Dictionary:
-	if group not in ["walkablePolygons", "noGoPolygons"]:
+	if not ["walkablePolygons", "noGoPolygons"].has(group):
 		return _bad("Unsupported zone collection")
 	var doc: Dictionary = original.duplicate(true)
 	for i in range(doc[group].size()):
@@ -463,8 +463,9 @@ static func validate(doc: Dictionary) -> Dictionary:
 		if wp.has("roomId") and not ROOM_IDS.has(wp["roomId"]):
 			return _bad("Waypoint " + id + " has invalid roomId; choose one of five QA rooms")
 		var point := _vector(wp.get("pointPx", []))
-		if not _inside_art(point, doc) or _is_restricted(point, doc):
-			return _bad("Waypoint " + id + " lies outside walkable area or within an obstacle")
+		var constraint: Dictionary = restriction_at(point, doc)
+		if constraint.get("kind") != "allowed":
+			return _bad("Waypoint " + id + " at " + str(point.round()) + ": " + str(constraint["reason"]))
 	var route_ids := {}
 	for route in doc["routes"]:
 		if not route is Dictionary:
