@@ -13,6 +13,9 @@ var document: Dictionary = {}
 var image: Texture2D
 var mode := "Waypoints"
 var active_room := "RM-ROOM-HALL"
+var show_constraints := true
+var selected_zone := ""
+var zone_corner := Vector2.INF
 var selected_waypoint := ""
 var selected_route := ""
 var selected_cell := ""
@@ -59,6 +62,21 @@ func set_active_room(room_id: String) -> void:
 	queue_redraw()
 
 
+func set_show_constraints(enabled: bool) -> void:
+	show_constraints = enabled
+	queue_redraw()
+
+
+func set_selected_zone(id: String) -> void:
+	selected_zone = id
+	queue_redraw()
+
+
+func set_zone_corner(point: Vector2) -> void:
+	zone_corner = point
+	queue_redraw()
+
+
 func show_preview(points: PackedVector2Array) -> void:
 	preview_points = points
 	queue_redraw()
@@ -85,19 +103,27 @@ func _draw() -> void:
 	if document.is_empty() or image == null:
 		return
 	draw_texture_rect(image, Rect2(image_origin, image.get_size() * zoom), false)
-	for polygon in document.get("walkablePolygons", []):
-		_draw_region(polygon, Color(0.15, 0.90, 0.40, 0.13))
-	for polygon in document.get("noGoPolygons", []):
-		_draw_region(polygon, Color(0.95, 0.17, 0.20, 0.26))
+	if show_constraints:
+		# Cell-centre preview of rejected space; polygon outlines below remain
+		# exact image-pixel geometry. This explains blank-looking forbidden floor.
+		_draw_outside_walkable_cells()
+		for polygon in document.get("walkablePolygons", []):
+			_draw_region(polygon, Color(0.12, 0.88, 0.32, 0.11), Color("#62ff90"))
+		for polygon in document.get("noGoPolygons", []):
+			_draw_region(polygon, Color(0.94, 0.08, 0.11, 0.40), Color("#ff676e"))
 	_draw_grid()
 	var g: Dictionary = document["grid"]
-	for cell in document.get("blockedCells", []):
-		var centre := Routes.cell_to_pixel(str(cell), document)
-		if not centre.is_finite():
-			continue
-		var w := float(g["cellWidth"]) * zoom
-		var h := float(g["cellHeight"]) * zoom
-		draw_rect(Rect2(image_to_screen(centre) - Vector2(w, h) * 0.5, Vector2(w, h)), Color(0.98, 0.28, 0.10, 0.55))
+	if show_constraints:
+		for cell in document.get("blockedCells", []):
+			var centre := Routes.cell_to_pixel(str(cell), document)
+			if not centre.is_finite():
+				continue
+			var w := float(g["cellWidth"]) * zoom
+			var h := float(g["cellHeight"]) * zoom
+			draw_rect(Rect2(image_to_screen(centre) - Vector2(w, h) * 0.5, Vector2(w, h)), Color(0.98, 0.40, 0.10, 0.68))
+	if zone_corner.is_finite():
+		draw_circle(image_to_screen(zone_corner), 8.0, Color("#f5ff00"))
+		_draw_label(image_to_screen(zone_corner) + Vector2(10, -10), "1st corner", Color.WHITE)
 	# Draw the selected route LAST with a high-contrast outline so it can
 	# be found even on top of the detailed first-floor artwork.
 	for selected_pass in [false, true]:
@@ -148,12 +174,48 @@ func _draw() -> void:
 			draw_rect(Rect2(image_to_screen(centre) - Vector2(w, h) * 0.5, Vector2(w, h)), Color("#fff89a"), false, 2.5)
 
 
-func _draw_region(region: Dictionary, color: Color) -> void:
+func _draw_region(region: Dictionary, color: Color, border_color: Color) -> void:
 	var points := PackedVector2Array()
 	for pair in region.get("pointsPx", []):
 		points.append(image_to_screen(Routes._vector(pair)))
-	if points.size() >= 3:
-		draw_colored_polygon(points, color)
+	if points.size() < 3:
+		return
+	draw_colored_polygon(points, color)
+	var outline := points.duplicate()
+	outline.append(points[0])
+	var highlighted: bool = str(region.get("id", "")) == selected_zone
+	draw_polyline(outline, Color("#ffff76") if highlighted else border_color,
+		4.0 if highlighted else 2.0, true)
+	# Small labels are deliberate: exact IDs are available in the zone inspector.
+	var centroid := Vector2.ZERO
+	for point in points:
+		centroid += point
+	centroid /= float(points.size())
+	if highlighted or zoom >= 0.65:
+		_draw_label(centroid, str(region.get("id", "zone")), Color("#fffef5"))
+
+
+func _draw_outside_walkable_cells() -> void:
+	if document.get("walkablePolygons", []).is_empty():
+		return
+	var g: Dictionary = document["grid"]
+	var w := float(g["cellWidth"])
+	var h := float(g["cellHeight"])
+	var origin := Routes._vector(g["origin"])
+	var first_col := maxi(0, floori(-origin.x / w))
+	var first_row := maxi(0, floori(-origin.y / h))
+	var last_col := mini(2000, ceili((image.get_width() - origin.x) / w))
+	var last_row := mini(2000, ceili((image.get_height() - origin.y) / h))
+	for row in range(first_row, last_row):
+		for col in range(first_col, last_col):
+			var cell_start := origin + Vector2(col * w, row * h)
+			var centre := cell_start + Vector2(w, h) * 0.5
+			if not Routes._inside_art(centre, document):
+				continue
+			var diagnosis: Dictionary = Routes.restriction_at(centre, document)
+			if diagnosis.get("kind") == "outside-walkable":
+				draw_rect(Rect2(image_to_screen(cell_start), Vector2(w, h) * zoom),
+					Color(0.08, 0.10, 0.18, 0.48))
 
 
 func _draw_grid() -> void:
