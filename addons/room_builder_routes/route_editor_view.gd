@@ -1018,7 +1018,11 @@ func _redraw_selected_freehand() -> void:
 
 
 func _on_freehand_started() -> void:
-	_discard_freehand(false)
+	# Canvas has already captured the press: do not cancel its active drag.
+	freehand_proposal = {}
+	freehand_baseline = ""
+	freehand_apply_button.disabled = true
+	freehand_hint.text = "Drawing… release to validate the route."
 	_message("Drawing freehand stroke · release to validate; draft unchanged")
 
 
