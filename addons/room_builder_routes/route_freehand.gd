@@ -60,8 +60,9 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 	for i in range(1, filtered.size()):
 		var segment_error: String = Routes._check_segment(filtered[i - 1], filtered[i], doc)
 		if not segment_error.is_empty():
+			var blocked_at: Vector2 = _first_bad_pixel(doc, room_id, filtered[i - 1], filtered[i])
 			return _fail(doc, raw, cells, "Drawn stroke crosses an obstacle near " +
-				str(filtered[i - 1].lerp(filtered[i], 0.5).round()) + ": " + segment_error, filtered[i])
+				str(blocked_at.round()) + ": " + segment_error, blocked_at)
 		# Exact 2px sampling (same granularity as RouteDocument geometry).
 		# Ownership is distinct from global walkability: traversing the next
 		# room is not allowed merely because its floor is also green.
@@ -104,7 +105,8 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 		if i > 0:
 			var error: String = Routes._check_segment(centers[i - 1], point, doc)
 			if not error.is_empty():
-				return _fail(doc, raw, cells, "Invalid grid step " + str(cells[i - 1]) + " → " + str(cells[i]) + ": " + error, point)
+				var blocked_at: Vector2 = _first_bad_pixel(doc, room_id, centers[i - 1], point)
+				return _fail(doc, raw, cells, "Invalid grid step " + str(cells[i - 1]) + " → " + str(cells[i]) + ": " + error, blocked_at)
 			var samples := maxi(1, ceili(centers[i - 1].distance_to(point) / 2.0))
 			for j in range(samples + 1):
 				var between: Vector2 = centers[i - 1].lerp(point, float(j) / samples)
@@ -132,6 +134,22 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 # The v1 QA polygon list already carries roomId on the five imported
 # walkable regions. Optional user-authored zones are tagged by the editor.
 # Untagged polygons cannot silently grant cross-room authoring permission.
+static func _first_bad_pixel(doc: Dictionary, room_id: String, a: Vector2, b: Vector2) -> Vector2:
+	var count := maxi(1, ceili(a.distance_to(b) / 2.0))
+	for i in range(count + 1):
+		var sample: Vector2 = a.lerp(b, float(i) / count)
+		if Routes.restriction_at(sample, doc)["kind"] != "allowed" or not _room_error(doc, room_id, sample).is_empty():
+			return sample
+	for zone in doc.get("noGoPolygons", []):
+		var polygon: PackedVector2Array = Routes._polygon_points(zone)
+		for i in range(polygon.size()):
+			var crossing: Variant = Geometry2D.segment_intersects_segment(a, b,
+				polygon[i], polygon[(i + 1) % polygon.size()])
+			if crossing != null:
+				return crossing
+	return a.lerp(b, 0.5)
+
+
 static func _room_error(doc: Dictionary, room_id: String, point: Vector2) -> String:
 	var own := false
 	var other := ""
