@@ -299,6 +299,80 @@ static func delete_zone(original: Dictionary, group: String, id: String) -> Dict
 	return _bad("Unknown " + group + " zone " + id)
 
 
+# MAP-EDIT-04A: all original and user-created QA polygons have exactly the
+# same draft edit authority. Preserve stable id/roomId/provenance metadata.
+# Fail closed rather than auto-moving waypoints, removing obstacles, or
+# modifying the immutable source pilot / canonical first-floor manifest.
+static func set_zone_polygon(original: Dictionary, group: String, id: String,
+		points: PackedVector2Array) -> Dictionary:
+	if not ["noGoPolygons", "walkablePolygons"].has(group):
+		return _bad("Select a NO-GO or WALKABLE polygon")
+	if points.size() < 3 or points.size() > 64:
+		return _bad("A polygon needs 3–64 corners")
+	var area := 0.0
+	var seen := {}
+	for i in range(points.size()):
+		var a: Vector2 = points[i]
+		var b: Vector2 = points[(i + 1) % points.size()]
+		if not _inside_art(a, original):
+			return _bad("Corner %d is outside the approved image" % (i + 1))
+		var key := str(pixel_pair(a))
+		if seen.has(key) or a.distance_to(b) < 1.0:
+			return _bad("Coincident or excessively close polygon corners")
+		seen[key] = true
+		area += a.cross(b)
+	if absf(area) < 16.0:
+		return _bad("Polygon has too little area or collapsed corners")
+	# Prevent bow-tie/self-intersecting polygons that Godot cannot
+	# reliably evaluate as obstacle or walkable regions.
+	for i in range(points.size()):
+		for j in range(i + 1, points.size()):
+			if j == i + 1 or (i == 0 and j == points.size() - 1):
+				continue
+			if Geometry2D.segment_intersects_segment(
+				points[i], points[(i + 1) % points.size()],
+				points[j], points[(j + 1) % points.size()]) != null:
+				return _bad("Polygon edges cross; move or remove a corner")
+	var doc: Dictionary = original.duplicate(true)
+	for zone in doc[group]:
+		if str(zone.get("id", "")) == id:
+			var pairs: Array = []
+			for point in points:
+				pairs.append(pixel_pair(point))
+			zone["pointsPx"] = pairs
+			var result: Dictionary = _finish_edit(doc)
+			if result.get("ok", false):
+				result["id"] = id
+			return result
+	return _bad("Unknown " + group + " zone " + id)
+
+
+static func insert_zone_corner(original: Dictionary, group: String, id: String,
+		edge_index: int, at: Vector2) -> Dictionary:
+	for zone in original.get(group, []):
+		if str(zone.get("id", "")) != id:
+			continue
+		var points: PackedVector2Array = _polygon_points(zone)
+		if edge_index < 0 or edge_index >= points.size():
+			return _bad("Select an existing polygon edge")
+		points.insert(edge_index + 1, at)
+		return set_zone_polygon(original, group, id, points)
+	return _bad("Unknown selected zone " + id)
+
+
+static func remove_zone_corner(original: Dictionary, group: String, id: String,
+		index: int) -> Dictionary:
+	for zone in original.get(group, []):
+		if str(zone.get("id", "")) != id:
+			continue
+		var points: PackedVector2Array = _polygon_points(zone)
+		if points.size() <= 3 or index < 0 or index >= points.size():
+			return _bad("Choose a corner; at least three must remain")
+		points.remove_at(index)
+		return set_zone_polygon(original, group, id, points)
+	return _bad("Unknown selected zone " + id)
+
+
 static func _crosses_polygon(a: Vector2, b: Vector2, region: Dictionary) -> bool:
 	var polygon := _polygon_points(region)
 	for i in range(polygon.size()):
