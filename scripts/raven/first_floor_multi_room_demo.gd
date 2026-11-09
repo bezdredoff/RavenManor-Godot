@@ -59,7 +59,7 @@ func _pause() -> void:
 func _status(message: String) -> void:
 	if not is_instance_valid(status_label):
 		return
-	var room := host.active_room_id
+	var room: String = str(host.active_room_id)
 	status_label.text = "%s\nRoom %s · anchor %s · feet %s" % [
 		message, room, host.controller.confirmed_anchor(), str(host.actor.position.round())]
 	heading_label.text = "MAP-QA-07A · %s · TEST ONLY" % room
