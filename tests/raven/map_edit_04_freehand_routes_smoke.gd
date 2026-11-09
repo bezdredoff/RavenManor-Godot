@@ -193,6 +193,9 @@ func _run() -> void:
 	assert(not view.freehand_proposal.get("ok", false) and view.freehand_apply_button.disabled)
 	view._discard_freehand()
 	assert(JSON.stringify(view.document) == committed_json)
+	# Undo removed the new selection; Redo restores document history, not UI
+	# selection state. Explicitly reselect the route as the owner would do.
+	view._on_canvas_route(new_id)
 	view._redraw_selected_freehand()
 	assert(view.current_mode == "Freehand" and view.selected_route == new_id)
 	view._on_freehand_finished(PackedVector2Array([A, Vector2(240, 112), B]))
