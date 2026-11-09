@@ -12,6 +12,11 @@ signal freehand_started()
 signal freehand_changed(stroke: PackedVector2Array)
 signal freehand_finished(stroke: PackedVector2Array)
 signal freehand_cancelled()
+signal zone_chosen(group: String, id: String)
+signal zone_vertex_chosen(index: int)
+signal zone_drag_changed(points: PackedVector2Array)
+signal zone_drag_finished(points: PackedVector2Array)
+signal zone_insert_requested(edge_index: int, point: Vector2)
 
 var document: Dictionary = {}
 var image: Texture2D
@@ -19,6 +24,17 @@ var mode := "Waypoints"
 var active_room := "RM-ROOM-HALL"
 var show_constraints := true
 var selected_zone := ""
+var selected_zone_group := ""
+var selected_zone_vertex := -1
+var zone_creating := false
+var zone_inserting := false
+var zone_edit_preview := PackedVector2Array()
+var zone_edit_valid := true
+var _zone_dragging := false
+var _zone_drag_vertex := -1
+var _zone_drag_base := PackedVector2Array()
+var _zone_drag_start := Vector2.INF
+var _zone_drag_moved := false
 var zone_corner := Vector2.INF
 var selected_waypoint := ""
 var selected_route := ""
@@ -64,6 +80,8 @@ func set_mode(value: String) -> void:
 	mode = value
 	_drag_point = ""
 	_painting = false
+	_zone_dragging = false
+	zone_inserting = false
 	queue_redraw()
 
 
@@ -94,9 +112,53 @@ func set_show_constraints(enabled: bool) -> void:
 	queue_redraw()
 
 
-func set_selected_zone(id: String) -> void:
+func set_selected_zone(id: String, group: String = "") -> void:
+	if id != selected_zone or group != selected_zone_group:
+		zone_edit_preview = PackedVector2Array()
+		selected_zone_vertex = -1
+		zone_inserting = false
 	selected_zone = id
+	selected_zone_group = group
+	_zone_dragging = false
 	queue_redraw()
+
+
+func set_zone_drawing(active: bool) -> void:
+	zone_creating = active
+	if active:
+		zone_inserting = false
+		_zone_dragging = false
+	queue_redraw()
+
+
+func start_zone_insert() -> void:
+	zone_inserting = true
+	_zone_dragging = false
+	queue_redraw()
+
+
+func clear_zone_edit_preview() -> void:
+	zone_edit_preview = PackedVector2Array()
+	zone_edit_valid = true
+	zone_inserting = false
+	_zone_dragging = false
+	queue_redraw()
+
+
+func set_zone_edit_preview(points: PackedVector2Array, valid: bool) -> void:
+	zone_edit_preview = points.duplicate()
+	zone_edit_valid = valid
+	queue_redraw()
+
+
+func selected_zone_points() -> PackedVector2Array:
+	for group in ["noGoPolygons", "walkablePolygons"]:
+		if not selected_zone_group.is_empty() and group != selected_zone_group:
+			continue
+		for region in document.get(group, []):
+			if str(region.get("id", "")) == selected_zone:
+				return Routes._polygon_points(region)
+	return PackedVector2Array()
 
 
 func set_zone_corner(point: Vector2) -> void:
@@ -130,7 +192,7 @@ func _draw() -> void:
 	if document.is_empty() or image == null:
 		return
 	draw_texture_rect(image, Rect2(image_origin, image.get_size() * zoom), false)
-	if show_constraints:
+	if show_constraints or mode == "Zones":
 		# Cell-centre preview of rejected space; polygon outlines below remain
 		# exact image-pixel geometry. This explains blank-looking forbidden floor.
 		_draw_outside_walkable_cells()
@@ -140,7 +202,7 @@ func _draw() -> void:
 			_draw_region(polygon, Color(0.94, 0.08, 0.11, 0.40), Color("#ff676e"))
 	_draw_grid()
 	var g: Dictionary = document["grid"]
-	if show_constraints:
+	if show_constraints or mode == "Zones":
 		for cell in document.get("blockedCells", []):
 			var centre := Routes.cell_to_pixel(str(cell), document)
 			if not centre.is_finite():
@@ -234,17 +296,31 @@ func _draw() -> void:
 
 
 func _draw_region(region: Dictionary, color: Color, border_color: Color) -> void:
+	var raw: PackedVector2Array = Routes._polygon_points(region)
+	var highlighted: bool = str(region.get("id", "")) == selected_zone
+	if highlighted and not zone_edit_preview.is_empty():
+		raw = zone_edit_preview
 	var points := PackedVector2Array()
-	for pair in region.get("pointsPx", []):
-		points.append(image_to_screen(Routes._vector(pair)))
+	for p in raw:
+		points.append(image_to_screen(p))
 	if points.size() < 3:
 		return
 	draw_colored_polygon(points, color)
 	var outline := points.duplicate()
 	outline.append(points[0])
-	var highlighted: bool = str(region.get("id", "")) == selected_zone
-	draw_polyline(outline, Color("#ffff76") if highlighted else border_color,
-		4.0 if highlighted else 2.0, true)
+	var outline_color := border_color
+	if highlighted:
+		outline_color = Color("#ffe66b") if zone_edit_valid else Color("#ff334d")
+	draw_polyline(outline, outline_color, 4.0 if highlighted else 2.0, true)
+	if highlighted and mode == "Zones":
+		for i in range(points.size()):
+			var fill := Color("#ffffff")
+			if i == selected_zone_vertex:
+				fill = Color("#ffc04d")
+			if not zone_edit_valid:
+				fill = Color("#ff4f5f")
+			draw_circle(points[i], 7.0, Color("#171e29"))
+			draw_circle(points[i], 5.0, fill)
 	# Small labels are deliberate: exact IDs are available in the zone inspector.
 	var centroid := Vector2.ZERO
 	for point in points:
@@ -365,8 +441,116 @@ func pick_route(pixel: Vector2) -> String:
 	return best
 
 
+# Native polygon hit-testing includes ALL source-provided QA regions. Select
+# by polygon edge or interior, preferring NO-GO over the surrounding WALKABLE.
+# Clicked points are always source-image pixels, regardless of zoom/pan.
+func pick_zone(pixel: Vector2) -> Dictionary:
+	var nearest: Dictionary = {}
+	var best := 11.0 / zoom
+	for group in ["noGoPolygons", "walkablePolygons"]:
+		for region in document.get(group, []):
+			var points: PackedVector2Array = Routes._polygon_points(region)
+			for i in range(points.size()):
+				var edge: Vector2 = Geometry2D.get_closest_point_to_segment(
+					pixel, points[i], points[(i + 1) % points.size()])
+				var distance: float = pixel.distance_to(edge)
+				if distance < best:
+					best = distance
+					nearest = {"group": group, "id": str(region.get("id", ""))}
+	if not nearest.is_empty():
+		return nearest
+	for group in ["noGoPolygons", "walkablePolygons"]:
+		for region in document.get(group, []):
+			if Geometry2D.is_point_in_polygon(pixel, Routes._polygon_points(region)):
+				return {"group": group, "id": str(region.get("id", ""))}
+	return {}
+
+
+func _zone_vertex_at(pixel: Vector2, points: PackedVector2Array) -> int:
+	for i in range(points.size()):
+		if pixel.distance_to(points[i]) <= 12.0 / zoom:
+			return i
+	return -1
+
+
+func _zone_edge_at(pixel: Vector2, points: PackedVector2Array) -> int:
+	var index := -1
+	var best := 13.0 / zoom
+	for i in range(points.size()):
+		var closest := Geometry2D.get_closest_point_to_segment(
+			pixel, points[i], points[(i + 1) % points.size()])
+		var distance := pixel.distance_to(closest)
+		if distance < best:
+			index = i
+			best = distance
+	return index
+
+
+func _zone_mouse_press(pixel: Vector2) -> void:
+	var points: PackedVector2Array = selected_zone_points()
+	if zone_inserting:
+		var edge_index := _zone_edge_at(pixel, points)
+		if edge_index >= 0:
+			zone_insert_requested.emit(edge_index, pixel)
+		zone_inserting = false
+		queue_redraw()
+		return
+	var handle := _zone_vertex_at(pixel, points)
+	if handle >= 0:
+		selected_zone_vertex = handle
+		zone_vertex_chosen.emit(handle)
+		_zone_drag_vertex = handle
+	elif points.size() >= 3 and Geometry2D.is_point_in_polygon(pixel, points):
+		_zone_drag_vertex = -1
+	else:
+		var hit: Dictionary = pick_zone(pixel)
+		if not hit.is_empty():
+			zone_chosen.emit(str(hit["group"]), str(hit["id"]))
+		else:
+			zone_chosen.emit("", "")
+		return
+	_zone_dragging = true
+	_zone_drag_moved = false
+	_zone_drag_start = pixel
+	_zone_drag_base = points
+	grab_focus()
+
+
+func _zone_drag_motion(pixel: Vector2) -> void:
+	if not _zone_dragging:
+		return
+	var delta: Vector2 = pixel - _zone_drag_start
+	if delta.length() < 0.5 and not _zone_drag_moved:
+		return
+	_zone_drag_moved = true
+	var points: PackedVector2Array = _zone_drag_base.duplicate()
+	if _zone_drag_vertex >= 0:
+		points[_zone_drag_vertex] += delta
+	else:
+		for i in range(points.size()):
+			points[i] += delta
+	zone_edit_preview = points
+	zone_drag_changed.emit(points)
+	queue_redraw()
+
+
+func _zone_mouse_release(pixel: Vector2) -> void:
+	if not _zone_dragging:
+		return
+	_zone_drag_motion(pixel)
+	_zone_dragging = false
+	if _zone_drag_moved:
+		zone_drag_finished.emit(zone_edit_preview.duplicate())
+
+
 func _gui_input(event: InputEvent) -> void:
 	if document.is_empty() or image == null:
+		return
+	if mode == "Zones" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		_zone_dragging = false
+		zone_inserting = false
+		clear_zone_edit_preview()
+		accept_event()
 		return
 	if mode == "Freehand" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		cancel_freehand()
@@ -388,6 +572,13 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 			return
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			if mode == "Zones" and not zone_creating:
+				if event.pressed:
+					_zone_mouse_press(screen_to_image(event.position))
+				else:
+					_zone_mouse_release(screen_to_image(event.position))
+				accept_event()
+				return
 			if mode == "Freehand":
 				if event.pressed:
 					_freehand_active = true
@@ -450,6 +641,10 @@ func _gui_input(event: InputEvent) -> void:
 				queue_redraw()
 			accept_event()
 	elif event is InputEventMouseMotion:
+		if mode == "Zones" and _zone_dragging:
+			_zone_drag_motion(screen_to_image(event.position))
+			accept_event()
+			return
 		if mode == "Freehand":
 			freehand_cursor = screen_to_image(event.position)
 			if _freehand_active and freehand_raw.size() < 20000:
