@@ -4,6 +4,7 @@ extends Control
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 signal waypoint_chosen(id: String)
 signal waypoint_dropped(id: String, point: Vector2)
+signal route_chosen(id: String)
 signal image_pixel_chosen(point: Vector2)
 signal cell_chosen(cell: String)
 signal obstacle_paint(cell: String, blocked: bool)
@@ -11,6 +12,7 @@ signal obstacle_paint(cell: String, blocked: bool)
 var document: Dictionary = {}
 var image: Texture2D
 var mode := "Waypoints"
+var active_room := "RM-ROOM-HALL"
 var selected_waypoint := ""
 var selected_route := ""
 var selected_cell := ""
@@ -47,6 +49,13 @@ func set_image(texture: Texture2D) -> void:
 
 func set_mode(value: String) -> void:
 	mode = value
+	_drag_point = ""
+	_painting = false
+	queue_redraw()
+
+
+func set_active_room(room_id: String) -> void:
+	active_room = room_id
 	queue_redraw()
 
 
@@ -89,21 +98,34 @@ func _draw() -> void:
 		var w := float(g["cellWidth"]) * zoom
 		var h := float(g["cellHeight"]) * zoom
 		draw_rect(Rect2(image_to_screen(centre) - Vector2(w, h) * 0.5, Vector2(w, h)), Color(0.98, 0.28, 0.10, 0.55))
-	for route in document.get("routes", []):
-		var points := Routes.route_points(route, document)
-		if points.size() < 2:
-			continue
-		var selected: bool = route["id"] == selected_route
-		var color := Color("#fff18a") if selected else (Color("#e8a85a") if route["provisional"] else Color("#62d9f5"))
-		var stroke := 3.5 if selected else 2.0
-		for i in range(1, points.size()):
-			# Provisional edges are visually distinct: no invented cell-by-cell detail.
-			if route["provisional"]:
-				_dashed(points[i - 1], points[i], color, stroke)
-			else:
-				draw_line(image_to_screen(points[i - 1]), image_to_screen(points[i]), color, stroke, true)
-		if not bool(route["bidirectional"]):
-			_draw_arrow(points[points.size() - 2], points[points.size() - 1], color)
+	# Draw the selected route LAST with a high-contrast outline so it can
+	# be found even on top of the detailed first-floor artwork.
+	for selected_pass in [false, true]:
+		for route in document.get("routes", []):
+			var chosen: bool = str(route["id"]) == selected_route
+			if chosen != selected_pass:
+				continue
+			var points: PackedVector2Array = Routes.route_points(route, document)
+			if points.size() < 2:
+				continue
+			var source_room: String = Routes.room_for_id(document, str(route["from"]))
+			var in_room: bool = source_room == active_room
+			var color := Color("#ffe04e") if chosen else (Color("#e6a85c") if route["provisional"] else Color("#62d9f5"))
+			if not in_room:
+				color.a = 0.15
+			var width := 5.0 if chosen else (2.5 if in_room else 1.5)
+			for i in range(1, points.size()):
+				if chosen:
+					draw_line(image_to_screen(points[i - 1]), image_to_screen(points[i]), Color(0.07, 0.06, 0.12, 0.95), 9.0, true)
+				if route["provisional"] and not chosen:
+					_dashed(points[i - 1], points[i], color, width)
+				else:
+					draw_line(image_to_screen(points[i - 1]), image_to_screen(points[i]), color, width, true)
+			if not bool(route["bidirectional"]):
+				_draw_arrow(points[points.size() - 2], points[points.size() - 1], color)
+			if chosen:
+				draw_circle(image_to_screen(points[0]), 9.0, Color("#5bffb5"))
+				draw_circle(image_to_screen(points[points.size() - 1]), 9.0, Color("#ff9a6a"))
 	if preview_points.size() > 1:
 		for i in range(1, preview_points.size()):
 			draw_line(image_to_screen(preview_points[i - 1]), image_to_screen(preview_points[i]), Color("#bfff5b"), 5.0, true)
@@ -112,9 +134,12 @@ func _draw() -> void:
 		var pixel := _drag_preview if id == _drag_point else Routes._vector(wp["pointPx"])
 		var centre := image_to_screen(pixel)
 		var selected := id == selected_waypoint
-		draw_circle(centre, 9.0 if selected else 6.0, Color("#ffe78a") if selected else Color("#f1f1f6"))
+		var in_room := Routes.waypoint_room(wp) == active_room
+		var tint := Color("#ffe78a") if selected else (Color("#f1f1f6") if in_room else Color(0.65, 0.68, 0.76, 0.3))
+		draw_circle(centre, 9.0 if selected else 6.0, tint)
 		draw_arc(centre, 10.0 if selected else 7.0, 0.0, TAU, 24, Color("#2a2736"), 1.5)
-		_draw_label(centre + Vector2(10, -12), str(wp["label"]), Color("#fff4d8"))
+		if in_room or selected:
+			_draw_label(centre + Vector2(10, -12), str(wp["label"]), Color("#fff4d8"))
 	if not selected_cell.is_empty():
 		var centre := Routes.cell_to_pixel(selected_cell, document)
 		if centre.is_finite():
@@ -192,10 +217,30 @@ func _pick_waypoint(pixel: Vector2) -> String:
 	var best := ""
 	var max_distance := 14.0 / zoom
 	for wp in document.get("waypoints", []):
+		if Routes.waypoint_room(wp) != active_room:
+			continue
 		var distance := pixel.distance_to(Routes._vector(wp["pointPx"]))
 		if distance < max_distance:
 			max_distance = distance
 			best = str(wp["id"])
+	return best
+
+
+# This hit-test is the stable selection boundary for a future freehand tool:
+# authoring still commits through RouteDocument.set_route_cells, never pixels.
+func pick_route(pixel: Vector2) -> String:
+	var best := ""
+	var distance_limit := 11.0 / zoom
+	for route in document.get("routes", []):
+		if Routes.room_for_id(document, str(route["from"])) != active_room:
+			continue
+		var points: PackedVector2Array = Routes.route_points(route, document)
+		for i in range(1, points.size()):
+			var projected: Vector2 = Geometry2D.get_closest_point_to_segment(pixel, points[i - 1], points[i])
+			var distance: float = pixel.distance_to(projected)
+			if distance < distance_limit:
+				distance_limit = distance
+				best = str(route["id"])
 	return best
 
 
@@ -224,15 +269,24 @@ func _gui_input(event: InputEvent) -> void:
 				var cell := Routes.pixel_to_cell(pixel, document)
 				selected_cell = cell
 				cell_chosen.emit(cell)
-				image_pixel_chosen.emit(pixel)
-				if mode == "Obstacles":
+				var hit := _pick_waypoint(pixel)
+				if mode != "Add" or hit.is_empty():
+					image_pixel_chosen.emit(pixel)
+				if mode == "Add":
+					if not hit.is_empty():
+						waypoint_chosen.emit(hit)
+				elif mode == "Obstacles":
 					_painting = true
 					_painted.clear()
 					_paint_value = not document["blockedCells"].has(cell)
 					_paint(cell)
-				elif mode in ["Waypoints", "Routes"]:
-					var hit := _pick_waypoint(pixel)
-					waypoint_chosen.emit(hit)
+				elif mode in ["Waypoints", "Connect", "Routes"]:
+					if not hit.is_empty():
+						waypoint_chosen.emit(hit)
+					elif mode == "Routes":
+						var route_id := pick_route(pixel)
+						if not route_id.is_empty():
+							route_chosen.emit(route_id)
 					if mode == "Waypoints" and not hit.is_empty():
 						_drag_point = hit
 						_did_drag = false

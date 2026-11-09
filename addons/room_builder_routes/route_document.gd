@@ -10,6 +10,22 @@ const IMAGE_BLOB_SHA := "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563"
 const DEFAULT_SAVE := "user://room_builder_routes/hall_routes_draft.v1.json"
 const PROJECT_DRAFT_DIR := "res://assets/raven/map/qa/drafts/"
 const TYPES := ["Spawn", "Waypoint", "Interaction", "Door Approach", "Return Spawn"]
+const ROOM_IDS := ["RM-ROOM-HALL", "RM-ROOM-CORRIDOR", "RM-ROOM-BEDROOM", "RM-ROOM-ARCHIVE", "RM-ROOM-KITCHEN"]
+# Only the original stable IDs may omit ownership (legacy Hall imports).
+const LEGACY_HALL_IDS := ["QA-HALL-SPAWN", "QA-HALL-CENTRE", "QA-HALL-WEST", "QA-HALL-EAST",
+	"QA-HALL-TABLE-APPROACH", "QA-HALL-PORTAL-APPROACH", "QA-HALL-RETURN-SAFE"]
+
+
+static func waypoint_room(waypoint: Dictionary) -> String:
+	if waypoint.has("roomId"):
+		return str(waypoint.get("roomId", ""))
+	return "RM-ROOM-HALL" if LEGACY_HALL_IDS.has(str(waypoint.get("id", ""))) else ""
+
+
+static func room_for_id(doc: Dictionary, id: String) -> String:
+	var item: Dictionary = _waypoint_lookup(doc).get(id, {})
+	return waypoint_room(item) if not item.is_empty() else ""
+
 
 static func import_hall(path: String = HALL_SOURCE) -> Dictionary:
 	var raw_text := FileAccess.get_file_as_string(path)
@@ -276,6 +292,12 @@ static func _check_route(route: Dictionary, doc: Dictionary) -> String:
 	var b := str(route.get("to", ""))
 	if not by_id.has(a) or not by_id.has(b) or a == b:
 		return "Route " + str(route.get("id", "")) + ": unknown or identical endpoint IDs"
+	var a_room := waypoint_room(by_id[a])
+	var b_room := waypoint_room(by_id[b])
+	if not a_room.is_empty() and not b_room.is_empty() and a_room != b_room:
+		return "Route " + str(route.get("id", "")) + ": different rooms (" + a_room + " / " + b_room + "). Use same-room points; door transitions are separate."
+	if route.has("roomId") and (not ROOM_IDS.has(route["roomId"]) or (not a_room.is_empty() and route["roomId"] != a_room) or (not b_room.is_empty() and route["roomId"] != b_room)):
+		return "Route " + str(route.get("id", "")) + ": roomId differs from its endpoints"
 	if not route.get("provisional") is bool:
 		return "Route " + str(route.get("id", "")) + ": provisional flag must be boolean"
 	if not route.get("bidirectional") is bool:
@@ -369,6 +391,8 @@ static func validate(doc: Dictionary) -> Dictionary:
 			return _bad("Waypoint " + id + " needs a display label")
 		if not TYPES.has(wp.get("type")):
 			return _bad("Waypoint " + id + " has an unknown type")
+		if wp.has("roomId") and not ROOM_IDS.has(wp["roomId"]):
+			return _bad("Waypoint " + id + " has invalid roomId; choose one of five QA rooms")
 		var point := _vector(wp.get("pointPx", []))
 		if not _inside_art(point, doc) or _is_restricted(point, doc):
 			return _bad("Waypoint " + id + " lies outside walkable area or within an obstacle")
@@ -400,17 +424,31 @@ static func move_waypoint(original: Dictionary, id: String, pixel: Vector2) -> D
 	return _bad("Unknown waypoint ID " + id)
 
 
-static func set_waypoint_info(original: Dictionary, id: String, label: String, kind: String) -> Dictionary:
+static func set_waypoint_info(original: Dictionary, id: String, label: String, kind: String, room_id: String = "") -> Dictionary:
+	if not room_id.is_empty() and not ROOM_IDS.has(room_id):
+		return _bad("Invalid room: select one of five QA rooms")
 	var doc: Dictionary = original.duplicate(true)
 	for wp in doc["waypoints"]:
 		if wp["id"] == id:
 			wp["label"] = label.strip_edges()
 			wp["type"] = kind
+			if not room_id.is_empty():
+				wp["roomId"] = room_id
 			return _finish_edit(doc)
 	return _bad("Unknown waypoint ID " + id)
 
 
-static func add_waypoint(original: Dictionary, pixel: Vector2, label: String = "New waypoint") -> Dictionary:
+static func set_waypoint_room(original: Dictionary, id: String, room_id: String) -> Dictionary:
+	if not ROOM_IDS.has(room_id):
+		return _bad("Invalid room: select one of five QA rooms")
+	var wp: Dictionary = _waypoint_lookup(original).get(id, {})
+	if wp.is_empty():
+		return _bad("Unknown waypoint ID " + id)
+	return set_waypoint_info(original, id, str(wp["label"]), str(wp["type"]), room_id)
+
+static func add_waypoint(original: Dictionary, pixel: Vector2, label: String = "New waypoint", room_id: String = "") -> Dictionary:
+	if not ROOM_IDS.has(room_id):
+		return _bad("Choose a room before adding a waypoint; no automatic Hall assignment")
 	var doc: Dictionary = original.duplicate(true)
 	var serial := int(doc.get("nextWaypointSerial", 1))
 	var known := _waypoint_lookup(doc)
@@ -419,7 +457,7 @@ static func add_waypoint(original: Dictionary, pixel: Vector2, label: String = "
 		serial += 1
 		id = "QA-USER-%03d" % serial
 	doc["nextWaypointSerial"] = serial + 1
-	doc["waypoints"].append({"id": id, "label": label, "type": "Waypoint", "pointPx": pixel_pair(pixel), "provisional": false})
+	doc["waypoints"].append({"id": id, "label": label, "type": "Waypoint", "pointPx": pixel_pair(pixel), "provisional": false, "roomId": room_id})
 	var result := _finish_edit(doc)
 	if result.ok:
 		result["id"] = id
@@ -439,6 +477,12 @@ static func delete_waypoint(original: Dictionary, id: String) -> Dictionary:
 
 
 static func add_route(original: Dictionary, from_id: String, to_id: String) -> Dictionary:
+	var from_room := room_for_id(original, from_id)
+	var to_room := room_for_id(original, to_id)
+	if from_room.is_empty() or to_room.is_empty():
+		return _bad("Both waypoints need valid room ownership; legacy Hall IDs are supported")
+	if from_room != to_room:
+		return _bad("Cannot connect different rooms: " + from_room + " → " + to_room + ". Choose points in one room; doors are TEST_ONLY transitions.")
 	var doc: Dictionary = original.duplicate(true)
 	var serial := int(doc.get("nextRouteSerial", 1))
 	var id := "QA-ROUTE-%03d" % serial
@@ -450,7 +494,7 @@ static func add_route(original: Dictionary, from_id: String, to_id: String) -> D
 		id = "QA-ROUTE-%03d" % serial
 	doc["nextRouteSerial"] = serial + 1
 	# A new edge is also provisional until the user explicitly authors cells.
-	doc["routes"].append({"id": id, "from": from_id, "to": to_id, "bidirectional": true, "cells": [], "provisional": true})
+	doc["routes"].append({"id": id, "from": from_id, "to": to_id, "bidirectional": true, "cells": [], "provisional": true, "roomId": from_room})
 	var result := _finish_edit(doc)
 	if result.ok:
 		result["id"] = id
