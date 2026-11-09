@@ -3,6 +3,7 @@ extends SceneTree
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const Freehand = preload("res://addons/room_builder_routes/route_freehand.gd")
 const View = preload("res://addons/room_builder_routes/route_editor_view.gd")
+const DemoScene = preload("res://scenes/raven/tests/first_floor_integrated_qa.tscn")
 const Adapter = preload("res://scripts/raven/first_floor_integrated_draft_adapter.gd")
 const Preview = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const ART := "res://a_detailed_top_down_isometric_game_map_illustratio.png"
@@ -215,6 +216,43 @@ func _run() -> void:
 	assert(preview.get("ok", false), str(preview.get("error", "")))
 	assert(preview["points"].size() >= 2)
 	view.queue_free()
+
+	# True playable MAP-QA-07B integration: convert an actual Hall route in
+	# the 22/19 saved first-floor QA draft, then walk Onoe over that same
+	# authored segment. No new movement controller or canonical mutation.
+	var project: Dictionary = Routes.load_draft(PROJECT)
+	assert(project.ok)
+	var actual: Dictionary = project["document"]
+	var rerouted: Dictionary = Freehand.convert(actual, HALL,
+		"QA-HALL-WEST", "QA-HALL-CIRCULATION-W",
+		PackedVector2Array([Vector2(759, 719), Vector2(784, 720)]), 2.0,
+		"QA-ROUTE-008")
+	_assert_orthogonal(rerouted)
+	assert(rerouted["routeId"] == "QA-ROUTE-008")
+	assert(Routes.save_draft(TEMP, rerouted["document"]).ok)
+	var demo = DemoScene.instantiate()
+	root.add_child(demo)
+	await process_frame
+	assert(demo.load_source(Preview.USER, TEMP))
+	assert(demo.host.ready_for_test)
+	assert(demo.walk_waypoint("QA-HALL-WEST").get("ok", false))
+	for i in range(90):
+		if not demo.host.actor.has_active_segment():
+			break
+		demo.host.actor.advance(60.0)
+	assert(demo.host.controller.confirmed_anchor() == "QA-HALL-WEST")
+	var route_arrivals: Array[String] = []
+	demo.host.actor.segment_completed.connect(func(id, _feet): route_arrivals.append(str(id)))
+	assert(demo.walk_waypoint("QA-HALL-CIRCULATION-W").get("ok", false))
+	for i in range(90):
+		if not demo.host.actor.has_active_segment():
+			break
+		demo.host.actor.advance(60.0)
+	assert(demo.host.controller.confirmed_anchor() == "QA-HALL-CIRCULATION-W")
+	assert(demo.host.actor.position == Vector2(784, 720))
+	assert(route_arrivals.has("QA-HALL-CIRCULATION-W"),
+		"Onoe must physically traverse the newly freehand-authored cell edge")
+	demo.queue_free()
 
 	assert(FileAccess.get_file_as_string(SOURCE) == source_before)
 	assert(FileAccess.get_file_as_string(PROJECT) == project_before)
