@@ -25,7 +25,7 @@ func _fixture() -> Dictionary:
 	var source: Dictionary = Routes.import_hall()
 	assert(source.get("ok", false), str(source.get("error", "")))
 	var zone: Dictionary = Routes.add_zone_rectangle(source["document"], "walkablePolygons",
-		Vector2(64, 64), Vector2(480, 320))
+		Vector2(64, 64), Vector2(480, 320), HALL)
 	assert(zone.get("ok", false), str(zone.get("error", "")))
 	var doc: Dictionary = zone["document"]
 	var ids: Array = []
@@ -114,6 +114,19 @@ func _run() -> void:
 	assert(cross_room.ok)
 	assert(not Freehand.convert(cross_room["document"], HALL, a, str(cross_room["id"]),
 		PackedVector2Array([A, Vector2(112, 208)])).ok)
+
+	var wrong_owner := Routes.add_zone_rectangle(doc, "walkablePolygons",
+		Vector2(220, 90), Vector2(252, 142), CORRIDOR)
+	assert(wrong_owner.ok)
+	var crossed_room := Freehand.convert(wrong_owner["document"], HALL, a, b,
+		PackedVector2Array([A, B]))
+	assert(not crossed_room.ok and str(crossed_room["error"]).contains("CORRIDOR"))
+	# Native-added zones have explicit room ownership; original calls with no
+	# ownership remain readable but cannot grant an implicit room shortcut.
+	var unowned := Routes.add_zone_rectangle(doc, "walkablePolygons",
+		Vector2(450, 90), Vector2(470, 140))
+	assert(unowned.ok)
+	assert(not unowned["document"]["walkablePolygons"].back().has("roomId"))
 
 	var with_nogo: Dictionary = Routes.add_zone_rectangle(doc, "noGoPolygons",
 		Vector2(220, 90), Vector2(252, 142))
