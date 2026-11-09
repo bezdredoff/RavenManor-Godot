@@ -34,7 +34,7 @@ func load_source(kind: String, path: String = "", start_room: String = HALL) -> 
 			_message("RELOAD REJECTED: moving, pending handoff or safe hold")
 			return false
 		var graph = host.current_graph()
-		var anchor := host.controller.confirmed_anchor()
+		var anchor: String = host.controller.confirmed_anchor()
 		if graph != null and str(graph.anchor(anchor).get("kind", "")) != "safe":
 			_message("RELOAD REJECTED: move to a safe anchor first")
 			return false
@@ -197,7 +197,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_zoom(1.0 / 1.12)
 		elif event.button_index == MOUSE_BUTTON_LEFT:
 			var selected := ""
-			var distance := PICK_RADIUS / host.camera.zoom.x
+			var distance: float = PICK_RADIUS / host.camera.zoom.x
 			var point: Vector2 = get_global_mouse_position()
 			for id in host.current_graph().anchors():
 				var anchor: Dictionary = host.current_graph().anchor(str(id))
@@ -287,8 +287,8 @@ func _set_gate() -> void:
 func _message(message: String) -> void:
 	if not is_instance_valid(_status) or not is_instance_valid(_header):
 		return
-	var room := host.active_room_id if is_instance_valid(host) else "NONE"
-	var anchor := host.controller.confirmed_anchor() if is_instance_valid(host) else "NONE"
+	var room: String = host.active_room_id if is_instance_valid(host) else "NONE"
+	var anchor: String = host.controller.confirmed_anchor() if is_instance_valid(host) else "NONE"
 	_header.text = "MAP-QA-07B · %s · DRAFT_ONLY / TEST_ONLY" % room
 	_status.text = "%s\n%s · %s · anchor %s · %d WP / %d routes · unresolved %d" % [
 		message, _source_kind, _source_path, anchor,
