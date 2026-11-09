@@ -11,6 +11,7 @@ signal obstacle_paint(cell: String, blocked: bool)
 signal freehand_started()
 signal freehand_changed(stroke: PackedVector2Array)
 signal freehand_finished(stroke: PackedVector2Array)
+signal freehand_cancelled()
 
 var document: Dictionary = {}
 var image: Texture2D
@@ -356,6 +357,7 @@ func _gui_input(event: InputEvent) -> void:
 		return
 	if mode == "Freehand" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
 		cancel_freehand()
+		freehand_cancelled.emit()
 		accept_event()
 		return
 	if event is InputEventMouseButton:
