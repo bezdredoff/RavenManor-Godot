@@ -250,9 +250,11 @@ static func restriction_at(point: Vector2, doc: Dictionary) -> Dictionary:
 # UI-only rectangle authoring into the existing schema-v1 polygon collections.
 # Changes stay on a versioned DRAFT_ONLY copy; the compiler/adapter validate
 # every existing waypoint and route after each edit. No runtime override.
-static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, b: Vector2) -> Dictionary:
+static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, b: Vector2, room_id: String = "") -> Dictionary:
 	if not ["walkablePolygons", "noGoPolygons"].has(group):
 		return _bad("Choose WALKABLE or NO-GO polygon for draft editing")
+	if not room_id.is_empty() and not ROOM_IDS.has(room_id):
+		return _bad("Unknown room for draft zone ownership")
 	if not _inside_art(a, original) or not _inside_art(b, original):
 		return _bad("Zone corner outside approved image")
 	var min_xy := Vector2(minf(a.x, b.x), minf(a.y, b.y))
@@ -270,11 +272,16 @@ static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, 
 	while known.has(prefix + "%03d" % serial):
 		serial += 1
 	var id := prefix + "%03d" % serial
-	doc[group].append({
+	var new_zone := {
 		"id": id,
 		"pointsPx": [pixel_pair(min_xy), pixel_pair(Vector2(max_xy.x, min_xy.y)),
 			pixel_pair(max_xy), pixel_pair(Vector2(min_xy.x, max_xy.y))]
-	})
+	}
+	# Original calls remain backward-compatible. Native editing assigns
+	# room ownership to new WALKABLE zones so freehand cannot cross rooms.
+	if group == "walkablePolygons" and not room_id.is_empty():
+		new_zone["roomId"] = room_id
+	doc[group].append(new_zone)
 	var checked := _finish_edit(doc)
 	if checked.ok:
 		checked["id"] = id

@@ -4,14 +4,15 @@ extends Control
 ## Writes ONLY explicit QA drafts, never the source pilot or production state.
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const RouteCanvas = preload("res://addons/room_builder_routes/route_canvas.gd")
+const Freehand = preload("res://addons/room_builder_routes/route_freehand.gd")
 const PreviewSource = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_launch.gd")
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
-const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones"]
+const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones", "Freehand"]
 const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
-	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones"]
+	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones", "9 Draw route (freehand)"]
 const ROOM_LABELS := ["Hall", "Corridor", "Bedroom", "Library / Archive", "Kitchen"]
 
 var document: Dictionary = {}
@@ -71,6 +72,12 @@ var cell_inspection: Label
 var undo_button: Button
 var redo_button: Button
 var _preview_route: PackedVector2Array
+var freehand_bar: HBoxContainer
+var freehand_tolerance: SpinBox
+var freehand_hint: Label
+var freehand_apply_button: Button
+var freehand_proposal: Dictionary = {}
+var freehand_baseline := ""
 
 
 func _init() -> void:
@@ -170,6 +177,35 @@ func _make_ui() -> void:
 	dirty_label = Label.new()
 	dirty_label.text = "Saved"
 	actions.add_child(dirty_label)
+	# One short contextual row, only visible in tool 9. No tall inspector,
+	# no wrap-prone toolbar captions and no extra side panel.
+	freehand_bar = HBoxContainer.new()
+	freehand_bar.name = "FreehandActions"
+	freehand_bar.add_theme_constant_override("separation", 7)
+	outer.add_child(freehand_bar)
+	freehand_bar.add_child(_button("New (FROM / TO)", _begin_new_freehand))
+	freehand_bar.add_child(_button("Redraw selected", _redraw_selected_freehand))
+	var tolerance_caption := Label.new()
+	tolerance_caption.text = "Simplify px:"
+	freehand_bar.add_child(tolerance_caption)
+	freehand_tolerance = SpinBox.new()
+	freehand_tolerance.min_value = 0
+	freehand_tolerance.max_value = 48
+	freehand_tolerance.step = 1
+	freehand_tolerance.value = 4
+	freehand_tolerance.custom_minimum_size.x = 76
+	freehand_bar.add_child(freehand_tolerance)
+	freehand_apply_button = _button("Apply route", _apply_freehand)
+	freehand_apply_button.name = "ApplyFreehand"
+	freehand_apply_button.disabled = true
+	freehand_bar.add_child(freehand_apply_button)
+	freehand_bar.add_child(_button("Discard", _discard_freehand))
+	freehand_hint = Label.new()
+	freehand_hint.text = "Blue stroke → green grid → Apply. Red = blocked."
+	freehand_hint.clip_text = true
+	freehand_hint.size_flags_horizontal = SIZE_EXPAND_FILL
+	freehand_bar.add_child(freehand_hint)
+	freehand_bar.visible = false
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status.custom_minimum_size.y = 32
@@ -188,6 +224,10 @@ func _make_ui() -> void:
 	canvas.image_pixel_chosen.connect(_on_image_clicked)
 	canvas.cell_chosen.connect(_on_cell_clicked)
 	canvas.obstacle_paint.connect(_on_paint_cell)
+	canvas.freehand_started.connect(_on_freehand_started)
+	canvas.freehand_changed.connect(_on_freehand_changed)
+	canvas.freehand_finished.connect(_on_freehand_finished)
+	canvas.freehand_cancelled.connect(_discard_freehand)
 	inspector_scroll = ScrollContainer.new()
 	inspector_scroll.custom_minimum_size.x = 365
 	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -322,7 +362,7 @@ func _make_ui() -> void:
 	route_bidirectional.text = "Bidirectional (unchecked = one way from → to)"
 	route_bidirectional.toggled.connect(_on_direction_changed)
 	inspector.add_child(route_bidirectional)
-	inspector.add_child(_paragraph("Tool 3: choose two waypoints in the SAME room to connect (temporary provisional edge). Tool 4: click a route line to select it. Tool 5: click adjacent grid cells to redraw the selected route, starting at FROM and ending at TO. Press Apply cells. Existing exact text editor remains available."))
+	inspector.add_child(_paragraph("Tool 3 connects same-room points. Tool 4 selects routes. Tool 5 edits individual cells. Tool 9: choose a selected route to redraw, or choose FROM / TO and New; drag a line over the artwork, release, inspect and Apply route. The exact cell editor remains available."))
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("OBSTACLES + PREVIEW"))
 	inspector.add_child(_paragraph("Block cells: click/paint orange grid blockers; re-click to unblock. Red NO-GO polygons and missing GREEN walkable area are separate restrictions; edit those under WALKABLE / NO-GO ZONES above."))
@@ -381,6 +421,10 @@ func _set_mode(mode: String) -> void:
 	if not MODES.has(mode):
 		_message("ERROR: Unknown editor tool " + mode)
 		return
+	if mode != "Freehand":
+		_discard_freehand(false)
+	if is_instance_valid(freehand_bar):
+		freehand_bar.visible = mode == "Freehand"
 	if mode != "Zones":
 		zone_pending_group = ""
 		zone_pending_corner = Vector2.INF
@@ -400,6 +444,7 @@ func _set_mode(mode: String) -> void:
 		"Obstacles": tool_help.text = "BLOCK CELLS: click/paint cells to toggle blockers. Existing routes cannot pass through blocked cells."
 		"Pan": tool_help.text = "PAN: left/right/middle drag. Mouse wheel always zooms; Fit artwork resets view."
 		"Zones": tool_help.text = "ZONES: choose + WALKABLE or + NO-GO, click two opposite artwork corners. To redraw a polygon, select it in the list, remove with confirmation and draw anew. Draft only."
+		"Freehand": tool_help.text = "FREEHAND: select existing route to redraw, or choose two same-room FROM/TO points and press New. Hold left mouse to draw. Release for a validated preview; Apply or Discard. Escape cancels."
 	_message(active_tool_label.text + " · " + ROOM_LABELS[Routes.ROOM_IDS.find(active_room)])
 
 
@@ -413,6 +458,7 @@ func _change_room(room_id: String) -> void:
 	if not Routes.ROOM_IDS.has(room_id):
 		_message("ERROR: Unsupported editing room")
 		return
+	_discard_freehand(false)
 	active_room = room_id
 	room_picker.select(Routes.ROOM_IDS.find(room_id))
 	canvas.set_active_room(room_id)
@@ -426,6 +472,7 @@ func _change_room(room_id: String) -> void:
 
 
 func _set_document(value: Dictionary, push_history: bool = true) -> void:
+	_discard_freehand(false)
 	if push_history and not document.is_empty() and JSON.stringify(document) != JSON.stringify(value):
 		history.append(document.duplicate(true))
 		if history.size() > 64:
@@ -613,7 +660,7 @@ func _zone_corner_clicked(point: Vector2) -> void:
 		return
 	var start := zone_pending_corner
 	var group := zone_pending_group
-	var result := Routes.add_zone_rectangle(document, group, start, point)
+	var result := Routes.add_zone_rectangle(document, group, start, point, active_room)
 	if _commit(result, "New " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " polygon added to QA draft. Undo / Save to persist."):
 		selected_zone_group = group
 		selected_zone_id = str(result["id"])
@@ -737,6 +784,7 @@ func _on_canvas_waypoint(id: String) -> void:
 func _on_canvas_route(id: String) -> void:
 	if id.is_empty() or not route_ids.has(id):
 		return
+	_discard_freehand(false)
 	selected_route = id
 	_refresh()
 	_clear_preview()
@@ -807,6 +855,7 @@ func _delete_waypoint() -> void:
 func _on_route_list_select(index: int) -> void:
 	if index < 0 or index >= route_ids.size():
 		return
+	_discard_freehand(false)
 	selected_route = route_ids[index]
 	_refresh()
 	_clear_preview()
@@ -949,7 +998,106 @@ func _clear_preview() -> void:
 		canvas.show_preview(_preview_route)
 
 
+
+# The proposal is never written on mouse release. The only document mutation
+# is Apply, which commits the exact RouteDocument-validated draft once.
+func _begin_new_freehand() -> void:
+	_set_mode("Freehand")
+	_discard_freehand(false)
+	selected_route = ""
+	_refresh()
+	_message("FREEHAND NEW: choose FROM and TO (same room), then drag from green start to orange destination. Release to preview.")
+
+
+func _redraw_selected_freehand() -> void:
+	if selected_route.is_empty():
+		_message("ERROR: Select a route in the list or on the map before Redraw")
+		return
+	_set_mode("Freehand")
+	_discard_freehand(false)
+	_message("FREEHAND REDRAW: " + selected_route + ". Draw from its existing FROM waypoint to TO. Route ID and direction will stay unchanged.")
+
+
+func _on_freehand_started() -> void:
+	# Canvas has already captured the press: do not cancel its active drag.
+	freehand_proposal = {}
+	freehand_baseline = ""
+	freehand_apply_button.disabled = true
+	freehand_hint.text = "Drawing… release to validate the route."
+	_message("Drawing freehand stroke · release to validate; draft unchanged")
+
+
+func _on_freehand_changed(stroke: PackedVector2Array) -> void:
+	canvas.set_freehand_preview(stroke, PackedVector2Array())
+
+
+func _on_freehand_finished(stroke: PackedVector2Array) -> void:
+	var from_id := ""
+	var to_id := ""
+	if not selected_route.is_empty():
+		for route in document["routes"]:
+			if str(route["id"]) == selected_route:
+				from_id = str(route["from"])
+				to_id = str(route["to"])
+				break
+	else:
+		if route_from.selected >= 0:
+			from_id = route_from.get_item_text(route_from.selected)
+		if route_to.selected >= 0:
+			to_id = route_to.get_item_text(route_to.selected)
+	freehand_baseline = JSON.stringify(document)
+	freehand_proposal = Freehand.convert(document, active_room, from_id, to_id,
+		stroke, freehand_tolerance.value, selected_route)
+	var points: PackedVector2Array = freehand_proposal.get("points", PackedVector2Array())
+	var invalid: Vector2 = freehand_proposal.get("invalidAt", Vector2.INF)
+	canvas.set_freehand_preview(stroke, points, invalid)
+	var ready: bool = bool(freehand_proposal.get("ok", false))
+	freehand_apply_button.disabled = not ready
+	if ready:
+		freehand_hint.text = "%d cells · %s → %s · Apply or Discard" % [freehand_proposal["cells"].size(), from_id, to_id]
+		_message("VALID freehand proposal (" + str(freehand_proposal["cells"].size()) + " cells). Blue = stroke; lime = grid. Press Apply route; nothing saved yet.")
+	else:
+		freehand_hint.text = "INVALID: " + str(freehand_proposal.get("error", "redraw"))
+		_message("ERROR: " + str(freehand_proposal.get("error", "Invalid freehand stroke")) + ". Discard or redraw; no document changes.")
+
+
+func _apply_freehand() -> void:
+	if not freehand_proposal.get("ok", false):
+		_message("ERROR: Draw a valid stroke and inspect its preview before Apply route")
+		return
+	if freehand_baseline != JSON.stringify(document):
+		_discard_freehand(false)
+		_message("ERROR: Draft changed since the preview. Draw again; no stale proposal will be applied.")
+		return
+	var id := str(freehand_proposal["routeId"])
+	var accepted: Dictionary = freehand_proposal["document"]
+	_set_document(accepted)
+	selected_route = id
+	_refresh()
+	_message("Applied " + id + " to UNSAVED DRAFT_ONLY document. Undo is available. Save user draft, then Play integrated first floor.")
+
+
+func _discard_freehand(notify: bool = true) -> void:
+	freehand_proposal = {}
+	freehand_baseline = ""
+	if is_instance_valid(canvas):
+		canvas.cancel_freehand()
+	if is_instance_valid(freehand_apply_button):
+		freehand_apply_button.disabled = true
+	if is_instance_valid(freehand_hint):
+		freehand_hint.text = "Blue stroke → green grid → Apply. Red = blocked."
+	if notify and is_instance_valid(status):
+		_message("Freehand preview discarded; draft unchanged")
+
+
+func _unhandled_key_input(event: InputEvent) -> void:
+	if current_mode == "Freehand" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		_discard_freehand()
+		get_viewport().set_input_as_handled()
+
+
 func _undo() -> void:
+	_discard_freehand(false)
 	if history.is_empty():
 		return
 	future.append(document.duplicate(true))
@@ -961,6 +1109,7 @@ func _undo() -> void:
 
 
 func _redo() -> void:
+	_discard_freehand(false)
 	if future.is_empty():
 		return
 	history.append(document.duplicate(true))
