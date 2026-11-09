@@ -2,7 +2,8 @@ extends Node2D
 
 ## MAP-QA-03 isolated image-pixel movement pilot. No campaign/store/reducer access.
 ## The base PNG already has perspective; camera only translates/uniformly scales.
-const HallQaGraph = preload("res://scripts/raven/first_floor_hall_qa_graph.gd")
+const PreviewSource = preload("res://addons/room_builder_routes/route_preview_source.gd")
+const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_launch.gd")
 const RouteSession = preload("res://scripts/raven/manor_route_session.gd")
 const LAUNCHER := "res://scenes/raven/prototype_launcher.tscn"
 const PICK_RADIUS_SCREEN := 27.0
@@ -16,7 +17,9 @@ signal portal_transition_requested(portal_id: String, to_room_id: String)
 @onready var overlay: Node2D = $QAOverlay
 @onready var hotspots: Node2D = $Hotspots
 
-var qa = HallQaGraph.new()
+var qa = PreviewSource.new()
+var source_kind := PreviewSource.BASELINE
+var source_path := ""
 var session
 var ready_for_qa := false
 var portal_request_count := 0
@@ -38,9 +41,17 @@ func _ready() -> void:
 	_build_hud()
 	overlay.visible = false
 	art.centered = false
-	ready_for_qa = qa.load_pilot()
+	var choice := PreviewLaunch.consume()
+	if not choice.get("ok", false):
+		ready_for_qa = false
+		feedback = "PREVIEW SELECTION REJECTED: " + str(choice.get("error", "unknown"))
+		_refresh_hud()
+		return
+	source_kind = str(choice["kind"])
+	qa = PreviewSource.new()
+	ready_for_qa = qa.load_source(source_kind, str(choice.get("path", "")))
 	if not ready_for_qa:
-		feedback = "QA dataset rejected: " + qa.error_text
+		feedback = "QA source '%s' rejected: %s" % [source_kind, qa.error_text]
 		push_error(feedback)
 		_refresh_hud()
 		return
@@ -58,6 +69,7 @@ func _ready() -> void:
 		return
 	# Only initial placement uses an anchor coordinate. Moving feet are NEVER reset.
 	actor.position = qa.waypoint_position("QA-HALL-SPAWN")
+	source_path = qa.source_path
 	actor.set_sprite_height(62.0)
 	actor.move_speed = 130.0
 	actor.segment_completed.connect(_on_segment_completed)
@@ -85,6 +97,15 @@ func request_waypoint(point_id: String) -> bool:
 		return false
 	feedback = "Requested %s (%s)" % [point_id, str(response.get("status", ""))]
 	_pump()
+	_refresh_hud()
+	return true
+
+
+func stop_movement() -> bool:
+	if not ready_for_qa:
+		return false
+	var result: Dictionary = session.cancel()
+	feedback = "STOP queued: finishing current safe segment" if bool(result.get("finishCurrentSegment", false)) else "STOP: no further segments queued"
 	_refresh_hud()
 	return true
 
@@ -211,6 +232,8 @@ func _unhandled_input(event: InputEvent) -> void:
 					pause_movement()
 			KEY_F3:
 				set_debug_overlay(not overlay.visible)
+			KEY_S:
+				stop_movement()
 
 
 func _pick_point(screen_point: Vector2) -> void:
@@ -257,12 +280,13 @@ func _build_markers() -> void:
 			points.append(Vector2(cos(angle), sin(angle)) * 9.0)
 		marker.points = points
 		hotspots.add_child(marker)
-	var portal_caption := Label.new()
-	portal_caption.text = "VIRTUAL QA PORTAL"
-	portal_caption.position = qa.waypoint_position("QA-HALL-PORTAL-APPROACH") + Vector2(12, 8)
-	portal_caption.add_theme_font_size_override("font_size", 12)
-	portal_caption.add_theme_color_override("font_color", Color("#ffb2e5"))
-	hotspots.add_child(portal_caption)
+	if qa.waypoint_ids().has("QA-HALL-PORTAL-APPROACH"):
+		var portal_caption := Label.new()
+		portal_caption.text = "VIRTUAL QA PORTAL"
+		portal_caption.position = qa.waypoint_position("QA-HALL-PORTAL-APPROACH") + Vector2(12, 8)
+		portal_caption.add_theme_font_size_override("font_size", 12)
+		portal_caption.add_theme_color_override("font_color", Color("#ffb2e5"))
+		hotspots.add_child(portal_caption)
 
 
 func _build_debug_geometry() -> void:
@@ -273,12 +297,20 @@ func _build_debug_geometry() -> void:
 	for edge in qa.graph.active_edges():
 		var line := Line2D.new()
 		line.width = 2.0
-		line.default_color = Color(0.27, 0.88, 1.0, 0.9)
+		line.default_color = Color("#efa45b") if bool(edge.get("provisional", false)) else Color(0.27, 0.88, 1.0, 0.9)
 		line.points = PackedVector2Array([
-			qa.waypoint_position(str(edge["from"])),
-			qa.waypoint_position(str(edge["to"]))
+			qa.graph.position(str(edge["from"])),
+			qa.graph.position(str(edge["to"]))
 		])
 		overlay.add_child(line)
+		# Authored intermediate anchors are actual playable feet targets.
+		if str(edge["to"]).contains("-STEP-"):
+			var step := Line2D.new()
+			step.width = 2.0
+			step.default_color = Color("#f9d47d")
+			step.points = PackedVector2Array([Vector2(-3, 0), Vector2(3, 0)])
+			step.position = qa.graph.position(str(edge["to"]))
+			overlay.add_child(step)
 	for id in qa.waypoint_ids():
 		var label := Label.new()
 		label.text = id
@@ -331,16 +363,22 @@ func _build_hud() -> void:
 	buttons.add_child(_button("← Lab", func(): get_tree().change_scene_to_file(LAUNCHER)))
 	_pause_button = _button("Pause", _toggle_pause)
 	buttons.add_child(_pause_button)
+	buttons.add_child(_button("Stop", stop_movement))
 	buttons.add_child(_button("QA", func(): set_debug_overlay(not overlay.visible)))
 	buttons.add_child(_button("−", func(): _zoom_by(1.0 / 1.2)))
 	buttons.add_child(_button("+", func(): _zoom_by(1.2)))
+	var sources := HFlowContainer.new()
+	vbox.add_child(sources)
+	sources.add_child(_button("Original", _change_source.bind(PreviewSource.BASELINE)))
+	sources.add_child(_button("Saved user", _change_source.bind(PreviewSource.USER)))
+	sources.add_child(_button("Project export", _change_source.bind(PreviewSource.PROJECT)))
 	_status_label = Label.new()
 	_status_label.custom_minimum_size = Vector2(318, 0)
 	_status_label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status_label.add_theme_font_size_override("font_size", 12)
 	vbox.add_child(_status_label)
 	var help := Label.new()
-	help.text = "Tap circles · Drag pan · Wheel / ± zoom · Space pause · F3 QA"
+	help.text = "Tap circles · Drag pan · Wheel / ± zoom · Space pause · S stop after leg · F3 QA"
 	help.add_theme_font_size_override("font_size", 10)
 	vbox.add_child(help)
 
@@ -350,6 +388,22 @@ func _button(title: String, callback: Callable) -> Button:
 	result.text = title
 	result.pressed.connect(callback)
 	return result
+
+
+func _change_source(kind: String) -> void:
+	# A source change requires a fresh QA scene: no mid-leg graph switch,
+	# no interpolation from a stale waypoint and no character teleport.
+	var probe = PreviewSource.new()
+	if not probe.load_source(kind):
+		feedback = "Source %s rejected: %s (current preview unchanged)" % [kind, probe.error_text]
+		_refresh_hud()
+		return
+	var ticket := PreviewLaunch.stage(kind)
+	if not ticket.get("ok", false):
+		feedback = "Source selection failed: " + str(ticket.get("error", "unknown"))
+		_refresh_hud()
+		return
+	get_tree().reload_current_scene()
 
 
 func _toggle_pause() -> void:
@@ -365,9 +419,10 @@ func _refresh_hud() -> void:
 	var motion := "PAUSED" if actor.is_paused() else ("MOVING" if actor.has_active_segment() else "IDLE")
 	_pause_button.text = "Resume" if actor.is_paused() else "Pause"
 	if not ready_for_qa:
-		_status_label.text = feedback
+		_status_label.text = "SOURCE: %s\n%s" % [source_kind, feedback]
 		return
-	_status_label.text = "%s | confirmed: %s\nTarget: %s | feet: %s\nPortal: %s\n%s" % [
-		motion, session.current_anchor(), session.pending_hotspot(),
-		str(actor.position.round()), portal_status, feedback
+	var provisional_info := "%d PROVISIONAL edges (straight QA)" % qa.provisional_routes.size() if not qa.provisional_routes.is_empty() else "All edges explicit / original baseline"
+	_status_label.text = "SOURCE: %s · %s\n%s | confirmed: %s\nTarget: %s | feet: %s\nPortal: %s\n%s\n%s" % [
+		source_kind, source_path.get_file(), motion, session.current_anchor(), session.pending_hotspot(),
+		str(actor.position.round()), portal_status, provisional_info, feedback
 	]
