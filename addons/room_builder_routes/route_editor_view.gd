@@ -659,7 +659,7 @@ func _zone_corner_clicked(point: Vector2) -> void:
 		return
 	var start := zone_pending_corner
 	var group := zone_pending_group
-	var result := Routes.add_zone_rectangle(document, group, start, point)
+	var result := Routes.add_zone_rectangle(document, group, start, point, active_room)
 	if _commit(result, "New " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " polygon added to QA draft. Undo / Save to persist."):
 		selected_zone_group = group
 		selected_zone_id = str(result["id"])
