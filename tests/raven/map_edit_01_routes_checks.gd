@@ -52,7 +52,7 @@ static func run(test_root: Window) -> void:
 	assert(not Routes.change_grid(doc, 0, 32, Vector2.ZERO, true, false).ok)
 
 	# Edits are copy-on-write, preserving source and stable waypoint identities.
-	var added := Routes.add_waypoint(doc, Vector2(840, 730), "Review position")
+	var added := Routes.add_waypoint(doc, Vector2(840, 730), "Review position", "RM-ROOM-HALL")
 	assert(added.ok, str(added.get("error", "")))
 	assert(added.id == "QA-USER-001")
 	assert(doc.waypoints.size() == 7)
@@ -65,7 +65,7 @@ static func run(test_root: Window) -> void:
 	assert(Routes._waypoint_lookup(renamed.document)[added.id].label == "Evelyn staging")
 	assert(not Routes.move_waypoint(renamed.document, added.id, Vector2(835, 570)).ok, "No-go polygon must reject waypoint")
 	assert(not Routes.move_waypoint(renamed.document, added.id, Vector2(1800, 570)).ok)
-	var second := Routes.add_waypoint(renamed.document, Vector2(844, 736))
+	var second := Routes.add_waypoint(renamed.document, Vector2(844, 736), "Second point", "RM-ROOM-HALL")
 	assert(second.ok and second.id == "QA-USER-002", "Stable IDs cannot be reallocated")
 	var direction_base: Dictionary = doc.duplicate(true)
 	direction_base.routes = []
@@ -140,7 +140,7 @@ static func run(test_root: Window) -> void:
 	test_root.add_child(native_view)
 	assert(native_view.document.get("kind") == "raven-grid-route-draft")
 	var untouched := JSON.stringify(native_view.document)
-	var extra := Routes.add_waypoint(native_view.document, Vector2(840, 730))
+	var extra := Routes.add_waypoint(native_view.document, Vector2(840, 730), "History point", "RM-ROOM-HALL")
 	assert(extra.ok)
 	native_view._set_document(extra.document)
 	assert(native_view.history.size() == 1)
