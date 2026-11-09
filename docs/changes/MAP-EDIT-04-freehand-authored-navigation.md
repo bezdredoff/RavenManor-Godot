@@ -1,5 +1,16 @@
 # MAP-EDIT-04 — Freehand authored navigation (Room Builder)
 
+Task IDs: MAP-EDIT-04 (P0 scoped technical task), CODE-05-01 (P0 parent partial)
+
+Changes: Native freehand draw/preview/Apply/Discard, deterministic orthogonal converter, same-room and walkability protection, redraw stable IDs, optional owned WALKABLE rectangles, owner guide.
+
+Verification: New Godot MAP-EDIT-04 smoke plus all existing regressions registered; initial GitHub Actions CI pending repair; no local Godot binary or claim of passing tests.
+
+Owner QA: HUMAN_PENDING — Godot visual window sizes, drag and route geometry, persisted user draft and physical Onoe playback in MAP-QA-07B.
+
+Status impact: Only room-builder shard updated, CODE-05-01 remains P0 partial and PR_review while PR #253 is open; no owner acceptance, no approved art or canonical geometry.
+
+
 Date: 2026-11-09. Domain: `room-builder`. Priority: P0 technical subtask of `CODE-05-01`. Baseline: main `2d692e48129ee3d391816e4e405d50c217225f99` (#251/#252 merged). Approval: **DRAFT_ONLY**, **AI_PROVISIONAL_UNAPPROVED**, **TEST_ONLY** QA playback.
 
 ## Scope and reuse
