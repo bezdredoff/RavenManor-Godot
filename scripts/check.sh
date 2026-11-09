@@ -59,6 +59,7 @@ run_check 'MAP-QA-01 Hall source geometry' 'MAP-QA-01 Hall pilot Godot JSON/imag
 run_check 'MAP-QA-03 Hall movement pilot' 'Raven MAP-QA-03 Hall movement pilot smoke passed' --script res://tests/raven/map_qa_03_hall_movement_smoke.gd --quit-after 120
 run_check 'MAP-QA-06 authored room transitions' 'Raven MAP-QA-06 authored room transition smoke passed' --script res://tests/raven/map_qa_06_room_transitions_smoke.gd --quit-after 150
 run_check 'MAP-QA-07A multi-room host' 'Raven MAP-QA-07A multi-room playable foundation smoke passed' --script res://tests/raven/map_qa_07a_multi_room_smoke.gd --quit-after 180
+run_check 'MAP-QA-07B integrated first-floor draft' 'Raven MAP-QA-07B integrated first-floor authored Onoe movement smoke passed' --script res://tests/raven/map_qa_07b_integrated_first_floor_smoke.gd --quit-after 240
 # MAP-EDIT-01 runs independently from the existing import smoke, also executed by pages.yml.
 run_check 'MAP-EDIT-01 native route editor' 'MAP-EDIT-01 native Room Builder route document smoke passed' --script res://tests/raven/map_edit_01_routes_smoke.gd --quit-after 120
 run_check 'MAP-EDIT-02 playable route preview' 'MAP-EDIT-02 saved/exported playable Onoe preview smoke passed' --script res://tests/raven/map_edit_02_playable_preview_smoke.gd --quit-after 180
