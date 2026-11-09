@@ -1,0 +1,151 @@
+@tool
+extends RefCounted
+## MAP-EDIT-04: deterministic freehand stroke -> existing authored v1 cells.
+## Read-only proposal. All mutations/authority remain in RouteDocument.
+const Routes = preload("res://addons/room_builder_routes/route_document.gd")
+const MAX_SAMPLES := 20000
+const MAX_CELLS := 4000
+
+
+static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: String,
+		raw: PackedVector2Array, tolerance: float = 4.0, route_id: String = "") -> Dictionary:
+	var cells: Array = []
+	if not Routes.ROOM_IDS.has(room_id):
+		return _fail(doc, raw, cells, "Choose an editing room", Vector2.INF)
+	var lookup: Dictionary = Routes._waypoint_lookup(doc)
+	if from_id == to_id or not lookup.has(from_id) or not lookup.has(to_id):
+		return _fail(doc, raw, cells, "Choose two different existing waypoints", Vector2.INF)
+	if Routes.room_for_id(doc, from_id) != room_id or Routes.room_for_id(doc, to_id) != room_id:
+		return _fail(doc, raw, cells, "Both route endpoints must belong to " + room_id, Vector2.INF)
+	if not route_id.is_empty():
+		var existing := false
+		for route in doc.get("routes", []):
+			if str(route["id"]) == route_id:
+				existing = true
+				if str(route["from"]) != from_id or str(route["to"]) != to_id:
+					return _fail(doc, raw, cells, "Redraw cannot change the route endpoints", Vector2.INF)
+				break
+		if not existing:
+			return _fail(doc, raw, cells, "Selected route no longer exists", Vector2.INF)
+	if raw.size() < 2 or raw.size() > MAX_SAMPLES:
+		return _fail(doc, raw, cells, "Hold the left mouse button and draw a stroke (2–20000 samples)", Vector2.INF)
+	if not is_finite(tolerance) or tolerance < 0.0 or tolerance > 48.0:
+		return _fail(doc, raw, cells, "Simplification must be 0–48 image pixels", Vector2.INF)
+	var start: Vector2 = Routes._vector(lookup[from_id]["pointPx"])
+	var finish: Vector2 = Routes._vector(lookup[to_id]["pointPx"])
+	var width := float(doc["grid"]["cellWidth"])
+	var height := float(doc["grid"]["cellHeight"])
+	var snap_distance := maxf(width, height) * 1.75
+	if not raw[0].is_finite() or raw[0].distance_to(start) > snap_distance:
+		return _fail(doc, raw, cells, "Begin the stroke near FROM waypoint " + from_id, raw[0])
+	if not raw[raw.size() - 1].is_finite() or raw[raw.size() - 1].distance_to(finish) > snap_distance:
+		return _fail(doc, raw, cells, "Finish the stroke near TO waypoint " + to_id, raw[raw.size() - 1])
+	for point in raw:
+		if not point.is_finite() or not Routes._inside_art(point, doc):
+			return _fail(doc, raw, cells, "Stroke leaves the approved image", point)
+		var restriction: Dictionary = Routes.restriction_at(point, doc)
+		if restriction["kind"] != "allowed":
+			return _fail(doc, raw, cells, "Stroke at " + str(point.round()) + ": " + str(restriction["reason"]), point)
+	# Anchor endpoint snapping is explicit. Retain turns from the actual pixel
+	# stroke; a configurable small distance filter removes mouse jitter without
+	# performing global smoothing or rerouting through unrelated corridors.
+	var filtered := PackedVector2Array([start])
+	for i in range(1, raw.size() - 1):
+		if raw[i].distance_to(filtered[filtered.size() - 1]) >= maxf(0.5, tolerance):
+			filtered.append(raw[i])
+	filtered.append(finish)
+	for i in range(1, filtered.size()):
+		var segment_error: String = Routes._check_segment(filtered[i - 1], filtered[i], doc)
+		if not segment_error.is_empty():
+			return _fail(doc, raw, cells, "Drawn stroke crosses an obstacle near " +
+				str(filtered[i - 1].lerp(filtered[i], 0.5).round()) + ": " + segment_error, filtered[i])
+	for point in filtered:
+		var cell := Routes.pixel_to_cell(point, doc)
+		if cell.is_empty():
+			return _fail(doc, raw, cells, "Sample cannot be snapped inside the image", point)
+		if cells.is_empty():
+			cells.append(cell)
+		else:
+			_append_orthogonal(cells, cell)
+		if cells.size() > MAX_CELLS:
+			return _fail(doc, raw, cells, "Stroke contains too many grid steps; draw a shorter route", point)
+	if cells.size() < 2:
+		return _fail(doc, raw, cells, "FROM and TO must occupy different grid cells", finish)
+	# Do not silently erase backtracking or invent a short-cut. Revisited cells
+	# indicate an ambiguous stroke: ask the owner to redraw the exact corridor.
+	var seen := {}
+	for cell in cells:
+		if seen.has(cell):
+			return _fail(doc, raw, cells, "Stroke doubles back through cell " + cell + ". Redraw without loops.", Routes.cell_to_pixel(cell, doc))
+		seen[cell] = true
+	var centers := _centers(doc, cells)
+	for i in range(centers.size()):
+		var point: Vector2 = centers[i]
+		if not point.is_finite():
+			return _fail(doc, raw, cells, "Cell " + str(cells[i]) + " is outside the image", point)
+		var restriction: Dictionary = Routes.restriction_at(point, doc)
+		if restriction["kind"] != "allowed":
+			return _fail(doc, raw, cells, "Cell " + str(cells[i]) + " at " + str(point.round()) + ": " + str(restriction["reason"]), point)
+		if i > 0:
+			var error: String = Routes._check_segment(centers[i - 1], point, doc)
+			if not error.is_empty():
+				return _fail(doc, raw, cells, "Invalid grid step " + str(cells[i - 1]) + " → " + str(cells[i]) + ": " + error, point)
+	# Use the authoritative route validator for endpoint alignment, direction,
+	# room ownership, per-segment walkability and compiled runtime geometry.
+	var candidate: Dictionary = doc
+	var id := route_id
+	if id.is_empty():
+		var created: Dictionary = Routes.add_route(candidate, from_id, to_id)
+		if not created.get("ok", false):
+			return _fail(doc, raw, cells, str(created.get("error", "Cannot create route")), finish)
+		candidate = created["document"]
+		id = str(created["id"])
+	var checked: Dictionary = Routes.set_route_cells(candidate, id, " → ".join(PackedStringArray(cells)))
+	if not checked.get("ok", false):
+		return _fail(doc, raw, cells, "Authoritative route validation: " + str(checked.get("error", "invalid path")), finish)
+	return {"ok": true, "cells": cells, "points": centers, "raw": raw.duplicate(),
+		"invalidAt": Vector2.INF, "error": "", "routeId": id,
+		"document": checked["document"]}
+
+
+static func _append_orthogonal(cells: Array, destination: String) -> void:
+	var source: Dictionary = Routes.parse_cell(str(cells.back()))
+	var target: Dictionary = Routes.parse_cell(destination)
+	if not source.ok or not target.ok:
+		return
+	var x := int(source.col)
+	var y := int(source.row)
+	var dx := int(target.col) - x
+	var dy := int(target.row) - y
+	var nx := absi(dx)
+	var ny := absi(dy)
+	var moved_x := 0
+	var moved_y := 0
+	var sx := signi(dx)
+	var sy := signi(dy)
+	while moved_x < nx or moved_y < ny:
+		# Compare next grid-boundary crossings. Ties always use X first;
+		# deterministic even for sparse, diagonal input.
+		if moved_x < nx and (moved_y >= ny or
+				float(2 * moved_x + 1) * float(maxi(ny, 1)) <=
+				float(2 * moved_y + 1) * float(maxi(nx, 1))):
+			x += sx
+			moved_x += 1
+		else:
+			y += sy
+			moved_y += 1
+		cells.append(Routes.cell_name(x, y))
+
+
+static func _centers(doc: Dictionary, cells: Array) -> PackedVector2Array:
+	var result := PackedVector2Array()
+	for cell in cells:
+		result.append(Routes.cell_to_pixel(str(cell), doc))
+	return result
+
+
+static func _fail(doc: Dictionary, raw: PackedVector2Array, cells: Array,
+		reason: String, point: Vector2) -> Dictionary:
+	return {"ok": false, "error": reason, "raw": raw.duplicate(),
+		"cells": cells.duplicate(), "points": _centers(doc, cells),
+		"invalidAt": point, "routeId": ""}
