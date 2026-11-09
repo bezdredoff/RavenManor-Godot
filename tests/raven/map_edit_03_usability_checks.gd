@@ -114,7 +114,7 @@ static func run(test_root: Window) -> void:
 	view._on_canvas_waypoint(ui_id)
 	assert(view.connect_from.is_empty())
 	assert(view.document["routes"].size() == 20)
-	var selected_route := view.selected_route
+	var selected_route: String = str(view.selected_route)
 	assert(not selected_route.is_empty())
 	view._set_mode("Routes")
 	assert(view.canvas.pick_route(Vector2(832, 336)) == "QA-ROUTE-011",
