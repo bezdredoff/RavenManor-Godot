@@ -1,5 +1,19 @@
 # MAP-EDIT-03A — Owner feedback: compact native editor layout and editable walkable/no-go QA zones
 
+Task IDs: MAP-EDIT-03A (scoped owner-defect follow-up), CODE-05-01 (parent P0 partial)
+
+Changes:
+- Fix one-line native toolbar, scroll access to GRID/Apply controls, high-contrast polygons and outside-walkable diagnostics, reversible DRAFT_ONLY polygon editing.
+
+Verification:
+- Headless Godot MAP-EDIT-03A plus existing MAP-EDIT-01/02/03, MAP-QA-05/07B, CI all six blocking jobs on exact PR head; initial failures actively investigated, no pass claim yet.
+
+Owner QA:
+- Owner manual Godot 4.7.2 screenshot proves MAP-EDIT-03 GUI issue; fixing PR still needs real editor visual, mouse/drag and runtime-route QA. No owner acceptance assumed.
+
+Status impact:
+- CODE-05-01 remains P0 partial and PR_review while #252 is open; only its own room-builder progress shard changes. No approved geometry, source art or campaign promotion.
+
 Task: `MAP-EDIT-03A` (follow-up to merged `MAP-EDIT-03` PR #251); domain `room-builder`. Parent `CODE-05-01` remains P0 partial. Baseline main `bd60567fb79f28dba45e6236b505827cb122ce20`.
 
 ## Owner-reported defect
