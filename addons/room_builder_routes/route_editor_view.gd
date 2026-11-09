@@ -227,6 +227,7 @@ func _make_ui() -> void:
 	canvas.freehand_started.connect(_on_freehand_started)
 	canvas.freehand_changed.connect(_on_freehand_changed)
 	canvas.freehand_finished.connect(_on_freehand_finished)
+	canvas.freehand_cancelled.connect(_discard_freehand)
 	inspector_scroll = ScrollContainer.new()
 	inspector_scroll.custom_minimum_size.x = 365
 	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
