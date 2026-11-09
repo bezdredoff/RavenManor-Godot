@@ -84,7 +84,8 @@ func _install(candidate: Dictionary, start_room: String) -> bool:
 	_manual_camera = false
 	host.room_changed.connect(_on_room_changed)
 	host.movement_rejected.connect(_on_rejected)
-	host.toggle_routes() if _debug else null
+	if _debug:
+		host.toggle_routes()
 	_refresh_destinations()
 	_refresh_rooms()
 	queue_redraw()
