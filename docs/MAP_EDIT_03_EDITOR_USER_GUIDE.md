@@ -44,6 +44,37 @@ For a future freehand pen tool, route hit-testing lives in `RouteCanvas.pick_rou
 - The editor maintains JSON schemaVersion **1** and `DRAFT_ONLY`; the original source PNG, immutable original Hall QA dataset and canonical 13 production anchors are untouched.
 - The integrated QA launcher always boots the existing integrated scene with its own explicit source selector. It does not automatically select the last-saved source or promise device/geometry acceptance.
 
+## MAP-EDIT-03A — Correcting the map restrictions and toolbar layout
+
+The top **Tool** / **Room** selectors are now in one compact line; they no longer use paragraph labels inside an auto-wrapping flow layout. The grid settings and **Apply grid settings** button have moved near the **top** of the scrolling inspector, directly below Quick Start. If the Godot Output/Debugger dock is open, scroll the right inspector independently; collapsing the bottom Output dock gives the map more height.
+
+### What is actually blocking a click?
+
+The initial project draft contains **5 WALKABLE polygons**, **10 NO-GO polygons** and **0 blockedCells**. Walkable polygons are limited QA proposals, **not** all visually clear floor on the approved PNG. Unlike the old editor, the canvas now explains all restrictions without requiring you to guess:
+
+| Map overlay | Meaning | How to edit the DRAFT_ONLY geometry |
+| --- | --- | --- |
+| **Green outlines** | Explicit walkable polygons; only places inside the union can receive authored waypoint feet | **+ WALKABLE rectangle**, click two opposite corners; Undo if wrong |
+| **Darkened grid cells** | Grid-centre diagnostic preview outside *all* walkable polygons (not inherently walls) | Expand WALKABLE via a new rectangle; keep only plausible floor, then test movement |
+| **Red fill/outline** | NO-GO polygons (staircases, tables, furniture; names in the list) | Select zone in list, click **Remove selected draft zone…**, confirm; redraw NO-GO if needed |
+| **Orange cells** | Individually blocked cells (initially none) | **6 Block cells** toggles each; **Unblock selected cell** removes the block |
+
+**Important:** These layers are not interchangeable. Removing a blocked cell never overrides a red polygon or a missing green walkable area. All polygon boundaries use **image pixels**, not Room Builder world coordinates. The dark cell overlay samples grid centres for readability; the exact polygon boundaries are the green/red outlines and the validator remains pixel accurate.
+
+### How to expand a walkable room safely
+
+1. **Load project draft** and select the relevant Room at the top. Make sure **Show walkable / no-go / excluded** is checked in the right inspector.
+2. Click **+ WALKABLE rectangle**. Tool 8 (**Edit zones**) is selected. Click the first and opposite corners around a plausible piece of floor on the approved image. This adds a new separately named `QA-EDIT-WALK-*` polygon to the draft. The old five polygons and the approved source image remain untouched.
+3. Click the previously forbidden location to inspect its reason. Use **2 Add waypoint** to place your new point after its precise pixel/room validation passes.
+4. If a red obstacle overlaps your intended route, select its explicit ID from the polygon list; remove it with confirmation and, when appropriate, draw a smaller **+ NO-GO rectangle** that covers the furniture without blocking the floor. Use **Undo/Redo** as needed.
+5. **Save user draft**, then **Play integrated first floor** and choose the saved user source inside MAP-QA-07B. Inspect the route overlay/F3. The editor accepts only a draft that still validates **all** its waypoints and routes; it never automatically approves a real door or campaign collision.
+
+Use **Cancel zone drawing** to stop after the first corner. Removing a polygon that would strand an existing waypoint/route is rejected, with a specific reason. Old imported polygons can be removed **from a saved draft only**; the original QA source/canonical geometry never changes. Rectangle authoring with delete-and-redraw is provided here; freeform vertex editing and automatic room collision extraction remain future work.
+
+### Avoiding repeated warnings
+
+Expected invalid clicks now produce feedback in the editor's status line and **constraint explanation** field instead of spamming the Godot Output dock. A rejected edit does not change the document or the Undo history.
+
 ## Automated checks
 
 The new `map_edit_03_usability_smoke.gd` checks creation/editing/invalid ownership, same-room and cross-room routes, ordered grid cells, save/load, MAP-QA-07B bridge with an extra point and edge, native UI tool state, selection, undo/redo, and unchanged source/canonical files. It runs exactly once via `scripts/check.sh`, alongside MAP-EDIT-01/02 and MAP-QA-05/07B.

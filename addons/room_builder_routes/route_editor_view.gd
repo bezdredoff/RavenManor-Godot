@@ -9,9 +9,9 @@ const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_la
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
-const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan"]
+const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones"]
 const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
-	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map"]
+	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones"]
 const ROOM_LABELS := ["Hall", "Corridor", "Bedroom", "Library / Archive", "Kitchen"]
 
 var document: Dictionary = {}
@@ -29,6 +29,16 @@ var click_route_from := true
 var connect_from := ""
 var active_room := "RM-ROOM-HALL"
 var _suppress := false
+var zone_pending_group := ""
+var zone_pending_corner := Vector2.INF
+var selected_zone_id := ""
+var selected_zone_group := ""
+var zone_ids: Array[Dictionary] = []
+var show_constraints_checkbox: CheckBox
+var constraint_feedback: Label
+var zone_list: ItemList
+var zone_delete_confirmation: ConfirmationDialog
+var inspector_scroll: ScrollContainer
 
 var canvas: Control
 var status: Label
@@ -101,23 +111,33 @@ func _make_ui() -> void:
 	outer.size_flags_vertical = SIZE_EXPAND_FILL
 	outer.size_flags_horizontal = SIZE_EXPAND_FILL
 	add_child(outer)
-	var toolbar := HFlowContainer.new()
+	# A single-row toolbar with non-wrapping labels. HFlowContainer previously
+	# squeezed _paragraph() labels to one character per line (300px high).
+	var toolbar := HBoxContainer.new()
+	toolbar.name = "MainToolbar"
+	toolbar.add_theme_constant_override("separation", 8)
 	outer.add_child(toolbar)
 	var title := Label.new()
 	title.text = "Navigation / Routes · DRAFT_ONLY"
 	title.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(title)
-	toolbar.add_child(_paragraph("Active tool:"))
+	var tool_caption := Label.new()
+	tool_caption.text = "Tool:"
+	toolbar.add_child(tool_caption)
 	mode_picker = OptionButton.new()
 	mode_picker.name = "ToolPicker"
+	mode_picker.custom_minimum_size = Vector2(195, 30)
 	for i in range(MODES.size()):
 		mode_picker.add_item(MODE_LABELS[i])
 		mode_picker.set_item_metadata(i, MODES[i])
 	mode_picker.item_selected.connect(func(i: int): _set_mode(str(mode_picker.get_item_metadata(i))))
 	toolbar.add_child(mode_picker)
-	toolbar.add_child(_paragraph("Editing room:"))
+	var room_caption := Label.new()
+	room_caption.text = "Room:"
+	toolbar.add_child(room_caption)
 	room_picker = OptionButton.new()
 	room_picker.name = "RoomPicker"
+	room_picker.custom_minimum_size = Vector2(160, 30)
 	for i in range(Routes.ROOM_IDS.size()):
 		room_picker.add_item(ROOM_LABELS[i])
 		room_picker.set_item_metadata(i, Routes.ROOM_IDS[i])
@@ -125,6 +145,9 @@ func _make_ui() -> void:
 	toolbar.add_child(room_picker)
 	active_tool_label = Label.new()
 	active_tool_label.name = "ActiveTool"
+	active_tool_label.clip_text = true
+	active_tool_label.custom_minimum_size.x = 140
+	active_tool_label.size_flags_horizontal = SIZE_EXPAND_FILL
 	toolbar.add_child(active_tool_label)
 	var actions := HFlowContainer.new()
 	outer.add_child(actions)
@@ -155,7 +178,7 @@ func _make_ui() -> void:
 	split.size_flags_vertical = SIZE_EXPAND_FILL
 	outer.add_child(split)
 	canvas = RouteCanvas.new()
-	canvas.custom_minimum_size = Vector2(650, 480)
+	canvas.custom_minimum_size = Vector2(400, 240)
 	canvas.size_flags_horizontal = SIZE_EXPAND_FILL
 	canvas.size_flags_vertical = SIZE_EXPAND_FILL
 	split.add_child(canvas)
@@ -165,14 +188,17 @@ func _make_ui() -> void:
 	canvas.image_pixel_chosen.connect(_on_image_clicked)
 	canvas.cell_chosen.connect(_on_cell_clicked)
 	canvas.obstacle_paint.connect(_on_paint_cell)
-	var scroll := ScrollContainer.new()
-	scroll.custom_minimum_size.x = 355
-	scroll.size_flags_vertical = SIZE_EXPAND_FILL
-	split.add_child(scroll)
+	inspector_scroll = ScrollContainer.new()
+	inspector_scroll.custom_minimum_size.x = 365
+	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
+	inspector_scroll.vertical_scroll_mode = ScrollContainer.SCROLL_MODE_AUTO
+	inspector_scroll.horizontal_scroll_mode = ScrollContainer.SCROLL_MODE_DISABLED
+	inspector_scroll.follow_focus = true
+	split.add_child(inspector_scroll)
 	var inspector := VBoxContainer.new()
 	inspector.custom_minimum_size.x = 340
 	inspector.add_theme_constant_override("separation", 7)
-	scroll.add_child(inspector)
+	inspector_scroll.add_child(inspector)
 	selection_label = _paragraph("Selected room: Hall · Selected waypoint: —")
 	selection_label.name = "SelectionInfo"
 	inspector.add_child(selection_label)
@@ -182,6 +208,7 @@ func _make_ui() -> void:
 	inspector.add_child(_paragraph("QUICK START: 1) Load project draft. 2) Choose room. 3) Add / drag points. 4) Connect two points. 5) Draw route cells. 6) Save. 7) Play integrated first floor."))
 	inspector.add_child(HSeparator.new())
 	var grid_section := VBoxContainer.new()
+	grid_section.name = "GridSettings"
 	grid_section.add_child(_heading("GRID · source-image pixels"))
 	var row := HBoxContainer.new()
 	grid_section.add_child(row)
@@ -201,6 +228,40 @@ func _make_ui() -> void:
 	grid_section.add_child(_button("Apply grid settings", _apply_grid))
 	cell_inspection = _paragraph("Selected cell: —")
 	grid_section.add_child(cell_inspection)
+	# Grid controls must be near the top of the scrollable inspector, not
+	# hidden below the entire route and obstacle editor.
+	inspector.add_child(_heading("GRID SETTINGS · image pixels"))
+	inspector.add_child(grid_section)
+	inspector.add_child(HSeparator.new())
+	inspector.add_child(_heading("WALKABLE / NO-GO ZONES · DRAFT_ONLY"))
+	show_constraints_checkbox = CheckBox.new()
+	show_constraints_checkbox.name = "ShowConstraints"
+	show_constraints_checkbox.text = "Show walkable (green) / no-go (red) / excluded (dark)"
+	show_constraints_checkbox.button_pressed = true
+	show_constraints_checkbox.toggled.connect(func(checked: bool): canvas.set_show_constraints(checked))
+	inspector.add_child(show_constraints_checkbox)
+	constraint_feedback = _paragraph("Click the map to inspect a cell restriction.")
+	constraint_feedback.name = "ConstraintFeedback"
+	inspector.add_child(constraint_feedback)
+	inspector.add_child(_paragraph("Dark: outside all WALKABLE polygons. Red: NO-GO polygons. Orange: blocked cells. Green outline: walkable. These are distinct; unblocking a cell cannot override a polygon."))
+	zone_list = ItemList.new()
+	zone_list.name = "ZoneList"
+	zone_list.custom_minimum_size.y = 108
+	zone_list.item_selected.connect(_on_zone_selected)
+	inspector.add_child(zone_list)
+	var zone_actions := HFlowContainer.new()
+	inspector.add_child(zone_actions)
+	zone_actions.add_child(_button("+ WALKABLE rectangle", _begin_walkable_zone))
+	zone_actions.add_child(_button("+ NO-GO rectangle", _begin_nogo_zone))
+	zone_actions.add_child(_button("Cancel zone drawing", _cancel_zone))
+	zone_actions.add_child(_button("Remove selected draft zone…", _request_delete_zone))
+	inspector.add_child(_paragraph("To expand walkable floor: click + WALKABLE rectangle, then two opposite corners on the map. To adjust an existing polygon, select it, remove with confirmation, then redraw. Undo works. Changes affect QA drafts only."))
+	zone_delete_confirmation = ConfirmationDialog.new()
+	zone_delete_confirmation.title = "Remove DRAFT_ONLY navigation polygon?"
+	zone_delete_confirmation.dialog_text = "This removes the selected polygon from the editable QA draft only. Existing route/waypoint constraints will be validated. The original source and production map stay unchanged."
+	zone_delete_confirmation.confirmed.connect(_delete_selected_zone)
+	add_child(zone_delete_confirmation)
+	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("WAYPOINTS · stable IDs"))
 	waypoint_list = ItemList.new()
 	waypoint_list.custom_minimum_size.y = 155
@@ -264,14 +325,12 @@ func _make_ui() -> void:
 	inspector.add_child(_paragraph("Tool 3: choose two waypoints in the SAME room to connect (temporary provisional edge). Tool 4: click a route line to select it. Tool 5: click adjacent grid cells to redraw the selected route, starting at FROM and ending at TO. Press Apply cells. Existing exact text editor remains available."))
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("OBSTACLES + PREVIEW"))
-	inspector.add_child(_paragraph("Obstacles mode: click or paint cells to block. Re-click to unblock. No-go polygons remain read-only restrictions."))
+	inspector.add_child(_paragraph("Block cells: click/paint orange grid blockers; re-click to unblock. Red NO-GO polygons and missing GREEN walkable area are separate restrictions; edit those under WALKABLE / NO-GO ZONES above."))
 	inspector.add_child(_button("Unblock selected cell", _clear_selected_cell))
 	inspector.add_child(_button("Test Route: selected from → to", _test_route))
 	inspector.add_child(_button("Clear route preview", _clear_preview))
 	inspector.add_child(_paragraph("Test Route shows the in-editor path. Play integrated first floor reads the SAVED user / project draft, never unsaved changes. Real doors are still unresolved: transitions are TEST_ONLY."))
-	inspector.add_child(HSeparator.new())
-	inspector.add_child(_heading("ADVANCED · grid / image pixels"))
-	inspector.add_child(grid_section)
+	# No advanced grid controls at the bottom: see GRID SETTINGS above.
 
 
 func _button(caption: String, callback: Callable) -> Button:
@@ -312,14 +371,20 @@ func _spin(parent: BoxContainer, caption: String, low: float, high: float, initi
 
 func _message(text: String) -> void:
 	status.text = text
-	if text.begins_with("ERROR:"):
-		push_warning(text)
+	status.add_theme_color_override("font_color",
+		Color("#ff8585") if text.begins_with("ERROR:") else Color("#d7e2ee"))
+	# User-action validation is expected feedback. Do not flood Godot's Output
+	# dock with repeated push_warning() on every invalid click.
 
 
 func _set_mode(mode: String) -> void:
 	if not MODES.has(mode):
 		_message("ERROR: Unknown editor tool " + mode)
 		return
+	if mode != "Zones":
+		zone_pending_group = ""
+		zone_pending_corner = Vector2.INF
+		canvas.set_zone_corner(Vector2.INF)
 	current_mode = mode
 	canvas.set_mode(mode)
 	var index := MODES.find(mode)
@@ -334,6 +399,7 @@ func _set_mode(mode: String) -> void:
 		"Cells": tool_help.text = "DRAW CELLS: select a route, press Start cell path, then click successive adjacent cells; finish at TO and Apply."
 		"Obstacles": tool_help.text = "BLOCK CELLS: click/paint cells to toggle blockers. Existing routes cannot pass through blocked cells."
 		"Pan": tool_help.text = "PAN: left/right/middle drag. Mouse wheel always zooms; Fit artwork resets view."
+		"Zones": tool_help.text = "ZONES: choose + WALKABLE or + NO-GO, click two opposite artwork corners. To redraw a polygon, select it in the list, remove with confirmation and draw anew. Draft only."
 	_message(active_tool_label.text + " · " + ROOM_LABELS[Routes.ROOM_IDS.find(active_room)])
 
 
@@ -396,6 +462,7 @@ func _refresh() -> void:
 	grid_offset_y.set_value_no_signal(float(g["origin"][1]))
 	grid_visible.set_pressed_no_signal(bool(g["visible"]))
 	grid_coordinates.set_pressed_no_signal(bool(g["showCoordinates"]))
+	_refresh_zone_list()
 	waypoint_list.clear()
 	waypoint_ids.clear()
 	route_from.clear()
@@ -466,8 +533,115 @@ func _refresh() -> void:
 	canvas.selected_waypoint = selected_waypoint
 	canvas.selected_route = selected_route
 	canvas.selected_cell = selected_cell
+	canvas.set_selected_zone(selected_zone_id)
 	canvas.set_active_room(active_room)
 	canvas.queue_redraw()
+
+
+
+func _refresh_zone_list() -> void:
+	if not is_instance_valid(zone_list):
+		return
+	zone_list.clear()
+	zone_ids.clear()
+	for group in ["walkablePolygons", "noGoPolygons"]:
+		for zone in document.get(group, []):
+			var id := str(zone.get("id", ""))
+			zone_ids.append({"group": group, "id": id})
+			zone_list.add_item(("WALKABLE · " if group == "walkablePolygons" else "NO-GO · ") + id)
+			if group == selected_zone_group and id == selected_zone_id:
+				zone_list.select(zone_ids.size() - 1)
+	var still_selected := false
+	for item in zone_ids:
+		if item["id"] == selected_zone_id and item["group"] == selected_zone_group:
+			still_selected = true
+			break
+	if not still_selected:
+		selected_zone_id = ""
+		selected_zone_group = ""
+
+
+func _on_zone_selected(index: int) -> void:
+	if index < 0 or index >= zone_ids.size():
+		return
+	selected_zone_group = str(zone_ids[index]["group"])
+	selected_zone_id = str(zone_ids[index]["id"])
+	canvas.set_selected_zone(selected_zone_id)
+	_message("Selected " + selected_zone_id + " (" + selected_zone_group + "). Remove with confirmation, then redraw if needed. DRAFT_ONLY.")
+
+
+func _show_restriction(point: Vector2) -> void:
+	if document.is_empty() or not is_instance_valid(constraint_feedback):
+		return
+	var result: Dictionary = Routes.restriction_at(point, document)
+	var cell: String = Routes.pixel_to_cell(point, document)
+	constraint_feedback.text = "Pixel %s · cell %s · %s" % [str(point.round()), cell, str(result.get("reason", ""))]
+
+
+func _begin_walkable_zone() -> void:
+	_begin_zone("walkablePolygons")
+
+
+func _begin_nogo_zone() -> void:
+	_begin_zone("noGoPolygons")
+
+
+func _begin_zone(group: String) -> void:
+	if not ["walkablePolygons", "noGoPolygons"].has(group):
+		return
+	_set_mode("Zones")
+	zone_pending_group = group
+	zone_pending_corner = Vector2.INF
+	canvas.set_zone_corner(Vector2.INF)
+	_message("ZONE: click first corner, then opposite corner of a new " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " rectangle. DRAFT_ONLY.")
+
+
+func _cancel_zone() -> void:
+	zone_pending_group = ""
+	zone_pending_corner = Vector2.INF
+	canvas.set_zone_corner(Vector2.INF)
+	_message("Zone drawing cancelled; draft unchanged")
+
+
+func _zone_corner_clicked(point: Vector2) -> void:
+	if zone_pending_group.is_empty():
+		return
+	if not zone_pending_corner.is_finite():
+		zone_pending_corner = point
+		canvas.set_zone_corner(point)
+		_message("Zone first corner: " + str(point.round()) + ". Click opposite corner, or Cancel zone drawing.")
+		return
+	var start := zone_pending_corner
+	var group := zone_pending_group
+	var result := Routes.add_zone_rectangle(document, group, start, point)
+	if _commit(result, "New " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " polygon added to QA draft. Undo / Save to persist."):
+		selected_zone_group = group
+		selected_zone_id = str(result["id"])
+		_refresh()
+		zone_pending_group = ""
+		zone_pending_corner = Vector2.INF
+		canvas.set_zone_corner(Vector2.INF)
+	else:
+		_message("ERROR: Zone edit rejected: " + str(result.get("error", "")) + ". Choose a different opposite corner or Cancel.")
+
+
+func _request_delete_zone() -> void:
+	if selected_zone_id.is_empty():
+		_message("ERROR: Select a WALKABLE or NO-GO polygon from the list before removal")
+		return
+	zone_delete_confirmation.dialog_text = "Remove %s from the current DRAFT_ONLY file? You can Undo. Existing waypoints and routes will be validated; immutable QA source and production geometry are untouched." % selected_zone_id
+	zone_delete_confirmation.popup_centered()
+
+
+func _delete_selected_zone() -> void:
+	if selected_zone_id.is_empty():
+		return
+	var id := selected_zone_id
+	var result := Routes.delete_zone(document, selected_zone_group, id)
+	if _commit(result, "Removed draft polygon " + id + ". Undo or redraw if necessary."):
+		selected_zone_id = ""
+		selected_zone_group = ""
+		_refresh()
 
 
 func _show_route_details(route: Dictionary) -> void:
@@ -510,8 +684,11 @@ func _snap_point(pixel: Vector2) -> Vector2:
 func _on_image_clicked(point: Vector2) -> void:
 	last_pixel = point
 	pixel_selected = true
+	_show_restriction(point)
 	if current_mode == "Add":
 		_add_waypoint()
+	elif current_mode == "Zones" and not zone_pending_group.is_empty():
+		_zone_corner_clicked(point)
 
 
 func _on_cell_clicked(cell: String) -> void:
@@ -591,7 +768,13 @@ func _add_waypoint() -> void:
 	if not pixel_selected:
 		_message("ERROR: Click an empty walkable position on the map before adding a waypoint")
 		return
-	var result := Routes.add_waypoint(document, _snap_point(last_pixel), "New waypoint", active_room)
+	var target := _snap_point(last_pixel)
+	var blocked_reason: Dictionary = Routes.restriction_at(target, document)
+	if blocked_reason.get("kind") != "allowed":
+		_message("ERROR: " + str(blocked_reason["reason"]) + " [at " + str(target.round()) + "]")
+		_show_restriction(target)
+		return
+	var result := Routes.add_waypoint(document, target, "New waypoint", active_room)
 	if _commit(result, "Added waypoint at " + str(last_pixel.round())):
 		selected_waypoint = str(result.id)
 		_refresh()
