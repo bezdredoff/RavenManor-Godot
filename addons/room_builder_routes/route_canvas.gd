@@ -17,6 +17,7 @@ signal zone_vertex_chosen(index: int)
 signal zone_drag_changed(points: PackedVector2Array)
 signal zone_drag_finished(points: PackedVector2Array)
 signal zone_insert_requested(edge_index: int, point: Vector2)
+signal zone_cancelled()
 
 var document: Dictionary = {}
 var image: Texture2D
@@ -496,6 +497,13 @@ func _zone_mouse_press(pixel: Vector2) -> void:
 		queue_redraw()
 		return
 	var handle := _zone_vertex_at(pixel, points)
+	# When polygons overlap, select the region under the cursor rather than
+	# accidentally moving the previously selected large WALKABLE floor.
+	var hit: Dictionary = pick_zone(pixel)
+	if handle < 0 and not hit.is_empty() and (
+			str(hit["id"]) != selected_zone or str(hit["group"]) != selected_zone_group):
+		zone_chosen.emit(str(hit["group"]), str(hit["id"]))
+		return
 	if handle >= 0:
 		selected_zone_vertex = handle
 		zone_vertex_chosen.emit(handle)
@@ -503,7 +511,6 @@ func _zone_mouse_press(pixel: Vector2) -> void:
 	elif points.size() >= 3 and Geometry2D.is_point_in_polygon(pixel, points):
 		_zone_drag_vertex = -1
 	else:
-		var hit: Dictionary = pick_zone(pixel)
 		if not hit.is_empty():
 			zone_chosen.emit(str(hit["group"]), str(hit["id"]))
 		else:
@@ -550,6 +557,7 @@ func _gui_input(event: InputEvent) -> void:
 		_zone_dragging = false
 		zone_inserting = false
 		clear_zone_edit_preview()
+		zone_cancelled.emit()
 		accept_event()
 		return
 	if mode == "Freehand" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
