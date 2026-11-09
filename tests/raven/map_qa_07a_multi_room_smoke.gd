@@ -44,6 +44,10 @@ func _run() -> void:
 	host = HostScene.instantiate()
 	root.add_child(host)
 	await process_frame
+	var physical_arrivals: Array[Dictionary] = []
+	# Connect before host config so this records the old-room physical contact
+	# before the MAP-QA-06 ready callback switches visual coordinate spaces.
+	host.actor.segment_completed.connect(func(id, feet): physical_arrivals.append({"id": str(id), "feet": feet}))
 	assert(host.configure_host(contract, fixture["visuals"], "RM-ROOM-HALL", "QA-HALL-SPAWN"))
 	host.room_changed.connect(func(event): visited.append(str(event.get("roomId", ""))))
 	assert(host.active_room_id == "RM-ROOM-HALL")
@@ -88,6 +92,9 @@ func _run() -> void:
 	assert(host.actor.position == in_motion and host.actor.is_paused())
 	assert(host.resume_movement())
 	_drive_room("QA-F7-CORRIDOR")
+	assert(not physical_arrivals.is_empty())
+	assert(physical_arrivals.back().id == "QA-HALL-PORTAL-APPROACH")
+	assert(physical_arrivals.back().feet == _fixture_anchor_position(contract["rooms"][0]["graph"], "QA-HALL-PORTAL-APPROACH"))
 	assert(host.controller.confirmed_anchor() == "QA-F7-C-ENTRY-H")
 	assert(host.actor.position == Vector2(135, 280))
 	assert(host.camera.limit_right == 900 and host.camera.limit_bottom == 550)
@@ -112,6 +119,7 @@ func _run() -> void:
 	assert(host.controller.confirmed_anchor() == "QA-F7-C-SIDE")
 	assert(host.request_transition("QA-F7-TR-CB").get("ok"))
 	_drive_room("QA-F7-BEDROOM")
+	assert(physical_arrivals.back().id == "QA-F7-C-TO-B" and physical_arrivals.back().feet == Vector2(765, 280))
 	assert(host.controller.confirmed_anchor() == "QA-F7-B-ENTRY")
 	assert(host.actor.position == Vector2(135, 280))
 	assert(host.camera.limit_right == 780 and host.camera.limit_bottom == 520)
@@ -121,10 +129,12 @@ func _run() -> void:
 	# Return C → B → A, with dedicated far-side safe entries.
 	assert(host.request_transition("QA-F7-TR-BC").get("ok"))
 	_drive_room("QA-F7-CORRIDOR")
+	assert(physical_arrivals.back().id == "QA-F7-B-TO-C" and physical_arrivals.back().feet == Vector2(65, 280))
 	assert(host.actor.position == Vector2(685,280))
 	assert(host.controller.confirmed_anchor() == "QA-F7-C-ENTRY-B")
 	assert(host.request_transition("QA-F7-TR-CH").get("ok"))
 	_drive_room("RM-ROOM-HALL")
+	assert(physical_arrivals.back().id == "QA-F7-C-TO-H" and physical_arrivals.back().feet == Vector2(65, 280))
 	assert(host.controller.confirmed_anchor() == "QA-HALL-RETURN-SAFE")
 	assert(host.actor.position == host.controller.anchor_position("QA-HALL-RETURN-SAFE"))
 	assert(host.state_proposal()["returnSpawnAnchorId"] == "QA-HALL-RETURN-SAFE")
@@ -193,3 +203,10 @@ func _drive_demo_room(demo, target: String) -> void:
 		assert(demo.host.actor.has_active_segment())
 		demo.host.actor.advance(60.0)
 	assert(demo.host.active_room_id == target)
+
+
+func _fixture_anchor_position(graph_data: Dictionary, anchor_id: String) -> Vector2:
+	for raw in graph_data.get("anchors", []):
+		if str(raw.get("id", "")) == anchor_id:
+			return Vector2(float(raw["position"][0]), float(raw["position"][1]))
+	return Vector2.INF
