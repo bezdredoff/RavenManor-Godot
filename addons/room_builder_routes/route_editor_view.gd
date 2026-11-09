@@ -23,6 +23,8 @@ var selected_waypoint := ""
 var selected_route := ""
 var selected_cell := ""
 var last_pixel := Vector2(836, 746)
+var pixel_selected := false
+var last_persisted_kind := PreviewSource.PROJECT
 var click_route_from := true
 var connect_from := ""
 var active_room := "RM-ROOM-HALL"
@@ -71,6 +73,7 @@ func _init() -> void:
 func _ready() -> void:
 	_make_ui()
 	canvas.set_image(IMAGE)
+	_set_mode("Waypoints")
 	var imported := Routes.import_hall()
 	if not imported.ok:
 		_message("ERROR: " + str(imported.error))
@@ -506,6 +509,7 @@ func _snap_point(pixel: Vector2) -> Vector2:
 
 func _on_image_clicked(point: Vector2) -> void:
 	last_pixel = point
+	pixel_selected = true
 	if current_mode == "Add":
 		_add_waypoint()
 
@@ -584,6 +588,9 @@ func _on_waypoint_list_select(index: int) -> void:
 
 
 func _add_waypoint() -> void:
+	if not pixel_selected:
+		_message("ERROR: Click an empty walkable position on the map before adding a waypoint")
+		return
 	var result := Routes.add_waypoint(document, _snap_point(last_pixel), "New waypoint", active_room)
 	if _commit(result, "Added waypoint at " + str(last_pixel.round())):
 		selected_waypoint = str(result.id)
@@ -787,7 +794,7 @@ func _import_hall() -> void:
 		_message("ERROR: " + str(source.error))
 		return
 	_set_document(source.document)
-	_message("Re-imported original immutable Hall QA; seven points, provisional edges. Save to keep this change.")
+	_message("Imported original Hall DRAFT_ONLY. Save it before launching; original source remains immutable.")
 
 
 func _save_user() -> void:
@@ -796,8 +803,9 @@ func _save_user() -> void:
 		_message("ERROR: " + str(saved.error))
 		return
 	last_saved = JSON.stringify(document)
+	last_persisted_kind = PreviewSource.USER
 	_refresh_dirty()
-	_message("Saved editor draft to " + Routes.DEFAULT_SAVE + " (NOT production)")
+	_message("Saved DRAFT_ONLY to user://. Press Play integrated first floor, then choose Saved user in the QA scene.")
 
 
 func _load_user() -> void:
@@ -806,6 +814,7 @@ func _load_user() -> void:
 		_message("ERROR: " + str(loaded.error))
 		return
 	_set_document(loaded.document, false)
+	last_persisted_kind = PreviewSource.USER
 	_message("Loaded persistent user:// QA draft")
 
 
@@ -816,6 +825,7 @@ func _export_project() -> void:
 		_message("ERROR: " + str(result.error))
 		return
 	last_saved = JSON.stringify(document)
+	last_persisted_kind = PreviewSource.PROJECT
 	_refresh_dirty()
 	EditorInterface.get_resource_filesystem().scan()
 	_message("Exported versioned QA draft to " + path + " (source pilot untouched)")
@@ -828,6 +838,7 @@ func _load_project() -> void:
 		_message("ERROR: " + str(result.error))
 		return
 	_set_document(result.document, false)
+	last_persisted_kind = PreviewSource.PROJECT
 	_message("Opened project QA draft: " + path)
 
 
@@ -846,3 +857,19 @@ func _open_pilot(kind: String = PreviewSource.BASELINE) -> void:
 		return
 	EditorInterface.play_custom_scene(PILOT)
 	_message("Playing %s: %s · DRAFT_ONLY · %d provisional edges. Only saved files are loaded." % [kind, preview.source_path, preview.provisional_routes.size()])
+
+
+# Launches the existing MAP-QA-07B playable integration without modifying
+# manor-map runtime or relying on unsaved editor state. Source is selected
+# explicitly in that scene; no hidden in-memory graph handoff.
+func _open_integrated() -> void:
+	if JSON.stringify(document) != last_saved:
+		_message("ERROR: Unsaved changes cannot be played. Save user draft or export project draft first.")
+		return
+	var path := Routes.DEFAULT_SAVE if last_persisted_kind == PreviewSource.USER else Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
+	var loaded := Routes.load_draft(path)
+	if not loaded.get("ok", false):
+		_message("ERROR: Cannot launch integrated QA: " + str(loaded.get("error", "missing draft")))
+		return
+	EditorInterface.play_custom_scene(INTEGRATED)
+	_message("MAP-QA-07B launched. Choose " + ("Saved user" if last_persisted_kind == PreviewSource.USER else "Project draft") + " in the scene. TEST_ONLY transitions; source DRAFT_ONLY.")
