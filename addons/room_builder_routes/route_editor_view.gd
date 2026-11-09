@@ -379,6 +379,10 @@ func _set_mode(mode: String) -> void:
 	if not MODES.has(mode):
 		_message("ERROR: Unknown editor tool " + mode)
 		return
+	if mode != "Zones":
+		zone_pending_group = ""
+		zone_pending_corner = Vector2.INF
+		canvas.set_zone_corner(Vector2.INF)
 	current_mode = mode
 	canvas.set_mode(mode)
 	var index := MODES.find(mode)
@@ -393,6 +397,7 @@ func _set_mode(mode: String) -> void:
 		"Cells": tool_help.text = "DRAW CELLS: select a route, press Start cell path, then click successive adjacent cells; finish at TO and Apply."
 		"Obstacles": tool_help.text = "BLOCK CELLS: click/paint cells to toggle blockers. Existing routes cannot pass through blocked cells."
 		"Pan": tool_help.text = "PAN: left/right/middle drag. Mouse wheel always zooms; Fit artwork resets view."
+		"Zones": tool_help.text = "ZONES: choose + WALKABLE or + NO-GO, click two opposite artwork corners. To redraw a polygon, select it in the list, remove with confirmation and draw anew. Draft only."
 	_message(active_tool_label.text + " · " + ROOM_LABELS[Routes.ROOM_IDS.find(active_room)])
 
 
@@ -455,6 +460,7 @@ func _refresh() -> void:
 	grid_offset_y.set_value_no_signal(float(g["origin"][1]))
 	grid_visible.set_pressed_no_signal(bool(g["visible"]))
 	grid_coordinates.set_pressed_no_signal(bool(g["showCoordinates"]))
+	_refresh_zone_list()
 	waypoint_list.clear()
 	waypoint_ids.clear()
 	route_from.clear()
@@ -525,8 +531,108 @@ func _refresh() -> void:
 	canvas.selected_waypoint = selected_waypoint
 	canvas.selected_route = selected_route
 	canvas.selected_cell = selected_cell
+	canvas.set_selected_zone(selected_zone_id)
 	canvas.set_active_room(active_room)
 	canvas.queue_redraw()
+
+
+
+func _refresh_zone_list() -> void:
+	if not is_instance_valid(zone_list):
+		return
+	zone_list.clear()
+	zone_ids.clear()
+	for group in ["walkablePolygons", "noGoPolygons"]:
+		for zone in document.get(group, []):
+			var id := str(zone.get("id", ""))
+			zone_ids.append({"group": group, "id": id})
+			zone_list.add_item(("WALKABLE · " if group == "walkablePolygons" else "NO-GO · ") + id)
+			if group == selected_zone_group and id == selected_zone_id:
+				zone_list.select(zone_ids.size() - 1)
+	if not zone_ids.any(func(z: Dictionary): return z["id"] == selected_zone_id and z["group"] == selected_zone_group):
+		selected_zone_id = ""
+		selected_zone_group = ""
+
+
+func _on_zone_selected(index: int) -> void:
+	if index < 0 or index >= zone_ids.size():
+		return
+	selected_zone_group = str(zone_ids[index]["group"])
+	selected_zone_id = str(zone_ids[index]["id"])
+	canvas.set_selected_zone(selected_zone_id)
+	_message("Selected " + selected_zone_id + " (" + selected_zone_group + "). Remove with confirmation, then redraw if needed. DRAFT_ONLY.")
+
+
+func _show_restriction(point: Vector2) -> void:
+	if document.is_empty() or not is_instance_valid(constraint_feedback):
+		return
+	var result: Dictionary = Routes.restriction_at(point, document)
+	var cell: String = Routes.pixel_to_cell(point, document)
+	constraint_feedback.text = "Pixel %s · cell %s · %s" % [str(point.round()), cell, str(result.get("reason", ""))]
+
+
+func _begin_walkable_zone() -> void:
+	_begin_zone("walkablePolygons")
+
+
+func _begin_nogo_zone() -> void:
+	_begin_zone("noGoPolygons")
+
+
+func _begin_zone(group: String) -> void:
+	if not ["walkablePolygons", "noGoPolygons"].has(group):
+		return
+	_set_mode("Zones")
+	zone_pending_group = group
+	zone_pending_corner = Vector2.INF
+	canvas.set_zone_corner(Vector2.INF)
+	_message("ZONE: click first corner, then opposite corner of a new " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " rectangle. DRAFT_ONLY.")
+
+
+func _cancel_zone() -> void:
+	zone_pending_group = ""
+	zone_pending_corner = Vector2.INF
+	canvas.set_zone_corner(Vector2.INF)
+	_message("Zone drawing cancelled; draft unchanged")
+
+
+func _zone_corner_clicked(point: Vector2) -> void:
+	if zone_pending_group.is_empty():
+		return
+	if not zone_pending_corner.is_finite():
+		zone_pending_corner = point
+		canvas.set_zone_corner(point)
+		_message("Zone first corner: " + str(point.round()) + ". Click opposite corner, or Cancel zone drawing.")
+		return
+	var start := zone_pending_corner
+	var group := zone_pending_group
+	var result := Routes.add_zone_rectangle(document, group, start, point)
+	if _commit(result, "New " + ("WALKABLE" if group == "walkablePolygons" else "NO-GO") + " polygon added to QA draft. Undo / Save to persist."):
+		selected_zone_group = group
+		selected_zone_id = str(result["id"])
+		_refresh()
+		_cancel_zone()
+	else:
+		_message("ERROR: Zone edit rejected: " + str(result.get("error", "")) + ". Choose a different opposite corner or Cancel.")
+
+
+func _request_delete_zone() -> void:
+	if selected_zone_id.is_empty():
+		_message("ERROR: Select a WALKABLE or NO-GO polygon from the list before removal")
+		return
+	zone_delete_confirmation.dialog_text = "Remove %s from the current DRAFT_ONLY file? You can Undo. Existing waypoints and routes will be validated; immutable QA source and production geometry are untouched." % selected_zone_id
+	zone_delete_confirmation.popup_centered()
+
+
+func _delete_selected_zone() -> void:
+	if selected_zone_id.is_empty():
+		return
+	var id := selected_zone_id
+	var result := Routes.delete_zone(document, selected_zone_group, id)
+	if _commit(result, "Removed draft polygon " + id + ". Undo or redraw if necessary."):
+		selected_zone_id = ""
+		selected_zone_group = ""
+		_refresh()
 
 
 func _show_route_details(route: Dictionary) -> void:
@@ -569,8 +675,11 @@ func _snap_point(pixel: Vector2) -> Vector2:
 func _on_image_clicked(point: Vector2) -> void:
 	last_pixel = point
 	pixel_selected = true
+	_show_restriction(point)
 	if current_mode == "Add":
 		_add_waypoint()
+	elif current_mode == "Zones" and not zone_pending_group.is_empty():
+		_zone_corner_clicked(point)
 
 
 func _on_cell_clicked(cell: String) -> void:
@@ -650,7 +759,13 @@ func _add_waypoint() -> void:
 	if not pixel_selected:
 		_message("ERROR: Click an empty walkable position on the map before adding a waypoint")
 		return
-	var result := Routes.add_waypoint(document, _snap_point(last_pixel), "New waypoint", active_room)
+	var target := _snap_point(last_pixel)
+	var blocked_reason: Dictionary = Routes.restriction_at(target, document)
+	if blocked_reason.get("kind") != "allowed":
+		_message("ERROR: " + str(blocked_reason["reason"]) + " [at " + str(target.round()) + "]")
+		_show_restriction(target)
+		return
+	var result := Routes.add_waypoint(document, target, "New waypoint", active_room)
 	if _commit(result, "Added waypoint at " + str(last_pixel.round())):
 		selected_waypoint = str(result.id)
 		_refresh()
