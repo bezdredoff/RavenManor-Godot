@@ -223,6 +223,75 @@ static func _is_restricted(point: Vector2, doc: Dictionary) -> bool:
 	return doc.get("blockedCells", []).has(pixel_to_cell(point, doc))
 
 
+
+# Explains exactly which draft-only limit is rejecting a pixel. A blocked cell
+# is NOT interchangeable with a no-go polygon or the walkable-area boundary.
+static func restriction_at(point: Vector2, doc: Dictionary) -> Dictionary:
+	if not _inside_art(point, doc):
+		return {"kind": "image", "id": "", "reason": "Outside the approved image bounds"}
+	for zone in doc.get("noGoPolygons", []):
+		if Geometry2D.is_point_in_polygon(point, _polygon_points(zone)):
+			return {"kind": "no-go", "id": str(zone.get("id", "")), "reason": "Inside red NO-GO zone " + str(zone.get("id", "")) + ". Edit it in Zones (draft only)."}
+	var walkable: Array = doc.get("walkablePolygons", [])
+	if not walkable.is_empty():
+		var inside := false
+		for zone in walkable:
+			if Geometry2D.is_point_in_polygon(point, _polygon_points(zone)):
+				inside = true
+				break
+		if not inside:
+			return {"kind": "outside-walkable", "id": "", "reason": "Outside all GREEN WALKABLE polygons. Add a WALKABLE zone in Zones mode (draft only)."}
+	var cell := pixel_to_cell(point, doc)
+	if doc.get("blockedCells", []).has(cell):
+		return {"kind": "blocked-cell", "id": cell, "reason": "Cell " + cell + " is blocked (orange). Use Block cells or Unblock selected cell."}
+	return {"kind": "allowed", "id": "", "reason": "Walkable draft point. Editing room and route still require validation."}
+
+
+# UI-only rectangle authoring into the existing schema-v1 polygon collections.
+# Changes stay on a versioned DRAFT_ONLY copy; the compiler/adapter validate
+# every existing waypoint and route after each edit. No runtime override.
+static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, b: Vector2) -> Dictionary:
+	if group not in ["walkablePolygons", "noGoPolygons"]:
+		return _bad("Choose WALKABLE or NO-GO polygon for draft editing")
+	if not _inside_art(a, original) or not _inside_art(b, original):
+		return _bad("Zone corner outside approved image")
+	var min_xy := Vector2(minf(a.x, b.x), minf(a.y, b.y))
+	var max_xy := Vector2(maxf(a.x, b.x), maxf(a.y, b.y))
+	if max_xy.x - min_xy.x < 4.0 or max_xy.y - min_xy.y < 4.0:
+		return _bad("Zone rectangle needs at least 4 image pixels width and height")
+	if max_xy.x >= 1672.0 or max_xy.y >= 941.0:
+		return _bad("Zone corners must stay within artwork")
+	var doc: Dictionary = original.duplicate(true)
+	var prefix := "QA-EDIT-WALK-" if group == "walkablePolygons" else "QA-EDIT-NOGO-"
+	var known := {}
+	for zone in doc[group]:
+		known[str(zone.get("id", ""))] = true
+	var serial := 1
+	while known.has(prefix + "%03d" % serial):
+		serial += 1
+	var id := prefix + "%03d" % serial
+	doc[group].append({
+		"id": id,
+		"pointsPx": [pixel_pair(min_xy), pixel_pair(Vector2(max_xy.x, min_xy.y)),
+			pixel_pair(max_xy), pixel_pair(Vector2(min_xy.x, max_xy.y))]
+	})
+	var checked := _finish_edit(doc)
+	if checked.ok:
+		checked["id"] = id
+	return checked
+
+
+static func delete_zone(original: Dictionary, group: String, id: String) -> Dictionary:
+	if group not in ["walkablePolygons", "noGoPolygons"]:
+		return _bad("Unsupported zone collection")
+	var doc: Dictionary = original.duplicate(true)
+	for i in range(doc[group].size()):
+		if str(doc[group][i].get("id", "")) == id:
+			doc[group].remove_at(i)
+			return _finish_edit(doc)
+	return _bad("Unknown " + group + " zone " + id)
+
+
 static func _crosses_polygon(a: Vector2, b: Vector2, region: Dictionary) -> bool:
 	var polygon := _polygon_points(region)
 	for i in range(polygon.size()):
