@@ -22,11 +22,27 @@
 | Select a route | **4 Select route** → click its colored line or select from route list | Selected path becomes thick yellow with outlined start (green) and end (orange) |
 | Redraw a route | Select it → **5 Draw route cells** → **Start cell path at FROM** → click orthogonally adjacent cells ending at TO → **Apply cells** | Preserves the exact text cell editor and the deterministic per-cell Godot movement path |
 | Delete a route | Select route → **Delete route** | Removes edge and allows its endpoint room to change later |
+| Freehand route | **9 Draw route (freehand)** → drag → inspect → **Apply route** | Converts a continuous mouse line into validated orthogonal cells; explicit commit only |
 | Undo or redo | **Undo** / **Redo** in toolbar | Reverses/replays committed document edits; selection/dragging alone is not a history step |
 
 **Cell path example:** `AB11 → AC11 → AD11 → AD12`. Each successive cell must share a side (no diagonals or skipped cells), and the first and last must contain the route's FROM and TO waypoint respectively. **Apply cells** is the commit: until then the editor is only previewing the proposed route, not silently changing the document. Provisional imported straight edges remain marked provisional until an authored sequence validates.
 
-For a future freehand pen tool, route hit-testing lives in `RouteCanvas.pick_route()`; saved geometry still goes through `RouteDocument.set_route_cells()`. Freehand drawing is **not** implemented in MAP-EDIT-03.
+## MAP-EDIT-04 — draw a whole route with the mouse (tool 9)
+
+**No cell coordinates are required.** This workflow edits the same DRAFT_ONLY v1 document as the older grid tools.
+
+1. Click **Load project draft**, select Hall/Corridor/Bedroom/Library/Kitchen from the compact **Room** selector, and confirm green WALKABLE / red NO-GO / dark outside-walkable overlays are visible.
+2. For an existing path, click it using **4 Select route** or choose it in the route list, then choose **9 Draw route (freehand)** or **Redraw selected**. The route's endpoints, ID and one-way/bidirectional flag are preserved.
+3. For a new path, choose **9 Draw route (freehand)**, click **New (FROM / TO)**, and select two same-room waypoints in the existing FROM / TO pickers. You do **not** have to connect them manually first.
+4. Hold **left mouse** near the FROM dot, paint along the actual walkable corridor on the approved image and release near the TO dot. Blue is the original mouse stroke; thick lime is the proposed orthogonal grid path. A red marker/segment identifies a rejected location. Use **Simplify px** (0–48, default 4) to reduce pointer noise, but preserve visible turns.
+5. Review the status/diagnostic message. If valid, click **Apply route**. Release does **not** save anything, and **Discard** or **Escape** abandons only the preview. Invalid or room-crossing strokes cannot be applied. If the stroke touches furniture/NO-GO/blocked/outside green region, redraw in freehand or explicitly correct the draft zones in tool 8; this tool will **not** silently move walls, enlarge zones or choose a different corridor.
+6. **Undo / Redo** revert the single applied document edit. The editor then says **UNSAVED changes**. Click **Save user draft**, followed by **Play integrated first floor**, and choose **Saved user** inside the QA scene. In F3 view, inspect the same route cells and walk Onoe between the two endpoints. For a shareable QA candidate choose **Export project draft** and **Project draft** in the scene instead.
+
+**Room ownership:** freehand steps must remain inside walkable polygons explicitly tagged with the selected room. Newly added WALKABLE rectangles inherit the selected room in the native editor. Older unowned draft rectangles must be redrawn from the appropriate room before freehand will use them; a green polygon for another room is not permission to cross the doorway. This is an authoring-safety check, **not** an approved collision/production geometry boundary.
+
+**Troubleshooting:** A missing green floor is different from an orange blocked cell and a red NO-GO polygon. Examine the error location, select tool 8 to edit a provisional green/red zone or tool 6 for a blocker, and retry. A loop/backtrack is refused rather than silently simplified into a shortcut. The freehand row appears only for tool 9 and leaves the main toolbar compact. Existing tools 1–8, exact cell text, baseline Hall test and save/reload continue to work.
+
+**QA caveat:** headless smoke validates conversion/UI/document-save and the MAP-QA-07B adapter; the owner still must visually verify at the actual Godot editor window size, physical Onoe travel and clearance before declaring the geometry accepted. No campaign or canonical changes are made.
 
 ## Save and actually walk the change
 
