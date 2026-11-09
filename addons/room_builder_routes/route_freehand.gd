@@ -46,6 +46,9 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 		var restriction: Dictionary = Routes.restriction_at(point, doc)
 		if restriction["kind"] != "allowed":
 			return _fail(doc, raw, cells, "Stroke at " + str(point.round()) + ": " + str(restriction["reason"]), point)
+		var room_error := _room_error(doc, room_id, point)
+		if not room_error.is_empty():
+			return _fail(doc, raw, cells, "Stroke at " + str(point.round()) + ": " + room_error, point)
 	# Anchor endpoint snapping is explicit. Retain turns from the actual pixel
 	# stroke; a configurable small distance filter removes mouse jitter without
 	# performing global smoothing or rerouting through unrelated corridors.
@@ -59,6 +62,15 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 		if not segment_error.is_empty():
 			return _fail(doc, raw, cells, "Drawn stroke crosses an obstacle near " +
 				str(filtered[i - 1].lerp(filtered[i], 0.5).round()) + ": " + segment_error, filtered[i])
+		# Exact 2px sampling (same granularity as RouteDocument geometry).
+		# Ownership is distinct from global walkability: traversing the next
+		# room is not allowed merely because its floor is also green.
+		var count := maxi(1, ceili(filtered[i - 1].distance_to(filtered[i]) / 2.0))
+		for j in range(count + 1):
+			var sample: Vector2 = filtered[i - 1].lerp(filtered[i], float(j) / count)
+			var room_error := _room_error(doc, room_id, sample)
+			if not room_error.is_empty():
+				return _fail(doc, raw, cells, "Stroke crosses room boundary at " + str(sample.round()) + ": " + room_error, sample)
 	for point in filtered:
 		var cell := Routes.pixel_to_cell(point, doc)
 		if cell.is_empty():
@@ -86,10 +98,19 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 		var restriction: Dictionary = Routes.restriction_at(point, doc)
 		if restriction["kind"] != "allowed":
 			return _fail(doc, raw, cells, "Cell " + str(cells[i]) + " at " + str(point.round()) + ": " + str(restriction["reason"]), point)
+		var room_error := _room_error(doc, room_id, point)
+		if not room_error.is_empty():
+			return _fail(doc, raw, cells, "Cell " + str(cells[i]) + " at " + str(point.round()) + ": " + room_error, point)
 		if i > 0:
 			var error: String = Routes._check_segment(centers[i - 1], point, doc)
 			if not error.is_empty():
 				return _fail(doc, raw, cells, "Invalid grid step " + str(cells[i - 1]) + " → " + str(cells[i]) + ": " + error, point)
+			var samples := maxi(1, ceili(centers[i - 1].distance_to(point) / 2.0))
+			for j in range(samples + 1):
+				var between: Vector2 = centers[i - 1].lerp(point, float(j) / samples)
+				var boundary_error := _room_error(doc, room_id, between)
+				if not boundary_error.is_empty():
+					return _fail(doc, raw, cells, "Grid step " + str(cells[i - 1]) + " → " + str(cells[i]) + " crosses room ownership: " + boundary_error, between)
 	# Use the authoritative route validator for endpoint alignment, direction,
 	# room ownership, per-segment walkability and compiled runtime geometry.
 	var candidate: Dictionary = doc
@@ -106,6 +127,31 @@ static func convert(doc: Dictionary, room_id: String, from_id: String, to_id: St
 	return {"ok": true, "cells": cells, "points": centers, "raw": raw.duplicate(),
 		"invalidAt": Vector2.INF, "error": "", "routeId": id,
 		"document": checked["document"]}
+
+
+# The v1 QA polygon list already carries roomId on the five imported
+# walkable regions. Optional user-authored zones are tagged by the editor.
+# Untagged polygons cannot silently grant cross-room authoring permission.
+static func _room_error(doc: Dictionary, room_id: String, point: Vector2) -> String:
+	var own := false
+	var other := ""
+	var unknown := false
+	for polygon in doc.get("walkablePolygons", []):
+		if Geometry2D.is_point_in_polygon(point, Routes._polygon_points(polygon)):
+			var owner := str(polygon.get("roomId", ""))
+			if owner == room_id:
+				own = true
+			elif owner.is_empty():
+				unknown = true
+			else:
+				other = owner
+	if not other.is_empty():
+		return "Entered " + other + " walkable region; edit one room at a time"
+	if not own:
+		if unknown:
+			return "Walkable zone has no room ownership. Redraw that draft zone from the selected room."
+		return "Outside the selected room's owned WALKABLE area"
+	return ""
 
 
 static func _append_orthogonal(cells: Array, destination: String) -> void:
