@@ -1,6 +1,6 @@
 extends SceneTree
 ## MAP-QA-07A deterministic Godot headless smoke. No campaign save or real
-## Corridor/Bedroom art. Run separately until integration owner wires check.sh.
+## Corridor/Bedroom art. Registered by scripts/check.sh after MAP-QA-06.
 const Fixture = preload("res://scripts/raven/first_floor_multi_room_fixture.gd")
 const HostScene = preload("res://scenes/raven/tests/first_floor_multi_room_host.tscn")
 const DemoScene = preload("res://scenes/raven/tests/first_floor_multi_room_qa.tscn")

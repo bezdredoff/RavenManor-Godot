@@ -51,7 +51,7 @@ Run:
 - godot --headless --path . --script res://tests/raven/prototype_lab_smoke.gd --quit-after 120
 - bash scripts/check.sh
 
-**Integration-owner follow-up:** register the new MAP-QA-07A smoke once in shared scripts/check.sh, after MAP-QA-06. Agent A/B may edit this shared registry concurrently, so it is intentionally omitted here to avoid conflicts. Until that registration is merged, regular green CI **does not demonstrate that the new MAP-QA-07A smoke executed**. Existing regression checks remain registered.
+**Integration update after PR #247/#249:** the MAP-QA-07A smoke is now registered **exactly once** after MAP-QA-06 in shared scripts/check.sh. MAP-QA-03, MAP-QA-06, MAP-EDIT-01, MAP-EDIT-02 and MAP-QA-05 registrations remain unchanged. Exact-head CI evidence (not merely a green build) must contain `Raven MAP-QA-07A multi-room playable foundation smoke passed`; the smoke drives Onoe and asserts Hall→Corridor→Bedroom→Corridor→Hall with physically confirmed arrivals.
 
 ## Reuse and constraints
 

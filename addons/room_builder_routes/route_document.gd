@@ -276,11 +276,16 @@ static func _check_route(route: Dictionary, doc: Dictionary) -> String:
 	var b := str(route.get("to", ""))
 	if not by_id.has(a) or not by_id.has(b) or a == b:
 		return "Route " + str(route.get("id", "")) + ": unknown or identical endpoint IDs"
+	if not route.get("provisional") is bool:
+		return "Route " + str(route.get("id", "")) + ": provisional flag must be boolean"
 	if not route.get("bidirectional") is bool:
 		return "Route " + str(route.get("id", "")) + ": direction must be boolean"
 	var cells: Variant = route.get("cells", null)
 	if not cells is Array:
 		return "Route cells must be an array"
+	for cell in cells:
+		if not cell is String:
+			return "Route cells must contain cell name strings"
 	if bool(route.get("provisional", false)):
 		if not cells.is_empty():
 			return "Provisional imported straight route cannot claim authored cells"
@@ -311,6 +316,8 @@ static func validate(doc: Dictionary) -> Dictionary:
 		return _bad("Navigation authoring cannot promote geometry to production")
 	if doc.get("canonicalNavigationAuthority") != false or doc.get("coordinateSpace") != "image-pixel":
 		return _bad("Canonical world-plan navigation authority is forbidden")
+	if not doc.get("source", null) is Dictionary or not doc.get("grid", null) is Dictionary:
+		return _bad("Draft source and grid must be objects")
 	var source: Dictionary = doc.get("source", {})
 	if source.get("path") != IMAGE_PATH or source.get("sha256") != IMAGE_SHA256 or source.get("gitBlobSha") != IMAGE_BLOB_SHA:
 		return _bad("Source-image identity differs from approved Hall PNG")
@@ -343,8 +350,10 @@ static func validate(doc: Dictionary) -> Dictionary:
 		occupied[str(cell)] = true
 	for group in ["walkablePolygons", "noGoPolygons"]:
 		for region in doc[group]:
-			if not region is Dictionary or region.get("pointsPx", []).size() < 3:
+			if not region is Dictionary:
 				return _bad("Invalid polygon in " + group)
+			if not region.get("pointsPx", null) is Array or region["pointsPx"].size() < 3:
+				return _bad("Invalid polygon points in " + group)
 			for point in region["pointsPx"]:
 				if not _inside_art(_vector(point), doc):
 					return _bad("Polygon source pixel is outside art")
@@ -510,14 +519,15 @@ static func compile_qa_graph(doc: Dictionary) -> Dictionary:
 		anchors.append({"id": wp["id"], "position": wp["pointPx"].duplicate(), "roomId": "RM-ROOM-HALL", "kind": "safe" if wp["type"] in ["Spawn", "Return Spawn"] else "qa", "hotspotId": hotspot})
 	for route in doc["routes"]:
 		var previous: String = route["from"]
+		var metadata := {"bidirectional": route["bidirectional"], "routeId": route["id"], "provisional": route["provisional"]}
 		var cells: Array = route["cells"]
 		# One intermediate QA anchor per authored cell guarantees corners survive.
 		for i in range(1, cells.size() - 1):
 			var anchor_id := "%s-STEP-%03d" % [str(route["id"]), i]
 			anchors.append({"id": anchor_id, "position": pixel_pair(cell_to_pixel(str(cells[i]), doc)), "roomId": "RM-ROOM-HALL", "kind": "qa"})
-			edges.append({"from": previous, "to": anchor_id, "bidirectional": route["bidirectional"]})
+			edges.append({"from": previous, "to": anchor_id, "bidirectional": metadata.bidirectional, "routeId": metadata.routeId, "provisional": metadata.provisional})
 			previous = anchor_id
-		edges.append({"from": previous, "to": route["to"], "bidirectional": route["bidirectional"]})
+		edges.append({"from": previous, "to": route["to"], "bidirectional": metadata.bidirectional, "routeId": metadata.routeId, "provisional": metadata.provisional})
 	var graph_data := {"anchors": anchors, "edges": edges, "provenance": {"approval": "DRAFT_ONLY", "productionReady": false, "coordinateSpace": "image-pixel"}}
 	var graph = Graph.new()
 	graph.rebuild({}, graph_data)
@@ -542,8 +552,8 @@ static func route_preview(doc: Dictionary, from_id: String, to_id: String) -> Di
 
 
 static func save_draft(path: String, doc: Dictionary) -> Dictionary:
-	if not path.ends_with(".json"):
-		return _bad("Draft path must end with .json")
+	if not path.ends_with(".json") or path.contains("..") or path.contains("\\"):
+		return _bad("Draft path must be a safe .json path")
 	if not path.begins_with("user://room_builder_routes/") and not path.begins_with(PROJECT_DRAFT_DIR):
 		return _bad("Save only inside user://room_builder_routes/ or res://assets/raven/map/qa/drafts/")
 	var checked := validate(doc)
@@ -563,6 +573,8 @@ static func save_draft(path: String, doc: Dictionary) -> Dictionary:
 
 
 static func load_draft(path: String) -> Dictionary:
+	if not path.ends_with(".json") or path.contains("..") or path.contains("\\"):
+		return _bad("Draft must have a safe .json path")
 	if not path.begins_with("user://room_builder_routes/") and not path.begins_with(PROJECT_DRAFT_DIR):
 		return _bad("Load only from separate QA draft directories")
 	var value: Variant = JSON.parse_string(FileAccess.get_file_as_string(path))

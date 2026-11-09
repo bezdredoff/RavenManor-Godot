@@ -28,14 +28,14 @@ The existing authored Hall QA graph is loaded and validated; the Hall-Corridor d
 ## Verification
 
 Local Godot executable: NOT_AVAILABLE in this execution environment.
-Scoped new headless test: provided, NOT_RUN locally and not yet registered in shared check.sh.
+Scoped new headless test: registered once after MAP-QA-06 in scripts/check.sh; local Godot NOT_AVAILABLE; exact-head CI pending.
 Existing MAP-QA-03/MAP-QA-06/Whole Manor/Prototype Lab regression commands: documented; status requires exact-head CI.
 External CI: PENDING.
 Owner GUI/phone/manual QA: HUMAN_PENDING.
 
 ## Risk and integration follow-up
 
-No campaign saves/geometry were changed. Manual footpoint/occlusion/portrait inspection still required. Future geometry and draft selection from MAP-QA-05/MAP-EDIT-02 must come through a separately reviewed adapter. Integrator should add one new smoke invocation to scripts/check.sh after MAP-QA-06, then run all six CI jobs. The shared check.sh registry was deliberately left unchanged to minimize parallel-branch conflicts.
+No campaign saves/geometry were changed. Manual footpoint/occlusion/portrait inspection still required. Future geometry and draft selection from MAP-QA-05/MAP-EDIT-02 must come through a separately reviewed adapter. After #247 and #249 merged, this branch merges latest main and adds one new smoke invocation to scripts/check.sh after MAP-QA-06. Existing MAP-QA-03, MAP-QA-06, MAP-EDIT-01, MAP-EDIT-02 and MAP-QA-05 registrations are preserved. Confirm execution from exact-head Godot logs.
 
 ## Status
 
