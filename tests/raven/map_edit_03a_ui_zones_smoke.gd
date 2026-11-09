@@ -100,7 +100,7 @@ func _run() -> void:
 	assert(view.zone_ids.size() == 16)
 	assert(view.dirty_label.text.contains("UNSAVED"))
 	assert(view.history.size() > 0)
-	var zone_count := view.document["walkablePolygons"].size()
+	var zone_count: int = int(view.document["walkablePolygons"].size())
 	view._undo()
 	assert(view.document["walkablePolygons"].size() == zone_count - 1)
 	assert(JSON.stringify(view.document) == untouched)
