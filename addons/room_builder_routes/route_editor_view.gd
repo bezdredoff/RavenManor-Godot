@@ -114,6 +114,7 @@ func _make_ui() -> void:
 	# A single-row toolbar with non-wrapping labels. HFlowContainer previously
 	# squeezed _paragraph() labels to one character per line (300px high).
 	var toolbar := HBoxContainer.new()
+	toolbar.name = "MainToolbar"
 	toolbar.add_theme_constant_override("separation", 8)
 	outer.add_child(toolbar)
 	var title := Label.new()
@@ -207,6 +208,7 @@ func _make_ui() -> void:
 	inspector.add_child(_paragraph("QUICK START: 1) Load project draft. 2) Choose room. 3) Add / drag points. 4) Connect two points. 5) Draw route cells. 6) Save. 7) Play integrated first floor."))
 	inspector.add_child(HSeparator.new())
 	var grid_section := VBoxContainer.new()
+	grid_section.name = "GridSettings"
 	grid_section.add_child(_heading("GRID · source-image pixels"))
 	var row := HBoxContainer.new()
 	grid_section.add_child(row)
@@ -323,7 +325,7 @@ func _make_ui() -> void:
 	inspector.add_child(_paragraph("Tool 3: choose two waypoints in the SAME room to connect (temporary provisional edge). Tool 4: click a route line to select it. Tool 5: click adjacent grid cells to redraw the selected route, starting at FROM and ending at TO. Press Apply cells. Existing exact text editor remains available."))
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("OBSTACLES + PREVIEW"))
-	inspector.add_child(_paragraph("Obstacles mode: click or paint cells to block. Re-click to unblock. No-go polygons remain read-only restrictions."))
+	inspector.add_child(_paragraph("Block cells: click/paint orange grid blockers; re-click to unblock. Red NO-GO polygons and missing GREEN walkable area are separate restrictions; edit those under WALKABLE / NO-GO ZONES above."))
 	inspector.add_child(_button("Unblock selected cell", _clear_selected_cell))
 	inspector.add_child(_button("Test Route: selected from → to", _test_route))
 	inspector.add_child(_button("Clear route preview", _clear_preview))
@@ -549,7 +551,12 @@ func _refresh_zone_list() -> void:
 			zone_list.add_item(("WALKABLE · " if group == "walkablePolygons" else "NO-GO · ") + id)
 			if group == selected_zone_group and id == selected_zone_id:
 				zone_list.select(zone_ids.size() - 1)
-	if not zone_ids.any(func(z: Dictionary): return z["id"] == selected_zone_id and z["group"] == selected_zone_group):
+	var still_selected := false
+	for item in zone_ids:
+		if item["id"] == selected_zone_id and item["group"] == selected_zone_group:
+			still_selected = true
+			break
+	if not still_selected:
 		selected_zone_id = ""
 		selected_zone_group = ""
 
@@ -611,7 +618,9 @@ func _zone_corner_clicked(point: Vector2) -> void:
 		selected_zone_group = group
 		selected_zone_id = str(result["id"])
 		_refresh()
-		_cancel_zone()
+		zone_pending_group = ""
+		zone_pending_corner = Vector2.INF
+		canvas.set_zone_corner(Vector2.INF)
 	else:
 		_message("ERROR: Zone edit rejected: " + str(result.get("error", "")) + ". Choose a different opposite corner or Cancel.")
 
