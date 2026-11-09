@@ -8,6 +8,9 @@ signal route_chosen(id: String)
 signal image_pixel_chosen(point: Vector2)
 signal cell_chosen(cell: String)
 signal obstacle_paint(cell: String, blocked: bool)
+signal freehand_started()
+signal freehand_changed(stroke: PackedVector2Array)
+signal freehand_finished(stroke: PackedVector2Array)
 
 var document: Dictionary = {}
 var image: Texture2D
@@ -31,6 +34,11 @@ var _last_mouse := Vector2.ZERO
 var _painting := false
 var _paint_value := true
 var _painted: Dictionary = {}
+var freehand_raw := PackedVector2Array()
+var freehand_grid := PackedVector2Array()
+var freehand_invalid := Vector2.INF
+var freehand_cursor := Vector2.INF
+var _freehand_active := false
 
 
 func _ready() -> void:
@@ -51,9 +59,27 @@ func set_image(texture: Texture2D) -> void:
 
 
 func set_mode(value: String) -> void:
+	cancel_freehand()
 	mode = value
 	_drag_point = ""
 	_painting = false
+	queue_redraw()
+
+
+func cancel_freehand() -> void:
+	_freehand_active = false
+	freehand_raw = PackedVector2Array()
+	freehand_grid = PackedVector2Array()
+	freehand_invalid = Vector2.INF
+	freehand_cursor = Vector2.INF
+	queue_redraw()
+
+
+func set_freehand_preview(raw: PackedVector2Array, proposed: PackedVector2Array,
+		invalid_at: Vector2 = Vector2.INF) -> void:
+	freehand_raw = raw.duplicate()
+	freehand_grid = proposed.duplicate()
+	freehand_invalid = invalid_at
 	queue_redraw()
 
 
@@ -152,6 +178,25 @@ func _draw() -> void:
 			if chosen:
 				draw_circle(image_to_screen(points[0]), 9.0, Color("#5bffb5"))
 				draw_circle(image_to_screen(points[points.size() - 1]), 9.0, Color("#ff9a6a"))
+	# Freehand is ONLY a proposal: blue mouse pixels, green authored cells,
+	# red rejected segment/location. Waypoints remain visible over all layers.
+	if mode == "Freehand":
+		for i in range(1, freehand_raw.size()):
+			draw_line(image_to_screen(freehand_raw[i - 1]), image_to_screen(freehand_raw[i]),
+				Color("#39d5ff"), 2.0, true)
+		for i in range(1, freehand_grid.size()):
+			draw_line(image_to_screen(freehand_grid[i - 1]), image_to_screen(freehand_grid[i]),
+				Color("#d5ff61"), 5.0, true)
+		if freehand_invalid.is_finite():
+			var rejected := image_to_screen(freehand_invalid)
+			if freehand_raw.size() > 1:
+				draw_line(image_to_screen(freehand_raw[freehand_raw.size() - 2]), rejected, Color("#ff4141"), 4.0, true)
+			draw_circle(rejected, 11.0, Color("#ff4141"))
+			draw_arc(rejected, 14.0, 0, TAU, 24, Color.WHITE, 2.0)
+		if freehand_cursor.is_finite():
+			var cursor := image_to_screen(freehand_cursor)
+			draw_line(cursor + Vector2(-8, 0), cursor + Vector2(8, 0), Color("#e9fbff"), 1.5)
+			draw_line(cursor + Vector2(0, -8), cursor + Vector2(0, 8), Color("#e9fbff"), 1.5)
 	if preview_points.size() > 1:
 		for i in range(1, preview_points.size()):
 			draw_line(image_to_screen(preview_points[i - 1]), image_to_screen(preview_points[i]), Color("#bfff5b"), 5.0, true)
@@ -309,6 +354,10 @@ func pick_route(pixel: Vector2) -> String:
 func _gui_input(event: InputEvent) -> void:
 	if document.is_empty() or image == null:
 		return
+	if mode == "Freehand" and event is InputEventKey and event.pressed and event.keycode == KEY_ESCAPE:
+		cancel_freehand()
+		accept_event()
+		return
 	if event is InputEventMouseButton:
 		if event.button_index in [MOUSE_BUTTON_WHEEL_UP, MOUSE_BUTTON_WHEEL_DOWN] and event.pressed:
 			var factor := 1.15 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1.0 / 1.15
@@ -324,6 +373,24 @@ func _gui_input(event: InputEvent) -> void:
 			accept_event()
 			return
 		if event.button_index == MOUSE_BUTTON_LEFT:
+			if mode == "Freehand":
+				if event.pressed:
+					_freehand_active = true
+					grab_focus()
+					freehand_raw = PackedVector2Array([screen_to_image(event.position)])
+					freehand_grid = PackedVector2Array()
+					freehand_invalid = Vector2.INF
+					freehand_started.emit()
+					freehand_changed.emit(freehand_raw)
+				elif _freehand_active:
+					_freehand_active = false
+					var ending: Vector2 = screen_to_image(event.position)
+					if freehand_raw.size() == 1 or ending.distance_to(freehand_raw[freehand_raw.size() - 1]) >= 0.5:
+						freehand_raw.append(ending)
+					freehand_finished.emit(freehand_raw.duplicate())
+				queue_redraw()
+				accept_event()
+				return
 			if event.pressed:
 				var pixel := screen_to_image(event.position)
 				if not Routes._inside_art(pixel, document):
@@ -368,6 +435,14 @@ func _gui_input(event: InputEvent) -> void:
 				queue_redraw()
 			accept_event()
 	elif event is InputEventMouseMotion:
+		if mode == "Freehand":
+			freehand_cursor = screen_to_image(event.position)
+			if _freehand_active and freehand_raw.size() < 20000:
+				var pixel: Vector2 = freehand_cursor
+				if pixel.distance_to(freehand_raw[freehand_raw.size() - 1]) >= 0.5:
+					freehand_raw.append(pixel)
+					freehand_changed.emit(freehand_raw.duplicate())
+			queue_redraw()
 		if _pan_active:
 			image_origin += event.position - _last_mouse
 			_last_mouse = event.position
