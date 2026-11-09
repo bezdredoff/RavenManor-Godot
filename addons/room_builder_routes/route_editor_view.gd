@@ -411,7 +411,7 @@ func _refresh() -> void:
 			selected_index = waypoint_ids.size()
 			selected_wp = wp
 		waypoint_ids.append(id)
-		var owner_label := "UNASSIGNED" if room.is_empty() else ROOM_LABELS[Routes.ROOM_IDS.find(room)]
+		var owner_label: String = "UNASSIGNED" if room.is_empty() else str(ROOM_LABELS[Routes.ROOM_IDS.find(room)])
 		waypoint_list.add_item("%s · %s [%s]" % [id, str(wp["label"]), owner_label])
 		if room == active_room:
 			route_from.add_item(id)
