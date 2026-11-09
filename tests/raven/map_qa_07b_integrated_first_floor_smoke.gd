@@ -72,7 +72,7 @@ func _run() -> void:
 	assert(check.get("ok", false))
 	assert(check["graph"].route("QA-BEDROOM-WINDOW", "QA-BEDROOM-RUG").is_empty())
 	assert(not check["graph"].route("QA-BEDROOM-RUG", "QA-BEDROOM-WINDOW").is_empty())
-	assert(not check["graph"].route("QA-HALL-SPAWN", "QA-BEDROOM-RUG").size() > 0)
+	assert(check["graph"].route("QA-HALL-SPAWN", "QA-BEDROOM-RUG").is_empty())
 	# Original 7-point Hall pilot remains separately selectable.
 	var original := Adapter.load_source(Preview.BASELINE)
 	assert(original.get("ok", false))
