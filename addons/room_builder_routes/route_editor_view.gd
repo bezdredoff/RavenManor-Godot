@@ -8,6 +8,11 @@ const PreviewSource = preload("res://addons/room_builder_routes/route_preview_so
 const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_launch.gd")
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
+const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
+const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan"]
+const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
+	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map"]
+const ROOM_LABELS := ["Hall", "Corridor", "Bedroom", "Library / Archive", "Kitchen"]
 
 var document: Dictionary = {}
 var history: Array[Dictionary] = []
@@ -19,6 +24,8 @@ var selected_route := ""
 var selected_cell := ""
 var last_pixel := Vector2(836, 746)
 var click_route_from := true
+var connect_from := ""
+var active_room := "RM-ROOM-HALL"
 var _suppress := false
 
 var canvas: Control
@@ -31,6 +38,12 @@ var route_ids: Array[String] = []
 var name_edit: LineEdit
 var kind_picker: OptionButton
 var snap_checkbox: CheckBox
+var mode_picker: OptionButton
+var room_picker: OptionButton
+var waypoint_room_picker: OptionButton
+var active_tool_label: Label
+var selection_label: Label
+var tool_help: Label
 var route_cells: LineEdit
 var route_bidirectional: CheckBox
 var route_hint: Label
@@ -88,30 +101,49 @@ func _make_ui() -> void:
 	var toolbar := HFlowContainer.new()
 	outer.add_child(toolbar)
 	var title := Label.new()
-	title.text = "Room Builder · Navigation / Routes · DRAFT_ONLY"
+	title.text = "Navigation / Routes · DRAFT_ONLY"
 	title.add_theme_font_size_override("font_size", 17)
 	toolbar.add_child(title)
-	var mode_picker := OptionButton.new()
-	for option in ["Waypoints", "Routes", "Obstacles", "Pan"]:
-		mode_picker.add_item(option)
-	mode_picker.item_selected.connect(func(i: int): _set_mode(mode_picker.get_item_text(i)))
+	toolbar.add_child(_paragraph("Active tool:"))
+	mode_picker = OptionButton.new()
+	mode_picker.name = "ToolPicker"
+	for i in range(MODES.size()):
+		mode_picker.add_item(MODE_LABELS[i])
+		mode_picker.set_item_metadata(i, MODES[i])
+	mode_picker.item_selected.connect(func(i: int): _set_mode(str(mode_picker.get_item_metadata(i))))
 	toolbar.add_child(mode_picker)
-	toolbar.add_child(_button("Import Hall QA", _import_hall))
-	toolbar.add_child(_button("Load user draft", _load_user))
-	toolbar.add_child(_button("Save user draft", _save_user))
-	toolbar.add_child(_button("Load project draft", _load_project))
-	toolbar.add_child(_button("Export project draft", _export_project))
-	undo_button = _button("↶ Undo", _undo)
-	toolbar.add_child(undo_button)
-	redo_button = _button("↷ Redo", _redo)
-	toolbar.add_child(redo_button)
-	toolbar.add_child(_button("Fit", _fit))
-	toolbar.add_child(_button("Play original Hall", _open_pilot.bind(PreviewSource.BASELINE)))
-	toolbar.add_child(_button("Play saved user (Onoe)", _open_pilot.bind(PreviewSource.USER)))
-	toolbar.add_child(_button("Play project export (Onoe)", _open_pilot.bind(PreviewSource.PROJECT)))
+	toolbar.add_child(_paragraph("Editing room:"))
+	room_picker = OptionButton.new()
+	room_picker.name = "RoomPicker"
+	for i in range(Routes.ROOM_IDS.size()):
+		room_picker.add_item(ROOM_LABELS[i])
+		room_picker.set_item_metadata(i, Routes.ROOM_IDS[i])
+	room_picker.item_selected.connect(_on_room_selected)
+	toolbar.add_child(room_picker)
+	active_tool_label = Label.new()
+	active_tool_label.name = "ActiveTool"
+	toolbar.add_child(active_tool_label)
+	var actions := HFlowContainer.new()
+	outer.add_child(actions)
+	actions.add_child(_button("Load project draft", _load_project))
+	actions.add_child(_button("Load saved user", _load_user))
+	actions.add_child(_button("Save user draft", _save_user))
+	actions.add_child(_button("Export project draft", _export_project))
+	actions.add_child(_button("Import original Hall", _import_hall))
+	undo_button = _button("Undo", _undo)
+	undo_button.name = "Undo"
+	actions.add_child(undo_button)
+	redo_button = _button("Redo", _redo)
+	redo_button.name = "Redo"
+	actions.add_child(redo_button)
+	actions.add_child(_button("Fit artwork", _fit))
+	actions.add_child(_button("Play saved (Hall only)", _open_pilot.bind(PreviewSource.USER)))
+	actions.add_child(_button("Play exported (Hall only)", _open_pilot.bind(PreviewSource.PROJECT)))
+	actions.add_child(_button("Play original Hall", _open_pilot.bind(PreviewSource.BASELINE)))
+	actions.add_child(_button("Play integrated first floor", _open_integrated))
 	dirty_label = Label.new()
 	dirty_label.text = "Saved"
-	toolbar.add_child(dirty_label)
+	actions.add_child(dirty_label)
 	status = Label.new()
 	status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	status.custom_minimum_size.y = 32
@@ -126,6 +158,7 @@ func _make_ui() -> void:
 	split.add_child(canvas)
 	canvas.waypoint_chosen.connect(_on_canvas_waypoint)
 	canvas.waypoint_dropped.connect(_on_drop_waypoint)
+	canvas.route_chosen.connect(_on_canvas_route)
 	canvas.image_pixel_chosen.connect(_on_image_clicked)
 	canvas.cell_chosen.connect(_on_cell_clicked)
 	canvas.obstacle_paint.connect(_on_paint_cell)
@@ -137,26 +170,34 @@ func _make_ui() -> void:
 	inspector.custom_minimum_size.x = 340
 	inspector.add_theme_constant_override("separation", 7)
 	scroll.add_child(inspector)
-	inspector.add_child(_heading("GRID · source-image pixels"))
+	selection_label = _paragraph("Selected room: Hall · Selected waypoint: —")
+	selection_label.name = "SelectionInfo"
+	inspector.add_child(selection_label)
+	tool_help = _paragraph("Select / drag: click a point to inspect it, drag to move. Choose a room above.")
+	tool_help.name = "ToolHelp"
+	inspector.add_child(tool_help)
+	inspector.add_child(_paragraph("QUICK START: 1) Load project draft. 2) Choose room. 3) Add / drag points. 4) Connect two points. 5) Draw route cells. 6) Save. 7) Play integrated first floor."))
+	inspector.add_child(HSeparator.new())
+	var grid_section := VBoxContainer.new()
+	grid_section.add_child(_heading("GRID · source-image pixels"))
 	var row := HBoxContainer.new()
-	inspector.add_child(row)
+	grid_section.add_child(row)
 	grid_width = _spin(row, "W", 4, 512, 32)
 	grid_height = _spin(row, "H", 4, 512, 32)
 	var origin_row := HBoxContainer.new()
-	inspector.add_child(origin_row)
+	grid_section.add_child(origin_row)
 	grid_offset_x = _spin(origin_row, "Origin X", -4096, 4096, 0)
 	grid_offset_y = _spin(origin_row, "Origin Y", -4096, 4096, 0)
 	grid_visible = CheckBox.new()
 	grid_visible.text = "Grid visible"
 	grid_visible.button_pressed = true
-	inspector.add_child(grid_visible)
+	grid_section.add_child(grid_visible)
 	grid_coordinates = CheckBox.new()
 	grid_coordinates.text = "Show every cell coordinate (zoomed)"
-	inspector.add_child(grid_coordinates)
-	inspector.add_child(_button("Apply grid settings", _apply_grid))
+	grid_section.add_child(grid_coordinates)
+	grid_section.add_child(_button("Apply grid settings", _apply_grid))
 	cell_inspection = _paragraph("Selected cell: —")
-	inspector.add_child(cell_inspection)
-	inspector.add_child(HSeparator.new())
+	grid_section.add_child(cell_inspection)
 	inspector.add_child(_heading("WAYPOINTS · stable IDs"))
 	waypoint_list = ItemList.new()
 	waypoint_list.custom_minimum_size.y = 155
@@ -169,16 +210,23 @@ func _make_ui() -> void:
 	for kind in Routes.TYPES:
 		kind_picker.add_item(kind)
 	inspector.add_child(kind_picker)
+	inspector.add_child(_paragraph("Waypoint room (explicit ownership):"))
+	waypoint_room_picker = OptionButton.new()
+	waypoint_room_picker.name = "WaypointRoom"
+	for i in range(Routes.ROOM_IDS.size()):
+		waypoint_room_picker.add_item(ROOM_LABELS[i])
+		waypoint_room_picker.set_item_metadata(i, Routes.ROOM_IDS[i])
+	inspector.add_child(waypoint_room_picker)
 	snap_checkbox = CheckBox.new()
 	snap_checkbox.text = "Snap dragged/created points to cell centres"
 	snap_checkbox.button_pressed = true
 	inspector.add_child(snap_checkbox)
 	var wp_row := HFlowContainer.new()
 	inspector.add_child(wp_row)
-	wp_row.add_child(_button("+ Add at selected pixel", _add_waypoint))
-	wp_row.add_child(_button("Apply label/type", _apply_waypoint_info))
+	wp_row.add_child(_button("+ Add waypoint here", _add_waypoint))
+	wp_row.add_child(_button("Apply label/type/room", _apply_waypoint_info))
 	wp_row.add_child(_button("Delete waypoint", _delete_waypoint))
-	inspector.add_child(_paragraph("Click/drag a point in Waypoints mode. IDs are immutable. Delete a connected route first."))
+	inspector.add_child(_paragraph("Tool 1: click / drag a point. Tool 2: click empty walkable art to create a point in the editing room. Changing a connected point's room is rejected until its routes are removed."))
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("ROUTES · ordered orthogonal cells"))
 	var endpoint_row := HBoxContainer.new()
@@ -189,7 +237,7 @@ func _make_ui() -> void:
 	route_to = OptionButton.new()
 	route_to.custom_minimum_size.x = 155
 	endpoint_row.add_child(route_to)
-	inspector.add_child(_button("+ Add provisional edge from/to", _add_route))
+	inspector.add_child(_button("+ Connect selected FROM / TO", _add_route))
 	route_list = ItemList.new()
 	route_list.custom_minimum_size.y = 160
 	route_list.item_selected.connect(_on_route_list_select)
@@ -202,6 +250,7 @@ func _make_ui() -> void:
 	inspector.add_child(route_cells)
 	var route_row := HFlowContainer.new()
 	inspector.add_child(route_row)
+	route_row.add_child(_button("Start cell path at FROM", _start_cell_path))
 	route_row.add_child(_button("Apply cells", _apply_route_cells))
 	route_row.add_child(_button("Remove last cell", _remove_last_cell))
 	route_row.add_child(_button("Delete route", _delete_route))
@@ -209,14 +258,17 @@ func _make_ui() -> void:
 	route_bidirectional.text = "Bidirectional (unchecked = one way from → to)"
 	route_bidirectional.toggled.connect(_on_direction_changed)
 	inspector.add_child(route_bidirectional)
-	inspector.add_child(_paragraph("In Routes mode tap successive adjacent cells to extend the text. Provisional straight edges remain explicitly provisional until Apply cells succeeds."))
+	inspector.add_child(_paragraph("Tool 3: choose two waypoints in the SAME room to connect (temporary provisional edge). Tool 4: click a route line to select it. Tool 5: click adjacent grid cells to redraw the selected route, starting at FROM and ending at TO. Press Apply cells. Existing exact text editor remains available."))
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("OBSTACLES + PREVIEW"))
 	inspector.add_child(_paragraph("Obstacles mode: click or paint cells to block. Re-click to unblock. No-go polygons remain read-only restrictions."))
 	inspector.add_child(_button("Unblock selected cell", _clear_selected_cell))
 	inspector.add_child(_button("Test Route: selected from → to", _test_route))
 	inspector.add_child(_button("Clear route preview", _clear_preview))
-	inspector.add_child(_paragraph("Test Route draws a compiled path in the editor. Play saved user / Play project export runs physical Onoe on the chosen persisted DRAFT_ONLY geometry. Unsaved edits are never launched."))
+	inspector.add_child(_paragraph("Test Route shows the in-editor path. Play integrated first floor reads the SAVED user / project draft, never unsaved changes. Real doors are still unresolved: transitions are TEST_ONLY."))
+	inspector.add_child(HSeparator.new())
+	inspector.add_child(_heading("ADVANCED · grid / image pixels"))
+	inspector.add_child(grid_section)
 
 
 func _button(caption: String, callback: Callable) -> Button:
