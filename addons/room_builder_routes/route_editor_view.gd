@@ -39,6 +39,11 @@ var show_constraints_checkbox: CheckBox
 var constraint_feedback: Label
 var zone_list: ItemList
 var zone_delete_confirmation: ConfirmationDialog
+var zone_apply_button: Button
+var zone_edit_hint: Label
+var zone_selected_vertex := -1
+var zone_proposal: Dictionary = {}
+var zone_preview_base := ""
 var inspector_scroll: ScrollContainer
 
 var canvas: Control
@@ -228,6 +233,11 @@ func _make_ui() -> void:
 	canvas.freehand_changed.connect(_on_freehand_changed)
 	canvas.freehand_finished.connect(_on_freehand_finished)
 	canvas.freehand_cancelled.connect(_discard_freehand)
+	canvas.zone_chosen.connect(_on_canvas_zone_chosen)
+	canvas.zone_vertex_chosen.connect(_on_canvas_zone_vertex)
+	canvas.zone_drag_finished.connect(_on_zone_polygon_dragged)
+	canvas.zone_insert_requested.connect(_on_zone_corner_insert)
+	canvas.zone_cancelled.connect(_cancel_zone)
 	inspector_scroll = ScrollContainer.new()
 	inspector_scroll.custom_minimum_size.x = 365
 	inspector_scroll.size_flags_vertical = SIZE_EXPAND_FILL
@@ -294,8 +304,20 @@ func _make_ui() -> void:
 	zone_actions.add_child(_button("+ WALKABLE rectangle", _begin_walkable_zone))
 	zone_actions.add_child(_button("+ NO-GO rectangle", _begin_nogo_zone))
 	zone_actions.add_child(_button("Cancel zone drawing", _cancel_zone))
-	zone_actions.add_child(_button("Remove selected draft zone…", _request_delete_zone))
-	inspector.add_child(_paragraph("To expand walkable floor: click + WALKABLE rectangle, then two opposite corners on the map. To adjust an existing polygon, select it, remove with confirmation, then redraw. Undo works. Changes affect QA drafts only."))
+	zone_actions.add_child(_button("Insert corner: click edge", _begin_zone_insert))
+	zone_actions.add_child(_button("Remove selected corner", _remove_zone_corner))
+	zone_apply_button = _button("Apply zone", _apply_zone_preview)
+	zone_apply_button.name = "ApplyZone"
+	zone_apply_button.disabled = true
+	zone_actions.add_child(zone_apply_button)
+	zone_actions.add_child(_button("Discard zone edit", _discard_zone_edit))
+	zone_actions.add_child(_button("Remove selected zone…", _request_delete_zone))
+	zone_edit_hint = Label.new()
+	zone_edit_hint.name = "ZoneEditHint"
+	zone_edit_hint.text = "Select ANY red/green zone or its name. Drag corner or interior; Apply to keep edits."
+	zone_edit_hint.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
+	inspector.add_child(zone_edit_hint)
+	inspector.add_child(_paragraph("All 10 original red NO-GO areas and all 5 green WALKABLE areas can be reshaped. Click a polygon on the artwork or select its original ID in the list. Drag white handles to resize, drag inside to move; insert or remove corners for irregular shapes. Review, Apply zone, then Save user draft. Nothing edits the immutable baseline."))
 	zone_delete_confirmation = ConfirmationDialog.new()
 	zone_delete_confirmation.title = "Remove DRAFT_ONLY navigation polygon?"
 	zone_delete_confirmation.dialog_text = "This removes the selected polygon from the editable QA draft only. Existing route/waypoint constraints will be validated. The original source and production map stay unchanged."
@@ -423,11 +445,14 @@ func _set_mode(mode: String) -> void:
 		return
 	if mode != "Freehand":
 		_discard_freehand(false)
+	if mode != "Zones":
+		_discard_zone_edit(false)
 	if is_instance_valid(freehand_bar):
 		freehand_bar.visible = mode == "Freehand"
 	if mode != "Zones":
 		zone_pending_group = ""
 		zone_pending_corner = Vector2.INF
+		canvas.set_zone_drawing(false)
 		canvas.set_zone_corner(Vector2.INF)
 	current_mode = mode
 	canvas.set_mode(mode)
@@ -443,7 +468,7 @@ func _set_mode(mode: String) -> void:
 		"Cells": tool_help.text = "DRAW CELLS: select a route, press Start cell path, then click successive adjacent cells; finish at TO and Apply."
 		"Obstacles": tool_help.text = "BLOCK CELLS: click/paint cells to toggle blockers. Existing routes cannot pass through blocked cells."
 		"Pan": tool_help.text = "PAN: left/right/middle drag. Mouse wheel always zooms; Fit artwork resets view."
-		"Zones": tool_help.text = "ZONES: choose + WALKABLE or + NO-GO, click two opposite artwork corners. To redraw a polygon, select it in the list, remove with confirmation and draw anew. Draft only."
+		"Zones": tool_help.text = "ZONES: all default NO-GO/WALKABLE polygons are editable. Click polygon or select ID; drag white corners or interior. Apply zone, Undo or Discard. Insert corner on edge; Save user draft. Rectangle buttons add NEW areas."
 		"Freehand": tool_help.text = "FREEHAND: select existing route to redraw, or choose two same-room FROM/TO points and press New. Hold left mouse to draw. Release for a validated preview; Apply or Discard. Escape cancels."
 	_message(active_tool_label.text + " · " + ROOM_LABELS[Routes.ROOM_IDS.find(active_room)])
 
@@ -459,6 +484,7 @@ func _change_room(room_id: String) -> void:
 		_message("ERROR: Unsupported editing room")
 		return
 	_discard_freehand(false)
+	_discard_zone_edit(false)
 	active_room = room_id
 	room_picker.select(Routes.ROOM_IDS.find(room_id))
 	canvas.set_active_room(room_id)
@@ -473,6 +499,7 @@ func _change_room(room_id: String) -> void:
 
 func _set_document(value: Dictionary, push_history: bool = true) -> void:
 	_discard_freehand(false)
+	_discard_zone_edit(false)
 	if push_history and not document.is_empty() and JSON.stringify(document) != JSON.stringify(value):
 		history.append(document.duplicate(true))
 		if history.size() > 64:
@@ -580,7 +607,7 @@ func _refresh() -> void:
 	canvas.selected_waypoint = selected_waypoint
 	canvas.selected_route = selected_route
 	canvas.selected_cell = selected_cell
-	canvas.set_selected_zone(selected_zone_id)
+	canvas.set_selected_zone(selected_zone_id, selected_zone_group)
 	canvas.set_active_room(active_room)
 	canvas.queue_redraw()
 
@@ -613,8 +640,121 @@ func _on_zone_selected(index: int) -> void:
 		return
 	selected_zone_group = str(zone_ids[index]["group"])
 	selected_zone_id = str(zone_ids[index]["id"])
-	canvas.set_selected_zone(selected_zone_id)
-	_message("Selected " + selected_zone_id + " (" + selected_zone_group + "). Remove with confirmation, then redraw if needed. DRAFT_ONLY.")
+	_discard_zone_edit(false)
+	zone_selected_vertex = -1
+	zone_list.select(index)
+	canvas.set_selected_zone(selected_zone_id, selected_zone_group)
+	_message("Editable polygon " + selected_zone_id + " (" + selected_zone_group + "): drag WHITE corners to resize, or drag inside to move. Apply zone to commit.")
+
+
+
+# Original imported and new QA polygons share one editor workflow. Dragging
+# is a preview, not a mutation; the final validated document is committed on
+# Apply zone, once, through the existing history/dirty/save machinery.
+func _on_canvas_zone_chosen(group: String, id: String) -> void:
+	if id.is_empty():
+		_discard_zone_edit(false)
+		selected_zone_id = ""
+		selected_zone_group = ""
+		canvas.set_selected_zone("")
+		_message("Click a red NO-GO or green WALKABLE polygon to select it")
+		return
+	for i in range(zone_ids.size()):
+		if str(zone_ids[i]["group"]) == group and str(zone_ids[i]["id"]) == id:
+			_on_zone_selected(i)
+			return
+	_message("ERROR: Polygon is not present in the current editable draft")
+
+
+func _on_canvas_zone_vertex(index: int) -> void:
+	zone_selected_vertex = index
+	canvas.selected_zone_vertex = index
+	canvas.queue_redraw()
+
+
+func _preview_zone_polygon(points: PackedVector2Array) -> void:
+	if selected_zone_id.is_empty():
+		_message("ERROR: Select an existing polygon first")
+		return
+	zone_preview_base = JSON.stringify(document)
+	zone_proposal = Routes.set_zone_polygon(
+		document, selected_zone_group, selected_zone_id, points)
+	var valid: bool = bool(zone_proposal.get("ok", false))
+	canvas.set_zone_edit_preview(points, valid)
+	zone_apply_button.disabled = not valid
+	if valid:
+		zone_edit_hint.text = selected_zone_id + " · VALID draft preview · Apply zone or Discard"
+		_message("Valid zone preview. Click Apply zone to modify the UNSAVED draft, or Discard to keep the original")
+	else:
+		zone_edit_hint.text = "INVALID: " + str(zone_proposal.get("error", "Unknown polygon error"))
+		_message("ERROR: " + str(zone_proposal.get("error", "Invalid polygon")) + ". Existing geometry is unchanged.")
+
+
+func _on_zone_polygon_dragged(points: PackedVector2Array) -> void:
+	_preview_zone_polygon(points)
+
+
+func _begin_zone_insert() -> void:
+	if selected_zone_id.is_empty():
+		_message("ERROR: Select an existing NO-GO / WALKABLE polygon before inserting a corner")
+		return
+	_set_mode("Zones")
+	canvas.start_zone_insert()
+	_message("INSERT CORNER: click the edge of " + selected_zone_id + ". Inspect preview, then Apply zone.")
+
+
+func _on_zone_corner_insert(edge_index: int, pixel: Vector2) -> void:
+	var points: PackedVector2Array = canvas.selected_zone_points()
+	if edge_index < 0 or edge_index >= points.size():
+		_message("ERROR: Click directly on the selected polygon's outline")
+		return
+	points.insert(edge_index + 1, pixel)
+	zone_selected_vertex = edge_index + 1
+	canvas.selected_zone_vertex = zone_selected_vertex
+	_preview_zone_polygon(points)
+
+
+func _remove_zone_corner() -> void:
+	if selected_zone_id.is_empty() or zone_selected_vertex < 0:
+		_message("ERROR: Click a white corner handle first, then Remove selected corner")
+		return
+	var points: PackedVector2Array = canvas.selected_zone_points()
+	if points.size() <= 3 or zone_selected_vertex >= points.size():
+		_message("ERROR: A polygon must retain at least three corners")
+		return
+	points.remove_at(zone_selected_vertex)
+	zone_selected_vertex = -1
+	canvas.selected_zone_vertex = -1
+	_preview_zone_polygon(points)
+
+
+func _apply_zone_preview() -> void:
+	if not zone_proposal.get("ok", false):
+		_message("ERROR: No valid zone preview to apply")
+		return
+	if zone_preview_base != JSON.stringify(document):
+		_discard_zone_edit(false)
+		_message("ERROR: Document changed during zone preview; redraw to avoid stale changes")
+		return
+	var id := selected_zone_id
+	if _commit(zone_proposal, "Updated existing zone " + id + " in UNSAVED DRAFT_ONLY document. Undo available. Save user draft to persist."):
+		selected_zone_id = id
+		_refresh()
+
+
+func _discard_zone_edit(notify: bool = true) -> void:
+	zone_proposal = {}
+	zone_preview_base = ""
+	zone_selected_vertex = -1
+	if is_instance_valid(canvas):
+		canvas.clear_zone_edit_preview()
+		canvas.selected_zone_vertex = -1
+	if is_instance_valid(zone_apply_button):
+		zone_apply_button.disabled = true
+	if is_instance_valid(zone_edit_hint):
+		zone_edit_hint.text = "Select ANY red/green zone or its name; drag white corners or interior, then Apply zone."
+	if notify and is_instance_valid(status):
+		_message("Zone preview discarded; source and current draft unchanged")
 
 
 func _show_restriction(point: Vector2) -> void:
@@ -637,6 +777,8 @@ func _begin_zone(group: String) -> void:
 	if not ["walkablePolygons", "noGoPolygons"].has(group):
 		return
 	_set_mode("Zones")
+	_discard_zone_edit(false)
+	canvas.set_zone_drawing(true)
 	zone_pending_group = group
 	zone_pending_corner = Vector2.INF
 	canvas.set_zone_corner(Vector2.INF)
@@ -646,8 +788,10 @@ func _begin_zone(group: String) -> void:
 func _cancel_zone() -> void:
 	zone_pending_group = ""
 	zone_pending_corner = Vector2.INF
+	canvas.set_zone_drawing(false)
 	canvas.set_zone_corner(Vector2.INF)
-	_message("Zone drawing cancelled; draft unchanged")
+	_discard_zone_edit(false)
+	_message("Zone drawing/preview cancelled; draft unchanged")
 
 
 func _zone_corner_clicked(point: Vector2) -> void:
@@ -674,7 +818,7 @@ func _zone_corner_clicked(point: Vector2) -> void:
 
 func _request_delete_zone() -> void:
 	if selected_zone_id.is_empty():
-		_message("ERROR: Select a WALKABLE or NO-GO polygon from the list before removal")
+		_message("ERROR: Select any existing WALKABLE or NO-GO polygon on the map or in the list")
 		return
 	zone_delete_confirmation.dialog_text = "Remove %s from the current DRAFT_ONLY file? You can Undo. Existing waypoints and routes will be validated; immutable QA source and production geometry are untouched." % selected_zone_id
 	zone_delete_confirmation.popup_centered()
@@ -683,6 +827,7 @@ func _request_delete_zone() -> void:
 func _delete_selected_zone() -> void:
 	if selected_zone_id.is_empty():
 		return
+	_discard_zone_edit(false)
 	var id := selected_zone_id
 	var result := Routes.delete_zone(document, selected_zone_group, id)
 	if _commit(result, "Removed draft polygon " + id + ". Undo or redraw if necessary."):
@@ -1098,6 +1243,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 func _undo() -> void:
 	_discard_freehand(false)
+	_discard_zone_edit(false)
 	if history.is_empty():
 		return
 	future.append(document.duplicate(true))
@@ -1110,6 +1256,7 @@ func _undo() -> void:
 
 func _redo() -> void:
 	_discard_freehand(false)
+	_discard_zone_edit(false)
 	if future.is_empty():
 		return
 	history.append(document.duplicate(true))
