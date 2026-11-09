@@ -314,9 +314,46 @@ func _message(text: String) -> void:
 
 
 func _set_mode(mode: String) -> void:
+	if not MODES.has(mode):
+		_message("ERROR: Unknown editor tool " + mode)
+		return
 	current_mode = mode
 	canvas.set_mode(mode)
-	_message(mode + " mode · right/middle drag to pan; mouse wheel to zoom")
+	var index := MODES.find(mode)
+	if is_instance_valid(mode_picker):
+		mode_picker.select(index)
+	active_tool_label.text = MODE_LABELS[index]
+	match mode:
+		"Waypoints": tool_help.text = "SELECT / DRAG: click a waypoint, then drag to move it. Only the selected room's points are editable."
+		"Add": tool_help.text = "ADD: choose editing room above, then click EMPTY walkable artwork. New point receives that roomId."
+		"Connect": tool_help.text = "CONNECT: click the start waypoint, then the destination in the same room. A provisional edge is created."
+		"Routes": tool_help.text = "SELECT ROUTE: click a drawn line or a route in the list. Click waypoints to set FROM and TO."
+		"Cells": tool_help.text = "DRAW CELLS: select a route, press Start cell path, then click successive adjacent cells; finish at TO and Apply."
+		"Obstacles": tool_help.text = "BLOCK CELLS: click/paint cells to toggle blockers. Existing routes cannot pass through blocked cells."
+		"Pan": tool_help.text = "PAN: left/right/middle drag. Mouse wheel always zooms; Fit artwork resets view."
+	_message(active_tool_label.text + " · " + ROOM_LABELS[Routes.ROOM_IDS.find(active_room)])
+
+
+func _on_room_selected(index: int) -> void:
+	if index < 0 or index >= Routes.ROOM_IDS.size():
+		return
+	_change_room(str(room_picker.get_item_metadata(index)))
+
+
+func _change_room(room_id: String) -> void:
+	if not Routes.ROOM_IDS.has(room_id):
+		_message("ERROR: Unsupported editing room")
+		return
+	active_room = room_id
+	room_picker.select(Routes.ROOM_IDS.find(room_id))
+	canvas.set_active_room(room_id)
+	selected_waypoint = ""
+	selected_route = ""
+	connect_from = ""
+	click_route_from = true
+	_clear_preview()
+	_refresh()
+	_message("Editing " + ROOM_LABELS[Routes.ROOM_IDS.find(room_id)] + " · new waypoints will explicitly use " + room_id)
 
 
 func _set_document(value: Dictionary, push_history: bool = true) -> void:
@@ -360,56 +397,73 @@ func _refresh() -> void:
 	waypoint_ids.clear()
 	route_from.clear()
 	route_to.clear()
-	var wp_index := -1
-	var i := 0
+	var selected_wp: Dictionary = {}
+	var selected_index := -1
 	for wp in document["waypoints"]:
 		var id := str(wp["id"])
-		waypoint_ids.append(id)
-		waypoint_list.add_item("%s · %s [%s]" % [id, str(wp["label"]), str(wp["type"])])
-		route_from.add_item(id)
-		route_to.add_item(id)
+		var room := Routes.waypoint_room(wp)
+		if room != active_room and not room.is_empty():
+			continue
 		if id == selected_waypoint:
-			wp_index = i
-		i += 1
-	for pos in range(route_from.item_count):
-		if route_from.get_item_text(pos) == remembered_from:
-			route_from.select(pos)
-		if route_to.get_item_text(pos) == remembered_to:
-			route_to.select(pos)
-	if wp_index >= 0:
-		waypoint_list.select(wp_index)
-		var item: Dictionary = document["waypoints"][wp_index]
-		name_edit.text = str(item["label"])
-		kind_picker.select(Routes.TYPES.find(str(item["type"])))
-		var feet := Routes._vector(item["pointPx"])
-		cell_inspection.text = "%s · feet (%.2f, %.2f) px · cell %s" % [selected_waypoint, feet.x, feet.y, Routes.pixel_to_cell(feet, document)]
+			selected_index = waypoint_ids.size()
+			selected_wp = wp
+		waypoint_ids.append(id)
+		var owner_label := "UNASSIGNED" if room.is_empty() else ROOM_LABELS[Routes.ROOM_IDS.find(room)]
+		waypoint_list.add_item("%s · %s [%s]" % [id, str(wp["label"]), owner_label])
+		if room == active_room:
+			route_from.add_item(id)
+			route_to.add_item(id)
+	for idx in range(route_from.item_count):
+		if route_from.get_item_text(idx) == remembered_from:
+			route_from.select(idx)
+		if route_to.get_item_text(idx) == remembered_to:
+			route_to.select(idx)
+	if selected_index >= 0:
+		waypoint_list.select(selected_index)
+		name_edit.text = str(selected_wp["label"])
+		kind_picker.select(Routes.TYPES.find(str(selected_wp["type"])))
+		var owner: String = Routes.waypoint_room(selected_wp)
+		if Routes.ROOM_IDS.has(owner):
+			waypoint_room_picker.select(Routes.ROOM_IDS.find(owner))
+		else:
+			waypoint_room_picker.select(Routes.ROOM_IDS.find(active_room))
+		var feet: Vector2 = Routes._vector(selected_wp["pointPx"])
+		cell_inspection.text = "%s · feet (%.2f, %.2f) px · cell %s" % [
+			selected_waypoint, feet.x, feet.y, Routes.pixel_to_cell(feet, document)]
 	else:
 		selected_waypoint = ""
 		name_edit.clear()
+		waypoint_room_picker.select(Routes.ROOM_IDS.find(active_room))
 	route_list.clear()
 	route_ids.clear()
+	var selected_route_data: Dictionary = {}
 	var route_index := -1
-	i = 0
 	for route in document["routes"]:
-		route_ids.append(str(route["id"]))
+		if Routes.room_for_id(document, str(route["from"])) != active_room:
+			continue
+		var id := str(route["id"])
+		if id == selected_route:
+			route_index = route_ids.size()
+			selected_route_data = route
+		route_ids.append(id)
 		var info := "PROVISIONAL" if route["provisional"] else "%d cells" % route["cells"].size()
-		route_list.add_item("%s · %s → %s · %s" % [route["id"], route["from"], route["to"], info])
-		if route["id"] == selected_route:
-			route_index = i
-		i += 1
+		route_list.add_item("%s · %s → %s · %s" % [id, route["from"], route["to"], info])
 	if route_index >= 0:
 		route_list.select(route_index)
-		_show_route_details(document["routes"][route_index])
+		_show_route_details(selected_route_data)
 	else:
 		selected_route = ""
 		route_cells.clear()
-		route_hint.text = "Select a route to edit its exact cell sequence."
+		route_hint.text = "Select a highlighted route on the map or in this list."
 		route_bidirectional.set_pressed_no_signal(true)
+	var room_name: String = ROOM_LABELS[Routes.ROOM_IDS.find(active_room)]
+	selection_label.text = "ROOM: " + room_name + " · WAYPOINT: " + (selected_waypoint if not selected_waypoint.is_empty() else "—") + " · ROUTE: " + (selected_route if not selected_route.is_empty() else "—")
 	_suppress = false
 	_refresh_dirty()
 	canvas.selected_waypoint = selected_waypoint
 	canvas.selected_route = selected_route
 	canvas.selected_cell = selected_cell
+	canvas.set_active_room(active_room)
 	canvas.queue_redraw()
 
 
@@ -452,6 +506,8 @@ func _snap_point(pixel: Vector2) -> Vector2:
 
 func _on_image_clicked(point: Vector2) -> void:
 	last_pixel = point
+	if current_mode == "Add":
+		_add_waypoint()
 
 
 func _on_cell_clicked(cell: String) -> void:
@@ -461,7 +517,7 @@ func _on_cell_clicked(cell: String) -> void:
 	var blocked: bool = document.get("blockedCells", []).has(cell)
 	var point := Routes.cell_to_pixel(cell, document)
 	cell_inspection.text = "%s · centre %s · blocked: %s" % [cell, str(point), str(blocked)]
-	if current_mode == "Routes" and not selected_route.is_empty():
+	if current_mode == "Cells" and not selected_route.is_empty():
 		_append_route_cell(cell)
 	canvas.selected_cell = cell
 	canvas.queue_redraw()
@@ -472,9 +528,18 @@ func _on_canvas_waypoint(id: String) -> void:
 		return
 	selected_waypoint = id
 	_refresh()
-	if current_mode == "Routes":
-		# Refreshing the current route inspector may restore its own endpoints:
-		# apply an explicit user pick AFTER the refresh.
+	if current_mode == "Connect":
+		if connect_from.is_empty():
+			connect_from = id
+			_message("CONNECT: starting at " + id + ". Click a second waypoint in the same room.")
+			return
+		var start := connect_from
+		connect_from = ""
+		if start == id:
+			_message("ERROR: Choose a different destination waypoint")
+			return
+		_connect_points(start, id)
+	elif current_mode == "Routes":
 		for i in range(route_from.item_count):
 			if route_from.get_item_text(i) == id:
 				if click_route_from:
@@ -482,8 +547,27 @@ func _on_canvas_waypoint(id: String) -> void:
 				else:
 					route_to.select(i)
 				click_route_from = not click_route_from
-				_message("Selected %s as %s" % [id, "from" if not click_route_from else "to"])
+				_message("Endpoint " + id + " chosen as " + ("FROM" if not click_route_from else "TO"))
 				break
+	else:
+		_message("Selected waypoint " + id + " · " + active_room)
+
+
+func _on_canvas_route(id: String) -> void:
+	if id.is_empty() or not route_ids.has(id):
+		return
+	selected_route = id
+	_refresh()
+	_clear_preview()
+	_message("Selected " + id + ". Choose Draw route cells to edit exact grid turns.")
+
+
+func _connect_points(from_id: String, to_id: String) -> void:
+	var result := Routes.add_route(document, from_id, to_id)
+	if _commit(result, "Connected " + from_id + " → " + to_id + " (PROVISIONAL). Select Draw route cells and Apply."):
+		selected_route = str(result.id)
+		_refresh()
+
 
 func _on_drop_waypoint(id: String, point: Vector2) -> void:
 	var result := Routes.move_waypoint(document, id, _snap_point(point))
@@ -500,7 +584,7 @@ func _on_waypoint_list_select(index: int) -> void:
 
 
 func _add_waypoint() -> void:
-	var result := Routes.add_waypoint(document, _snap_point(last_pixel))
+	var result := Routes.add_waypoint(document, _snap_point(last_pixel), "New waypoint", active_room)
 	if _commit(result, "Added waypoint at " + str(last_pixel.round())):
 		selected_waypoint = str(result.id)
 		_refresh()
@@ -510,7 +594,14 @@ func _apply_waypoint_info() -> void:
 	if selected_waypoint.is_empty():
 		_message("ERROR: Select a waypoint first")
 		return
-	_commit(Routes.set_waypoint_info(document, selected_waypoint, name_edit.text, kind_picker.get_item_text(kind_picker.selected)), "Waypoint label/type updated; stable ID unchanged")
+	var room_id: String = str(waypoint_room_picker.get_item_metadata(waypoint_room_picker.selected))
+	var waypoint_id := selected_waypoint
+	if _commit(Routes.set_waypoint_info(document, waypoint_id, name_edit.text,
+			kind_picker.get_item_text(kind_picker.selected), room_id), "Waypoint label/type/room updated; stable ID unchanged"):
+		if room_id != active_room:
+			_change_room(room_id)
+			selected_waypoint = waypoint_id
+			_refresh()
 
 
 func _delete_waypoint() -> void:
@@ -535,10 +626,7 @@ func _add_route() -> void:
 	if route_from.selected < 0 or route_to.selected < 0:
 		_message("ERROR: Select from and to waypoints")
 		return
-	var result := Routes.add_route(document, route_from.get_item_text(route_from.selected), route_to.get_item_text(route_to.selected))
-	if _commit(result, "New provisional edge: author exact adjacent cells next"):
-		selected_route = str(result.id)
-		_refresh()
+	_connect_points(route_from.get_item_text(route_from.selected), route_to.get_item_text(route_to.selected))
 
 
 func _apply_route_cells() -> void:
@@ -548,12 +636,42 @@ func _apply_route_cells() -> void:
 	_commit(Routes.set_route_cells(document, selected_route, route_cells.text), "Authored cells saved (DRAFT_ONLY)")
 
 
+func _start_cell_path() -> void:
+	if selected_route.is_empty():
+		_message("ERROR: Select a route first")
+		return
+	var route: Dictionary = {}
+	for item in document["routes"]:
+		if str(item["id"]) == selected_route:
+			route = item
+			break
+	if route.is_empty():
+		return
+	var source: Dictionary = Routes._waypoint_lookup(document).get(str(route["from"]), {})
+	if source.is_empty():
+		return
+	route_cells.text = Routes.pixel_to_cell(Routes._vector(source["pointPx"]), document)
+	_on_route_text_changed(route_cells.text)
+	_message("Start at " + route_cells.text + ". Tool 5: click adjacent cells until you reach TO, then Apply cells.")
+
+
 func _append_route_cell(cell: String) -> void:
 	var text := route_cells.text.strip_edges()
 	if text.is_empty():
-		route_cells.text = cell
-	elif text.split("→")[-1].strip_edges() != cell:
-		route_cells.text += " → " + cell
+		_start_cell_path()
+		text = route_cells.text.strip_edges()
+	var last := text.replace("->", "→").split("→")[-1].strip_edges()
+	if last == cell:
+		return
+	var start := Routes.parse_cell(last)
+	var next := Routes.parse_cell(cell)
+	if not start.ok or not next.ok:
+		_message("ERROR: Invalid route cell; choose an A1-style grid coordinate")
+		return
+	if absi(int(start.col) - int(next.col)) + absi(int(start.row) - int(next.row)) != 1:
+		_message("ERROR: Route cell " + cell + " is not adjacent to " + last + ". Move one horizontal/vertical cell.")
+		return
+	route_cells.text += " → " + cell
 	_on_route_text_changed(route_cells.text)
 
 
