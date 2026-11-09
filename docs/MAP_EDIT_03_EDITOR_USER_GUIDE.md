@@ -27,6 +27,18 @@
 
 **Cell path example:** `AB11 → AC11 → AD11 → AD12`. Each successive cell must share a side (no diagonals or skipped cells), and the first and last must contain the route's FROM and TO waypoint respectively. **Apply cells** is the commit: until then the editor is only previewing the proposed route, not silently changing the document. Provisional imported straight edges remain marked provisional until an authored sequence validates.
 
+## MAP-EDIT-04A — Edit ALL original NO-GO and WALKABLE areas directly
+
+The initial 10 red **NO-GO polygons** (staircases, tea table, plants, bedroom bed, library furniture, kitchen island/hearth) are now editable in exactly the same way as new zones. You can also reshape all five original green **WALKABLE polygons**. **No delete-and-redraw is required.** These are draft edits; neither the immutable Hall QA source nor production geometry is rewritten.
+
+1. **Load project draft**, select the relevant room, choose **8 Edit zones**. The zone list shows **all 10 original red NO-GO** and **all 5 original green WALKABLE** zones by their stable IDs. Click any visible red polygon (or its outline), or click its name in the inspector. Selected polygons have yellow outlines and **white corner handles**.
+2. **Drag a white handle** to reshape a corner; **drag inside the selected polygon** to reposition the entire restriction. If a shape needs another bend, choose **Insert corner: click edge**, then click that polygon's outline. Select a handle and choose **Remove selected corner** to simplify it (minimum three corners).
+3. **Release the mouse** to inspect the proposed shape. This is only a preview. Click **Apply zone** to commit a valid proposal to your working document or **Discard zone edit** / Escape to abandon it. A red invalid outline and the status message explain why the change would break a route, place a corner outside the image or create self-crossing geometry. Undo/Redo works after Apply.
+4. If you want to put a waypoint where a default NO-GO used to be, **shrink or move that red polygon** first, then check that the area is also inside a **green WALKABLE polygon for the selected room**. If not, reshape the existing green polygon by its handles or add a room-owned green rectangle. Red and dark restrictions are independent.
+5. Click **Save user draft** (not Import original Hall) and use **Play integrated first floor → Saved user** to inspect the revised zones and route with Onoe. The original 10 NO-GO IDs and metadata are preserved; only their polygon points change in the DRAFT_ONLY copy.
+
+**Notes:** If multiple zones overlap, click the explicit zone ID in the list first. A valid polygon edit may still leave existing walkable restrictions; inspect the dark overlay separately. Do not erase walls/furniture purely to make an invalid route pass; owner-approved physical geometry remains a separate QA gate. The existing new-zone rectangle controls still work.
+
 ## MAP-EDIT-04 — draw a whole route with the mouse (tool 9)
 
 **No cell coordinates are required.** This workflow edits the same DRAFT_ONLY v1 document as the older grid tools.
@@ -72,7 +84,7 @@ The initial project draft contains **5 WALKABLE polygons**, **10 NO-GO polygons*
 | --- | --- | --- |
 | **Green outlines** | Explicit walkable polygons; only places inside the union can receive authored waypoint feet | **+ WALKABLE rectangle**, click two opposite corners; Undo if wrong |
 | **Darkened grid cells** | Grid-centre diagnostic preview outside *all* walkable polygons (not inherently walls) | Expand WALKABLE via a new rectangle; keep only plausible floor, then test movement |
-| **Red fill/outline** | NO-GO polygons (staircases, tables, furniture; names in the list) | Select zone in list, click **Remove selected draft zone…**, confirm; redraw NO-GO if needed |
+| **Red fill/outline** | NO-GO polygons (staircases, tables, furniture; names in the list) | Select original polygon by ID or click its red outline, drag corner handles or whole zone, then **Apply zone**; remove with confirmation only if desired |
 | **Orange cells** | Individually blocked cells (initially none) | **6 Block cells** toggles each; **Unblock selected cell** removes the block |
 
 **Important:** These layers are not interchangeable. Removing a blocked cell never overrides a red polygon or a missing green walkable area. All polygon boundaries use **image pixels**, not Room Builder world coordinates. The dark cell overlay samples grid centres for readability; the exact polygon boundaries are the green/red outlines and the validator remains pixel accurate.
@@ -82,10 +94,10 @@ The initial project draft contains **5 WALKABLE polygons**, **10 NO-GO polygons*
 1. **Load project draft** and select the relevant Room at the top. Make sure **Show walkable / no-go / excluded** is checked in the right inspector.
 2. Click **+ WALKABLE rectangle**. Tool 8 (**Edit zones**) is selected. Click the first and opposite corners around a plausible piece of floor on the approved image. This adds a new separately named `QA-EDIT-WALK-*` polygon to the draft. The old five polygons and the approved source image remain untouched.
 3. Click the previously forbidden location to inspect its reason. Use **2 Add waypoint** to place your new point after its precise pixel/room validation passes.
-4. If a red obstacle overlaps your intended route, select its explicit ID from the polygon list; remove it with confirmation and, when appropriate, draw a smaller **+ NO-GO rectangle** that covers the furniture without blocking the floor. Use **Undo/Redo** as needed.
+4. If a red obstacle overlaps your intended route, select its existing ID (or click it on the canvas) and drag white corners to fit the furniture; use **Apply zone** after preview, without deleting the original polygon. Use **Undo/Redo** as needed.
 5. **Save user draft**, then **Play integrated first floor** and choose the saved user source inside MAP-QA-07B. Inspect the route overlay/F3. The editor accepts only a draft that still validates **all** its waypoints and routes; it never automatically approves a real door or campaign collision.
 
-Use **Cancel zone drawing** to stop after the first corner. Removing a polygon that would strand an existing waypoint/route is rejected, with a specific reason. Old imported polygons can be removed **from a saved draft only**; the original QA source/canonical geometry never changes. Rectangle authoring with delete-and-redraw is provided here; freeform vertex editing and automatic room collision extraction remain future work.
+Use **Cancel zone drawing** to stop after the first corner. Removing a polygon that would strand an existing waypoint/route is rejected, with a specific reason. Old imported polygons can be removed **from a saved draft only**; the original QA source/canonical geometry never changes. MAP-EDIT-04A adds original-polygon vertex/body dragging, corner insert/remove and explicit preview/Apply; automatic collision extraction remains out of scope.
 
 ### Avoiding repeated warnings
 
