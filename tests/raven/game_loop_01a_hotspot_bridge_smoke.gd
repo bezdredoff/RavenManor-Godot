@@ -48,6 +48,30 @@ func _walk(bridge, actor) -> Dictionary:
 
 
 func _run() -> void:
+	# Exercise the actual playable QA scene as well as the pure bridge below.
+	# This catches scene parse/instantiation, in-memory injection and real
+	# vertical_slice Match-3 UI handoff (not just static source checks).
+	var qa_scene: PackedScene = load("res://scenes/raven/tests/game_loop_01a_qa_harness.tscn")
+	assert(qa_scene != null)
+	var qa = qa_scene.instantiate()
+	root.add_child(qa)
+	await process_frame
+	assert(qa.bridge != null and qa.memory != null)
+	assert(qa.bridge.state.storyBeatsSeen.has("RM-BEAT-01-01"))
+	assert(qa.actor.position == qa.bridge.graph.position("RM-NAV-HALL-SPAWN"))
+	qa._request("RM-HS-005")
+	var qa_hops := 0
+	while qa.actor.has_active_segment() and qa_hops < 16:
+		qa.actor.advance(30.0)
+		qa_hops += 1
+	assert(qa_hops > 0 and qa_hops < 16)
+	assert(is_instance_valid(qa.gameplay), "Arrival opens existing playable gameplay overlay")
+	assert(qa.gameplay.step.id == "level1")
+	assert(qa.gameplay.store == qa.bridge.store, "No competing campaign state")
+	qa._close_gameplay()
+	qa.queue_free()
+	await process_frame
+
 	var actor = Actor.instantiate()
 	root.add_child(actor)
 	await process_frame
