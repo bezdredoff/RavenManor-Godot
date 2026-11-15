@@ -44,3 +44,9 @@ No auto-merge. See docs/qa/map-qa-09b/README.md for manual review and rollback.
   canonical save authority, donor story/art or production UI imported.
 - No raster generation or original image edit: code-native polygons/lines form the greybox.
   No source mask/NO-GO is hidden or hard-coded in movement; geometry is in the editable file.
+
+## Published review
+
+PR https://github.com/bezdredoff/RavenManor-Godot/pull/261 is open, not merged; own shard
+records PR_review with the actual URL. Final exact-head CI results are recorded in the PR.
+Architecture, masks/elevation, physical doors and production approval remain unaccepted.
