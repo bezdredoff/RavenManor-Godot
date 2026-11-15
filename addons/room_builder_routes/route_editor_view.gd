@@ -11,6 +11,7 @@ const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
 const VISUAL_CANDIDATE := "res://assets/raven/map/qa/drafts/map_qa_08_visual_candidate.v1.json"
+const OPENING_BLUEPRINT := "res://assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json"
 const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones", "Freehand"]
 const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
 	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones", "9 Draw route (freehand)"]
@@ -171,6 +172,7 @@ func _make_ui() -> void:
 	outer.add_child(actions)
 	actions.add_child(_button("Load project draft", _load_project))
 	actions.add_child(_button("Load 08B visual candidate", _load_visual_candidate))
+	actions.add_child(_button("Load 09B opening blueprint", func(): _load_project_path(OPENING_BLUEPRINT)))
 	actions.add_child(_button("Load saved user", _load_user))
 	actions.add_child(_button("Save user draft", _save_user))
 	actions.add_child(_button("Export project draft", _export_project))
@@ -1398,6 +1400,8 @@ func _load_user() -> void:
 	_set_document(loaded.document, false)
 	last_persisted_kind = PreviewSource.USER
 	last_project_path = VISUAL_CANDIDATE if document.get("taskId", "") == "MAP-QA-08B" else Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
+	if document.get("taskId", "") == "MAP-QA-09B":
+		last_project_path = OPENING_BLUEPRINT
 	_message("Loaded persistent user:// QA draft")
 
 
@@ -1467,4 +1471,6 @@ func _open_integrated() -> void:
 		return
 	EditorInterface.play_custom_scene(INTEGRATED)
 	var selection := "Saved user" if last_persisted_kind == PreviewSource.USER else ("08B visual candidate" if path == VISUAL_CANDIDATE else "Project draft")
+	if last_persisted_kind == PreviewSource.PROJECT and path == OPENING_BLUEPRINT:
+		selection = "09B opening blueprint"
 	_message("MAP-QA-07B launched. Choose " + selection + " in the scene. TEST_ONLY transitions; source DRAFT_ONLY.")

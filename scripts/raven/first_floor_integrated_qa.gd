@@ -6,6 +6,8 @@ const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const Preview = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const HostScene = preload("res://scenes/raven/tests/first_floor_multi_room_host.tscn")
 const DoorReviewPanel = preload("res://scripts/raven/first_floor_door_review_panel.gd")
+const OpeningBlueprint = preload("res://scripts/raven/first_floor_opening_blueprint.gd")
+const OpeningOverlay = preload("res://scripts/raven/first_floor_opening_overlay.gd")
 const HALL := "RM-ROOM-HALL"
 const VISUAL_CANDIDATE := "res://assets/raven/map/qa/drafts/map_qa_08_visual_candidate.v1.json"
 const PICK_RADIUS := 28.0
@@ -23,6 +25,10 @@ var _room_picker: OptionButton
 var _status: Label
 var _header: Label
 var _door_review_panel
+var _blueprint_picker: OptionButton
+var _blueprint_transition_ids: Array[String] = []
+var _blueprint_controls: HFlowContainer
+var _legacy_doors: HBoxContainer
 
 
 func _ready() -> void:
@@ -79,6 +85,11 @@ func _install(candidate: Dictionary, start_room: String) -> bool:
 		return false
 	var previous = host
 	host = next_host
+	if candidate.get("openingBlueprint", false):
+		var overlay = OpeningOverlay.new()
+		overlay.document = candidate.document
+		overlay.z_index = 0
+		host.add_child(overlay)
 	if is_instance_valid(previous):
 		previous.queue_free()
 	_loaded = candidate
@@ -91,6 +102,7 @@ func _install(candidate: Dictionary, start_room: String) -> bool:
 		host.toggle_routes()
 	_refresh_destinations()
 	_refresh_rooms()
+	_refresh_blueprint_transitions()
 	queue_redraw()
 	_message("Loaded persisted " + _source_kind + "; TEST_ONLY portals; all image-pixel routes DRAFT_ONLY")
 	return true
@@ -238,6 +250,7 @@ func _pause() -> void:
 func _on_room_changed(_event: Dictionary) -> void:
 	_refresh_destinations()
 	_refresh_rooms()
+	_refresh_blueprint_transitions()
 	queue_redraw()
 	_message("Room changed after physical approach; TEST_ONLY handoff")
 
@@ -280,6 +293,37 @@ func open_door_review() -> void:
 	_door_review_panel.open_review()
 
 
+func _refresh_blueprint_transitions() -> void:
+	if not is_instance_valid(_blueprint_picker):
+		return
+	_blueprint_picker.clear()
+	_blueprint_transition_ids.clear()
+	var active := bool(_loaded.get("openingBlueprint", false))
+	_blueprint_controls.visible = active
+	_legacy_doors.visible = not active
+	if not _loaded.get("openingBlueprint", false):
+		return
+	for item in _loaded.contract.transitions:
+		if item.sourceRoomId == host.active_room_id:
+			_blueprint_transition_ids.append(str(item.id))
+			_blueprint_picker.add_item(str(item.id))
+
+
+func _try_blueprint_crossing(open_gate: bool) -> void:
+	var index := _blueprint_picker.selected
+	if index < 0 or index >= _blueprint_transition_ids.size():
+		_message("Choose 09B blueprint source and a proposed contact first")
+		return
+	var id := _blueprint_transition_ids[index]
+	for item in _loaded.contract.transitions:
+		if item.id == id:
+			host.test_gate(str(item.doorId), "open" if open_gate else "gated")
+	if open_gate:
+		transition(id)
+	else:
+		_message("QA candidate gate closed; story flags unchanged")
+
+
 func _picked_destination() -> void:
 	var index := _destination_picker.selected
 	if index >= 0 and index < _destination_ids.size():
@@ -306,6 +350,8 @@ func _message(message: String) -> void:
 	var room: String = host.active_room_id if is_instance_valid(host) else "NONE"
 	var anchor: String = host.controller.confirmed_anchor() if is_instance_valid(host) else "NONE"
 	_header.text = "MAP-QA-07B · %s · DRAFT_ONLY / TEST_ONLY" % room
+	if _loaded.get("openingBlueprint", false):
+		_header.text = "09B PROPOSED ARCHITECTURE · %s · TEST_ONLY / NEW ART REQUIRED" % room
 	_status.text = "%s\n%s · %s · anchor %s · %d WP / %d routes · unresolved %d" % [
 		message, _source_kind, _source_path, anchor,
 		int(_loaded.get("waypointCount", 0)), int(_loaded.get("routeCount", 0)),
@@ -325,12 +371,14 @@ func _make_ui() -> void:
 	var rows := VBoxContainer.new()
 	panel.add_child(rows)
 	_header = Label.new()
+	_header.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_header.add_theme_font_size_override("font_size", 14)
 	rows.add_child(_header)
 	var sources := HFlowContainer.new()
 	rows.add_child(sources)
 	_button(sources, "Project draft", func(): load_source(Preview.PROJECT))
 	_button(sources, "08B visual candidate", func(): load_source(Preview.PROJECT, VISUAL_CANDIDATE))
+	_button(sources, "09B opening blueprint", func(): load_source(Preview.PROJECT, OpeningBlueprint.PATH))
 	_button(sources, "Saved user", func(): load_source(Preview.USER))
 	_button(sources, "Original Hall", func(): load_source(Preview.BASELINE))
 	_button(sources, "Reload", func(): load_source(_source_kind, _source_path))
@@ -346,12 +394,21 @@ func _make_ui() -> void:
 	targets.add_child(_room_picker)
 	_button(targets, "Restart island (QA)", _picked_room)
 	var doors := HBoxContainer.new()
+	_legacy_doors = doors
 	rows.add_child(doors)
 	_button(doors, "Hall → Corridor", func(): transition("QA-07B-TR-HC"))
 	_button(doors, "Corridor → Bedroom", func(): transition("QA-07B-TR-CB"))
 	_button(doors, "Bedroom → Corridor", func(): transition("QA-07B-TR-BC"))
 	_button(doors, "Corridor → Hall", func(): transition("QA-07B-TR-CH"))
 	_button(doors, "Locked", func(): transition("QA-07B-TR-LOCKED"))
+	var proposals := HFlowContainer.new()
+	_blueprint_controls = proposals
+	rows.add_child(proposals)
+	_blueprint_picker = OptionButton.new()
+	_blueprint_picker.add_theme_font_size_override("font_size", 11)
+	proposals.add_child(_blueprint_picker)
+	_button(proposals, "QA open + cross proposed sill", func(): _try_blueprint_crossing(true))
+	_button(proposals, "QA close gate", func(): _try_blueprint_crossing(false))
 	var actions := HBoxContainer.new()
 	rows.add_child(actions)
 	_button(actions, "Gate", _set_gate)

@@ -1,5 +1,7 @@
 # Documentation map and authority
 
+- [MAP-QA-09B opening blueprint](qa/map-qa-09b/README.md): editable architectural proposals and TEST_ONLY shared-sill movement without room-switch relocation.
+
 - [MAP-QA-09 physical door evidence review](qa/map-qa-09/README.md): original-image crops, unresolved threshold contract and safe room-side inspection in integrated QA.
 
 - [MAP-QA-08B visual route calibration and owner QA](qa/map-qa-08b/README.md): independent 26/21 candidate, overlays, narrative targets, unresolved physical doors and native runtime evidence.

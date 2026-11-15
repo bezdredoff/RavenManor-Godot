@@ -4,6 +4,7 @@ extends RefCounted
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const Preview = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const Original = preload("res://scripts/raven/first_floor_hall_qa_graph.gd")
+const OpeningBlueprint = preload("res://scripts/raven/first_floor_opening_blueprint.gd")
 const ART := "res://a_detailed_top_down_isometric_game_map_illustratio.png"
 const HALL := "RM-ROOM-HALL"
 const CORRIDOR := "RM-ROOM-CORRIDOR"
@@ -135,14 +136,14 @@ static func load_source(kind: String = Preview.PROJECT, path: String = "") -> Di
 			_transition("QA-07B-TR-LOCKED", HALL, CORRIDOR, "QA-HALL-WEST", STARTS[CORRIDOR], "", "QA-07B-DOOR-LOCKED")]
 	# All 11 real manifest doors remain unresolved. QA transitions use
 	# authored waypoints as MOCKED approaches, not real portal footpoints.
-	return {"ok":true, "contract":_contract(rooms, doors, transitions),
+	return OpeningBlueprint.apply_to({"ok":true, "contract":_contract(rooms, doors, transitions),
 		"visuals":_visuals(available_starts.keys()), "document":doc,
 		"sourceKind":kind, "sourcePath":preview.source_path,
 		"initialRoomId":HALL, "initialAnchorId":STARTS[HALL],
 		"starts":available_starts, "waypointCount":doc["waypoints"].size(),
 		"routeCount":doc["routes"].size(),
 		"unresolvedCount":doc.get("unresolvedLocations", []).size(),
-		"syntheticTransitions":mock}
+		"syntheticTransitions":mock})
 
 
 static func _contract(rooms: Array, doors: Array, transitions: Array) -> Dictionary:
