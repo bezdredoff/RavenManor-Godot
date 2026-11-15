@@ -646,6 +646,24 @@ static func validate(doc: Dictionary) -> Dictionary:
 		if constraint.get("kind") != "allowed":
 			return _bad("Waypoint " + id + " at " + str(point.round()) + ": " + str(constraint["reason"]))
 	var route_ids := {}
+	# Optional authoring-only paired contacts. This metadata never creates edges.
+	var contacts: Variant = doc.get("sharedDoorContacts", [])
+	if not contacts is Array:
+		return _bad("sharedDoorContacts must be an array")
+	var contact_ids := {}
+	var lookup := _waypoint_lookup(doc)
+	for contact in contacts:
+		if not contact is Dictionary or contact.get("authority") != "TEST_ONLY" or contact.get("physicalPortalApproved") != false:
+			return _bad("Shared contact must remain TEST_ONLY and unapproved")
+		var contact_id := str(contact.get("id", ""))
+		var pairs: Variant = contact.get("waypointIds")
+		var rooms: Variant = contact.get("roomIds")
+		if contact_id.is_empty() or contact_ids.has(contact_id) or not pairs is Array or not rooms is Array or pairs.size() != 2 or rooms.size() != 2 or pairs[0] == pairs[1] or rooms[0] == rooms[1]:
+			return _bad("Invalid shared contact pair")
+		contact_ids[contact_id] = true
+		for side in range(2):
+			if not lookup.has(pairs[side]) or waypoint_room(lookup[pairs[side]]) != rooms[side] or lookup[pairs[side]].type != "Door Approach":
+				return _bad("Shared contact waypoint/room mismatch")
 	for route in doc["routes"]:
 		if not route is Dictionary:
 			return _bad("Invalid authored route")
@@ -657,6 +675,22 @@ static func validate(doc: Dictionary) -> Dictionary:
 		if not error.is_empty():
 			return _bad(error)
 	return {"ok": true}
+
+
+static func shared_contact_rooms(doc: Dictionary, point: Vector2) -> Array:
+	# Only an exactly coincident paired endpoint can touch both room boundaries.
+	# Ordinary freehand strokes must still remain in one owned floor region.
+	var contacts: Array = doc.get("sharedDoorContacts", [])
+	if contacts.is_empty():
+		return []
+	var lookup := _waypoint_lookup(doc)
+	for contact in contacts:
+		var pair: Array = contact.get("waypointIds", [])
+		if pair.size() != 2 or not lookup.has(pair[0]) or not lookup.has(pair[1]):
+			continue
+		if _vector(lookup[pair[0]].pointPx).distance_to(point) <= 0.001 and _vector(lookup[pair[1]].pointPx).distance_to(point) <= 0.001:
+			return contact.get("roomIds", []).duplicate()
+	return []
 
 
 static func _finish_edit(doc: Dictionary) -> Dictionary:
@@ -721,6 +755,12 @@ static func delete_waypoint(original: Dictionary, id: String) -> Dictionary:
 	for i in range(doc["waypoints"].size()):
 		if doc["waypoints"][i].get("id") == id:
 			doc["waypoints"].remove_at(i)
+			if doc.has("sharedDoorContacts"):
+				var retained: Array = []
+				for contact in doc.sharedDoorContacts:
+					if not contact.waypointIds.has(id):
+						retained.append(contact)
+				doc.sharedDoorContacts = retained
 			return _finish_edit(doc)
 	return _bad("Unknown waypoint " + id)
 

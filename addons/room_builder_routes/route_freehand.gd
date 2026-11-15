@@ -151,6 +151,8 @@ static func _first_bad_pixel(doc: Dictionary, room_id: String, a: Vector2, b: Ve
 
 
 static func _room_error(doc: Dictionary, room_id: String, point: Vector2) -> String:
+	if Routes.shared_contact_rooms(doc, point).has(room_id):
+		return ""
 	# An explicitly cleared AI floor mask is not a new invisible NO-GO boundary.
 	# Still reject crossing explicitly room-owned zones of OTHER rooms.
 	var boundary_open: bool = str(doc.get("walkableBoundaryMode", "REQUIRE")) == "OPEN"
