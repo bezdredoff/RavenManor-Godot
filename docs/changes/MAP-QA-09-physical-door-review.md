@@ -49,3 +49,10 @@ No dashboard edits, production promotion, save migration, gate changes or auto-m
 - No schema migration: separate DRAFT_ONLY evidence format. Changing this JSON cannot
   grant movement authority; guarded loader rejects fabricated contacts/approval.
 - Rollback removes the new evidence/panel/test hook. 08B accepted room graph remains intact.
+
+## Published review
+
+PR https://github.com/bezdredoff/RavenManor-Godot/pull/258 is open, not merged.
+Own manor-map shard records PR_review with the real URL. Native entrance/Archive crop
+inspection and the explicit Archive-side QA reset + existing route were observed;
+these are not physical crossing or owner geometry acceptance. Final CI is recorded in PR.
