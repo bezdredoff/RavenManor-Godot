@@ -82,6 +82,7 @@ run_check 'Replayable onboarding' 'Raven first-session and replayable onboarding
 run_check 'Procedural audio runtime' 'Raven procedural audio runtime, preference gating and focus smoke passed' --script res://tests/raven/audio_runtime_smoke.gd --quit-after 240
 run_check 'Session lifecycle E2E smoke' 'Raven Manor session lifecycle E2E smoke passed' --script res://tests/raven/session_lifecycle_e2e_smoke.gd --quit-after 240
 run_check 'GAME-LOOP-01 runtime reward/restoration characterization' 'Raven Manor game loop characterization smoke passed' --script res://tests/raven/game_loop_characterization_smoke.gd --quit-after 240
+run_check 'GAME-LOOP-01A hotspot → gameplay QA' 'Raven GAME-LOOP-01A hotspot-to-gameplay bridge smoke passed' --script res://tests/raven/game_loop_01a_hotspot_bridge_smoke.gd --quit-after 240
 run_check 'Match-3 transaction/session boundary' 'Raven Match-3 session persistence and booster transaction smoke passed' --script res://tests/raven/match3_session_smoke.gd --quit-after 180
 run_check 'Match-3 independent booster UI' 'Raven Match-3 booster UI labels, gates and callbacks smoke passed' --script res://tests/raven/match3_booster_ui_smoke.gd --quit-after 120
 run_check 'Match-3 checkpoint smoke' 'Raven Manor Match-3 replay checkpoint smoke passed' --script res://tests/raven/match3_checkpoint_smoke.gd --quit-after 120
