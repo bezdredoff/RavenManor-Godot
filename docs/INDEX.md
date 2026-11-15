@@ -1,5 +1,9 @@
 # Documentation map and authority
 
+- **[Current next steps and task order (2026-11-15)](NEXT_PLAN.md)**: verified #254–261 baseline, QA-versus-production gates, owner architectural decisions, parallel integration workstreams and merge dependencies.
+- **[Current status summary (2026-11-15)](STATUS.md)**: latest verified main, unapproved real doors and open shard reconciliation PRs #262/#263; historical timeline retained below.
+- **[Implementation handoff and historical milestone record](IMPLEMENTATION_PLAN.md)**: authoritative live status is in 15 progress shards, not frozen `production_progress.json`.
+
 - [MAP-QA-09B opening blueprint](qa/map-qa-09b/README.md): editable architectural proposals and TEST_ONLY shared-sill movement without room-switch relocation.
 
 - [MAP-QA-09 physical door evidence review](qa/map-qa-09/README.md): original-image crops, unresolved threshold contract and safe room-side inspection in integrated QA.

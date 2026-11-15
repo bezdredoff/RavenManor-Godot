@@ -26,8 +26,15 @@ This narrative sync is a guardrail for RM-PIPE work: Hall/room imports, generate
 
 ## Production delivery snapshot — 2026-10-27 (code/art roadmap authority)
 
-This document retains its `RM-HUB-001` historical implementation record. For **current Season 1 production**, follow `docs/production/CODE_PRODUCTION_ROADMAP_RU.md` and `docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`; use `data/raven/production/code_work_packages.json` for task scope/dependencies and `data/raven/production/production_progress.json` for current state/evidence. Dashboard is generated, not authoritative.
+This document retains its `RM-HUB-001` historical implementation record. For **current Season 1 production**, follow `docs/production/CODE_PRODUCTION_ROADMAP_RU.md` and `docs/production/GRAPHICS_PRODUCTION_ROADMAP_RU.md`; use `data/raven/production/code_work_packages.json` for task scope/dependencies and `data/raven/production/progress/<domain>.json` (15 live domain shards) for current state/evidence. Dashboard is generated, not authoritative; `production_progress.json` is a frozen historical snapshot.
 
 - UPDS actual core imported with [PR #46](https://github.com/bezdredoff/RavenManor-Godot/pull/46); original board-shape/motion/tutorial/easing primitives merged with [PR #54](https://github.com/bezdredoff/RavenManor-Godot/pull/54) (**CODE-02-00 merged**). Full touch/input and animated Match-3 screen **CODE-02-01/02 still in progress**.
 - Real phone ZIP-to-PR/CI evidence merged in [PR #56](https://github.com/bezdredoff/RavenManor-Godot/pull/56). `MOB-04` remains partial pending adversarial/phone artifact QA; `/preview/` is CI/artifact review, not a separate-origin playable game.
 - Next code PR must extract reusable UPDS Match3Screen input/board cell presenter/cascade/HUD and connect it to Raven theme and existing reducer/saves without importing school-story progression. Parallel GFX-10 art still needs owner acceptance; combined CODE-11 × GFX-11 Hall pilot is the scale-out gate.
+
+
+## 2026-11-15 — post-calibration implementation handoff
+
+The historical PR 1–3 and 2026-10-27 roadmaps above remain provenance, not the next runnable work queue. For the **current** order, use [NEXT_PLAN.md](NEXT_PLAN.md). The verified main snapshot after #261 contains: separate MAP-QA-08B room routes (#257), physical-door evidence with unresolved real thresholds (#258), isolated hotspot→Match-3→VN QA (#259), fail-closed navigation source boundary (#260) and a distinct TEST_ONLY 09B four-opening architecture blueprint (#261). None enables production movement or approves structural art/occlusion/room-save support.
+
+Next implementation contract: (1) owner/architecture review of HA/HC/CB/CK and floor/foreground/elevation, (2) single-writer bridge↔navigation-source adapter integration with safe checkpoint/Continue tests, (3) reviewed production source activation only after geometry/door/save-catalog approvals, (4) chibi Evelyn and portrait/mobile visual QA. Both the old proposed geometry and the QA in-memory gameplay loop remain independently revertible. Open status-reconciliation PR #262 (manor-map) and #263 (campaign-core) must be considered before updating their live shards.
