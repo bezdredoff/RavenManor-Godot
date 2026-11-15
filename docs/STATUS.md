@@ -1,3 +1,15 @@
+# Raven Manor — current verified status (2026-11-15)
+
+**Latest audited main:** `f0d2264e` (merge of PR #261). Current working priorities and dependencies: [NEXT_PLAN.md](NEXT_PLAN.md). Live task status source: `data/raven/production/progress/<domain>.json`; the public dashboard is generated and may lag until PR merges / Pages deploy. Sections below retain chronological historical evidence, including statuses that were accurate only before their PRs merged.
+
+**Merged technical slices:** native Route Editor freehand and fully editable draft constraints (#251–255); separate story-aware 08B visual floor candidate (#256–257; 26 waypoints, 21 routes); physical-door evidence review (#258; all 11 real doors unresolved); TEST_ONLY hotspot → Match-3 → VN in-memory integration (#259); explicit fail-closed QA-vs-production navigation source adapter (#260); editable architectural 09B blueprint (#261; 34 waypoints, 29 routes, four proposed HA/HC/CB/CK openings and TEST_ONLY paired footpoints). Exact-head CI passed on each checked PR, including #261 [run 43759111860](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43759111860). This does **not** imply geometry/art/mobile/save production acceptance.
+
+**Open evidence reconciliation at audit:** [#262](https://github.com/bezdredoff/RavenManor-Godot/pull/262) updates manor-map CODE-05-02; [#263](https://github.com/bezdredoff/RavenManor-Godot/pull/263) updates campaign-core GAME-LOOP-01. Both are open with successful head CI, not merged at this snapshot. A separate room-builder CODE-05-01/RM-GAP-001 reconciliation PR updates that owner shard. Do not double-write these shards or edit `dashboard/status.json` by hand.
+
+**Highest remaining gates:** owner-confirm HA/HC/CB/CK architectural openings, physical actor clearance/65° elevation/foreground/locks, unify `raven_hotspot_gameplay_bridge.gd` with `manor_navigation_source.gd` under one integration owner, integrate real gameplay/Continue and save-catalog room identity, approve Evelyn chibi walker, then device-level Hall vertical-slice QA. Current production source deliberately rejects unapproved geometry. Bedroom access remains independent of bathroom repair; bathroom remains a vignette; no free tap-to-move.
+
+---
+
 ## 2026-11-04 — technical closeout and parallel-agent preparation (PROC-006)
 
 At main `c5f286ea1da4625da880e27d07c61714cf022a81`, PRs [#178](https://github.com/bezdredoff/RavenManor-Godot/pull/178), [#179](https://github.com/bezdredoff/RavenManor-Godot/pull/179) and [#180](https://github.com/bezdredoff/RavenManor-Godot/pull/180) are merged. Per owner request, `CODE-04-01`, `CODE-04-02` and `GAME-ONBOARD-01` are closed as **merged technical deliveries**, not device/owner-accepted gameplay. GAME-UI-01 and GAME-QA-01 retain remaining manual verification. There are 25 Match-3 levels (3 story + 22 optional), boosters, new candidate cup/quill tile art. All require appropriate gameplay/art QA; no new runtime behavior or save migration in this process slice.
