@@ -151,6 +151,9 @@ static func _first_bad_pixel(doc: Dictionary, room_id: String, a: Vector2, b: Ve
 
 
 static func _room_error(doc: Dictionary, room_id: String, point: Vector2) -> String:
+	# An explicitly cleared AI floor mask is not a new invisible NO-GO boundary.
+	# Still reject crossing explicitly room-owned zones of OTHER rooms.
+	var boundary_open: bool = str(doc.get("walkableBoundaryMode", "REQUIRE")) == "OPEN"
 	var own := false
 	var other := ""
 	var unknown := false
@@ -165,7 +168,7 @@ static func _room_error(doc: Dictionary, room_id: String, point: Vector2) -> Str
 				other = owner
 	if not other.is_empty():
 		return "Entered " + other + " walkable region; edit one room at a time"
-	if not own:
+	if not own and not boundary_open:
 		if unknown:
 			return "Walkable zone has no room ownership. Redraw that draft zone from the selected room."
 		return "Outside the selected room's owned WALKABLE area"

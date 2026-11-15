@@ -11,6 +11,10 @@ const DEFAULT_SAVE := "user://room_builder_routes/hall_routes_draft.v1.json"
 const PROJECT_DRAFT_DIR := "res://assets/raven/map/qa/drafts/"
 const TYPES := ["Spawn", "Waypoint", "Interaction", "Door Approach", "Return Spawn"]
 const ROOM_IDS := ["RM-ROOM-HALL", "RM-ROOM-CORRIDOR", "RM-ROOM-BEDROOM", "RM-ROOM-ARCHIVE", "RM-ROOM-KITCHEN"]
+# These five source Hall pilot NO-GO IDs predate status/origin metadata.
+# They are provisional geometry, NOT production obstacles.
+const LEGACY_AI_NO_GO_IDS := ["QA-HALL-NOGO-STAIR-L", "QA-HALL-NOGO-STAIR-R",
+	"QA-HALL-NOGO-TEA-TABLE", "QA-HALL-NOGO-PLANT-LEFT", "QA-HALL-NOGO-PLANT-RIGHT"]
 # Only the original stable IDs may omit ownership (legacy Hall imports).
 const LEGACY_HALL_IDS := ["QA-HALL-SPAWN", "QA-HALL-CENTRE", "QA-HALL-WEST", "QA-HALL-EAST",
 	"QA-HALL-TABLE-APPROACH", "QA-HALL-PORTAL-APPROACH", "QA-HALL-RETURN-SAFE"]
@@ -212,7 +216,7 @@ static func _is_restricted(point: Vector2, doc: Dictionary) -> bool:
 		if Geometry2D.is_point_in_polygon(point, _polygon_points(region)):
 			return true
 	var walkable: Array = doc.get("walkablePolygons", [])
-	if not walkable.is_empty():
+	if doc.get("walkableBoundaryMode", "REQUIRE") == "REQUIRE" and not walkable.is_empty():
 		var inside := false
 		for region in walkable:
 			if Geometry2D.is_point_in_polygon(point, _polygon_points(region)):
@@ -233,7 +237,7 @@ static func restriction_at(point: Vector2, doc: Dictionary) -> Dictionary:
 		if Geometry2D.is_point_in_polygon(point, _polygon_points(zone)):
 			return {"kind": "no-go", "id": str(zone.get("id", "")), "reason": "Inside red NO-GO zone " + str(zone.get("id", "")) + ". Edit it in Zones (draft only)."}
 	var walkable: Array = doc.get("walkablePolygons", [])
-	if not walkable.is_empty():
+	if doc.get("walkableBoundaryMode", "REQUIRE") == "REQUIRE" and not walkable.is_empty():
 		var inside := false
 		for zone in walkable:
 			if Geometry2D.is_point_in_polygon(point, _polygon_points(zone)):
@@ -275,7 +279,8 @@ static func add_zone_rectangle(original: Dictionary, group: String, a: Vector2, 
 	var new_zone := {
 		"id": id,
 		"pointsPx": [pixel_pair(min_xy), pixel_pair(Vector2(max_xy.x, min_xy.y)),
-			pixel_pair(max_xy), pixel_pair(Vector2(min_xy.x, max_xy.y))]
+			pixel_pair(max_xy), pixel_pair(Vector2(min_xy.x, max_xy.y))],
+		"origin": "USER_DRAFT", "status": "USER_DRAFT_UNAPPROVED"
 	}
 	# Original calls remain backward-compatible. Native editing assigns
 	# room ownership to new WALKABLE zones so freehand cannot cross rooms.
@@ -371,6 +376,92 @@ static func remove_zone_corner(original: Dictionary, group: String, id: String,
 		points.remove_at(index)
 		return set_zone_polygon(original, group, id, points)
 	return _bad("Unknown selected zone " + id)
+
+
+# An editable source polygon is AI only with explicit metadata or a known
+# original Hall pilot ID. Unknown legacy objects remain untouched by bulk clear.
+static func zone_origin(zone: Dictionary, group: String) -> String:
+	var explicit := str(zone.get("origin", ""))
+	if explicit == "USER_DRAFT" or str(zone.get("id", "")).begins_with("QA-EDIT-"):
+		return "USER_DRAFT"
+	if explicit == "AI_DRAFT":
+		return "AI_DRAFT"
+	var status := str(zone.get("status", "")).to_upper()
+	if status.begins_with("AI_") or status == "VISUAL_ESTIMATE_UNAPPROVED":
+		return "AI_DRAFT"
+	if group == "noGoPolygons" and LEGACY_AI_NO_GO_IDS.has(str(zone.get("id", ""))):
+		return "AI_DRAFT"
+	return "UNSPECIFIED_DRAFT"
+
+
+# Preview describes exactly what a confirmed clear would remove. Existing
+# unlabelled blocked cells are ambiguous and MUST be preserved.
+static func ai_constraints_preview(original: Dictionary) -> Dictionary:
+	var checked := validate(original)
+	if not checked.ok:
+		return checked
+	var walkable_ids: Array = []
+	var no_go_ids: Array = []
+	for zone in original["walkablePolygons"]:
+		if zone_origin(zone, "walkablePolygons") == "AI_DRAFT":
+			walkable_ids.append(str(zone.get("id", "")))
+	for zone in original["noGoPolygons"]:
+		if zone_origin(zone, "noGoPolygons") == "AI_DRAFT":
+			no_go_ids.append(str(zone.get("id", "")))
+	var blocked: Array = []
+	var origins: Dictionary = original.get("blockedCellOrigins", {})
+	for cell in original["blockedCells"]:
+		if str(origins.get(str(cell), "")) == "AI_DRAFT":
+			blocked.append(str(cell))
+	return {"ok": true, "walkableIds": walkable_ids, "noGoIds": no_go_ids,
+		"blockedCells": blocked,
+		"count": walkable_ids.size() + no_go_ids.size() + blocked.size(),
+		"retainedWalkable": original["walkablePolygons"].size() - walkable_ids.size(),
+		"retainedNoGo": original["noGoPolygons"].size() - no_go_ids.size(),
+		"retainedBlocked": original["blockedCells"].size() - blocked.size(),
+		"opensWalkableBoundary": not walkable_ids.is_empty()}
+
+
+# A single validated, undoable candidate. Do not edit source JSON or the art.
+# Removing imported WALKABLE limits switches the optional draft policy to OPEN
+# so retained manually drawn partial zones cannot strand existing waypoints.
+static func clear_ai_constraints(original: Dictionary) -> Dictionary:
+	var summary := ai_constraints_preview(original)
+	if not summary.ok:
+		return summary
+	if int(summary["count"]) == 0:
+		return _bad("No identified AI constraints to clear; unspecified and user-owned restrictions are preserved")
+	var doc: Dictionary = original.duplicate(true)
+	for group in ["walkablePolygons", "noGoPolygons"]:
+		var ids: Array = summary["walkableIds"] if group == "walkablePolygons" else summary["noGoIds"]
+		var retained: Array = []
+		for zone in doc[group]:
+			if not ids.has(str(zone.get("id", ""))):
+				retained.append(zone)
+		doc[group] = retained
+	var blocked: Array = []
+	for cell in doc["blockedCells"]:
+		if not summary["blockedCells"].has(str(cell)):
+			blocked.append(cell)
+	doc["blockedCells"] = blocked
+	if doc.has("blockedCellOrigins"):
+		var origins: Dictionary = doc["blockedCellOrigins"]
+		for cell in summary["blockedCells"]:
+			origins.erase(str(cell))
+		doc["blockedCellOrigins"] = origins
+	if summary["opensWalkableBoundary"]:
+		doc["walkableBoundaryMode"] = "OPEN"
+	var result := _finish_edit(doc)
+	if result.ok:
+		result["summary"] = summary
+	return result
+
+
+# Optional v1 field. Old documents with no field retain the REQUIRE behavior.
+static func set_walkable_boundary_mode(original: Dictionary, required: bool) -> Dictionary:
+	var doc: Dictionary = original.duplicate(true)
+	doc["walkableBoundaryMode"] = "REQUIRE" if required else "OPEN"
+	return _finish_edit(doc)
 
 
 static func _crosses_polygon(a: Vector2, b: Vector2, region: Dictionary) -> bool:
@@ -511,6 +602,10 @@ static func validate(doc: Dictionary) -> Dictionary:
 		return _bad("Draft must contain waypoint and route arrays")
 	if doc["waypoints"].size() > 500 or doc["routes"].size() > 1000:
 		return _bad("Draft is too large")
+	if not ["REQUIRE", "OPEN"].has(str(doc.get("walkableBoundaryMode", "REQUIRE"))):
+		return _bad("Draft walkableBoundaryMode must be REQUIRE or OPEN")
+	if doc.has("blockedCellOrigins") and not doc["blockedCellOrigins"] is Dictionary:
+		return _bad("blockedCellOrigins must be an optional JSON object")
 	for key in ["blockedCells", "walkablePolygons", "noGoPolygons"]:
 		if not doc.get(key, null) is Array:
 			return _bad("Missing array " + key)
@@ -520,6 +615,9 @@ static func validate(doc: Dictionary) -> Dictionary:
 		if not p.ok or not cell_to_pixel(str(cell), doc).is_finite() or occupied.has(str(cell)):
 			return _bad("Invalid, duplicate or out-of-image blocked cell: " + str(cell))
 		occupied[str(cell)] = true
+	for cell in doc.get("blockedCellOrigins", {}).keys():
+		if not occupied.has(str(cell)) or not ["AI_DRAFT", "USER_DRAFT"].has(str(doc["blockedCellOrigins"][cell])):
+			return _bad("Invalid provenance for draft blocked cell " + str(cell))
 	for group in ["walkablePolygons", "noGoPolygons"]:
 		for region in doc[group]:
 			if not region is Dictionary:
@@ -698,8 +796,13 @@ static func set_blocked(original: Dictionary, cell: String, blocked: bool) -> Di
 	if blocked and not cells.has(name.cell):
 		cells.append(name.cell)
 		cells.sort()
+		var origins: Dictionary = doc.get("blockedCellOrigins", {}).duplicate(true)
+		origins[name.cell] = "USER_DRAFT"
+		doc["blockedCellOrigins"] = origins
 	elif not blocked:
 		cells.erase(name.cell)
+		if doc.has("blockedCellOrigins"):
+			doc["blockedCellOrigins"].erase(name.cell)
 	return _finish_edit(doc)
 
 
