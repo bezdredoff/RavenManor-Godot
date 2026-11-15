@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-map-qa-08-story-navigation-targets",
+  "taskId": "MAP-QA-08A",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "runtimeAuthority": false,
+  "coordinateSpace": "image-pixel",
+  "sourceImage": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "sizePx": [
+      1672,
+      941
+    ],
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a"
+  },
+  "legacyDraft": "res://assets/raven/map/qa/drafts/hall_routes_draft.v1.json",
+  "sourceOfNarrative": "res://data/raven/production/map_narrative_routes.json",
+  "authorityNote": "Target inventory only. No point coordinates, no candidate routes, no real portal locations. Approved image must be visually examined before MAP-QA-08B geometry authoring.",
+  "targetPoints": [
+    {
+      "id": "QA-POI-HALL-ARRIVAL",
+      "roomId": "RM-ROOM-HALL",
+      "type": "STAGING",
+      "relatedStoryIds": [
+        "RM-BEAT-01-01"
+      ],
+      "relatedHotspotIds": [
+        "RM-HS-001"
+      ],
+      "visualCue": "Hall entrance / first Ada-Lucas orientation",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-HALL-SEATING",
+      "roomId": "RM-ROOM-HALL",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-02-01"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Armchairs and tea table; footpoint outside furniture",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-HALL-FUTURE-PLAN",
+      "roomId": "RM-ROOM-HALL",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-06-02"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Inspectable estate plan; exact prop/location unconfirmed",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-HALL-NEXT-DAY",
+      "roomId": "RM-ROOM-HALL",
+      "type": "STAGING",
+      "relatedStoryIds": [
+        "RM-BEAT-01-05",
+        "RM-BEAT-05-01",
+        "RM-BEAT-05-04"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Hall return/start for next-day and storm beats",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-CORRIDOR-BEDROOM-GATE",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "type": "DOOR_APPROACH",
+      "relatedStoryIds": [],
+      "relatedHotspotIds": [
+        "RM-HS-005"
+      ],
+      "visualCue": "Jammed bedroom access: near-side only; physical door footpoint unresolved",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-CORRIDOR-BATH-VIGNETTE",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "type": "VIGNETTE_APPROACH",
+      "relatedStoryIds": [
+        "RM-BEAT-01-03"
+      ],
+      "relatedHotspotIds": [
+        "RM-HS-003"
+      ],
+      "visualCue": "Bathroom repair accessed from corridor; no standalone walkable bathroom",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-CORRIDOR-KITCHEN-GATE",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "type": "DOOR_APPROACH",
+      "relatedStoryIds": [],
+      "relatedHotspotIds": [],
+      "visualCue": "Kitchen approach only; no physical portal asserted",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-BEDROOM-REST",
+      "roomId": "RM-ROOM-BEDROOM",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-01-02"
+      ],
+      "relatedHotspotIds": [
+        "RM-HS-002"
+      ],
+      "visualCue": "Bed restoration reachable without stepping through bed/canopy",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-BEDROOM-CHILDHOOD",
+      "roomId": "RM-ROOM-BEDROOM",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-01-04"
+      ],
+      "relatedHotspotIds": [
+        "RM-HS-004"
+      ],
+      "visualCue": "Childhood clue near safe standing floor",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-BEDROOM-NIGHT",
+      "roomId": "RM-ROOM-BEDROOM",
+      "type": "STAGING",
+      "relatedStoryIds": [
+        "RM-BEAT-06-03"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Safe first-night/late-night room standing area",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-KITCHEN-LEDGER",
+      "roomId": "RM-ROOM-KITCHEN",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-02-03"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Household ledger at kitchen table; stand beside not on table",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-KITCHEN-POWER",
+      "roomId": "RM-ROOM-KITCHEN",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-02-04"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Inspectable power-safe/preparation context, not specialist repair",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-ARCHIVE-DOOR",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "type": "DOOR_APPROACH",
+      "relatedStoryIds": [
+        "RM-BEAT-03-01"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Library door far-side candidate; physical threshold unresolved",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-ARCHIVE-DESK",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-03-02",
+        "RM-BEAT-03-04"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Family album and drawer at desk; footpoint outside NO-GO furniture",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-ARCHIVE-LUCAS",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "type": "NPC_STAGING",
+      "relatedStoryIds": [
+        "RM-BEAT-03-03",
+        "RM-BEAT-06-01"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Lucas interaction area; story timing gate remains external",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-ARCHIVE-WINDOW",
+      "roomId": "RM-ROOM-ARCHIVE",
+      "type": "INTERACTION",
+      "relatedStoryIds": [
+        "RM-BEAT-05-02",
+        "RM-BEAT-05-03"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Window/wet documents investigation zone",
+      "routeRequired": true,
+      "pointPx": null,
+      "status": "NOT_CALIBRATED",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-ENTRY-ROWAN",
+      "roomId": "RM-ROOM-ENTRY",
+      "type": "VISUAL_ONLY",
+      "relatedStoryIds": [
+        "RM-BEAT-02-02"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Rowan at front entry; stair/elevation geometry unresolved, no footpoint",
+      "routeRequired": false,
+      "pointPx": null,
+      "status": "OUT_OF_SCOPE",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-CONSERVATORY-BENCH",
+      "roomId": "RM-ROOM-CONSERVATORY",
+      "type": "VISUAL_ONLY",
+      "relatedStoryIds": [
+        "RM-BEAT-04-02",
+        "RM-BEAT-04-03",
+        "RM-BEAT-04-04"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Bench and safe glass route not yet visible/confirmed",
+      "routeRequired": false,
+      "pointPx": null,
+      "status": "OUT_OF_SCOPE",
+      "approval": "DRAFT_ONLY"
+    },
+    {
+      "id": "QA-POI-GARDEN-ROWAN",
+      "roomId": "RM-ROOM-BACK-GARDEN",
+      "type": "OUT_OF_IMAGE",
+      "relatedStoryIds": [
+        "RM-BEAT-04-01"
+      ],
+      "relatedHotspotIds": [],
+      "visualCue": "Garden fence outside approved first-floor image",
+      "routeRequired": false,
+      "pointPx": null,
+      "status": "OUT_OF_SCOPE",
+      "approval": "DRAFT_ONLY"
+    }
+  ],
+  "doorCalibration": [
+    {
+      "doorId": "RM-DOOR-ENTRY-HALL",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-HALL-ARCHIVE",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-HALL-CORRIDOR",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-CORRIDOR-BATHROOM",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-CORRIDOR-KITCHEN",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-KITCHEN-CONSERVATORY",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-HALL-EAST-WING",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-HALL-UPPER-FLOOR",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-KITCHEN-SERVICE",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    },
+    {
+      "doorId": "RM-DOOR-CONSERVATORY-GARDEN",
+      "status": "UNRESOLVED",
+      "nearSidePointPx": null,
+      "farSidePointPx": null,
+      "authority": "DRAFT_ONLY_NO_REAL_TRANSITION"
+    }
+  ],
+  "calibrationRules": {
+    "mapEvidence": "Pixel-precise inspection of approved image is mandatory; do not derive coordinates from the old 22/19 draft alone.",
+    "storyGates": "May annotate scene/hotspot IDs; must not set gameplay flags or automatically unlock real doors.",
+    "movement": "Per-room orthodox grid cells and actual avatar footpoint clearance; do not teleport; preserve bidirectionality unless backed by source.",
+    "safeEditing": "New candidate draft file; never overwrite immutable Hall source, existing project draft, or production geometry without owner approval.",
+    "unresolvedGeometry": "Keep uncertain stairs, bathrooms, conservatory glazing and outside garden unwalkable/unplaced until evidenced."
+  }
+}
