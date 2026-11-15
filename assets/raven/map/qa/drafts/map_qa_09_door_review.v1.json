@@ -1,0 +1,538 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-first-floor-door-review",
+  "taskId": "MAP-QA-09",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "runtimeAuthority": false,
+  "coordinateSpace": "image-pixel",
+  "source": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a"
+  },
+  "routeDraftPath": "res://assets/raven/map/qa/drafts/map_qa_08_visual_candidate.v1.json",
+  "routeDraftSha256": "a245e2f56702b1c9145200a8e9fe28879e37f8ff3331c9d42d01e27c857a7697",
+  "ownerReview": {
+    "mapQa08b": "OWNER_CONFIRMED",
+    "evidence": "Owner chat after merged PR #257: «все ок. можно идти дальше»",
+    "scope": "Per-room routes and editor checks from preceding checklist; does not approve door thresholds, missing openings, production or devices"
+  },
+  "doors": [
+    {
+      "id": "RM-DOOR-ENTRY-HALL",
+      "roomIds": [
+        "RM-ROOM-ENTRY",
+        "RM-ROOM-HALL"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "VISIBLE_DOOR_ELEVATION_UNRESOLVED",
+      "reviewRectPx": [
+        735,
+        735,
+        230,
+        155
+      ],
+      "thresholdCandidatePx": [
+        833,
+        801
+      ],
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "open",
+      "manifestVisualStatus": "visible_threshold_candidate",
+      "manifestVisualNotes": "front double entrance visible; floor contact visually estimated, not calibrated; source-pixel approx [833,801] moved to RM-ART-FID-ENTRY for visual review only",
+      "evidence": "Front double leaves are visible. Outside steps and inside floor differ in elevation. Width, ground contact and foreground are not calibrated.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-HALL",
+          "waypointId": "QA-HALL-SPAWN",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          836,
+          795
+        ],
+        "status": "VISUALLY_CONFIRMED_CANDIDATE",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-HALL-ARCHIVE",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-ARCHIVE"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "APPARENT_SOLID_PARTITION",
+      "reviewRectPx": [
+        560,
+        505,
+        110,
+        185
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "gated",
+      "manifestVisualStatus": "apparent_solid_wall",
+      "manifestVisualNotes": "Hall↔Library west wall does not show an unambiguous opening in the supplied painting",
+      "evidence": "Enlarged image shows a bright vertical wall/trim strip between dark wall caps, not an exposed floor opening. The 08B threshold guess is unproven; do not cross.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-HALL",
+          "waypointId": "QA-HALL-PORTAL-APPROACH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        },
+        {
+          "roomId": "RM-ROOM-ARCHIVE",
+          "waypointId": "QA-08B-ARCHIVE-EAST",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          607,
+          607
+        ],
+        "status": "VISUALLY_CONFIRMED_CANDIDATE",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-CORRIDOR"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "STAIR_LANDING_NOT_GROUND_PORTAL",
+      "reviewRectPx": [
+        735,
+        385,
+        195,
+        160
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "open",
+      "manifestVisualStatus": "not_visible_at_reference_position",
+      "manifestVisualNotes": "Upper horizontal corridor is behind Hall's staircase/landing, not a confirmed first-floor right-wall portal",
+      "evidence": "Corridor is behind the central upper stair landing. No continuous ground-floor path is visible; landing height is unknown.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-HALL",
+          "waypointId": "QA-HALL-CENTRE",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        },
+        {
+          "roomId": "RM-ROOM-CORRIDOR",
+          "waypointId": "QA-08B-CORRIDOR-CENTRE",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": null,
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BEDROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BEDROOM"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "APPARENT_SOLID_PARTITION",
+      "reviewRectPx": [
+        480,
+        225,
+        100,
+        190
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "gated",
+      "manifestVisualStatus": "not_visible",
+      "manifestVisualNotes": "Bedroom has no clear approved opening onto the upper corridor; apparent partitions/windows are not doorways",
+      "evidence": "Two illuminated trim segments and wall caps separate Bedroom and Corridor. A real bedroom doorway/threshold cannot be located reliably.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-CORRIDOR",
+          "waypointId": "QA-CORRIDOR-WEST",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        },
+        {
+          "roomId": "RM-ROOM-BEDROOM",
+          "waypointId": "QA-BEDROOM-SOUTH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          531,
+          365
+        ],
+        "status": "VISUALLY_CONFIRMED_CANDIDATE",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BATHROOM",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BATHROOM"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "CLOSED_PANEL_OR_TRIM",
+      "reviewRectPx": [
+        540,
+        285,
+        155,
+        105
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "gated",
+      "manifestVisualStatus": "ambiguous",
+      "manifestVisualNotes": "Small light seam around lower bathroom threshold may be decorative; cannot certify as walking portal",
+      "evidence": "South bath feature has a dark panel and bright trim. It may be a closed door, cabinet or wall element. Vignette stop remains usable; no full bathroom crossing.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-CORRIDOR",
+          "waypointId": "QA-08B-CORRIDOR-BATH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          618,
+          337
+        ],
+        "status": "VISUALLY_CONFIRMED_CANDIDATE",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-KITCHEN",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-KITCHEN"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "NONADJACENT_PAINTED_ROOMS",
+      "reviewRectPx": [
+        985,
+        275,
+        245,
+        290
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "gated",
+      "manifestVisualStatus": "not_visible",
+      "manifestVisualNotes": "Kitchen sits below dark northeast room; old Corridor↔Kitchen adjacency not observed",
+      "evidence": "The covered northeast room lies between the painted corridor and kitchen. A direct wall threshold does not exist as visible shared floor.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-CORRIDOR",
+          "waypointId": "QA-CORRIDOR-EAST",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        },
+        {
+          "roomId": "RM-ROOM-KITCHEN",
+          "waypointId": "QA-KITCHEN-NORTH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": null,
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-CONSERVATORY",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        "RM-ROOM-CONSERVATORY"
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "NONCONTIGUOUS_GLASSHOUSE",
+      "reviewRectPx": [
+        1190,
+        120,
+        335,
+        405
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "gated",
+      "manifestVisualStatus": "not_contiguous",
+      "manifestVisualNotes": "Glasshouse is outside far northeast, visually separated from kitchen by intervening covered room and garden",
+      "evidence": "Conservatory is outside beyond the covered room/garden. Roof glazing hides its floor and does not establish a kitchen portal.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-KITCHEN",
+          "waypointId": "QA-KITCHEN-NORTH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": null,
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-HALL-EAST-WING",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "APPARENT_SOLID_PARTITION",
+      "reviewRectPx": [
+        1010,
+        490,
+        100,
+        180
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "future",
+      "manifestVisualStatus": "not_visible",
+      "manifestVisualNotes": "Covered dark room northeast not connected to Hall by verified ground-floor opening",
+      "evidence": "East Hall bright trim is not proof of story-locked double doors. Far-side room and physical opening are unresolved.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-HALL",
+          "waypointId": "QA-08B-HALL-EAST-DOOR",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          1057,
+          606
+        ],
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-HALL-UPPER-FLOOR",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "STAIR_ELEVATION_LOCKED",
+      "reviewRectPx": [
+        625,
+        410,
+        420,
+        245
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "future",
+      "manifestVisualStatus": "stair_landing_ambiguous",
+      "manifestVisualNotes": "Two curved stair flights and central landing observed; level elevation/destination cannot be derived from flat art",
+      "evidence": "Curved stairs are visible, but upper-level elevation and collision are outside flat first-floor navigation. Keep closed.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-HALL",
+          "waypointId": "QA-HALL-CENTRE",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          836,
+          475
+        ],
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-KITCHEN-SERVICE",
+      "roomIds": [
+        "RM-ROOM-KITCHEN",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "CLOSED_PANEL_OR_TRIM",
+      "reviewRectPx": [
+        1100,
+        420,
+        115,
+        110
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "future",
+      "manifestVisualStatus": "not_visible",
+      "manifestVisualNotes": "No unambiguous service exterior door in kitchen's right/south walls",
+      "evidence": "Bright seam faces the covered northeast room. It is not a verified service threshold; service destination unconfirmed.",
+      "roomSideStops": [
+        {
+          "roomId": "RM-ROOM-KITCHEN",
+          "waypointId": "QA-KITCHEN-NORTH",
+          "meaning": "Nearby accepted room stop, NOT physical threshold contact"
+        }
+      ],
+      "prior08B": {
+        "thresholdCandidatePx": [
+          1157,
+          470
+        ],
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    },
+    {
+      "id": "RM-DOOR-CONSERVATORY-GARDEN",
+      "roomIds": [
+        "RM-ROOM-CONSERVATORY",
+        null
+      ],
+      "status": "UNRESOLVED",
+      "origin": "AI_DRAFT",
+      "physicalPortalApproved": false,
+      "traversalEnabled": false,
+      "classification": "HIDDEN_FLOOR_AND_THRESHOLD",
+      "reviewRectPx": [
+        1220,
+        0,
+        385,
+        245
+      ],
+      "thresholdCandidatePx": null,
+      "nearSideFootpointPx": null,
+      "farSideFootpointPx": null,
+      "openingWidthPx": null,
+      "elevationStatus": "UNRESOLVED",
+      "foregroundMaskStatus": "UNRESOLVED",
+      "collisionStatus": "UNRESOLVED",
+      "storyGateAuthority": "Existing narrative runtime only; this document cannot unlock a door",
+      "referenceState": "future",
+      "manifestVisualStatus": "garden_connection_ambiguous",
+      "manifestVisualNotes": "Greenhouse and garden adjacent; exact glasshouse door/threshold cannot be resolved",
+      "evidence": "Glazing, framing and foliage obscure the sill and both ground contacts; garden room navigation is out of scope.",
+      "roomSideStops": [],
+      "prior08B": {
+        "thresholdCandidatePx": null,
+        "status": "UNRESOLVED",
+        "disposition": "Historical unapproved estimate; not used for crossing"
+      },
+      "requiredOwnerDecision": "Confirm a real opening or approve a separate opening/occlusion art layer. Do not alter logical topology implicitly."
+    }
+  ]
+}

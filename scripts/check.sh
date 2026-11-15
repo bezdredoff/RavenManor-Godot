@@ -71,6 +71,7 @@ run_check 'MAP-EDIT-05 fully editable constraints' 'MAP-EDIT-05 editable AI navi
 run_check 'MAP-QA-05 AI-authored first-floor draft' 'MAP-QA-05 first floor draft geometry smoke passed' --script res://tests/raven/map_qa_05_first_floor_draft_smoke.gd --quit-after 120
 run_check 'MAP-QA-08A story POI targets' 'MAP-QA-08A narrative POI targets and unresolved-geometry contract passed' --script res://tests/raven/map_qa_08a_story_targets_smoke.gd --quit-after 120
 run_check 'MAP-QA-08B visual candidate' 'MAP-QA-08B visual candidate geometry and physical movement passed' --script res://tests/raven/map_qa_08b_visual_candidate_smoke.gd --quit-after 240
+run_check 'MAP-QA-09 door evidence' 'MAP-QA-09 physical door evidence and fail-closed room approaches passed' --script res://tests/raven/map_qa_09_door_review_smoke.gd --quit-after 240
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'VN tri-locale save/reload parity' 'Raven tri-locale VN save/reload parity smoke passed' --script res://tests/raven/vn_locale_save_parity_smoke.gd --quit-after 240
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600
