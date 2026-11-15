@@ -1,5 +1,7 @@
 # Documentation map and authority
 
+- [MAP-QA-09 physical door evidence review](qa/map-qa-09/README.md): original-image crops, unresolved threshold contract and safe room-side inspection in integrated QA.
+
 - [MAP-QA-08B visual route calibration and owner QA](qa/map-qa-08b/README.md): independent 26/21 candidate, overlays, narrative targets, unresolved physical doors and native runtime evidence.
 
 - `audits/MERGED_CLOSURE_AUDIT_20261103.md`: all 53 merged work items individually checked against merged PRs; 50 closed-scope deliveries, 3 GFX tasks reopened with exact follow-up IDs and QA evidence.
