@@ -1,5 +1,7 @@
 # Documentation map and authority
 
+- [MAP-QA-08B visual route calibration and owner QA](qa/map-qa-08b/README.md): independent 26/21 candidate, overlays, narrative targets, unresolved physical doors and native runtime evidence.
+
 - `audits/MERGED_CLOSURE_AUDIT_20261103.md`: all 53 merged work items individually checked against merged PRs; 50 closed-scope deliveries, 3 GFX tasks reopened with exact follow-up IDs and QA evidence.
 
 - `audits/ACTIVE_WORK_AND_REVIEW_20261103.md`: 35-item live GitHub workflow state re-audit after PR #139; separates currently active/review from previously partial, merged and waiting for QA.

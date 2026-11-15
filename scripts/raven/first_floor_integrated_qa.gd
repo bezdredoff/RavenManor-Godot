@@ -6,6 +6,7 @@ const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const Preview = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const HostScene = preload("res://scenes/raven/tests/first_floor_multi_room_host.tscn")
 const HALL := "RM-ROOM-HALL"
+const VISUAL_CANDIDATE := "res://assets/raven/map/qa/drafts/map_qa_08_visual_candidate.v1.json"
 const PICK_RADIUS := 28.0
 
 var host
@@ -311,9 +312,10 @@ func _make_ui() -> void:
 	_header = Label.new()
 	_header.add_theme_font_size_override("font_size", 14)
 	rows.add_child(_header)
-	var sources := HBoxContainer.new()
+	var sources := HFlowContainer.new()
 	rows.add_child(sources)
 	_button(sources, "Project draft", func(): load_source(Preview.PROJECT))
+	_button(sources, "08B visual candidate", func(): load_source(Preview.PROJECT, VISUAL_CANDIDATE))
 	_button(sources, "Saved user", func(): load_source(Preview.USER))
 	_button(sources, "Original Hall", func(): load_source(Preview.BASELINE))
 	_button(sources, "Reload", func(): load_source(_source_kind, _source_path))
