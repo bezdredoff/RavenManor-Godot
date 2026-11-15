@@ -53,3 +53,10 @@ Initial 32px geometry was rejected at narrow kitchen/bedroom margins. Removed ki
 south loop, selected existing supported 16px grid, snapped waypoints to cell centres to
 remove doglegs, moved Hall east stop inward. Inspected overlays and repeated movement
 validation. Detailed unresolved physical topology is reserved for MAP-QA-09.
+
+## Published review
+
+PR https://github.com/bezdredoff/RavenManor-Godot/pull/257 is open, not merged.
+Native editor load-button QA also observed the candidate filename and 16px grid;
+`docs/qa/map-qa-08b/editor-candidate.jpg` records it. Temporary editor plugin settings
+and import-file rewrites are excluded. Own shard now records PR_review with the real URL.

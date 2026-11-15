@@ -113,6 +113,10 @@ Owner review at furniture, walls, stair tips and frames remains mandatory.
   to table approach and explicit Bedroom island restart. Screenshots
   [Hall](runtime-hall.jpg), [Bedroom](runtime-bedroom.jpg). This is desktop evidence, not
   owner/mobile acceptance or a complete hands-on editing certification.
+- Native editor: enabled the existing plugin, opened Navigation / Routes, clicked the
+  new load button and observed the candidate filename and 16px grid:
+  [editor screenshot](editor-candidate.jpg). Temporary plugin/project/import changes are
+  excluded from the PR.
 
 ## Manual Godot review
 
