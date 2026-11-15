@@ -26,7 +26,8 @@ func _run() -> void:
 	assert(data["sourceImage"]["sha256"] == Routes.IMAGE_SHA256)
 	assert(data["sourceImage"]["gitBlobSha"] == Routes.IMAGE_BLOB_SHA)
 	assert(data["sourceImage"]["path"] == Routes.IMAGE_PATH)
-	assert(data["sourceImage"]["sizePx"] == [1672, 941])
+	var dimensions: Array = data["sourceImage"]["sizePx"]
+	assert(dimensions.size() == 2 and int(dimensions[0]) == 1672 and int(dimensions[1]) == 941)
 	assert(data["legacyDraft"] == ORIGINAL)
 	var original: Dictionary = Routes.load_draft(ORIGINAL)
 	assert(original.get("ok", false), str(original.get("error", "")))
