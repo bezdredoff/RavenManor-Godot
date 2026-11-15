@@ -1,5 +1,15 @@
 # CODE-05-01 / RM-GAP-001 — post-merge plan and dashboard-status reconciliation (2026-11-15)
 
+Task IDs: CODE-05-01, RM-GAP-001 (room-builder, P0/partial; no parent task closed).
+
+Changes: Reconcile live room-builder status for merged editor/draft work and update 2026-11-15 README, STATUS, NEXT_PLAN, IMPLEMENTATION_PLAN, INDEX; keep historical sections and source-of-truth shards. No gameplay change.
+
+Verification: GitHub API verified main f0d2264e and merged #254–261 with successful exact-head Actions; JSON parse checked. Initial PR-head data-contracts failed only on this governance record formatting; latest CI must rerun after correction. Local Godot and dashboard generator NOT_RUN; merge requires successful exact-head checks.
+
+Owner QA: Native map art, 65-degree projection, physical doors, elevation/occlusion and phone remain unapproved. Do not claim production approval from editor/harness QA.
+
+Status impact: CODE-05-01 PR_review → ready/partial P0; RM-GAP-001 proposed → ready/partial P0. Both approval pending. Dashboard consumes room-builder shard after merge; #262 manor-map and #263 campaign-core are separate open PRs.
+
 ## Task IDs and ownership
 - Owner domain: `room-builder`; live shard: `data/raven/production/progress/room-builder.json`.
 - Status tasks: `CODE-05-01`, `RM-GAP-001`.
