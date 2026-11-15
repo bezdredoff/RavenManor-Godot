@@ -1,5 +1,7 @@
 # Raven Manor — актуальный план и очередь задач
 
+> **НОВЫЙ release-focused аудит 2026-11-15 после PR #265 (main 8f931c37, [CI PASS](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43762839236)):** открытых PR 0; #262–265 merged. Главный ограничитель финала Season 1 — 20/28 ещё неисполняемых сцен (0/28 проходит production VN dispatcher), QA-only first-floor geometry и отсутствие полного production hotspot/save/Continue пути. **[Release finish-line scope, пять параллельных потоков A–E и последовательные gates G0–G4](RELEASE_FINISH_PLAN_20261115_RU.md)** — proposed operational plan для owner approval; не меняет статусы и не утверждает арт/двери. Предыдущий блок ниже (baseline после #261 с открытыми #262/#263) исторический и не должен использоваться как текущая очередь.
+
 > **Живое операционное обновление: 2026-11-15, main `f0d2264e` после #261.** Все разделы ниже после горизонтальной черты сохраняются как **исторический срез 2026-11-03/06**, а не инструкция начинать работу с нуля. Источник статуса задач — 15 `data/raven/production/progress/<domain>.json`; публичный [дашборд](https://bezdredoff.github.io/RavenManor-Godot/dashboard/) генерируется автоматически. Не править `dashboard/status.json` и frozen `production_progress.json`. Для каждого PR — уникальный `docs/changes/` и только собственный shard.
 
 ## Проверенный baseline, не смешивать технические срезы с production
