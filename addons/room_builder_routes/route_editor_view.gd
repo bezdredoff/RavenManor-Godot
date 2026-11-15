@@ -10,6 +10,7 @@ const PreviewLaunch = preload("res://addons/room_builder_routes/route_preview_la
 const IMAGE = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const PILOT = "res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn"
 const INTEGRATED = "res://scenes/raven/tests/first_floor_integrated_qa.tscn"
+const VISUAL_CANDIDATE := "res://assets/raven/map/qa/drafts/map_qa_08_visual_candidate.v1.json"
 const MODES := ["Waypoints", "Add", "Connect", "Routes", "Cells", "Obstacles", "Pan", "Zones", "Freehand"]
 const MODE_LABELS := ["1 Select / drag", "2 Add waypoint", "3 Connect points",
 	"4 Select route", "5 Draw route cells", "6 Block cells", "7 Pan map", "8 Edit zones", "9 Draw route (freehand)"]
@@ -26,6 +27,7 @@ var selected_cell := ""
 var last_pixel := Vector2(836, 746)
 var pixel_selected := false
 var last_persisted_kind := PreviewSource.PROJECT
+var last_project_path := Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
 var click_route_from := true
 var connect_from := ""
 var active_room := "RM-ROOM-HALL"
@@ -168,6 +170,7 @@ func _make_ui() -> void:
 	var actions := HFlowContainer.new()
 	outer.add_child(actions)
 	actions.add_child(_button("Load project draft", _load_project))
+	actions.add_child(_button("Load 08B visual candidate", _load_visual_candidate))
 	actions.add_child(_button("Load saved user", _load_user))
 	actions.add_child(_button("Save user draft", _save_user))
 	actions.add_child(_button("Export project draft", _export_project))
@@ -1394,30 +1397,41 @@ func _load_user() -> void:
 		return
 	_set_document(loaded.document, false)
 	last_persisted_kind = PreviewSource.USER
+	last_project_path = VISUAL_CANDIDATE if document.get("taskId", "") == "MAP-QA-08B" else Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
 	_message("Loaded persistent user:// QA draft")
 
 
 func _export_project() -> void:
-	var path: String = Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
+	# Keep the selected project candidate independent from the MAP-QA-05 baseline.
+	var path: String = last_project_path
 	var result := Routes.save_draft(path, document)
 	if not result.ok:
 		_message("ERROR: " + str(result.error))
 		return
 	last_saved = JSON.stringify(document)
 	last_persisted_kind = PreviewSource.PROJECT
+	last_project_path = path
 	_refresh_dirty()
 	EditorInterface.get_resource_filesystem().scan()
 	_message("Exported versioned QA draft to " + path + " (source pilot untouched)")
 
 
 func _load_project() -> void:
-	var path: String = Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
+	_load_project_path(Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json")
+
+
+func _load_visual_candidate() -> void:
+	_load_project_path(VISUAL_CANDIDATE)
+
+
+func _load_project_path(path: String) -> void:
 	var result := Routes.load_draft(path)
 	if not result.ok:
 		_message("ERROR: " + str(result.error))
 		return
 	_set_document(result.document, false)
 	last_persisted_kind = PreviewSource.PROJECT
+	last_project_path = path
 	_message("Opened project QA draft: " + path)
 
 
@@ -1427,10 +1441,11 @@ func _open_pilot(kind: String = PreviewSource.BASELINE) -> void:
 		return
 	# Probe the persisted disk version, not the in-memory editor document.
 	var preview = PreviewSource.new()
-	if not preview.load_source(kind):
+	var path: String = last_project_path if kind == PreviewSource.PROJECT else ""
+	if not preview.load_source(kind, path):
 		_message("ERROR: Cannot play %s: %s" % [kind, preview.error_text])
 		return
-	var staged := PreviewLaunch.stage(kind)
+	var staged := PreviewLaunch.stage(kind, path)
 	if not staged.get("ok", false):
 		_message("ERROR: Could not select preview: " + str(staged.get("error", "unknown")))
 		return
@@ -1445,10 +1460,11 @@ func _open_integrated() -> void:
 	if JSON.stringify(document) != last_saved:
 		_message("ERROR: Unsaved changes cannot be played. Save user draft or export project draft first.")
 		return
-	var path := Routes.DEFAULT_SAVE if last_persisted_kind == PreviewSource.USER else Routes.PROJECT_DRAFT_DIR + "hall_routes_draft.v1.json"
+	var path := Routes.DEFAULT_SAVE if last_persisted_kind == PreviewSource.USER else last_project_path
 	var loaded := Routes.load_draft(path)
 	if not loaded.get("ok", false):
 		_message("ERROR: Cannot launch integrated QA: " + str(loaded.get("error", "missing draft")))
 		return
 	EditorInterface.play_custom_scene(INTEGRATED)
-	_message("MAP-QA-07B launched. Choose " + ("Saved user" if last_persisted_kind == PreviewSource.USER else "Project draft") + " in the scene. TEST_ONLY transitions; source DRAFT_ONLY.")
+	var selection := "Saved user" if last_persisted_kind == PreviewSource.USER else ("08B visual candidate" if path == VISUAL_CANDIDATE else "Project draft")
+	_message("MAP-QA-07B launched. Choose " + selection + " in the scene. TEST_ONLY transitions; source DRAFT_ONLY.")
