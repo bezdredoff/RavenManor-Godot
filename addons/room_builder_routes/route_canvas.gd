@@ -30,6 +30,7 @@ var selected_zone_vertex := -1
 var zone_creating := false
 var zone_inserting := false
 var zone_edit_preview := PackedVector2Array()
+var clear_ai_preview: Dictionary = {}
 var zone_edit_valid := true
 var _zone_dragging := false
 var _zone_drag_vertex := -1
@@ -152,6 +153,12 @@ func set_zone_edit_preview(points: PackedVector2Array, valid: bool) -> void:
 	queue_redraw()
 
 
+# Magenta outlines are a removable-AI preview, never an applied document.
+func set_ai_clear_preview(summary: Dictionary) -> void:
+	clear_ai_preview = summary.duplicate(true)
+	queue_redraw()
+
+
 func selected_zone_points() -> PackedVector2Array:
 	for group in ["noGoPolygons", "walkablePolygons"]:
 		if not selected_zone_group.is_empty() and group != selected_zone_group:
@@ -211,6 +218,28 @@ func _draw() -> void:
 			var w := float(g["cellWidth"]) * zoom
 			var h := float(g["cellHeight"]) * zoom
 			draw_rect(Rect2(image_to_screen(centre) - Vector2(w, h) * 0.5, Vector2(w, h)), Color(0.98, 0.40, 0.10, 0.68))
+	# Keep the actual current constraints visible while previewing what would
+	# disappear. No map/document mutation until the confirmation is accepted.
+	if not clear_ai_preview.is_empty():
+		for group in ["walkablePolygons", "noGoPolygons"]:
+			var keys: Array = clear_ai_preview.get("walkableIds", []) if group == "walkablePolygons" else clear_ai_preview.get("noGoIds", [])
+			for zone in document.get(group, []):
+				if not keys.has(str(zone.get("id", ""))):
+					continue
+				var points := PackedVector2Array()
+				for vertex in Routes._polygon_points(zone):
+					points.append(image_to_screen(vertex))
+				if points.size() >= 3:
+					draw_colored_polygon(points, Color(0.75, 0.15, 0.8, 0.26))
+					var outline := points.duplicate()
+					outline.append(points[0])
+					draw_polyline(outline, Color("#f8a5ff"), 4.5, true)
+		for cell in clear_ai_preview.get("blockedCells", []):
+			var centre: Vector2 = Routes.cell_to_pixel(str(cell), document)
+			if centre.is_finite():
+				var cell_size := Vector2(float(g["cellWidth"]), float(g["cellHeight"])) * zoom
+				draw_rect(Rect2(image_to_screen(centre) - cell_size * 0.5, cell_size),
+					Color("#ffa6ff"), false, 3.0)
 	if zone_corner.is_finite():
 		draw_circle(image_to_screen(zone_corner), 8.0, Color("#f5ff00"))
 		_draw_label(image_to_screen(zone_corner) + Vector2(10, -10), "1st corner", Color.WHITE)
@@ -332,7 +361,7 @@ func _draw_region(region: Dictionary, color: Color, border_color: Color) -> void
 
 
 func _draw_outside_walkable_cells() -> void:
-	if document.get("walkablePolygons", []).is_empty():
+	if document.get("walkableBoundaryMode", "REQUIRE") == "OPEN" or document.get("walkablePolygons", []).is_empty():
 		return
 	var g: Dictionary = document["grid"]
 	var w := float(g["cellWidth"])
