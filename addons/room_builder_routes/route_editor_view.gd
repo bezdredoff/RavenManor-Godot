@@ -39,6 +39,10 @@ var show_constraints_checkbox: CheckBox
 var constraint_feedback: Label
 var zone_list: ItemList
 var zone_delete_confirmation: ConfirmationDialog
+var clear_ai_confirmation: ConfirmationDialog
+var clear_ai_proposal: Dictionary = {}
+var clear_ai_baseline := ""
+var walkable_boundary_checkbox: CheckBox
 var zone_apply_button: Button
 var zone_edit_hint: Label
 var zone_selected_vertex := -1
@@ -290,6 +294,11 @@ func _make_ui() -> void:
 	show_constraints_checkbox.button_pressed = true
 	show_constraints_checkbox.toggled.connect(func(checked: bool): canvas.set_show_constraints(checked))
 	inspector.add_child(show_constraints_checkbox)
+	walkable_boundary_checkbox = CheckBox.new()
+	walkable_boundary_checkbox.name = "RequireWalkableBoundary"
+	walkable_boundary_checkbox.text = "Require points/routes INSIDE WALKABLE areas"
+	walkable_boundary_checkbox.toggled.connect(_on_walkable_boundary_toggled)
+	inspector.add_child(walkable_boundary_checkbox)
 	constraint_feedback = _paragraph("Click the map to inspect a cell restriction.")
 	constraint_feedback.name = "ConstraintFeedback"
 	inspector.add_child(constraint_feedback)
@@ -312,6 +321,7 @@ func _make_ui() -> void:
 	zone_actions.add_child(zone_apply_button)
 	zone_actions.add_child(_button("Discard zone edit", _discard_zone_edit))
 	zone_actions.add_child(_button("Remove selected zone…", _request_delete_zone))
+	zone_actions.add_child(_button("Clear AI constraints…", _preview_clear_ai))
 	zone_edit_hint = Label.new()
 	zone_edit_hint.name = "ZoneEditHint"
 	zone_edit_hint.text = "Select ANY red/green zone or its name. Drag corner or interior; Apply to keep edits."
@@ -323,6 +333,12 @@ func _make_ui() -> void:
 	zone_delete_confirmation.dialog_text = "This removes the selected polygon from the editable QA draft only. Existing route/waypoint constraints will be validated. The original source and production map stay unchanged."
 	zone_delete_confirmation.confirmed.connect(_delete_selected_zone)
 	add_child(zone_delete_confirmation)
+	clear_ai_confirmation = ConfirmationDialog.new()
+	clear_ai_confirmation.title = "Preview: clear AI navigation constraints (DRAFT_ONLY)"
+	clear_ai_confirmation.get_ok_button().text = "Clear AI draft constraints"
+	clear_ai_confirmation.confirmed.connect(_confirm_clear_ai)
+	clear_ai_confirmation.canceled.connect(_discard_clear_ai_preview)
+	add_child(clear_ai_confirmation)
 	inspector.add_child(HSeparator.new())
 	inspector.add_child(_heading("WAYPOINTS · stable IDs"))
 	waypoint_list = ItemList.new()
@@ -498,6 +514,7 @@ func _change_room(room_id: String) -> void:
 
 
 func _set_document(value: Dictionary, push_history: bool = true) -> void:
+	_discard_clear_ai_preview(false)
 	_discard_freehand(false)
 	_discard_zone_edit(false)
 	if push_history and not document.is_empty() and JSON.stringify(document) != JSON.stringify(value):
@@ -536,6 +553,8 @@ func _refresh() -> void:
 	grid_offset_y.set_value_no_signal(float(g["origin"][1]))
 	grid_visible.set_pressed_no_signal(bool(g["visible"]))
 	grid_coordinates.set_pressed_no_signal(bool(g["showCoordinates"]))
+	walkable_boundary_checkbox.set_pressed_no_signal(
+		str(document.get("walkableBoundaryMode", "REQUIRE")) == "REQUIRE")
 	_refresh_zone_list()
 	waypoint_list.clear()
 	waypoint_ids.clear()
@@ -622,7 +641,8 @@ func _refresh_zone_list() -> void:
 		for zone in document.get(group, []):
 			var id := str(zone.get("id", ""))
 			zone_ids.append({"group": group, "id": id})
-			zone_list.add_item(("WALKABLE · " if group == "walkablePolygons" else "NO-GO · ") + id)
+			zone_list.add_item(("WALKABLE · " if group == "walkablePolygons" else "NO-GO · ") +
+				id + " [" + Routes.zone_origin(zone, group).replace("_", " ") + "]")
 			if group == selected_zone_group and id == selected_zone_id:
 				zone_list.select(zone_ids.size() - 1)
 	var still_selected := false
@@ -757,6 +777,83 @@ func _discard_zone_edit(notify: bool = true) -> void:
 		_message("Zone preview discarded; source and current draft unchanged")
 
 
+# Clear previews are non-mutating: the confirmation shows counts and explicit
+# IDs while the canvas outlines removable regions in magenta. User-authored
+# and unclassified legacy constraints stay untouched.
+func _preview_clear_ai() -> void:
+	if document.is_empty():
+		return
+	_discard_freehand(false)
+	_discard_zone_edit(false)
+	var proposal: Dictionary = Routes.clear_ai_constraints(document)
+	if not proposal.get("ok", false):
+		_message("ERROR: " + str(proposal.get("error", "Cannot preview AI clear")))
+		return
+	clear_ai_proposal = proposal
+	clear_ai_baseline = JSON.stringify(document)
+	var summary: Dictionary = proposal["summary"]
+	canvas.set_ai_clear_preview(summary)
+	var targets := PackedStringArray()
+	for id in summary["walkableIds"]:
+		targets.append("GREEN " + str(id))
+	for id in summary["noGoIds"]:
+		targets.append("RED " + str(id))
+	for id in summary["blockedCells"]:
+		targets.append("CELL " + str(id))
+	var shown := PackedStringArray()
+	for i in range(mini(targets.size(), 7)):
+		shown.append(targets[i])
+	var remainder := targets.size() - shown.size()
+	clear_ai_confirmation.dialog_text = (
+		"PREVIEW (magenta overlays on the map):\n" +
+		"%d AI WALKABLE polygons, %d AI NO-GO polygons, %d AI blocked cells.\n" %
+		[summary["walkableIds"].size(), summary["noGoIds"].size(), summary["blockedCells"].size()] +
+		"\n".join(shown) +
+		("\n... and %d more AI constraints" % remainder if remainder > 0 else "") +
+		"\n\nRetain: %d user/unknown WALKABLE, %d NO-GO, %d blocked cells.\n" %
+		[summary["retainedWalkable"], summary["retainedNoGo"], summary["retainedBlocked"]] +
+		"Removing the imported walkable mask switches the editable DRAFT to OPEN floor;\n" +
+		"room-owned endpoints, image bounds, retained obstacles and routes still validate.\n" +
+		"Confirm ONE undoable edit? Source PNG / production / doors are never changed.")
+	zone_edit_hint.text = "MAGENTA = AI constraints proposed for clearing. Confirm or Cancel; no draft changes yet."
+	clear_ai_confirmation.popup_centered()
+	_message("Preview: %d AI constraints marked in magenta. Confirm or Cancel; no document changes yet." % int(summary["count"]))
+
+
+func _confirm_clear_ai() -> void:
+	if not clear_ai_proposal.get("ok", false):
+		_message("ERROR: No validated AI clear proposal")
+		return
+	if clear_ai_baseline != JSON.stringify(document):
+		_discard_clear_ai_preview(false)
+		_message("ERROR: The document changed since clear preview; inspect a fresh preview")
+		return
+	var result: Dictionary = clear_ai_proposal
+	var removed: int = int(result["summary"]["count"])
+	_discard_clear_ai_preview(false)
+	if _commit(result, "Cleared %d AI DRAFT_ONLY constraints; user/unknown zones and stable IDs retained. Undo available." % removed):
+		_refresh()
+
+
+func _discard_clear_ai_preview(notify: bool = true) -> void:
+	clear_ai_proposal = {}
+	clear_ai_baseline = ""
+	if is_instance_valid(canvas):
+		canvas.set_ai_clear_preview({})
+	if is_instance_valid(zone_edit_hint):
+		zone_edit_hint.text = "Select a polygon or preview Clear AI constraints before committing."
+	if notify and is_instance_valid(status):
+		_message("AI clear preview cancelled; original draft unchanged")
+
+
+func _on_walkable_boundary_toggled(checked: bool) -> void:
+	if _suppress or document.is_empty():
+		return
+	var result: Dictionary = Routes.set_walkable_boundary_mode(document, checked)
+	if not _commit(result, "DRAFT_ONLY walkable boundary is " + ("REQUIRE" if checked else "OPEN") + ". Undo available."):
+		_refresh()
+
+
 func _show_restriction(point: Vector2) -> void:
 	if document.is_empty() or not is_instance_valid(constraint_feedback):
 		return
@@ -889,7 +986,8 @@ func _on_cell_clicked(cell: String) -> void:
 		return
 	var blocked: bool = document.get("blockedCells", []).has(cell)
 	var point := Routes.cell_to_pixel(cell, document)
-	cell_inspection.text = "%s · centre %s · blocked: %s" % [cell, str(point), str(blocked)]
+	var origin: String = str(document.get("blockedCellOrigins", {}).get(cell, "UNSPECIFIED_DRAFT"))
+	cell_inspection.text = "%s · centre %s · blocked: %s · %s" % [cell, str(point), str(blocked), origin]
 	if current_mode == "Cells" and not selected_route.is_empty():
 		_append_route_cell(cell)
 	canvas.selected_cell = cell
@@ -1242,6 +1340,7 @@ func _unhandled_key_input(event: InputEvent) -> void:
 
 
 func _undo() -> void:
+	_discard_clear_ai_preview(false)
 	_discard_freehand(false)
 	_discard_zone_edit(false)
 	if history.is_empty():
@@ -1255,6 +1354,7 @@ func _undo() -> void:
 
 
 func _redo() -> void:
+	_discard_clear_ai_preview(false)
 	_discard_freehand(false)
 	_discard_zone_edit(false)
 	if future.is_empty():
