@@ -6,10 +6,10 @@ neither closes the parent.
 
 Changes: Evidence/status-only reconciliation of `data/raven/production/progress/manor-map.json`.
 Verified and recorded the actual merge state of the two most recent manor-map PRs, replacing stale
-`PR_review` / "open, not merged" text. The parent entry moves from `PR_review` to `ready` because no
-PR is open and no branch is active; `implementationState` stays `partial`, `qaState` stays
-`automated`, priority stays `P0`. No runtime, navigation, geometry, collider, scene, save-schema,
-catalog or art file is touched.
+`PR_review` / "open, not merged" text. The parent entry moves from `PR_review` to `ready` because the
+PRs it referenced are merged; this evidence-only PR is not parent-task review. `implementationState`
+stays `partial`, `qaState` stays `automated`, priority stays `P0`. No runtime, navigation, geometry,
+collider, scene, save-schema, catalog or art file is touched.
 
 Verification: GitHub REST API and git history checked at `main` f0d2264e771be90f672a052dc9c169ee944607c4
 with a clean working tree.
@@ -27,6 +27,8 @@ with a clean working tree.
 - Local validation: `python scripts/raven/tools/progress_shards.py` and
   `python scripts/raven/tools/build_production_dashboard.py --check` executed before opening the PR;
   exact-head GitHub Actions remains the merge gate.
+- This evidence PR #262 exact-head CI run 43760078971 PASS in data-contracts, room-builder,
+  godot-runtime, art-pipeline, web-package and build (deploy skipped on PR).
 
 Owner QA: Not run and not claimed. Physical door positions/footpoints, HA/HC/CB/CK shared sills,
 the proposed HC underpass and CK service vestibule, room-art calibration, elevation and foreground
@@ -35,7 +37,7 @@ AI_PROPOSED_ARCHITECTURE with initially closed gates. Merged CI proves tests, no
 acceptance.
 
 Status impact: `CODE-05-02` remains P0 partial; only this manor-map shard plus this evidence record
-change. Production movement stays disabled because the canonical greybox still resolves as
+change, and this bookkeeping PR is not parent-task review. Production movement stays disabled because the canonical greybox still resolves as
 `unavailable_geometry` with a hold, and QA candidate navigation still requires explicit
 `allowQaCandidate`. Known follow-up gap: `raven_hotspot_gameplay_bridge.gd` (GAME-LOOP-01A,
 campaign-core) still builds `ManorNavigationGraph`/`RouteSession` directly instead of consuming
