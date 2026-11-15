@@ -27,8 +27,9 @@ with a clean working tree.
 - Local validation: `python scripts/raven/tools/progress_shards.py` and
   `python scripts/raven/tools/build_production_dashboard.py --check` executed before opening the PR;
   exact-head GitHub Actions remains the merge gate.
-- This evidence PR #262 exact-head CI run 43760078971 PASS in data-contracts, room-builder,
-  godot-runtime, art-pipeline, web-package and build (deploy skipped on PR).
+- This evidence PR #262 CI: run 43760078971 PASS at 727f407 and run 43760395275 PASS at 8008f30 in
+  data-contracts, room-builder, godot-runtime, art-pipeline, web-package and build (deploy skipped on
+  PR). Later evidence-only commits are revalidated by PR checks.
 
 Owner QA: Not run and not claimed. Physical door positions/footpoints, HA/HC/CB/CK shared sills,
 the proposed HC underpass and CK service vestibule, room-art calibration, elevation and foreground
