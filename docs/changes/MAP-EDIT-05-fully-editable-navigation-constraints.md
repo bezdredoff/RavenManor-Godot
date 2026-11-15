@@ -1,5 +1,11 @@
 # MAP-EDIT-05 — Fully editable navigation constraints
 
+Task IDs: MAP-EDIT-05 (P0), CODE-05-01 (P0 parent)
+Changes: Provenance labels, bulk AI-only constraints preview/confirmation with native magenta overlays and Undo/Redo, optional OPEN walkable boundary mode, retained manual obstacles, no production promotion.
+Verification: MAP-EDIT-05 Godot smoke registered once in scripts/check.sh; existing MAP-EDIT-01–04A and MAP-QA-05/07B retained. Exact-head GitHub Actions pending at initial record; owner visual QA pending.
+Owner QA: Manually verify original polygons, clear preview/cancel/confirm, history, waypoint and freehand after clear, Saved user F6 integrated Onoe movement and room transitions at actual window size.
+Status impact: Only room-builder status shard updated; CODE-05-01 remains P0 partial / PR_review, no production geometry acceptance.
+
 - **Owner domain:** room-builder
 - **Priority:** P0; partial slice under CODE-05-01
 - **Baseline main:** beb43cc118c0953db70e1f5644f70bbe512e4130 (2026-11-15)
