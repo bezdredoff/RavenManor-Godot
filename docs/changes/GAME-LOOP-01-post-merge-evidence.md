@@ -24,12 +24,15 @@ f0d2264e771be90f672a052dc9c169ee944607c4 with a clean working tree.
 - Local validation: `python scripts/raven/tools/progress_shards.py` and
   `python scripts/raven/tools/build_production_dashboard.py --check` executed before opening the PR;
   exact-head GitHub Actions remains the merge gate.
+- This evidence PR #263 exact-head CI run 43760079652 PASS in all six required jobs (data-contracts,
+  room-builder, godot-runtime, art-pipeline, web-package, build; deploy skipped on PR).
 
 Owner QA: Not run and not claimed. No human/device playthrough, physical Hall door alignment,
 art calibration or production map approval is implied by the merged QA slice.
 
 Status impact: `GAME-LOOP-01` stays `ready` / `implementationState=partial` / P0. Only this
-campaign-core shard plus this evidence record change. No production navigation is enabled; the
+campaign-core shard plus this evidence record change. This bookkeeping PR is not parent-task review.
+No production navigation is enabled; the
 canonical greybox still fails closed as `unavailable_geometry`, and the QA candidate still requires
 explicit `allowQaCandidate`. Converging the bridge onto `manor_navigation_source` and removing the
 duplicate graph/session construction is scoped as a separate cross-domain PR.
