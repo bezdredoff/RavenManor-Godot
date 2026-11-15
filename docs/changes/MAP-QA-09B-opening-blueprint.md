@@ -50,3 +50,16 @@ No auto-merge. See docs/qa/map-qa-09b/README.md for manual review and rollback.
 PR https://github.com/bezdredoff/RavenManor-Godot/pull/261 is open, not merged; own shard
 records PR_review with the actual URL. Final exact-head CI results are recorded in the PR.
 Architecture, masks/elevation, physical doors and production approval remain unaccepted.
+
+## Main conflict reconciliation
+
+Merged main `9cfad9f` after PR #260 (navigation source adapter) and PR #259 (hotspot gameplay
+QA bridge). The only textual conflict was CODE-05-02's evidence string in the manor-map
+shard; both complete histories were retained and a reconciliation note appended.
+`scripts/check.sh` merged automatically: all three MAP-QA-09B, MAP-GAME-01A and
+GAME-LOOP-01A smoke registrations remain exactly once, with both new adapter parse checks.
+No runtime, candidate geometry or canonical state logic was changed to resolve the conflict.
+Targeted merged-head checks and final CI results are recorded in the PR.
+Local merged-head verification: Godot 4.7.2 MAP-QA-09B, MAP-GAME-01A and GAME-LOOP-01A
+smokes PASS in isolated APPDATA; progress/code/dashboard validators, bash syntax and diff
+checks PASS. Both input evidence histories checked paragraph-by-paragraph (43 checks).
