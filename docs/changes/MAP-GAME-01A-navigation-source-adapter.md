@@ -30,8 +30,12 @@ Verification: Local Godot 4.7.2 headless: new
 MAP-QA-07B and MAP-QA-08B smokes PASS after a one-time native project import
 (`--editor --quit`). MAP-QA-06 exits non-zero locally only from pre-existing
 CanvasItem/resource leak warnings after its PASS line. `json.load` validates the
-updated `manor-map` shard. Exact-head Linux GitHub Actions verification will be
-recorded on the PR after publication; no unexecuted CI success is claimed here.
+updated `manor-map` shard. PR #260 exact-head Linux GitHub Actions run
+https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43757228276 passed
+all six required jobs at merged-main head `bf8480b` (art-pipeline,
+room-builder, data-contracts, godot-runtime, web-package and aggregate build).
+A final documentation-head rerun is recorded on the PR; no unexecuted CI success
+is claimed here.
 
 Owner QA: Manual desktop/mobile hotspot input, camera follow feel, octilinear
 art alignment, physical door/footpoint and foreground clearance remain pending.
@@ -141,5 +145,9 @@ Rollback is deleting the two scripts, smoke and registration and reverting the
 ## Review and PR evidence
 
 Branch: `agent/manor-map/MAP-GAME-01A-navigation-source-adapter`, based on
-`main` `20e17e1` (PR #257 merged). PR URL and exact-head GitHub Actions result
-are added here after publication. This PR must not auto-merge.
+`main` `20e17e1` (PR #257 merged) and merged with current `main` `dbe864f`
+(MAP-QA-09 PR #258 merged). PR: https://github.com/bezdredoff/RavenManor-Godot/pull/260
+(open, not merged). First merged-main exact-head CI run
+https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43757228276 passed
+all required jobs at `bf8480b`; the final evidence-head run is linked in the PR
+conversation. This PR must not auto-merge.
