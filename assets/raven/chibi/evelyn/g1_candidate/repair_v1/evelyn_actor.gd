@@ -7,3 +7,11 @@ func _ready() -> void:
 	_visual.name = "EvelynVisual"
 	add_child(_visual)
 	_visual.set_display_height(sprite_height)
+	_visual.set_ground_speed(move_speed)
+
+func start_segment(segment: Dictionary) -> bool:
+	# Reuse the original mover; adjust candidate animation cadence only.
+	var started: bool = super.start_segment(segment)
+	if started:
+		_visual.set_ground_speed(move_speed)
+	return started
