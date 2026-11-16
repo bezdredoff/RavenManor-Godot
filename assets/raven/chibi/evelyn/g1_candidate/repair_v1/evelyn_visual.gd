@@ -9,6 +9,11 @@ var _sprite: AnimatedSprite2D
 var _height := 62.0
 var _reduced := false
 var _walking := false
+var _ground_speed := 130.0
+# A full 4-frame loop should cover roughly 0.8 visible character heights.
+# This is an isolated candidate cadence estimate, not visual gait approval.
+const CYCLE_STRIDE_IN_HEIGHTS := 0.8
+const BASE_FPS := 6.0
 var _meta: Dictionary
 
 func _ready() -> void:
@@ -35,6 +40,7 @@ func _ready() -> void:
 	_sprite.material = alpha_material
 	add_child(_sprite)
 	_sprite.frame_changed.connect(_align)
+	_apply_cadence()
 	set_idle()
 
 func get_sprite() -> AnimatedSprite2D:
@@ -45,9 +51,23 @@ func set_display_height(pixels: float) -> void:
 		_height = pixels
 		if is_instance_valid(_sprite):
 			_align()
+			_apply_cadence()
 
 func display_height() -> float:
 	return _height
+
+func set_ground_speed(source_px_per_second: float) -> void:
+	if not is_finite(source_px_per_second) or source_px_per_second <= 0.0:
+		return
+	_ground_speed = source_px_per_second
+	_apply_cadence()
+
+func _apply_cadence() -> void:
+	if not is_instance_valid(_sprite):
+		return
+	var travel_per_cycle := maxf(_height * CYCLE_STRIDE_IN_HEIGHTS, 1.0)
+	var target_fps := clampf(_ground_speed * 4.0 / travel_per_cycle, 4.0, 18.0)
+	_sprite.speed_scale = target_fps / BASE_FPS
 
 func face(direction: Vector2) -> void:
 	if not direction.is_finite() or direction.length_squared() <= 0.0001:
