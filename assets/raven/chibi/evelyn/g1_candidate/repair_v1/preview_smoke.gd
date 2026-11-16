@@ -59,6 +59,7 @@ func _run() -> void:
 		visual.set_reduced_motion(false)
 		actor.advance(100)
 		assert(actor.position == start+direction and not actor.has_active_segment())
+		assert(absf(visual.phase()-fposmod(initial_phase+direction.length()/visual.cycle_distance(), 1.0)) < 0.0001, "Final phase must count only exact endpoint-clamped travel")
 		assert(sprite.frame == visual.IDLE_FRAME and not sprite.is_playing())
 		var idle_phase: float = visual.phase()
 		actor.advance(100)

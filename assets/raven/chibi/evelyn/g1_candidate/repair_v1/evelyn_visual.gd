@@ -67,8 +67,10 @@ func face(direction: Vector2) -> void:
 	_apply_phase()
 
 func travel(distance_px: float) -> void:
-	if not _walking or not is_finite(distance_px) or distance_px <= 0.0:
+	if not is_finite(distance_px) or distance_px <= 0.0:
 		return
+	# Count the final clamped displacement even when the parent has already
+	# selected idle/emitted arrival. _apply_phase still holds the idle pose.
 	_phase = fposmod(_phase + distance_px / cycle_distance(), 1.0)
 	_apply_phase()
 
