@@ -2,7 +2,7 @@
 
 Task IDs: GAME-QA-01; related GAME-LOOP-01, GAME-LOOP-01A, CODE-10-01, CODE-11-01, GFX-11-T09.
 Changes: Reconcile merged #267; retain G1–G4 release gate and all functional checks; add missing Windows G2 runner parity and require exact-once registered critical suites; clarify shipped Pages packaging vs actual browser boot.
-Verification: Audited main `0d1886b0d01491047dbd900b260757623c6ef9bc` (run [43974385365](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43974385365) SUCCESS). New-PR exact-head Python/Godot/CI: PENDING; no local Godot/PowerShell or live browser execution asserted.
+Verification: Audited main `0d1886b0d01491047dbd900b260757623c6ef9bc` (run [43974385365](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43974385365) SUCCESS). PR #276 first exact head `6ba1d3ae46b399af71228174b852fc2e0a786f59`: [run 43981227524](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524) **SUCCESS** (data-contracts, godot-runtime, room-builder, art-pipeline, web-package, build). Evidence-only follow-up final-head CI pending; no local Godot/PowerShell or live browser execution asserted.
 Owner QA: Windows desktop, real Web and physical phone NOT_RUN; owner acceptance PENDING; HC/CB production geometry and future Agent B/D handoffs remain BLOCKED.
 Status impact: GAME-QA-01 remains partial and approvalState=pending in qa-infrastructure only; #267 MERGED, new QA follow-up review pending. This document does not approve content, art, doors or launch.
 
@@ -40,7 +40,7 @@ Status impact: GAME-QA-01 remains partial and approvalState=pending in qa-infras
 - Linux full functional+data checks: `bash scripts/check_data.sh && bash scripts/check.sh` with Godot **4.7.2** on PATH (in CI data and runtime jobs may run independently with `RAVEN_SKIP_DATA_CHECKS=1 bash scripts/check.sh`).
 - Single Godot smoke (replace filename with any row above): `godot --headless --path . --script res://tests/raven/game_loop_01a_hotspot_bridge_smoke.gd --quit-after 240`.
 - Windows local: `py -m unittest discover -s tests/raven -p test_game_qa_release_gate.py -v`; then `.\check.ps1 -GodotPath 'C:\Path\To\Godot_v4.7.2-stable_win64_console.exe'`.
-- Existing release baseline: [main run 43974385365](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43974385365) SUCCESS at `0d1886b0d01491047dbd900b260757623c6ef9bc`. **New PR-head CI: PENDING** until GitHub checks complete. No local Godot/Windows/browser/phone run was performed in this authoring session.
+- Existing release baseline: [main run 43974385365](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43974385365) SUCCESS at `0d1886b0d01491047dbd900b260757623c6ef9bc`. PR #276 [run 43981227524](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524) **SUCCESS on head `6ba1d3ae46b399af71228174b852fc2e0a786f59`** (all six checks). Final evidence-update head CI must also succeed; record final link on PR after it completes. No local Godot/Windows/browser/phone run was performed in this authoring session.
 - Required final PR acceptance: six required jobs (`data-contracts`, `godot-runtime`, `room-builder`, `art-pipeline`, `web-package`, `build`) all SUCCESS on the exact PR-head SHA; do not infer from a prior run.
 
 ## Manual acceptance — reproducible checklist
@@ -59,6 +59,11 @@ Status impact: GAME-QA-01 remains partial and approvalState=pending in qa-infras
 ## Parallel merge window / no future-feature breakage
 
 QA is sole writer of runner registration. Agents B/C/D provide standalone test paths, expected success output and exact commands. QA registers those tests only after their implementation is merged on main (or a coordinated integration window); unmerged code is never preloaded. Agent A/owner must approve HC/CB geometry before production route is asserted. Current tests remain blocking; absent future G2 product criteria remain BLOCKED in this matrix, not an artificial CI failure. No changes to gameplay runtime, approved geometry/art, catalogs, reducer/store, project.godot or workflows.
+
+## PR #276 run results and traceability
+
+- First exact PR head: `6ba1d3ae46b399af71228174b852fc2e0a786f59`; [Actions 43981227524](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524) **SUCCESS** — `data-contracts`, `godot-runtime`, `room-builder`, `art-pipeline`, `web-package`, aggregate `build` all completed successfully. `deploy` correctly SKIPPED on a PR.
+- This is real GitHub CI execution of Godot and Python tests, **not** a claim that local Windows, live browser or phone tests ran. The final evidence-only commit requires its own exact-head run; link to be recorded on PR without another code change.
 
 ## Owner QA and status impact
 
