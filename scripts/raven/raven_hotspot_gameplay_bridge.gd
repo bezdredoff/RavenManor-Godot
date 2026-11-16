@@ -3,8 +3,7 @@ extends RefCounted
 ## GAME-LOOP-01A: isolated hotspot -> authored route -> Raven reducer boundary.
 ## No UI, save schema, new Match-3 session, or story gate definitions live here.
 ## Preview only: graph uses the historical greybox, never the unapproved 08B portal geometry.
-const Graph = preload("res://scripts/raven/manor_navigation_graph.gd")
-const RouteSession = preload("res://scripts/raven/manor_route_session.gd")
+const NavigationSource = preload("res://scripts/raven/manor_navigation_source.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -16,37 +15,40 @@ var store: RefCounted
 var state: Dictionary = {}
 var graph
 var session
-var _source: Dictionary = {}
+var navigation = NavigationSource.new()
+var _paused := false
 var _requested := ""
 
 
-func _init(storage_adapter: RefCounted = null, graph_override: Dictionary = {}) -> void:
+func _init(storage_adapter: RefCounted = null, source_request: Dictionary = {}) -> void:
 	store = Store.new(storage_adapter)
-	_source = graph_override.duplicate(true) if not graph_override.is_empty() else Graph.GRAPH_DATA.data
-	graph = Graph.new()
-	reload()
+	state = store.load_campaign()
+	navigation.select(source_request, state)
+	graph = navigation.graph
+	session = navigation.session
 
 
 func reload() -> String:
 	state = store.load_campaign()
-	graph.rebuild(state, _source)
-	session = RouteSession.new(graph)
 	_requested = ""
-	return session.restore(state)
+	_paused = false
+	return navigation.restore_routes(state)
 
 
 func refresh() -> void:
 	# When the existing VN/Match-3 UI closes, reread the one Raven store.
 	# Do not reset an actor's confirmed feet on a presentation-only transition.
 	state = store.load_campaign()
-	graph.rebuild(state, _source)
+	navigation.refresh_routes(state)
 
 
 func request_hotspot(hotspot_id: String) -> Dictionary:
 	refresh()
+	if session == null or _paused:
+		return {"ok": false, "error": "navigation-source-unavailable" if session == null else "paused"}
 	if not HOTSPOT_STEPS.has(hotspot_id):
 		return {"ok": false, "error": "unmapped-hotspot"}
-	if str(Director.next_step(state).get("id", "")) != HOTSPOT_STEPS[hotspot_id]:
+	if not _hotspot_available(hotspot_id):
 		return {"ok": false, "error": "locked-hotspot"}
 	var result: Dictionary = session.request_hotspot(hotspot_id)
 	if result.get("ok", false):
@@ -55,6 +57,8 @@ func request_hotspot(hotspot_id: String) -> Dictionary:
 
 
 func next_segment() -> Dictionary:
+	if session == null or _paused:
+		return {}
 	refresh()
 	if not _requested.is_empty() and not _still_available():
 		cancel()
@@ -68,6 +72,8 @@ func next_segment() -> Dictionary:
 func finish_segment(anchor_id: String) -> Dictionary:
 	# This must be called by the visual host only after Onoe confirms contact.
 	# Rebuild before acknowledgement, so a gate closed mid-leg blocks crossing.
+	if session == null or _paused:
+		return {"ok": false, "error": "navigation-source-unavailable" if session == null else "paused"}
 	refresh()
 	var result: Dictionary = session.finish_segment(anchor_id)
 	if not result.get("ok", false):
@@ -84,13 +90,18 @@ func finish_segment(anchor_id: String) -> Dictionary:
 				cancel()
 				return {"ok": false, "error": "checkpoint-save-failed"}
 			state = applied.state
-			graph.rebuild(state, _source)
+			navigation.refresh_routes(state)
 	return result
 
 
 func cancel() -> Dictionary:
 	_requested = ""
-	return session.cancel()
+	return session.cancel() if session != null else {"ok": true, "finishCurrentSegment": false}
+
+
+func set_paused(value: bool) -> void:
+	# Host pauses its existing mover too; no acknowledgement while paused.
+	_paused = value
 
 
 func interrupt_scene() -> Dictionary:
@@ -100,8 +111,13 @@ func interrupt_scene() -> Dictionary:
 
 
 func _still_available() -> bool:
-	return HOTSPOT_STEPS.has(_requested) and \
-		str(Director.next_step(state).get("id", "")) == HOTSPOT_STEPS[_requested]
+	return _hotspot_available(_requested)
+
+
+func _hotspot_available(hotspot_id: String) -> bool:
+	return HOTSPOT_STEPS.has(hotspot_id) and \
+		str(Director.next_step(state).get("id", "")) == HOTSPOT_STEPS[hotspot_id] and \
+		str(state.get("hotspotStates", {}).get(hotspot_id, "")) not in ["cleared", "restored"]
 
 
 func _commit_arrival(hotspot_id: String) -> Dictionary:
@@ -110,6 +126,13 @@ func _commit_arrival(hotspot_id: String) -> Dictionary:
 	if hotspot_id != _requested or not _still_available():
 		_requested = ""
 		return {"ok": false, "error": "no-longer-available"}
+	var destination: String = graph.interaction_anchor(hotspot_id)
+	var current: String = session.current_anchor()
+	if current != destination or destination.is_empty() or not session.in_flight_anchor().is_empty() \
+			or str(graph.anchor(current).get("roomId", "")).is_empty() \
+			or graph.route(session.checkpoint_event("arrival-probe").get("anchorId", ""), destination).is_empty():
+		_requested = ""
+		return {"ok": false, "error": "invalid-arrival-position"}
 	var step_id: String = HOTSPOT_STEPS[hotspot_id]
 	var proposed: Dictionary = state.duplicate(true)
 	for raw_event in Director.events_for(step_id):
@@ -127,7 +150,7 @@ func _commit_arrival(hotspot_id: String) -> Dictionary:
 		_requested = ""
 		return {"ok": false, "error": "save-failed"}
 	state = proposed
-	graph.rebuild(state, _source)
+	navigation.refresh_routes(state)
 	_requested = ""
 	return {"ok": true, "status": "action-committed", "hotspotId": hotspot_id,
 		"nextStep": ACTION_STEPS[step_id],

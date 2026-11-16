@@ -6,6 +6,7 @@ extends RefCounted
 ## a save, never invents door connectivity and never turns a screen point into
 ## a movement destination. `raven_campaign_store.gd` + reducer remain the sole
 ## save authority; the harness returns proposals only.
+const RouteSession = preload("res://scripts/raven/manor_route_session.gd")
 const Graph = preload("res://scripts/raven/manor_navigation_graph.gd")
 const Controller = preload("res://scripts/raven/manor_room_transition_controller.gd")
 const QaAdapter = preload("res://scripts/raven/first_floor_integrated_draft_adapter.gd")
@@ -110,6 +111,8 @@ static func _resolve_qa(request: Dictionary) -> Dictionary:
 		blocked.status = "qa_requires_opt_in"
 		blocked.reason = "qa-candidate-requires-explicit-allowQaCandidate"
 		return blocked
+	if request.get("qaSourceKind", "") == "historical-greybox":
+		return _resolve_historical_qa(request)
 	var source_kind := str(request.get("qaSourceKind", Preview.PROJECT))
 	var source_path := str(request.get("qaSourcePath", ""))
 	var loaded: Dictionary = QaAdapter.load_source(source_kind, source_path)
@@ -474,3 +477,99 @@ static func _valid_position(value: Variant) -> bool:
 	if not (value[0] is int or value[0] is float) or not (value[1] is int or value[1] is float):
 		return false
 	return Vector2(float(value[0]), float(value[1])).is_finite()
+
+
+## Explicit compatibility source for GAME-LOOP-01A. Never falls through from
+## production or draft-map failure. Overrides are QA fixtures, not approval.
+static func historical_qa_request(graph_override: Dictionary = {}) -> Dictionary:
+	var request := {"schemaVersion": SCHEMA_VERSION, "kind": REQUEST_KIND,
+		"mode": MODE_QA, "allowQaCandidate": true, "qaSourceKind": "historical-greybox"}
+	if not graph_override.is_empty():
+		request.qaGraph = graph_override.duplicate(true)
+	return request
+
+
+static func _resolve_historical_qa(request: Dictionary) -> Dictionary:
+	var data: Variant = request.get("qaGraph", WORLD_PLAN.data)
+	if not data is Dictionary or not data.get("anchors") is Array or not data.get("edges") is Array:
+		return _invalid_route(MODE_QA, "invalid-qa-graph")
+	var canonical := {}
+	for anchor in WORLD_PLAN.data.anchors:
+		canonical[str(anchor.id)] = anchor
+	var known := {}
+	var hotspots := {}
+	for anchor in data.anchors:
+		if not anchor is Dictionary or not _valid_position(anchor.get("position")):
+			return _invalid_route(MODE_QA, "invalid-qa-anchor")
+		var id := str(anchor.get("id", ""))
+		var hotspot := str(anchor.get("hotspotId", ""))
+		if id.is_empty() or known.has(id) or not RavenIds.is_known("rooms", str(anchor.get("roomId", ""))):
+			return _invalid_route(MODE_QA, "invalid-qa-anchor-id-or-room")
+		if not hotspot.is_empty() and (hotspots.has(hotspot) or not RavenIds.is_known("hotspots", hotspot)):
+			return _invalid_route(MODE_QA, "invalid-qa-hotspot")
+		if not canonical.has(id) or anchor.get("roomId") != canonical[id].roomId \
+				or anchor.get("kind") != canonical[id].kind \
+				or hotspot != str(canonical[id].get("hotspotId", "")):
+			return _invalid_route(MODE_QA, "historical-anchor-identity-mismatch")
+		known[id] = anchor
+		if not hotspot.is_empty():
+			hotspots[hotspot] = true
+	for edge in data.edges:
+		if not edge is Dictionary or not known.has(str(edge.get("from", ""))) or not known.has(str(edge.get("to", ""))):
+			return _invalid_route(MODE_QA, "invalid-qa-edge")
+		var door := str(edge.get("doorId", ""))
+		if not door.is_empty() and not RavenIds.is_known("doors", door):
+			return _invalid_route(MODE_QA, "unknown-qa-door")
+	var graph = Graph.new()
+	graph.rebuild(_snapshot(request), data)
+	var start: String = graph.safe_checkpoint_anchor(_snapshot(request))
+	if start.is_empty():
+		return _invalid_route(MODE_QA, "missing-safe-qa-start")
+	var result := _base(MODE_QA)
+	result.merge({"ok": true, "status": "ready", "approval": "TEST_ONLY",
+		"movementEnabled": true, "coordinateSpace": "independent-greybox",
+		"initialRoomId": str(graph.anchor(start).roomId), "initialAnchorId": start,
+		"routeGraph": data.duplicate(true),
+		"source": {"kind": "historical-greybox", "approval": "TEST_ONLY"}}, true)
+	return result
+
+
+## A selected source owns the route objects. Reload resets this same session;
+## refresh only rebuilds its graph gates, never selects another source.
+## Multi-room candidate contracts continue to use the existing transition
+## controller/harness. Their gameplay handoff is deliberately held until G2.
+var selection: Dictionary = {}
+var graph
+var session
+var _route_data: Dictionary = {}
+var _selected := false
+
+
+func select(request: Dictionary, snapshot: Dictionary) -> bool:
+	if _selected:
+		return false
+	_selected = true
+	var input := request.duplicate(true)
+	input.snapshot = snapshot.duplicate(true)
+	selection = resolve(input)
+	if not selection.get("ok", false):
+		return false
+	if not selection.has("routeGraph"):
+		selection = _invalid_route(str(selection.mode), "gameplay-transition-handoff-requires-G2")
+		return false
+	_route_data = selection.routeGraph.duplicate(true)
+	graph = Graph.new()
+	graph.rebuild(snapshot, _route_data)
+	session = RouteSession.new(graph)
+	session.restore(snapshot)
+	return true
+
+
+func refresh_routes(snapshot: Dictionary) -> void:
+	if graph != null:
+		graph.rebuild(snapshot, _route_data)
+
+
+func restore_routes(snapshot: Dictionary) -> String:
+	refresh_routes(snapshot)
+	return session.restore(snapshot) if session != null else ""
