@@ -1,5 +1,5 @@
 {
-  "alpha": "a *= smoothstep(32/255,64/255,a); quantized zero -> RGBA zero",
+  "alpha": "integer smoothstep 32..64; half-up rounding; quantized zero -> RGBA zero",
   "engine": "4.7.2-stable (official)",
   "frames": [
     {
@@ -231,6 +231,7 @@
       "sourceHeadCenter": 129.0
     }
   ],
-  "outputSha256": "e5446fcf80c30874101e539c6b8e175d4ba54139481f79be467c861c56f3c521",
+  "outputSha256": "b69965a1bdb675d91d7f0d60534972b661f9fc58d8e15f93870d5a58cadf447b",
+  "resampling": "integer bilinear RGBA8 pixel centers; half-up rounding; no platform floating-point resampler",
   "sourceSha256": "38e3f7b438a6e1c3187b4fb06c88a05b622ddc56c06bf13def689ef02bbe2b89"
 }

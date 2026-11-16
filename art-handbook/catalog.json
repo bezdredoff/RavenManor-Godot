@@ -15144,7 +15144,8 @@
         "Supersedes the #269 runtime atlas. Earlier selected design and motion remain historical, never final owner acceptance.",
         "Approved VN Evelyn face/hair/outfit/palette is authoritative; back/profile and mirrored hair are inferred candidates.",
         "Four built-in imagegen calls: one VN-led regeneration, then passing-pose, opposing-contact and low-step/counter-swing corrections. Model/seed unavailable.",
-        "Raw final source is retained; bake_atlas.gd cleans alpha and normalizes uniform cells. No silhouette repaint or VN changes."
+        "Raw final source is retained; bake_atlas.gd cleans alpha and normalizes uniform cells. No silhouette repaint or VN changes.",
+        "The final deterministic bake uses integer bilinear RGBA8 interpolation and integer smoothstep/half-up rounding; strict source/output pixel comparison is retained across Windows/Linux."
       ],
       "artifacts": [
         {
@@ -19128,7 +19129,7 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_walk.png",
       "width": 1024,
       "height": 1536,
-      "sha256": "e5446fcf80c30874101e539c6b8e175d4ba54139481f79be467c861c56f3c521",
+      "sha256": "b69965a1bdb675d91d7f0d60534972b661f9fc58d8e15f93870d5a58cadf447b",
       "preview": null,
       "recipeId": "chatgpt-evelyn-g1-repair-v1",
       "evidence": "conversation_generated_candidate",
@@ -19152,7 +19153,7 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "b70e8805c2354e69bcc163de4a7e0138dbfd7b369b9457d12117a6ff0047f0a6",
+      "sha256": "a7cd6d670aea019783e36fcc517c7c82f35eff8148fb48ed5bf6cb1a408ecf17",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",
@@ -19176,7 +19177,7 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_light_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "417661efddd9289a0bf1b942bcd9a052f90926622bd4e26aed77200e5df88971",
+      "sha256": "8179d61cda1dc8ba5542ee52c0c3abc7f1b2c4c1d06c7be51cee4efa7286820a",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",
@@ -19200,7 +19201,7 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/map_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "47c91e0bcbdfb2940ac634cdd4794edf3573e6ad8fbdf68a7f80fccdf3ba0d17",
+      "sha256": "008b7735618241330f48f6630120aba48c71a3b762e5b48cf92273e1003bc799",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",

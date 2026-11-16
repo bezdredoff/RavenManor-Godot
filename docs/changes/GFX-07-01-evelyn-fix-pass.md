@@ -17,3 +17,5 @@ Scope justification: Evelyn candidate files, parent handoff pointer, this change
 Migration/rollback: No data/save migration. Revert this bounded PR to restore the #269 candidate and existing previews. Onoe remains the production placeholder pending explicit owner approval and a separate controlled switch. Do not auto-merge.
 
 Published PR: https://github.com/bezdredoff/RavenManor-Godot/pull/274 (open, unmerged). GFX-07-01 is PR_review / partial; exact-head Actions results are maintained in the PR description. No owner approval inferred.
+
+CI portability correction: Linux run 43972514009 at 075d2d023118425437190b426d1bf1f260606852 failed the newly registered strict pixel-reproduction assertion; Windows Lanczos floating-point bake was not portable. Replaced it with explicit integer bilinear RGBA8 interpolation and integer smoothstep/half-up rounding, retained the strict pixel comparison, bounded its assertion-failure runtime, rebaked and refreshed all captures/provenance. Local strict reproduction and measurement pass again; new exact-head CI required.
