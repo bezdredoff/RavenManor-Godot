@@ -248,6 +248,7 @@ func _run() -> void:
 	assert(restored.state.unlockedDoors.has(CB_DOOR))
 	assert(restored.state.completedRestorations.size() == 1)
 	assert(restored.state.workPoints == 0)
+	assert(restored.current_activity().id == "bedroom", "Continue must retain VN scene activity")
 
 	# Write failure at a confirmed portal entry must never save a false room;
 	# the caller may recover by Continue from the last committed safe anchor.
