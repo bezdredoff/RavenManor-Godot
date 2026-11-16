@@ -59,7 +59,9 @@ func _run() -> void:
 	assert(host.advance().status == "segment_started")
 	assert(host.actor.has_active_segment())
 	var initial_phase: float = host.actor.visual().phase()
-	host.advance(0.05)
+	# QA graph routes can contain short intermediate grid anchors; keep this
+	# physical segment in-flight when testing cancellation, not at its boundary.
+	host.advance(0.005)
 	assert(host.actor.position.distance_to(origin) > 0.01)
 	assert(host.actor.visual().phase() != initial_phase)
 	var mid_leg: Vector2 = host.actor.position
@@ -73,11 +75,12 @@ func _run() -> void:
 	assert(host.actor.position == mid_leg and host.actor.visual().phase() == held_phase)
 	assert(host.actor.resume_segment())
 	host.actor.visual().set_reduced_motion(true)
-	host.advance(0.05)
+	host.advance(0.005)
 	assert(host.actor.position != mid_leg and host.actor.get_sprite().frame == 1)
 	host.actor.visual().set_reduced_motion(false)
+	assert(host.actor.has_active_segment(), "Cancel test needs an in-flight leg")
 	var canceled: Dictionary = host.cancel_request()
-	assert(canceled.get("finishCurrentSegment", false))
+	assert(canceled.ok and canceled.get("finishCurrentSegment", false), "Cancel retains current physical leg")
 	var after_cancel: Vector2 = host.actor.position
 	assert(host.drive().ok)
 	assert(not host.actor.has_active_segment())
