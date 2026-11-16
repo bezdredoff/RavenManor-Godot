@@ -10,7 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
 RUNNERS = ("scripts/check.sh", "check.ps1")
-SCRIPT_RE = re.compile(r"res://tests/raven/([A-Za-z0-9_/-]+\\.gd)")
+SCRIPT_RE = re.compile(r"res://tests/raven/([A-Za-z0-9_/-]+\.gd)")
 CRITICAL_G2 = (
     "manor_navigation_graph_smoke.gd",
     "map_game_01a_navigation_source_smoke.gd",
