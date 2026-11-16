@@ -58,7 +58,7 @@ func _seed(adapter: RefCounted) -> void:
 	assert(Store.new(adapter).save_campaign(snapshot))
 
 
-func _host(adapter: RefCounted) -> Node2D:
+func _host(adapter: RefCounted):
 	return Host.new(adapter, true)
 
 
