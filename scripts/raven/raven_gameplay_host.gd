@@ -186,10 +186,16 @@ func advance(delta: float = 0.05) -> Dictionary:
 	if not loaded.get("ok", false):
 		return loaded
 	if not _pending_story.is_empty() and not Bridge.story_available(state, _pending_story):
-		cancel()
+		var stop_story: Dictionary = cancel()
+		if bool(stop_story.get("finishCurrentSegment", false)):
+			return {"ok": true, "status": "cancel-finishing-current-leg",
+				"reason": "no-longer-available"}
 		return _error("no-longer-available")
 	if not _pending_transition.is_empty() and not _door_gate_error(_pending_transition).is_empty():
-		cancel()
+		var stop_transition: Dictionary = cancel()
+		if bool(stop_transition.get("finishCurrentSegment", false)):
+			return {"ok": true, "status": "cancel-finishing-current-leg",
+				"reason": "door-gate-changed"}
 		return _error("door-gate-changed")
 	var result: Dictionary = navigation.advance(delta)
 	if not result.get("ok", false):
