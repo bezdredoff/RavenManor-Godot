@@ -199,7 +199,7 @@ func advance(delta: float = 0.05) -> Dictionary:
 		return result
 	var status := str(result.get("status", ""))
 	if status == "arrived" and not _pending_story.is_empty():
-		return _commit_story_arrival(str(result.get("hotspotId", "")))
+		return _commit_story_arrival(str(result.get("hotspotId", _pending_map_hotspot)))
 	if status == "continue" or status == "cancelled" or status == "arrived":
 		var checkpoint := checkpoint_safe_anchor()
 		if not checkpoint.get("ok", false):
