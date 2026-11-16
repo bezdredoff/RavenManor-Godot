@@ -17,7 +17,9 @@ func _run() -> void:
 	var visual = actor.visual()
 	var sprite: AnimatedSprite2D = actor.get_sprite()
 	assert(sprite.material == null, "Clean raw atlas must work without an alpha material")
-	assert(not visual._meta.ownerApproved and not visual._meta.productionReplacementAllowed)
+	assert(visual._meta.ownerApproved and not visual._meta.productionReplacementAllowed)
+	assert(not visual._meta.productionIntegrationVerified and not visual._meta.deviceVerified)
+	assert(not visual._meta.foregroundOcclusionVerified)
 	actor.segment_completed.connect(func(_id: String, _point: Vector2): arrivals += 1)
 	var steps := [Vector2(100, 0), Vector2(0, -100), Vector2(-100, 0), Vector2(0, 100)]
 	for direction in steps:
@@ -105,5 +107,5 @@ func _run() -> void:
 	assert(host.session.current_anchor() == destination and host.session.next_segment().is_empty())
 	host.queue_free()
 	await process_frame
-	print("GFX-07-01 Evelyn preview PASS: uniform atlas, fixed grounding, real-distance cadence at 0.5/55/130 px/s, four turns, pause, reduced motion, real Hall cancellation; art approval pending")
+	print("GFX-07-01 Evelyn preview PASS: uniform atlas, fixed grounding, real-distance cadence at 0.5/55/130 px/s, four turns, pause, reduced motion, real Hall cancellation; owner visual approval recorded")
 	quit()

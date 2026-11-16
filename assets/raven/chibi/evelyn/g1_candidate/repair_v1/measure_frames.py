@@ -43,7 +43,10 @@ def measure():
             "cycleTravelInHeights": 0.5,
             "cadence": "one cycle per 0.5 displayed heights of ACTUAL root travel; no timer or FPS clamp",
             "zeroAlphaPixels": alpha.histogram()[0], "requiresAlphaMaterial": False,
-            "ownerApproved": False, "productionReplacementAllowed": False, "frames": frames}
+            "ownerApproved": True,
+            "ownerApprovalEvidence": "2026-11-17: owner reviewed merged PR #274 Godot preview and approved Evelyn visual design and animation",
+            "productionReplacementAllowed": False, "productionIntegrationVerified": False,
+            "deviceVerified": False, "foregroundOcclusionVerified": False, "frames": frames}
 
 
 if __name__ == "__main__":
@@ -53,7 +56,7 @@ if __name__ == "__main__":
     data = measure()
     if args.check:
         assert data == json.loads((HERE / "frames.json").read_text(encoding="utf-8"))
-        print("PASS: clean alpha, uniform 12-cell atlas, fixed crown/sole/pivot/hash; owner approval pending")
+        print("PASS: clean alpha, uniform 12-cell atlas, fixed crown/sole/pivot/hash; owner visual approval recorded")
     else:
         (HERE / "frames.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
         print("Wrote frames.json; visual identity/contact remain review judgments")

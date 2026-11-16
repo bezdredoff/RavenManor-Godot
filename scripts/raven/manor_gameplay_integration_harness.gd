@@ -2,12 +2,14 @@ extends Node2D
 ## MAP-GAME-01A: isolated gameplay integration harness.
 ##
 ## This node composes only the existing authored `ManorRoomTransitionController`
-## and `OnoeSegmentMover`. It owns no save, no Camera2D and no map coordinates.
+## and owner-approved Evelyn (inheriting the existing `OnoeSegmentMover`).
+## It owns no save, no Camera2D and no map coordinates.
 ## Movement starts exclusively from authored hotspots/transitions; a screen or
 ## ground point is always rejected. Camera and room changes are proposals for a
 ## future host, and checkpoints are proposals the caller must persist through
 ## `raven_campaign_store.gd` + reducer.
-const Mover = preload("res://scripts/raven/onoe_segment_mover.gd")
+const Mover = preload("res://scripts/raven/onoe_segment_mover.gd") # Stable movement API.
+const EvelynScene = preload("res://scenes/raven/actors/evelyn_walker.tscn")
 const Controller = preload("res://scripts/raven/manor_room_transition_controller.gd")
 
 signal room_changed(proposal: Dictionary)
@@ -25,7 +27,7 @@ var _reported_room := ""
 var _camera_room := ""
 
 
-## Add this harness to the scene tree before calling configure so the Onoe
+## Add this harness to the scene tree before calling configure so Evelyn's
 ## visual child can initialise. The source must be a successful
 ## `manor_navigation_source.resolve()` result with movement enabled.
 func configure(source: Dictionary, snapshot: Dictionary = {}) -> bool:
@@ -50,11 +52,14 @@ func configure(source: Dictionary, snapshot: Dictionary = {}) -> bool:
 	if not trial.configure(contract, initial_room, initial_anchor, gates):
 		return _fail("transition-contract:" + trial.error_text)
 	controller = trial
-	actor = Mover.new()
-	actor.name = "Onoe"
+	actor = EvelynScene.instantiate() as Mover
+	if actor == null:
+		return _fail("evelyn-actor-unavailable")
 	actor.sprite_height = 62.0
 	actor.move_speed = 160.0
 	add_child(actor)
+	# The gameplay caller drives advance(delta); do not double-advance via _process.
+	actor.set_process(false)
 	actor.position = controller.anchor_position(initial_anchor)
 	source_result = source.duplicate(true)
 	_reported_room = initial_room

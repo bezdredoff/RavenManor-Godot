@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/raven/tests/first_floor_multi_room_host.tscn" id="1_baseline"]
+[ext_resource type="Script" path="res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_actor.gd" id="2_evelyn"]
+
+[node name="EvelynMultiRoomPreview" instance=ExtResource("1_baseline")]
+
+# Historical QA host expects $Onoe; the override is diagnostic only.
+[node name="Onoe" parent="." index="1"]
+script = ExtResource("2_evelyn")
