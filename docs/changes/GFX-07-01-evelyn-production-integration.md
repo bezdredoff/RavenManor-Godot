@@ -1,3 +1,13 @@
+Task IDs: GFX-07-01 (bounded Evelyn visual actor integration; related GFX-07-05/09/10 and GFX-11-T06 remain open).
+
+Changes: Register explicit owner visual approval from merged #274, regenerate frames.json through measure_frames.py authority, add stable Evelyn walker scene, wire the gameplay movement harness with existing mover/controller, retain original Onoe QA and add separate Evelyn TEST_ONLY multi-room preview with focused CI-registered smoke. No story/save/campaign geometry/asset pixel changes.
+
+Verification: NOT_RUN locally (Godot executable unavailable in this execution environment). Required exact-head checks: full GitHub Actions jobs, GFX-07-01 new gameplay-host smoke, existing Onoe and Evelyn preview smoke, atlas and metadata reproducibility, MAP-GAME-01A and Hall/multi-room regressions. The PR run is the first executable evidence; no prior runner success is inferred.
+
+Owner QA: Visual design/animation approved by owner after manually reviewing merged #274 Godot preview (2026-11-17). Physical phone, HC/CB foreground/sills, performance, normal New Game activation and full gameplay/save verification remain NOT_RUN/NOT_APPROVED.
+
+Status impact: Only chibi-animation.json modified; GFX-07-01 remains PR_review/partial, task-level approval pending. Visual metadata ownerApproved=true but productionReplacementAllowed=false, productionIntegrationVerified=false, deviceVerified=false and foregroundOcclusionVerified=false. PR https://github.com/bezdredoff/RavenManor-Godot/pull/275 is open DRAFT, not merged.
+
 # GFX-07-01 — Approved Evelyn production walker integration
 
 **Domain:** chibi-animation · **Priority:** P0 · **Base:** `0d1886b0d01491047dbd900b260757623c6ef9bc` (main after merged #269 and #274).
