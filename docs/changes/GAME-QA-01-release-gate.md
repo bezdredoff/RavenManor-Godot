@@ -1,0 +1,39 @@
+# GAME-QA-01 — G1 release-gate regression and QA infrastructure
+
+Baseline audited: `origin/main` after PR #266, SHA `832657c`. This PR is QA-only; it does not promote draft geometry, proposed story scenes, art, gameplay, save schema, or production routes.
+
+## G1–G4 acceptance matrix
+
+| Gate | Blocking automated evidence | Manual/device evidence still required | Current result |
+|---|---|---|---|
+| G1 — safe contracts | `main_menu_upds_parity_smoke`, `game_loop_01a_hotspot_bridge_smoke`, `manor_navigation_graph_smoke`, `production_narrative_smoke`, `campaign_season1_audit_smoke`; draft map and proposed scenes fail closed | Windows + Web startup; RU/BE/EN selection; touch/mouse/keyboard; pause/settings; missing/corrupt save copy and Continue behavior | Automated PASS on registered suites; physical/browser checks NOT RUN |
+| G2 — first gameplay loop | Existing hotspot/arrival-gate/cancellation/pause-save, restoration exact-once, Match-3 checkpoint/session/viewport and menu/campaign smokes | Hall → Corridor → Bedroom → Corridor → Hall on an approved physical map; locked/unlocked doors, safe room restore, real input, restart/Continue | Automated PASS for fixtures; production geometry/owner acceptance BLOCKED until approved |
+| G3 — story waves | `vn_production_runtime_dispatch_smoke`, tri-locale localization, locale-save parity, read-only Skip, save rehearsal and season audit | Every approved chapter in order, choice gates, mid-line resume, chapter transitions, completed-season Continue in RU/BE/EN | Existing partial/staged content remains accurately blocked; no future scene is promoted |
+| G4 — release candidate | Device matrix (320×568, 390×844, 430×932), Web import/export contracts, data contracts and exact runner registration | Windows/Web release build, physical portrait touch, desktop browser, refresh/offline/resume, accessibility controls, Pages deployment and owner sign-off | NOT READY: manual/device/Web live evidence and full-season production capability are missing |
+
+## Registered blocking coverage
+
+The existing runners already cover the release-critical automated journeys; this PR adds no duplicate gameplay suite. `test_game_qa_release_gate.py` is a small contract test that verifies both `scripts/check.sh` and `check.ps1` reference existing Godot tests and retain the seven critical smoke families above. It is registered in the data/check path and is intentionally not a dashboard/backlog consistency gate.
+
+Covered by existing tests: New Game/Continue and corrupt/read-failed save handling; language and settings; authored navigation, missing routes, cancellation, pause/resume and safe anchors; hotspot arrival gates; Match-3 start/checkpoint/retry/return and exact-once campaign effects; restoration and persistence; canonical scene dispatch, RU/BE/EN, choices, read-only Skip and save-line resume; staged rollout fail-closed behavior; portrait layout reachability.
+
+Not proven by headless Godot: native touch/stylus, browser refresh/offline cache, audio/haptics, visual readability/art approval, production-map geometry, live Pages deployment, or owner acceptance.
+
+## Manual/device checklist
+
+- [ ] Windows desktop: New Game, Continue, corrupt/missing save recovery, pause/settings, mouse + keyboard.
+- [ ] Web desktop: startup, refresh, offline/resume, save/Continue, browser console/network errors.
+- [ ] Physical portrait devices at 320×568, 390×844, 430×932: RU/BE/EN, touch targets, safe area, pause/settings, VN choices/Skip, Match-3 swipe/help/retry.
+- [ ] Approved-map journey: Hall → Corridor → Bedroom → Corridor → Hall; locks, missing route, cancellation, pause/resume, safe-room anchor restore.
+- [ ] Full approved Season 1: chapter order, mid-line resume, exact-once rewards/spending, restart persistence, final/completed-season state.
+- [ ] Build/Pages: successful Web export and live deployment; record exact SHA, Actions run URL, browser/device/version and screenshots.
+
+## Evidence classification and ownership
+
+`PASS` means the named automated check actually ran. `NOT RUN` means no evidence was produced. `BLOCKED` means a dependency is intentionally unavailable (currently approved production geometry, full approved chapters, or physical/browser access). `OWNER ACCEPTED` requires explicit owner evidence and is not inferred from CI. Agents A–D integration requirements are not registered here until their PRs land; this PR does not reference nonexistent tests.
+
+No product defect was independently fixed. The release blockers to report to owning agents are the already-audited missing production scene capability/full-season dispatch, unapproved map geometry, and outstanding physical/browser/Web acceptance.
+
+## Verification
+
+Local verification for this PR: `python -m unittest tests/raven/test_game_qa_release_gate.py` (expected PASS). Full Godot and Pages CI must be recorded against the PR head SHA; no merge or device acceptance is claimed here.
