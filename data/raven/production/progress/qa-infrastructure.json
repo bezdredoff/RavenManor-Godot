@@ -185,10 +185,10 @@
     {
       "id": "GAME-QA-01",
       "status": "PR_review",
-      "priority": "P0",
+      "priority": "P1",
       "owner": "ChatGPT",
-      "updated": "2026-11-16",
-      "evidence": "QA-only release-gate PR from main 832657c: added docs/changes/GAME-QA-01-release-gate.md and test_game_qa_release_gate.py; registered runner-contract check in scripts/check.sh via check_data.sh and check.ps1. Existing critical journey suites retained; draft map/proposed scenes remain fail-closed. Automated local test pending PR-head CI; physical/browser/Web/full-season acceptance remains NOT RUN or BLOCKED.",
+      "updated": "2026-11-17",
+      "evidence": "#267 MERGED 2026-11-16 (0f34235ee28e46edd8ce9c39c3f397ec9add4d77), exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43964409306. GAME-QA-01 G2 follow-up on main 0d1886b0d01491047dbd900b260757623c6ef9bc: existing G1-G4 gate retained; Windows runner gains nine already-existing blocking G2 cases; runner contract enforces exact-once registration and Pages shipped-game packaging assertions. Planned PR branch agent/qa-infrastructure/GAME-QA-01-G2-regression; exact-head CI pending. Implementation partial; current QA is automated, NOT physical/device/browser proof. G2 HC/CB, Agent B/D production integrations and owner acceptance still pending. Evidence docs/changes/GAME-QA-01-G2-regression-20261117.md.",
       "implementationState": "partial",
       "qaState": "automated",
       "approvalState": "pending"
