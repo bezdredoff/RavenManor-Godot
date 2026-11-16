@@ -31,10 +31,20 @@ jobs:
       - name: Enforce per-PR evidence or legacy status pair
         if: github.event_name == 'pull_request'
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
           HEAD_REF: ${{ github.head_ref }}
         run: |
-          python3 scripts/raven/tools/check_pr_governance.py --base-sha "$BASE_SHA" --head-ref "$HEAD_REF"
+          # Checkout on pull_request is a synthetic merge of current main
+          # (first parent) and PR head (second parent). The event base.sha may
+          # still point to main before earlier PRs were merged. Comparing that
+          # stale SHA to the merge checkout falsely reports foreign shards.
+          PARENTS="$(git rev-list --parents -n 1 HEAD)"
+          set -- $PARENTS
+          if [ "$#" -ne 3 ]; then
+            echo "::error::Expected a two-parent pull_request merge checkout"
+            exit 1
+          fi
+          CURRENT_BASE_SHA="$2"
+          python3 scripts/raven/tools/check_pr_governance.py --base-sha "$CURRENT_BASE_SHA" --head-ref "$HEAD_REF"
       - name: Check shell syntax and source/data contracts
         run: bash -n scripts/check.sh scripts/check_data.sh && bash scripts/check_data.sh
 
