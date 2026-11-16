@@ -2,6 +2,11 @@
 
 Task IDs: CODE-08-01, VN-RUNTIME-01, CODE-03-01, CODE-03-02, CODE-03-03
 
+Changes: Harden synthetic approved-scene dispatcher ordinal and snapshot gate validation; canonical scene approvals remain unchanged.
+Verification: Prior exact-head CI 43957056367 FAILED on GDScript test parse and governance fields; new-head CI must execute the Godot runtime suite before merge.
+Owner QA: NOT_RUN; no physical devices, production VN scene promotion or owner content acceptance.
+Status impact: CODE-08-01 remains PR_review / partial / automated-only evidence.
+
 ## Changes
 
 - Fixed production dispatcher ordinal decoding: JSON integral floats are accepted, while fractional, negative, non-numeric, out-of-range and ambiguous duplicate ordinals are rejected.
