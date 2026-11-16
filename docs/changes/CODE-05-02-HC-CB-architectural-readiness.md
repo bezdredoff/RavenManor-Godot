@@ -1,5 +1,12 @@
 # CODE-05-02 — HC/CB architectural readiness (09D owner decision candidate)
 
+Task IDs: CODE-05-02 (09D owner decision package, partial)
+Changes: Non-destructive HC/CB SVG comparisons, conditional JSON floor/jamb/foreground geometry, isolated draft QA smoke and manor-map shard evidence.
+Verification: Source-calibration JSON crosschecked against G1 and existing 09B data; 09D Godot script NOT executed or registered in shared runner; exact-head CI is being checked.
+Owner QA: Pending HC structural/elevation choice and CB wall-cut/width/mask approval; local image/phone inspection not yet performed.
+Status impact: PR_review only; implementationState=partial, approval=DRAFT_ONLY, productionReady=false, and no production navigation activation.
+
+
 **PR:** https://github.com/bezdredoff/RavenManor-Godot/pull/278 (draft; unmerged)
 **Domain:** manor-map · **Priority:** P0 · **State:** DRAFT_ONLY / partial, owner decision outstanding.
 **Base:** main 0d1886b0d01491047dbd900b260757623c6ef9bc; reconciles merged #258/#261/#270/#272.
