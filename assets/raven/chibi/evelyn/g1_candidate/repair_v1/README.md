@@ -37,7 +37,7 @@ python scripts/raven/tools/build_production_dashboard.py --check
 
 Python/Pillow only measures pixels; it does not edit them. Measurements reproduce explicit frame rectangles, source SHA, bounded silhouettes and source pivots. Godot smoke covers all 12 frames and both side flips, constant displayed height, sole registration, four turns, start/stop/idle, pause/resume, reduced motion and cancellation on the inherited real Hall route. Tests cannot approve identity, leg anatomy or foot sliding. Shared test registration remains Agent E's scope.
 
-The handbook's mandatory raster-coverage gate requires provenance for both generated sheets and all three PNG captures. Five chibi-specific records and three recipes are registered in its existing source manifest, with official catalog/data regeneration. Two fixed count assertions change to 160/69 after Agent E coordination; no art acceptance or validation rule is weakened.
+The handbook's mandatory raster-coverage gate requires provenance for both generated sheets and all three PNG captures. Five chibi-specific records and three recipes are registered in its existing source manifest, with official catalog/data regeneration. Fixed Python/browser count expectations change to 160/69 after Agent E coordination; no art acceptance or validation rule is weakened.
 
 Captures are real Godot 4.7.2 Compatibility renderer output at 390×844. GIF is a 32-frame/24-FPS Godot Movie Maker recording encoded to a looping 12-FPS GIF with ffmpeg; the temporary AVI stays outside repository source. PNGs are direct viewport captures. Run a scene with `-- --capture=<path.png>` (close-up), `-- --light --capture=<path.png>` (light close-up), or `-- --capture-map=<path.png>` (map) to capture and exit.
 
