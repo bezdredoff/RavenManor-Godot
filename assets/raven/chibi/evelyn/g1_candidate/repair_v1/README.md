@@ -11,6 +11,8 @@ The owner selected the earlier design in chat ("i like it"), then explicitly req
 
 ![Actual 390×844 first-floor capture](map_capture.png)
 
+The map candidate now adjusts its four-frame animation cadence from the existing segment mover's actual `move_speed`, without changing the mover, authored route, physical root or source image. The provisional full-cycle travel target is `0.8 × displayed character height`, bounded at 4–18 FPS; at 130 source px/s and 62px display height this is approximately 10.48 FPS instead of fixed 6 FPS. This narrows the timing mismatch (previously 86.7 source pixels per cycle), but **does not correct asymmetric knees or side-leg art** and is not a claim of planted-foot approval. `preview_smoke.gd` checks the speed-scale contract; a fresh real-route recording and owner visual review remain necessary.
+
 The Hall pilot is a flat approved map plus diagnostics, not a layered-foreground certification. Multi-room sill/foreground occlusion and real phone approval remain pending, with the original handoff checklist applicable. Physical door calibration is separately owned in PR #270. No merge or production replacement is authorized by selecting this design.
 
 ## Repaired atlas and integration contract
