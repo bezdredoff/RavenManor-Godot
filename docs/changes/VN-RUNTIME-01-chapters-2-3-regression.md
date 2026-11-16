@@ -2,6 +2,12 @@
 
 Task IDs: **VN-RUNTIME-01**. Dependency: **CODE-08-01** (campaign-core; do **not** duplicate its status entry). Domain: `vn-runtime`. Base: `main@0d1886b0d01491047dbd900b260757623c6ef9bc`, 2026-11-17.
 
+Changes: New eight-scene review-only manifest; source-copy Hall Tea RU/BE/EN selection/completion regression and registered VN smoke invocation; own vn-runtime shard only.
+Verification: Static catalog/manifest audit completed; local Godot NOT_RUN; exact-head GitHub Actions required and status recorded separately.
+Owner QA: NOT_RUN; Ada pose, physical hall target, phone layout and promotion approval remain pending.
+Status impact: Existing VN-RUNTIME-01 PR_review/partial/manual_pending; no CODE-08-01 duplicate, accepted art or production status promotion.
+
+
 ## Changes
 
 - Added `data/raven/production/vn_chapters_ii_iii_readiness.json`, an **explicitly review-only** eight-scene integration handoff. It records exact canon line IDs/counts, RU/BE/EN completeness, cast/staging/accepted background, pose×emotion deficits, affected line-cue IDs, runtime gate support, unregistered save beats and current promotion blockers.
