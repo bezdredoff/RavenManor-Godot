@@ -25,7 +25,7 @@ const FOOT_TOLERANCE := 0.25
 var store: RefCounted
 var state: Dictionary = {}
 var source: Dictionary = {}
-var navigation: Node2D
+var navigation
 var last_error := ""
 
 var _isolated_qa_storage := false
