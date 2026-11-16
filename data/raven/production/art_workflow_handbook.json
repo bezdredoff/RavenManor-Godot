@@ -15137,23 +15137,33 @@
     },
     {
       "id": "chatgpt-evelyn-g1-repair-v1",
-      "title": "Evelyn selected design - two focused imagegen repairs",
+      "title": "Evelyn VN-led fix pass: generation, focused pose corrections, deterministic bake",
       "stage": "archive",
       "evidence": "conversation_generated_candidate",
       "notes": [
-        "GFX-07-01 chibi-specific provenance only. No owner motion/device/foreground or production approval.",
-        "Original design selected by owner; proportions retained by explicit repair request. Original rejected technical source is historical evidence.",
-        "Runtime uses explicit source regions/pivots and alpha cleanup material; raw atlas is not a certified clean cutout."
+        "Supersedes the #269 runtime atlas. Earlier selected design and motion remain historical, never final owner acceptance.",
+        "Approved VN Evelyn face/hair/outfit/palette is authoritative; back/profile and mirrored hair are inferred candidates.",
+        "Four built-in imagegen calls: one VN-led regeneration, then passing-pose, opposing-contact and low-step/counter-swing corrections. Model/seed unavailable.",
+        "Raw final source is retained; bake_atlas.gd cleans alpha and normalizes uniform cells. No silhouette repaint or VN changes."
       ],
       "artifacts": [
         {
           "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/repair_prompts.txt",
           "label": "Exact repair prompts"
+        },
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/bake_atlas.gd",
+          "label": "Deterministic source-to-atlas normalization"
+        },
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/bake_manifest.json",
+          "label": "Baked source/output hashes and alignment"
         }
       ],
       "inputs": [],
       "outputs": [
-        "RM-CHIBI-EVELYN-G1-REPAIR-V1"
+        "RM-CHIBI-EVELYN-G1-REPAIR-V1",
+        "RM-CHIBI-EVELYN-G1-FIX-SOURCE"
       ],
       "requires": [],
       "prompts": [
@@ -15168,7 +15178,8 @@
         "seed": null,
         "steps": null,
         "tool": "built-in image_gen.imagegen",
-        "transparent_background_requested": true
+        "transparent_background_requested": true,
+        "referenceAssetId": "RM-VN-EVELYN-BASE-NEUTRAL"
       },
       "settings": {},
       "originalApiSha256": null,
@@ -15180,14 +15191,22 @@
       "stage": "archive",
       "evidence": "runtime_capture",
       "notes": [
-        "GFX-07-01 chibi-specific provenance only. No owner motion/device/foreground or production approval.",
-        "Original design selected by owner; proportions retained by explicit repair request. Original rejected technical source is historical evidence.",
-        "Runtime uses explicit source regions/pivots and alpha cleanup material; raw atlas is not a certified clean cutout."
+        "Fresh fix-pass Godot 4.7.2 Compatibility captures, 390x844, 62 source px character / 0.74 map zoom.",
+        "Map review uses candidate-only 55 source px/s, actual-distance animation; six existing Hall waypoints. Route markers can be toggled.",
+        "Current PNG/GIF evidence replaces the pre-cadence #269 captures. No owner/device/foreground acceptance."
       ],
       "artifacts": [
         {
           "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/README.md",
           "label": "Provenance and review contract"
+        },
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/motion_review.gif",
+          "label": "Fresh stationary gait inspector recording"
+        },
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/map_motion_review.gif",
+          "label": "Fresh actual Hall route recording"
         }
       ],
       "inputs": [],
@@ -19102,26 +19121,26 @@
     },
     {
       "id": "RM-CHIBI-EVELYN-G1-REPAIR-V1",
-      "title": "Evelyn selected design - repaired motion candidate",
+      "title": "Evelyn VN-led corrected walker candidate (fix pass)",
       "kind": "chibi_candidate",
       "group": "Evelyn",
       "status": "pending_review",
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_walk.png",
       "width": 1024,
       "height": 1536,
-      "sha256": "bb6e60c358bcd0b37abbe9687a9c6277ab5ac0c07162956e1e04558708c14e62",
+      "sha256": "e5446fcf80c30874101e539c6b8e175d4ba54139481f79be467c861c56f3c521",
       "preview": null,
       "recipeId": "chatgpt-evelyn-g1-repair-v1",
       "evidence": "conversation_generated_candidate",
       "chain": [
         "chatgpt-evelyn-g1-repair-v1"
       ],
-      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "sourceImage": "GFX-07-01 Evelyn fix pass; approved VN reference drives new candidate. No owner approval of this new design/motion. See repair_v1/README.md.",
       "export": {
         "format": "PNG",
         "lossless": true,
         "nativeSizePreserved": true,
-        "note": "Unmodified built-in imagegen RGBA; repair atlas requires supplied alpha-cleanup material and explicit per-frame metadata."
+        "note": "Godot-baked alpha cleanup and uniform registration from retained generated source; fixed 4x3 cells/pivot, no runtime alpha material."
       }
     },
     {
@@ -19133,14 +19152,14 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "80a796e44ee5389df47b9441dcfd450375ceb715f291bd70ca8056751d33ecc1",
+      "sha256": "b70e8805c2354e69bcc163de4a7e0138dbfd7b369b9457d12117a6ff0047f0a6",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",
       "chain": [
         "godot-evelyn-g1-review-captures"
       ],
-      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "sourceImage": "GFX-07-01 Evelyn fix pass; approved VN reference drives new candidate. No owner approval of this new design/motion. See repair_v1/README.md.",
       "export": {
         "format": "PNG",
         "lossless": true,
@@ -19157,14 +19176,14 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_light_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "bd84970be9b89a8f10ecdb4d81197f7e19a63bcdfb136a01c0c8aad2750922d7",
+      "sha256": "417661efddd9289a0bf1b942bcd9a052f90926622bd4e26aed77200e5df88971",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",
       "chain": [
         "godot-evelyn-g1-review-captures"
       ],
-      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "sourceImage": "GFX-07-01 Evelyn fix pass; approved VN reference drives new candidate. No owner approval of this new design/motion. See repair_v1/README.md.",
       "export": {
         "format": "PNG",
         "lossless": true,
@@ -19181,19 +19200,43 @@
       "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/map_capture.png",
       "width": 390,
       "height": 844,
-      "sha256": "421db6827c40a7432b421dd58e6e18a633b878a7a6da3f830c17826d6d32f31e",
+      "sha256": "47c91e0bcbdfb2940ac634cdd4794edf3573e6ad8fbdf68a7f80fccdf3ba0d17",
       "preview": null,
       "recipeId": "godot-evelyn-g1-review-captures",
       "evidence": "runtime_capture",
       "chain": [
         "godot-evelyn-g1-review-captures"
       ],
-      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "sourceImage": "GFX-07-01 Evelyn fix pass; approved VN reference drives new candidate. No owner approval of this new design/motion. See repair_v1/README.md.",
       "export": {
         "format": "PNG",
         "lossless": true,
         "nativeSizePreserved": true,
         "note": "Direct Godot viewport capture; diagnostic evidence, not approved art."
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-FIX-SOURCE",
+      "title": "Evelyn fix-pass retained imagegen source (not runtime atlas)",
+      "kind": "chibi_candidate",
+      "group": "Evelyn",
+      "status": "candidate",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_walk_source.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "38e3f7b438a6e1c3187b4fb06c88a05b622ddc56c06bf13def689ef02bbe2b89",
+      "preview": null,
+      "recipeId": "chatgpt-evelyn-g1-repair-v1",
+      "evidence": "conversation_generated_candidate",
+      "chain": [
+        "chatgpt-evelyn-g1-repair-v1"
+      ],
+      "sourceImage": "GFX-07-01 Evelyn fix pass; approved VN reference drives new candidate. No owner approval of this new design/motion. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Unmodified final built-in imagegen output. Has low-alpha haze and unaligned source cells; consume the baked evelyn_walk.png instead."
       }
     }
   ],

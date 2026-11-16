@@ -1,50 +1,50 @@
-"""Measure only: no bitmap edits. Produces deterministic source pivot metadata.
-
-python measure_frames.py > frames.json
-python measure_frames.py --check
-"""
+"""Read-only validation. Godot bake_atlas.gd owns import normalization."""
 import argparse
 import hashlib
 import json
-import statistics
 from pathlib import Path
-from PIL import Image
+from PIL import Image, ImageFilter, ImageChops
 
 HERE = Path(__file__).resolve().parent
+
 
 def measure():
     path = HERE / "evelyn_walk.png"
     image = Image.open(path)
     assert image.mode == "RGBA" and image.size == (1024, 1536)
+    imported = (HERE / "evelyn_walk.png.import").read_text(encoding="utf-8").splitlines()
+    for setting in ("compress/mode=0", "mipmaps/generate=false", "process/size_limit=0", "process/premult_alpha=false"):
+        assert setting in imported, "Import contract drift: " + setting
     alpha = image.getchannel("A")
     frames = {}
     for row, name in enumerate(("down", "up", "side")):
         frames[name] = []
-        # Side frame 4 crosses the requested cell boundary. An explicit split
-        # inside the measured empty gutter prevents sampling a neighbour.
-        cuts = (0, 256, 512, 754, 1024) if row == 2 else (0, 256, 512, 768, 1024)
         for column in range(4):
-            x, width = cuts[column], cuts[column+1]-cuts[column]
-            cell = alpha.crop((x, row*512, x+width, row*512+512))
-            mask = cell.point(lambda v: 255 if v > 128 else 0)
-            left, top, right, bottom = mask.getbbox()
-            assert 0 < left < right < width and 0 < top < bottom < 512
-            centers = []
-            for y in range(top + 12, top + (bottom-top)//4):
-                bounds = mask.crop((0, y, width, y+1)).getbbox()
-                if bounds:
-                    centers.append((bounds[0]+bounds[2])/2)
-            frames[name].append({"region": [x, row*512, width, 512],
-                                 "boundsAlphaAbove128": [left, top, right, bottom],
-                                 "pivot": [statistics.median(centers), bottom],
-                                 "visibleHeight": bottom-top})
-    histogram = alpha.histogram()
-    return {"schemaVersion": 1, "sourceSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
-            "atlasSize": [1024, 1536], "layout": "explicit regions; side row split at x754", "fps": 6,
-            "zeroAlphaPixels": histogram[0], "lowAlphaPixels1to15": sum(histogram[1:16]),
-            "ownerDesignSelected": True, "ownerMotionApproved": False,
-            "pivotMethod": "median head-row center x / lowest alpha>128 sole boundary y; per-frame scale normalizes visible height",
-            "frames": frames}
+            cell = image.crop((column*256, row*512, column*256+256, row*512+512))
+            bounds = cell.getchannel("A").point(lambda v: 255 if v > 128 else 0).getbbox()
+            assert abs(bounds[1] - 32) <= 1 and bounds[3] == 480, (name, column, bounds)
+            assert 8 <= bounds[0] < bounds[2] <= 248
+            for edge in ((0, 0, 8, 512), (248, 0, 256, 512), (0, 0, 256, 24), (0, 488, 256, 512)):
+                assert cell.getchannel("A").crop(edge).getextrema() == (0, 0)
+            frames[name].append({"region": [column*256, row*512, 256, 512],
+                                 "boundsAlphaAbove128": list(bounds),
+                                 "pivot": [128, 480], "visibleHeight": 448})
+    opaque = alpha.point(lambda v: 255 if v > 128 else 0)
+    nearby = opaque.filter(ImageFilter.MaxFilter(9))
+    residue = ImageChops.subtract(alpha.point(lambda v: 255 if v else 0), nearby)
+    assert residue.getbbox() is None, "Non-edge alpha residue remains"
+    return {"schemaVersion": 2, "sourceSha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "generationSourceSha256": hashlib.sha256((HERE / "evelyn_walk_source.png").read_bytes()).hexdigest(),
+            "atlasSize": [1024, 1536], "frameSize": [256, 512],
+            "layout": "uniform 4 columns x 3 rows: down/up/right; left is mirrored right",
+            "pivot": [128, 480], "visibleHeight": 448, "idleFrame": 1,
+            "walkSequence": [0, 1, 2, 3],
+            "frameMeaning": ["opposed contact A", "passing A", "opposed contact B", "passing B"],
+            "cycleTravelInHeights": 0.5,
+            "cadence": "one cycle per 0.5 displayed heights of ACTUAL root travel; no timer or FPS clamp",
+            "zeroAlphaPixels": alpha.histogram()[0], "requiresAlphaMaterial": False,
+            "ownerApproved": False, "productionReplacementAllowed": False, "frames": frames}
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
@@ -53,6 +53,7 @@ if __name__ == "__main__":
     data = measure()
     if args.check:
         assert data == json.loads((HERE / "frames.json").read_text(encoding="utf-8"))
-        print("PASS: atlas hash, 12 bounded frames and deterministic measured pivots; visual motion approval pending")
+        print("PASS: clean alpha, uniform 12-cell atlas, fixed crown/sole/pivot/hash; owner approval pending")
     else:
-        print(json.dumps(data, indent=2))
+        (HERE / "frames.json").write_text(json.dumps(data, indent=2) + "\n", encoding="utf-8")
+        print("Wrote frames.json; visual identity/contact remain review judgments")
