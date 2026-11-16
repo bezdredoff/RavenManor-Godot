@@ -59,3 +59,8 @@ Owner/device acceptance is **pending**. Required evidence is the physical portra
 ## Status impact
 
 `GAME-QA-01` remains `PR_review`, `implementationState=partial`, `qaState=automated`, and `approvalState=pending` in `data/raven/production/progress/qa-infrastructure.json`. This update fixes the PR evidence contract only; it does not weaken blocking tests or change unfinished-backlog status.
+
+
+## PR validation after merge-base CI repair
+
+As of main `4b7f252a846faa829aad124ec17f8f6713ea053d` (after merged #273 and #272), the repository-wide pull-request evidence check now diffs against the first parent of the actual synthetic PR merge commit. Prior red status on #267 at `8fc09ae` was caused by the old workflow comparing against `832657c` and falsely attributing the already merged `campaign-core` and `manor-map` shards to `qa-infrastructure`. This note update requests an exact-new-head CI recheck; do not claim PASS before the checks finish. Existing GAME-QA-01 QA scope and device acceptance remain unchanged.
