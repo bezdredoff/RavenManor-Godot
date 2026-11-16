@@ -8,7 +8,7 @@ var _light := false
 func _ready() -> void:
 	RenderingServer.set_default_clear_color(Color("28252e"))
 	_label("EVELYN · MOTION REVIEW CANDIDATE", Vector2(12, 14), 16)
-	_label("Selected design retained · motion approval pending", Vector2(12, 39), 12)
+	_label("VN-led repair · visual approval pending", Vector2(12, 39), 12)
 	var bar := HFlowContainer.new()
 	bar.position = Vector2(12, 65)
 	bar.size.x = 366
@@ -47,15 +47,15 @@ func _ready() -> void:
 	add_child(reference)
 	var selected := Sprite2D.new()
 	var texture := AtlasTexture.new()
-	texture.atlas = preload("res://assets/raven/chibi/evelyn/g1_candidate/rejected_source.png")
-	texture.region = Rect2(0, 0, 256, 512)
+	texture.atlas = preload("res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_walk.png")
+	texture.region = Rect2(256, 0, 256, 512)
 	selected.texture = texture
 	selected.material = actors[0].get_sprite().material
 	selected.scale = Vector2.ONE * (224.0 / 512.0)
 	selected.position = Vector2(286, 665)
 	add_child(selected)
 	_label("Approved VN", Vector2(57, 790), 13)
-	_label("Selected design", Vector2(234, 790), 13)
+	_label("Current candidate", Vector2(234, 790), 13)
 	_label("Feet guides show registered contact; inspect gait visually.", Vector2(12, 819), 11)
 	queue_redraw()
 	if OS.get_cmdline_user_args().has("--light"):
@@ -63,6 +63,13 @@ func _ready() -> void:
 	for arg in OS.get_cmdline_user_args():
 		if arg.begins_with("--capture="):
 			_capture(arg.trim_prefix("--capture="))
+
+func _process(delta: float) -> void:
+	if _playing:
+		for visual in actors:
+			# Same body-relative speed at both zooms. This is a stationary gait
+			# inspector; only the map host supplies physical root displacement.
+			visual.travel(delta * visual.display_height() * (55.0 / 62.0))
 
 func _draw() -> void:
 	for i in range(4):

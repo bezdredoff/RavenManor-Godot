@@ -1,17 +1,40 @@
 {
-  "schemaVersion": 1,
-  "sourceSha256": "bb6e60c358bcd0b37abbe9687a9c6277ab5ac0c07162956e1e04558708c14e62",
+  "schemaVersion": 2,
+  "sourceSha256": "b69965a1bdb675d91d7f0d60534972b661f9fc58d8e15f93870d5a58cadf447b",
+  "generationSourceSha256": "38e3f7b438a6e1c3187b4fb06c88a05b622ddc56c06bf13def689ef02bbe2b89",
   "atlasSize": [
     1024,
     1536
   ],
-  "layout": "explicit regions; side row split at x754",
-  "fps": 6,
-  "zeroAlphaPixels": 663177,
-  "lowAlphaPixels1to15": 286921,
-  "ownerDesignSelected": true,
-  "ownerMotionApproved": false,
-  "pivotMethod": "median head-row center x / lowest alpha>128 sole boundary y; per-frame scale normalizes visible height",
+  "frameSize": [
+    256,
+    512
+  ],
+  "layout": "uniform 4 columns x 3 rows: down/up/right; left is mirrored right",
+  "pivot": [
+    128,
+    480
+  ],
+  "visibleHeight": 448,
+  "idleFrame": 1,
+  "walkSequence": [
+    0,
+    1,
+    2,
+    3
+  ],
+  "frameMeaning": [
+    "opposed contact A",
+    "passing A",
+    "opposed contact B",
+    "passing B"
+  ],
+  "cycleTravelInHeights": 0.5,
+  "cadence": "one cycle per 0.5 displayed heights of ACTUAL root travel; no timer or FPS clamp",
+  "zeroAlphaPixels": 1114853,
+  "requiresAlphaMaterial": false,
+  "ownerApproved": false,
+  "productionReplacementAllowed": false,
   "frames": {
     "down": [
       {
@@ -22,16 +45,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          70,
-          47,
-          222,
-          497
+          65,
+          32,
+          189,
+          480
         ],
         "pivot": [
-          146.0,
-          497
+          128,
+          480
         ],
-        "visibleHeight": 450
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -41,16 +64,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          57,
-          46,
-          209,
-          501
+          65,
+          32,
+          190,
+          480
         ],
         "pivot": [
-          133.0,
-          501
+          128,
+          480
         ],
-        "visibleHeight": 455
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -60,16 +83,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          42,
-          47,
-          193,
-          497
+          65,
+          32,
+          188,
+          480
         ],
         "pivot": [
-          118.0,
-          497
+          128,
+          480
         ],
-        "visibleHeight": 450
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -79,16 +102,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          25,
-          47,
-          181,
-          501
+          66,
+          32,
+          189,
+          480
         ],
         "pivot": [
-          105.5,
-          501
+          128,
+          480
         ],
-        "visibleHeight": 454
+        "visibleHeight": 448
       }
     ],
     "up": [
@@ -100,16 +123,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          67,
-          35,
-          224,
-          492
+          64,
+          31,
+          190,
+          480
         ],
         "pivot": [
-          146.0,
-          492
+          128,
+          480
         ],
-        "visibleHeight": 457
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -119,16 +142,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          54,
-          35,
-          211,
-          495
+          63,
+          31,
+          191,
+          480
         ],
         "pivot": [
-          132.5,
-          495
+          128,
+          480
         ],
-        "visibleHeight": 460
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -138,16 +161,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          41,
-          35,
-          197,
-          493
+          63,
+          31,
+          189,
+          480
         ],
         "pivot": [
-          118.5,
-          493
+          128,
+          480
         ],
-        "visibleHeight": 458
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -157,16 +180,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          20,
-          37,
-          197,
-          494
+          64,
+          31,
+          191,
+          480
         ],
         "pivot": [
-          105.5,
-          494
+          128,
+          480
         ],
-        "visibleHeight": 457
+        "visibleHeight": 448
       }
     ],
     "side": [
@@ -178,16 +201,16 @@
           512
         ],
         "boundsAlphaAbove128": [
-          57,
-          33,
-          219,
-          489
+          44,
+          32,
+          205,
+          480
         ],
         "pivot": [
-          144.5,
-          489
+          128,
+          480
         ],
-        "visibleHeight": 456
+        "visibleHeight": 448
       },
       {
         "region": [
@@ -197,54 +220,54 @@
           512
         ],
         "boundsAlphaAbove128": [
-          37,
-          33,
-          245,
-          489
+          68,
+          31,
+          188,
+          480
         ],
         "pivot": [
-          134.0,
-          489
+          128,
+          480
         ],
-        "visibleHeight": 456
+        "visibleHeight": 448
       },
       {
         "region": [
           512,
           1024,
-          242,
+          256,
           512
         ],
         "boundsAlphaAbove128": [
+          26,
           32,
-          33,
-          195,
-          489
+          221,
+          480
         ],
         "pivot": [
-          118.5,
-          489
+          128,
+          480
         ],
-        "visibleHeight": 456
+        "visibleHeight": 448
       },
       {
         "region": [
-          754,
+          768,
           1024,
-          270,
+          256,
           512
         ],
         "boundsAlphaAbove128": [
-          13,
-          33,
-          227,
-          490
+          69,
+          32,
+          189,
+          480
         ],
         "pivot": [
-          121.25,
-          490
+          128,
+          480
         ],
-        "visibleHeight": 457
+        "visibleHeight": 448
       }
     ]
   }

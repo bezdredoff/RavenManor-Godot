@@ -9,82 +9,101 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _run() -> void:
-	assert(CLOSEUP != null)
 	var actor = Actor.new()
 	root.add_child(actor)
 	actor.set_process(false)
 	actor.set_sprite_height(62)
-	actor.move_speed = 130.0
 	await process_frame
+	var visual = actor.visual()
 	var sprite: AnimatedSprite2D = actor.get_sprite()
-	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(actor.visual().META_PATH))
+	assert(sprite.material == null, "Clean raw atlas must work without an alpha material")
+	assert(not visual._meta.ownerApproved and not visual._meta.productionReplacementAllowed)
 	actor.segment_completed.connect(func(_id: String, _point: Vector2): arrivals += 1)
 	var steps := [Vector2(100, 0), Vector2(0, -100), Vector2(-100, 0), Vector2(0, 100)]
 	for direction in steps:
 		var start: Vector2 = actor.position
+		actor.move_speed = 55
 		assert(actor.start_segment({"fromAnchorId": "A", "toAnchorId": "B", "fromPosition": start, "toPosition": start+direction}))
-		var target_fps := 130.0 * 4.0 / (62.0 * 0.8)
-		assert(absf(actor.get_sprite().speed_scale - target_fps / 6.0) < 0.01,
-			"Candidate animation cadence must match physical travel speed")
 		var clip := "side" if direction.x != 0 else ("up" if direction.y < 0 else "down")
 		assert(sprite.animation == clip and sprite.flip_h == (direction.x < 0))
-		assert(sprite.is_playing())
+		var scale_before := sprite.scale
+		var offset_before := sprite.position
 		for frame in range(4):
 			sprite.frame = frame
-			actor.visual()._align()
-			var data: Dictionary = meta.frames[clip][frame]
-			var point := Vector2(data.pivot[0], data.pivot[1]) - Vector2(data.region[2], data.region[3])*0.5
-			if sprite.flip_h:
-				point.x = -point.x
-			assert((sprite.position + point*sprite.scale).length() < 0.001, "Registered sole must map to physical root")
-			assert(absf(float(data.visibleHeight)*sprite.scale.y-62.0) < 0.001)
-		actor.advance(0.1)
+			var texture: AtlasTexture = sprite.sprite_frames.get_frame_texture(clip, frame)
+			assert(texture.region.size == Vector2(256, 512) and texture.filter_clip)
+			assert(sprite.scale == scale_before and sprite.position == offset_before, "Frame changes must not resize/recenter the body")
+			assert((sprite.position + Vector2(0, 224)*sprite.scale).length() < 0.001)
+		# Half a body-relative cycle at different speeds covers exactly the
+		# same physical distance and phase. This fails timer/clamped-FPS code.
+		var initial_phase: float = visual.phase()
+		for invalid_delta in [-1.0, 0.0, INF, NAN]:
+			actor.advance(invalid_delta)
+		assert(actor.position == start and visual.phase() == initial_phase)
+		actor.advance(7.75 / 55.0)
+		actor.move_speed = 0.5
+		actor.advance(7.75 / 0.5)
+		assert(absf(fposmod(visual.phase()-initial_phase, 1.0)-0.5) < 0.0001)
 		var held: Vector2 = actor.position
 		assert(actor.pause_segment())
-		actor.advance(1)
-		assert(actor.position == held and not sprite.is_playing())
+		var held_phase: float = visual.phase()
+		var held_frame := sprite.frame
+		actor.advance(100)
+		await create_timer(0.08).timeout
+		assert(actor.position == held and visual.phase() == held_phase and sprite.frame == held_frame)
 		assert(actor.resume_segment())
-		actor.visual().set_reduced_motion(true)
+		visual.set_reduced_motion(true)
+		actor.move_speed = 130
 		actor.advance(0.1)
-		assert(actor.position != held and sprite.frame == 0 and not sprite.is_playing())
-		actor.visual().set_reduced_motion(false)
-		assert(sprite.is_playing())
-		actor.advance(2)
+		assert(actor.position != held and sprite.frame == visual.IDLE_FRAME)
+		visual.set_reduced_motion(false)
+		actor.advance(100)
 		assert(actor.position == start+direction and not actor.has_active_segment())
-		assert(sprite.frame == 0 and not sprite.is_playing())
-	assert(arrivals == 4)
-	assert(actor.position == Vector2.ZERO, "Four route turns must return to initial root")
+		assert(absf(visual.phase()-fposmod(initial_phase+direction.length()/visual.cycle_distance(), 1.0)) < 0.0001, "Final phase must count only exact endpoint-clamped travel")
+		assert(sprite.frame == visual.IDLE_FRAME and not sprite.is_playing())
+		var idle_phase: float = visual.phase()
+		actor.advance(100)
+		assert(visual.phase() == idle_phase)
+	assert(arrivals == 4 and actor.position == Vector2.ZERO)
+	assert(not actor.start_segment({"fromAnchorId": "A", "toAnchorId": "B", "fromPosition": Vector2(500, 0), "toPosition": Vector2(600, 0)}))
 	actor.queue_free()
+	await process_frame
+	var closeup = CLOSEUP.instantiate()
+	root.add_child(closeup)
+	await process_frame
+	assert(closeup.actors.size() == 8)
+	closeup._step()
+	closeup._background()
+	closeup.queue_free()
 	await process_frame
 	var host = MAP.instantiate()
 	root.add_child(host)
 	await process_frame
 	await process_frame
-	assert(host.ready_for_qa, "Inherited Hall route harness must initialize")
+	assert(host.ready_for_qa)
+	assert(host.actor.move_speed == 55.0, "Candidate review speed must be explicit")
 	host.actor.set_process(false)
 	var accepted := false
 	for point in host.qa.waypoint_ids():
 		if point != host.session.current_anchor() and host.request_waypoint(point) and host.actor.has_active_segment():
 			accepted = true
 			break
-	assert(accepted, "Must walk a real existing Hall route")
+	assert(accepted)
 	host.actor.advance(0.01)
 	var mid: Vector2 = host.actor.position
 	var destination: String = host.actor.segment_destination()
 	assert(host.pause_movement())
 	host.actor.advance(2)
 	assert(host.actor.position == mid)
-	assert(host.resume_movement())
-	assert(host.stop_movement())
-	assert(host.actor.position == mid, "Cancellation cannot teleport")
+	assert(host.resume_movement() and host.stop_movement())
+	assert(host.actor.position == mid, "Cancel cannot teleport")
 	for i in range(1000):
 		if not host.actor.has_active_segment():
 			break
 		host.actor.advance(0.05)
 	assert(not host.actor.has_active_segment())
-	assert(host.session.current_anchor() == destination, "Cancel must finish exactly its authorized leg")
-	assert(host.session.next_segment().is_empty())
+	assert(host.session.current_anchor() == destination and host.session.next_segment().is_empty())
 	host.queue_free()
 	await process_frame
-	print("GFX-07-01 Evelyn preview PASS: 12 frames, both flips, registered feet/height, four turns, idle, pause/resume, reduced motion, real Hall route cancellation")
+	print("GFX-07-01 Evelyn preview PASS: uniform atlas, fixed grounding, real-distance cadence at 0.5/55/130 px/s, four turns, pause, reduced motion, real Hall cancellation; art approval pending")
 	quit()

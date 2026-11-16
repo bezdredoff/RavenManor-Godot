@@ -1,0 +1,237 @@
+{
+  "alpha": "integer smoothstep 32..64; half-up rounding; quantized zero -> RGBA zero",
+  "engine": "4.7.2-stable (official)",
+  "frames": [
+    {
+      "bakedSize": [
+        239,
+        479
+      ],
+      "column": 0,
+      "placement": [
+        9,
+        16
+      ],
+      "row": 0,
+      "sourceBounds": [
+        60,
+        17,
+        133,
+        479
+      ],
+      "sourceHeadCenter": 127.5
+    },
+    {
+      "bakedSize": [
+        240,
+        480
+      ],
+      "column": 1,
+      "placement": [
+        8,
+        16
+      ],
+      "row": 0,
+      "sourceBounds": [
+        61,
+        17,
+        133,
+        478
+      ],
+      "sourceHeadCenter": 127.5
+    },
+    {
+      "bakedSize": [
+        238,
+        477
+      ],
+      "column": 2,
+      "placement": [
+        9,
+        16
+      ],
+      "row": 0,
+      "sourceBounds": [
+        61,
+        18,
+        132,
+        481
+      ],
+      "sourceHeadCenter": 127.5
+    },
+    {
+      "bakedSize": [
+        240,
+        480
+      ],
+      "column": 3,
+      "placement": [
+        8,
+        16
+      ],
+      "row": 0,
+      "sourceBounds": [
+        62,
+        17,
+        132,
+        478
+      ],
+      "sourceHeadCenter": 127.5
+    },
+    {
+      "bakedSize": [
+        239,
+        479
+      ],
+      "column": 0,
+      "placement": [
+        8,
+        15
+      ],
+      "row": 1,
+      "sourceBounds": [
+        60,
+        18,
+        135,
+        479
+      ],
+      "sourceHeadCenter": 129.0
+    },
+    {
+      "bakedSize": [
+        240,
+        480
+      ],
+      "column": 1,
+      "placement": [
+        7,
+        15
+      ],
+      "row": 1,
+      "sourceBounds": [
+        60,
+        18,
+        136,
+        478
+      ],
+      "sourceHeadCenter": 129.0
+    },
+    {
+      "bakedSize": [
+        239,
+        478
+      ],
+      "column": 2,
+      "placement": [
+        8,
+        15
+      ],
+      "row": 1,
+      "sourceBounds": [
+        59,
+        18,
+        135,
+        480
+      ],
+      "sourceHeadCenter": 128.5
+    },
+    {
+      "bakedSize": [
+        240,
+        480
+      ],
+      "column": 3,
+      "placement": [
+        7,
+        15
+      ],
+      "row": 1,
+      "sourceBounds": [
+        60,
+        18,
+        136,
+        478
+      ],
+      "sourceHeadCenter": 129.0
+    },
+    {
+      "bakedSize": [
+        240,
+        480
+      ],
+      "column": 0,
+      "placement": [
+        8,
+        15
+      ],
+      "row": 2,
+      "sourceBounds": [
+        38,
+        18,
+        173,
+        478
+      ],
+      "sourceHeadCenter": 128.5
+    },
+    {
+      "bakedSize": [
+        241,
+        482
+      ],
+      "column": 1,
+      "placement": [
+        7,
+        14
+      ],
+      "row": 2,
+      "sourceBounds": [
+        65,
+        19,
+        127,
+        476
+      ],
+      "sourceHeadCenter": 129.0
+    },
+    {
+      "bakedSize": [
+        241,
+        482
+      ],
+      "column": 2,
+      "placement": [
+        7,
+        14
+      ],
+      "row": 2,
+      "sourceBounds": [
+        20,
+        19,
+        207,
+        476
+      ],
+      "sourceHeadCenter": 129.0
+    },
+    {
+      "bakedSize": [
+        241,
+        482
+      ],
+      "column": 3,
+      "placement": [
+        7,
+        14
+      ],
+      "row": 2,
+      "sourceBounds": [
+        66,
+        19,
+        127,
+        476
+      ],
+      "sourceHeadCenter": 129.0
+    }
+  ],
+  "outputSha256": "b69965a1bdb675d91d7f0d60534972b661f9fc58d8e15f93870d5a58cadf447b",
+  "resampling": "integer bilinear RGBA8 pixel centers; half-up rounding; no platform floating-point resampler",
+  "sourceSha256": "38e3f7b438a6e1c3187b4fb06c88a05b622ddc56c06bf13def689ef02bbe2b89"
+}

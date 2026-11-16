@@ -1,50 +1,60 @@
-# Evelyn — selected design, repaired motion candidate
+# Evelyn fix-pass candidate — current review entry point
 
-The owner selected the earlier design in chat ("i like it"), then explicitly requested repair. **Preserve that selected face, hair, outfit, palette and proportions.** This overrides the earlier proposed change to 3.5–4.5-head proportions for this candidate. Selection of the design is not approval of repaired motion, hair mirroring, device readability or production replacement.
+**Technical candidate; new art and motion are NOT owner-approved. Production replacement is disabled.**
 
-## Review now
+This directory name is retained for existing preview paths. Its atlas, metadata, scripts and captures now supersede PR #269's repair. The original rejected_source.png, source_audit.json, atlas_spec.json and parent HANDOFF.md are historical rejection evidence, not the current atlas specification. Old repair pixels remain in Git history.
 
-- F6 `res://scenes/raven/tests/evelyn_chibi_preview.tscn`: four facings, play/idle, single-frame inspection, light/dark backgrounds, reduced-motion hold, actual portrait map size and approved VN comparison.
-- F6 `res://scenes/raven/tests/evelyn_chibi_map_preview.tscn`: existing first-floor Hall route scene with only the candidate visual substituted. Tap authored circles, Space/button pause/resume, S/Stop finishes the current leg, QA toggles diagnostics. Starts at the approved pilot's existing spawn, with 62px visible source height and 0.74 zoom. No production source, geometry, door, save or controller edits.
+## Audit and authority
 
-![Actual Godot motion capture](motion_review.gif)
+Baseline: fresh origin/main `2631c7a9f87d146f02244894b64dc5899e462c5a`, the actual merge of #269. Queried open/closed GitHub PR history, including #241/#243/#244 (Onoe adapter/Hall/diagnostics), #238 (route session), #257/#260/#268 (navigation/gameplay), #269 (Evelyn) and #270 (draft HC/CB physical doors). No overlapping open PR was found. #269's final head was 076d0433547e42c6109d6682c0dea548b9074fdc. Its green CI explicitly coexisted with CHANGES NEEDED: high asymmetric knees, side-leg overlap and apparent slip. The old GIF predated its last cadence change.
 
-![Actual 390×844 first-floor capture](map_capture.png)
+Approved identity authority: `assets/raven/characters/evelyn/base_neutral.webp` and the accepted VN records in the art handbook. Long warm chestnut hair, restrained green/teal eyes, ivory band-collar linen blouse, deep wine midi skirt and black ankle boots guide the new sheet. The new proportions are less exaggerated than #269, with longer readable calves and a longer skirt. These are **new candidate art**, not an inherited owner approval.
 
-The map candidate now adjusts its four-frame animation cadence from the existing segment mover's actual `move_speed`, without changing the mover, authored route, physical root or source image. The provisional full-cycle travel target is `0.8 × displayed character height`, bounded at 4–18 FPS; at 130 source px/s and 62px display height this is approximately 10.48 FPS instead of fixed 6 FPS. This narrows the timing mismatch (previously 86.7 source pixels per cycle), but **does not correct asymmetric knees or side-leg art** and is not a claim of planted-foot approval. `preview_smoke.gd` checks the speed-scale contract; a fresh real-route recording and owner visual review remain necessary.
+UPDS-godot main was freshly checked at 3deed628efd6c22bcd1717f7c545b7d3ca865781; its recursive tree contains no directional map walker. Reuse decision: **adapter** over Raven `scripts/raven/onoe_visual.gd` (blob b85fac3b7658de2224f39225a72be921535bc793) and `onoe_segment_mover.gd` (blob 5c7a43ea6b99c4ad6681ca82303b7ac0422ee222). Keep existing RouteSession, segment validation, root position, endpoint clamp, pause and arrival signals. No alternate movement controller.
 
-The Hall pilot is a flat approved map plus diagnostics, not a layered-foreground certification. Multi-room sill/foreground occlusion and real phone approval remain pending, with the original handoff checklist applicable. Physical door calibration is separately owned in PR #270. No merge or production replacement is authorized by selecting this design.
+## What changed visually
 
-## Repaired atlas and integration contract
+One VN-led imagegen sheet was refined with three focused pose edits. The two contact poses now oppose one another; two lower legs/boots are visible in side passing poses, the high raised knee is lowered, and side arm counter-swing is reversed. Contact A/B still contain hand-drawn differences; a four-pose atlas is not a continuous skeletal walk. Check the fresh GIF rather than inferring visual success from these changes or CI.
 
-`evelyn_walk.png` is the retained built-in imagegen repair, unchanged after generation. Two focused edits were made after the owner's repair request: preserve the selected design and repair the sheet, then change the fourth-column leading foot specifically. Front/back now visibly reverse the leading boot instead of repeating it; side changes arm/leg staging. The front/back raised leg is a larger step than the opposing phase, and side leg overlap still needs subjective walk review. No claim of anatomically certified or slip-free motion is made from headless tests.
+The old low-alpha brown background is removed in the **runtime PNG itself**, with no essential material. A deterministic Godot import bake applies `a *= smoothstep(32/255,64/255,a)`, clears quantized-zero RGBA, uses integer bilinear RGBA8 resampling with half-up rounding for each source cell and registers its head center/sole. No new costume pixels are painted by the bake. Both alpha smoothing and interpolation use integer arithmetic so Windows/Linux reproduce the exact same RGBA bytes. The stricter threshold affects fine translucent hair edges; inspect light/dark captures. The unmodified final generated sheet is retained as `evelyn_walk_source.png`, for provenance/rebaking only. Do not use it directly as the runtime atlas.
 
-1024×1536 RGBA source; three rows down/up/right-side; four frames at 6 FPS. Neutral frames 0/2, opposed step poses 1/3. Idle = frame 0. Left uses side flip and reverses hair part; approve that explicitly. `frames.json` pins SHA-256, all twelve explicit regions and measured source pivots. The generated side pose crosses the nominal x768 boundary, so the side row uses cuts 0/256/512/**754**/1024. This split is inside the measured transparent gutter; no neighbour is sampled. Other rows use 0/256/512/768/1024. No implicit uniform-grid slicing is safe for this source; consume the supplied regions.
+## Exact current contract
 
-For each frame, the pivot is median head-center X and lowest alpha>128 sole boundary Y; visible height is measured from crown to that sole. The runtime applies uniform scale `requestedHeight/visibleHeight` and centered texture offset `(regionSize/2 - sourcePivot)*scale`. Mirrored X offset is negated. This registers the feet at the physical root and normalizes height; it does not modify atlas pixels, project the body, change path travel or prove planted-foot friction. Per-frame scales/pivots are intentional import metadata, not a single falsely claimed raw-cell pivot.
+- `evelyn_walk.png`: 1024×1536 lossless RGBA; 4 columns × 3 rows; every cell 256×512, rows down/up/right-side.
+- Regions: `[column*256, row*512, 256, 512]`; explicit identical regions in `frames.json`. No x754 split or runtime trim.
+- Sequence 0/1/2/3 = opposed contact A / passing A / opposed contact B / passing B. Idle/reduced motion = frame **1**, keeping facing.
+- Fixed pivot (128,480); alpha>128 sole boundary y480 in all 12 frames; crown y32 ±1 source pixel. All use uniform scale `requestedHeight/448`, with centered texture position `(0,-224)*scale`. No per-frame scale or lateral correction.
+- Transparent gutters are exactly zero; nonzero alpha must remain within four source pixels of the solid silhouette. Antialiased hair edges remain fractional alpha. The measurement test checks every cell and source hashes, not anatomy.
+- Tracked runtime PNG import: lossless compress/mode=0, no mipmaps, size_limit=0, straight alpha; explicit linear Sprite2D filtering and AtlasTexture.filter_clip. No shader required.
+- Existing Raven direction helper: horizontal dominance selects side; vertical wins ties; zero retains facing. Left mirrors right. Hair-part reversal and inferred back/profile need owner approval.
+- `frames.json` and `bake_manifest.json` pin exact source/output SHA-256 and alignment. Illustration generation is nondeterministic; the retained source-to-atlas bake is reproducible.
 
-The raw generated alpha still has faint residue. `clean_alpha.gdshader` suppresses it at render time with `alpha *= smoothstep(0.05,0.15,alpha)`; this is an **essential import material**, not a claim that the raw PNG is a perfectly clean cutout. Its effect on fine hair edges was inspected on light/dark rendered captures and remains owner-reviewable. Keep this material when reusing the atlas. Pixel alpha above 0.15 is unchanged. Do not replace this with opaque black/white background extraction or transfer the raw sheet into a consumer that ignores the material.
+## Actual distance and review pace
 
-`evelyn_actor.gd` overrides only the existing mover's `_ready` to install `evelyn_visual.gd`. It inherits real segment execution, position checks, arrival signals and pause behavior. The existing Onoe directional helper is reused. Reduced motion retains physical movement but holds frame 0 of the facing. No second route controller. The close-up controls are isolated Godot QA controls, not a new player UI. Current UPDS tree was rechecked at `3deed628efd6c22bcd1717f7c545b7d3ca865781`; donor/Raven blob evidence in the original handoff still applies.
+The visual no longer runs an independent FPS clock or 4–18 FPS clamp. `evelyn_actor.gd.advance()` delegates physical travel to the original mover, measures actual root displacement, then advances only the visual phase. Equal distance gives equal phase at 0.5, 55 and 130 source px/s. No displacement means no phase change. Pause retains the physical point and phase; reduced motion holds idle while the root continues; endpoint clamp cannot produce overshoot travel.
 
-## Reproduce validation
+The full-cycle distance is **0.5 displayed heights** (31 source px at height 62), based on roughly a quarter-height side contact span. This is a review calibration, not measured planted-boot friction in every direction. The isolated Hall preview explicitly uses **55 source px/s**, approximately 7.10 pose changes/s, to review a walking pace. Shared/production speed remains untouched; 130 px/s is covered technically, not presented as an approved natural walk. Front/back contact perception, discrete four-frame stepping and any residual sliding must be judged in the live map before production approval. This PR does not claim mathematically perfect foot locking.
 
-```text
-python assets/raven/chibi/evelyn/g1_candidate/repair_v1/measure_frames.py --check
-godot --headless --path . --script res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/preview_smoke.gd
-godot --headless --path . --script res://tests/raven/onoe_segment_movement_smoke.gd
-python scripts/raven/tools/progress_shards.py
-python scripts/raven/tools/build_production_dashboard.py --check
-```
+## Preview and fresh evidence
 
-Python/Pillow only measures pixels; it does not edit them. Measurements reproduce explicit frame rectangles, source SHA, bounded silhouettes and source pivots. Godot smoke covers all 12 frames and both side flips, constant displayed height, sole registration, four turns, start/stop/idle, pause/resume, reduced motion and cancellation on the inherited real Hall route. Tests cannot approve identity, leg anatomy or foot sliding. Shared test registration remains Agent E's scope.
+F6 `scenes/raven/tests/evelyn_chibi_preview.tscn`: four facings, actual 45.88 screen-pixel map size, frame step, play/idle, light/dark, reduced motion, approved VN comparison. All inspector sizes use the same body-relative cadence. This stationary inspector cannot establish travel/foot slip.
 
-The handbook's mandatory raster-coverage gate requires provenance for both generated sheets and all three PNG captures. Five chibi-specific records and three recipes are registered in its existing source manifest, with official catalog/data regeneration. Fixed Python/browser count expectations change to 160/69 after Agent E coordination; no art acceptance or validation rule is weakened.
+F6 `scenes/raven/tests/evelyn_chibi_map_preview.tscn`: inherited Hall route host on the approved first-floor image; 62px visible character and 0.74 zoom (45.88 screen px), upright uniform body. **Walk review route** uses six existing authored waypoints. **Show authored route targets** restores interactive circles; they are hidden initially because they covered the character's face/feet. Original pause/stop buttons remain. No free floor taps.
 
-Captures are real Godot 4.7.2 Compatibility renderer output at 390×844. GIF is a 32-frame/24-FPS Godot Movie Maker recording encoded to a looping 12-FPS GIF with ffmpeg; the temporary AVI stays outside repository source. PNGs are direct viewport captures. Run a scene with `-- --capture=<path.png>` (close-up), `-- --light --capture=<path.png>` (light close-up), or `-- --capture-map=<path.png>` (map) to capture and exit.
+![Fresh isolated Godot recording](motion_review.gif)
 
-## Provenance and remaining owner QA
+![Fresh actual Hall route recording](map_motion_review.gif)
 
-Built-in `image_gen.imagegen`, transparent background requested. Edit target: original selected `../rejected_source.png`, then the first repair intermediate. Model/seed not exposed. No VN art was edited. No CLI API or external character assets used. Final prompts are recorded in `repair_prompts.txt`. Raw illustrations are not deterministically regenerable; layout/metadata/renderer are deterministic for the pinned file.
+![Fresh light-background close-up](review_light_capture.png)
 
-Inspect the GIF and live preview for exaggerated stepping, two distinct legs at every phase, stable skirt/hair and loop seams. Confirm selected proportions remain desirable in motion. Approve or reject the mirrored hair part. On the real device, review 45.88 screen-pixel height, route turns and UI overlap. Finally test layered foreground/sills in the integration owner's approved multi-room scene. These checks remain **HUMAN_PENDING**, and the candidate must stay isolated until approved. G1 full acceptance remains open.
+![Fresh actual-scale first-floor screenshot](map_capture.png)
+
+PNGs are direct 390×844 Godot 4.7.2 Compatibility captures. GIFs encode fresh Movie Maker AVIs (isolated 72 frames/3s; Hall 360 frames/15s, both 24 FPS) at 12 FPS. They show this atlas and this distance-driven adapter. AVIs and inspection contact sheets remain outside tracked source. Capture options: `-- --capture=<png>`, add `--light` for light inspector; map `-- --capture-map=<png>`; map movie adds `-- --review-route`. The map image hash remains 5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a.
+
+## Verification and acceptance
+
+Executed locally: atlas measurement, source-to-bake pixel reproducibility, new Godot preview smoke, existing Onoe movement smoke, historical rejection audit, handbook build/check/tests, shard/dashboard checks. The preview smoke exercises all 12 regions/both side facings, fixed scale/grounding, four real moves, slow/mid/fast phase consistency, paused wall-clock hold, reduced motion, invalid starts, endpoint/arrival behavior, inspector scene and actual Hall route cancellation. The bake and preview smoke are registered in both existing check runners. Exact-head GitHub CI is reported on the PR.
+
+**Technical pass** means the recorded tests actually passed. **Visual candidate ready for review** means fresh evidence exists and described defects were materially addressed. **Owner-approved final** requires explicit new owner proof and is currently **false**.
+
+Remaining owner QA: confirm VN identity/new proportions, front/back balance and side passing poses in motion, acceptable four-frame contact/slip at the intended production pace, mirrored hair part, fine hair alpha edges, and readability on a real phone. Layered foreground/door-sill HC/CB tests remain dependent on map-owner geometry/art approval (#270 is DRAFT_ONLY). Flat Hall evidence does not certify multi-room occlusion. Onoe is not replaced in production, and GFX-07-01/full G1 acceptance stays open.
