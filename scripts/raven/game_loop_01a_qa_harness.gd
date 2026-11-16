@@ -3,6 +3,7 @@ extends Node2D
 ## Explicit QA scene: real RM-HS-005 -> Match-3 -> RM-HS-002 -> VN.
 ## The map is greybox TEST_ONLY, seed lives in memory, and gameplay uses
 ## the existing vertical_slice UI/store plus the existing physical Onoe mover.
+const NavigationSource = preload("res://scripts/raven/manor_navigation_source.gd")
 const Bridge = preload("res://scripts/raven/raven_hotspot_gameplay_bridge.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -37,7 +38,7 @@ func _ready() -> void:
 	if not Store.new(memory).save_campaign(fixture):
 		push_error("QA seed save failed")
 		return
-	bridge = Bridge.new(memory)
+	bridge = Bridge.new(memory, NavigationSource.historical_qa_request())
 	actor.position = bridge.graph.position(bridge.session.current_anchor())
 	actor.set_sprite_height(62.0)
 	actor.move_speed = 270.0
