@@ -15095,6 +15095,125 @@
       "localSourceRecord": {
         "workflow": "ChatGPT image generation in conversation; exact model/runtime parameters unavailable."
       }
+    },
+    {
+      "id": "chatgpt-evelyn-g1-initial-rejected",
+      "title": "Evelyn G1 initial generation - rejected technical atlas",
+      "stage": "archive",
+      "evidence": "conversation_generated_candidate",
+      "notes": [
+        "GFX-07-01 chibi-specific provenance only. No owner motion/device/foreground or production approval.",
+        "Original design selected by owner; proportions retained by explicit repair request. Original rejected technical source is historical evidence.",
+        "Runtime uses explicit source regions/pivots and alpha cleanup material; raw atlas is not a certified clean cutout."
+      ],
+      "artifacts": [
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/HANDOFF.md",
+          "label": "Provenance and review contract"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "RM-CHIBI-EVELYN-G1-REJECTED"
+      ],
+      "requires": [],
+      "prompts": [
+        {
+          "label": "request",
+          "value": "Approved repository Evelyn full-body references; initial bounded attempt and correction recorded in HANDOFF.md.",
+          "certainty": "documented_summary"
+        }
+      ],
+      "parameters": {
+        "model": null,
+        "seed": null,
+        "steps": null,
+        "tool": "built-in image_gen.imagegen",
+        "transparent_background_requested": true
+      },
+      "settings": {},
+      "originalApiSha256": null,
+      "nodeTypes": []
+    },
+    {
+      "id": "chatgpt-evelyn-g1-repair-v1",
+      "title": "Evelyn selected design - two focused imagegen repairs",
+      "stage": "archive",
+      "evidence": "conversation_generated_candidate",
+      "notes": [
+        "GFX-07-01 chibi-specific provenance only. No owner motion/device/foreground or production approval.",
+        "Original design selected by owner; proportions retained by explicit repair request. Original rejected technical source is historical evidence.",
+        "Runtime uses explicit source regions/pivots and alpha cleanup material; raw atlas is not a certified clean cutout."
+      ],
+      "artifacts": [
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/repair_prompts.txt",
+          "label": "Exact repair prompts"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "RM-CHIBI-EVELYN-G1-REPAIR-V1"
+      ],
+      "requires": [],
+      "prompts": [
+        {
+          "label": "request",
+          "value": "See recorded exact repair prompts in repo artifact.",
+          "certainty": "verbatim_recorded"
+        }
+      ],
+      "parameters": {
+        "model": null,
+        "seed": null,
+        "steps": null,
+        "tool": "built-in image_gen.imagegen",
+        "transparent_background_requested": true
+      },
+      "settings": {},
+      "originalApiSha256": null,
+      "nodeTypes": []
+    },
+    {
+      "id": "godot-evelyn-g1-review-captures",
+      "title": "Evelyn Godot 4.7.2 runtime review captures",
+      "stage": "archive",
+      "evidence": "runtime_capture",
+      "notes": [
+        "GFX-07-01 chibi-specific provenance only. No owner motion/device/foreground or production approval.",
+        "Original design selected by owner; proportions retained by explicit repair request. Original rejected technical source is historical evidence.",
+        "Runtime uses explicit source regions/pivots and alpha cleanup material; raw atlas is not a certified clean cutout."
+      ],
+      "artifacts": [
+        {
+          "repoPath": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/README.md",
+          "label": "Provenance and review contract"
+        }
+      ],
+      "inputs": [],
+      "outputs": [
+        "RM-CHIBI-EVELYN-G1-REVIEW-DARK",
+        "RM-CHIBI-EVELYN-G1-REVIEW-LIGHT",
+        "RM-CHIBI-EVELYN-G1-REVIEW-MAP"
+      ],
+      "requires": [],
+      "prompts": [
+        {
+          "label": "capture",
+          "value": "Direct Godot Compatibility viewport output at 390x844.",
+          "certainty": "recorded_runtime"
+        }
+      ],
+      "parameters": {
+        "model": null,
+        "seed": null,
+        "steps": null,
+        "tool": "Godot 4.7.2 Compatibility renderer",
+        "transparent_background_requested": false
+      },
+      "settings": {},
+      "originalApiSha256": null,
+      "nodeTypes": []
     }
   ],
   "assets": [
@@ -18955,6 +19074,126 @@
         "nativeSizePreserved": false,
         "RGBAComparedToSourcePNG": false,
         "note": "alpha-cropped/resized to 256×256 canvas for tile normalization"
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-REJECTED",
+      "title": "Evelyn G1 initial rejected source",
+      "kind": "chibi_candidate",
+      "group": "Evelyn",
+      "status": "superseded",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/rejected_source.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "8241e8b214aa46f8f2b8b1f6b2697fe11645c378d9bc874c39f3037c5a42709a",
+      "preview": null,
+      "recipeId": "chatgpt-evelyn-g1-initial-rejected",
+      "evidence": "conversation_generated_candidate",
+      "chain": [
+        "chatgpt-evelyn-g1-initial-rejected"
+      ],
+      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Unmodified built-in imagegen RGBA; repair atlas requires supplied alpha-cleanup material and explicit per-frame metadata."
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-REPAIR-V1",
+      "title": "Evelyn selected design - repaired motion candidate",
+      "kind": "chibi_candidate",
+      "group": "Evelyn",
+      "status": "pending_review",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_walk.png",
+      "width": 1024,
+      "height": 1536,
+      "sha256": "bb6e60c358bcd0b37abbe9687a9c6277ab5ac0c07162956e1e04558708c14e62",
+      "preview": null,
+      "recipeId": "chatgpt-evelyn-g1-repair-v1",
+      "evidence": "conversation_generated_candidate",
+      "chain": [
+        "chatgpt-evelyn-g1-repair-v1"
+      ],
+      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Unmodified built-in imagegen RGBA; repair atlas requires supplied alpha-cleanup material and explicit per-frame metadata."
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-REVIEW-DARK",
+      "title": "Evelyn Godot close-up capture - dark",
+      "kind": "qa_capture",
+      "group": "Evelyn",
+      "status": "candidate",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_capture.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "80a796e44ee5389df47b9441dcfd450375ceb715f291bd70ca8056751d33ecc1",
+      "preview": null,
+      "recipeId": "godot-evelyn-g1-review-captures",
+      "evidence": "runtime_capture",
+      "chain": [
+        "godot-evelyn-g1-review-captures"
+      ],
+      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Direct Godot viewport capture; diagnostic evidence, not approved art."
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-REVIEW-LIGHT",
+      "title": "Evelyn Godot close-up capture - light",
+      "kind": "qa_capture",
+      "group": "Evelyn",
+      "status": "candidate",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/review_light_capture.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "bd84970be9b89a8f10ecdb4d81197f7e19a63bcdfb136a01c0c8aad2750922d7",
+      "preview": null,
+      "recipeId": "godot-evelyn-g1-review-captures",
+      "evidence": "runtime_capture",
+      "chain": [
+        "godot-evelyn-g1-review-captures"
+      ],
+      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Direct Godot viewport capture; diagnostic evidence, not approved art."
+      }
+    },
+    {
+      "id": "RM-CHIBI-EVELYN-G1-REVIEW-MAP",
+      "title": "Evelyn Godot first-floor map capture",
+      "kind": "qa_capture",
+      "group": "Evelyn",
+      "status": "candidate",
+      "image": "assets/raven/chibi/evelyn/g1_candidate/repair_v1/map_capture.png",
+      "width": 390,
+      "height": 844,
+      "sha256": "421db6827c40a7432b421dd58e6e18a633b878a7a6da3f830c17826d6d32f31e",
+      "preview": null,
+      "recipeId": "godot-evelyn-g1-review-captures",
+      "evidence": "runtime_capture",
+      "chain": [
+        "godot-evelyn-g1-review-captures"
+      ],
+      "sourceImage": "GFX-07-01; owner selected original design, repaired motion and device/foreground approval pending. See repair_v1/README.md.",
+      "export": {
+        "format": "PNG",
+        "lossless": true,
+        "nativeSizePreserved": true,
+        "note": "Direct Godot viewport capture; diagnostic evidence, not approved art."
       }
     }
   ],
