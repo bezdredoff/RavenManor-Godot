@@ -99,7 +99,7 @@ func _initialize() -> void:
 	ordinals.routes.sceneTriggers[-1].ordinal = -1
 	assert(_find(ordinals, state).is_empty(), "Negative ordinal accepted")
 	ordinals = _synthetic()
-	var duplicate := ordinals.routes.sceneTriggers[-1].duplicate(true)
+	var duplicate: Dictionary = ordinals.routes.sceneTriggers[-1].duplicate(true)
 	duplicate.sceneId = BEAT
 	ordinals.routes.sceneTriggers.append(duplicate)
 	assert(_find(ordinals, state).is_empty(), "Duplicate ordinal accepted")
