@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-map-g1-door-calibration",
+  "taskId": "CODE-05-02",
+  "title": "G1 physical door & route calibration - Hall<->Corridor and Corridor<->Bedroom",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "runtimeAuthority": false,
+  "canonicalNavigationAuthority": false,
+  "coordinateSpace": "image-pixel",
+  "coordinateNotes": "Source-image pixels, origin upper-left, +x right, +y down (per first_floor_manifest.v1.json sourcePixel). NOT world-plan. NOT greybox. No implicit mapping between spaces.",
+  "sourceImage": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sizePx": [1672, 941],
+    "immutable": true
+  },
+  "baseEvidence": {
+    "openingBlueprint": "res://assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json",
+    "doorReview": "res://assets/raven/map/qa/drafts/map_qa_09_door_review.v1.json",
+    "artManifest": "res://assets/raven/map/first_floor_manifest.v1.json",
+    "canonicalGraph": "res://data/raven/manor_greybox_graph.json",
+    "worldMap": "res://data/raven/season1_world_map.json",
+    "note": "09B is an AI-proposed architectural draft, not approved production geometry. This record calibrates only the HC and CB contacts on top of it."
+  },
+  "actorFootprint": {
+    "footRadiusPx": 12,
+    "spriteHeightPx": 62,
+    "authority": "AI_PROVISIONAL_UNAPPROVED",
+    "note": "Ground-plane disk proxy only. Body/foreground depth is not proven by the flat painting."
+  },
+  "projection": {
+    "elevationDeg": 65,
+    "note": "The approved PNG is already painted with its 65-degree elevation look. Actor feet are placed directly at image-pixel positions; the scene must not double-project the painted surface (see manifest worldPlanToPrototypeScreen)."
+  },
+  "doors": [
+    {
+      "doorId": "RM-DOOR-HALL-CORRIDOR",
+      "label": "HC - Hall <-> Corridor",
+      "roomIds": ["RM-ROOM-HALL", "RM-ROOM-CORRIDOR"],
+      "logicalReferenceState": "open",
+      "canonicalNearAnchorId": "RM-NAV-HALL-CORRIDOR-NEAR",
+      "canonicalFarAnchorId": "RM-NAV-HALL-CORRIDOR-FAR",
+      "visualStatus": "NOT_VISIBLE_AT_REFERENCE_POSITION",
+      "requiresArchitecturalChange": true,
+      "thresholdPx": [824, 400],
+      "openingWidthPx": 48,
+      "normalPx": [0, -1],
+      "normalMeaning": "door plane horizontal at y=400; crossing north from Hall floor into the upper corridor",
+      "nearSideRoomId": "RM-ROOM-HALL",
+      "farSideRoomId": "RM-ROOM-CORRIDOR",
+      "nearFootPx": [824, 424],
+      "farFootPx": [824, 384],
+      "nearFootFloorStatus": "PROPOSED_PATCH",
+      "nearFootFloorPatchId": "QA-09B-FLOOR-HC-HALL-UNDERPASS",
+      "farFootFloorStatus": "EXISTING",
+      "farFootFloorPatchId": "QA-08B-FLOOR-CORRIDOR",
+      "minClearancePx": 92.7,
+      "clearanceSampleNote": "minimum distance from either foot to the nearest 09B NO-GO polygon edge; 12px foot radius satisfied with margin",
+      "nearPixelRgb": [127, 68, 46],
+      "farPixelRgb": [128, 81, 64],
+      "thresholdPixelRgb": [140, 81, 55],
+      "elevationStatus": "PROPOSED_FLAT_QA_ONLY",
+      "foregroundStatus": "NOT_IMPLEMENTED",
+      "artChanges": [
+        "Cut a 48px passage through the central stair landing / landing apron between the twin stair flights.",
+        "Reveal new floor + wall backfill under the landing (currently painted as landing/riser, not a walkable corridor).",
+        "Resolve landing elevation: the landing is above the Hall floor and the corridor sits behind it; the QA record assumes a flat ground-plane only.",
+        "Author foreground mask for the balustrade / landing edge so the actor is correctly occluded when passing under it."
+      ],
+      "confidence": "medium",
+      "uncertainty": "Landing elevation and the exact underside clearance cannot be derived from the flat painting; owner/art decision required."
+    },
+    {
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM",
+      "label": "CB - Corridor <-> Bedroom",
+      "roomIds": ["RM-ROOM-CORRIDOR", "RM-ROOM-BEDROOM"],
+      "logicalReferenceState": "gated",
+      "canonicalNearAnchorId": "RM-NAV-BEDROOM-NEAR",
+      "canonicalFarAnchorId": "RM-NAV-BEDROOM-FAR",
+      "visualStatus": "NOT_VISIBLE",
+      "requiresArchitecturalChange": true,
+      "thresholdPx": [528, 376],
+      "openingWidthPx": 48,
+      "normalPx": [-1, 0],
+      "normalMeaning": "door plane vertical at x=528; crossing west from the corridor into the bedroom",
+      "nearSideRoomId": "RM-ROOM-CORRIDOR",
+      "farSideRoomId": "RM-ROOM-BEDROOM",
+      "nearFootPx": [552, 376],
+      "farFootPx": [512, 376],
+      "nearFootFloorStatus": "EXISTING",
+      "nearFootFloorPatchId": "QA-08B-FLOOR-CORRIDOR",
+      "farFootFloorStatus": "PROPOSED_PATCH",
+      "farFootFloorPatchId": "QA-09B-FLOOR-CB-BEDROOM-SILL",
+      "minClearancePx": 32.0,
+      "clearanceSampleNote": "minimum distance from either foot to the nearest 09B NO-GO polygon edge; 12px foot radius satisfied with margin",
+      "nearPixelRgb": [103, 52, 28],
+      "farPixelRgb": [99, 51, 29],
+      "thresholdPixelRgb": [152, 117, 68],
+      "elevationStatus": "PROPOSED_FLAT_QA_ONLY",
+      "foregroundStatus": "NOT_IMPLEMENTED",
+      "artChanges": [
+        "Cut a 48px opening in the bedroom partition wall at x=528 (y 352..400).",
+        "Reveal a bedroom-side floor sill where the corridor meets the bedroom south wall.",
+        "Add new jamb/trim foreground for the opening.",
+        "Keep the RM-DOOR-CORRIDOR-BEDROOM gate independent of bathroom repair (RM-DEC-006)."
+      ],
+      "confidence": "medium",
+      "uncertainty": "The painted partition shows trim/wall caps, not an exposed threshold; the exact jamb position needs an art pass."
+    }
+  ],
+  "preservation": {
+    "roomIdentity": "All RM-ROOM-* room IDs preserved.",
+    "doorIds": "RM-DOOR-HALL-CORRIDOR and RM-DOOR-CORRIDOR-BEDROOM preserved; lock state (open/gated) unchanged.",
+    "orthogonalRoutes": "Existing 08B/09B authored room-owned orthogonal routes are not removed or renumbered.",
+    "approvedPng": "Immutable; this record and its evidence never modify the PNG."
+  },
+  "ownerApprovalRequired": [
+    "Whether the HC under-landing passage is acceptable architecture (vs. an alternative Hall<->Corridor route).",
+    "Whether the CB partition opening is the correct bedroom threshold position.",
+    "Final opening widths, jamb/trim, floor backfill and foreground masks.",
+    "Elevation handling for the stair landing versus the flat QA ground-plane."
+  ]
+}
