@@ -14,6 +14,7 @@ func _run() -> void:
 	root.add_child(actor)
 	actor.set_process(false)
 	actor.set_sprite_height(62)
+	actor.move_speed = 130.0
 	await process_frame
 	var sprite: AnimatedSprite2D = actor.get_sprite()
 	var meta: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(actor.visual().META_PATH))
@@ -22,6 +23,9 @@ func _run() -> void:
 	for direction in steps:
 		var start: Vector2 = actor.position
 		assert(actor.start_segment({"fromAnchorId": "A", "toAnchorId": "B", "fromPosition": start, "toPosition": start+direction}))
+		var target_fps := 130.0 * 4.0 / (62.0 * 0.8)
+		assert(absf(actor.get_sprite().speed_scale - target_fps / 6.0) < 0.01,
+			"Candidate animation cadence must match physical travel speed")
 		var clip := "side" if direction.x != 0 else ("up" if direction.y < 0 else "down")
 		assert(sprite.animation == clip and sprite.flip_h == (direction.x < 0))
 		assert(sprite.is_playing())
