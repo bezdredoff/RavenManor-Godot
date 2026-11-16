@@ -144,6 +144,49 @@ func _run() -> void:
 	assert(Store.new(cancelled_memory).load_campaign().lastRoomId == HALL)
 	assert(Store.new(cancelled_memory).load_campaign().storyFlags.is_empty())
 
+	# A story gate revoked during a real in-flight leg does not commit
+	# extra events; the already-started leg finishes and stops safely.
+	var revoked_storage = Memory.new()
+	_seed(revoked_storage)
+	var revoked = _host(revoked_storage)
+	root.add_child(revoked)
+	await process_frame
+	assert(revoked.configure(_qa_request()).ok)
+	assert(revoked.request_transition("QA-07B-TR-HC").ok)
+	assert(revoked.drive().status == "ready")
+	assert(revoked.commit_ready_transition().ok)
+	assert(revoked.request_story_hotspot("RM-HS-005").ok)
+	assert(revoked.advance(0.05).status == "segment_started")
+	var external: Dictionary = Store.new(revoked_storage).load_campaign()
+	for raw in Director.events_for("access"):
+		var event: Dictionary = raw.duplicate(true)
+		event.eventId = "g2-revoked-" + str(raw.get("type", ""))
+		var update: Dictionary = Reducer.apply(external, event)
+		assert(update.ok)
+		external = update.state
+	assert(Store.new(revoked_storage).save_campaign(external))
+	var stopped: Dictionary = revoked.advance(0.05)
+	assert(stopped.ok and stopped.status == "cancel-finishing-current-leg")
+	assert(revoked.drive().status == "idle")
+	var after_revocation: Dictionary = Store.new(revoked_storage).load_campaign()
+	assert(after_revocation.storyFlags == external.storyFlags)
+	assert(after_revocation.hotspotStates == external.hotspotStates)
+	assert(after_revocation.unlockedDoors == external.unlockedDoors)
+	assert(after_revocation.firstClearLevels.is_empty())
+
+	# Door relock during an in-flight CB approach also cancels without a
+	# physical portal commit or forged Bedroom checkpoint.
+	assert(revoked.request_transition("QA-07B-TR-CB").ok)
+	assert(revoked.advance(0.05).status == "segment_started")
+	var closed: Dictionary = Store.new(revoked_storage).load_campaign()
+	closed.unlockedDoors.erase(CB_DOOR)
+	assert(Store.new(revoked_storage).save_campaign(closed))
+	var door_stopped: Dictionary = revoked.advance(0.05)
+	assert(door_stopped.ok and door_stopped.status == "cancel-finishing-current-leg")
+	assert(revoked.drive().status == "idle")
+	assert(revoked.room_state().roomId == CORRIDOR)
+	assert(Store.new(revoked_storage).load_campaign().lastRoomId == CORRIDOR)
+
 	# Physical traversal and arrival precede the atomic story action.
 	assert(restored.request_story_hotspot("RM-HS-005").ok)
 	assert(not restored.state.storyFlags.has("RM-FLAG-BEDROOM-ACCESS-CLEARED"))
