@@ -199,16 +199,17 @@ func _audit_positive_control() -> void:
 	assert(found, "Positive-control scene missing from the catalog")
 	var state: Dictionary = _state_with_all_others_seen(target)
 	assert(not state.storyBeatsSeen.has(target))
-	# Stage A: the canonical route registry is JSON, so every ordinal decodes as
-	# float; the dispatcher's `ordinal is int` guard then refuses every route.
+	# Stage A: canonical JSON route ordinals decode as floats in Godot.
+	# An explicitly approved synthetic scene must now select with these integral
+	# JSON values; the real scene catalog remains fail-closed by its own statuses.
 	assert(typeof(_route_for(target).get("ordinal", -1)) == TYPE_FLOAT,
 		"Canonical route ordinals are expected to decode as JSON floats")
-	var refused: Dictionary = RuntimeDispatch.find_approved(state, "ru", approved, Routes.data,
+	var selected_json: Dictionary = RuntimeDispatch.find_approved(state, "ru", approved, Routes.data,
 		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data)
-	assert(refused.is_empty(),
-		"With the real JSON route registry the dispatcher must still refuse a fully ready scene")
-	# Stage B: int-typed ordinals only. Everything else stays canonical, so a
-	# selection here proves the remaining defect is exactly the ordinal typing.
+	assert(str(selected_json.get("beatId", "")) == target,
+		"Integral canonical JSON ordinal must select a fully approved synthetic scene")
+	# Stage B: converting the same integral ordinal to a native int must preserve
+	# selection, rather than being the only way the dispatcher can work.
 	var typed_routes: Dictionary = Routes.data.duplicate(true)
 	for route: Dictionary in typed_routes.sceneTriggers:
 		route["ordinal"] = int(route["ordinal"])
@@ -216,6 +217,8 @@ func _audit_positive_control() -> void:
 		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data)
 	assert(str(selected.get("beatId", "")) == target,
 		"%s must be selectable once its status and route ordinals are canonical" % target)
+	assert(selected == selected_json,
+		"Integral JSON ordinals and native-int ordinals must produce identical configs")
 	assert(selected.get("source") == "canonical_production_only", "Positive control must be a production config")
 	assert(selected.get("lines", []).size() > 0 and selected.get("lineIds", []).size() == selected.get("lines", []).size(),
 		"Positive control must produce playable lines")

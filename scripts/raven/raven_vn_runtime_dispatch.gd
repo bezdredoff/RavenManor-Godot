@@ -41,6 +41,7 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 	var all_routes: Array = routes.get("sceneTriggers", [])
 	var selected: Dictionary = {}
 	var best_ordinal: int = 2147483647
+	var used_ordinals: Dictionary = {}
 	for route in all_routes:
 		if not route is Dictionary:
 			return {}
@@ -49,6 +50,12 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 			continue
 		if known_scenes[beat_id].get("status") != APPROVED_SCENE_STATUS:
 			continue
+		var ordinal := _strict_integral_ordinal(route.get("ordinal", null))
+		if ordinal < 0:
+			continue
+		if used_ordinals.has(ordinal):
+			return {}
+		used_ordinals[ordinal] = true
 		var gate: Variant = route.get("gate", {})
 		if not gate is Dictionary or not (gate.get("approvedRuntime") is bool) or not (gate.get("proposedRuntime") is bool):
 			continue
@@ -58,8 +65,7 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 			continue
 		if not _gate_satisfied(gate, state, foundation, known_scenes):
 			continue
-		var ordinal: Variant = route.get("ordinal", -1)
-		if not ordinal is int or ordinal < 0 or ordinal >= best_ordinal:
+		if ordinal >= best_ordinal:
 			continue
 		if route.get("postSceneAction") != "record_story_beat_only_after_player_finishes_VN":
 			continue
@@ -86,7 +92,25 @@ static func _gate_satisfied(gate: Dictionary, state: Dictionary,
 			return scenes.has(ref) and state["storyBeatsSeen"].has(ref)
 		"first_clear":
 			return foundation.get("levels", {}).has(ref) and state["firstClearLevels"].has(ref)
+		"auto_new_game":
+			return ref == "none" and state["storyBeatsSeen"].is_empty() and \
+				state["firstClearLevels"].is_empty()
+		"restoration_done":
+			return foundation.get("restorations", {}).has(ref) and state.get("completedRestorations", []).has(ref)
+		"clue_recorded":
+			return foundation.get("clues", {}).has(ref) and state.get("recordedClues", []).has(ref)
 	return false  # No choice, script, time or arbitrary branch in D2C.
+
+
+static func _strict_integral_ordinal(value: Variant) -> int:
+	if value is bool or not (value is int or value is float):
+		return -1
+	var numeric := float(value)
+	if not is_finite(numeric) or numeric < 0.0 or floor(numeric) != numeric:
+		return -1
+	if numeric > 2147483646.0:
+		return -1
+	return int(numeric)
 
 
 static func build_config(beat_id: String, locale: String, scene: Dictionary, entries: Array,
