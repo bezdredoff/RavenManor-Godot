@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "sourceSha256": "bb6e60c358bcd0b37abbe9687a9c6277ab5ac0c07162956e1e04558708c14e62",
+  "atlasSize": [
+    1024,
+    1536
+  ],
+  "layout": "explicit regions; side row split at x754",
+  "fps": 6,
+  "zeroAlphaPixels": 663177,
+  "lowAlphaPixels1to15": 286921,
+  "ownerDesignSelected": true,
+  "ownerMotionApproved": false,
+  "pivotMethod": "median head-row center x / lowest alpha>128 sole boundary y; per-frame scale normalizes visible height",
+  "frames": {
+    "down": [
+      {
+        "region": [
+          0,
+          0,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          70,
+          47,
+          222,
+          497
+        ],
+        "pivot": [
+          146.0,
+          497
+        ],
+        "visibleHeight": 450
+      },
+      {
+        "region": [
+          256,
+          0,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          57,
+          46,
+          209,
+          501
+        ],
+        "pivot": [
+          133.0,
+          501
+        ],
+        "visibleHeight": 455
+      },
+      {
+        "region": [
+          512,
+          0,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          42,
+          47,
+          193,
+          497
+        ],
+        "pivot": [
+          118.0,
+          497
+        ],
+        "visibleHeight": 450
+      },
+      {
+        "region": [
+          768,
+          0,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          25,
+          47,
+          181,
+          501
+        ],
+        "pivot": [
+          105.5,
+          501
+        ],
+        "visibleHeight": 454
+      }
+    ],
+    "up": [
+      {
+        "region": [
+          0,
+          512,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          67,
+          35,
+          224,
+          492
+        ],
+        "pivot": [
+          146.0,
+          492
+        ],
+        "visibleHeight": 457
+      },
+      {
+        "region": [
+          256,
+          512,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          54,
+          35,
+          211,
+          495
+        ],
+        "pivot": [
+          132.5,
+          495
+        ],
+        "visibleHeight": 460
+      },
+      {
+        "region": [
+          512,
+          512,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          41,
+          35,
+          197,
+          493
+        ],
+        "pivot": [
+          118.5,
+          493
+        ],
+        "visibleHeight": 458
+      },
+      {
+        "region": [
+          768,
+          512,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          20,
+          37,
+          197,
+          494
+        ],
+        "pivot": [
+          105.5,
+          494
+        ],
+        "visibleHeight": 457
+      }
+    ],
+    "side": [
+      {
+        "region": [
+          0,
+          1024,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          57,
+          33,
+          219,
+          489
+        ],
+        "pivot": [
+          144.5,
+          489
+        ],
+        "visibleHeight": 456
+      },
+      {
+        "region": [
+          256,
+          1024,
+          256,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          37,
+          33,
+          245,
+          489
+        ],
+        "pivot": [
+          134.0,
+          489
+        ],
+        "visibleHeight": 456
+      },
+      {
+        "region": [
+          512,
+          1024,
+          242,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          32,
+          33,
+          195,
+          489
+        ],
+        "pivot": [
+          118.5,
+          489
+        ],
+        "visibleHeight": 456
+      },
+      {
+        "region": [
+          754,
+          1024,
+          270,
+          512
+        ],
+        "boundsAlphaAbove128": [
+          13,
+          33,
+          227,
+          490
+        ],
+        "pivot": [
+          121.25,
+          490
+        ],
+        "visibleHeight": 457
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 # GFX-07-01 — Evelyn G1 art-blocked handoff
 
+> Historical first delivery below. The owner subsequently selected this design and requested repair. Current repaired motion candidate, explicit frame metadata, runtime alpha material, executed tests and isolated previews: [repair_v1/README.md](repair_v1/README.md). The old `rejected_source.png`, `atlas_spec.json` and source audit remain unchanged historical evidence; their blocked status does not describe the new preview. Repaired motion/device/production approval is still pending.
+
 **Not a completed sprite sheet. No validated frames, animation resource, moving Evelyn preview or owner approval is delivered.** `rejected_source.png` is retained solely as generation/rejection evidence. It must not be loaded as production art. The fallback is the precise import contract below. G1 remains open; Onoe remains the technical placeholder.
 
 ## Reference authority and identity
