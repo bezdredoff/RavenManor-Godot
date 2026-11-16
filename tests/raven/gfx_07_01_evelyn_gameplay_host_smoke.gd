@@ -5,7 +5,7 @@ const Harness = preload("res://scripts/raven/manor_gameplay_integration_harness.
 const Mover = preload("res://scripts/raven/onoe_segment_mover.gd")
 const EvelynActor = preload("res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_actor.gd")
 const EvelynScene = preload("res://scenes/raven/actors/evelyn_walker.tscn")
-const EvelynMultiRoom = preload("res://scenes/raven/tests/evelyn_chibi_multi_room_preview.tscn")
+const HistoricalMultiRoom = preload("res://scenes/raven/tests/first_floor_multi_room_host.tscn")
 const Fixture = preload("res://scripts/raven/first_floor_multi_room_fixture.gd")
 const Source = preload("res://scripts/raven/manor_navigation_source.gd")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
@@ -133,10 +133,17 @@ func _run() -> void:
 	# distinct QA-only Hall ↔ Corridor ↔ Bedroom host for multi-room regression.
 	var fixture: Dictionary = Fixture.build()
 	assert(not fixture.is_empty())
-	var multi = EvelynMultiRoom.instantiate()
+	var multi = HistoricalMultiRoom.instantiate()
+	# This is a TEST_ONLY local substitution on the already proven QA host.
+	# Switch the script before _ready, preserving the historical $Onoe API
+	# and the baseline scene on disk (no alternate movement controller).
+	var qa_actor: Node2D = multi.get_node("Onoe")
+	assert(qa_actor != null and qa_actor.get_script() != EvelynActor)
+	qa_actor.set_script(EvelynActor)
+	assert(qa_actor.get_script() == EvelynActor)
 	root.add_child(multi)
 	await process_frame
-	assert(multi.actor.get_script() == EvelynActor)
+	assert(multi.actor == qa_actor and multi.actor.get_script() == EvelynActor)
 	assert(multi.configure_host(fixture.contract, fixture.visuals,
 		fixture.initialRoomId, fixture.initialAnchorId))
 	multi.actor.set_process(false)
