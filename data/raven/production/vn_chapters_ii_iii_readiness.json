@@ -1,0 +1,850 @@
+{
+  "schemaVersion": 1,
+  "kind": "vn_chapters_ii_iii_scene_readiness_review_only",
+  "sourceMainSha": "0d1886b0d01491047dbd900b260757623c6ef9bc",
+  "runtimePromotion": false,
+  "firstPlayableCandidate": "RM-BEAT-02-01",
+  "summary": {
+    "sceneCount": 8,
+    "canonicalLineCount": 96,
+    "completeLocales": [
+      "ru",
+      "be",
+      "en"
+    ],
+    "missingUniqueAcceptedPortraitVariants": [
+      "RM-CHAR-ADA/offer_tray/dry_amused",
+      "RM-CHAR-EVELYN/investigate/curious",
+      "RM-CHAR-EVELYN/investigate/worried",
+      "RM-CHAR-LUCAS/explain/professional",
+      "RM-CHAR-LUCAS/explain/serious",
+      "RM-CHAR-LUCAS/folder_present/professional",
+      "RM-CHAR-ROWAN/point_route/wry"
+    ],
+    "missingCuePortraitOccurrences": 43
+  },
+  "scenes": [
+    {
+      "sceneId": "RM-BEAT-02-01",
+      "chapter": "02",
+      "title": {
+        "ru": "2.1. Завтрак без кухни",
+        "be": "2.1. Сняданак без кухні",
+        "en": "2.1. Breakfast Without a Kitchen"
+      },
+      "catalogStatus": "pilot_runtime",
+      "ordinal": 8,
+      "lineCount": 12,
+      "localeLineCounts": {
+        "ru": 12,
+        "be": 12,
+        "en": 12
+      },
+      "lineIds": [
+        "RM-BEAT-02-01-L001",
+        "RM-BEAT-02-01-L002",
+        "RM-BEAT-02-01-L003",
+        "RM-BEAT-02-01-L004",
+        "RM-BEAT-02-01-L005",
+        "RM-BEAT-02-01-L006",
+        "RM-BEAT-02-01-L007",
+        "RM-BEAT-02-01-L008",
+        "RM-BEAT-02-01-L009",
+        "RM-BEAT-02-01-L010",
+        "RM-BEAT-02-01-L011",
+        "RM-BEAT-02-01-L012"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 12,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-HALL",
+        "lighting": "day",
+        "roomState": "habitable",
+        "path": "res://assets/raven/vn_backgrounds/hall/day_habitable.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "evelyn_hair_tuck"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "offer_tray",
+          "emotion": "dry_amused",
+          "micro": "ada_precise_straighten"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-ADA",
+          "pose": "offer_tray",
+          "emotion": "dry_amused",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-02-01-L002",
+            "RM-BEAT-02-01-L004",
+            "RM-BEAT-02-01-L006",
+            "RM-BEAT-02-01-L008",
+            "RM-BEAT-02-01-L010",
+            "RM-BEAT-02-01-L011"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-02-01-L002",
+        "RM-BEAT-02-01-L004",
+        "RM-BEAT-02-01-L006",
+        "RM-BEAT-02-01-L008",
+        "RM-BEAT-02-01-L010",
+        "RM-BEAT-02-01-L011"
+      ],
+      "gate": {
+        "kind": "scene_complete",
+        "ref": "RM-BEAT-01-05",
+        "kindCurrentlySupported": true,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "Existing authoritative storyBeatsSeen contains RM-BEAT-01-05; physical arrival at hall_chair_table and owner approval of Ada offer_tray/dry_amused still required."
+      },
+      "interactionTarget": "hall_chair_table",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": true,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-02-02",
+      "chapter": "02",
+      "title": {
+        "ru": "2.2. Человек с грязными ботинками",
+        "be": "2.2. Чалавек у брудных ботах",
+        "en": "2.2. The Man with Muddy Boots"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 9,
+      "lineCount": 13,
+      "localeLineCounts": {
+        "ru": 13,
+        "be": 13,
+        "en": 13
+      },
+      "lineIds": [
+        "RM-BEAT-02-02-L001",
+        "RM-BEAT-02-02-L002",
+        "RM-BEAT-02-02-L003",
+        "RM-BEAT-02-02-L004",
+        "RM-BEAT-02-02-L005",
+        "RM-BEAT-02-02-L006",
+        "RM-BEAT-02-02-L007",
+        "RM-BEAT-02-02-L008",
+        "RM-BEAT-02-02-L009",
+        "RM-BEAT-02-02-L010",
+        "RM-BEAT-02-02-L011",
+        "RM-BEAT-02-02-L012",
+        "RM-BEAT-02-02-L013"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 13,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-ENTRY",
+        "lighting": "day",
+        "roomState": "approachable",
+        "path": "res://assets/raven/vn_backgrounds/entry/day_approachable.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "slot": "left",
+          "pose": "point_route",
+          "emotion": "wry",
+          "micro": "rowan_weight_shift"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "evelyn_hair_tuck"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-ROWAN",
+          "pose": "point_route",
+          "emotion": "wry",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-02-02-L001",
+            "RM-BEAT-02-02-L004",
+            "RM-BEAT-02-02-L006",
+            "RM-BEAT-02-02-L008",
+            "RM-BEAT-02-02-L010",
+            "RM-BEAT-02-02-L011",
+            "RM-BEAT-02-02-L013"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-02-02-L001",
+        "RM-BEAT-02-02-L004",
+        "RM-BEAT-02-02-L006",
+        "RM-BEAT-02-02-L008",
+        "RM-BEAT-02-02-L010",
+        "RM-BEAT-02-02-L011",
+        "RM-BEAT-02-02-L013"
+      ],
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-ROWAN",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative NPC-tap event/snapshot predicate in dispatcher. Agent B/map interaction owner must define arrived NPC interaction token/state with single-use semantics; never infer tap from NPC presence."
+      },
+      "interactionTarget": "entry",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:npc_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-02-03",
+      "chapter": "02",
+      "title": {
+        "ru": "2.3. Список, который становится длиннее",
+        "be": "2.3. Спіс, які ўсё расце",
+        "en": "2.3. The Ever-Growing List"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 10,
+      "lineCount": 19,
+      "localeLineCounts": {
+        "ru": 19,
+        "be": 19,
+        "en": 19
+      },
+      "lineIds": [
+        "RM-BEAT-02-03-L001",
+        "RM-BEAT-02-03-L002",
+        "RM-BEAT-02-03-L003",
+        "RM-BEAT-02-03-L004",
+        "RM-BEAT-02-03-L005",
+        "RM-BEAT-02-03-L006",
+        "RM-BEAT-02-03-L007",
+        "RM-BEAT-02-03-L008",
+        "RM-BEAT-02-03-L009",
+        "RM-BEAT-02-03-L010",
+        "RM-BEAT-02-03-L011",
+        "RM-BEAT-02-03-L012",
+        "RM-BEAT-02-03-L013",
+        "RM-BEAT-02-03-L014",
+        "RM-BEAT-02-03-L015",
+        "RM-BEAT-02-03-L016",
+        "RM-BEAT-02-03-L017",
+        "RM-BEAT-02-03-L018",
+        "RM-BEAT-02-03-L019"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 19,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-KITCHEN",
+        "lighting": "day",
+        "roomState": "power_off",
+        "path": "res://assets/raven/vn_backgrounds/kitchen/day_power_off.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "investigate",
+          "emotion": "curious",
+          "micro": "evelyn_note_glance"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "pose": "investigate",
+          "emotion": "curious",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-02-03-L001",
+            "RM-BEAT-02-03-L003",
+            "RM-BEAT-02-03-L005",
+            "RM-BEAT-02-03-L006",
+            "RM-BEAT-02-03-L008",
+            "RM-BEAT-02-03-L010",
+            "RM-BEAT-02-03-L012",
+            "RM-BEAT-02-03-L014",
+            "RM-BEAT-02-03-L016",
+            "RM-BEAT-02-03-L018"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-02-03-L001",
+        "RM-BEAT-02-03-L003",
+        "RM-BEAT-02-03-L005",
+        "RM-BEAT-02-03-L006",
+        "RM-BEAT-02-03-L008",
+        "RM-BEAT-02-03-L010",
+        "RM-BEAT-02-03-L012",
+        "RM-BEAT-02-03-L014",
+        "RM-BEAT-02-03-L016",
+        "RM-BEAT-02-03-L018"
+      ],
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-HOUSEHOLD-LEDGER",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative object-tap event/snapshot predicate in dispatcher. Agent B/map interaction owner must define completed physical prop interaction token/state, validated by route/hotspot authority."
+      },
+      "interactionTarget": "kitchen_table",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:object_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-02-04",
+      "chapter": "02",
+      "title": {
+        "ru": "2.4. Обед, который всё-таки состоялся",
+        "be": "2.4. Абед, які ўсё ж адбыўся",
+        "en": "2.4. Lunch, After All"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 11,
+      "lineCount": 13,
+      "localeLineCounts": {
+        "ru": 13,
+        "be": 13,
+        "en": 13
+      },
+      "lineIds": [
+        "RM-BEAT-02-04-L001",
+        "RM-BEAT-02-04-L002",
+        "RM-BEAT-02-04-L003",
+        "RM-BEAT-02-04-L004",
+        "RM-BEAT-02-04-L005",
+        "RM-BEAT-02-04-L006",
+        "RM-BEAT-02-04-L007",
+        "RM-BEAT-02-04-L008",
+        "RM-BEAT-02-04-L009",
+        "RM-BEAT-02-04-L010",
+        "RM-BEAT-02-04-L011",
+        "RM-BEAT-02-04-L012",
+        "RM-BEAT-02-04-L013"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 13,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-KITCHEN",
+        "lighting": "evening",
+        "roomState": "partial_lighting",
+        "path": "res://assets/raven/vn_backgrounds/kitchen/evening_partial_lighting.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "relaxed",
+          "emotion": "neutral",
+          "micro": "evelyn_hair_tuck"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
+        }
+      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
+      "gate": {
+        "kind": "specialist_result",
+        "ref": "kitchen_power_safe",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative kitchen_power_safe specialist-result event/state predicate in dispatcher. Requires specialist workflow event and persisted validated state, not UI tap or scene existence."
+      },
+      "interactionTarget": "kitchen",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:specialist_result",
+        "story_beat_not_in_foundation"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-03-01",
+      "chapter": "03",
+      "title": {
+        "ru": "3.1. Библиотека",
+        "be": "3.1. Бібліятэка",
+        "en": "3.1. The Library"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 12,
+      "lineCount": 7,
+      "localeLineCounts": {
+        "ru": 7,
+        "be": 7,
+        "en": 7
+      },
+      "lineIds": [
+        "RM-BEAT-03-01-L001",
+        "RM-BEAT-03-01-L002",
+        "RM-BEAT-03-01-L003",
+        "RM-BEAT-03-01-L004",
+        "RM-BEAT-03-01-L005",
+        "RM-BEAT-03-01-L006",
+        "RM-BEAT-03-01-L007"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 7,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-LIBRARY",
+        "lighting": "evening",
+        "roomState": "shut_dusty",
+        "path": "res://assets/raven/vn_backgrounds/library/evening_shut_dusty.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "left",
+          "pose": "folder_present",
+          "emotion": "professional",
+          "micro": "lucas_page_align"
+        },
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "center",
+          "pose": "investigate",
+          "emotion": "neutral",
+          "micro": "evelyn_note_glance"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "pose": "folder_present",
+          "emotion": "professional",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-03-01-L001",
+            "RM-BEAT-03-01-L005"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-03-01-L001",
+        "RM-BEAT-03-01-L005"
+      ],
+      "gate": {
+        "kind": "door_tap",
+        "ref": "RM-DOOR-HALL-ARCHIVE",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative door-tap event/snapshot predicate in dispatcher. Requires validated physical Hall→Archive door interaction and authoritative door state/arrival token, not merely unlockedDoor."
+      },
+      "interactionTarget": "library",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:door_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-03-02",
+      "chapter": "03",
+      "title": {
+        "ru": "3.2. Следы чужого почерка",
+        "be": "3.2. Сляды чужога почырку",
+        "en": "3.2. Traces of Another Hand"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 13,
+      "lineCount": 13,
+      "localeLineCounts": {
+        "ru": 13,
+        "be": 13,
+        "en": 13
+      },
+      "lineIds": [
+        "RM-BEAT-03-02-L001",
+        "RM-BEAT-03-02-L002",
+        "RM-BEAT-03-02-L003",
+        "RM-BEAT-03-02-L004",
+        "RM-BEAT-03-02-L005",
+        "RM-BEAT-03-02-L006",
+        "RM-BEAT-03-02-L007",
+        "RM-BEAT-03-02-L008",
+        "RM-BEAT-03-02-L009",
+        "RM-BEAT-03-02-L010",
+        "RM-BEAT-03-02-L011",
+        "RM-BEAT-03-02-L012",
+        "RM-BEAT-03-02-L013"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 13,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-LIBRARY",
+        "lighting": "evening",
+        "roomState": "usable",
+        "path": "res://assets/raven/vn_backgrounds/library/evening_usable.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "investigate",
+          "emotion": "neutral",
+          "micro": "evelyn_note_glance"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "center",
+          "pose": "composed",
+          "emotion": "dry_amused",
+          "micro": "ada_long_paused_blink"
+        },
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "right",
+          "pose": "explain",
+          "emotion": "professional",
+          "micro": "lucas_glasses_adjust"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "pose": "explain",
+          "emotion": "professional",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-03-02-L007",
+            "RM-BEAT-03-02-L009",
+            "RM-BEAT-03-02-L012"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-03-02-L007",
+        "RM-BEAT-03-02-L009",
+        "RM-BEAT-03-02-L012"
+      ],
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-FAMILY-ALBUM",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative object-tap event/snapshot predicate in dispatcher. Agent B/map interaction owner must define completed physical prop interaction token/state, validated by route/hotspot authority."
+      },
+      "interactionTarget": "library_desk",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:object_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-03-03",
+      "chapter": "03",
+      "title": {
+        "ru": "3.3. Разговор о памяти",
+        "be": "3.3. Размова пра памяць",
+        "en": "3.3. Talking About Memory"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 14,
+      "lineCount": 10,
+      "localeLineCounts": {
+        "ru": 10,
+        "be": 10,
+        "en": 10
+      },
+      "lineIds": [
+        "RM-BEAT-03-03-L001",
+        "RM-BEAT-03-03-L002",
+        "RM-BEAT-03-03-L003",
+        "RM-BEAT-03-03-L004",
+        "RM-BEAT-03-03-L005",
+        "RM-BEAT-03-03-L006",
+        "RM-BEAT-03-03-L007",
+        "RM-BEAT-03-03-L008",
+        "RM-BEAT-03-03-L009",
+        "RM-BEAT-03-03-L010"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 10,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-LIBRARY",
+        "lighting": "evening",
+        "roomState": "usable",
+        "path": "res://assets/raven/vn_backgrounds/library/evening_usable.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "investigate",
+          "emotion": "worried",
+          "micro": "evelyn_note_glance"
+        },
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "slot": "right",
+          "pose": "explain",
+          "emotion": "serious",
+          "micro": "lucas_glasses_adjust"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "pose": "investigate",
+          "emotion": "worried",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-03-03-L001",
+            "RM-BEAT-03-03-L003",
+            "RM-BEAT-03-03-L005",
+            "RM-BEAT-03-03-L007",
+            "RM-BEAT-03-03-L009"
+          ]
+        },
+        {
+          "characterId": "RM-CHAR-LUCAS",
+          "pose": "explain",
+          "emotion": "serious",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-03-03-L002",
+            "RM-BEAT-03-03-L004",
+            "RM-BEAT-03-03-L006",
+            "RM-BEAT-03-03-L008",
+            "RM-BEAT-03-03-L010"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-03-03-L001",
+        "RM-BEAT-03-03-L002",
+        "RM-BEAT-03-03-L003",
+        "RM-BEAT-03-03-L004",
+        "RM-BEAT-03-03-L005",
+        "RM-BEAT-03-03-L006",
+        "RM-BEAT-03-03-L007",
+        "RM-BEAT-03-03-L008",
+        "RM-BEAT-03-03-L009",
+        "RM-BEAT-03-03-L010"
+      ],
+      "gate": {
+        "kind": "npc_tap",
+        "ref": "RM-CHAR-LUCAS",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative NPC-tap event/snapshot predicate in dispatcher. Agent B/map interaction owner must define arrived NPC interaction token/state with single-use semantics; never infer tap from NPC presence."
+      },
+      "interactionTarget": "library",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:npc_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    },
+    {
+      "sceneId": "RM-BEAT-03-04",
+      "chapter": "03",
+      "title": {
+        "ru": "3.4. Второе письмо",
+        "be": "3.4. Другі ліст",
+        "en": "3.4. The Second Letter"
+      },
+      "catalogStatus": "proposed_future_runtime",
+      "ordinal": 15,
+      "lineCount": 9,
+      "localeLineCounts": {
+        "ru": 9,
+        "be": 9,
+        "en": 9
+      },
+      "lineIds": [
+        "RM-BEAT-03-04-L001",
+        "RM-BEAT-03-04-L002",
+        "RM-BEAT-03-04-L003",
+        "RM-BEAT-03-04-L004",
+        "RM-BEAT-03-04-L005",
+        "RM-BEAT-03-04-L006",
+        "RM-BEAT-03-04-L007",
+        "RM-BEAT-03-04-L008",
+        "RM-BEAT-03-04-L009"
+      ],
+      "speakerCastCoverage": true,
+      "cueCount": 9,
+      "cueManualReviewLineIds": [],
+      "cueHiddenLineIds": [],
+      "background": {
+        "backgroundId": "BG-LIBRARY",
+        "lighting": "day",
+        "roomState": "usable",
+        "path": "res://assets/raven/vn_backgrounds/library/day_usable.webp",
+        "status": "accepted",
+        "approved": "2026-11-02"
+      },
+      "backgroundMatches": 1,
+      "cast": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "slot": "left",
+          "pose": "investigate",
+          "emotion": "worried",
+          "micro": "evelyn_note_glance"
+        },
+        {
+          "characterId": "RM-CHAR-ADA",
+          "slot": "right",
+          "pose": "composed",
+          "emotion": "stern",
+          "micro": "ada_long_paused_blink"
+        }
+      ],
+      "missingPortraitVariants": [
+        {
+          "characterId": "RM-CHAR-EVELYN",
+          "pose": "investigate",
+          "emotion": "worried",
+          "requiredByStaging": true,
+          "affectedCueLineIds": [
+            "RM-BEAT-03-04-L001",
+            "RM-BEAT-03-04-L003",
+            "RM-BEAT-03-04-L005",
+            "RM-BEAT-03-04-L007",
+            "RM-BEAT-03-04-L009"
+          ]
+        }
+      ],
+      "missingCuePortraitLineIds": [
+        "RM-BEAT-03-04-L001",
+        "RM-BEAT-03-04-L003",
+        "RM-BEAT-03-04-L005",
+        "RM-BEAT-03-04-L007",
+        "RM-BEAT-03-04-L009"
+      ],
+      "gate": {
+        "kind": "object_tap",
+        "ref": "PROP-LIBRARY-DESK",
+        "kindCurrentlySupported": false,
+        "approvedRuntime": false,
+        "proposedRuntime": true,
+        "authoritativeContract": "No authoritative object-tap event/snapshot predicate in dispatcher. Agent B/map interaction owner must define completed physical prop interaction token/state, validated by route/hotspot authority."
+      },
+      "interactionTarget": "library_drawer",
+      "completionAction": "record_story_beat_only_after_player_finishes_VN",
+      "saveBeatRegistered": false,
+      "blockers": [
+        "scene_status_review_only",
+        "route_not_approved_for_runtime",
+        "unsupported_gate_kind:object_tap",
+        "story_beat_not_in_foundation",
+        "missing_accepted_portrait_variants"
+      ]
+    }
+  ]
+}
