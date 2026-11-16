@@ -2,6 +2,12 @@
 
 Baseline audited: `origin/main` after PR #266, SHA `832657c`. This PR is QA-only; it does not promote draft geometry, proposed story scenes, art, gameplay, save schema, or production routes.
 
+Task IDs: GAME-QA-01; related CODE-10-01, CODE-11-01, GFX-11-T09.
+Changes: Add a G1-G4 acceptance matrix and runner-registration contract test, with no gameplay or map promotion.
+Verification: Local Python unittest (2 tests) PASS; prior PR-head CI run 43956784200 failed governance on this evidence format; exact new-head CI is pending.
+Owner QA: NOT_RUN on physical devices and live Web; owner approval remains pending.
+Status impact: GAME-QA-01 stays PR_review / partial / qaState=automated / approvalState=pending.
+
 ## Task IDs
 
 Primary: `GAME-QA-01`. Related: `CODE-10-01`, `CODE-11-01`, `GFX-11-T09`.
