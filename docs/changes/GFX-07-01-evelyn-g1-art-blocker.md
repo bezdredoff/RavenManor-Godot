@@ -6,6 +6,8 @@ Verification: EXECUTED_PASS — original rejected-source audit --check; repair_v
 
 Owner QA: Original design explicitly selected in chat; repaired motion not approved. See repair_v1/README.md and original HANDOFF.md checklist. Real phone and layered foreground/door-sill QA NOT_RUN. Raised-step amplitude, side-leg overlap, mirrored hair part and planted-foot slip remain visual review items. No auto-approval or merge.
 
+Candidate cadence follow-up: `evelyn_visual.gd` now derives animation speed from inherited actor `move_speed` and visible height (4–18 FPS clamp, full-cycle target 0.8 visible heights); `evelyn_actor.gd` delegates segment execution to `super.start_segment()`; `preview_smoke.gd` asserts the selected 130px/s cadence. This is a **technical timing hypothesis**, not a silhouette/leg-occlusion repair or owner visual approval. The current motion GIF predates this update and must not be represented as evidence of the corrected cadence. Exact-head CI pending.
+
 Status impact: GFX-07-01 PR_review / partial in draft https://github.com/bezdredoff/RavenManor-Godot/pull/269; moving candidate now available, full G1 owner/device/occlusion acceptance remains open. Related tasks remain open. Owning shard only; no generated dashboard or frozen monolith edit.
 
 Baseline: 832657cbbed2511a38485ae869b9b021484eb7c8. Fresh GitHub search found no open PR at initial audit. UPDS main tree reconfirmed 3deed628efd6c22bcd1717f7c545b7d3ca865781; Raven existing directional/movement adapter reuse is specified with blob SHAs in the handoff. Historical bible coat/vest proposal is superseded for this asset by owner-accepted VN images; no new canonical outfit inferred.
