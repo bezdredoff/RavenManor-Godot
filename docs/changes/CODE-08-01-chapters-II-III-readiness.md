@@ -4,7 +4,7 @@ Task IDs: CODE-08-01; related VN-RUNTIME-01, CODE-03-01/02/03.
 Changes: Document Chapter II-III readiness dependencies and scene-by-scene handoff without approving production scenes.
 Verification: Catalog and gate review recorded in this manifest; pending exact-head Godot CI after test parse fix, not an executed chapter E2E.
 Owner QA: NOT_RUN; scene, art and physical hotspot approvals remain pending.
-Status impact: CODE-08-01 remains PR_review / partial; no canonical catalogs or release statuses modified.
+Status impact: CODE-08-01 remains ready / partial in campaign-core; this agent records supporting work on the already owned VN-RUNTIME-01 entry, without a duplicate cross-domain task.
 
 This is an integration contract, not approval of any production scene. Scene IDs, triggers and canonical text are read-only references to the current catalogs.
 
