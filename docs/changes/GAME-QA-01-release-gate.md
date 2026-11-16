@@ -2,6 +2,14 @@
 
 Baseline audited: `origin/main` after PR #266, SHA `832657c`. This PR is QA-only; it does not promote draft geometry, proposed story scenes, art, gameplay, save schema, or production routes.
 
+## Task IDs
+
+Primary: `GAME-QA-01`. Related: `CODE-10-01`, `CODE-11-01`, `GFX-11-T09`.
+
+## Changes
+
+Added the G1–G4 release acceptance matrix, manual/device checklist, and blocking-vs-advisory evidence rules. Added `tests/raven/test_game_qa_release_gate.py` to verify that both local runners retain the critical smoke registrations and reference existing test files. Registered that contract test in `scripts/check_data.sh` and `check.ps1`. Updated only the `qa-infrastructure` progress shard.
+
 ## G1–G4 acceptance matrix
 
 | Gate | Blocking automated evidence | Manual/device evidence still required | Current result |
@@ -36,4 +44,12 @@ No product defect was independently fixed. The release blockers to report to own
 
 ## Verification
 
-Local verification for this PR: `python -m unittest tests/raven/test_game_qa_release_gate.py` (expected PASS). Full Godot and Pages CI must be recorded against the PR head SHA; no merge or device acceptance is claimed here.
+Local verification actually run: `python -m unittest discover -s tests/raven -p 'test_game_qa_release_gate.py'` — **PASS, 2 tests**; `git diff --cached --check` — **PASS**. Godot was not available in the local Windows environment. PR #267 CI run `43946777966` previously passed `godot-runtime`, `room-builder`, and `art-pipeline`, but failed only the data-contract evidence-shape check; this follow-up commit is intended to rerun that gate at its new head.
+
+## Owner QA
+
+Owner/device acceptance is **pending**. Required evidence is the physical portrait matrix, Windows/Web input and refresh/offline flow, approved-map journey, full approved Season 1 completion, and Pages deployment. No owner acceptance or device verification is inferred from the local Python test or headless Godot CI.
+
+## Status impact
+
+`GAME-QA-01` remains `PR_review`, `implementationState=partial`, `qaState=automated`, and `approvalState=pending` in `data/raven/production/progress/qa-infrastructure.json`. This update fixes the PR evidence contract only; it does not weaken blocking tests or change unfinished-backlog status.
