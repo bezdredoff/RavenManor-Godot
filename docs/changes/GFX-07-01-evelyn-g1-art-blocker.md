@@ -6,7 +6,7 @@ Verification: EXECUTED_PASS — python assets/raven/chibi/evelyn/g1_candidate/au
 
 Owner QA: NOT_RUN. See assets/raven/chibi/evelyn/g1_candidate/HANDOFF.md for eight explicit checks covering identity, both legs, frame/pivot, turns, start/stop, pause/resume/cancel, 390×844 map scale, foreground occlusion, reduced motion and real phone. No auto-approval or merge.
 
-Status impact: GFX-07-01 partial/art-blocked evidence; PR_review only after the actual PR exists. Related tasks remain open. G1 Definition of Done is NOT MET. Owning shard only; no generated dashboard or frozen monolith edit.
+Status impact: GFX-07-01 PR_review / partial in draft https://github.com/bezdredoff/RavenManor-Godot/pull/269; art remains blocked. Related tasks remain open. G1 Definition of Done is NOT MET. Owning shard only; no generated dashboard or frozen monolith edit.
 
 Baseline: 832657cbbed2511a38485ae869b9b021484eb7c8. Fresh GitHub search found no open PR at initial audit. UPDS main tree reconfirmed 3deed628efd6c22bcd1717f7c545b7d3ca865781; Raven existing directional/movement adapter reuse is specified with blob SHAs in the handoff. Historical bible coat/vest proposal is superseded for this asset by owner-accepted VN images; no new canonical outfit inferred.
 
