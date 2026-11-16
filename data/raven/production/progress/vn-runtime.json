@@ -4,6 +4,17 @@
   "domain": "vn-runtime",
   "entries": [
     {
+      "id": "CODE-08-01",
+      "owner": "ChatGPT",
+      "updated": "2026-11-16",
+      "status": "PR_review",
+      "implementationState": "partial",
+      "qaState": "automated",
+      "approvalState": "not_recorded",
+      "priority": "P1",
+      "evidence": "Base origin/main 832657c after PR #266. Scoped dispatcher fix accepts strict integral JSON ordinals, rejects invalid/duplicate order, supports only authoritative snapshot gates, and preserves fail-closed production approval/art/locale/cue contracts. Synthetic approved-scene regression and Chapters II–III readiness manifest added in docs/changes/CODE-08-01-*.md. Canonical scene/status/route/save/art catalogs unchanged; real 20 unfinished scenes remain unapproved. CI/owner/device QA pending."
+    },
+    {
       "id": "CODE-03-01",
       "owner": "ChatGPT",
       "updated": "2026-11-03",
@@ -68,6 +79,10 @@
     }
   ],
   "assignments": [
+    {
+      "id": "CODE-08-01",
+      "workstreamId": "WS-VN-STUDIO"
+    },
     {
       "id": "CODE-03-01",
       "workstreamId": "WS-VN-STUDIO"

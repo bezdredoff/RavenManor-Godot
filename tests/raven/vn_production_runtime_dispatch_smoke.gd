@@ -91,6 +91,28 @@ func _initialize() -> void:
 	assert(_find(first_clear, without_level).is_empty())
 	without_level.firstClearLevels.append("RM-LVL-001")
 	assert(_find(first_clear, without_level).get("beatId") == BEAT)
+	var ordinals := _synthetic()
+	assert(_find(ordinals, state).get("beatId") == BEAT)
+	ordinals.routes.sceneTriggers[-1].ordinal = 900.5
+	assert(_find(ordinals, state).is_empty(), "Fractional ordinal accepted")
+	ordinals = _synthetic()
+	ordinals.routes.sceneTriggers[-1].ordinal = -1
+	assert(_find(ordinals, state).is_empty(), "Negative ordinal accepted")
+	ordinals = _synthetic()
+	var duplicate := ordinals.routes.sceneTriggers[-1].duplicate(true)
+	duplicate.sceneId = BEAT
+	ordinals.routes.sceneTriggers.append(duplicate)
+	assert(_find(ordinals, state).is_empty(), "Duplicate ordinal accepted")
+	var restoration := _synthetic()
+	restoration.routes.sceneTriggers[-1].gate = {"kind":"restoration_done", "ref":"RM-REST-001", "approvedRuntime":true, "proposedRuntime":false}
+	restoration.foundation.restorations["RM-REST-001"] = {}
+	assert(_find(restoration, state).is_empty())
+	var restored := state.duplicate(true)
+	restored.completedRestorations = ["RM-REST-001"]
+	assert(_find(restoration, restored).get("beatId") == BEAT)
+	var unsupported := _synthetic()
+	unsupported.routes.sceneTriggers[-1].gate.kind = "npc_tap"
+	assert(_find(unsupported, state).is_empty(), "Unsupported gate accepted")
 	# No new native resource or foundation entry is touched by smoke.
 	assert(Runtime.next_scene(state).is_empty())
 	assert(not Foundation.data.storyBeats.has(BEAT))
