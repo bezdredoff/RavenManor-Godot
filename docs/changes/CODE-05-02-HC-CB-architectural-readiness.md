@@ -1,5 +1,6 @@
 # CODE-05-02 — HC/CB architectural readiness (09D owner decision candidate)
 
+**PR:** https://github.com/bezdredoff/RavenManor-Godot/pull/278 (draft; unmerged)
 **Domain:** manor-map · **Priority:** P0 · **State:** DRAFT_ONLY / partial, owner decision outstanding.
 **Base:** main 0d1886b0d01491047dbd900b260757623c6ef9bc; reconciles merged #258/#261/#270/#272.
 
