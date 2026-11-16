@@ -75,6 +75,10 @@ func _run() -> void:
 		assert(qa.transition(ab).get("ok", false))
 		_drive(qa.host, doc)
 		assert(qa.host.active_room_id == b and qa.host.actor.position == contact_px)
+		# Verify the same door blocks return travel independently in reverse.
+		assert(qa.host.test_gate(door_id, "gated"))
+		assert(qa.transition(ba).get("error") == "locked-door")
+		assert(qa.host.test_gate(door_id, "open"))
 		assert(qa.walk_waypoint(qa._loaded["starts"][b]).get("ok", false))
 		_drive(qa.host, doc)
 		assert(qa.transition(ba).get("ok", false))
@@ -102,20 +106,24 @@ func _run() -> void:
 			removed = true
 	assert(removed)
 	var persisted := Routes.save_draft(BROKEN, missing)
-	assert(persisted.get("ok", false))
-	var result := Adapter.load_source(Preview.USER, BROKEN)
-	if result.get("ok", false):
-		var isolated = QA.instantiate()
-		root.add_child(isolated)
-		await process_frame
-		assert(isolated.load_source(Preview.USER, BROKEN))
-		assert(isolated.restart_island("RM-ROOM-HALL"))
-		assert(isolated.host.test_gate("RM-DOOR-HALL-CORRIDOR", "open"))
-		var start_feet: Vector2 = isolated.host.actor.position
-		assert(not isolated.transition("QA-09B-HC-AB").get("ok", false))
-		assert(isolated.host.actor.position == start_feet)
-		assert(isolated.host.active_room_id == "RM-ROOM-HALL")
-		isolated.queue_free()
+	# Either the authored document is rejected immediately or its disconnected
+	# target must be unreachable at runtime. Both are fail-closed outcomes.
+	if not persisted.get("ok", false):
+		assert(not Routes.validate(missing).get("ok", false))
+	else:
+		var result := Adapter.load_source(Preview.USER, BROKEN)
+		if result.get("ok", false):
+			var isolated = QA.instantiate()
+			root.add_child(isolated)
+			await process_frame
+			assert(isolated.load_source(Preview.USER, BROKEN))
+			assert(isolated.restart_island("RM-ROOM-HALL"))
+			assert(isolated.host.test_gate("RM-DOOR-HALL-CORRIDOR", "open"))
+			var start_feet: Vector2 = isolated.host.actor.position
+			assert(not isolated.transition("QA-09B-HC-AB").get("ok", false))
+			assert(isolated.host.actor.position == start_feet)
+			assert(isolated.host.active_room_id == "RM-ROOM-HALL")
+			isolated.queue_free()
 	qa.queue_free()
 	assert(FileAccess.get_sha256("res://a_detailed_top_down_isometric_game_map_illustratio.png") == original_art)
 	assert(FileAccess.get_file_as_string(Blueprint.PATH) == before_blueprint)
