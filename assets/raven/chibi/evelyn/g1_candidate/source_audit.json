@@ -1,0 +1,148 @@
+{
+  "sourceSha256": "8241e8b214aa46f8f2b8b1f6b2697fe11645c378d9bc874c39f3037c5a42709a",
+  "mode": "RGBA",
+  "size": [
+    1024,
+    1536
+  ],
+  "zeroAlphaPixels": 887371,
+  "totalPixels": 1572864,
+  "lowNonzeroAlphaPixels1to15": 104193,
+  "nonzeroAlphaFraction": 0.435825,
+  "cells": [
+    {
+      "facing": "down",
+      "column": 0,
+      "alphaAbove32BoundsExclusive": [
+        74,
+        48,
+        218,
+        494
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "down",
+      "column": 1,
+      "alphaAbove32BoundsExclusive": [
+        61,
+        48,
+        206,
+        497
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "down",
+      "column": 2,
+      "alphaAbove32BoundsExclusive": [
+        46,
+        48,
+        190,
+        494
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "down",
+      "column": 3,
+      "alphaAbove32BoundsExclusive": [
+        32,
+        48,
+        175,
+        497
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "up",
+      "column": 0,
+      "alphaAbove32BoundsExclusive": [
+        73,
+        39,
+        218,
+        490
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "up",
+      "column": 1,
+      "alphaAbove32BoundsExclusive": [
+        62,
+        39,
+        210,
+        491
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "up",
+      "column": 2,
+      "alphaAbove32BoundsExclusive": [
+        44,
+        39,
+        189,
+        490
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "up",
+      "column": 3,
+      "alphaAbove32BoundsExclusive": [
+        31,
+        39,
+        180,
+        491
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "side",
+      "column": 0,
+      "alphaAbove32BoundsExclusive": [
+        64,
+        34,
+        218,
+        487
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "side",
+      "column": 1,
+      "alphaAbove32BoundsExclusive": [
+        43,
+        32,
+        239,
+        486
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "side",
+      "column": 2,
+      "alphaAbove32BoundsExclusive": [
+        39,
+        34,
+        193,
+        487
+      ],
+      "productionValidated": false
+    },
+    {
+      "facing": "side",
+      "column": 3,
+      "alphaAbove32BoundsExclusive": [
+        20,
+        34,
+        215,
+        487
+      ],
+      "productionValidated": false
+    }
+  ],
+  "result": "REJECTED_ART_NOT_PRODUCTION_ATLAS",
+  "visualJudgments": "See HANDOFF.md; alpha bounds do not prove anatomy, identity, ground contact or walking quality."
+}
