@@ -2,6 +2,12 @@
 
 **Task / domain:** GAME-LOOP-01 / campaign-core · **priority:** P0 · **branch:** `agent/campaign-core/GAME-LOOP-01-G2-host-persistence` · **baseline:** `main@0d1886b0d01491047dbd900b260757623c6ef9bc` · **status:** PR review only; **G2 not accepted**.
 
+Task IDs: GAME-LOOP-01 (G2 isolated host candidate, not accepted)
+Changes: Reuse Raven navigation/actor and story/store; add explicit isolated QA gameplay host.
+Verification: Standalone Godot smoke authored; execution and exact-head CI pending.
+Owner QA: Pending physical HC/CB geometry, Evelyn walker, phone/device and player-facing acceptance.
+Status impact: campaign-core GAME-LOOP-01 remains PR_review / partial / owner approval pending.
+
 ## Changes
 
 1. `scripts/raven/raven_hotspot_gameplay_bridge.gd`: extract pure `story_available` / `story_arrival_proposal` used by both the G1 route bridge and G2 host. The arrival proposal evaluates existing `RavenSliceDirector.events_for`, stable `RM-*` IDs, and the authoritative reducer; it **never** persists progress or pretends to confirm movement. G1 event keys and persistence remain unchanged.
