@@ -6,6 +6,8 @@ $ErrorActionPreference = 'Stop'
 $projectPath = $PSScriptRoot
 py -m unittest discover -s "$projectPath/tests/raven" -p test_vns5_contract.py
 if ($LASTEXITCODE -ne 0) { throw 'VNS5 contract audit failed.' }
+py -m unittest discover -s "$projectPath/tests/raven" -p test_game_qa_release_gate.py
+if ($LASTEXITCODE -ne 0) { throw 'GAME-QA-01 release-gate runner contract failed.' }
 py "$projectPath/scripts/raven/tools/reconcile_gap_statuses.py" --check
 if ($LASTEXITCODE -ne 0) { throw 'Backlog gap status audit failed.' }
 py "$projectPath/scripts/raven/tools/validate_backlog_dependencies.py"
@@ -123,6 +125,9 @@ Invoke-GodotCheck 'Live Raven VN gameplay backgrounds' @('--headless', '--path',
 Invoke-GodotCheck 'Hall VN runtime UI smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/hall_tea_vn_ui_smoke.gd', '--quit-after', '240') 'Raven Manor Hall VN UI runtime smoke passed'
 Invoke-GodotCheck 'Whole season1 map smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/season1_map_smoke.gd', '--quit-after', '120') 'Raven Manor continuous season1 map smoke passed'
 Invoke-GodotCheck 'Campaign Season 1 executability audit' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/campaign_season1_audit_smoke.gd', '--quit-after', '240') 'Raven Manor campaign Season 1 audit passed'
+Invoke-GodotCheck 'GAME-LOOP-01A hotspot to gameplay QA' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/game_loop_01a_hotspot_bridge_smoke.gd', '--quit-after', '240') 'Raven GAME-LOOP-01A hotspot-to-gameplay bridge smoke passed'
+Invoke-GodotCheck 'Match-3 session persistence' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_session_smoke.gd', '--quit-after', '180') 'Raven Match-3 session persistence and booster transaction smoke passed'
+Invoke-GodotCheck 'Match-3 checkpoint' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_checkpoint_smoke.gd', '--quit-after', '120') 'Raven Manor Match-3 replay checkpoint smoke passed'
 
 Invoke-GodotCheck 'UPDS VN shell layout and input' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_layout_smoke.gd', '--quit-after', '600') 'Raven UPDS VN shell layout and input smoke passed'
 Invoke-GodotCheck 'VN game frame safe-area and locale overflow' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_shell_safe_area_smoke.gd', '--quit-after', '240') 'Raven VN game frame safe-area and locale overflow smoke passed'
@@ -132,5 +137,6 @@ Invoke-GodotCheck 'Procedural audio runtime' @('--headless', '--path', $projectP
 
 Invoke-GodotCheck 'VN persisted read-only Skip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_read_skip_smoke.gd', '--quit-after', '600') 'Raven VN persisted read-only Skip smoke passed'
 Invoke-GodotCheck 'VN tri-locale save/reload parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_locale_save_parity_smoke.gd', '--quit-after', '240') 'Raven tri-locale VN save/reload parity smoke passed'
+Invoke-GodotCheck 'Canonical-only VN runtime dispatch' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_production_runtime_dispatch_smoke.gd', '--quit-after', '240') 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed'
 
 Invoke-GodotCheck 'Match-3 viewport pointer and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_viewport_input_smoke.gd', '--quit-after', '240') 'Raven Match-3 viewport pointer and modal smoke passed'

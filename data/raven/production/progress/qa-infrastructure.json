@@ -184,13 +184,13 @@
     },
     {
       "id": "GAME-QA-01",
-      "status": "proposed",
+      "status": "PR_review",
       "priority": "P0",
-      "owner": "Unassigned",
-      "updated": "2026-11-03",
-      "evidence": "Planning only. Owner approved scope; implementation and QA pending. Related: CODE-11-01.",
-      "implementationState": "not_started",
-      "qaState": "not_started",
+      "owner": "ChatGPT",
+      "updated": "2026-11-16",
+      "evidence": "QA-only release-gate PR from main 832657c: added docs/changes/GAME-QA-01-release-gate.md and test_game_qa_release_gate.py; registered runner-contract check in scripts/check.sh via check_data.sh and check.ps1. Existing critical journey suites retained; draft map/proposed scenes remain fail-closed. Automated local test pending PR-head CI; physical/browser/Web/full-season acceptance remains NOT RUN or BLOCKED.",
+      "implementationState": "partial",
+      "qaState": "automated",
       "approvalState": "pending"
     },
     {
