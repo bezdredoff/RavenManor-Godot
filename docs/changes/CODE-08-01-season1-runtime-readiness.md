@@ -28,3 +28,8 @@ Not performed. Device, owner visual, native save/relaunch and real approved-scen
 ## Status impact
 
 `CODE-08-01` is `PR_review` / `partial` / automated evidence only. The real 20 unfinished scenes remain unapproved; this PR proves only synthetic selection and prepares a traceable Agent B handoff.
+
+
+## Post-#273 regression revalidation
+
+Merged #273 corrects the prior false foreign-shard detection for PRs authored before main advanced. New run required at this PR's current head to validate both strict governance and production dispatcher tests. Historical run `43962825851` passed Godot runtime after its old hardcoded JSON-ordinal positive control was updated, but failed the obsolete PR-base governance gate. No authored production scene approval is implied; all proposed Chapter II–III scene gates and content approvals stay fail-closed. As of this note, PR #271 is still open, not merged.
