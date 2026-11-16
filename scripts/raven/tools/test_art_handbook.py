@@ -16,8 +16,8 @@ book=importlib.util.module_from_spec(spec);spec.loader.exec_module(book)
 class ArtHandbookTests(unittest.TestCase):
     def test_current_published_images_and_artifact_evidence(self):
         p=book.payload();data=p['catalog']
-        self.assertEqual(len(data['assets']),155)
-        self.assertEqual(len(data['recipes']),66)
+        self.assertEqual(len(data['assets']),160)
+        self.assertEqual(len(data['recipes']),69)
         cup=next(a for a in data['assets'] if a['id']=='RM-M3-CUP-CHATGPT-CANDIDATE-V1')
         self.assertEqual(cup['status'],'pending_review')
         self.assertEqual(cup['image'],'assets/raven/match3/generated/cup-chatgpt-candidate-v1.png')

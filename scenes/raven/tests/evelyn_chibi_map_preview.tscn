@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/raven/tests/first_floor_hall_movement_pilot.tscn" id="1_base"]
+[ext_resource type="Script" path="res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/evelyn_actor.gd" id="2_actor"]
+[ext_resource type="Script" path="res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/map_review.gd" id="3_review"]
+
+[node name="EvelynChibiMapPreview" instance=ExtResource("1_base")]
+
+[node name="Onoe" parent="." index="2"]
+script = ExtResource("2_actor")
+
+[node name="EvelynReview" type="Node" parent="."]
+script = ExtResource("3_review")
