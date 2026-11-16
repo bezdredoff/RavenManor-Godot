@@ -5,7 +5,7 @@ Task IDs: CODE-08-01, VN-RUNTIME-01, CODE-03-01, CODE-03-02, CODE-03-03
 Changes: Harden synthetic approved-scene dispatcher ordinal and snapshot gate validation; canonical scene approvals remain unchanged.
 Verification: Prior exact-head CI 43957056367 FAILED on GDScript test parse and governance fields; new-head CI must execute the Godot runtime suite before merge.
 Owner QA: NOT_RUN; no physical devices, production VN scene promotion or owner content acceptance.
-Status impact: CODE-08-01 remains PR_review / partial / automated-only evidence.
+Status impact: Canonical CODE-08-01 stays ready / partial in campaign-core; this VN-runtime PR records supporting evidence on VN-RUNTIME-01, without duplicating the task ID.
 
 ## Changes
 
@@ -27,9 +27,14 @@ Not performed. Device, owner visual, native save/relaunch and real approved-scen
 
 ## Status impact
 
-`CODE-08-01` is `PR_review` / `partial` / automated evidence only. The real 20 unfinished scenes remain unapproved; this PR proves only synthetic selection and prepares a traceable Agent B handoff.
+`CODE-08-01` remains `ready` / `partial` in its authoritative `campaign-core` shard; this PR updates only `VN-RUNTIME-01` evidence in the `vn-runtime` shard. Task closeout belongs to the campaign-core owner after merge. The real 20 unfinished scenes remain unapproved; this PR proves only synthetic selection and prepares a traceable Agent B handoff.
 
 
 ## Post-#273 regression revalidation
 
 Merged #273 corrects the prior false foreign-shard detection for PRs authored before main advanced. New run required at this PR's current head to validate both strict governance and production dispatcher tests. Historical run `43962825851` passed Godot runtime after its old hardcoded JSON-ordinal positive control was updated, but failed the obsolete PR-base governance gate. No authored production scene approval is implied; all proposed Chapter II–III scene gates and content approvals stay fail-closed. As of this note, PR #271 is still open, not merged.
+
+
+## Sharded-ledger correction (2026-11-16)
+
+Previous CI exposed an actual duplicate task ID across campaign-core and vn-runtime. The authoritative `CODE-08-01` task and `WS-CAMPAIGN` assignment were already present in `data/raven/production/progress/campaign-core.json`; this agent does not own that shared integration ledger. Removed the accidental duplicate entry and `WS-VN-STUDIO` assignment from the local vn-runtime shard. Added supporting PR #271 evidence to existing `VN-RUNTIME-01` without closing that parent. Tests: `progress_shards.py` and complete exact-head CI pending; owner/device and authored scene approvals remain unclaimed.
