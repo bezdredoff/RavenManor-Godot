@@ -1,8 +1,9 @@
 """GAME-QA-01: blocking runner/package registration, not future G2 acceptance.
 
 The already-implemented smoke suites remain blocking on both local runners.
-Production HC/CB approval, the future Evelyn gameplay actor, the menu-to-G2
-route and physical Web/mobile acceptance are deliberately NOT asserted here.
+Owner-approved HC/CB direction and the merged Evelyn gameplay walker are now
+covered by isolated smoke. Production geometry, normal menu-to-G2 route and
+physical Web/mobile acceptance are deliberately NOT asserted here.
 """
 from pathlib import Path
 import re
@@ -33,6 +34,9 @@ CRITICAL_G2 = (
     "vn_english_localization_smoke.gd",
     "vn_belarusian_localization_smoke.gd",
     "device_matrix_reachability_smoke.gd",
+    "gfx_07_01_evelyn_gameplay_host_smoke.gd",
+    "map_qa_09d_hc_cb_architectural_smoke.gd",
+    "game_loop_g2_host_smoke.gd",
 )
 
 
