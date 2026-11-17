@@ -1,12 +1,12 @@
 # VN-RUNTIME-02 — Hall Tea production-dispatch boundary and Chapter II–III handoff
 
-Task IDs: VN-RUNTIME-02 (vn-runtime, P1).
+Task IDs: VN-RUNTIME-01 (registered P1 owner; VN-RUNTIME-02 is the bounded follow-up delivery label, not yet a registered task ID).
 Changes: Physically triggered production VN scenes no longer auto-play; exact-target, production-host/footpoint opt-in selector; Hall Tea tri-locale synthetic fixture; eight-scene handoff.
 Verification: Local Godot NOT_RUN; exact-head GitHub CI PENDING; existing registered Chapter II–III smoke extended, no art/production promotion.
 Owner QA: NOT_RUN; Ada offer_tray/dry_amused, Hall/table physical arrival, phone tri-locale presentation and save/Continue still require approval.
-Status impact: vn-runtime only, new VN-RUNTIME-02 PR_review/partial/manual_pending; real Chapter II–III canonical scenes remain disabled, CODE-08-01 untouched.
+Status impact: vn-runtime only, existing VN-RUNTIME-01 progress evidence updated for draft PR #287; no new unknown task ID. Eight canonical Chapter II–III scenes remain disabled, CODE-08-01 untouched.
 
-**Task IDs:** VN-RUNTIME-02 (vn-runtime, P1). **Baseline:** `main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24` after merged #271, #277, #280 (2026-11-17). **Owner QA:** NOT_RUN. **Production promotion:** NO.
+**Task IDs:** registered VN-RUNTIME-01 (vn-runtime, P1); VN-RUNTIME-02 is a follow-up delivery label pending integration-owner registration. **Baseline:** `main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24` after merged #271, #277, #280 (2026-11-17). **Owner QA:** NOT_RUN. **Production promotion:** NO.
 
 ## Changes and exact ownership
 
@@ -14,7 +14,7 @@ Status impact: vn-runtime only, new VN-RUNTIME-02 PR_review/partial/manual_pendi
 - `next_scene_at_confirmed_hotspot(host, hotspot_id, locale)`: new **opt-in** production selector, using the actual Raven gameplay host script, non-draft source, actor not moving, no pending door transition, confirmed authored room/interaction anchor and a ≤0.25-unit physical footpoint check. It does not accept arbitrary `approved=true` or `tap=true` flags, does not mutate/reward/save, and does not expose canonical scenes lacking scene, route, foundation, locale, cue, accepted asset and predecessor approvals. Agent B must call it only after committing the real map arrival; there is **no new player-facing activation** in this PR.
 - Selection returns exact `interactionTarget` and strict integral `ordinal`, making the proposed host handoff reviewable. Canonical `RM-BEAT-XX-YY-L001...` order is now required before a scene can be selected; no silent save-cursor remapping on reordered source.
 - The already registered `vn_chapters_ii_iii_readiness_fixture.gd` regression exercises Hall Tea with a **deep-copy synthetic** runtime/route/art approval, all 12 real canonical lines in RU/BE/EN, correct `hall_chair_table` targeting, unrelated-target rejection, auto-play rejection and fake-host rejection. It retains existing reducer idempotence, Save/Continue, read-only Skip, choice/Match-3 boundary and missing-art/locale/cue negative tests. It is invoked from `vn_production_runtime_dispatch_smoke.gd` in normal CI.
-- Only this domain's progress shard changes. No canonical text, approved assets, runtime statuses/routes, Foundation, shared gameplay host, reducer, snapshot, store, `vertical_slice.gd`, runner or generated dashboard changes.
+- Only this domain's existing registered progress entry changes; VN-RUNTIME-02 is not yet a known task ID in the shared work-package catalog. No canonical text, approved assets, runtime statuses/routes, Foundation, shared gameplay host, reducer, snapshot, store, `vertical_slice.gd`, runner or generated dashboard changes.
 
 ## Why the production auto-boundary matters
 
