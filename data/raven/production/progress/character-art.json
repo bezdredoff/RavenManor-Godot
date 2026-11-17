@@ -318,10 +318,10 @@
     {
       "id": "GFX-05-08",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Character compositor has containment/layout handling, but no full native portrait/device QA proof. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Character compositor has containment/layout handling, but no full native portrait/device QA proof. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-17 VN-ART-01 documentation-only reference audit: draft #285 contains 0/7 new portraits; 43 Chapter II–III cue appearances remain blocked. Removed unregistered VN-ART-01 live task/assignment after data-contract CI 44139046614 identified the unknown ID. No art acceptance or task completion. Integration owner may register a distinct work package later if required; existing art task statuses unchanged.",
       "status": "ready",
       "priority": "P1",
-      "updated": "2026-11-03",
+      "updated": "2026-11-17",
       "implementationState": "partial",
       "qaState": "manual_pending",
       "approvalState": "pending"
@@ -427,17 +427,6 @@
       "evidence": "\n2026-11-03 P1 RELEASE-SCOPE AUDIT (priority only, status unchanged): Complete all-poses held-object contradiction matrix is a follow-up after scene-specific VN-CAST-MATRIX QA; does not invalidate accepted art. Future work remains open if status is proposed/ready. No approval, art completion, runtime or device acceptance claimed. See docs/audits/P1_WORKSTREAMS_SCOPE_20261103.md.",
       "priority": "P2",
       "updated": "2026-11-03"
-    },
-    {
-      "id": "VN-ART-01",
-      "status": "ready",
-      "owner": "character-art",
-      "updated": "2026-11-17",
-      "priority": "P1",
-      "implementationState": "not_recorded",
-      "qaState": "not_recorded",
-      "approvalState": "pending",
-      "evidence": "Baseline main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24. Audited Chapter II–III readiness: 7 exact missing pose x emotion combinations, 43 cue appearances; 62 approved reference frames preserved. Reference-only visual sheet and per-asset blockers in docs/production/VN_ART_01_REFERENCE_CONTACT_SHEET.md and unique docs/changes/VN-ART-01-portrait-blocker-and-reference-audit.md. No generated candidate images, Godot import/preview or owner approvals; production registration remains pending."
     }
   ],
   "assignments": [
@@ -484,10 +473,6 @@
     {
       "id": "GFX-06-10",
       "p2ReentryGroup": "P2-CONDITIONAL-PIPELINE"
-    },
-    {
-      "id": "VN-ART-01",
-      "workstreamId": "WS-VN-STUDIO"
     }
   ]
 }
