@@ -1,5 +1,11 @@
 # MAP-PROD-01 — HC/CB Godot geometry, Evelyn and production handoff
 
+Task IDs: MAP-PROD-01; scoped continuation of CODE-05-02.
+Changes: Inactive Godot-rendered HC/CB door and floor artwork, Evelyn preview, explicit candidate calibration, QA tests and capture workflow.
+Verification: Existing Godot 09B and 09D tests passed in focused CI; candidate test failure diagnosed and correction submitted; exact-head verification pending.
+Owner QA: RM-DEC-030 architectural positions approved; actual render, occlusion, headroom and physical-phone acceptance pending.
+Status impact: CODE-05-02 remains P0 partial; no production activation or merge.
+
 Task ID: `MAP-PROD-01` · domain `manor-map` · P0 · 2026-11-17. Base `ddcc8a646ffbfa60dcfea43849a592bfdddd9f24` (#257/#261/#270/#278/#280 merged). This is an **inactive architectural/art candidate** under the owner-approved RM-DEC-030 positions, **not an owner-accepted production passage**.
 
 ## Changes
