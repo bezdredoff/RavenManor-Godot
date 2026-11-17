@@ -184,11 +184,11 @@
     },
     {
       "id": "GAME-QA-01",
-      "status": "PR_review",
+      "status": "in_progress",
       "priority": "P1",
       "owner": "ChatGPT",
       "updated": "2026-11-17",
-      "evidence": "#267 MERGED 2026-11-16 (0f34235ee28e46edd8ce9c39c3f397ec9add4d77), exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43964409306. GAME-QA-01 G2 follow-up on main 0d1886b0d01491047dbd900b260757623c6ef9bc: existing G1-G4 gate retained; Windows runner gains nine already-existing blocking G2 cases; runner contract enforces exact-once registration and Pages shipped-game packaging assertions. PR #276 https://github.com/bezdredoff/RavenManor-Godot/pull/276 open on agent/qa-infrastructure/GAME-QA-01-G2-regression; initial exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524 at 6ba1d3ae46b399af71228174b852fc2e0a786f59. Final evidence-only SHA CI pending. Implementation partial; current QA is automated, NOT physical/device/browser proof. G2 HC/CB, Agent B/D production integrations and owner acceptance still pending. Evidence docs/changes/GAME-QA-01-G2-regression-20261117.md.",
+      "evidence": "#267 MERGED 2026-11-16, exact-head CI PASS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43964409306. #276 GAME-QA-01 G2 runner parity/matrix MERGED 2026-11-17 at b77d282471c7c6880db99f75e2acc1776b60c6f7, final head f23fddf28fc68366e64135cb4d83a1d81359d4f2 exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981606512. #280 integrated merged #275/#277/#276/#278/#279 and registered HC/CB 09D + G2 host tests in both runners; MERGED at ddcc8a646ffbfa60dcfea43849a592bfdddd9f24, exact-head CI PASS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44072750669. Post-merge main exact SHA ddcc8a646ffbfa60dcfea43849a592bfdddd9f24: full GitHub CI and Pages deploy SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44073202009; Godot job explicitly PASS GFX-07-01 Evelyn host, CODE-05-02/09D architecture and GAME-LOOP-01 G2 host/Continue. Existing G1–G4 release matrix and blocking Linux/Windows regression coverage retained. QA parent remains in_progress/partial/P1 with automated evidence only: normal menu→G2 production route, physical HC/CB surfaces/collision/occlusion, real Windows/browser/phone QA and owner acceptance still BLOCKED/NOT_RUN. See docs/changes/GAME-QA-01-G2-regression-20261117.md and docs/changes/GAME-QA-01-postmerge-reconciliation-20261117.md.",
       "implementationState": "partial",
       "qaState": "automated",
       "approvalState": "pending"
