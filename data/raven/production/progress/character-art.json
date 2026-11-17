@@ -318,10 +318,10 @@
     {
       "id": "GFX-05-08",
       "owner": "ChatGPT",
-      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Character compositor has containment/layout handling, but no full native portrait/device QA proof. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.",
+      "evidence": "\n2026-11-03 OWNER-SCOPE P0 REVIEW: Character compositor has containment/layout handling, but no full native portrait/device QA proof. [Scope audit: docs/production/GFX_P0_SCOPE_RECONCILIATION_20261103_RU.md]. Legacy auto-generated P0 by stage is overridden with task-specific priority P1. Status proposed -> ready; evidence of the 62 accepted cast frames / 26 accepted VN backgrounds is distinct from map chibi, keyframe animations, props, Match-3 and device acceptance.\n2026-11-03 OWNER QA FEEDBACK: User reports requested manual checks passed. Per-scene cast fallback, safe zones and all supported device outputs remain distinct from one end-to-end authoring walkthrough. Current implementation/status/qa/approval fields are retained until required task-specific artifacts or evidence are available; do not misstate a complete device matrix.\n2026-11-17 VN-ART-01 documentation-only reference audit: draft #285 contains 0/7 new portraits; 43 Chapter II–III cue appearances remain blocked. Removed unregistered VN-ART-01 live task/assignment after data-contract CI 44139046614 identified the unknown ID. No art acceptance or task completion. Integration owner may register a distinct work package later if required; existing art task statuses unchanged.",
       "status": "ready",
       "priority": "P1",
-      "updated": "2026-11-03",
+      "updated": "2026-11-17",
       "implementationState": "partial",
       "qaState": "manual_pending",
       "approvalState": "pending"
