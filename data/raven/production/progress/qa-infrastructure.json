@@ -184,12 +184,12 @@
     },
     {
       "id": "GAME-QA-01",
-      "status": "PR_review",
+      "status": "merged",
       "priority": "P1",
       "owner": "ChatGPT",
       "updated": "2026-11-17",
-      "evidence": "#267 MERGED 2026-11-16 (0f34235ee28e46edd8ce9c39c3f397ec9add4d77), exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43964409306. GAME-QA-01 G2 follow-up on main 0d1886b0d01491047dbd900b260757623c6ef9bc: existing G1-G4 gate retained; Windows runner gains nine already-existing blocking G2 cases; runner contract enforces exact-once registration and Pages shipped-game packaging assertions. PR #276 https://github.com/bezdredoff/RavenManor-Godot/pull/276 open on agent/qa-infrastructure/GAME-QA-01-G2-regression; initial exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524 at 6ba1d3ae46b399af71228174b852fc2e0a786f59. Final evidence-only SHA CI pending. Implementation partial; current QA is automated, NOT physical/device/browser proof. G2 HC/CB, Agent B/D production integrations and owner acceptance still pending. Evidence docs/changes/GAME-QA-01-G2-regression-20261117.md.",
-      "implementationState": "partial",
+      "evidence": "#267 MERGED 2026-11-16 (0f34235ee28e46edd8ce9c39c3f397ec9add4d77), exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43964409306. GAME-QA-01 G2 follow-up on main 0d1886b0d01491047dbd900b260757623c6ef9bc: existing G1-G4 gate retained; Windows runner gains nine already-existing blocking G2 cases; runner contract enforces exact-once registration and Pages shipped-game packaging assertions. PR #276 https://github.com/bezdredoff/RavenManor-Godot/pull/276 open on agent/qa-infrastructure/GAME-QA-01-G2-regression; initial exact-head CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981227524 at 6ba1d3ae46b399af71228174b852fc2e0a786f59. Final evidence-only SHA CI pending. Implementation partial; current QA is automated, NOT physical/device/browser proof. G2 HC/CB, Agent B/D production integrations and owner acceptance still pending. Evidence docs/changes/GAME-QA-01-G2-regression-20261117.md.\n2026-11-17 GAME-QA-02 own-shard reconciliation: PR #276 MERGED at b77d282471c7c6880db99f75e2acc1776b60c6f7, exact final PR head f23fddf28fc68366e64135cb4d83a1d81359d4f2 CI SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/43981606512; #280 main ddcc8a646ffbfa60dcfea43849a592bfdddd9f24 full six-job CI and Pages deploy SUCCESS https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44073202009. Scoped QA runner contract delivery is merged, NOT full G2 acceptance. New GAME-QA-02 entry cannot be created until integration owner registers its canonical work-package ID. GAME-QA-02 candidate evidence docs/changes/GAME-QA-02-production-g2-acceptance.md; normal menu route and physical door remain blocked; device/browser/owner gameplay QA NOT_RUN.",
+      "implementationState": "delivered",
       "qaState": "automated",
       "approvalState": "pending"
     },
