@@ -69,6 +69,7 @@ func _ready() -> void:
 	camera = Camera2D.new()
 	add_child(camera)
 	camera.make_current()
+	get_viewport().size_changed.connect(_resize_camera)
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
 	_build_hud()
@@ -201,11 +202,6 @@ func _resize_camera() -> void:
 		return
 	var viewport_width := get_viewport_rect().size.x
 	camera.zoom = Vector2.ONE * _zoom * clampf(viewport_width / 390.0, 0.7, 1.1)
-
-
-func _notification(what: int) -> void:
-	if what == NOTIFICATION_RESIZED:
-		_resize_camera()
 
 
 func _rebuild_targets() -> void:
