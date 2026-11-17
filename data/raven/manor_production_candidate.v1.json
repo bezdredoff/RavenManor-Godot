@@ -1,0 +1,2653 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-calibrated-production-world-plan",
+  "provenance": {
+    "approval": "RENDER_REVIEW_PENDING",
+    "productionReady": false,
+    "activationEnabled": false,
+    "runtimeAuthority": false,
+    "coordinateSpace": "world-plan",
+    "calibrationVersion": 2,
+    "ownerDecision": "RM-DEC-030",
+    "authoringSource": "assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json",
+    "authoringSourceTextSha256": "90548edf6310c643d004384db1aaefb1102f470549d5306e4b93a51fef76ea22",
+    "authoringSourceHashEncoding": "UTF-8 with LF; independent of Git checkout EOL",
+    "roomArtCalibration": {
+      "status": "candidate",
+      "version": 2,
+      "assetHash": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+      "transform": {
+        "translation": [
+          128,
+          128
+        ],
+        "uniformScale": 1,
+        "controlPoints": [
+          {
+            "image": [
+              824,
+              400
+            ],
+            "world": [
+              952,
+              528
+            ]
+          },
+          {
+            "image": [
+              528,
+              376
+            ],
+            "world": [
+              656,
+              504
+            ]
+          },
+          {
+            "image": [
+              824,
+              760
+            ],
+            "world": [
+              952,
+              888
+            ]
+          },
+          {
+            "image": [
+              440,
+              344
+            ],
+            "world": [
+              568,
+              472
+            ]
+          }
+        ]
+      },
+      "scale": {
+        "sourcePixelsPerMetre": 40,
+        "doorClearWidthMetres": 1.2,
+        "footRadiusMetres": 0.3,
+        "status": "DESIGN_TARGET_NOT_SURVEYED",
+        "paintedElevationDegrees": 65,
+        "applySecondProjection": false
+      },
+      "rooms": {
+        "RM-ROOM-HALL": {
+          "texturePath": "res://a_detailed_top_down_isometric_game_map_illustratio.png",
+          "bounds": [
+            128,
+            128,
+            1672,
+            941
+          ],
+          "cameraZoom": 1.0,
+          "actorHeight": 62.0,
+          "artLayer": "hc-cb-v3",
+          "artOrigin": [
+            128,
+            128
+          ]
+        },
+        "RM-ROOM-CORRIDOR": {
+          "texturePath": "res://a_detailed_top_down_isometric_game_map_illustratio.png",
+          "bounds": [
+            128,
+            128,
+            1672,
+            941
+          ],
+          "cameraZoom": 1.0,
+          "actorHeight": 62.0,
+          "artLayer": "hc-cb-v3",
+          "artOrigin": [
+            128,
+            128
+          ]
+        },
+        "RM-ROOM-BEDROOM": {
+          "texturePath": "res://a_detailed_top_down_isometric_game_map_illustratio.png",
+          "bounds": [
+            128,
+            128,
+            1672,
+            941
+          ],
+          "cameraZoom": 1.0,
+          "actorHeight": 62.0,
+          "artLayer": "hc-cb-v3",
+          "artOrigin": [
+            128,
+            128
+          ]
+        }
+      }
+    }
+  },
+  "physicalConstraints": {
+    "footRadiusWorld": 12,
+    "noGoPolygons": [
+      {
+        "id": "QA-08B-BED",
+        "roomId": "RM-ROOM-BEDROOM",
+        "pointsPx": [
+          [
+            229,
+            242
+          ],
+          [
+            383,
+            242
+          ],
+          [
+            383,
+            369
+          ],
+          [
+            229,
+            369
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Bed, canopy and foot stool"
+      },
+      {
+        "id": "QA-08B-BED-DESK",
+        "roomId": "RM-ROOM-BEDROOM",
+        "pointsPx": [
+          [
+            289,
+            204
+          ],
+          [
+            386,
+            204
+          ],
+          [
+            386,
+            250
+          ],
+          [
+            289,
+            250
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Bedroom desk"
+      },
+      {
+        "id": "QA-08B-BATH-WALL",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            535,
+            326
+          ],
+          [
+            688,
+            326
+          ],
+          [
+            688,
+            344
+          ],
+          [
+            535,
+            344
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Bathroom foreground wall; vignette approached from south"
+      },
+      {
+        "id": "QA-08B-ARCHIVE-CHAIR",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            387,
+            508
+          ],
+          [
+            457,
+            508
+          ],
+          [
+            457,
+            579
+          ],
+          [
+            387,
+            579
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Armchair including feet"
+      },
+      {
+        "id": "QA-08B-ARCHIVE-DESK",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            388,
+            625
+          ],
+          [
+            519,
+            625
+          ],
+          [
+            519,
+            700
+          ],
+          [
+            388,
+            700
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Desk, book and chair"
+      },
+      {
+        "id": "QA-08B-ARCHIVE-PLANT",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            329,
+            483
+          ],
+          [
+            380,
+            483
+          ],
+          [
+            380,
+            541
+          ],
+          [
+            329,
+            541
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Left plant and pot"
+      },
+      {
+        "id": "QA-08B-ARCHIVE-GLOBE",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            331,
+            614
+          ],
+          [
+            373,
+            614
+          ],
+          [
+            373,
+            666
+          ],
+          [
+            331,
+            666
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Globe stand"
+      },
+      {
+        "id": "QA-08B-ARCHIVE-EAST-PROPS",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            516,
+            500
+          ],
+          [
+            588,
+            500
+          ],
+          [
+            588,
+            574
+          ],
+          [
+            516,
+            574
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Plant and cabinet"
+      },
+      {
+        "id": "QA-08B-HALL-TABLE",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            788,
+            548
+          ],
+          [
+            880,
+            548
+          ],
+          [
+            880,
+            623
+          ],
+          [
+            788,
+            623
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Round flower table including feet"
+      },
+      {
+        "id": "QA-08B-HALL-WEST-STAIR",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            642,
+            450
+          ],
+          [
+            735,
+            450
+          ],
+          [
+            735,
+            632
+          ],
+          [
+            642,
+            632
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "West stair flight"
+      },
+      {
+        "id": "QA-08B-HALL-EAST-STAIR",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            938,
+            450
+          ],
+          [
+            1024,
+            450
+          ],
+          [
+            1024,
+            632
+          ],
+          [
+            938,
+            632
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "East stair flight"
+      },
+      {
+        "id": "QA-08B-HALL-WEST-PLANT",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            666,
+            681
+          ],
+          [
+            734,
+            681
+          ],
+          [
+            734,
+            752
+          ],
+          [
+            666,
+            752
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Foreground west pot"
+      },
+      {
+        "id": "QA-08B-HALL-EAST-PLANT",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            945,
+            683
+          ],
+          [
+            1005,
+            683
+          ],
+          [
+            1005,
+            752
+          ],
+          [
+            945,
+            752
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Foreground east pot"
+      },
+      {
+        "id": "QA-08B-HALL-INNER-WEST-POT",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            716,
+            511
+          ],
+          [
+            760,
+            511
+          ],
+          [
+            760,
+            567
+          ],
+          [
+            716,
+            567
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Inner stair pot"
+      },
+      {
+        "id": "QA-08B-HALL-INNER-EAST-POT",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            907,
+            511
+          ],
+          [
+            950,
+            511
+          ],
+          [
+            950,
+            567
+          ],
+          [
+            907,
+            567
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Inner stair pot"
+      },
+      {
+        "id": "QA-08B-KITCHEN-ISLAND",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1150,
+            548
+          ],
+          [
+            1317,
+            548
+          ],
+          [
+            1317,
+            651
+          ],
+          [
+            1150,
+            651
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Island and all surrounding chairs"
+      },
+      {
+        "id": "QA-08B-KITCHEN-HEARTH",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1348,
+            480
+          ],
+          [
+            1446,
+            480
+          ],
+          [
+            1446,
+            653
+          ],
+          [
+            1348,
+            653
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Stove hood, fire and utensils"
+      },
+      {
+        "id": "QA-08B-KITCHEN-BARRELS",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1075,
+            639
+          ],
+          [
+            1130,
+            639
+          ],
+          [
+            1130,
+            691
+          ],
+          [
+            1075,
+            691
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Southwest barrels"
+      },
+      {
+        "id": "QA-08B-KITCHEN-COUNTER",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1175,
+            479
+          ],
+          [
+            1326,
+            479
+          ],
+          [
+            1326,
+            526
+          ],
+          [
+            1175,
+            526
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "North crockery counter"
+      }
+    ],
+    "walkablePolygons": [
+      {
+        "id": "QA-08B-FLOOR-HALL",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            622,
+            640
+          ],
+          [
+            755,
+            640
+          ],
+          [
+            755,
+            510
+          ],
+          [
+            911,
+            510
+          ],
+          [
+            911,
+            640
+          ],
+          [
+            1047,
+            640
+          ],
+          [
+            1047,
+            680
+          ],
+          [
+            948,
+            680
+          ],
+          [
+            948,
+            762
+          ],
+          [
+            744,
+            762
+          ],
+          [
+            744,
+            680
+          ],
+          [
+            622,
+            680
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Lower parquet and central stair well; excludes stair flights and foreground plants"
+      },
+      {
+        "id": "QA-08B-FLOOR-CORRIDOR",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            548,
+            352
+          ],
+          [
+            1018,
+            352
+          ],
+          [
+            1018,
+            387
+          ],
+          [
+            548,
+            387
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Horizontal parquet below bath; wall faces excluded"
+      },
+      {
+        "id": "QA-08B-FLOOR-BEDROOM",
+        "roomId": "RM-ROOM-BEDROOM",
+        "pointsPx": [
+          [
+            395,
+            202
+          ],
+          [
+            499,
+            202
+          ],
+          [
+            499,
+            387
+          ],
+          [
+            395,
+            387
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Rug and eastern bedside aisle; not the bed or canopy"
+      },
+      {
+        "id": "QA-08B-FLOOR-ARCHIVE",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            300,
+            510
+          ],
+          [
+            511,
+            510
+          ],
+          [
+            511,
+            575
+          ],
+          [
+            575,
+            575
+          ],
+          [
+            575,
+            682
+          ],
+          [
+            526,
+            682
+          ],
+          [
+            526,
+            615
+          ],
+          [
+            300,
+            615
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Rug lane south of chair, west aisle, east desk approach"
+      },
+      {
+        "id": "QA-08B-FLOOR-KITCHEN",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1094,
+            518
+          ],
+          [
+            1148,
+            518
+          ],
+          [
+            1148,
+            632
+          ],
+          [
+            1094,
+            632
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "status": "AI_DRAFT",
+        "calibrationStatus": "VISUALLY_CONFIRMED_CANDIDATE",
+        "visualCue": "Left tile aisle only; narrow south gap rejected after 12px clearance review"
+      },
+      {
+        "id": "QA-09B-FLOOR-HA-HALL-LANE",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            612,
+            584
+          ],
+          [
+            640,
+            584
+          ],
+          [
+            640,
+            680
+          ],
+          [
+            612,
+            680
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "Proposed clear west approach, separate from stair flight"
+      },
+      {
+        "id": "QA-09B-FLOOR-HA-HALL-SILL",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            608,
+            584
+          ],
+          [
+            640,
+            584
+          ],
+          [
+            640,
+            632
+          ],
+          [
+            608,
+            632
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "New wall opening in separate greybox layer"
+      },
+      {
+        "id": "QA-09B-FLOOR-HA-ARCHIVE-SILL",
+        "roomId": "RM-ROOM-ARCHIVE",
+        "pointsPx": [
+          [
+            560,
+            584
+          ],
+          [
+            608,
+            584
+          ],
+          [
+            608,
+            632
+          ],
+          [
+            560,
+            632
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "New wall opening, archive side"
+      },
+      {
+        "id": "QA-09B-FLOOR-HC-HALL-UNDERPASS",
+        "roomId": "RM-ROOM-HALL",
+        "pointsPx": [
+          [
+            800,
+            400
+          ],
+          [
+            848,
+            400
+          ],
+          [
+            848,
+            536
+          ],
+          [
+            800,
+            536
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "PROPOSED under-landing passage; needs new floor/backfill and stair foreground/elevation solution"
+      },
+      {
+        "id": "QA-09B-FLOOR-HC-CORRIDOR-SILL",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            800,
+            376
+          ],
+          [
+            848,
+            376
+          ],
+          [
+            848,
+            400
+          ],
+          [
+            800,
+            400
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "PROPOSED corridor access behind landing; not exposed ground in original PNG"
+      },
+      {
+        "id": "QA-09B-FLOOR-CB-CORRIDOR-SILL",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            528,
+            352
+          ],
+          [
+            568,
+            352
+          ],
+          [
+            568,
+            392
+          ],
+          [
+            528,
+            392
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "New bedroom opening; bathroom access independent"
+      },
+      {
+        "id": "QA-09B-FLOOR-CB-BEDROOM-SILL",
+        "roomId": "RM-ROOM-BEDROOM",
+        "pointsPx": [
+          [
+            480,
+            352
+          ],
+          [
+            528,
+            352
+          ],
+          [
+            528,
+            392
+          ],
+          [
+            480,
+            392
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "Bedroom near-side floor for new opening"
+      },
+      {
+        "id": "QA-09B-FLOOR-CK-CORRIDOR-BRANCH",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            992,
+            352
+          ],
+          [
+            1144,
+            352
+          ],
+          [
+            1144,
+            400
+          ],
+          [
+            992,
+            400
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "PROPOSED service vestibule on west edge of covered northeast room"
+      },
+      {
+        "id": "QA-09B-FLOOR-CK-SERVICE-VESTIBULE",
+        "roomId": "RM-ROOM-CORRIDOR",
+        "pointsPx": [
+          [
+            1088,
+            376
+          ],
+          [
+            1144,
+            376
+          ],
+          [
+            1144,
+            480
+          ],
+          [
+            1088,
+            480
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "Requires relocating covered foreground cabinet/prop and creating new enclosure/floor; does not unlock covered room"
+      },
+      {
+        "id": "QA-09B-FLOOR-CK-KITCHEN-SILL",
+        "roomId": "RM-ROOM-KITCHEN",
+        "pointsPx": [
+          [
+            1094,
+            480
+          ],
+          [
+            1148,
+            480
+          ],
+          [
+            1148,
+            536
+          ],
+          [
+            1094,
+            536
+          ]
+        ],
+        "origin": "AI_DRAFT",
+        "role": "PROPOSED_FLOOR_PATCH",
+        "calibrationStatus": "AI_PROPOSED_ARCHITECTURE",
+        "visualCue": "New kitchen north sill; current wall/panel must be replaced by separate opening art"
+      }
+    ],
+    "polygonSpace": "image-pixel",
+    "portalWidthWorld": 48,
+    "portalPairs": [
+      [
+        "RM-NAV-HALL-CORRIDOR-NEAR",
+        "RM-NAV-HALL-CORRIDOR-FAR"
+      ],
+      [
+        "RM-NAV-BEDROOM-NEAR",
+        "RM-NAV-BEDROOM-FAR"
+      ]
+    ]
+  },
+  "anchors": [
+    {
+      "id": "RM-NAV-HALL-SPAWN",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        888
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-HALL-SPAWN-SAFE"
+    },
+    {
+      "id": "RM-NAV-CORRIDOR-CENTER",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        952,
+        504
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-CORRIDOR-CENTER-SAFE"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-CENTER",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        568,
+        472
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-BEDROOM-CENTER-SAFE"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-001",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        880
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-002",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        872
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-003",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        864
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-004",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        856
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-005",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        848
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-006",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        840
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-007",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        832
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-008",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        824
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-009",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        816
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-010",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        808
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-001-STEP-011",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        800
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-HS-001",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        792
+      ],
+      "kind": "interaction",
+      "hotspotId": "RM-HS-001"
+    },
+    {
+      "id": "RM-NAV-HS-005",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        696,
+        504
+      ],
+      "kind": "interaction",
+      "hotspotId": "RM-HS-005"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-001",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        704,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-002",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        712,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        720,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-004",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        728,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-005",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        736,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-006",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        744,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-007-STEP-007",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        752,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-HS-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        760,
+        504
+      ],
+      "kind": "interaction",
+      "hotspotId": "RM-HS-003"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-001",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        768,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-002",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        776,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        784,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-004",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        792,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-005",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        800,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-006",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        808,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-007",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        816,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-008",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        824,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-009",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        832,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-010",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        840,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-011",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        848,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-012",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        856,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-013",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        864,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-014",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        872,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-015",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        880,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-016",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        888,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-017",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        896,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-018",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        904,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-019",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        912,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-020",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        920,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-021",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        928,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-022",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        936,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-008-STEP-023",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        944,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-010-STEP-001",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        560,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-010-STEP-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        552,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-010-STEP-003",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        544,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-HS-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        536,
+        472
+      ],
+      "kind": "interaction",
+      "hotspotId": "RM-HS-002"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-001",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        576,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        584,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-003",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        592,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-004",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        600,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-005",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        608,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-006",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        616,
+        472
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-007",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        616,
+        480
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-008",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        616,
+        488
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-08B-021-STEP-009",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        616,
+        496
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-SOUTH",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        616,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-001",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        944,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-002",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        936,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-003",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        928,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-004",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        920,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-005",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        912,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-006",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        792
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-007",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        784
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-008",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        776
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-009",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        768
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-010",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        760
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-011",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        752
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-012",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        744
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-013",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        736
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-014",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        728
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-015",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        720
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-016",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        712
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-017",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        704
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-018",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        696
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-019",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        688
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-020",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        680
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-021",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        672
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-022",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        664
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-023",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        904,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-024",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        912,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-025",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        920,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-026",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        928,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-027",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        936,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-028",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        944,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-029",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        656
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-030",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        648
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-031",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        640
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-032",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        632
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-033",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        624
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-034",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        616
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-035",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        608
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-036",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        600
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-037",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        592
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-038",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        584
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-039",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        576
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-040",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        568
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-041",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        560
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-042",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        552
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-043",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        544
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-03-STEP-044",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        536
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-HALL-CORRIDOR-NEAR",
+      "roomId": "RM-ROOM-HALL",
+      "position": [
+        952,
+        528
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-HALL-CORRIDOR-NEAR-DOOR",
+      "checkpointAllowed": false
+    },
+    {
+      "id": "RM-NAV-09B-04-STEP-001",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        952,
+        512
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-04-STEP-002",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        952,
+        520
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-HALL-CORRIDOR-FAR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        952,
+        528
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-HALL-CORRIDOR-FAR-DOOR",
+      "checkpointAllowed": false
+    },
+    {
+      "id": "RM-NAV-09B-05-STEP-001",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        688,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-05-STEP-002",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        680,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-05-STEP-003",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        672,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-05-STEP-004",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        664,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-NEAR",
+      "roomId": "RM-ROOM-CORRIDOR",
+      "position": [
+        656,
+        504
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-BEDROOM-NEAR-DOOR",
+      "checkpointAllowed": false
+    },
+    {
+      "id": "RM-NAV-09B-06-STEP-001",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        624,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-06-STEP-002",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        632,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-06-STEP-003",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        640,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-09B-06-STEP-004",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        648,
+        504
+      ],
+      "kind": "waypoint"
+    },
+    {
+      "id": "RM-NAV-BEDROOM-FAR",
+      "roomId": "RM-ROOM-BEDROOM",
+      "position": [
+        656,
+        504
+      ],
+      "kind": "safe",
+      "hotspotId": "RM-NAV-BEDROOM-FAR-DOOR",
+      "checkpointAllowed": false
+    }
+  ],
+  "edges": [
+    {
+      "from": "RM-NAV-HALL-SPAWN",
+      "to": "RM-NAV-08B-001-STEP-001"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-001",
+      "to": "RM-NAV-08B-001-STEP-002"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-002",
+      "to": "RM-NAV-08B-001-STEP-003"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-003",
+      "to": "RM-NAV-08B-001-STEP-004"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-004",
+      "to": "RM-NAV-08B-001-STEP-005"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-005",
+      "to": "RM-NAV-08B-001-STEP-006"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-006",
+      "to": "RM-NAV-08B-001-STEP-007"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-007",
+      "to": "RM-NAV-08B-001-STEP-008"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-008",
+      "to": "RM-NAV-08B-001-STEP-009"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-009",
+      "to": "RM-NAV-08B-001-STEP-010"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-010",
+      "to": "RM-NAV-08B-001-STEP-011"
+    },
+    {
+      "from": "RM-NAV-08B-001-STEP-011",
+      "to": "RM-NAV-HS-001"
+    },
+    {
+      "from": "RM-NAV-HS-005",
+      "to": "RM-NAV-08B-007-STEP-001"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-001",
+      "to": "RM-NAV-08B-007-STEP-002"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-002",
+      "to": "RM-NAV-08B-007-STEP-003"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-003",
+      "to": "RM-NAV-08B-007-STEP-004"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-004",
+      "to": "RM-NAV-08B-007-STEP-005"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-005",
+      "to": "RM-NAV-08B-007-STEP-006"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-006",
+      "to": "RM-NAV-08B-007-STEP-007"
+    },
+    {
+      "from": "RM-NAV-08B-007-STEP-007",
+      "to": "RM-NAV-HS-003"
+    },
+    {
+      "from": "RM-NAV-HS-003",
+      "to": "RM-NAV-08B-008-STEP-001"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-001",
+      "to": "RM-NAV-08B-008-STEP-002"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-002",
+      "to": "RM-NAV-08B-008-STEP-003"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-003",
+      "to": "RM-NAV-08B-008-STEP-004"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-004",
+      "to": "RM-NAV-08B-008-STEP-005"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-005",
+      "to": "RM-NAV-08B-008-STEP-006"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-006",
+      "to": "RM-NAV-08B-008-STEP-007"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-007",
+      "to": "RM-NAV-08B-008-STEP-008"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-008",
+      "to": "RM-NAV-08B-008-STEP-009"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-009",
+      "to": "RM-NAV-08B-008-STEP-010"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-010",
+      "to": "RM-NAV-08B-008-STEP-011"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-011",
+      "to": "RM-NAV-08B-008-STEP-012"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-012",
+      "to": "RM-NAV-08B-008-STEP-013"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-013",
+      "to": "RM-NAV-08B-008-STEP-014"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-014",
+      "to": "RM-NAV-08B-008-STEP-015"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-015",
+      "to": "RM-NAV-08B-008-STEP-016"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-016",
+      "to": "RM-NAV-08B-008-STEP-017"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-017",
+      "to": "RM-NAV-08B-008-STEP-018"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-018",
+      "to": "RM-NAV-08B-008-STEP-019"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-019",
+      "to": "RM-NAV-08B-008-STEP-020"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-020",
+      "to": "RM-NAV-08B-008-STEP-021"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-021",
+      "to": "RM-NAV-08B-008-STEP-022"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-022",
+      "to": "RM-NAV-08B-008-STEP-023"
+    },
+    {
+      "from": "RM-NAV-08B-008-STEP-023",
+      "to": "RM-NAV-CORRIDOR-CENTER"
+    },
+    {
+      "from": "RM-NAV-BEDROOM-CENTER",
+      "to": "RM-NAV-08B-010-STEP-001"
+    },
+    {
+      "from": "RM-NAV-08B-010-STEP-001",
+      "to": "RM-NAV-08B-010-STEP-002"
+    },
+    {
+      "from": "RM-NAV-08B-010-STEP-002",
+      "to": "RM-NAV-08B-010-STEP-003"
+    },
+    {
+      "from": "RM-NAV-08B-010-STEP-003",
+      "to": "RM-NAV-HS-002"
+    },
+    {
+      "from": "RM-NAV-BEDROOM-CENTER",
+      "to": "RM-NAV-08B-021-STEP-001"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-001",
+      "to": "RM-NAV-08B-021-STEP-002"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-002",
+      "to": "RM-NAV-08B-021-STEP-003"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-003",
+      "to": "RM-NAV-08B-021-STEP-004"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-004",
+      "to": "RM-NAV-08B-021-STEP-005"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-005",
+      "to": "RM-NAV-08B-021-STEP-006"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-006",
+      "to": "RM-NAV-08B-021-STEP-007"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-007",
+      "to": "RM-NAV-08B-021-STEP-008"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-008",
+      "to": "RM-NAV-08B-021-STEP-009"
+    },
+    {
+      "from": "RM-NAV-08B-021-STEP-009",
+      "to": "RM-NAV-BEDROOM-SOUTH"
+    },
+    {
+      "from": "RM-NAV-HS-001",
+      "to": "RM-NAV-09B-03-STEP-001"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-001",
+      "to": "RM-NAV-09B-03-STEP-002"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-002",
+      "to": "RM-NAV-09B-03-STEP-003"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-003",
+      "to": "RM-NAV-09B-03-STEP-004"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-004",
+      "to": "RM-NAV-09B-03-STEP-005"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-005",
+      "to": "RM-NAV-09B-03-STEP-006"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-006",
+      "to": "RM-NAV-09B-03-STEP-007"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-007",
+      "to": "RM-NAV-09B-03-STEP-008"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-008",
+      "to": "RM-NAV-09B-03-STEP-009"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-009",
+      "to": "RM-NAV-09B-03-STEP-010"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-010",
+      "to": "RM-NAV-09B-03-STEP-011"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-011",
+      "to": "RM-NAV-09B-03-STEP-012"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-012",
+      "to": "RM-NAV-09B-03-STEP-013"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-013",
+      "to": "RM-NAV-09B-03-STEP-014"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-014",
+      "to": "RM-NAV-09B-03-STEP-015"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-015",
+      "to": "RM-NAV-09B-03-STEP-016"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-016",
+      "to": "RM-NAV-09B-03-STEP-017"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-017",
+      "to": "RM-NAV-09B-03-STEP-018"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-018",
+      "to": "RM-NAV-09B-03-STEP-019"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-019",
+      "to": "RM-NAV-09B-03-STEP-020"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-020",
+      "to": "RM-NAV-09B-03-STEP-021"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-021",
+      "to": "RM-NAV-09B-03-STEP-022"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-022",
+      "to": "RM-NAV-09B-03-STEP-023"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-023",
+      "to": "RM-NAV-09B-03-STEP-024"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-024",
+      "to": "RM-NAV-09B-03-STEP-025"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-025",
+      "to": "RM-NAV-09B-03-STEP-026"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-026",
+      "to": "RM-NAV-09B-03-STEP-027"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-027",
+      "to": "RM-NAV-09B-03-STEP-028"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-028",
+      "to": "RM-NAV-09B-03-STEP-029"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-029",
+      "to": "RM-NAV-09B-03-STEP-030"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-030",
+      "to": "RM-NAV-09B-03-STEP-031"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-031",
+      "to": "RM-NAV-09B-03-STEP-032"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-032",
+      "to": "RM-NAV-09B-03-STEP-033"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-033",
+      "to": "RM-NAV-09B-03-STEP-034"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-034",
+      "to": "RM-NAV-09B-03-STEP-035"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-035",
+      "to": "RM-NAV-09B-03-STEP-036"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-036",
+      "to": "RM-NAV-09B-03-STEP-037"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-037",
+      "to": "RM-NAV-09B-03-STEP-038"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-038",
+      "to": "RM-NAV-09B-03-STEP-039"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-039",
+      "to": "RM-NAV-09B-03-STEP-040"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-040",
+      "to": "RM-NAV-09B-03-STEP-041"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-041",
+      "to": "RM-NAV-09B-03-STEP-042"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-042",
+      "to": "RM-NAV-09B-03-STEP-043"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-043",
+      "to": "RM-NAV-09B-03-STEP-044"
+    },
+    {
+      "from": "RM-NAV-09B-03-STEP-044",
+      "to": "RM-NAV-HALL-CORRIDOR-NEAR"
+    },
+    {
+      "from": "RM-NAV-CORRIDOR-CENTER",
+      "to": "RM-NAV-09B-04-STEP-001"
+    },
+    {
+      "from": "RM-NAV-09B-04-STEP-001",
+      "to": "RM-NAV-09B-04-STEP-002"
+    },
+    {
+      "from": "RM-NAV-09B-04-STEP-002",
+      "to": "RM-NAV-HALL-CORRIDOR-FAR"
+    },
+    {
+      "from": "RM-NAV-HS-005",
+      "to": "RM-NAV-09B-05-STEP-001"
+    },
+    {
+      "from": "RM-NAV-09B-05-STEP-001",
+      "to": "RM-NAV-09B-05-STEP-002"
+    },
+    {
+      "from": "RM-NAV-09B-05-STEP-002",
+      "to": "RM-NAV-09B-05-STEP-003"
+    },
+    {
+      "from": "RM-NAV-09B-05-STEP-003",
+      "to": "RM-NAV-09B-05-STEP-004"
+    },
+    {
+      "from": "RM-NAV-09B-05-STEP-004",
+      "to": "RM-NAV-BEDROOM-NEAR"
+    },
+    {
+      "from": "RM-NAV-BEDROOM-SOUTH",
+      "to": "RM-NAV-09B-06-STEP-001"
+    },
+    {
+      "from": "RM-NAV-09B-06-STEP-001",
+      "to": "RM-NAV-09B-06-STEP-002"
+    },
+    {
+      "from": "RM-NAV-09B-06-STEP-002",
+      "to": "RM-NAV-09B-06-STEP-003"
+    },
+    {
+      "from": "RM-NAV-09B-06-STEP-003",
+      "to": "RM-NAV-09B-06-STEP-004"
+    },
+    {
+      "from": "RM-NAV-09B-06-STEP-004",
+      "to": "RM-NAV-BEDROOM-FAR"
+    },
+    {
+      "from": "RM-NAV-HALL-CORRIDOR-NEAR",
+      "to": "RM-NAV-HALL-CORRIDOR-FAR",
+      "doorId": "RM-DOOR-HALL-CORRIDOR"
+    },
+    {
+      "from": "RM-NAV-HALL-CORRIDOR-FAR",
+      "to": "RM-NAV-HALL-CORRIDOR-NEAR",
+      "doorId": "RM-DOOR-HALL-CORRIDOR"
+    },
+    {
+      "from": "RM-NAV-BEDROOM-NEAR",
+      "to": "RM-NAV-BEDROOM-FAR",
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM"
+    },
+    {
+      "from": "RM-NAV-BEDROOM-FAR",
+      "to": "RM-NAV-BEDROOM-NEAR",
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM"
+    }
+  ]
+}

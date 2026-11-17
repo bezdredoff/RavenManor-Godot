@@ -38,6 +38,9 @@ CRITICAL_G2 = (
     "map_qa_09d_hc_cb_architectural_smoke.gd",
     "game_loop_g2_host_smoke.gd",
     "game_qa_02_menu_boundary_smoke.gd",
+    "game_loop_g2_production_integration_smoke.gd",
+    "map_prod_01_hc_cb_candidate_smoke.gd",
+    "game_loop_02_player_map_smoke.gd",
 )
 
 

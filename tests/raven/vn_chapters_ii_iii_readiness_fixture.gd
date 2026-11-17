@@ -146,10 +146,21 @@ static func _verify_hall_tea_fixture() -> void:
 
 	var fixture := _synthetic_hall_tea()
 	assert(_find(fixture, clean).is_empty(), "Hall Tea started without predecessor")
+	assert(_find(fixture, after_slice, "ru", "other_hotspot").is_empty(),
+		"Hall Tea launched after arrival at an unrelated hotspot")
+	assert(_find(fixture, after_slice, "ru", "", true).is_empty(),
+		"Physically triggered Hall Tea launched through automatic Continue")
+	# The production entrypoint rejects null/forged map hosts, rather than
+	# allowing UI-provided flags to pass as a verified physical arrival.
+	assert(Runtime.next_scene_at_confirmed_hotspot(null, "hall_chair_table").is_empty())
+	var unverified_host := Node2D.new()
+	assert(Runtime.next_scene_at_confirmed_hotspot(unverified_host, "hall_chair_table").is_empty())
+	unverified_host.free()
 	var ids: Array = []
 	for locale in LOCALES:
-		var config: Dictionary = _find(fixture, after_slice, locale)
+		var config: Dictionary = _find(fixture, after_slice, locale, "hall_chair_table")
 		assert(config.get("sceneId") == BEAT and config.get("source") == "canonical_production_only")
+		assert(config.get("interactionTarget") == "hall_chair_table" and config.get("ordinal") == 8)
 		assert(config.lines.size() == 12 and config.lineIds.size() == 12)
 		if ids.is_empty():
 			ids = config.lineIds.duplicate()
@@ -249,9 +260,10 @@ static func _verify_hall_tea_fixture() -> void:
 			assert(scene.status == "pilot_runtime")
 
 
-static func _find(data: Dictionary, state: Dictionary, locale: String = "ru") -> Dictionary:
+static func _find(data: Dictionary, state: Dictionary, locale: String = "ru",
+		arrived_target: String = "", auto_only: bool = false) -> Dictionary:
 	return Runtime.find_approved(state, locale, data.dialogue, data.routes, data.staging,
-		data.cues, data.foundation, data.backgrounds, data.portraits)
+		data.cues, data.foundation, data.backgrounds, data.portraits, arrived_target, auto_only)
 
 
 static func _synthetic_hall_tea() -> Dictionary:

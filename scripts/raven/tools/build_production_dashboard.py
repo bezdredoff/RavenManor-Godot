@@ -89,7 +89,7 @@ def build(progress_override: dict | None = None) -> dict:
     character_catalog = load(CHAR_ART)
     plan = []
     for item in source["workPackages"]:
-        plan.append({**item, "domain": "CODE", "description": item.get("deliverable", ""), "source": item.get("sourceDecision", str(CODE.relative_to(ROOT)))})
+        plan.append({**item, "domain": "CODE", "description": item.get("deliverable", ""), "source": item.get("sourceDecision", CODE.relative_to(ROOT).as_posix())})
     for item in gap["workPackages"]:
         plan.append({**item, "stage": item.get("domain", "process").upper()})
     plan.extend(graphics_tasks)
@@ -252,7 +252,7 @@ def build(progress_override: dict | None = None) -> dict:
         "taskCount": len(plan),
         "assetSummary": approval_summary,
         "openTaskCount": sum(x["status"] not in {"merged", "integrated", "accepted", "device_verified", "superseded", "not_planned"} for x in plan),
-        "sourceFiles": [str(p.relative_to(ROOT)) for p in (
+        "sourceFiles": [p.relative_to(ROOT).as_posix() for p in (
             CODE, GFX, GAPS, *( [SHARDS / "index.json", *[SHARDS / name for name in load(SHARDS / "index.json")["shards"]]]
                 if progress_override is None else [LEGACY_PROGRESS] ),
             BG, CHAR_ART, WORKSTREAMS, P2_REENTRY)],

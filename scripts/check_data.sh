@@ -33,3 +33,6 @@ worklist_check="$(mktemp)"
 python3 "$ROOT/scripts/raven/tools/export_translation_worklist.py" --output "$worklist_check"
 rm -f "$worklist_check"
 
+
+# Reproducibility of the inactive, world-space G2 calibration candidate.
+python3 "$ROOT/scripts/raven/tools/build_g2_production_candidate.py" --check

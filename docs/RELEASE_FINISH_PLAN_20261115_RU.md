@@ -88,3 +88,9 @@ No more than **five active agent worktrees**, no two writers on one file. Across
 ## 7. Single source of truth и следующий управляющий шаг
 Statuses: data/raven/production/progress/*.json (15); dashboard generated automatically. Code/gap/GFX historical plan JSONs are NOT live status. This document is an **operational proposed release subset** over those statuses, not a new status ledger and not an approval record.
 **Next actions:** review/merge this planning PR; owner accepts/edits release boundary and HC/CB architecture; issue five narrow agent task cards from sections 2–4; merge R1 source boundary before enabling R2/R3 production; use G1–G4 checkboxes to govern every subsequent task.
+
+## G2-03 integration checkpoint — 2026-11-17
+
+Status reconciliation #281–284 and QA baseline #286 merged with exact-head CI; details, exact SHAs, visual findings, verification and rollback are in [GAME-LOOP-01 G2-03 evidence](changes/GAME-LOOP-01-g2-03-production-unification.md). Existing draft #287–289 implementations are consolidated on `integration/G2-03-production-unification` for shared production-contract review. No new parallel runtime implementation or production approval was created.
+
+The real player-map view, registered menu/map/E2E tests, inactive world-plan calibration and actual GPU captures are available. Full Windows runner PASS; Linux/full integration CI is recorded in the integration PR. Candidate source selection and separate acceptance receipt remain disabled. G2 is **not owner accepted**: final painted HC/CB finish, structural headroom/occlusion approval, real phone QA and the distinct portrait-art blockers remain. The broader Season 1 plan and parent tasks stay open.

@@ -1,0 +1,61 @@
+name: MAP-PROD-01 HC-CB geometry QA
+
+on:
+  pull_request:
+    paths:
+      - "assets/raven/map/production/**"
+      - "scripts/raven/map_prod_01_*"
+      - "scenes/raven/tests/map_prod_01_*"
+      - "tests/raven/map_prod_01_*"
+      - ".github/workflows/map-prod-01.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  map-prod-01:
+    name: map-prod-01-Godot-4.7.2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR merge
+        uses: actions/checkout@v6
+      - name: Install Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q godot.zip -d godot-bin
+          chmod +x godot-bin/Godot_v4.7.2-stable_linux.x86_64
+          sudo mv godot-bin/Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
+      - name: Import reviewed PNG and Evelyn assets
+        run: godot --headless --editor --path . --import
+      - name: Historical 09B opening regression
+        run: godot --headless --path . --script res://tests/raven/map_qa_09b_opening_blueprint_smoke.gd
+      - name: Historical 09D architectural regression
+        run: godot --headless --path . --script res://tests/raven/map_qa_09d_hc_cb_architectural_smoke.gd
+      - name: MAP-PROD-01 bidirectional and visual-node regression
+        run: timeout 90s godot --headless --path . --script res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd
+
+      - name: Render actual Godot HC/CB passage review captures
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq xvfb
+          fi
+          timeout 150s xvfb-run -a -s "-screen 0 1280x1024x24" godot --path . --script res://tests/raven/map_prod_01_visual_capture.gd
+          test -s build/map-prod-01/HC-godot-evelyn.png
+          test -s build/map-prod-01/CB-godot-evelyn.png
+          timeout 150s xvfb-run -a -s "-screen 0 1280x1024x24" godot --path . --script res://tests/raven/game_loop_g2_visual_capture.gd
+          test -s build/map-prod-01/G2-player-map-390x844.png
+          test -s build/map-prod-01/G2-HC-return-under-landing.png
+          test -s build/map-prod-01/G2-CB-return-contact.png
+      - name: Upload HC/CB in-engine review images
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-prod-01-HC-CB-rendered-review
+          path: build/map-prod-01/*.png
+          retention-days: 14
+          if-no-files-found: error

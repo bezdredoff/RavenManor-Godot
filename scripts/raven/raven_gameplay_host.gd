@@ -14,6 +14,7 @@ const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Ids = preload("res://scripts/raven/raven_ids.gd")
+const Dispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
 const Slice = preload("res://scenes/raven/vertical_slice.tscn")
 
 signal room_changed(room: Dictionary)
@@ -36,6 +37,9 @@ var _pending_story := ""
 var _pending_map_hotspot := ""
 var _pending_transition := ""
 var _presentation_step := ""
+var _pending_safe_entry := ""
+var _pending_runtime := ""
+var _runtime_scene: Dictionary = {}
 var _presentation: Control
 var _paused := false
 var _held := false
@@ -48,7 +52,7 @@ func _init(storage_adapter: RefCounted = null, isolated_qa_storage: bool = false
 
 ## The host does NOT accept externally supplied source results. Always resolve
 ## the canonical source; arbitrary "PRODUCTION_APPROVED" fixture dictionaries
-## may only be used in isolated Source/MapHarness unit tests, never here.
+## may only be validated in isolated Source tests, never injected here.
 func configure(request: Dictionary) -> Dictionary:
 	if navigation != null:
 		return _error("already-configured")
@@ -96,8 +100,19 @@ func configure(request: Dictionary) -> Dictionary:
 	_pending_map_hotspot = ""
 	_pending_transition = ""
 	_presentation_step = ""
+	_pending_safe_entry = ""
 	_paused = false
 	_held = false
+	# Continue only resumes a canonical approved runtime VN at its persisted
+	# physically safe hotspot, never because the legacy chapter merely ended.
+	_runtime_scene = {}
+	_pending_runtime = ""
+	if not source.draftOnly and not state.get("vnCursor", {}).is_empty():
+		var graph = navigation.controller.room_graph(navigation.controller.room_id())
+		var anchor: Dictionary = graph.anchor(navigation.controller.confirmed_anchor())
+		var resumed: Dictionary = Dispatch.next_scene_at_confirmed_hotspot(self, str(anchor.get("hotspotId", "")), str(request.get("locale", "ru")))
+		if str(resumed.get("beatId", "")) == str(state.vnCursor.get("beatId", "")):
+			_runtime_scene = resumed
 	last_error = ""
 	return {"ok": true, "status": "ready", "approval": source.approval,
 		"draftOnly": source.draftOnly, "roomId": navigation.controller.room_id(),
@@ -132,7 +147,14 @@ func _validate_bindings(request: Dictionary, resolved: Dictionary) -> String:
 
 
 func current_activity() -> Dictionary:
-	return Director.next_step(state) if not state.is_empty() else {}
+	if state.is_empty():
+		return {}
+	var activity: Dictionary = Director.next_step(state)
+	if not _runtime_scene.is_empty() and not state.storyBeatsSeen.has(_runtime_scene.beatId):
+		return {"id": "production-" + str(_runtime_scene.beatId), "kind": "vn_production", "config": _runtime_scene.duplicate(true)}
+	if not bool(source.get("draftOnly", true)) and activity.get("id") == "level1" and navigation != null and navigation.controller.room_id() != "RM-ROOM-BEDROOM":
+		return {"id": "travel-bedroom", "kind": "map"}
+	return activity
 
 
 func room_state() -> Dictionary:
@@ -142,7 +164,7 @@ func room_state() -> Dictionary:
 func request_story_hotspot(hotspot_id: String) -> Dictionary:
 	if not _can_accept_input():
 		return _error("host-not-ready")
-	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _presentation_step.is_empty():
+	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
 		return _error("action-already-pending")
 	var loaded := _load_state()
 	if not loaded.get("ok", false):
@@ -163,7 +185,7 @@ func request_story_hotspot(hotspot_id: String) -> Dictionary:
 func request_transition(transition_id: String) -> Dictionary:
 	if not _can_accept_input():
 		return _error("host-not-ready")
-	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _presentation_step.is_empty():
+	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
 		return _error("action-already-pending")
 	var loaded := _load_state()
 	if not loaded.get("ok", false):
@@ -204,6 +226,19 @@ func advance(delta: float = 0.05) -> Dictionary:
 		_pending_transition = ""
 		return result
 	var status := str(result.get("status", ""))
+	if status == "arrived" and not _pending_runtime.is_empty():
+		var target := _pending_runtime
+		_pending_runtime = ""
+		# This call is strictly AFTER controller + physical mover arrival.
+		_runtime_scene = Dispatch.next_scene_at_confirmed_hotspot(self, target, str(_request.get("locale", "ru")))
+		if _runtime_scene.is_empty():
+			return {"ok": true, "status": "runtime-scene-unavailable"}
+		var checkpoint := checkpoint_safe_anchor()
+		if not checkpoint.ok:
+			return checkpoint
+		return {"ok": true, "status": "action-committed", "presentation": "vn_production"}
+	if status == "arrived" and not _pending_safe_entry.is_empty():
+		_pending_safe_entry = ""
 	if status == "arrived" and not _pending_story.is_empty():
 		return _commit_story_arrival(str(result.get("hotspotId", _pending_map_hotspot)))
 	if status == "continue" or status == "cancelled" or status == "arrived":
@@ -219,7 +254,7 @@ func drive(max_steps: int = 4000, delta: float = 0.05) -> Dictionary:
 		result = advance(delta)
 		if not result.get("ok", false):
 			return result
-		if str(result.get("status", "")) in ["idle", "arrived", "ready", "action-committed"]:
+		if str(result.get("status", "")) in ["idle", "arrived", "ready", "action-committed"] and _pending_safe_entry.is_empty():
 			return result
 	return _error("movement-did-not-settle")
 
@@ -240,7 +275,20 @@ func commit_ready_transition() -> Dictionary:
 	if not result.get("ok", false):
 		return result
 	_pending_transition = ""
-	# The entry is a validated safe anchor; do NOT save the approach portal.
+	# Calibrated continuous-map contacts coincide in world space. Walk the
+	# existing authored route to room-owned safe ground before checkpointing.
+	for descriptor in source.contract.transitions:
+		if descriptor.id == result.transitionId and descriptor.has("destinationSafeAnchorId"):
+			var safe_id: String = str(descriptor.destinationSafeAnchorId)
+			var graph = navigation.controller.room_graph(str(descriptor.destinationRoomId))
+			var route: Dictionary = navigation.request_hotspot(str(graph.anchor(safe_id).get("hotspotId", "")))
+			if not route.get("ok", false):
+				return _save_failure("safe-entry-route-unavailable")
+			_pending_safe_entry = safe_id
+			result["finishEntryRoute"] = true
+			room_changed.emit(navigation.room_state())
+			return result
+	# Legacy isolated fixtures already end at a verified safe entry.
 	var checkpoint := checkpoint_safe_anchor()
 	if not checkpoint.get("ok", false):
 		return checkpoint
@@ -254,7 +302,7 @@ func checkpoint_safe_anchor() -> Dictionary:
 	var room: String = navigation.controller.room_id()
 	var anchor: String = navigation.controller.confirmed_anchor()
 	var graph = navigation.controller.room_graph(room)
-	if graph == null or not graph.has_anchor(anchor) or str(graph.anchor(anchor).get("kind", "")) != "safe":
+	if graph == null or not graph.has_anchor(anchor) or str(graph.anchor(anchor).get("kind", "")) != "safe" or not graph.anchor(anchor).get("checkpointAllowed", true):
 		return {"ok": true, "status": "non-safe-anchor-skipped"}
 	if navigation.actor.position.distance_to(graph.position(anchor)) > FOOT_TOLERANCE:
 		return _error("checkpoint-physical-footpoint-mismatch")
@@ -294,6 +342,8 @@ func _commit_story_arrival(map_hotspot: String) -> Dictionary:
 		return _save_failure("story-write-failed")
 	state = proposal.state
 	_presentation_step = str(proposal.nextStep)
+	if not bool(source.get("draftOnly", true)) and _presentation_step == "level1":
+		_presentation_step = "" # Bedroom entry owns when its Match-3 can open.
 	proposal.erase("state")
 	story_action_ready.emit(proposal.duplicate(true))
 	return proposal
@@ -325,15 +375,22 @@ func _door_gate_error(transition_id: String) -> String:
 
 ## Present the existing vertical slice (VN & UPDS Match-3), with exactly the
 ## same Raven store. The map host owns no copy of its cursor or board state.
-func mount_presentation(parent: Node) -> Control:
+func mount_presentation(parent: Node, locale: String = "ru") -> Control:
 	if not _can_accept_input() or is_instance_valid(_presentation):
 		return null
 	var activity := current_activity()
-	if str(activity.get("kind", "")) not in ["vn", "match3"]:
+	if str(activity.get("kind", "")) not in ["vn", "vn_production", "match3"]:
 		return null
 	if not _presentation_step.is_empty() and str(activity.get("id", "")) != _presentation_step:
 		return null
+	if not _runtime_scene.is_empty():
+		_runtime_scene = Dispatch.next_scene_at_confirmed_hotspot(self, str(_runtime_scene.get("interactionTarget", "")), locale)
+		if _runtime_scene.is_empty():
+			return null
 	_presentation = Slice.instantiate()
+	_presentation.embedded_in_manor = true
+	_presentation.normal_game_flow = not bool(source.get("draftOnly", true))
+	_presentation.confirmed_production_scene = _runtime_scene.duplicate(true)
 	_presentation.store = store
 	parent.add_child(_presentation)
 	return _presentation
@@ -353,6 +410,8 @@ func close_presentation() -> Dictionary:
 
 
 func cancel() -> Dictionary:
+	_pending_runtime = ""
+	_pending_safe_entry = ""
 	_pending_story = ""
 	_pending_map_hotspot = ""
 	_pending_transition = ""
@@ -387,6 +446,7 @@ func reload_session() -> Dictionary:
 	_pending_map_hotspot = ""
 	_pending_transition = ""
 	_presentation_step = ""
+	_pending_safe_entry = ""
 	_held = false
 	_paused = false
 	return configure(request)
@@ -398,6 +458,12 @@ func _load_state() -> Dictionary:
 	if str(report.get("detail", "")) == "storage-read-failed" or str(report.get("status", "")) == "recovered-corrupt":
 		return _save_failure("save-unreadable:" + str(report.get("detail", "")))
 	state = loaded
+	# UI cannot unlock doors directly. Rebuild only a PRODUCTION controller's
+	# physical route gates from the sole persisted Raven snapshot. In QA the
+	# isolated source continues to own its virtual TEST_ONLY contract.
+	if navigation != null and not bool(source.get("draftOnly", true)):
+		if not navigation.controller.refresh_production_doors(state, navigation.actor):
+			return _save_failure("production-door-gate-refresh-failed")
 	return {"ok": true}
 
 
@@ -415,3 +481,22 @@ func _save_failure(reason: String) -> Dictionary:
 func _error(reason: String) -> Dictionary:
 	last_error = reason
 	return {"ok": false, "error": reason}
+
+
+func request_runtime_hotspot(hotspot_id: String) -> Dictionary:
+	if not _can_accept_input() or source.get("draftOnly", true):
+		return _error("production-host-required")
+	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty():
+		return _error("action-already-pending")
+	var loaded := _load_state()
+	if not loaded.ok:
+		return loaded
+	if Director.next_step(state).kind != "done":
+		return _error("runtime-story-gate-closed")
+	# Only a canonical authored target; no caller-supplied scene or catalogs.
+	if hotspot_id != "RM-HS-TEA-TABLE":
+		return _error("unknown-runtime-hotspot")
+	var requested: Dictionary = navigation.request_hotspot(hotspot_id)
+	if requested.get("ok", false):
+		_pending_runtime = hotspot_id
+	return requested

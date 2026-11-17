@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-hc-cb-production-geometry-candidate",
+  "taskId": "MAP-PROD-01",
+  "ownerDecision": "RM-DEC-030",
+  "architectureDirectionApproved": true,
+  "approval": "RENDER_REVIEW_PENDING",
+  "activationEnabled": false,
+  "productionReady": false,
+  "runtimeAuthority": false,
+  "source": {
+    "path": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
+    "immutable": true
+  },
+  "paintedPerspective": {
+    "angleDeg": 65,
+    "alreadyPainted": true,
+    "applySecondProjection": false
+  },
+  "previewCoordinateSpace": "image-pixel",
+  "coordinateTransform": {
+    "status": "EXPLICIT_CANDIDATE_NEEDS_WORLDPLAN_AUTHORITY_REVIEW",
+    "from": "image-pixel",
+    "to": "candidate-world-plan",
+    "linear": [
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        1
+      ]
+    ],
+    "translation": [
+      128,
+      128
+    ],
+    "inverseTranslation": [
+      -128,
+      -128
+    ],
+    "noSkew": true,
+    "uniformScale": 1,
+    "actorFootRadiusWorld": 12,
+    "controlPoints": [
+      {
+        "image": [
+          824,
+          400
+        ],
+        "world": [
+          952,
+          528
+        ]
+      },
+      {
+        "image": [
+          528,
+          376
+        ],
+        "world": [
+          656,
+          504
+        ]
+      },
+      {
+        "image": [
+          824,
+          760
+        ],
+        "world": [
+          952,
+          888
+        ]
+      },
+      {
+        "image": [
+          440,
+          344
+        ],
+        "world": [
+          568,
+          472
+        ]
+      }
+    ],
+    "maxRoundTripResidualPx": 0,
+    "note": "Review-space offset proves non-implicit coordinate conversion; NOT a mapping to shipped canonical world-plan. Agent B must validate/reconcile a replacement worldPlan and visual bounds before enabling production."
+  },
+  "layers": {
+    "base": {
+      "z": -20,
+      "type": "approved immutable PNG"
+    },
+    "floorAndOpening": {
+      "z": 2,
+      "path": "res://scripts/raven/map_prod_01_hc_cb_art.gd",
+      "mode": "background"
+    },
+    "walker": {
+      "z": 8,
+      "path": "res://scenes/raven/actors/evelyn_walker.tscn",
+      "footPivot": "existing Evelyn actor Node2D.position"
+    },
+    "foreground": {
+      "z": 12,
+      "path": "res://scripts/raven/map_prod_01_hc_cb_art.gd",
+      "mode": "foreground"
+    },
+    "debug": {
+      "z": 20,
+      "type": "QA-only disabled by default"
+    }
+  },
+  "doorLockAuthority": "existing ManorRoomTransitionController; no independent lock/save state",
+  "navigation": {
+    "sourceDocument": "res://assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json",
+    "candidateOnly": true,
+    "roomIds": [
+      "RM-ROOM-HALL",
+      "RM-ROOM-CORRIDOR",
+      "RM-ROOM-BEDROOM"
+    ],
+    "crossingContacts": [
+      "QA-09B-HC",
+      "QA-09B-CB"
+    ],
+    "enabledNonHCBCTransitions": [],
+    "usesExistingRouteDocument": true,
+    "safeAnchorSourceIds": {
+      "RM-ROOM-HALL": "QA-HALL-SPAWN",
+      "RM-ROOM-CORRIDOR": "QA-CORRIDOR-WEST",
+      "RM-ROOM-BEDROOM": "QA-BEDROOM-RUG"
+    }
+  },
+  "doors": [
+    {
+      "id": "RM-DOOR-HALL-CORRIDOR",
+      "shortId": "HC",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-CORRIDOR"
+      ],
+      "thresholdPx": [
+        824,
+        400
+      ],
+      "nearFootPx": [
+        824,
+        424
+      ],
+      "farFootPx": [
+        824,
+        384
+      ],
+      "openingWidthPx": 48,
+      "normalPx": [
+        0,
+        -1
+      ],
+      "structuralStatus": "IMPLEMENTATION_CANDIDATE_OWNER_RENDER_REVIEW_PENDING",
+      "clearance": {
+        "footRadiusPx": 12,
+        "openingWidthPx": 48,
+        "nominalSideMarginPx": 12,
+        "stepMaxPx": 3.251
+      },
+      "authoredRoutes": [
+        "QA-ROUTE-09B-03",
+        "QA-ROUTE-09B-04"
+      ],
+      "contact": "QA-09B-HC",
+      "forwardTransition": "QA-09B-HC-AB",
+      "reverseTransition": "QA-09B-HC-BA",
+      "imageGeometry": {
+        "floorBoundsPx": null,
+        "clearOpeningPx": null,
+        "wallJoinPx": [
+          764,
+          398,
+          134,
+          26
+        ],
+        "wallJoinSourcePx": [
+          675,
+          398,
+          80,
+          26
+        ],
+        "foregroundPx": [
+          [
+            764,
+            398,
+            134,
+            26
+          ],
+          [
+            748,
+            424,
+            160,
+            56
+          ]
+        ],
+        "underLandingHeadroom": "PAINTED_OCCLUSION_ONLY_PHYSICAL_SECTION_NOT_CERTIFIED",
+        "visualMethod": "original-floor-preserved-with-source-sampled-continuous-north-wall",
+        "foregroundMethod": "Joined corridor wall and original raised landing mask the walker; no additional floor, side rails or southern lintel. Physical headroom remains unverified."
+      }
+    },
+    {
+      "id": "RM-DOOR-CORRIDOR-BEDROOM",
+      "shortId": "CB",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BEDROOM"
+      ],
+      "thresholdPx": [
+        528,
+        376
+      ],
+      "nearFootPx": [
+        552,
+        376
+      ],
+      "farFootPx": [
+        512,
+        376
+      ],
+      "openingWidthPx": 48,
+      "normalPx": [
+        -1,
+        0
+      ],
+      "structuralStatus": "IMPLEMENTATION_CANDIDATE_OWNER_RENDER_REVIEW_PENDING",
+      "clearance": {
+        "footRadiusPx": 12,
+        "openingWidthPx": 48,
+        "nominalSideMarginPx": 12,
+        "stepMaxPx": 3.251
+      },
+      "authoredRoutes": [
+        "QA-ROUTE-09B-05",
+        "QA-ROUTE-09B-06"
+      ],
+      "contact": "QA-09B-CB",
+      "forwardTransition": "QA-09B-CB-AB",
+      "reverseTransition": "QA-09B-CB-BA",
+      "imageGeometry": {
+        "floorBoundsPx": null,
+        "clearOpeningPx": null,
+        "foregroundPx": [
+          [
+            516,
+            280,
+            24,
+            132
+          ]
+        ],
+        "underLandingHeadroom": null,
+        "visualMethod": "unchanged-original-golden-door-and-partition-no-background-patch",
+        "foregroundMethod": "Source-identical partition and golden door mask the walker. Nominal 48px route width is a navigation target, not a newly painted opening."
+      }
+    }
+  ],
+  "checks": {
+    "footRadiusPx": 12,
+    "spriteHeightPx": 62,
+    "noGoMustClear": true,
+    "diagonalShortcutAllowed": false,
+    "scenePath": "res://scenes/raven/tests/map_prod_01_hc_cb_review.tscn",
+    "smokePath": "res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd",
+    "physicalDeviceVerified": false,
+    "renderReviewVerified": false,
+    "fullIntegrationVerified": false
+  },
+  "productionHandoff": {
+    "target": "ManorNavigationSource.resolve(mode=production,worldPlan=reviewedCandidate)",
+    "worldPlanRequired": true,
+    "roomArtCalibrationStatusRequired": "approved",
+    "globalActivationFlag": "DISABLED",
+    "requiredOwnerReview": "Godot screenshot and actual game scale occlusion/headroom",
+    "noSecondController": true,
+    "saveMigrationOwner": "campaign-core Agent B",
+    "blockedUntil": [
+      "art review",
+      "true physical headroom/occlusion",
+      "source/world-plan calibrated graph",
+      "exact-head movement/collision QA",
+      "Agent B production bridge",
+      "physical phone QA"
+    ]
+  },
+  "artVersion": "composite-v4-original-door-wall-review-pending"
+}

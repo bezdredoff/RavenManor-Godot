@@ -1,68 +1,88 @@
 extends SceneTree
-## GAME-QA-02: exercise the ACTUAL menu callbacks, not a QA preview shortcut.
-## This is a negative activation boundary until Agent B integrates production G2.
-## Expected PASS here means only that we can honestly identify the still-legacy
-## New Game/Continue destinations; it NEVER certifies a player-facing G2 loop.
-const MENU_PATH := "res://scenes/raven/main_menu.tscn"
-const LEGACY_SLICE := "res://scenes/raven/vertical_slice.tscn"
+## Actual callbacks and views; a test-only adapter isolates every campaign write.
+const Fixture = preload("res://tests/support/g2_production_fixture.gd")
+const Menu = preload("res://tests/support/g2_menu_fixture.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
-const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
-
+const Source = preload("res://scripts/raven/manor_navigation_source.gd")
+const Contract = preload("res://data/save_contract.json")
 
 func _initialize() -> void:
 	call_deferred("_run")
 
-
-func _menu_with(storage: RefCounted) -> Control:
-	var menu: Control = load(MENU_PATH).instantiate()
+func _menu(storage: RefCounted, approved: bool = false):
+	if approved:
+		Fixture.install_canonical()
+	var menu = Menu.new()
 	menu.store = Store.new(storage)
 	root.add_child(menu)
 	return menu
 
-
 func _run() -> void:
 	root.size = Vector2i(390, 844)
-	assert(ProjectSettings.get_setting("application/run/main_scene") == MENU_PATH,
-		"Normal game startup must use the real menu, not a QA preview")
-
-	# Continue from a real, persisted Raven snapshot via the real Continue button.
-	var saved := Memory.new()
-	var state: Dictionary = Snapshot.fresh()
-	state.revision = 3
-	assert(Store.new(saved).save_campaign(state))
-	var menu := _menu_with(saved)
+	assert(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/raven/main_menu.tscn")
+	var memory = Memory.new()
+	var menu = _menu(memory)
 	await process_frame
-	assert(not menu.continue_button.disabled)
-	menu.continue_button.pressed.emit()
+	assert(menu.continue_button.disabled)
+	menu.find_child("NewGame", true, false).pressed.emit()
+	assert(menu._start_after_guide and menu.onboarding_dialog.visible)
+	assert(menu.launched_scene == null)
+	menu.onboarding_dialog.find_child("RavenOnboardingClose", true, false).pressed.emit()
 	await process_frame
-	await process_frame
-	assert(current_scene != null, "Continue failed to load a scene")
-	assert(current_scene.scene_file_path == LEGACY_SLICE,
-		"GAME-QA-02 G2 BLOCKED: menu Continue route changed; update this test to assert the real production map and safe anchor")
-
+	var opening = menu.launched_scene
+	assert(opening != null and opening.normal_game_flow)
+	for beat in ["RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03", "RM-BEAT-01-01"]:
+		assert(opening.vn_player.scene.beatId == beat, "Opening omitted: " + beat)
+		for _line in range(100):
+			if opening.state.storyBeatsSeen.has(beat):
+				break
+			opening._advance_vn()
+		assert(opening.state.storyBeatsSeen.has(beat))
+	assert(opening.step.id == "access" and opening.technical_shell.visible)
+	assert(opening.state.storyFlags.is_empty() and opening.state.firstClearLevels.is_empty())
+	assert(not Source.resolve({"schemaVersion": 1, "kind": Source.REQUEST_KIND, "mode": "production"}).ok)
+	var buttons: Array = opening.body.find_children("*", "Button", true, false)
+	assert(buttons.size() == 1 and buttons[0].text in ["Вернуться в меню", "Вярнуцца ў меню", "Return to menu"], "Geometry hold needs recovery without an action bypass")
+	opening.queue_free()
 	menu.queue_free()
 	await process_frame
-
-	# New Game must take the ordinary onboarding path before loading gameplay.
-	var fresh := _menu_with(Memory.new())
+	menu = _menu(memory)
+	menu.continue_button.pressed.emit()
 	await process_frame
-	assert(fresh.continue_button.disabled)
-	var new_game: Button = fresh.find_child("NewGame", true, false)
-	assert(new_game != null)
-	new_game.pressed.emit()
+	assert(menu.launched_scene.step.id == "access" and menu.launched_scene.normal_game_flow)
+	menu.launched_scene.queue_free()
+	menu.queue_free()
 	await process_frame
-	assert(fresh._start_after_guide and fresh.onboarding_dialog.visible)
-	var close_guide: Button = fresh.onboarding_dialog.find_child("RavenOnboardingClose", true, false)
-	assert(close_guide != null)
-	close_guide.pressed.emit()
+	# Positive control: the same callback routes to the real player view, actor,
+	# background and foreground using an isolated validated production fixture.
+	menu = _menu(memory, true)
+	menu.continue_button.pressed.emit()
 	await process_frame
+	assert(menu.launched_path == "res://scenes/raven/manor_player_map.tscn")
+	var map = menu.launched_scene
+	map.set_process(false)
+	assert(map._ready_for_input and map.host.room_state().roomId == "RM-ROOM-HALL", map.status.text)
+	assert(map.host.room_state().anchorId == "RM-NAV-HALL-SPAWN")
+	assert(map.host.navigation.actor.get_script().resource_path.ends_with("evelyn_actor.gd"))
+	assert(map.background.texture != null and map._door_art != null and map._door_foreground != null)
+	assert(not Store.new(memory).load_campaign().has("worldPlan"))
+	map.queue_free()
+	menu.queue_free()
 	await process_frame
-	assert(current_scene != null, "New Game failed to load a scene")
-	assert(current_scene.scene_file_path == LEGACY_SLICE,
-		"GAME-QA-02 G2 BLOCKED: menu New Game route changed; update this test to assert the real production map, approved Evelyn and starting Hall")
-
-	fresh.queue_free()
+	Fixture.restore_canonical()
+	assert(not Source.resolve(Fixture.request()).ok)
+	var corrupt = Memory.new()
+	corrupt.values[Contract.data.ravenKey] = "{bad"
+	menu = _menu(corrupt)
+	menu._continue_game()
+	assert(menu.launched_scene == null and corrupt.values[Contract.data.ravenKey] == "{bad")
+	menu.queue_free()
+	memory.fail_remove = true
+	menu = _menu(memory)
+	menu._reset_and_start()
+	assert(menu.launched_scene == null and not menu._start_after_guide)
+	menu.queue_free()
 	await process_frame
-	print("GAME-QA-02 normal menu legacy-route boundary smoke passed (production G2 activation BLOCKED)")
+	print("GAME-QA-02 menu opening, blocked geometry, approved isolated map and recovery smoke passed")
 	quit()
