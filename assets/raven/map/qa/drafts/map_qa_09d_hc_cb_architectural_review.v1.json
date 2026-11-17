@@ -1,0 +1,425 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-map-hc-cb-architectural-readiness",
+  "taskId": "CODE-05-02",
+  "reviewId": "09D",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "runtimeAuthority": false,
+  "canonicalNavigationAuthority": false,
+  "visualApproval": false,
+  "source": {
+    "imagePath": "a_detailed_top_down_isometric_game_map_illustratio.png",
+    "sha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+    "gitBlobSha": "b50bc36cffd3d3aca7e81a0cea28bb3d0c0e9563",
+    "dimensionsPx": [
+      1672,
+      941
+    ],
+    "immutable": true,
+    "coordinateSpace": "image-pixel",
+    "calibrationBaseline": "res://assets/raven/map/qa/drafts/map_qa_09c_g1_door_calibration.v1.json",
+    "draftRuntimeFixture": "res://assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json"
+  },
+  "projection": {
+    "elevationDeg": 65,
+    "paintedInSourceImage": true,
+    "actorFeetAreImagePixels": true,
+    "doNotApplySecondProjection": true,
+    "depthRequiresNewForegroundMasks": true
+  },
+  "actor": {
+    "footRadiusPx": 12,
+    "standingHeightPx": 62,
+    "technicalQAOnly": true
+  },
+  "visualLayerOrder": [
+    {
+      "z": 0,
+      "id": "immutable-approved-painting",
+      "source": "image"
+    },
+    {
+      "z": 1,
+      "id": "draft-floor-backfill",
+      "source": "overlay",
+      "authoritative": false
+    },
+    {
+      "z": 2,
+      "id": "draft-wall-cut-and-jambs",
+      "source": "overlay",
+      "authoritative": false
+    },
+    {
+      "z": 10,
+      "id": "actor-feet-and-body",
+      "source": "qa-runtime",
+      "authoritative": false
+    },
+    {
+      "z": 20,
+      "id": "foreground-landing-or-partition-caps",
+      "source": "conditional-mask",
+      "authoritative": false
+    }
+  ],
+  "doors": [
+    {
+      "doorId": "RM-DOOR-HALL-CORRIDOR",
+      "shortId": "HC",
+      "roomIds": [
+        "RM-ROOM-HALL",
+        "RM-ROOM-CORRIDOR"
+      ],
+      "referenceLockState": "open",
+      "testOnlyContactId": "QA-09B-HC",
+      "technicalTravelFixtureAvailable": true,
+      "architecturalDisposition": "BLOCKED_PENDING_STRUCTURAL_DECISION",
+      "physicalOpeningApproved": false,
+      "thresholdPx": [
+        824,
+        400
+      ],
+      "nearFootPx": [
+        824,
+        424
+      ],
+      "farFootPx": [
+        824,
+        384
+      ],
+      "openingWidthPx": 48,
+      "normalPx": [
+        0,
+        -1
+      ],
+      "footClearancePxPerSide": 12,
+      "collision": {
+        "footRadiusPx": 12,
+        "nominalThresholdWidthPx": 48,
+        "thresholdMarginPx": 12,
+        "footContactRule": "actor center is unprojected PNG-space coordinate; no teleport; no through-wall passage unless art/collision approved",
+        "artClearanceVerified": false
+      },
+      "floorContinuation": [
+        {
+          "id": "HC-HALL-UNDERPASS",
+          "pointsPx": [
+            [
+              800,
+              400
+            ],
+            [
+              848,
+              400
+            ],
+            [
+              848,
+              536
+            ],
+            [
+              800,
+              536
+            ]
+          ],
+          "status": "CONDITIONAL_NEW_GROUND_FLOOR_REQUIRES_STRUCTURAL_REBUILD"
+        },
+        {
+          "id": "HC-CORRIDOR-SILL",
+          "pointsPx": [
+            [
+              800,
+              376
+            ],
+            [
+              848,
+              376
+            ],
+            [
+              848,
+              400
+            ],
+            [
+              800,
+              400
+            ]
+          ],
+          "status": "PROPOSED_SILL_ONLY"
+        }
+      ],
+      "jambTrim": {
+        "leftPx": [
+          [
+            800,
+            390
+          ],
+          [
+            800,
+            414
+          ]
+        ],
+        "rightPx": [
+          [
+            848,
+            390
+          ],
+          [
+            848,
+            414
+          ]
+        ],
+        "materialHint": "dark wood / brass; candidate only"
+      },
+      "foregroundMasks": [
+        {
+          "id": "HC-LANDING-LEFT-EDGE",
+          "pointsPx": [
+            [
+              750,
+              386
+            ],
+            [
+              800,
+              386
+            ],
+            [
+              800,
+              420
+            ],
+            [
+              750,
+              420
+            ]
+          ],
+          "zIndex": 20,
+          "conditional": true
+        },
+        {
+          "id": "HC-LANDING-RIGHT-EDGE",
+          "pointsPx": [
+            [
+              848,
+              386
+            ],
+            [
+              906,
+              386
+            ],
+            [
+              906,
+              420
+            ],
+            [
+              848,
+              420
+            ]
+          ],
+          "zIndex": 20,
+          "conditional": true
+        }
+      ],
+      "blockingGeometry": [
+        {
+          "kind": "stair-landing-elevation",
+          "status": "UNRESOLVED",
+          "note": "Image only shows painted landing/riser; headroom, underside, structural bearing and level separation are unproven"
+        },
+        {
+          "kind": "left-and-right-flanks",
+          "status": "NOT_A_VALID_48PX_DETOUR",
+          "note": "09B NO-GO west/east stairs 642..735 / 938..1024 at y450..632; passage around the right stair is not safe"
+        }
+      ],
+      "alternative": {
+        "kind": "REQUIRE_EXPLICIT_VISIBLE_NEW_PORTAL",
+        "coordinatePx": null,
+        "status": "NO_SUPPORTED_PLACEMENT_YET",
+        "note": "The approved art and 09B obstructions do not currently establish a 48px grade-level bypass around both stair flights. Do not invent a hidden passage. If the owner rejects an engineered underpass, architectural art must show a ground-level opening and matched floor before coordinates/routes can be authored."
+      },
+      "ownerQuestion": "Approve redesigned, visibly supported HC underpass with headroom/elevation section, or commission a visible ground-floor alternative; reject current HC for production until then."
+    },
+    {
+      "doorId": "RM-DOOR-CORRIDOR-BEDROOM",
+      "shortId": "CB",
+      "roomIds": [
+        "RM-ROOM-CORRIDOR",
+        "RM-ROOM-BEDROOM"
+      ],
+      "referenceLockState": "gated",
+      "testOnlyContactId": "QA-09B-CB",
+      "technicalTravelFixtureAvailable": true,
+      "architecturalDisposition": "CANDIDATE_FOR_OWNER_VISUAL_REVIEW",
+      "physicalOpeningApproved": false,
+      "thresholdPx": [
+        528,
+        376
+      ],
+      "nearFootPx": [
+        552,
+        376
+      ],
+      "farFootPx": [
+        512,
+        376
+      ],
+      "openingWidthPx": 48,
+      "normalPx": [
+        -1,
+        0
+      ],
+      "footClearancePxPerSide": 12,
+      "collision": {
+        "footRadiusPx": 12,
+        "nominalThresholdWidthPx": 48,
+        "thresholdMarginPx": 12,
+        "footContactRule": "actor center crosses one open threshold in image-pixel XY; locked gate rejects both directions",
+        "artClearanceVerified": false
+      },
+      "floorContinuation": [
+        {
+          "id": "CB-BEDROOM-AND-CORRIDOR-CONTINUOUS-SILL",
+          "pointsPx": [
+            [
+              480,
+              352
+            ],
+            [
+              568,
+              352
+            ],
+            [
+              568,
+              400
+            ],
+            [
+              480,
+              400
+            ]
+          ],
+          "status": "PROPOSED_PATCH_REPAINT"
+        }
+      ],
+      "wallCut": {
+        "betweenX": [
+          520,
+          536
+        ],
+        "yRange": [
+          352,
+          400
+        ],
+        "status": "REQUIRES_PAINTED_WALL_REMOVAL"
+      },
+      "jambTrim": {
+        "upperPx": [
+          [
+            516,
+            349
+          ],
+          [
+            540,
+            349
+          ]
+        ],
+        "lowerPx": [
+          [
+            516,
+            404
+          ],
+          [
+            540,
+            404
+          ]
+        ],
+        "materialHint": "dark-wood partition cap, warm brass sill; candidate"
+      },
+      "foregroundMasks": [
+        {
+          "id": "CB-UPPER-WALL-CAP",
+          "pointsPx": [
+            [
+              516,
+              344
+            ],
+            [
+              540,
+              344
+            ],
+            [
+              540,
+              352
+            ],
+            [
+              516,
+              352
+            ]
+          ],
+          "zIndex": 20,
+          "conditional": true
+        },
+        {
+          "id": "CB-LOWER-WALL-CAP",
+          "pointsPx": [
+            [
+              516,
+              400
+            ],
+            [
+              540,
+              400
+            ],
+            [
+              540,
+              408
+            ],
+            [
+              516,
+              408
+            ]
+          ],
+          "zIndex": 20,
+          "conditional": true
+        }
+      ],
+      "blockingGeometry": [
+        {
+          "kind": "bedroom-partition",
+          "status": "VISIBLE_WALL_CUT_REQUIRED",
+          "note": "No doorway is prepainted; trim/caps are wall not safe floor"
+        }
+      ],
+      "bedroomBathroomIndependence": true,
+      "ownerQuestion": "Approve the visible 48px west-facing partition opening at x=528 y352..400, its floor backfill and occluding trim; no bathroom gate."
+    }
+  ],
+  "qa": {
+    "fixture": "09B TEST_ONLY shared-sill pairs",
+    "bidirectionalTestsExpected": true,
+    "mobileTested": false,
+    "artMaskRuntimeImplemented": false,
+    "collisionTestScope": "12px disk on authored 09B draft only, not 3D headroom",
+    "missingRoutesMustFailClosed": true,
+    "blockedDoorMustFailClosed": true,
+    "cancellationMustNotHandoff": true
+  },
+  "promotionGate": {
+    "requires": [
+      "OWNER_APPROVES_HC_ARCHITECTURE_OR_ALTERNATIVE",
+      "OWNER_APPROVES_CB_OPENING_AND_WIDTH",
+      "FOREGROUND_MASKS_AND_ELEVATION_ART_IMPLEMENTED",
+      "AGENT_B_INTEGRATION_AND_COLLISION_VALIDATED",
+      "PHONE_DEVICE_OCCLUSION_AND_SCALE_QA"
+    ],
+    "agentBMayEnableProduction": false,
+    "doNotModify": [
+      "approved-PNG",
+      "manifest",
+      "production-navigation",
+      "save",
+      "story-registry",
+      "Evelyn"
+    ]
+  },
+  "rollback": "Remove this overlay-only record, review SVGs, QA-only smoke and report; 08B/09B and canonical files remain unchanged."
+}

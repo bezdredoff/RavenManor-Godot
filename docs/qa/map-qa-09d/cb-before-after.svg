@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="740" viewBox="0 0 1400 740" role="img" aria-label="CB - Corridor / Bedroom, wall cut before and conditional after review">
+<rect width="1400" height="740" fill="#171c25"/><text x="34" y="37" fill="#f4efe6" font-family="sans-serif" font-size="27" font-weight="bold">CB - Corridor / Bedroom, wall cut</text>
+<text x="34" y="69" fill="#e8aa60" font-family="sans-serif" font-size="19">DRAFT ONLY | Original approved PNG is referenced, never modified</text>
+<rect x="26" y="96" width="654" height="508" fill="#313c49" stroke="#627183" stroke-width="2"/><rect x="720" y="96" width="654" height="508" fill="#313c49" stroke="#627183" stroke-width="2"/>
+<svg x="28" y="100" width="650" height="500" viewBox="420 286 225 185" preserveAspectRatio="xMidYMid meet"><image href="../../../a_detailed_top_down_isometric_game_map_illustratio.png" x="0" y="0" width="1672" height="941" /><rect x="520" y="352" width="16" height="48" stroke="#ff746f" fill="#ff746f" fill-opacity=".12" stroke-width="2.5" stroke-dasharray="4 4"/></svg><svg x="722" y="100" width="650" height="500" viewBox="420 286 225 185" preserveAspectRatio="xMidYMid meet"><image href="../../../a_detailed_top_down_isometric_game_map_illustratio.png" x="0" y="0" width="1672" height="941" /><rect x="480" y="352" width="88" height="48" fill="#48d2de" fill-opacity=".30" stroke="#48d2de" stroke-width="1.6"/>
+<rect x="520" y="352" width="16" height="48" fill="#73583a" fill-opacity=".48" stroke="#ffdc83" stroke-width="1.2" />
+<path d="M516 349 H540 M516 404 H540" stroke="#ffcc63" stroke-width="5"/>
+<path d="M516 344 H540 V352 H516 Z M516 400 H540 V408 H516 Z" fill="#ef706a" fill-opacity=".68" stroke="#fead9a" stroke-width="1.6"/>
+<path d="M552 376 H512" stroke="#ffcc63" stroke-width="2.5" stroke-dasharray="4 3"/>
+<rect x="543" y="314" width="18" height="62" rx="8" fill="none" stroke="#62df8c" stroke-width="1.7" stroke-dasharray="4 3" /><circle cx="552" cy="376" r="12" stroke="#62df8c" fill="#62df8c" fill-opacity=".14" stroke-width="2"/><rect x="503" y="314" width="18" height="62" rx="8" fill="none" stroke="#65b5ff" stroke-width="1.7" stroke-dasharray="4 3" /><circle cx="512" cy="376" r="12" stroke="#65b5ff" fill="#65b5ff" fill-opacity=".14" stroke-width="2"/></svg>
+<rect x="28" y="104" width="143" height="39" rx="5" fill="#1d2531"/><text x="46" y="131" fill="white" font-family="sans-serif" font-size="23">BEFORE</text>
+<rect x="722" y="104" width="248" height="39" rx="5" fill="#1d2531"/><text x="738" y="131" fill="#ffe0ac" font-family="sans-serif" font-size="23">AFTER (proposal)</text>
+<text x="32" y="641" fill="#e8f0f8" font-family="sans-serif" font-size="19">REVIEWABLE: proposed 48px cut and 88x48px continuous painted floor.</text>
+<text x="32" y="677" fill="#a5e0a3" font-family="sans-serif" font-size="17">Green = approach foot + 12px disk</text><text x="410" y="677" fill="#90c7ff" font-family="sans-serif" font-size="17">Blue = destination foot + 12px disk</text>
+<text x="32" y="708" fill="#eed2a8" font-family="sans-serif" font-size="16">Gold = proposed 48px opening / jamb | Cyan = proposed floor | Red = foreground or collision concern</text>
+</svg>
