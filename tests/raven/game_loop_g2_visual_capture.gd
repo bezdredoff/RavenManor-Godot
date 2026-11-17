@@ -24,6 +24,7 @@ func _shot(name: String, focus: Vector2, zoom: float = 2.0) -> void:
 	print("G2 integrated GPU capture: " + name)
 
 func _cross(door: String, name: String, contact: Vector2) -> void:
+	var entering_bedroom: bool = map.host.room_state().roomId == "RM-ROOM-CORRIDOR"
 	for transition in map.host.source.contract.transitions:
 		if transition.doorId == door and transition.sourceRoomId == map.host.room_state().roomId:
 			map._request_door(str(transition.id))
@@ -31,9 +32,20 @@ func _cross(door: String, name: String, contact: Vector2) -> void:
 	assert(map._moving)
 	var at_contact := false
 	var under_landing := false
+	var cb_approach := false
+	var cb_exit := false
 	for _tick in range(10000):
 		map._process(0.025)
 		var feet: Vector2 = map.host.navigation.actor.position
+		if door == "RM-DOOR-CORRIDOR-BEDROOM" and absf(feet.y - contact.y) < 0.1:
+			var approach_x: float = contact.x + (16.0 if entering_bedroom else -16.0)
+			var exit_x: float = contact.x + (-16.0 if entering_bedroom else 16.0)
+			if not cb_approach and absf(feet.x - approach_x) < 2.1:
+				cb_approach = true
+				await _shot(name + "-approach.png", contact)
+			if not cb_exit and absf(feet.x - exit_x) < 2.1:
+				cb_exit = true
+				await _shot(name + "-exit.png", contact)
 		if not under_landing and door == "RM-DOOR-HALL-CORRIDOR" and absf(feet.x - 952) < 0.1 and absf(feet.y - 628) < 2.1:
 			under_landing = true
 			await _shot(name + "-under-landing.png", Vector2(952, 608))
@@ -43,6 +55,8 @@ func _cross(door: String, name: String, contact: Vector2) -> void:
 		if not map._moving:
 			break
 	assert(at_contact, "Rendered route must pass exact physical portal")
+	if door == "RM-DOOR-CORRIDOR-BEDROOM":
+		assert(cb_approach and cb_exit, "Show Evelyn on both sides of the original golden door")
 	if is_instance_valid(map.overlay):
 		map._dismiss_presentation()
 		await process_frame

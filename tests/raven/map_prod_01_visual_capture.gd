@@ -2,12 +2,56 @@ extends SceneTree
 ## Produce actual Godot-rendered review captures after driving existing authored routes.
 ## Screenshots prove rendering, NOT production approval or physical phone clearance.
 const Geometry = preload("res://scripts/raven/map_prod_01_geometry.gd")
+const Art = preload("res://scripts/raven/map_prod_01_hc_cb_art.gd")
 const Review = preload("res://scenes/raven/tests/map_prod_01_hc_cb_review.tscn")
 
 func _initialize() -> void:
 	call_deferred("_run")
 
+func _verify_original_art() -> void:
+	root.size = Vector2i(1672, 941)
+	root.content_scale_size = root.size
+	var base := Sprite2D.new()
+	base.texture = Art.ORIGINAL
+	base.centered = false
+	root.add_child(base)
+	await process_frame
+	await RenderingServer.frame_post_draw
+	var before := root.get_texture().get_image()
+	var back := Art.new()
+	back.z_index = 2
+	root.add_child(back)
+	var front := Art.new()
+	front.foreground = true
+	front.z_index = 12
+	root.add_child(front)
+	await process_frame
+	await RenderingServer.frame_post_draw
+	var after := root.get_texture().get_image()
+	var changed := 0
+	var outside := 0
+	var door := 0
+	for y in range(941):
+		for x in range(1672):
+			if before.get_pixel(x,y) != after.get_pixel(x,y):
+				changed += 1
+				if not Art.HC_WALL.has_point(Vector2(x,y)):
+					outside += 1
+				if Rect2(516,280,24,132).has_point(Vector2(x,y)):
+					door += 1
+	assert(changed > 0)
+	assert(outside == 0, "No added floor tiles or changes outside the HC wall join: " + str(outside))
+	assert(door == 0, "Original CB golden door preserved pixel-for-pixel")
+	assert(after.save_png("res://build/map-prod-01/composite-v4-full.png") == OK)
+	print("V4 rendered pixel comparison PASS: ", changed, " changed pixels, all inside HC wall; CB golden door and all floors identical to original render")
+	base.free()
+	back.free()
+	front.free()
+	await process_frame
+
 func _run() -> void:
+	DirAccess.make_dir_recursive_absolute(ProjectSettings.globalize_path("res://build/map-prod-01"))
+	await _verify_original_art()
 	root.size = Vector2i(960, 720)
 	root.content_scale_size = Vector2i(960, 720)
 	if not Geometry.verify().get("ok", false):

@@ -180,55 +180,37 @@
       "forwardTransition": "QA-09B-HC-AB",
       "reverseTransition": "QA-09B-HC-BA",
       "imageGeometry": {
-        "floorBoundsPx": [
-          800,
-          388,
-          48,
-          148
+        "floorBoundsPx": null,
+        "clearOpeningPx": null,
+        "wallJoinPx": [
+          764,
+          398,
+          134,
+          26
         ],
-        "clearOpeningPx": [
-          800,
-          389,
-          48,
-          46
-        ],
-        "wallFlanksPx": [
-          [
-            792,
-            386,
-            8,
-            42
-          ],
-          [
-            848,
-            386,
-            8,
-            42
-          ]
+        "wallJoinSourcePx": [
+          675,
+          398,
+          80,
+          26
         ],
         "foregroundPx": [
           [
-            800,
-            422,
-            48,
-            58
+            764,
+            398,
+            134,
+            26
           ],
           [
             748,
-            381,
-            52,
-            99
-          ],
-          [
-            848,
-            381,
-            60,
-            99
+            424,
+            160,
+            56
           ]
         ],
-        "underLandingHeadroom": "ILLUSTRATED_ARCH_ONLY_PHYSICAL_SECTION_NOT_CERTIFIED",
-        "visualMethod": "original-source-parquet-sample-plus-architectural-jambs",
-        "foregroundMethod": "Source-identical raised landing and railings mask the tunnel; southern lintel y477. Owner structural/headroom review still required."
+        "underLandingHeadroom": "PAINTED_OCCLUSION_ONLY_PHYSICAL_SECTION_NOT_CERTIFIED",
+        "visualMethod": "original-floor-preserved-with-source-sampled-continuous-north-wall",
+        "foregroundMethod": "Joined corridor wall and original raised landing mask the walker; no additional floor, side rails or southern lintel. Physical headroom remains unverified."
       }
     },
     {
@@ -270,55 +252,19 @@
       "forwardTransition": "QA-09B-CB-AB",
       "reverseTransition": "QA-09B-CB-BA",
       "imageGeometry": {
-        "floorBoundsPx": [
-          520,
-          290,
-          16,
-          110
-        ],
-        "clearOpeningPx": [
-          520,
-          290,
-          16,
-          110
-        ],
-        "wallFlanksPx": [
-          [
-            516,
-            342,
-            24,
-            10
-          ],
-          [
-            516,
-            400,
-            24,
-            10
-          ]
-        ],
+        "floorBoundsPx": null,
+        "clearOpeningPx": null,
         "foregroundPx": [
           [
             516,
             280,
             24,
-            10
-          ],
-          [
-            516,
-            400,
-            24,
-            12
-          ],
-          [
-            536,
-            290,
-            4,
-            110
+            132
           ]
         ],
         "underLandingHeadroom": null,
-        "visualMethod": "original-source-bedroom-parquet-sample-with-narrow wall cut",
-        "foregroundMethod": "Full-height near jamb plus source partition caps; no horizontal bar through Evelyn at y352."
+        "visualMethod": "unchanged-original-golden-door-and-partition-no-background-patch",
+        "foregroundMethod": "Source-identical partition and golden door mask the walker. Nominal 48px route width is a navigation target, not a newly painted opening."
       }
     }
   ],
@@ -350,5 +296,5 @@
       "physical phone QA"
     ]
   },
-  "artVersion": "composite-v3-review-pending"
+  "artVersion": "composite-v4-original-door-wall-review-pending"
 }
