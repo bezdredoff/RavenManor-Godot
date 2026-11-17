@@ -78,6 +78,7 @@ func _run() -> void:
 	Fixture.install_canonical()
 	for locale in ["ru", "be", "en"]:
 		root.size = {"ru": Vector2i(320, 568), "be": Vector2i(430, 932), "en": Vector2i(390, 844)}[locale]
+		root.content_scale_size = root.size
 		var storage = Memory.new()
 		_seed(storage)
 		var map = _map(storage)
@@ -85,6 +86,11 @@ func _run() -> void:
 		assert(map._ready_for_input, map.status.text)
 		map.prefs.set_locale(locale)
 		assert(map.status.text == map._copy(0), "Status must follow the selected locale, like the HUD")
+		map._process(0.0)
+		map.camera.force_update_scroll()
+		var actor_on_screen: Vector2 = map.host.navigation.actor.get_global_transform_with_canvas().origin
+		assert(actor_on_screen.y < float(root.size.y) - 164.0, "Evelyn feet must remain above the portrait HUD")
+		assert(map.camera.limit_left == 128 and map.camera.limit_bottom == 1069)
 		assert(map.host.source.mode == "production" and not map.host.source.draftOnly)
 		assert(map.host.source.contract.transitions.size() == 4)
 		assert(map.host.navigation.actor.get_script().resource_path.ends_with("evelyn_actor.gd"))

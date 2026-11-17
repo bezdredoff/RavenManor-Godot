@@ -199,6 +199,12 @@ func _refresh_room() -> bool:
 	var texture := load(path) as Texture2D
 	if texture == null or texture.get_size().x <= 0.0 or texture.get_size().y <= 0.0:
 		return false
+	# Keep portrait framing inside the approved painting. A smaller phone must
+	# retain enough pixel scale for Evelyn to stay above the bottom controls.
+	camera.limit_left = int(bounds[0])
+	camera.limit_top = int(bounds[1])
+	camera.limit_right = int(float(bounds[0]) + float(bounds[2]))
+	camera.limit_bottom = int(float(bounds[1]) + float(bounds[3]))
 	background.texture = texture
 	background.position = Vector2(float(bounds[0]), float(bounds[1]))
 	background.scale = Vector2(float(bounds[2]), float(bounds[3])) / texture.get_size()
@@ -246,7 +252,7 @@ func _resize_camera() -> void:
 	if camera == null:
 		return
 	var viewport_width := get_viewport_rect().size.x
-	camera.zoom = Vector2.ONE * _zoom * clampf(viewport_width / 390.0, 0.7, 1.1)
+	camera.zoom = Vector2.ONE * _zoom * clampf(viewport_width / 390.0, 1.0, 1.1)
 
 
 func _rebuild_targets() -> void:
