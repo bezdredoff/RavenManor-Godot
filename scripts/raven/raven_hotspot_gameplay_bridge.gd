@@ -115,9 +115,37 @@ func _still_available() -> bool:
 
 
 func _hotspot_available(hotspot_id: String) -> bool:
+	return story_available(state, hotspot_id)
+
+
+## Pure story-gate contract reused by G1's route session and the G2
+## multi-room host. Movement/arrival must be verified by the caller first.
+static func story_available(snapshot: Dictionary, hotspot_id: String) -> bool:
 	return HOTSPOT_STEPS.has(hotspot_id) and \
-		str(Director.next_step(state).get("id", "")) == HOTSPOT_STEPS[hotspot_id] and \
-		str(state.get("hotspotStates", {}).get(hotspot_id, "")) not in ["cleared", "restored"]
+		str(Director.next_step(snapshot).get("id", "")) == HOTSPOT_STEPS[hotspot_id] and \
+		str(snapshot.get("hotspotStates", {}).get(hotspot_id, "")) not in ["cleared", "restored"]
+
+
+## Prepare an atomic Raven reducer transaction, WITHOUT persisting or moving.
+## Do not accept this proposal as evidence of arrival: only the gameplay host
+## can authorize an observed actor at an authored interaction anchor.
+static func story_arrival_proposal(snapshot: Dictionary, hotspot_id: String) -> Dictionary:
+	if not story_available(snapshot, hotspot_id):
+		return {"ok": false, "error": "no-longer-available"}
+	var step_id: String = HOTSPOT_STEPS[hotspot_id]
+	var proposed: Dictionary = snapshot.duplicate(true)
+	for raw_event in Director.events_for(step_id):
+		var event: Dictionary = raw_event.duplicate(true)
+		event["eventId"] = "loop01a-%s-%s" % [step_id, str(event.get("type", ""))]
+		var reduced: Dictionary = Reducer.apply(proposed, event)
+		if not reduced.get("ok", false):
+			return {"ok": false, "error": str(reduced.get("error", "reducer-rejected"))}
+		proposed = reduced.state
+	if str(Director.next_step(proposed).get("id", "")) != ACTION_STEPS[step_id]:
+		return {"ok": false, "error": "unexpected-story-transition"}
+	return {"ok": true, "state": proposed, "status": "action-committed",
+		"hotspotId": hotspot_id, "nextStep": ACTION_STEPS[step_id],
+		"presentation": "match3" if step_id == "access" else "vn"}
 
 
 func _commit_arrival(hotspot_id: String) -> Dictionary:
@@ -133,25 +161,15 @@ func _commit_arrival(hotspot_id: String) -> Dictionary:
 			or graph.route(session.checkpoint_event("arrival-probe").get("anchorId", ""), destination).is_empty():
 		_requested = ""
 		return {"ok": false, "error": "invalid-arrival-position"}
-	var step_id: String = HOTSPOT_STEPS[hotspot_id]
-	var proposed: Dictionary = state.duplicate(true)
-	for raw_event in Director.events_for(step_id):
-		var event: Dictionary = raw_event.duplicate(true)
-		event["eventId"] = "loop01a-%s-%s" % [step_id, str(event.get("type", ""))]
-		var reduced: Dictionary = Reducer.apply(proposed, event)
-		if not reduced.get("ok", false):
-			_requested = ""
-			return {"ok": false, "error": str(reduced.get("error", "reducer-rejected"))}
-		proposed = reduced.state
-	if str(Director.next_step(proposed).get("id", "")) != ACTION_STEPS[step_id]:
+	var prepared: Dictionary = story_arrival_proposal(state, hotspot_id)
+	if not bool(prepared.get("ok", false)):
 		_requested = ""
-		return {"ok": false, "error": "unexpected-story-transition"}
-	if not store.save_campaign(proposed):
+		return prepared
+	if not store.save_campaign(prepared.state):
 		_requested = ""
 		return {"ok": false, "error": "save-failed"}
-	state = proposed
+	state = prepared.state
 	navigation.refresh_routes(state)
 	_requested = ""
-	return {"ok": true, "status": "action-committed", "hotspotId": hotspot_id,
-		"nextStep": ACTION_STEPS[step_id],
-		"presentation": "match3" if step_id == "access" else "vn"}
+	prepared.erase("state")
+	return prepared
