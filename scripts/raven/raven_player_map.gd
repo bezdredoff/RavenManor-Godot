@@ -55,6 +55,8 @@ var _presentation_dismissed := false
 var _ready_for_input := false
 var _room_id := ""
 var _zoom := 1.0
+var _door_art: Node2D
+var _door_foreground: Node2D
 
 
 func _ready() -> void:
@@ -69,7 +71,8 @@ func _ready() -> void:
 	background.centered = false
 	background.z_index = -10
 	add_child(background)
-	host = Host.new()
+	if host == null:
+		host = Host.new()
 	add_child(host)
 	targets = Node2D.new()
 	targets.z_index = 10
@@ -81,20 +84,16 @@ func _ready() -> void:
 	ui_layer = CanvasLayer.new()
 	add_child(ui_layer)
 	_build_hud()
-	var stored := Store.new()
+	var stored: RefCounted = host.store
 	var snapshot: Dictionary = stored.load_campaign()
 	if str(stored.last_load_report.get("status", "")) == "recovered-corrupt" or \
 			str(stored.last_load_report.get("detail", "")) == "storage-read-failed":
 		_hold("save-unreadable")
 		return
-	if not Entry.can_enter(snapshot):
+	if not _entry_allowed(snapshot):
 		_hold(_copy(7))
 		return
-	var start: Dictionary = host.configure({
-		"schemaVersion": Source.SCHEMA_VERSION,
-		"kind": Source.REQUEST_KIND,
-		"mode": Source.MODE_PRODUCTION,
-	})
+	var start: Dictionary = host.configure(_navigation_request())
 	if not bool(start.get("ok", false)):
 		_hold(_copy(7) + ": " + str(start.get("error", "")))
 		return
@@ -107,6 +106,15 @@ func _ready() -> void:
 		return
 	_set_status(_copy(0))
 	_maybe_open_presentation()
+
+
+func _entry_allowed(snapshot: Dictionary) -> bool:
+	return Entry.can_enter(snapshot)
+
+
+func _navigation_request() -> Dictionary:
+	return {"schemaVersion": Source.SCHEMA_VERSION, "kind": Source.REQUEST_KIND,
+		"mode": Source.MODE_PRODUCTION, "locale": str(prefs.locale)}
 
 
 func _build_hud() -> void:
@@ -203,6 +211,19 @@ func _refresh_room() -> bool:
 	background.position = Vector2(float(bounds[0]), float(bounds[1]))
 	background.scale = Vector2(float(bounds[2]), float(bounds[3])) / texture.get_size()
 	_zoom = clampf(float(visual.get("cameraZoom", 1.0)), 0.1, 4.0)
+	if str(visual.get("artLayer", "")) == "hc-cb-v3":
+		if not is_instance_valid(_door_art):
+			var layer = load("res://scripts/raven/map_prod_01_hc_cb_art.gd")
+			_door_art = layer.new()
+			_door_art.z_index = 2
+			add_child(_door_art)
+			_door_foreground = layer.new()
+			_door_foreground.foreground = true
+			_door_foreground.z_index = 12
+			add_child(_door_foreground)
+		var origin: Array = visual.artOrigin
+		_door_art.position = Vector2(float(origin[0]), float(origin[1]))
+		_door_foreground.position = _door_art.position
 	_room_id = room
 	heading.text = _copy(0) + " · " + _room_name(room)
 	_refresh_ui_copy()
@@ -238,6 +259,9 @@ func _rebuild_targets() -> void:
 			break
 	for anchor in room_data.get("graph", {}).get("anchors", []):
 		var hotspot_id := str(anchor.get("hotspotId", ""))
+		if hotspot_id == "RM-HS-TEA-TABLE":
+			_world_button(anchor.get("position", []), _copy(6), Callable(self, "_request_runtime").bind(hotspot_id), str(host.current_activity().get("kind", "")) == "done")
+			continue
 		if not Bridge.HOTSPOT_STEPS.has(hotspot_id):
 			continue
 		var label_set: Dictionary = HOTSPOT_NAMES.get(hotspot_id, {})
@@ -251,7 +275,7 @@ func _rebuild_targets() -> void:
 			continue
 		var approach := str(transition.get("approachAnchorId", ""))
 		var door_id := str(transition.get("doorId", ""))
-		var unlocked := host.state.get("unlockedDoors", []).has(door_id)
+		var unlocked: bool = host.state.get("unlockedDoors", []).has(door_id)
 		var room_label := _room_name(str(transition.get("destinationRoomId", "")))
 		var caption := "→ " + room_label if unlocked else "🔒 " + room_label
 		for anchor in room_data.get("graph", {}).get("anchors", []):
@@ -313,7 +337,7 @@ func _process(delta: float) -> void:
 			match str(result.get("status", "")):
 				"ready":
 					var crossing: Dictionary = host.commit_ready_transition()
-					_moving = false
+					_moving = bool(crossing.get("finishEntryRoute", false))
 					if bool(crossing.get("ok", false)):
 						if not _refresh_room():
 							_hold("approved-room-visual-unavailable")
@@ -323,8 +347,12 @@ func _process(delta: float) -> void:
 					_moving = false
 					_rebuild_targets()
 					_maybe_open_presentation()
+				"runtime-scene-unavailable":
+					_moving = false
+					_set_status(_copy(9) + "scene-approval-pending")
 				"arrived", "idle", "cancelled":
 					_moving = false
+					_maybe_open_presentation()
 	if is_instance_valid(overlay):
 		var active_step: Variant = overlay.get("step")
 		if active_step is Dictionary and str(active_step.get("id", "")) in ["access", "restore1"]:
@@ -337,10 +365,10 @@ func _maybe_open_presentation() -> void:
 	if not _ready_for_input or _presentation_dismissed or is_instance_valid(overlay):
 		return
 	var activity: Dictionary = host.current_activity()
-	if str(activity.get("kind", "")) not in ["vn", "match3"]:
+	if str(activity.get("kind", "")) not in ["vn", "vn_production", "match3"]:
 		resume_button.visible = false
 		return
-	overlay = host.mount_presentation(ui_layer)
+	overlay = host.mount_presentation(ui_layer, str(prefs.locale))
 	if is_instance_valid(overlay):
 		overlay.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 		overlay.connect("map_return_requested", _dismiss_presentation)
@@ -362,7 +390,7 @@ func _close_presentation(dismissed: bool) -> void:
 	if not bool(result.get("ok", false)):
 		_hold(str(result.get("error", "presentation-save-unreadable")))
 		return
-	resume_button.visible = dismissed and str(host.current_activity().get("kind", "")) in ["vn", "match3"]
+	resume_button.visible = dismissed and str(host.current_activity().get("kind", "")) in ["vn", "vn_production", "match3"]
 	_rebuild_targets()
 
 
@@ -425,3 +453,8 @@ func _hold(reason: String) -> void:
 func _set_status(message: String) -> void:
 	if is_instance_valid(status):
 		status.text = message
+
+
+func _request_runtime(hotspot_id: String) -> void:
+	if _can_request():
+		_accept_request(host.request_runtime_hotspot(hotspot_id))

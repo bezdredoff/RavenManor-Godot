@@ -1,0 +1,5 @@
+--- a/scripts/raven/manor_navigation_source.gd
++++ b/scripts/raven/manor_navigation_source.gd
+@@ -19,1 +19,1 @@
+-const PRODUCTION_ACTIVATION_ENABLED := false
++const PRODUCTION_ACTIVATION_ENABLED := true

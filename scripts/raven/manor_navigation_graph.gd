@@ -115,7 +115,7 @@ func segment_available(from_anchor_id: String, to_anchor_id: String) -> bool:
 
 
 func _safe_and_reachable(anchor_id: String, fallback_id: String) -> bool:
-	if not _anchors.has(anchor_id) or str(_anchors[anchor_id].get("kind", "")) != "safe":
+	if not _anchors.has(anchor_id) or str(_anchors[anchor_id].get("kind", "")) != "safe" or not _anchors[anchor_id].get("checkpointAllowed", true):
 		return false
 	return not route(fallback_id, anchor_id).is_empty()
 
@@ -146,7 +146,7 @@ func checkpoint_event(anchor_id: String, event_id: String) -> Dictionary:
 	if event_id.is_empty() or not _anchors.has(anchor_id):
 		return {}
 	var item: Dictionary = _anchors[anchor_id]
-	if str(item.get("kind", "")) != "safe":
+	if str(item.get("kind", "")) != "safe" or not item.get("checkpointAllowed", true):
 		return {}
 	return {
 		"eventId": event_id,

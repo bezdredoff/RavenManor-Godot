@@ -55,7 +55,8 @@ func configure(source: Dictionary, snapshot: Dictionary = {}) -> bool:
 	actor = EvelynScene.instantiate() as Mover
 	if actor == null:
 		return _fail("evelyn-actor-unavailable")
-	actor.sprite_height = 62.0
+	actor.sprite_height = float(source.get("visuals", {}).get(initial_room, {}).get("actorHeight", 62.0))
+	actor.z_index = 8
 	actor.move_speed = 160.0
 	add_child(actor)
 	# The gameplay caller drives advance(delta); do not double-advance via _process.

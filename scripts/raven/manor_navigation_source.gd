@@ -13,6 +13,10 @@ const QaAdapter = preload("res://scripts/raven/first_floor_integrated_draft_adap
 const Preview = preload("res://addons/room_builder_routes/route_preview_source.gd")
 const RavenIds = preload("res://scripts/raven/raven_ids.gd")
 const WORLD_PLAN = preload("res://data/raven/manor_greybox_graph.json")
+const PRODUCTION_CANDIDATE = preload("res://data/raven/manor_production_candidate.v1.json")
+const ACCEPTANCE = preload("res://data/raven/manor_production_acceptance.v1.json")
+# Separate integration switch: editing candidate approval flags cannot select it.
+const PRODUCTION_ACTIVATION_ENABLED := false
 
 const SCHEMA_VERSION := 1
 const REQUEST_KIND := "raven-navigation-source-request"
@@ -43,7 +47,12 @@ static func resolve(request: Dictionary) -> Dictionary:
 static func _resolve_production(request: Dictionary) -> Dictionary:
 	var mode := MODE_PRODUCTION
 	var snapshot := _snapshot(request)
-	var graph_data: Variant = request.get("worldPlan", WORLD_PLAN.data)
+	var selected: Dictionary = WORLD_PLAN.data
+	if not request.has("worldPlan") and PRODUCTION_ACTIVATION_ENABLED:
+		if not _acceptance_receipt_matches():
+			return _unavailable(mode, "production-acceptance-receipt-missing", ["owner-rendered-geometry-review-required"])
+		selected = PRODUCTION_CANDIDATE.data
+	var graph_data: Variant = request.get("worldPlan", selected)
 	if not graph_data is Dictionary:
 		return _invalid_request_result(mode, "world-plan-must-be-dictionary")
 	var plan: Dictionary = graph_data
@@ -183,7 +192,7 @@ static func resolve_snapshot_start(source: Dictionary, snapshot: Dictionary = {}
 	var graph = Graph.new()
 	graph.rebuild(_gate_snapshot_stub(contract, snapshot), rooms[requested].get("graph", {}))
 	if not graph.has_anchor(saved) or str(graph.anchor(saved).get("kind", "")) != "safe" \
-			or str(graph.anchor(saved).get("roomId", "")) != requested:
+			or str(graph.anchor(saved).get("roomId", "")) != requested or not graph.anchor(saved).get("checkpointAllowed", true):
 		return _start_result(requested, room_start, true, "invalid-saved-anchor", false)
 	if graph.safe_checkpoint_anchor({"lastRoomId": requested, "lastSafeAnchorId": saved}, room_start) != saved:
 		return _start_result(requested, room_start, true, "unreachable-saved-anchor", false)
@@ -191,6 +200,10 @@ static func resolve_snapshot_start(source: Dictionary, snapshot: Dictionary = {}
 
 
 static func _production_contract(plan: Dictionary, snapshot: Dictionary, provenance: Dictionary, calibration: Dictionary) -> Dictionary:
+	if int(provenance.get("calibrationVersion", 0)) == 2:
+		var physical_error := validate_calibrated_plan(plan)
+		if not physical_error.is_empty():
+			return _contract_error(physical_error)
 	var rooms: Dictionary = {}
 	var room_order: Array = []
 	var anchors_by_id: Dictionary = {}
@@ -252,6 +265,10 @@ static func _production_contract(plan: Dictionary, snapshot: Dictionary, provena
 	var built_transitions := _production_transitions(cross_edges, anchors_by_id)
 	if not bool(built_transitions.get("ok", false)):
 		return built_transitions
+	for transition in built_transitions.transitions:
+		var entry: Dictionary = anchors_by_id[transition.destinationEntryAnchorId]
+		if entry.get("checkpointAllowed", true) == false:
+			transition["destinationSafeAnchorId"] = starts[transition.destinationRoomId]
 	var room_list: Array = []
 	for room in room_order:
 		room_list.append(rooms[room])
@@ -334,6 +351,8 @@ static func _production_visuals(room_order: Array, calibration: Dictionary) -> D
 			"bounds": entry.bounds.duplicate(),
 			"cameraZoom": float(entry.cameraZoom),
 			"actorHeight": float(entry.get("actorHeight", 62.0)),
+			"artLayer": str(entry.get("artLayer", "")),
+			"artOrigin": entry.get("artOrigin", [0, 0]).duplicate(),
 		}
 	if not blockers.is_empty():
 		return {"ok": false, "blockers": blockers}
@@ -364,9 +383,92 @@ static func _calibration_approved(value: Variant) -> bool:
 
 static func _first_safe(anchors: Array) -> String:
 	for anchor in anchors:
-		if anchor is Dictionary and str(anchor.get("kind", "")) == "safe":
+		if anchor is Dictionary and str(anchor.get("kind", "")) == "safe" and anchor.get("checkpointAllowed", true):
 			return str(anchor.get("id", ""))
 	return ""
+
+
+## Geometry validation is independent of approval metadata. The inactive
+## candidate and isolated tests use this same check before any source activation.
+static func validate_calibrated_plan(plan: Dictionary) -> String:
+	var calibration: Dictionary = plan.get("provenance", {}).get("roomArtCalibration", {})
+	var transform: Dictionary = calibration.get("transform", {})
+	if not _numbers_match(transform.get("translation"), [128, 128]) or float(transform.get("uniformScale", 0)) != 1.0:
+		return "invalid-physical-transform"
+	if FileAccess.get_sha256("res://a_detailed_top_down_isometric_game_map_illustratio.png") != calibration.get("assetHash", ""):
+		return "physical-source-hash-mismatch"
+	var controls: Array = transform.get("controlPoints", [])
+	if controls.size() != 4:
+		return "missing-calibration-control-points"
+	for control in controls:
+		if not _valid_position(control.get("image")) or not _valid_position(control.get("world")):
+			return "invalid-control-point"
+		if _point(control.world).distance_to(_point(control.image) + Vector2(128, 128)) > 0.001:
+			return "control-point-residual"
+	var scale: Dictionary = calibration.get("scale", {})
+	if float(scale.get("sourcePixelsPerMetre", 0)) != 40.0 or scale.get("applySecondProjection", true):
+		return "invalid-physical-scale"
+	var constraints: Dictionary = plan.get("physicalConstraints", {})
+	if float(constraints.get("footRadiusWorld", 0)) != 12.0 or float(constraints.get("portalWidthWorld", 0)) != 48.0:
+		return "invalid-physical-clearance"
+	var no_go: Array = constraints.get("noGoPolygons", [])
+	var walkable: Array = constraints.get("walkablePolygons", [])
+	if no_go.is_empty() or walkable.is_empty():
+		return "missing-physical-constraints"
+	var lookup: Dictionary = {}
+	for anchor in plan.get("anchors", []):
+		if not _valid_position(anchor.get("position")) or lookup.has(anchor.get("id")):
+			return "invalid-calibrated-anchor"
+		lookup[anchor.id] = anchor
+	for pair in constraints.get("portalPairs", []):
+		if pair.size() != 2 or not lookup.has(pair[0]) or not lookup.has(pair[1]):
+			return "missing-portal-pair"
+		if _point(lookup[pair[0]].position).distance_to(_point(lookup[pair[1]].position)) > 0.001:
+			return "portal-handoff-jump"
+		if lookup[pair[0]].get("checkpointAllowed", true) or lookup[pair[1]].get("checkpointAllowed", true):
+			return "portal-checkpoint-forbidden"
+	if constraints.get("portalPairs", []).size() != 2:
+		return "missing-hc-cb-portals"
+	for room in calibration.get("rooms", {}):
+		var visual: Dictionary = calibration.rooms[room]
+		if not _numbers_match(visual.get("bounds"), [128, 128, 1672, 941]) or not _numbers_match(visual.get("artOrigin"), [128, 128]):
+			return "art-world-alignment"
+	for edge in plan.get("edges", []):
+		if not lookup.has(edge.get("from")) or not lookup.has(edge.get("to")):
+			return "invalid-calibrated-edge"
+		var a: Dictionary = lookup[edge.from]
+		var b: Dictionary = lookup[edge.to]
+		var start := _point(a.position) - Vector2(128, 128)
+		var end := _point(b.position) - Vector2(128, 128)
+		if a.roomId != b.roomId and start.distance_to(end) > 0.001:
+			return "portal-handoff-jump"
+		for step in range(ceili(start.distance_to(end)) + 1):
+			var feet := start.lerp(end, float(step) / maxf(1.0, ceilf(start.distance_to(end))))
+			var allowed := false
+			for zone in walkable:
+				if str(zone.get("roomId", "")) == str(a.roomId) and Geometry2D.is_point_in_polygon(feet, _polygon(zone)):
+					allowed = true
+			if not allowed:
+				return "route-outside-walkable:" + str(edge.from)
+			for zone in no_go:
+				var polygon := _polygon(zone)
+				if Geometry2D.is_point_in_polygon(feet, polygon):
+					return "route-inside-no-go:" + str(zone.get("id", ""))
+				for i in range(polygon.size()):
+					if feet.distance_to(Geometry2D.get_closest_point_to_segment(feet, polygon[i], polygon[(i + 1) % polygon.size()])) < 11.99:
+						return "route-foot-clearance:" + str(zone.get("id", ""))
+	return ""
+
+
+static func _point(value: Array) -> Vector2:
+	return Vector2(float(value[0]), float(value[1]))
+
+
+static func _polygon(zone: Dictionary) -> PackedVector2Array:
+	var result := PackedVector2Array()
+	for point in zone.get("pointsPx", []):
+		result.append(_point(point))
+	return result
 
 
 static func _gate_snapshot_stub(contract: Dictionary, snapshot: Dictionary) -> Dictionary:
@@ -573,3 +675,21 @@ func refresh_routes(snapshot: Dictionary) -> void:
 func restore_routes(snapshot: Dictionary) -> String:
 	refresh_routes(snapshot)
 	return session.restore(snapshot) if session != null else ""
+
+
+static func _numbers_match(value: Variant, expected: Array) -> bool:
+	if not value is Array or value.size() != expected.size():
+		return false
+	for i in range(expected.size()):
+		if not (value[i] is int or value[i] is float) or not is_finite(float(value[i])) or absf(float(value[i]) - float(expected[i])) > 0.001:
+			return false
+	return true
+
+
+static func _acceptance_receipt_matches() -> bool:
+	var receipt: Dictionary = ACCEPTANCE.data
+	return receipt.get("ownerApproved", false) == true \
+		and not str(receipt.get("ownerDecisionId", "")).is_empty() \
+		and not str(receipt.get("renderEvidence", "")).is_empty() \
+		and receipt.get("worldPlanSha256", "") == FileAccess.get_sha256("res://data/raven/manor_production_candidate.v1.json") \
+		and receipt.get("doorLayerSha256", "") == FileAccess.get_sha256("res://scripts/raven/map_prod_01_hc_cb_art.gd")

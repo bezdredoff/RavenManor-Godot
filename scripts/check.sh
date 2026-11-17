@@ -12,7 +12,7 @@ run_check() {
 	local stage="$1" expected="$2"
 	shift 2
 	local output
-	output="$($GODOT_BIN --headless --path "$ROOT" "$@" 2>&1)" || { printf '%s\n' "$output"; return 1; }
+	output="$("$GODOT_BIN" --headless --path "$ROOT" "$@" 2>&1)" || { printf '%s\n' "$output"; return 1; }
 	if [[ -n "$expected" && "$output" != *"$expected"* ]]; then
 		printf 'ERROR: %s did not produce expected output: %s\n' "$stage" "$expected" >&2
 		printf '%s\n' "$output" >&2
@@ -95,7 +95,7 @@ run_check 'Match-3 checkpoint smoke' 'Raven Manor Match-3 replay checkpoint smok
 run_check 'VN line checkpoint smoke' 'Raven Manor VN line checkpoint smoke passed' --script res://tests/raven/vn_cursor_smoke.gd --quit-after 120
 run_check 'Gameplay pause smoke' 'Raven Manor save-and-exit pause smoke passed' --script res://tests/raven/game_pause_smoke.gd --quit-after 120
 run_check 'Main menu smoke' 'Raven Manor main menu and Prototype Lab navigation smoke passed' --script res://tests/raven/main_menu_smoke.gd --quit-after 120
-run_check 'GAME-QA-02 normal menu entry boundary' 'GAME-QA-02 normal menu legacy-route boundary smoke passed (production G2 activation BLOCKED)' --script res://tests/raven/game_qa_02_menu_boundary_smoke.gd --quit-after 240
+run_check 'GAME-QA-02 normal menu entry boundary' 'GAME-QA-02 menu opening, blocked geometry, approved isolated map and recovery smoke passed' --script res://tests/raven/game_qa_02_menu_boundary_smoke.gd --quit-after 240
 run_check 'Main menu Match-3 campaign entry' 'Raven main menu Match-3 campaign entry smoke passed' --script res://tests/raven/main_menu_match3_campaign_smoke.gd --quit-after 180
 run_check 'Main menu UPDS failure-mode parity' 'Raven main menu UPDS failure-mode parity smoke passed' --script res://tests/raven/main_menu_upds_parity_smoke.gd --quit-after 180
 run_check 'Optional Match-3 campaign controller' 'Raven optional Match-3 campaign controller smoke passed' --script res://tests/raven/optional_campaign_controller_smoke.gd --quit-after 180
@@ -130,3 +130,9 @@ run_check 'Live Raven VN gameplay backgrounds' 'Raven live VN background composi
 run_check 'Hall VN runtime UI smoke' 'Raven Manor Hall VN UI runtime smoke passed' --script res://tests/raven/hall_tea_vn_ui_smoke.gd --quit-after 240
 run_check 'Whole season1 map smoke' 'Raven Manor continuous season1 map smoke passed' --script res://tests/raven/season1_map_smoke.gd --quit-after 120
 run_check 'Campaign Season 1 executability audit' 'Raven Manor campaign Season 1 audit passed' --script res://tests/raven/campaign_season1_audit_smoke.gd --quit-after 240
+
+run_check 'GAME-LOOP-02 player map' 'GAME-LOOP-02 player map entry and production gate refresh smoke passed' --script res://tests/raven/game_loop_02_player_map_smoke.gd --quit-after 300
+
+run_check 'MAP-PROD-01 candidate' 'MAP-PROD-01 candidate: Evelyn, 4 HC/CB directions, gates, relock, cancel, NO-GO and 65-degree art validation PASS' --script res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd --quit-after 300
+
+run_check 'G2 production integration' 'G2 production-contract integrated map, Evelyn, traversal, VN/Match-3, save/recovery and RU/BE/EN PASS' --script res://tests/raven/game_loop_g2_production_integration_smoke.gd --quit-after 1000

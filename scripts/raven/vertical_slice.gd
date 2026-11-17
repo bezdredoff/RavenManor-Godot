@@ -45,6 +45,7 @@ var return_to_main_menu_after_campaign := false
 var active_booster := ""
 var booster_action_saved := true
 var embedded_in_manor := false
+var confirmed_production_scene: Dictionary = {}
 var normal_game_flow := false
 var _map_entry_scheduled := false
 var content: Dictionary
@@ -68,7 +69,7 @@ const PAUSE_COPY := {
 
 
 func _ready() -> void:
-	normal_game_flow = bool(get_tree().get_meta(NORMAL_GAME_ROUTE_META, false))
+	normal_game_flow = normal_game_flow or bool(get_tree().get_meta(NORMAL_GAME_ROUTE_META, false))
 	if get_tree().has_meta(NORMAL_GAME_ROUTE_META):
 		get_tree().remove_meta(NORMAL_GAME_ROUTE_META)
 	return_to_main_menu_after_campaign = bool(get_tree().get_meta(CAMPAIGN_ROUTE_META, false))
@@ -211,12 +212,14 @@ func _render() -> void:
 	# vertical slice gives way to the production map ONLY if the canonical
 	# navigation source is fully approved. An embedded presentation never
 	# tries to create a second map or switch scenes.
-	if not embedded_in_manor and not _map_entry_scheduled and str(step.get("id", "")) in ["access", "restore1"] and MapEntry.can_enter(state):
+	if normal_game_flow and not embedded_in_manor and not _map_entry_scheduled and str(step.get("id", "")) in ["access", "restore1"] and MapEntry.can_enter(state):
 		_map_entry_scheduled = true
 		call_deferred("_enter_player_map")
 		return
 	if step.get("kind") == "done":
 		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
+		if embedded_in_manor and not confirmed_production_scene.is_empty() and not state.storyBeatsSeen.has(confirmed_production_scene.get("beatId", "")):
+			approved = confirmed_production_scene
 		if not approved.is_empty():
 			step = {"id": "production-" + str(approved["beatId"]), "kind": "vn_production",
 				"scene": approved["beatId"], "title": approved["title"], "config": approved}
@@ -247,6 +250,7 @@ func _render() -> void:
 					"be": "Чакаецца зацверджаная фізічная мапа. Дзеянне недаступнае да прыбыцця персанажа.",
 					"en": "Awaiting approved physical map. This action requires Evelyn's arrival.",
 				}.get(preferences.locale, "Approved map required")))
+				_add_button(body, {"ru": "Вернуться в меню", "be": "Вярнуцца ў меню", "en": "Return to menu"}.get(preferences.locale, "Menu"), func(): get_tree().change_scene_to_file("res://scenes/raven/main_menu.tscn"))
 			elif not embedded_in_manor or str(step.get("id", "")) not in ["access", "restore1"]:
 				_add_button(body, "ВЫПОЛНИТЬ", _complete_action)
 		"vn", "vn_production": _render_vn()

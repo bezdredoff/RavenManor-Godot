@@ -7,8 +7,9 @@ const MAP_SCENE := "res://scenes/raven/manor_player_map.tscn"
 const OPENING_BEAT := "RM-BEAT-01-01"
 
 static func approved_source(snapshot: Dictionary) -> Dictionary:
-	if not snapshot.get("storyBeatsSeen", []).has(OPENING_BEAT):
-		return {"ok": false, "status": "opening-vn-pending"}
+	for beat in ["RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03", OPENING_BEAT]:
+		if not snapshot.get("storyBeatsSeen", []).has(beat):
+			return {"ok": false, "status": "opening-vn-pending"}
 	return Source.resolve({
 		"schemaVersion": Source.SCHEMA_VERSION,
 		"kind": Source.REQUEST_KIND,

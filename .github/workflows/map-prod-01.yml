@@ -48,6 +48,10 @@ jobs:
           timeout 150s xvfb-run -a -s "-screen 0 1280x1024x24" godot --path . --script res://tests/raven/map_prod_01_visual_capture.gd
           test -s build/map-prod-01/HC-godot-evelyn.png
           test -s build/map-prod-01/CB-godot-evelyn.png
+          timeout 150s xvfb-run -a -s "-screen 0 1280x1024x24" godot --path . --script res://tests/raven/game_loop_g2_visual_capture.gd
+          test -s build/map-prod-01/G2-player-map-390x844.png
+          test -s build/map-prod-01/G2-HC-return-under-landing.png
+          test -s build/map-prod-01/G2-CB-return-contact.png
       - name: Upload HC/CB in-engine review images
         uses: actions/upload-artifact@v4
         with:
