@@ -1,5 +1,11 @@
 # GAME-LOOP-01 / G2-ACT-01 — owner-approved V4 production source activation candidate
 
+Task IDs: GAME-LOOP-01, G2-ACT-01 (bounded production activation)
+Changes: Owner-approved HC/CB V4 source activation behind exact SHA-bound receipt, plus regression updates.
+Verification: Previous main exact-head CI green; this Draft PR exact-head CI and native/device checks pending.
+Owner QA: V4 visual APPROVE; step-2 preliminary go-ahead only; physical phone and final G2 acceptance NOT_RUN.
+Status impact: campaign-core GAME-LOOP-01 still partial and pending; Draft PR is not merged or accepted.
+
 **Status:** DRAFT PR / review only; do not merge without physical-device and ordinary-gameplay evidence.
 **Baseline:** `f43ef9169f9aeb73976451e97b3eea37fdcb7128` (17 November 2026, full main CI [44166322317](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44166322317) SUCCESS).
 **Owner decision:** RM-DEC-031 records explicit V4 visual **APPROVE** and provisional permission to proceed past step 2; this is **not** an Android/iOS PASS or final G2 signoff.
