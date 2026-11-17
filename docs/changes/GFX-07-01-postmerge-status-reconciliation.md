@@ -1,3 +1,13 @@
+Task IDs: GFX-07-01 (postmerge status-only follow-up).
+
+Changes: Reconcile the chibi-animation own shard to the verified merged status for PR #275; no runtime/art modifications.
+
+Verification: PR #275 exact-head CI 43982967767 SUCCESS, #280 exact-head CI 44072750669 SUCCESS. This follow-up's own exact-head CI remains required.
+
+Owner QA: Corrected #274 Evelyn design/animation visually APPROVED by owner. Real phone, foreground, production geometry and New Game integration NOT_RUN/NOT_APPROVED.
+
+Status impact: GFX-07-01 status PR_review -> merged, while implementationState partial, qaState manual_pending and approvalState pending remain unchanged.
+
 # GFX-07-01 — merged-host status reconciliation
 
 **Task IDs:** GFX-07-01 (bounded merged-PR evidence follow-up; no new runtime implementation).
