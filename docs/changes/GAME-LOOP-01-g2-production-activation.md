@@ -42,3 +42,7 @@ On Windows additionally run `check.ps1 -GodotPath <Godot-4.7.2-console>`. Requir
 **NOT_RUN:** measured physical-phone Android/iOS touch/foreground/headroom, background/resume, FPS/thermals, real Web refresh/offline, full non-fixture menu-to-Continue acceptance by owner. The CI test is isolated memory storage and is **not** phone or real disk persistence proof. Owner's step-2 provisional “yes” is not a recorded device test result. Do not auto-merge, auto-approve, mark Season 1 done or update portrait registry.
 
 Rollback: revert the activation PR or set the independent `PRODUCTION_ACTIVATION_ENABLED := false` switch. Existing original map, G2 host/reducer/save, 09B/09D drafts, approved Evelyn and VN content are unchanged.
+
+## Integration CI correction (PR #291)
+
+Native Godot positive menu entry exposed the old V3-only art-layer discriminator in `raven_player_map.gd`. The V4 candidate names `hc-cb-v4`, while the approved corrected V4 drawing is rendered by the existing `map_prod_01_hc_cb_art.gd` layer code. The map now recognizes both V3 and V4 layer identifiers without altering the bitmap, door-layer file or the SHA-pinned world plan; the real menu smoke asserts foreground/background presence. Bash and PowerShell runner sentinels were updated to the renamed production-positive smoke print. Exact-head Godot/CI verification is required for this refinement.
