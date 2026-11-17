@@ -1,5 +1,12 @@
 # GAME-LOOP-01 G2 — post-merge verification and parent-status reconciliation
 
+Task IDs: GAME-LOOP-01 (G2 QA post-merge reconciliation; parent remains partial).
+Changes: Reconcile the campaign-core shard's stale PR_review and add factual, unique #279/#280 merge evidence; no runtime modifications.
+Verification: #280 exact-head CI run 44072750669 SUCCESS, including G2 standalone, HC/CB and Evelyn host regressions; documentation-only PR #283 requires its own CI.
+Owner QA: Pending production HC/CB render/collision/foreground inspection, physical-device acceptance and menu-to-map activation.
+Status impact: GAME-LOOP-01 moves PR_review → ready (P0/partial/automated/pending remain unchanged); no production or G2 acceptance.
+
+
 **Task:** GAME-LOOP-01 · **domain:** campaign-core · **date:** 2026-11-17  
 **Baseline:** `main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24`  
 **Scope:** evidence-only. No runtime, geometry, menu, navigation gate, save schema, shared runner or external-domain shard changes.
