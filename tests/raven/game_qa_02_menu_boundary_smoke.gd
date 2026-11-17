@@ -23,8 +23,9 @@ func _run() -> void:
 	assert(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/raven/main_menu.tscn")
 	var memory = Memory.new()
 	# Negative gate: mutate only the in-memory JSON Resource, never the shipped receipt.
-	var saved_receipt: Dictionary = Source.ACCEPTANCE.data.duplicate(true)
-	Source.ACCEPTANCE.data.ownerApproved = false
+	var acceptance: Dictionary = Source.ACCEPTANCE.data
+	var saved_receipt: Dictionary = acceptance.duplicate(true)
+	acceptance["ownerApproved"] = false
 	var menu = _menu(memory)
 	await process_frame
 	assert(menu.continue_button.disabled)
@@ -59,8 +60,8 @@ func _run() -> void:
 	await process_frame
 	# Positive control: the same callback routes to the real player view, actor,
 	# background and foreground using an isolated validated production fixture.
-	Source.ACCEPTANCE.data.clear()
-	Source.ACCEPTANCE.data.merge(saved_receipt, true)
+	acceptance.clear()
+	acceptance.merge(saved_receipt, true)
 	assert(Source.resolve(Fixture.request()).ok, "Production receipt must be restored")
 	menu = _menu(memory)
 	menu.continue_button.pressed.emit()
