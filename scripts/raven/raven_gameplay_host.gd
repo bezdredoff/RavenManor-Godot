@@ -500,4 +500,3 @@ func request_runtime_hotspot(hotspot_id: String) -> Dictionary:
 	if requested.get("ok", false):
 		_pending_runtime = hotspot_id
 	return requested
-

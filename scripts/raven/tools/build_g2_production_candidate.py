@@ -89,7 +89,8 @@ def build():
             "activationEnabled": False, "runtimeAuthority": False, "coordinateSpace": "world-plan",
             "calibrationVersion": 2, "ownerDecision": "RM-DEC-030",
             "authoringSource": SOURCE.relative_to(ROOT).as_posix(),
-            "authoringSourceSha256": hashlib.sha256(SOURCE.read_bytes()).hexdigest(),
+            "authoringSourceTextSha256": hashlib.sha256(SOURCE.read_text(encoding="utf-8").encode("utf-8")).hexdigest(),
+            "authoringSourceHashEncoding": "UTF-8 with LF; independent of Git checkout EOL",
             "roomArtCalibration": {
                 "status": "candidate", "version": 2,
                 "assetHash": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",

@@ -10,7 +10,8 @@
     "calibrationVersion": 2,
     "ownerDecision": "RM-DEC-030",
     "authoringSource": "assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json",
-    "authoringSourceSha256": "1276a4abfee570e84af7d665b2b3d50d7dff157999270dcecfd346069a014460",
+    "authoringSourceTextSha256": "90548edf6310c643d004384db1aaefb1102f470549d5306e4b93a51fef76ea22",
+    "authoringSourceHashEncoding": "UTF-8 with LF; independent of Git checkout EOL",
     "roomArtCalibration": {
       "status": "candidate",
       "version": 2,
