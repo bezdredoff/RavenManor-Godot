@@ -27,6 +27,7 @@ const OptionalCampaign = preload("res://scripts/raven/raven_optional_campaign_co
 const MapEntry = preload("res://scripts/raven/raven_player_map_entry.gd")
 const MAIN_MENU_SCENE := "res://scenes/raven/main_menu.tscn"
 const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
+const NORMAL_GAME_ROUTE_META := "raven_normal_gameplay_from_menu"
 
 var preferences := Copy.new()
 var audio_runtime: Variant
@@ -44,6 +45,7 @@ var return_to_main_menu_after_campaign := false
 var active_booster := ""
 var booster_action_saved := true
 var embedded_in_manor := false
+var normal_game_flow := false
 var _map_entry_scheduled := false
 var content: Dictionary
 var technical_shell: MarginContainer
@@ -66,6 +68,9 @@ const PAUSE_COPY := {
 
 
 func _ready() -> void:
+	normal_game_flow = bool(get_tree().get_meta(NORMAL_GAME_ROUTE_META, false))
+	if get_tree().has_meta(NORMAL_GAME_ROUTE_META):
+		get_tree().remove_meta(NORMAL_GAME_ROUTE_META)
 	return_to_main_menu_after_campaign = bool(get_tree().get_meta(CAMPAIGN_ROUTE_META, false))
 	if get_tree().has_meta(CAMPAIGN_ROUTE_META):
 		get_tree().remove_meta(CAMPAIGN_ROUTE_META)
@@ -236,14 +241,21 @@ func _render() -> void:
 			body.add_child(_paragraph(str(step.body)))
 			# The embedded UI must not grant map actions without real physical
 			# arrival. Its parent closes this view at these two story steps.
-			if not embedded_in_manor or str(step.get("id", "")) not in ["access", "restore1"]:
+			if normal_game_flow and str(step.get("id", "")) in ["access", "restore1"] and not embedded_in_manor:
+				body.add_child(_paragraph({
+					"ru": "Ожидается утверждённая физическая карта. Действие недоступно до прибытия персонажа.",
+					"be": "Чакаецца зацверджаная фізічная мапа. Дзеянне недаступнае да прыбыцця персанажа.",
+					"en": "Awaiting approved physical map. This action requires Evelyn's arrival.",
+				}.get(preferences.locale, "Approved map required")))
+			elif not embedded_in_manor or str(step.get("id", "")) not in ["access", "restore1"]:
 				_add_button(body, "ВЫПОЛНИТЬ", _complete_action)
 		"vn", "vn_production": _render_vn()
 		"match3": _render_match3()
 		"done":
 			body.add_child(_paragraph(str(step.body)))
 			body.add_child(_paragraph("Уровни: %s\nРеставрации: %s\nУлики: %s" % [state.firstClearLevels, state.completedRestorations, state.recordedClues]))
-			_add_button(body, "ОТКРЫТЬ КАРТУ", func(): get_tree().change_scene_to_file("res://scenes/raven/manor_greybox.tscn"))
+			if not normal_game_flow:
+				_add_button(body, "ОТКРЫТЬ КАРТУ", func(): get_tree().change_scene_to_file("res://scenes/raven/manor_greybox.tscn"))
 
 
 func _render_vn() -> void:
