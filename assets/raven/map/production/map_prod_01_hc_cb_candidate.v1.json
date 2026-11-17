@@ -182,9 +182,9 @@
       "imageGeometry": {
         "floorBoundsPx": [
           800,
-          414,
+          388,
           48,
-          122
+          148
         ],
         "clearOpeningPx": [
           800,
@@ -208,21 +208,27 @@
         ],
         "foregroundPx": [
           [
-            750,
-            385,
-            50,
-            34
+            800,
+            422,
+            48,
+            58
+          ],
+          [
+            748,
+            381,
+            52,
+            99
           ],
           [
             848,
-            385,
-            58,
-            34
+            381,
+            60,
+            99
           ]
         ],
         "underLandingHeadroom": "ILLUSTRATED_ARCH_ONLY_PHYSICAL_SECTION_NOT_CERTIFIED",
         "visualMethod": "original-source-parquet-sample-plus-architectural-jambs",
-        "foregroundMethod": "same-pixel stair railing copy in z=12 plus narrow central lintel"
+        "foregroundMethod": "Source-identical raised landing and railings mask the tunnel; southern lintel y477. Owner structural/headroom review still required."
       }
     },
     {
@@ -266,15 +272,15 @@
       "imageGeometry": {
         "floorBoundsPx": [
           520,
-          352,
+          290,
           16,
-          48
+          110
         ],
         "clearOpeningPx": [
           520,
-          352,
+          290,
           16,
-          48
+          110
         ],
         "wallFlanksPx": [
           [
@@ -293,7 +299,7 @@
         "foregroundPx": [
           [
             516,
-            342,
+            280,
             24,
             10
           ],
@@ -301,12 +307,18 @@
             516,
             400,
             24,
-            10
+            12
+          ],
+          [
+            536,
+            290,
+            4,
+            110
           ]
         ],
         "underLandingHeadroom": null,
         "visualMethod": "original-source-bedroom-parquet-sample-with-narrow wall cut",
-        "foregroundMethod": "source-identical partition cap in z=12"
+        "foregroundMethod": "Full-height near jamb plus source partition caps; no horizontal bar through Evelyn at y352."
       }
     }
   ],
@@ -338,5 +350,6 @@
       "physical phone QA"
     ]
   },
-  "artVersion": "composite-v2"
+  "artVersion": "composite-v3-review-pending"
 }
+
