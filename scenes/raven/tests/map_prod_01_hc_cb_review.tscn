@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/raven/map_prod_01_hc_cb_review.gd" id="1_review"]
+
+[node name="MAP_PROD_01_HC_CB_Candidate_Review" type="Node2D"]
+script = ExtResource("1_review")
