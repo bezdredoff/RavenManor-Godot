@@ -239,7 +239,7 @@ func _rebuild_targets() -> void:
 		var allowed := Bridge.story_available(host.state, hotspot_id)
 		_world_button(anchor.get("position", []),
 			caption if allowed else "🔒 " + caption,
-			func() -> void: _request_story(hotspot_id), allowed)
+			Callable(self, "_request_story").bind(hotspot_id), allowed)
 	for transition in host.source.get("contract", {}).get("transitions", []):
 		if str(transition.get("sourceRoomId", "")) != _room_id:
 			continue
@@ -252,7 +252,7 @@ func _rebuild_targets() -> void:
 			if str(anchor.get("id", "")) == approach:
 				var transition_id := str(transition.get("id", ""))
 				_world_button(anchor.get("position", []), caption,
-					func() -> void: _request_door(transition_id), unlocked)
+					Callable(self, "_request_door").bind(transition_id), unlocked)
 				break
 
 
