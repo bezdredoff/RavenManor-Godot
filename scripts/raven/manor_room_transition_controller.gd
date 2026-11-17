@@ -391,6 +391,43 @@ func cancel_transition() -> Dictionary:
 	return {"ok": true, "transitionId": id, "finishCurrentSegment": bool(outcome.get("finishCurrentSegment", false))}
 
 
+## Reconcile a PRODUCTION controller with the single persisted Raven snapshot.
+## No UI or map fixture can mutate door state. Existing actor/session and feet
+## stay in place; a closing gate pauses an in-flight segment fail-closed.
+func refresh_production_doors(snapshot: Dictionary, actor) -> bool:
+	if _approval != "PRODUCTION_APPROVED" or not snapshot.get("unlockedDoors", null) is Array:
+		return false
+	var current: Array = []
+	for door in snapshot.unlockedDoors:
+		if door is String and _doors.has(door) and not current.has(door):
+			current.append(door)
+	if current == _unlocked_doors:
+		return true
+	_unlocked_doors = current
+	for room in _graphs:
+		_graphs[room].rebuild({"unlockedDoors": _unlocked_doors, "completedRestorations": []}, _room_data[room])
+	if _active_token != 0 and not _graph.segment_available(_session.current_anchor(), _active_to):
+		_safe_hold = true
+		_hard_hold = not is_instance_valid(actor) or not actor.has_active_segment()
+		_hold_reason = "production-gate-closed-mid-segment"
+		if not _hard_hold:
+			actor.pause_segment()
+		_session.cancel()
+		_pending_id = ""
+		_ready_id = ""
+		_reject("", _hold_reason)
+	elif not _ready_id.is_empty() and not _door_failure(_descriptors[_ready_id]).is_empty():
+		var rejected := _ready_id
+		_ready_id = ""
+		_pending_id = ""
+		_reject(rejected, "production-door-closed-before-commit")
+	elif not _pending_id.is_empty() and not _door_failure(_descriptors[_pending_id]).is_empty():
+		var rejected := _pending_id
+		cancel_transition()
+		_reject(rejected, "production-door-closed-before-arrival")
+	return true
+
+
 ## TEST_ONLY gate adapter. A production host must rebuild gates from the
 ## authoritative snapshot; never call this as a production door unlock.
 func set_test_door_status(door_id: String, status: String, actor) -> bool:

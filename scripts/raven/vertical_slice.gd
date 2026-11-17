@@ -1,5 +1,7 @@
 extends Control
 
+signal map_return_requested
+
 const Content = preload("res://data/raven/rm_vs_01_content.json")
 const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
@@ -22,8 +24,10 @@ const CatalogAdapter = preload("res://scripts/raven/raven_vn_catalog_adapter.gd"
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
 const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 const OptionalCampaign = preload("res://scripts/raven/raven_optional_campaign_controller.gd")
+const MapEntry = preload("res://scripts/raven/raven_player_map_entry.gd")
 const MAIN_MENU_SCENE := "res://scenes/raven/main_menu.tscn"
 const CAMPAIGN_ROUTE_META := "raven_open_match3_campaign_from_main_menu"
+const NORMAL_GAME_ROUTE_META := "raven_normal_gameplay_from_menu"
 
 var preferences := Copy.new()
 var audio_runtime: Variant
@@ -40,6 +44,9 @@ var optional_campaign := false
 var return_to_main_menu_after_campaign := false
 var active_booster := ""
 var booster_action_saved := true
+var embedded_in_manor := false
+var normal_game_flow := false
+var _map_entry_scheduled := false
 var content: Dictionary
 var technical_shell: MarginContainer
 var campaign_backdrop: TextureRect
@@ -61,6 +68,9 @@ const PAUSE_COPY := {
 
 
 func _ready() -> void:
+	normal_game_flow = bool(get_tree().get_meta(NORMAL_GAME_ROUTE_META, false))
+	if get_tree().has_meta(NORMAL_GAME_ROUTE_META):
+		get_tree().remove_meta(NORMAL_GAME_ROUTE_META)
 	return_to_main_menu_after_campaign = bool(get_tree().get_meta(CAMPAIGN_ROUTE_META, false))
 	if get_tree().has_meta(CAMPAIGN_ROUTE_META):
 		get_tree().remove_meta(CAMPAIGN_ROUTE_META)
@@ -70,6 +80,15 @@ func _ready() -> void:
 	content = Content.data
 	state = store.load_campaign()
 	_build_shell()
+	if embedded_in_manor:
+		# Native VN and Match-3 pause actions remain intact. The existing
+		# pause dialog offers one extra exit that does not complete the activity.
+		pause_dialog.add_button({"ru": "На карту", "be": "На мапу", "en": "To map"}.get(
+			preferences.locale, "To map"), true, "return_map")
+		pause_dialog.custom_action.connect(func(action: String) -> void:
+			if action == "return_map":
+				pause_dialog.hide()
+				map_return_requested.emit())
 	_render()
 	if return_to_main_menu_after_campaign:
 		_open_optional_campaign()
@@ -188,6 +207,14 @@ func _render() -> void:
 			_render_optional_campaign()
 		return
 	step = Director.next_step(state)
+	# Opening VN beats always play before entering the manor. The normal
+	# vertical slice gives way to the production map ONLY if the canonical
+	# navigation source is fully approved. An embedded presentation never
+	# tries to create a second map or switch scenes.
+	if not embedded_in_manor and not _map_entry_scheduled and str(step.get("id", "")) in ["access", "restore1"] and MapEntry.can_enter(state):
+		_map_entry_scheduled = true
+		call_deferred("_enter_player_map")
+		return
 	if step.get("kind") == "done":
 		var approved: Dictionary = RuntimeDispatch.next_scene(state, preferences.locale)
 		if not approved.is_empty():
@@ -212,13 +239,23 @@ func _render() -> void:
 	match str(step.kind):
 		"map","restore","clue":
 			body.add_child(_paragraph(str(step.body)))
-			_add_button(body, "ВЫПОЛНИТЬ", _complete_action)
+			# The embedded UI must not grant map actions without real physical
+			# arrival. Its parent closes this view at these two story steps.
+			if normal_game_flow and str(step.get("id", "")) in ["access", "restore1"] and not embedded_in_manor:
+				body.add_child(_paragraph({
+					"ru": "Ожидается утверждённая физическая карта. Действие недоступно до прибытия персонажа.",
+					"be": "Чакаецца зацверджаная фізічная мапа. Дзеянне недаступнае да прыбыцця персанажа.",
+					"en": "Awaiting approved physical map. This action requires Evelyn's arrival.",
+				}.get(preferences.locale, "Approved map required")))
+			elif not embedded_in_manor or str(step.get("id", "")) not in ["access", "restore1"]:
+				_add_button(body, "ВЫПОЛНИТЬ", _complete_action)
 		"vn", "vn_production": _render_vn()
 		"match3": _render_match3()
 		"done":
 			body.add_child(_paragraph(str(step.body)))
 			body.add_child(_paragraph("Уровни: %s\nРеставрации: %s\nУлики: %s" % [state.firstClearLevels, state.completedRestorations, state.recordedClues]))
-			_add_button(body, "ОТКРЫТЬ КАРТУ", func(): get_tree().change_scene_to_file("res://scenes/raven/manor_greybox.tscn"))
+			if not normal_game_flow:
+				_add_button(body, "ОТКРЫТЬ КАРТУ", func(): get_tree().change_scene_to_file("res://scenes/raven/manor_greybox.tscn"))
 
 
 func _render_vn() -> void:
@@ -658,3 +695,23 @@ func _label(text: String, size: int, color: Color) -> Label:
 
 func _paragraph(text: String) -> Label:
 	var label := _label(text, 14, Color("d4ccbe")); label.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART; label.custom_minimum_size = Vector2(0, 54); return label
+
+
+## Recheck canonical source and save at the deferred scene-switch boundary.
+func _enter_player_map() -> void:
+	if embedded_in_manor or optional_campaign:
+		_map_entry_scheduled = false
+		return
+	var refreshed: Dictionary = store.load_campaign()
+	if str(store.last_load_report.get("status", "")) == "recovered-corrupt" or \
+			str(store.last_load_report.get("detail", "")) == "storage-read-failed":
+		_show_save_error()
+		return
+	if not MapEntry.can_enter(refreshed):
+		_map_entry_scheduled = false
+		state = refreshed
+		_render()
+		return
+	if get_tree().change_scene_to_file(MapEntry.MAP_SCENE) != OK:
+		_map_entry_scheduled = false
+		_show_save_error()

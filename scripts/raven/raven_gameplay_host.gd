@@ -334,6 +334,7 @@ func mount_presentation(parent: Node) -> Control:
 	if not _presentation_step.is_empty() and str(activity.get("id", "")) != _presentation_step:
 		return null
 	_presentation = Slice.instantiate()
+	_presentation.embedded_in_manor = true
 	_presentation.store = store
 	parent.add_child(_presentation)
 	return _presentation
@@ -398,6 +399,12 @@ func _load_state() -> Dictionary:
 	if str(report.get("detail", "")) == "storage-read-failed" or str(report.get("status", "")) == "recovered-corrupt":
 		return _save_failure("save-unreadable:" + str(report.get("detail", "")))
 	state = loaded
+	# UI cannot unlock doors directly. Rebuild only a PRODUCTION controller's
+	# physical route gates from the sole persisted Raven snapshot. In QA the
+	# isolated source continues to own its virtual TEST_ONLY contract.
+	if navigation != null and not bool(source.get("draftOnly", true)):
+		if not navigation.controller.refresh_production_doors(state, navigation.actor):
+			return _save_failure("production-door-gate-refresh-failed")
 	return {"ok": true}
 
 
