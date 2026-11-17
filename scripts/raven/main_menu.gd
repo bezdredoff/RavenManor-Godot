@@ -122,7 +122,7 @@ func _has_progress() -> bool:
 	return _snapshot_has_progress(snapshot)
 
 func _snapshot_has_progress(snapshot: Dictionary) -> bool:
-	return int(snapshot.get("revision", 0)) > 0 or not snapshot.get("firstClearLevels", []).is_empty() or not snapshot.get("storyBeatsSeen", []).is_empty() or not snapshot.get("completedRestorations", []).is_empty() or not snapshot.get("appliedEventIds", []).is_empty()
+	return int(snapshot.get("revision", 0)) > 0 or not snapshot.get("firstClearLevels", []).is_empty() or not snapshot.get("storyBeatsSeen", []).is_empty() or not snapshot.get("completedRestorations", []).is_empty() or not snapshot.get("appliedEventIds", []).is_empty() or not snapshot.get("vnCursor", {}).is_empty() or not snapshot.get("vnReadLines", []).is_empty() or not snapshot.get("match3Checkpoint", {}).is_empty()
 
 func _save_is_unknown() -> bool:
 	# Donor menu confirms New Game not only on progress, but also when the save
