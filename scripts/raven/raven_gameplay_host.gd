@@ -52,12 +52,11 @@ func _init(storage_adapter: RefCounted = null, isolated_qa_storage: bool = false
 
 ## The host does NOT accept externally supplied source results. Always resolve
 ## the canonical source; arbitrary "PRODUCTION_APPROVED" fixture dictionaries
-## require an explicit debug test request and tests/support memory storage.
+## may only be validated in isolated Source tests, never injected here.
 func configure(request: Dictionary) -> Dictionary:
 	if navigation != null:
 		return _error("already-configured")
-	if str(request.get("mode", "")) == Source.MODE_PRODUCTION and request.has("worldPlan") and not (
-			_isolated_qa_storage and request.get("testOnlyProductionFixture", false) == true and _test_memory_storage()):
+	if str(request.get("mode", "")) == Source.MODE_PRODUCTION and request.has("worldPlan"):
 		return _error("injected-production-plan-forbidden")
 	if str(request.get("mode", "")) == Source.MODE_QA and not _isolated_qa_storage:
 		return _error("qa-requires-isolated-storage")
@@ -502,9 +501,3 @@ func request_runtime_hotspot(hotspot_id: String) -> Dictionary:
 		_pending_runtime = hotspot_id
 	return requested
 
-
-func _test_memory_storage() -> bool:
-	if not OS.has_feature("debug") or store.storage == null:
-		return false
-	var adapter_script: Script = store.storage.get_script()
-	return adapter_script != null and adapter_script.resource_path.begins_with("res://tests/support/")

@@ -1,7 +1,7 @@
 extends SceneTree
 ## Real production source/controller/view/Evelyn/VN/Match-3/store, isolated copy.
 const Fixture = preload("res://tests/support/g2_production_fixture.gd")
-const Map = preload("res://tests/support/g2_player_map_fixture.gd")
+const Map = preload("res://scripts/raven/raven_player_map.gd")
 const Host = preload("res://scripts/raven/raven_gameplay_host.gd")
 const Source = preload("res://scripts/raven/manor_navigation_source.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
@@ -25,7 +25,7 @@ func _seed(storage: RefCounted) -> void:
 
 func _map(storage: RefCounted):
 	var map = Map.new()
-	map.host = Host.new(storage, true)
+	map.host = Host.new(storage)
 	root.add_child(map)
 	map.set_process(false)
 	return map
@@ -68,12 +68,14 @@ func _run() -> void:
 	assert(not Source.resolve(Fixture.request().merged({"worldPlan": broken}, true)).ok)
 	var normal = Host.new()
 	root.add_child(normal)
-	assert(normal.configure(Fixture.request()).error == "injected-production-plan-forbidden")
+	var injected := Fixture.request().merged({"worldPlan": Fixture.plan()})
+	assert(normal.configure(injected).error == "injected-production-plan-forbidden")
 	normal.queue_free()
 	var unsafe_storage = Host.new(Store.new().storage, true)
 	root.add_child(unsafe_storage)
-	assert(unsafe_storage.configure(Fixture.request()).error == "injected-production-plan-forbidden", "Test approval cannot use persistent storage")
+	assert(unsafe_storage.configure(injected).error == "injected-production-plan-forbidden", "Test approval cannot use persistent storage")
 	unsafe_storage.queue_free()
+	Fixture.install_canonical()
 	for locale in ["ru", "be", "en"]:
 		root.size = {"ru": Vector2i(320, 568), "be": Vector2i(430, 932), "en": Vector2i(390, 844)}[locale]
 		var storage = Memory.new()
@@ -164,7 +166,7 @@ func _run() -> void:
 		await process_frame
 	var failed = Memory.new()
 	_seed(failed)
-	var host = Host.new(failed, true)
+	var host = Host.new(failed)
 	root.add_child(host)
 	assert(host.configure(Fixture.request()).ok)
 	assert(host.request_transition(str(host.source.contract.transitions[0].id)).ok)
@@ -178,11 +180,13 @@ func _run() -> void:
 	host.queue_free()
 	var corrupt = Memory.new()
 	corrupt.values[Contract.data.ravenKey] = "{broken"
-	host = Host.new(corrupt, true)
+	host = Host.new(corrupt)
 	root.add_child(host)
 	assert(host.configure(Fixture.request()).error.begins_with("save-unreadable:"))
 	assert(corrupt.values[Contract.data.ravenKey] == "{broken")
 	host.queue_free()
+	Fixture.restore_canonical()
+	assert(not Source.resolve(Fixture.request()).ok)
 	assert(FileAccess.get_sha256("res://data/raven/manor_greybox_graph.json") == canonical_hash)
 	assert(FileAccess.get_sha256("res://data/raven/manor_production_candidate.v1.json") == candidate_hash)
 	print("G2 production-contract integrated map, Evelyn, traversal, VN/Match-3, save/recovery and RU/BE/EN PASS")

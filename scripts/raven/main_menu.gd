@@ -185,7 +185,7 @@ func _continue_game() -> void:
 	# Resume the actual saved story activity. Before RM-BEAT-01-01 this is
 	# always the opening VN; afterwards a canonical approved map can host
 	# the same existing VN/Match-3 presentation and saved spatial anchor.
-	var target := MapEntry.MAP_SCENE if _map_available(snapshot) else SLICE
+	var target := MapEntry.MAP_SCENE if MapEntry.can_enter(snapshot) else SLICE
 	audio_runtime.set_scene("vn")
 	get_tree().set_meta(NORMAL_GAME_ROUTE_META, true)
 	if _open_normal_scene(target) != OK:
@@ -313,10 +313,6 @@ func _close_settings() -> void:
 		if button.name == "Settings":
 			button.grab_focus()
 			break
-
-
-func _map_available(snapshot: Dictionary) -> bool:
-	return MapEntry.can_enter(snapshot)
 
 
 func _open_normal_scene(target: String) -> Error:

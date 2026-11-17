@@ -1,6 +1,7 @@
 extends SceneTree
 ## Actual rendered player-view evidence. Run with a GPU or xvfb, not --headless.
-const Map = preload("res://tests/support/g2_player_map_fixture.gd")
+const Fixture = preload("res://tests/support/g2_production_fixture.gd")
+const Map = preload("res://scripts/raven/raven_player_map.gd")
 const Host = preload("res://scripts/raven/raven_gameplay_host.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -13,6 +14,7 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _shot(name: String, focus: Vector2, zoom: float = 2.0) -> void:
+	await process_frame # Flush deferred room/camera refresh before framing.
 	map.camera.position = focus
 	map.camera.zoom = Vector2.ONE * zoom
 	map.camera.force_update_scroll()
@@ -54,8 +56,9 @@ func _run() -> void:
 	for beat in ["RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03", "RM-BEAT-01-01"]:
 		state = Reducer.apply(state, {"eventId": "capture-" + beat, "type": "story_beat_seen", "storyBeatId": beat}).state
 	assert(Store.new(storage).save_campaign(state))
+	Fixture.install_canonical()
 	map = Map.new()
-	map.host = Host.new(storage, true)
+	map.host = Host.new(storage)
 	root.add_child(map)
 	map.set_process(false)
 	await process_frame
@@ -77,4 +80,5 @@ func _run() -> void:
 	await _cross("RM-DOOR-CORRIDOR-BEDROOM", "G2-CB-return", Vector2(656, 504))
 	await _cross("RM-DOOR-HALL-CORRIDOR", "G2-HC-return", Vector2(952, 528))
 	map.queue_free()
+	Fixture.restore_canonical()
 	quit()

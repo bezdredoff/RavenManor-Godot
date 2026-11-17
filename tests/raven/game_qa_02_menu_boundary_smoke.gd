@@ -1,5 +1,6 @@
 extends SceneTree
 ## Actual callbacks and views; a test-only adapter isolates every campaign write.
+const Fixture = preload("res://tests/support/g2_production_fixture.gd")
 const Menu = preload("res://tests/support/g2_menu_fixture.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
@@ -10,9 +11,10 @@ func _initialize() -> void:
 	call_deferred("_run")
 
 func _menu(storage: RefCounted, approved: bool = false):
+	if approved:
+		Fixture.install_canonical()
 	var menu = Menu.new()
 	menu.store = Store.new(storage)
-	menu.approved_fixture = approved
 	root.add_child(menu)
 	return menu
 
@@ -68,6 +70,8 @@ func _run() -> void:
 	map.queue_free()
 	menu.queue_free()
 	await process_frame
+	Fixture.restore_canonical()
+	assert(not Source.resolve(Fixture.request()).ok)
 	var corrupt = Memory.new()
 	corrupt.values[Contract.data.ravenKey] = "{bad"
 	menu = _menu(corrupt)

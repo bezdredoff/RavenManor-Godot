@@ -90,10 +90,11 @@ func _ready() -> void:
 			str(stored.last_load_report.get("detail", "")) == "storage-read-failed":
 		_hold("save-unreadable")
 		return
-	if not _entry_allowed(snapshot):
+	if not Entry.can_enter(snapshot):
 		_hold(_copy(7))
 		return
-	var start: Dictionary = host.configure(_navigation_request())
+	var start: Dictionary = host.configure({"schemaVersion": Source.SCHEMA_VERSION, "kind": Source.REQUEST_KIND,
+		"mode": Source.MODE_PRODUCTION, "locale": str(prefs.locale)})
 	if not bool(start.get("ok", false)):
 		_hold(_copy(7) + ": " + str(start.get("error", "")))
 		return
@@ -106,15 +107,6 @@ func _ready() -> void:
 		return
 	_set_status(_copy(0))
 	_maybe_open_presentation()
-
-
-func _entry_allowed(snapshot: Dictionary) -> bool:
-	return Entry.can_enter(snapshot)
-
-
-func _navigation_request() -> Dictionary:
-	return {"schemaVersion": Source.SCHEMA_VERSION, "kind": Source.REQUEST_KIND,
-		"mode": Source.MODE_PRODUCTION, "locale": str(prefs.locale)}
 
 
 func _build_hud() -> void:
