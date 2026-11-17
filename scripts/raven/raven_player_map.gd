@@ -225,6 +225,16 @@ func _refresh_room() -> bool:
 
 
 func _refresh_ui_copy() -> void:
+	# Status survives room/locale refreshes; translate its existing meaning too.
+	for index in [0, 4, 7, 8]:
+		if status.text in [LABELS.ru[index], LABELS.be[index], LABELS.en[index]]:
+			status.text = _copy(index)
+			break
+	for locale in LABELS:
+		var prefix: String = str(LABELS[locale][9])
+		if status.text.begins_with(prefix):
+			status.text = _copy(9) + status.text.trim_prefix(prefix)
+			break
 	pause_button.text = _copy(2) if _paused else _copy(1)
 	cancel_button.text = _copy(3)
 	settings_button.text = _copy(4)

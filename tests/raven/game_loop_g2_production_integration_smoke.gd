@@ -84,6 +84,7 @@ func _run() -> void:
 		await process_frame
 		assert(map._ready_for_input, map.status.text)
 		map.prefs.set_locale(locale)
+		assert(map.status.text == map._copy(0), "Status must follow the selected locale, like the HUD")
 		assert(map.host.source.mode == "production" and not map.host.source.draftOnly)
 		assert(map.host.source.contract.transitions.size() == 4)
 		assert(map.host.navigation.actor.get_script().resource_path.ends_with("evelyn_actor.gd"))
