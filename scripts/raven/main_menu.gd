@@ -3,6 +3,7 @@ extends Control
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Preferences = preload("res://scripts/shared/upds/player_preferences.gd")
 const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
+const MapEntry = preload("res://scripts/raven/raven_player_map_entry.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
 const COPY := {
@@ -172,8 +173,16 @@ func _continue_game() -> void:
 	if not _has_progress():
 		message.text = _tr(14)
 		return
+	var snapshot: Dictionary = store.load_campaign()
+	if _save_is_unknown():
+		message.text = _tr(COPY_SAVE_RECOVERED) if str(save_report.get("status", "")) == "recovered-corrupt" else _tr(COPY_SAVE_READ_FAILED)
+		return
+	# Resume the actual saved story activity. Before RM-BEAT-01-01 this is
+	# always the opening VN; afterwards a canonical approved map can host
+	# the same existing VN/Match-3 presentation and saved spatial anchor.
+	var target := MapEntry.MAP_SCENE if MapEntry.can_enter(snapshot) else SLICE
 	audio_runtime.set_scene("vn")
-	_start()
+	get_tree().change_scene_to_file(target)
 
 func _open_match3_levels() -> void:
 	get_tree().set_meta(CAMPAIGN_ROUTE_META, true)
