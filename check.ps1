@@ -110,6 +110,16 @@ Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $pro
 Invoke-GodotCheck 'Main menu settings smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_smoke.gd', '--quit-after', '120') 'Raven Manor main menu and Prototype Lab navigation smoke passed'
 Invoke-GodotCheck 'Main menu UPDS failure-mode parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_upds_parity_smoke.gd', '--quit-after', '180') 'Raven main menu UPDS failure-mode parity smoke passed'
 
+Invoke-GodotCheck 'G2 navigation source fails closed' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/map_game_01a_navigation_source_smoke.gd', '--quit-after', '300') 'MAP-GAME-01A navigation source adapter smoke passed'
+Invoke-GodotCheck 'G2 route transition and safe anchor' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/map_qa_06_room_transitions_smoke.gd', '--quit-after', '150') 'Raven MAP-QA-06 authored room transition smoke passed'
+Invoke-GodotCheck 'G2 multi-room draft path (TEST_ONLY)' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/map_qa_07b_integrated_first_floor_smoke.gd', '--quit-after', '240') 'Raven MAP-QA-07B integrated first-floor authored Onoe movement smoke passed'
+Invoke-GodotCheck 'G2 reward and restoration characterization' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/game_loop_characterization_smoke.gd', '--quit-after', '240') 'Raven Manor game loop characterization smoke passed'
+Invoke-GodotCheck 'G2 save reload and Continue' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/session_lifecycle_e2e_smoke.gd', '--quit-after', '240') 'Raven Manor session lifecycle E2E smoke passed'
+Invoke-GodotCheck 'G2 pause and safe exit' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/game_pause_smoke.gd', '--quit-after', '120') 'Raven Manor save-and-exit pause smoke passed'
+Invoke-GodotCheck 'G2 menu to existing Match-3 campaign' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_match3_campaign_smoke.gd', '--quit-after', '180') 'Raven main menu Match-3 campaign entry smoke passed'
+Invoke-GodotCheck 'G2 English VN locale' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_english_localization_smoke.gd', '--quit-after', '240') 'Raven English VN Studio localization smoke passed'
+Invoke-GodotCheck 'G2 Belarusian VN locale' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_belarusian_localization_smoke.gd', '--quit-after', '240') 'Raven Belarusian VN Studio localization smoke passed'
+
 Invoke-GodotCheck 'Narrative production contract smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/production_narrative_smoke.gd', '--quit-after', '120') 'Raven Manor production narrative contract smoke passed'
 
 Invoke-GodotCheck 'VN background catalog / gallery' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_background_gallery_smoke.gd', '--quit-after', '120') 'Raven VN background registry and 9 textures PASS'
