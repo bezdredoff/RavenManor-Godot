@@ -1,7 +1,8 @@
 extends RefCounted
 ## VN-RUNTIME-01: review-only Chapter II-III contract and canonical Hall Tea
-## regression. Invoked by the already-registered D2C smoke. All approvals,
-## portraits and routes below are synthetic deep copies; never persisted.
+## regression. Invoked by the already-registered D2C smoke. Runtime approval
+## and route changes use deep copies; portraits are actual accepted catalog
+## entries (never synthetic), with no changes persisted.
 const Runtime = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
 const Dialogue = preload("res://data/raven/production/season1_dialogue_catalog.json")
 const Routes = preload("res://data/raven/production/map_narrative_routes.json")
@@ -23,9 +24,31 @@ const BEAT := "RM-BEAT-02-01"
 const PREVIOUS := "RM-BEAT-01-05"
 const LOCALES := ["ru", "be", "en"]
 
+# Exact scene/character reuse counts from the 43 formerly blocked cues.
+# The referenced IDs are the actual accepted catalog entries, not aliases.
+const APPROVED_REUSE := [
+	{"sceneId": "RM-BEAT-02-01", "characterId": "RM-CHAR-ADA",
+		"portraitId": "RM-VN-ADA-OFFER-TRAY", "cueCount": 6},
+	{"sceneId": "RM-BEAT-02-02", "characterId": "RM-CHAR-ROWAN",
+		"portraitId": "RM-VN-ROWAN-POINT-ROUTE", "cueCount": 7},
+	{"sceneId": "RM-BEAT-02-03", "characterId": "RM-CHAR-EVELYN",
+		"portraitId": "RM-VN-EVELYN-INVESTIGATE-SMALL", "cueCount": 10},
+	{"sceneId": "RM-BEAT-03-01", "characterId": "RM-CHAR-LUCAS",
+		"portraitId": "RM-VN-LUCAS-FOLDER-PRESENT", "cueCount": 2},
+	{"sceneId": "RM-BEAT-03-02", "characterId": "RM-CHAR-LUCAS",
+		"portraitId": "RM-VN-LUCAS-EXPLAIN", "cueCount": 3},
+	{"sceneId": "RM-BEAT-03-03", "characterId": "RM-CHAR-EVELYN",
+		"portraitId": "RM-VN-EVELYN-BASE-WORRIED", "cueCount": 5},
+	{"sceneId": "RM-BEAT-03-03", "characterId": "RM-CHAR-LUCAS",
+		"portraitId": "RM-VN-LUCAS-BASE-SERIOUS", "cueCount": 5},
+	{"sceneId": "RM-BEAT-03-04", "characterId": "RM-CHAR-EVELYN",
+		"portraitId": "RM-VN-EVELYN-BASE-WORRIED", "cueCount": 5},
+]
+
 
 static func run() -> void:
 	_verify_readiness_manifest()
+	_verify_approved_portrait_reuse()
 	_verify_hall_tea_fixture()
 
 
@@ -36,6 +59,8 @@ static func _verify_readiness_manifest() -> void:
 	assert(Readiness.data.runtimePromotion == false)
 	assert(Readiness.data.firstPlayableCandidate == BEAT)
 	assert(Readiness.data.scenes.size() == 8)
+	assert(Readiness.data.summary.missingUniqueAcceptedPortraitVariants.is_empty())
+	assert(Readiness.data.summary.missingCuePortraitOccurrences == 0)
 	var line_total := 0
 	var missing_cue_total := 0
 	var scene_ids := {}
@@ -69,6 +94,9 @@ static func _verify_readiness_manifest() -> void:
 		assert(record.background.lighting == shot.lighting)
 		assert(record.background.roomState == shot.roomState)
 		assert(record.cast == shot.cast)
+		assert(record.missingPortraitVariants.is_empty())
+		assert(record.missingCuePortraitLineIds.is_empty())
+		assert(not record.blockers.has("missing_accepted_portrait_variants"))
 		var background_count := 0
 		for asset: Dictionary in Backgrounds.data.entries:
 			if asset.backgroundId == shot.backgroundId and asset.lighting == shot.lighting and asset.roomState == shot.roomState:
@@ -132,7 +160,49 @@ static func _verify_readiness_manifest() -> void:
 		assert(record.cueManualReviewLineIds.is_empty() and record.cueHiddenLineIds.is_empty())
 	assert(scene_ids.size() == 8)
 	assert(line_total == 96 and Readiness.data.summary.canonicalLineCount == line_total)
-	assert(missing_cue_total == 43 and Readiness.data.summary.missingCuePortraitOccurrences == missing_cue_total)
+	assert(missing_cue_total == 0 and Readiness.data.summary.missingCuePortraitOccurrences == 0)
+
+
+## Verify the actual approved portrait IDs, their true pose/emotion metadata,
+## defaultForPose and all 43 formerly blocked cue appearances.
+static func _verify_approved_portrait_reuse() -> void:
+	assert(Portraits.data.entries.size() == 62)
+	var wide_found := false
+	for art: Dictionary in Portraits.data.entries:
+		if art.id == "RM-VN-EVELYN-INVESTIGATE-WIDE":
+			wide_found = true
+			assert(art.status == "accepted" and art.defaultForPose == false)
+	assert(wide_found)
+	var cue_total := 0
+	for expected: Dictionary in APPROVED_REUSE:
+		var art_matches := 0
+		var selected: Dictionary = {}
+		for art: Dictionary in Portraits.data.entries:
+			if art.id == expected.portraitId:
+				art_matches += 1
+				selected = art
+		assert(art_matches == 1, str(expected.portraitId))
+		assert(selected.characterId == expected.characterId)
+		assert(selected.status == "accepted" and selected.defaultForPose == true)
+		assert(ResourceLoader.exists(str(selected.path)), str(selected.id) + ": missing asset")
+		var shot_matches := 0
+		for shot: Dictionary in Staging.data.sceneShots:
+			if shot.sceneId == expected.sceneId:
+				for actor: Dictionary in shot.cast:
+					if actor.characterId == expected.characterId:
+						shot_matches += 1
+						assert(actor.pose == selected.pose and actor.emotion == selected.emotion)
+		assert(shot_matches == 1, str(expected.sceneId) + ": incorrect cast replacement")
+		var cue_matches := 0
+		for cue: Dictionary in Cues.data.cues:
+			if cue.sceneId == expected.sceneId and cue.speakerId == expected.characterId:
+				cue_matches += 1
+				assert(cue.poseId == selected.pose and cue.emotionId == selected.emotion)
+				assert(Runtime._has_art(str(cue.speakerId), str(cue.poseId),
+					str(cue.emotionId), Portraits.data.entries))
+		assert(cue_matches == expected.cueCount, str(expected.sceneId) + ": cue drift")
+		cue_total += cue_matches
+	assert(cue_total == 43)
 
 
 static func _verify_hall_tea_fixture() -> void:
@@ -234,8 +304,21 @@ static func _verify_hall_tea_fixture() -> void:
 			scene.status = "pilot_runtime"
 	assert(_find(unsafe, after_slice).is_empty(), "Unapproved status launched")
 	unsafe = _synthetic_hall_tea()
-	unsafe.portraits.entries.pop_back()
-	assert(_find(unsafe, after_slice).is_empty(), "Absent Ada variant launched")
+	var removed := false
+	for index in range(unsafe.portraits.entries.size() - 1, -1, -1):
+		if unsafe.portraits.entries[index].id == "RM-VN-ADA-OFFER-TRAY":
+			unsafe.portraits.entries.remove_at(index)
+			removed = true
+	assert(removed, "Expected approved Ada tray entry in isolated test data")
+	assert(_find(unsafe, after_slice).is_empty(), "Absent accepted Ada tray portrait launched")
+	unsafe = _synthetic_hall_tea()
+	var invalidated := false
+	for art: Dictionary in unsafe.portraits.entries:
+		if art.id == "RM-VN-ADA-OFFER-TRAY":
+			art.defaultForPose = false
+			invalidated = true
+	assert(invalidated, "Expected accepted default Ada tray portrait")
+	assert(_find(unsafe, after_slice).is_empty(), "Non-default Ada tray portrait launched")
 	unsafe = _synthetic_hall_tea()
 	for line: Dictionary in unsafe.dialogue.entries:
 		if line.sceneId == BEAT:
@@ -283,19 +366,6 @@ static func _synthetic_hall_tea() -> Dictionary:
 		if route.sceneId == BEAT:
 			route.gate.approvedRuntime = true
 			route.gate.proposedRuntime = false
-	# Exact offer_tray/dry_amused art is *not* approved. The synthetic test
-	# temporarily aliases Ada's accepted composed/dry_amused asset path in a
-	# deep-copied catalog. It proves selection mechanics, NOT visual readiness.
-	var candidate: Dictionary = {}
-	for art: Dictionary in data.portraits.entries:
-		if art.characterId == "RM-CHAR-ADA" and art.pose == "composed" and art.emotion == "dry_amused" \
-				and art.defaultForPose == true and art.status == "accepted":
-			candidate = art.duplicate(true)
-			break
-	assert(not candidate.is_empty(), "Expected accepted Ada source art unavailable")
-	candidate.id = "SYNTHETIC-TEST-ONLY-ADA-TRAY"
-	candidate.pose = "offer_tray"
-	candidate.emotion = "dry_amused"
-	candidate.syntheticOnly = true
-	data.portraits.entries.append(candidate)
+	# Reuse the actual accepted art. Only scene status and route approval are
+	# promoted in this isolated test copy; production remains review-only.
 	return data
