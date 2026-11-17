@@ -6,7 +6,7 @@ Verification: Fix five required governance evidence headings after run 441071173
 
 Owner QA: All seven new portraits and all 43 affected cue appearances remain blocked; owner art approval pending.
 
-Status impact: No completed-art claim. VN-ART-01 stays ready/pending; this draft delivers documentation only.
+Status impact: No completed-art claim or unregistered live task. Existing GFX-05-08 status is unchanged; this draft delivers documentation only.
 
 # VN-ART-01 — Chapter II–III portrait blocker audit
 
@@ -18,7 +18,7 @@ Status impact: No completed-art claim. VN-ART-01 stays ready/pending; this draft
 
 - Audited canonical Chapter II–III **readiness**, 62 accepted portrait catalog entries, seven required pose × emotion combinations and their staging/cue line IDs. All eight scene localization line counts match RU, BE and EN; seven scenes contain art blockers.
 - Added a visible [reference-only contact sheet](../production/VN_ART_01_REFERENCE_CONTACT_SHEET.md) pairing each accepted **pose** with the accepted **facial-expression identity**. Each row truthfully marks the **missing new candidate**, records its reserved destination, scene/line coverage, original provenance SHA-256, and a per-asset edit/QA recipe.
-- Updated **only** the `character-art` task progress shard to register a P1 task in `ready` status with delivery/approval still pending. No runtime registry or actual asset was changed.
+- Updated only the `character-art` shard with documentation-only evidence under registered GFX-05-08. VN-ART-01 is an audit/work label, not a registered live task: its erroneous new entry/assignment was removed after CI identified the unknown ID. No runtime registry or actual asset was changed.
 
 ## Exact verification performed
 
@@ -48,7 +48,7 @@ Have an image-capable artist/agent create the seven exact variants on the listed
 
 ## Status impact
 
-`VN-ART-01`: `ready`, `implementationState=not_recorded`, `qaState=not_recorded`, `approvalState=pending`; current work blocked at image production/import capability. Existing 62 accepted assets and canonical runtime/story/save registries remain untouched. No post-merge closeout claimed.
+`VN-ART-01` is a documentation work label, not a live task registration. Existing registered GFX-05-08 receives reference-audit evidence with its status and acceptance unchanged; actual variant production remains blocked. Existing 62 accepted assets and canonical runtime/story/save registries remain untouched. No post-merge closeout claimed.
 
 ## Reuse, rights, rollback and coordination
 
