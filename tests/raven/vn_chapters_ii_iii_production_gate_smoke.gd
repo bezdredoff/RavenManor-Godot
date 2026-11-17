@@ -20,6 +20,7 @@ const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const Memory = preload("res://tests/support/memory_storage.gd")
+const SaveContract = preload("res://data/save_contract.json")
 
 const SCENES := [
     "RM-BEAT-02-01", "RM-BEAT-02-02", "RM-BEAT-02-03", "RM-BEAT-02-04",
@@ -102,6 +103,7 @@ func _audit_chapter_canon() -> void:
         var matching_shots: Array = Staging.data.sceneShots.filter(func(x): return x.get("sceneId") == id)
         var matching_routes: Array = Routes.data.sceneTriggers.filter(func(x): return x.get("sceneId") == id)
         assert(matching_scenes.size() == 1 and matching_shots.size() == 1 and matching_routes.size() == 1, id)
+        var scene_missing := {}
         var scene: Dictionary = matching_scenes[0]
         var shot: Dictionary = matching_shots[0]
         var route: Dictionary = matching_routes[0]
@@ -117,6 +119,7 @@ func _audit_chapter_canon() -> void:
             actors[character] = true
             slots[slot] = true
             _audited_requirement(character, str(actor.get("pose", "")), str(actor.get("emotion", "")), missing)
+            _audited_requirement(character, str(actor.get("pose", "")), str(actor.get("emotion", "")), scene_missing)
         var backgrounds: Array = Backgrounds.data.entries.filter(func(x):
             return x.get("backgroundId") == shot.backgroundId and x.get("lighting") == shot.lighting and x.get("roomState") == shot.roomState)
         assert(backgrounds.size() == 1 and backgrounds[0].get("status") == "accepted")
@@ -142,13 +145,14 @@ func _audit_chapter_canon() -> void:
             if exact.is_empty():
                 cue_missing_count += 1
             _audited_requirement(str(cue.speakerId), str(cue.poseId), str(cue.emotionId), missing)
+            _audited_requirement(str(cue.speakerId), str(cue.poseId), str(cue.emotionId), scene_missing)
         # A route/scene approved independently of art must still fail closed.
         if scene.status == "runtime_approved" and route.gate.get("approvedRuntime") == true:
             var seeded := _completed_chapter_i()
             var ready := Runtime.find_approved(seeded, "ru", Dialogue.data, Routes.data,
                 Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data,
                 str(route.interactionTarget))
-            if not missing.is_empty() and id == TEA:
+            if not scene_missing.is_empty() and id == TEA:
                 assert(ready.is_empty(), "Live Hall Tea bypassed missing accepted portrait")
     assert(line_total == 96 and cue_total == 96, "Expected 96 canonical lines/cues across Chapters II-III")
     print("GAME-QA-03 source audit: %d lines x 3 locales; %d distinct unresolved pose/emotion keys; %d cue occurrences (live catalogs)" %
@@ -188,7 +192,7 @@ func _verify_live_production_closed_paths() -> void:
 
 func _completed_chapter_i() -> Dictionary:
     var state: Dictionary = Snapshot.fresh()
-    for id: String in ["RM-BEAT-01-01", "RM-BEAT-01-02", "RM-BEAT-01-03", "RM-BEAT-01-04", PREVIOUS]:
+    for id: String in ["RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03", "RM-BEAT-01-01", "RM-BEAT-01-02", "RM-BEAT-01-03", "RM-BEAT-01-04", PREVIOUS]:
         var result: Dictionary = Reducer.apply(state, {
             "type": "story_beat_seen", "storyBeatId": id, "eventId": "game-qa-03-prereq-" + id})
         assert(result.get("ok", false), id + ": required Chapter I beat missing from Foundation")
@@ -369,10 +373,11 @@ func _synthetic_hall_tea_positive_and_negative() -> void:
             if route.sceneId == future_id:
                 route.gate.approvedRuntime = true
                 route.gate.proposedRuntime = false
-        assert(Runtime.find_approved(state, "ru", unsafe.dialogue, unsafe.routes,
+        var unverified_future := Runtime.find_approved(state, "ru", unsafe.dialogue, unsafe.routes,
             unsafe.staging, unsafe.cues, unsafe.foundation, unsafe.backgrounds,
-            unsafe.portraits, str(_target_for(future_id))).is_empty(),
-            "Unsupported or unregistered future gate dispatched: " + future_id)
+            unsafe.portraits, str(_target_for(future_id)))
+        assert(str(unverified_future.get("beatId", "")) != future_id,
+            "Unverified future interaction dispatched without authoritative token: " + future_id)
 
 
 func _target_for(id: String) -> String:
@@ -397,9 +402,9 @@ func _isolation_and_save_failures() -> void:
     assert(Store.new(memory).load_campaign().vnCursor == later.vnCursor)
     # No mutating a real user save. Corrupt input is a fresh isolated adapter.
     var corrupt := Memory.new()
-    corrupt.values[preload("res://data/save_contract.json").data.ravenKey] = "{corrupted"
+    corrupt.values[SaveContract.data.ravenKey] = "{corrupted"
     var host = Host.new(corrupt)
     root.add_child(host)
     assert(str(host.configure(_production_request()).get("error", "")).begins_with("save-unreadable:"))
-    assert(corrupt.values[preload("res://data/save_contract.json").data.ravenKey] == "{corrupted")
+    assert(corrupt.values[SaveContract.data.ravenKey] == "{corrupted")
     host.queue_free()
