@@ -33,8 +33,12 @@
   "cadence": "one cycle per 0.5 displayed heights of ACTUAL root travel; no timer or FPS clamp",
   "zeroAlphaPixels": 1114853,
   "requiresAlphaMaterial": false,
-  "ownerApproved": false,
+  "ownerApproved": true,
+  "ownerApprovalEvidence": "2026-11-17: owner reviewed merged PR #274 Godot preview and approved Evelyn visual design and animation",
   "productionReplacementAllowed": false,
+  "productionIntegrationVerified": false,
+  "deviceVerified": false,
+  "foregroundOcclusionVerified": false,
   "frames": {
     "down": [
       {

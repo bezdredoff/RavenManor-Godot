@@ -57,6 +57,7 @@ run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph 
 run_check 'MAP-QA-02 Onoe movement adapter' 'Raven MAP-QA-02 Onoe animated segment movement smoke passed' --script res://tests/raven/onoe_segment_movement_smoke.gd --quit-after 120
 run_check 'GFX-07-01 Evelyn atlas reproducibility' 'PASS: retained source reproduces baked atlas pixels and hashes' --script res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/bake_atlas.gd --quit-after 300 -- --check
 run_check 'GFX-07-01 Evelyn preview' 'GFX-07-01 Evelyn preview PASS' --script res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/preview_smoke.gd --quit-after 240
+run_check 'GFX-07-01 Evelyn gameplay host' 'GFX-07-01 Evelyn gameplay-host integration smoke passed' --script res://tests/raven/gfx_07_01_evelyn_gameplay_host_smoke.gd --quit-after 300
 run_check 'MAP-QA-01 Hall source geometry' 'MAP-QA-01 Hall pilot Godot JSON/image smoke passed' --script res://tests/raven/map_qa_01_hall_smoke.gd --quit-after 120
 run_check 'MAP-QA-03 Hall movement pilot' 'Raven MAP-QA-03 Hall movement pilot smoke passed' --script res://tests/raven/map_qa_03_hall_movement_smoke.gd --quit-after 120
 run_check 'MAP-QA-06 authored room transitions' 'Raven MAP-QA-06 authored room transition smoke passed' --script res://tests/raven/map_qa_06_room_transitions_smoke.gd --quit-after 150

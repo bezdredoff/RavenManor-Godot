@@ -1,6 +1,6 @@
 # Evelyn fix-pass candidate — current review entry point
 
-**Technical candidate; new art and motion are NOT owner-approved. Production replacement is disabled.**
+**Approved Evelyn visual and motion (2026-11-17):** after merging #274, the owner inspected the Godot preview and explicitly approved this exact chibi design/animation for Raven Manor. No redesign. This does **not** certify normal New Game integration, physical-phone performance or layered room occlusion; production release gates are still pending.
 
 This directory name is retained for existing preview paths. Its atlas, metadata, scripts and captures now supersede PR #269's repair. The original rejected_source.png, source_audit.json, atlas_spec.json and parent HANDOFF.md are historical rejection evidence, not the current atlas specification. Old repair pixels remain in Git history.
 
@@ -8,7 +8,7 @@ This directory name is retained for existing preview paths. Its atlas, metadata,
 
 Baseline: fresh origin/main `2631c7a9f87d146f02244894b64dc5899e462c5a`, the actual merge of #269. Queried open/closed GitHub PR history, including #241/#243/#244 (Onoe adapter/Hall/diagnostics), #238 (route session), #257/#260/#268 (navigation/gameplay), #269 (Evelyn) and #270 (draft HC/CB physical doors). No overlapping open PR was found. #269's final head was 076d0433547e42c6109d6682c0dea548b9074fdc. Its green CI explicitly coexisted with CHANGES NEEDED: high asymmetric knees, side-leg overlap and apparent slip. The old GIF predated its last cadence change.
 
-Approved identity authority: `assets/raven/characters/evelyn/base_neutral.webp` and the accepted VN records in the art handbook. Long warm chestnut hair, restrained green/teal eyes, ivory band-collar linen blouse, deep wine midi skirt and black ankle boots guide the new sheet. The new proportions are less exaggerated than #269, with longer readable calves and a longer skirt. These are **new candidate art**, not an inherited owner approval.
+Approved identity authority: `assets/raven/characters/evelyn/base_neutral.webp` and the accepted VN records in the art handbook. Long warm chestnut hair, restrained green/teal eyes, ivory band-collar linen blouse, deep wine midi skirt and black ankle boots guide the new sheet. The new proportions are less exaggerated than #269, with longer readable calves and a longer skirt. These were **new candidate art** for #274. The owner subsequently approved this exact merged visual/animation on 2026-11-17.
 
 UPDS-godot main was freshly checked at 3deed628efd6c22bcd1717f7c545b7d3ca865781; its recursive tree contains no directional map walker. Reuse decision: **adapter** over Raven `scripts/raven/onoe_visual.gd` (blob b85fac3b7658de2224f39225a72be921535bc793) and `onoe_segment_mover.gd` (blob 5c7a43ea6b99c4ad6681ca82303b7ac0422ee222). Keep existing RouteSession, segment validation, root position, endpoint clamp, pause and arrival signals. No alternate movement controller.
 
@@ -55,6 +55,6 @@ PNGs are direct 390×844 Godot 4.7.2 Compatibility captures. GIFs encode fresh M
 
 Executed locally: atlas measurement, source-to-bake pixel reproducibility, new Godot preview smoke, existing Onoe movement smoke, historical rejection audit, handbook build/check/tests, shard/dashboard checks. The preview smoke exercises all 12 regions/both side facings, fixed scale/grounding, four real moves, slow/mid/fast phase consistency, paused wall-clock hold, reduced motion, invalid starts, endpoint/arrival behavior, inspector scene and actual Hall route cancellation. The bake and preview smoke are registered in both existing check runners. Exact-head GitHub CI is reported on the PR.
 
-**Technical pass** means the recorded tests actually passed. **Visual candidate ready for review** means fresh evidence exists and described defects were materially addressed. **Owner-approved final** requires explicit new owner proof and is currently **false**.
+**Technical pass** means the recorded tests passed. **Owner visual approval** is now **true**, confirmed in chat on 2026-11-17 after manual Godot review of merged #274. **Full gameplay activation** (New Game), physical-phone/device and layered foreground/door-sill QA remain separate and unverified.
 
-Remaining owner QA: confirm VN identity/new proportions, front/back balance and side passing poses in motion, acceptable four-frame contact/slip at the intended production pace, mirrored hair part, fine hair alpha edges, and readability on a real phone. Layered foreground/door-sill HC/CB tests remain dependent on map-owner geometry/art approval (#270 is DRAFT_ONLY). Flat Hall evidence does not certify multi-room occlusion. Onoe is not replaced in production, and GFX-07-01/full G1 acceptance stays open.
+Visual identity and gait have explicit owner approval. Remaining QA: real-phone readability/performance, HC/CB layered foreground and door-sill contact, and production New Game-to-map activation. Flat Hall or synthetic multi-room previews do not certify layered occlusion. Historical Onoe QA remains for regression. Full GFX-07-01 release/device closure remains open.
