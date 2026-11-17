@@ -91,7 +91,7 @@ func _run() -> void:
 		assert(qa.restart_island(a))
 		assert(qa.host.test_gate(door_id, "open"))
 		assert(qa.transition(ab).get("ok", false))
-		var cancellation := qa.host.cancel_request()
+		var cancellation: Dictionary = qa.host.cancel_request()
 		assert(cancellation.get("ok", false))
 		_drive(qa.host, doc)
 		assert(qa.host.active_room_id == a)
