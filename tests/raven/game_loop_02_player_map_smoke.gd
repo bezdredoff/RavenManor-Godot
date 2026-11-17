@@ -19,7 +19,8 @@ func _run() -> void:
 	var fresh: Dictionary = Snapshot.fresh()
 	assert(not Entry.can_enter(fresh), "Never skip the authored opening VN")
 	var after_intro: Dictionary = fresh.duplicate(true)
-	after_intro.storyBeatsSeen.append("RM-BEAT-01-01")
+	for beat in ["RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03", "RM-BEAT-01-01"]:
+		after_intro.storyBeatsSeen.append(beat)
 	var selection: Dictionary = Source.resolve({
 		"schemaVersion": Source.SCHEMA_VERSION, "kind": Source.REQUEST_KIND,
 		"mode": Source.MODE_PRODUCTION, "snapshot": after_intro,

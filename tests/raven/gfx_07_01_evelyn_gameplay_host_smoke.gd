@@ -21,7 +21,7 @@ func _run() -> void:
 	# Unapproved canonical production geometry must fail closed; no actor spawn.
 	var unavailable: Dictionary = Source.resolve({
 		"schemaVersion": 1, "kind": Source.REQUEST_KIND,
-		"mode": "production", "snapshot": snapshot})
+		"mode": "production", "snapshot": snapshot, "worldPlan": Source.WORLD_PLAN.data})
 	assert(not unavailable.ok and not unavailable.movementEnabled)
 	var blocked = Harness.new()
 	root.add_child(blocked)

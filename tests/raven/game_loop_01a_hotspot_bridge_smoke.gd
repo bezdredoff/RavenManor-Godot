@@ -224,7 +224,7 @@ func _source_regressions() -> void:
 	var memory = Memory.new()
 	_seed(memory)
 	var before: Dictionary = Store.new(memory).load_campaign()
-	var production := {"schemaVersion": 1, "kind": NavigationSource.REQUEST_KIND, "mode": "production"}
+	var production := {"schemaVersion": 1, "kind": NavigationSource.REQUEST_KIND, "mode": "production", "worldPlan": NavigationSource.WORLD_PLAN.data}
 	for request in [{}, {"mode": "qa"}, production,
 			{"schemaVersion": 1, "kind": NavigationSource.REQUEST_KIND, "mode": "qa"},
 			{"schemaVersion": 1, "kind": NavigationSource.REQUEST_KIND, "mode": "qa",

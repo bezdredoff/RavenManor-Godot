@@ -63,20 +63,20 @@ func _host(adapter: RefCounted):
 
 
 func _run() -> void:
-	# Production is still fail-closed, even with a real campaign snapshot.
+	# Production uses approved default geometry; arbitrary caller-injected plans remain fail-closed.
 	var real := Memory.new()
 	_seed(real)
 	var before: Dictionary = Store.new(real).load_campaign()
 	var denied = _host(real)
 	root.add_child(denied)
 	await process_frame
-	assert(not denied.configure(_production_request()).ok)
-	assert(denied.navigation == null)
-	assert(not denied.request_story_hotspot("RM-HS-005").ok)
-	assert(Store.new(real).load_campaign() == before, "No false progress from blocked geometry")
+	assert(Source.resolve(_production_request()).ok, "Default approved source should resolve")
 	var forged := _production_request()
 	forged.worldPlan = {"provenance": {"approval": "PRODUCTION_APPROVED", "productionReady": true}}
 	assert(denied.configure(forged).error == "injected-production-plan-forbidden")
+	assert(denied.navigation == null)
+	assert(not denied.request_story_hotspot("RM-HS-005").ok)
+	assert(Store.new(real).load_campaign() == before, "Forged plan must not mutate campaign state")
 	denied.queue_free()
 	await process_frame
 

@@ -22,6 +22,10 @@ func _run() -> void:
 	root.size = Vector2i(390, 844)
 	assert(ProjectSettings.get_setting("application/run/main_scene") == "res://scenes/raven/main_menu.tscn")
 	var memory = Memory.new()
+	# Negative gate: mutate only the in-memory JSON Resource, never the shipped receipt.
+	var acceptance: Dictionary = Source.ACCEPTANCE.data
+	var saved_receipt: Dictionary = acceptance.duplicate(true)
+	acceptance["ownerApproved"] = false
 	var menu = _menu(memory)
 	await process_frame
 	assert(menu.continue_button.disabled)
@@ -56,7 +60,10 @@ func _run() -> void:
 	await process_frame
 	# Positive control: the same callback routes to the real player view, actor,
 	# background and foreground using an isolated validated production fixture.
-	menu = _menu(memory, true)
+	acceptance.clear()
+	acceptance.merge(saved_receipt, true)
+	assert(Source.resolve(Fixture.request()).ok, "Production receipt must be restored")
+	menu = _menu(memory)
 	menu.continue_button.pressed.emit()
 	await process_frame
 	assert(menu.launched_path == "res://scenes/raven/manor_player_map.tscn")
@@ -70,8 +77,7 @@ func _run() -> void:
 	map.queue_free()
 	menu.queue_free()
 	await process_frame
-	Fixture.restore_canonical()
-	assert(not Source.resolve(Fixture.request()).ok)
+	assert(Source.resolve(Fixture.request()).ok, "Shipped receipt must remain valid after menu checks")
 	var corrupt = Memory.new()
 	corrupt.values[Contract.data.ravenKey] = "{bad"
 	menu = _menu(corrupt)
@@ -84,5 +90,5 @@ func _run() -> void:
 	assert(menu.launched_scene == null and not menu._start_after_guide)
 	menu.queue_free()
 	await process_frame
-	print("GAME-QA-02 menu opening, blocked geometry, approved isolated map and recovery smoke passed")
+	print("GAME-QA-02 menu blocked-receipt fail-closed, approved real map entry and recovery smoke passed")
 	quit()

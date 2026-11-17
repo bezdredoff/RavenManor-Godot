@@ -209,7 +209,8 @@ func _refresh_room() -> bool:
 	background.position = Vector2(float(bounds[0]), float(bounds[1]))
 	background.scale = Vector2(float(bounds[2]), float(bounds[3])) / texture.get_size()
 	_zoom = clampf(float(visual.get("cameraZoom", 1.0)), 0.1, 4.0)
-	if str(visual.get("artLayer", "")) == "hc-cb-v3":
+	if str(visual.get("artLayer", "")) in ["hc-cb-v3", "hc-cb-v4"]:
+		# V4 preserves the same renderer/layer contract with owner-corrected door art.
 		if not is_instance_valid(_door_art):
 			var layer = load("res://scripts/raven/map_prod_01_hc_cb_art.gd")
 			_door_art = layer.new()

@@ -2,18 +2,19 @@
   "schemaVersion": 1,
   "kind": "raven-calibrated-production-world-plan",
   "provenance": {
-    "approval": "RENDER_REVIEW_PENDING",
-    "productionReady": false,
-    "activationEnabled": false,
-    "runtimeAuthority": false,
+    "approval": "PRODUCTION_APPROVED",
+    "productionReady": true,
+    "activationEnabled": true,
+    "runtimeAuthority": true,
     "coordinateSpace": "world-plan",
     "calibrationVersion": 2,
     "ownerDecision": "RM-DEC-030",
+    "productionOwnerDecision": "RM-DEC-031",
     "authoringSource": "assets/raven/map/qa/drafts/map_qa_09b_opening_blueprint.v1.json",
     "authoringSourceTextSha256": "90548edf6310c643d004384db1aaefb1102f470549d5306e4b93a51fef76ea22",
     "authoringSourceHashEncoding": "UTF-8 with LF; independent of Git checkout EOL",
     "roomArtCalibration": {
-      "status": "candidate",
+      "status": "approved",
       "version": 2,
       "assetHash": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
       "transform": {
@@ -84,7 +85,7 @@
           ],
           "cameraZoom": 1.0,
           "actorHeight": 62.0,
-          "artLayer": "hc-cb-v3",
+          "artLayer": "hc-cb-v4",
           "artOrigin": [
             128,
             128
@@ -100,7 +101,7 @@
           ],
           "cameraZoom": 1.0,
           "actorHeight": 62.0,
-          "artLayer": "hc-cb-v3",
+          "artLayer": "hc-cb-v4",
           "artOrigin": [
             128,
             128
@@ -116,7 +117,7 @@
           ],
           "cameraZoom": 1.0,
           "actorHeight": 62.0,
-          "artLayer": "hc-cb-v3",
+          "artLayer": "hc-cb-v4",
           "artOrigin": [
             128,
             128

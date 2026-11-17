@@ -16,7 +16,7 @@ const WORLD_PLAN = preload("res://data/raven/manor_greybox_graph.json")
 const PRODUCTION_CANDIDATE = preload("res://data/raven/manor_production_candidate.v1.json")
 const ACCEPTANCE = preload("res://data/raven/manor_production_acceptance.v1.json")
 # Separate integration switch: editing candidate approval flags cannot select it.
-const PRODUCTION_ACTIVATION_ENABLED := false
+const PRODUCTION_ACTIVATION_ENABLED := true
 
 const SCHEMA_VERSION := 1
 const REQUEST_KIND := "raven-navigation-source-request"
@@ -689,7 +689,9 @@ static func _numbers_match(value: Variant, expected: Array) -> bool:
 static func _acceptance_receipt_matches() -> bool:
 	var receipt: Dictionary = ACCEPTANCE.data
 	return receipt.get("ownerApproved", false) == true \
-		and not str(receipt.get("ownerDecisionId", "")).is_empty() \
+		and str(receipt.get("ownerDecisionId", "")) == str(PRODUCTION_CANDIDATE.data.provenance.get("productionOwnerDecision", "")) \
+		and bool(PRODUCTION_CANDIDATE.data.provenance.get("activationEnabled", false)) \
+		and bool(PRODUCTION_CANDIDATE.data.provenance.get("runtimeAuthority", false)) \
 		and not str(receipt.get("renderEvidence", "")).is_empty() \
 		and receipt.get("worldPlanSha256", "") == FileAccess.get_sha256("res://data/raven/manor_production_candidate.v1.json") \
 		and receipt.get("doorLayerSha256", "") == FileAccess.get_sha256("res://scripts/raven/map_prod_01_hc_cb_art.gd")

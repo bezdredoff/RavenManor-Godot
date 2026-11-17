@@ -1,4 +1,4 @@
-"""Compile the reviewed 09B authoring input into an INACTIVE production world plan.
+"""Compile the reviewed 09B input into the owner-approved G2 production world plan.
 
 This is an offline compiler, not a runtime QA navigation mode. Runtime consumes
 ordinary world-plan anchors/edges through ManorNavigationSource and its controller.
@@ -85,14 +85,15 @@ def build():
     return {
         "schemaVersion": 1, "kind": "raven-calibrated-production-world-plan",
         "provenance": {
-            "approval": "RENDER_REVIEW_PENDING", "productionReady": False,
-            "activationEnabled": False, "runtimeAuthority": False, "coordinateSpace": "world-plan",
+            "approval": "PRODUCTION_APPROVED", "productionReady": True,
+            "activationEnabled": True, "runtimeAuthority": True, "coordinateSpace": "world-plan",
             "calibrationVersion": 2, "ownerDecision": "RM-DEC-030",
+            "productionOwnerDecision": "RM-DEC-031",
             "authoringSource": SOURCE.relative_to(ROOT).as_posix(),
             "authoringSourceTextSha256": hashlib.sha256(SOURCE.read_text(encoding="utf-8").encode("utf-8")).hexdigest(),
             "authoringSourceHashEncoding": "UTF-8 with LF; independent of Git checkout EOL",
             "roomArtCalibration": {
-                "status": "candidate", "version": 2,
+                "status": "approved", "version": 2,
                 "assetHash": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
                 "transform": {"translation": [128, 128], "uniformScale": 1, "controlPoints": controls},
                 "scale": {"sourcePixelsPerMetre": 40, "doorClearWidthMetres": 1.2,
@@ -100,7 +101,7 @@ def build():
                           "paintedElevationDegrees": 65, "applySecondProjection": False},
                 "rooms": {room: {"texturePath": ART, "bounds": [128, 128, 1672, 941],
                                   "cameraZoom": 1.0, "actorHeight": 62.0,
-                                  "artLayer": "hc-cb-v3", "artOrigin": [128, 128]} for room in ROOMS},
+                                  "artLayer": "hc-cb-v4", "artOrigin": [128, 128]} for room in ROOMS},
             },
         },
         "physicalConstraints": {

@@ -1,5 +1,5 @@
 extends SceneTree
-## Real production source/controller/view/Evelyn/VN/Match-3/store, isolated copy.
+## Real approved production source/controller/view/Evelyn/VN/Match-3/store with isolated memory saves.
 const Fixture = preload("res://tests/support/g2_production_fixture.gd")
 const Map = preload("res://scripts/raven/raven_player_map.gd")
 const Host = preload("res://scripts/raven/raven_gameplay_host.gd")
@@ -75,7 +75,7 @@ func _run() -> void:
 	root.add_child(unsafe_storage)
 	assert(unsafe_storage.configure(injected).error == "injected-production-plan-forbidden", "Test approval cannot use persistent storage")
 	unsafe_storage.queue_free()
-	Fixture.install_canonical()
+	assert(Source.resolve(Fixture.request()).ok, "Accepted default world plan must be enabled")
 	for locale in ["ru", "be", "en"]:
 		root.size = {"ru": Vector2i(320, 568), "be": Vector2i(430, 932), "en": Vector2i(390, 844)}[locale]
 		root.content_scale_size = root.size
@@ -192,8 +192,7 @@ func _run() -> void:
 	assert(host.configure(Fixture.request()).error.begins_with("save-unreadable:"))
 	assert(corrupt.values[Contract.data.ravenKey] == "{broken")
 	host.queue_free()
-	Fixture.restore_canonical()
-	assert(not Source.resolve(Fixture.request()).ok)
+	assert(Source.resolve(Fixture.request()).ok, "Accepted default world plan must remain enabled")
 	assert(FileAccess.get_sha256("res://data/raven/manor_greybox_graph.json") == canonical_hash)
 	assert(FileAccess.get_sha256("res://data/raven/manor_production_candidate.v1.json") == candidate_hash)
 	print("G2 production-contract integrated map, Evelyn, traversal, VN/Match-3, save/recovery and RU/BE/EN PASS")
