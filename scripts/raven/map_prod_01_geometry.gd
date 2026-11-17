@@ -25,13 +25,19 @@ static func verify() -> Dictionary:
 		return {"ok":false, "error":"unsafe-activation"}
 	if not FileAccess.file_exists(ART_PATH) or FileAccess.get_sha256(ART_PATH) != ART_SHA256:
 		return {"ok":false, "error":"approved-png-changed"}
-	if spec["source"].get("sha256") != ART_SHA256 or spec["source"].get("dimensionsPx") != [1672,941]:
+	var dims: Variant = spec["source"].get("dimensionsPx", null)
+	if spec["source"].get("sha256") != ART_SHA256 or not dims is Array or dims.size() != 2:
 		return {"ok":false, "error":"source-identity"}
+	if int(dims[0]) != 1672 or int(dims[1]) != 941:
+		return {"ok":false, "error":"source-dimensions"}
 	if spec.get("paintedPerspective", {}).get("applySecondProjection") != false:
 		return {"ok":false, "error":"double-projection"}
 	var transform: Dictionary = spec.get("coordinateTransform", {})
-	if transform.get("status") != "EXPLICIT_CANDIDATE_NEEDS_WORLDPLAN_AUTHORITY_REVIEW" or transform.get("translation") != [128,128]:
+	var shift: Variant = transform.get("translation", null)
+	if transform.get("status") != "EXPLICIT_CANDIDATE_NEEDS_WORLDPLAN_AUTHORITY_REVIEW" or not shift is Array or shift.size() != 2:
 		return {"ok":false, "error":"unreviewed-transform"}
+	if absf(float(shift[0]) - OFFSET.x) > 0.001 or absf(float(shift[1]) - OFFSET.y) > 0.001:
+		return {"ok":false, "error":"calibration-shift"}
 	for sample in transform.get("controlPoints", []):
 		var image := Vector2(float(sample["image"][0]),float(sample["image"][1]))
 		var world := Vector2(float(sample["world"][0]),float(sample["world"][1]))
