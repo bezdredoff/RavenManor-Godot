@@ -17,6 +17,7 @@ const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const MemoryStorage = preload("res://tests/support/memory_storage.gd")
+const Chapters = preload("res://tests/raven/vn_chapters_ii_iii_readiness_fixture.gd")
 
 const BEAT := "RM-BEAT-07-01"
 const LINE := "RM-BEAT-07-01-L001"
@@ -116,6 +117,7 @@ func _initialize() -> void:
 	# No new native resource or foundation entry is touched by smoke.
 	assert(Runtime.next_scene(state).is_empty())
 	assert(not Foundation.data.storyBeats.has(BEAT))
+	Chapters.run()  # Registered CI stage also exercises real Chapter II/III source copies.
 	print("Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed")
 	quit()
 
