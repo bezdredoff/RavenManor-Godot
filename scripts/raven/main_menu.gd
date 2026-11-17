@@ -6,6 +6,7 @@ const Onboarding = preload("res://scripts/raven/raven_onboarding_dialog.gd")
 const MapEntry = preload("res://scripts/raven/raven_player_map_entry.gd")
 const SLICE := "res://scenes/raven/vertical_slice.tscn"
 const LAB := "res://scenes/raven/prototype_launcher.tscn"
+const NORMAL_GAME_ROUTE_META := "raven_normal_gameplay_from_menu"
 const COPY := {
 	"ru": ["Новая игра", "Продолжить", "Настройки", "Prototype Lab", "Новая игра удалит текущий прогресс. Продолжить?", "Начать", "Отмена", "Язык", "Музыка", "Эффекты", "Без звука", "Вибрация", "Назад", "Не удалось сохранить настройки", "Нет сохранённой игры", "Уменьшить анимацию", "Проверить музыку", "Проверить эффекты", "Как играть", "Уровни Match-3", "Не удалось открыть уровни Match-3", "Не удалось прочитать сохранение. Сохранённые данные не изменены.", "Сохранение повреждено. При возможности сохранена резервная копия.", "Не удалось сбросить прогресс игры"],
 	"be": ["Новая гульня", "Працягнуць", "Налады", "Prototype Lab", "Новая гульня выдаліць бягучы прагрэс. Працягнуць?", "Пачаць", "Скасаваць", "Мова", "Музыка", "Эфекты", "Без гуку", "Вібрацыя", "Назад", "Не ўдалося захаваць налады", "Няма захаванай гульні", "Паменшыць анімацыю", "Праверыць музыку", "Праверыць эфекты", "Як гуляць", "Узроўні Match-3", "Не ўдалося адкрыць узроўні Match-3", "Не ўдалося прачытаць захаванне. Захаваныя даныя не змененыя.", "Захаванне пашкоджанае. Пры магчымасці захаваная рэзервовая копія.", "Не ўдалося скінуць прагрэс гульні"],
@@ -167,22 +168,29 @@ func _reset_and_start() -> void:
 
 func _start() -> void:
 	audio_runtime.set_scene("vn")
-	get_tree().change_scene_to_file(SLICE)
+	get_tree().set_meta(NORMAL_GAME_ROUTE_META, true)
+	if get_tree().change_scene_to_file(SLICE) != OK:
+		get_tree().remove_meta(NORMAL_GAME_ROUTE_META)
+		message.text = _tr(13)
 
 func _continue_game() -> void:
-	if not _has_progress():
-		message.text = _tr(14)
-		return
-	var snapshot: Dictionary = store.load_campaign()
+	var has_progress := _has_progress()
 	if _save_is_unknown():
 		message.text = _tr(COPY_SAVE_RECOVERED) if str(save_report.get("status", "")) == "recovered-corrupt" else _tr(COPY_SAVE_READ_FAILED)
 		return
+	if not has_progress:
+		message.text = _tr(14)
+		return
+	var snapshot: Dictionary = store.load_campaign()
 	# Resume the actual saved story activity. Before RM-BEAT-01-01 this is
 	# always the opening VN; afterwards a canonical approved map can host
 	# the same existing VN/Match-3 presentation and saved spatial anchor.
 	var target := MapEntry.MAP_SCENE if MapEntry.can_enter(snapshot) else SLICE
 	audio_runtime.set_scene("vn")
-	get_tree().change_scene_to_file(target)
+	get_tree().set_meta(NORMAL_GAME_ROUTE_META, true)
+	if get_tree().change_scene_to_file(target) != OK:
+		get_tree().remove_meta(NORMAL_GAME_ROUTE_META)
+		message.text = _tr(13)
 
 func _open_match3_levels() -> void:
 	get_tree().set_meta(CAMPAIGN_ROUTE_META, true)
