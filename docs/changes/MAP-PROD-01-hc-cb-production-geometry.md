@@ -44,3 +44,7 @@ Agent B must validate a *replacement world-plan* with canonical RM-NAV IDs, exac
 ## Owner review and rollback
 
 In Godot scene, unlock HC, walk Hall→Corridor, check the stair underside masks as Evelyn approaches [824,400]; unlock CB, walk Corridor→Bedroom and return. Re-lock mid-walk, check full sprite, actual footpoint and viewpoint at 65°, inspect 48px opening against paint, capture screenshots of both doors with route debug OFF and run on a physical phone. If headroom/visual quality fails, correct art or foreground masks, not RM-DEC-030 coordinates without a new decision. Rollback removes only additive MAP-PROD-01 scripts/data/tests/workflow/scene and unique evidence. No auto-merge.
+
+## G2-03 bounded render correction
+
+Inspected actual artifact 14341720755 from run 44111379440; archive SHA-256 0bb01bd5855d96cdddf0151177960ba22d722361cb1ad395d11189115ad340a9. Original thin bars did not establish full body occlusion. V3 restores the full raised HC landing in foreground, replaces a dark east-wall floor sample with local Hall parquet, clears the CB wall's painted vertical rise and uses a full-height near jamb. Godot 4.7.2 GPU captures and four-direction/collision smoke executed locally in integration. The replacement overlays are still crude candidates: owner visual/structural headroom, painted finish and phone review are pending. All production flags remain false; no source PNG or Evelyn changes.
