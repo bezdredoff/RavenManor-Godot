@@ -70,7 +70,12 @@ func _run() -> void:
 	root.add_child(normal)
 	assert(normal.configure(Fixture.request()).error == "injected-production-plan-forbidden")
 	normal.queue_free()
+	var unsafe_storage = Host.new(Store.new().storage, true)
+	root.add_child(unsafe_storage)
+	assert(unsafe_storage.configure(Fixture.request()).error == "injected-production-plan-forbidden", "Test approval cannot use persistent storage")
+	unsafe_storage.queue_free()
 	for locale in ["ru", "be", "en"]:
+		root.size = {"ru": Vector2i(320, 568), "be": Vector2i(430, 932), "en": Vector2i(390, 844)}[locale]
 		var storage = Memory.new()
 		_seed(storage)
 		var map = _map(storage)
@@ -103,6 +108,17 @@ func _run() -> void:
 		var presentation = map.overlay
 		assert(is_instance_valid(presentation) and presentation.store == map.host.store)
 		assert(presentation.step.id == "level1" and presentation.match_game != null)
+		var first_hint: Dictionary = presentation.match_game.get_hint_move()
+		assert(presentation.match_game.attempt_swap(first_hint.first, first_hint.second).valid)
+		var board_checkpoint: Dictionary = map.host.store.load_campaign().match3Checkpoint.duplicate(true)
+		assert(not board_checkpoint.is_empty())
+		map.queue_free()
+		await process_frame
+		map = _map(storage)
+		await process_frame
+		assert(map.host.room_state().roomId == "RM-ROOM-BEDROOM" and map.host.room_state().anchorId == "RM-NAV-BEDROOM-CENTER")
+		presentation = map.overlay
+		assert(presentation.step.id == "level1" and presentation.match_game.move_history.size() == board_checkpoint.actions.size())
 		for _move in range(100):
 			if presentation.match_game.state != "playing":
 				break
@@ -123,9 +139,11 @@ func _run() -> void:
 		map.overlay._advance_vn()
 		var cursor: Dictionary = map.host.store.load_campaign().vnCursor.duplicate(true)
 		assert(cursor.beatId == "RM-BEAT-01-02")
-		map._dismiss_presentation()
+		map.queue_free()
 		await process_frame
-		map._resume_presentation()
+		map = _map(storage)
+		await process_frame
+		assert(map.host.room_state().roomId == "RM-ROOM-BEDROOM" and map.host.room_state().anchorId == "RM-NAV-BEDROOM-CENTER")
 		assert(map.overlay.vn_player.line_index == int(cursor.lineIndex))
 		for _line in range(100):
 			if map.overlay.state.storyBeatsSeen.has("RM-BEAT-01-02"):
