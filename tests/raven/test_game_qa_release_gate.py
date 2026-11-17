@@ -37,6 +37,8 @@ CRITICAL_G2 = (
     "gfx_07_01_evelyn_gameplay_host_smoke.gd",
     "map_qa_09d_hc_cb_architectural_smoke.gd",
     "game_loop_g2_host_smoke.gd",
+    "game_qa_02_menu_boundary_smoke.gd",
+    "game_loop_02_player_map_smoke.gd",
 )
 
 

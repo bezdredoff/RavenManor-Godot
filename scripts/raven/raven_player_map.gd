@@ -251,7 +251,7 @@ func _rebuild_targets() -> void:
 			continue
 		var approach := str(transition.get("approachAnchorId", ""))
 		var door_id := str(transition.get("doorId", ""))
-		var unlocked := host.state.get("unlockedDoors", []).has(door_id)
+		var unlocked: bool = host.state.get("unlockedDoors", []).has(door_id)
 		var room_label := _room_name(str(transition.get("destinationRoomId", "")))
 		var caption := "→ " + room_label if unlocked else "🔒 " + room_label
 		for anchor in room_data.get("graph", {}).get("anchors", []):

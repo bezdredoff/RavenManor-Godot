@@ -108,6 +108,7 @@ Invoke-GodotCheck 'Match3 direct QA Content Preview' @('--headless', '--path', $
 Invoke-GodotCheck 'Device matrix reachability' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/device_matrix_reachability_smoke.gd', '--quit-after', '240') 'Raven Manor device matrix 320/390/430 reachability smoke passed'
 Invoke-GodotCheck 'RM-VS-01 vertical slice smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vertical_slice_smoke.gd', '--quit-after', '120') 'Raven Manor RM-VS-01 smoke passed'
 Invoke-GodotCheck 'Main menu settings smoke' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_smoke.gd', '--quit-after', '120') 'Raven Manor main menu and Prototype Lab navigation smoke passed'
+Invoke-GodotCheck 'GAME-QA-02 normal menu entry boundary' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/game_qa_02_menu_boundary_smoke.gd', '--quit-after', '240') 'GAME-QA-02 normal menu legacy-route boundary smoke passed (production G2 activation BLOCKED)'
 Invoke-GodotCheck 'Main menu UPDS failure-mode parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/main_menu_upds_parity_smoke.gd', '--quit-after', '180') 'Raven main menu UPDS failure-mode parity smoke passed'
 
 Invoke-GodotCheck 'G2 navigation source fails closed' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/map_game_01a_navigation_source_smoke.gd', '--quit-after', '300') 'MAP-GAME-01A navigation source adapter smoke passed'
@@ -155,3 +156,5 @@ Invoke-GodotCheck 'VN tri-locale save/reload parity' @('--headless', '--path', $
 Invoke-GodotCheck 'Canonical-only VN runtime dispatch' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_production_runtime_dispatch_smoke.gd', '--quit-after', '240') 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed'
 
 Invoke-GodotCheck 'Match-3 viewport pointer and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_viewport_input_smoke.gd', '--quit-after', '240') 'Raven Match-3 viewport pointer and modal smoke passed'
+
+Invoke-GodotCheck 'GAME-LOOP-02 player map' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/game_loop_02_player_map_smoke.gd', '--quit-after', '300') 'GAME-LOOP-02 player map entry and production gate refresh smoke passed'

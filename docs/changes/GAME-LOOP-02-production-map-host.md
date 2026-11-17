@@ -60,3 +60,7 @@ When Agent A's reviewed production candidate is merged and visual/structural tes
 ## Status / rollback
 
 This is a **partial implementation candidate**. Single Raven save/reducer schema and story/door/RM IDs unchanged. Revert this scoped PR to restore the previous main-menu→vertical-slice behavior; no save migration. Related parent workstream: `GAME-LOOP-01` (existing campaign-core shard). `GAME-LOOP-02` is a scoped follow-up ID not yet in the shared canonical task catalog; do not create an unknown progress entry or edit foreign/shared catalog as a side effect.
+
+## G2-03 integration correction
+
+Registered the existing player-map smoke exactly once in both runners and the critical runner contract. Fixed an inferred Variant parse error in the actual player view. Current main status reconciliation is preserved; production activation and draft status remain disabled/pending. Local Godot 4.7.2 focused smoke PASS on the integration worktree; exact updated-branch CI required.
