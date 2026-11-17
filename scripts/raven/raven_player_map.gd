@@ -56,7 +56,7 @@ var _zoom := 1.0
 func _ready() -> void:
 	audio_runtime = get_node("/root/RavenAudio")
 	prefs = audio_runtime.preferences
-	audio_runtime.set_scene("map")
+	audio_runtime.set_scene("vn")
 	background = Sprite2D.new()
 	background.centered = false
 	background.z_index = -10
