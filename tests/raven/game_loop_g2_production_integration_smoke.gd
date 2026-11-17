@@ -60,6 +60,14 @@ func _run() -> void:
 	var canonical_hash := FileAccess.get_sha256("res://data/raven/manor_greybox_graph.json")
 	var candidate_hash := FileAccess.get_sha256("res://data/raven/manor_production_candidate.v1.json")
 	assert(Source.validate_calibrated_plan(Fixture.plan()).is_empty(), Source.validate_calibrated_plan(Fixture.plan()))
+	# One explicit map identifier -> authored route target. A narrative string
+	# is never accepted as a raw map hotspot or a physical-arrival receipt.
+	assert(Dispatch.canonical_interaction_target("RM-HS-TEA-TABLE") == "hall_chair_table")
+	assert(Dispatch.canonical_interaction_target("hall_chair_table").is_empty())
+	assert(Dispatch.canonical_interaction_target("RM-HS-001").is_empty())
+	# #291 approved the HC/CB graph, NOT a Hall Tea table anchor. A real
+	# production request must continue to fail closed pending mapped geometry.
+	assert(not Fixture.plan().anchors.any(func(a): return a.get("hotspotId", "") == "RM-HS-TEA-TABLE"))
 	var broken := Fixture.plan()
 	broken.anchors[0].position = [300, 400]
 	assert(not Source.validate_calibrated_plan(broken).is_empty())
@@ -93,6 +101,10 @@ func _run() -> void:
 		assert(map.camera.limit_left == 128 and map.camera.limit_bottom == 1069)
 		assert(map.host.source.mode == "production" and not map.host.source.draftOnly)
 		assert(map.host.source.contract.transitions.size() == 4)
+		var before_tea: Dictionary = map.host.store.load_campaign()
+		assert(map.host.request_runtime_hotspot("RM-HS-TEA-TABLE").get("error") == "runtime-story-gate-closed")
+		assert(map.host.request_runtime_hotspot("RM-HS-001").get("error") == "unknown-runtime-hotspot")
+		assert(map.host.store.load_campaign() == before_tea, "Unapproved tea taps cannot persist or complete scenes")
 		assert(map.host.navigation.actor.get_script().resource_path.ends_with("evelyn_actor.gd"))
 		assert(not map.host.navigation.request_screen_point(Vector2(952, 528)).ok)
 		map._request_door(_transition(map, "RM-DOOR-HALL-CORRIDOR"))
@@ -166,6 +178,9 @@ func _run() -> void:
 		var checkpoint: Dictionary = map.host.store.load_campaign()
 		assert(checkpoint.lastSafeAnchorId == "RM-NAV-HALL-SPAWN")
 		assert(Dispatch.next_scene_at_confirmed_hotspot(map.host, "RM-HS-TEA-TABLE", locale).is_empty())
+		assert(Dispatch.next_scene_at_confirmed_hotspot(map.host, "hall_chair_table", locale).is_empty())
+		assert(not map.host.runtime_hotspot_available("RM-HS-TEA-TABLE"))
+		assert(map.host.state.get("vnCursor", {}).is_empty(), "No premature Hall Tea cursor")
 		assert(map.host.reload_session().ok)
 		assert(map.host.room_state().anchorId == checkpoint.lastSafeAnchorId)
 		assert(map.host.state.workPoints == 0 and map.host.state.completedRestorations.size() == 1)
