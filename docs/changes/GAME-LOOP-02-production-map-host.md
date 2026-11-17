@@ -1,3 +1,9 @@
+Task IDs: GAME-LOOP-02; GAME-LOOP-01 (scoped follow-up)
+Changes: Player-facing production-gated map, normal New Game/Continue routing, reused VN/Match-3 overlay and canonical door-gate synchronization.
+Verification: Standalone GAME-LOOP-02 smoke authored; Godot local NOT_RUN, exact-head CI pending. Existing #280 baseline all six jobs passed.
+Owner QA: NOT_RUN; requires reviewed Agent A geometry, phone screenshots and Hall–Corridor–Bedroom walkthrough.
+Status impact: GAME-LOOP-01 remains P0 PR_review/partial; GAME-LOOP-02 is follow-up without new canonical task registry assignment.
+
 # GAME-LOOP-02 — normal New Game / Continue to production-gated manor map
 
 **Domain:** campaign-core (single runtime integration owner)  
