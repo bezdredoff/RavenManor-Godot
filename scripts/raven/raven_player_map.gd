@@ -31,7 +31,7 @@ const ROOM_NAMES := {
 	"RM-ROOM-BEDROOM": 12,
 }
 
-var host: Node2D
+var host
 var camera: Camera2D
 var background: Sprite2D
 var targets: Node2D
@@ -40,7 +40,7 @@ var status: Label
 var heading: Label
 var resume_button: Button
 var pause_button: Button
-var settings: Window
+var settings
 var overlay: Control
 var audio_runtime: Variant
 var prefs: Variant
