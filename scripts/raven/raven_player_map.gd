@@ -8,6 +8,7 @@ const Source = preload("res://scripts/raven/manor_navigation_source.gd")
 const Bridge = preload("res://scripts/raven/raven_hotspot_gameplay_bridge.gd")
 const Store = preload("res://scripts/raven/raven_campaign_store.gd")
 const SettingsDialog = preload("res://scripts/raven/raven_settings_dialog.gd")
+const MobileLayout = preload("res://scripts/match3/match3_mobile_layout.gd")
 
 const MENU := "res://scenes/raven/main_menu.tscn"
 const LABELS := {
@@ -109,6 +110,11 @@ func _ready() -> void:
 
 
 func _build_hud() -> void:
+	var insets := Vector4.ZERO
+	if OS.has_feature("mobile") and not OS.has_feature("web"):
+		insets = MobileLayout.native_safe_insets(
+			get_viewport().get_visible_rect().size, DisplayServer.screen_get_size(),
+			DisplayServer.get_display_safe_area())
 	var surface := Control.new()
 	surface.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 	surface.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -116,7 +122,7 @@ func _build_hud() -> void:
 	var top := PanelContainer.new()
 	top.anchor_right = 1.0
 	top.offset_left = 8.0
-	top.offset_top = 8.0
+	top.offset_top = 8.0 + insets.y
 	top.offset_right = -8.0
 	surface.add_child(top)
 	var top_column := VBoxContainer.new()
@@ -135,8 +141,8 @@ func _build_hud() -> void:
 	bottom.anchor_bottom = 1.0
 	bottom.offset_left = 8.0
 	bottom.offset_right = -8.0
-	bottom.offset_top = -164.0
-	bottom.offset_bottom = -8.0
+	bottom.offset_top = -164.0 - insets.w
+	bottom.offset_bottom = -8.0 - insets.w
 	surface.add_child(bottom)
 	var controls := GridContainer.new()
 	controls.columns = 2
