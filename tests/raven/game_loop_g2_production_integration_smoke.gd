@@ -10,6 +10,7 @@ const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const MatchSession = preload("res://scripts/raven/raven_match3_session.gd")
 const Dispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
+const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Contract = preload("res://data/save_contract.json")
 
 func _initialize() -> void:
@@ -22,6 +23,22 @@ func _seed(storage: RefCounted) -> void:
 		assert(result.ok)
 		state = result.state
 	assert(Store.new(storage).save_campaign(state))
+
+## Synthetic negative fixture only. Not a real normal-flow Chapter I E2E.
+func _seed_finished_chapter_negative_fixture(storage: RefCounted) -> void:
+	var snapshot := Snapshot.fresh()
+	snapshot.storyBeatsSeen = [
+		"RM-BEAT-00-01", "RM-BEAT-00-02", "RM-BEAT-00-03",
+		"RM-BEAT-01-01", "RM-BEAT-01-02", "RM-BEAT-01-03",
+		"RM-BEAT-01-04", "RM-BEAT-01-05"
+	]
+	snapshot.storyFlags = ["RM-FLAG-BEDROOM-ACCESS-CLEARED", "service.plumber_available"]
+	snapshot.firstClearLevels = ["RM-LVL-001", "RM-LVL-002", "RM-LVL-003"]
+	snapshot.completedRestorations = ["RM-REST-001", "RM-REST-002"]
+	snapshot.recordedClues = ["RM-CLUE-01-CHILDHOOD-OBJECT"]
+	snapshot.unlockedDoors = ["RM-DOOR-HALL-CORRIDOR", "RM-DOOR-CORRIDOR-BEDROOM"]
+	assert(Store.new(storage).save_campaign(snapshot))
+
 
 func _map(storage: RefCounted):
 	var map = Map.new()
@@ -186,6 +203,65 @@ func _run() -> void:
 		assert(map.host.state.workPoints == 0 and map.host.state.completedRestorations.size() == 1)
 		map.queue_free()
 		await process_frame
+	# The canonical Hall Tea scene, its route and art are still blocked.
+	# Even after a saved Chapter I completion, no scene may auto-play.
+	for locale in ["ru", "be", "en"]:
+		var tea_storage = Memory.new()
+		_seed_finished_chapter_negative_fixture(tea_storage)
+		var tea_host = Host.new(tea_storage)
+		root.add_child(tea_host)
+		await process_frame
+		assert(tea_host.configure(Fixture.request().merged({"locale": locale})).ok)
+		assert(Director.next_step(tea_host.state).get("kind") == "done")
+		assert(tea_host.current_activity().get("kind") == "done", "Chapter I must not auto-play tea")
+		var finished_saved: Dictionary = Store.new(tea_storage).load_campaign()
+		assert(tea_host.request_runtime_hotspot("RM-HS-TEA-TABLE").get("error") == "runtime-hotspot-not-in-current-room")
+		assert(tea_host.request_runtime_hotspot("hall_chair_table").get("error") == "unknown-runtime-hotspot")
+		assert(Dispatch.approved_for_map_hotspot(tea_host.state, "RM-HS-TEA-TABLE", locale).is_empty())
+		assert(not tea_host.runtime_hotspot_available("RM-HS-TEA-TABLE"))
+		tea_host.set_paused(true)
+		assert(not tea_host.request_runtime_hotspot("RM-HS-TEA-TABLE").get("ok", false))
+		tea_host.set_paused(false)
+		assert(Store.new(tea_storage).load_campaign() == finished_saved)
+		tea_host.queue_free()
+		await process_frame
+
+		# A saved cursor is not an approval or a forged physical arrival.
+		finished_saved.vnCursor = {"beatId": "RM-BEAT-02-01", "lineIndex": 4}
+		assert(Store.new(tea_storage).save_campaign(finished_saved))
+		var cursor_host = Host.new(tea_storage)
+		root.add_child(cursor_host)
+		await process_frame
+		assert(cursor_host.configure(Fixture.request().merged({"locale": locale})).ok)
+		assert(cursor_host._runtime_scene.is_empty())
+		assert(cursor_host.current_activity().get("kind") == "done")
+		cursor_host.queue_free()
+		await process_frame
+
+		finished_saved.vnCursor = {}
+		finished_saved.lastRoomId = "RM-ROOM-BEDROOM"
+		finished_saved.lastSafeAnchorId = "RM-NAV-BEDROOM-CENTER"
+		assert(Store.new(tea_storage).save_campaign(finished_saved))
+		var wrong_room = Host.new(tea_storage)
+		root.add_child(wrong_room)
+		await process_frame
+		assert(wrong_room.configure(Fixture.request().merged({"locale": locale})).ok)
+		assert(wrong_room.request_runtime_hotspot("RM-HS-TEA-TABLE").get("error") == "runtime-wrong-room")
+		wrong_room.queue_free()
+		await process_frame
+
+		finished_saved.lastRoomId = "RM-ROOM-HALL"
+		finished_saved.lastSafeAnchorId = "RM-NAV-HALL-SPAWN"
+		finished_saved.storyBeatsSeen.append("RM-BEAT-02-01")
+		assert(Store.new(tea_storage).save_campaign(finished_saved))
+		var replay = Host.new(tea_storage)
+		root.add_child(replay)
+		await process_frame
+		assert(replay.configure(Fixture.request().merged({"locale": locale})).ok)
+		assert(replay.request_runtime_hotspot("RM-HS-TEA-TABLE").get("error") == "runtime-already-completed")
+		replay.queue_free()
+		await process_frame
+
 	var failed = Memory.new()
 	_seed(failed)
 	var host = Host.new(failed)

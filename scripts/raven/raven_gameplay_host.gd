@@ -404,7 +404,12 @@ func mount_presentation(parent: Node, locale: String = "ru") -> Control:
 	if not _presentation_step.is_empty() and str(activity.get("id", "")) != _presentation_step:
 		return null
 	if not _runtime_scene.is_empty():
-		var confirmed: Dictionary = Dispatch.resume_scene_from_saved_cursor(state, locale) if _runtime_scene_from_cursor else 			Dispatch.next_scene_at_confirmed_hotspot(self, Dispatch.HALL_TEA_MAP_HOTSPOT, locale)
+		var confirmed: Dictionary = {}
+		if _runtime_scene_from_cursor:
+			confirmed = Dispatch.resume_scene_from_saved_cursor(state, locale)
+		else:
+			confirmed = Dispatch.next_scene_at_confirmed_hotspot(
+				self, Dispatch.HALL_TEA_MAP_HOTSPOT, locale)
 		if confirmed.is_empty() or confirmed.get("beatId") != _runtime_scene.get("beatId"):
 			_runtime_scene = {}
 			return null

@@ -1,11 +1,11 @@
 # GAME-LOOP-01 / VN-HALL-TEA-01 — Hall Tea runtime bridge (Draft)
 
-**Task IDs:** GAME-LOOP-01 (registered P0 parent), VN-HALL-TEA-01 (scoped follow-up).
-**Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` after merged PR #291.
-**Changes:** gameplay-host/runtime map-target bridge, fail-closed gated UI request, persisted VN cursor after physical arrival, saved-cursor Continue, existing G2 regression assertions, campaign-core status evidence only.
-**Verification:** Static source/code audit performed; Godot 4.7.2 NOT_RUN locally (no binary/network in this environment); exact-head CI PENDING.
-**Owner QA:** NOT_RUN; do not activate or merge without explicit approval.
-**Status impact:** GAME-LOOP-01 remains `in_progress` / `partial` / P0, owner acceptance pending.
+Task IDs: GAME-LOOP-01 (registered P0 parent), VN-HALL-TEA-01 (scoped follow-up).
+Baseline: `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` after merged PR #291.
+Changes: gameplay-host/runtime map-target bridge, fail-closed gated UI request, persisted VN cursor after physical arrival, saved-cursor Continue, existing G2 regression assertions, campaign-core status evidence only.
+Verification: Static source/code audit performed; Godot 4.7.2 NOT_RUN locally (no binary/network in this environment); exact-head CI PENDING.
+Owner QA: NOT_RUN; do not activate or merge without explicit approval.
+Status impact: GAME-LOOP-01 remains `in_progress` / `partial` / P0, owner acceptance pending.
 
 ## Actual source audit and critical gap
 
