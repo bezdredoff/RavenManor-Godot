@@ -40,6 +40,9 @@ var status: Label
 var heading: Label
 var resume_button: Button
 var pause_button: Button
+var cancel_button: Button
+var settings_button: Button
+var menu_button: Button
 var settings
 var overlay: Control
 var audio_runtime: Variant
@@ -142,9 +145,9 @@ func _build_hud() -> void:
 	controls.add_theme_constant_override("v_separation", 6)
 	bottom.add_child(controls)
 	pause_button = _hud_button(controls, _copy(1), _toggle_pause)
-	_hud_button(controls, _copy(3), _cancel)
-	_hud_button(controls, _copy(4), _show_settings)
-	_hud_button(controls, _copy(5), _request_menu)
+	cancel_button = _hud_button(controls, _copy(3), _cancel)
+	settings_button = _hud_button(controls, _copy(4), _show_settings)
+	menu_button = _hud_button(controls, _copy(5), _request_menu)
 	resume_button = _hud_button(controls, _copy(6), _resume_presentation)
 	resume_button.visible = false
 	settings = SettingsDialog.new()
@@ -196,9 +199,18 @@ func _refresh_room() -> bool:
 	_zoom = clampf(float(visual.get("cameraZoom", 1.0)), 0.1, 4.0)
 	_room_id = room
 	heading.text = _copy(0) + " · " + _room_name(room)
+	_refresh_ui_copy()
 	_rebuild_targets()
 	_resize_camera()
 	return true
+
+
+func _refresh_ui_copy() -> void:
+	pause_button.text = _copy(2) if _paused else _copy(1)
+	cancel_button.text = _copy(3)
+	settings_button.text = _copy(4)
+	menu_button.text = _copy(5)
+	resume_button.text = _copy(6)
 
 
 func _resize_camera() -> void:
@@ -375,6 +387,9 @@ func _toggle_pause() -> void:
 
 func _show_settings() -> void:
 	if _ready_for_input and not is_instance_valid(overlay):
+		# Do not allow a physical segment to progress under a settings modal.
+		if _moving and not _paused:
+			_toggle_pause()
 		settings.popup_centered(Vector2i(mini(360, int(get_viewport_rect().size.x) - 12),
 			mini(520, int(get_viewport_rect().size.y) - 12)))
 
