@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "kind": "vn_chapters_ii_iii_scene_readiness_review_only",
-  "sourceMainSha": "0d1886b0d01491047dbd900b260757623c6ef9bc",
+  "sourceMainSha": "32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a",
   "runtimePromotion": false,
   "firstPlayableCandidate": "RM-BEAT-02-01",
   "summary": {
@@ -12,16 +12,8 @@
       "be",
       "en"
     ],
-    "missingUniqueAcceptedPortraitVariants": [
-      "RM-CHAR-ADA/offer_tray/dry_amused",
-      "RM-CHAR-EVELYN/investigate/curious",
-      "RM-CHAR-EVELYN/investigate/worried",
-      "RM-CHAR-LUCAS/explain/professional",
-      "RM-CHAR-LUCAS/explain/serious",
-      "RM-CHAR-LUCAS/folder_present/professional",
-      "RM-CHAR-ROWAN/point_route/wry"
-    ],
-    "missingCuePortraitOccurrences": 43
+    "missingUniqueAcceptedPortraitVariants": [],
+    "missingCuePortraitOccurrences": 0
   },
   "scenes": [
     {
@@ -79,49 +71,26 @@
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "offer_tray",
-          "emotion": "dry_amused",
+          "emotion": "neutral",
           "micro": "ada_precise_straighten"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-ADA",
-          "pose": "offer_tray",
-          "emotion": "dry_amused",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-02-01-L002",
-            "RM-BEAT-02-01-L004",
-            "RM-BEAT-02-01-L006",
-            "RM-BEAT-02-01-L008",
-            "RM-BEAT-02-01-L010",
-            "RM-BEAT-02-01-L011"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-02-01-L002",
-        "RM-BEAT-02-01-L004",
-        "RM-BEAT-02-01-L006",
-        "RM-BEAT-02-01-L008",
-        "RM-BEAT-02-01-L010",
-        "RM-BEAT-02-01-L011"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "scene_complete",
         "ref": "RM-BEAT-01-05",
         "kindCurrentlySupported": true,
         "approvedRuntime": false,
         "proposedRuntime": true,
-        "authoritativeContract": "Existing authoritative storyBeatsSeen contains RM-BEAT-01-05; physical arrival at hall_chair_table and owner approval of Ada offer_tray/dry_amused still required."
+        "authoritativeContract": "Existing authoritative storyBeatsSeen contains RM-BEAT-01-05; physical arrival at hall_chair_table and separate owner approval of runtime activation still required (Ada portrait staging uses approved existing offer_tray/neutral)."
       },
       "interactionTarget": "hall_chair_table",
       "completionAction": "record_story_beat_only_after_player_finishes_VN",
       "saveBeatRegistered": true,
       "blockers": [
         "scene_status_review_only",
-        "route_not_approved_for_runtime",
-        "missing_accepted_portrait_variants"
+        "route_not_approved_for_runtime"
       ]
     },
     {
@@ -173,7 +142,7 @@
           "characterId": "RM-CHAR-ROWAN",
           "slot": "left",
           "pose": "point_route",
-          "emotion": "wry",
+          "emotion": "neutral",
           "micro": "rowan_weight_shift"
         },
         {
@@ -191,32 +160,8 @@
           "micro": "ada_long_paused_blink"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-ROWAN",
-          "pose": "point_route",
-          "emotion": "wry",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-02-02-L001",
-            "RM-BEAT-02-02-L004",
-            "RM-BEAT-02-02-L006",
-            "RM-BEAT-02-02-L008",
-            "RM-BEAT-02-02-L010",
-            "RM-BEAT-02-02-L011",
-            "RM-BEAT-02-02-L013"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-02-02-L001",
-        "RM-BEAT-02-02-L004",
-        "RM-BEAT-02-02-L006",
-        "RM-BEAT-02-02-L008",
-        "RM-BEAT-02-02-L010",
-        "RM-BEAT-02-02-L011",
-        "RM-BEAT-02-02-L013"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "npc_tap",
         "ref": "RM-CHAR-ROWAN",
@@ -232,8 +177,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:npc_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     },
     {
@@ -291,7 +235,7 @@
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
           "pose": "investigate",
-          "emotion": "curious",
+          "emotion": "neutral",
           "micro": "evelyn_note_glance"
         },
         {
@@ -302,38 +246,8 @@
           "micro": "ada_long_paused_blink"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-EVELYN",
-          "pose": "investigate",
-          "emotion": "curious",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-02-03-L001",
-            "RM-BEAT-02-03-L003",
-            "RM-BEAT-02-03-L005",
-            "RM-BEAT-02-03-L006",
-            "RM-BEAT-02-03-L008",
-            "RM-BEAT-02-03-L010",
-            "RM-BEAT-02-03-L012",
-            "RM-BEAT-02-03-L014",
-            "RM-BEAT-02-03-L016",
-            "RM-BEAT-02-03-L018"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-02-03-L001",
-        "RM-BEAT-02-03-L003",
-        "RM-BEAT-02-03-L005",
-        "RM-BEAT-02-03-L006",
-        "RM-BEAT-02-03-L008",
-        "RM-BEAT-02-03-L010",
-        "RM-BEAT-02-03-L012",
-        "RM-BEAT-02-03-L014",
-        "RM-BEAT-02-03-L016",
-        "RM-BEAT-02-03-L018"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "object_tap",
         "ref": "PROP-HOUSEHOLD-LEDGER",
@@ -349,8 +263,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:object_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     },
     {
@@ -476,7 +389,7 @@
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
           "pose": "folder_present",
-          "emotion": "professional",
+          "emotion": "neutral",
           "micro": "lucas_page_align"
         },
         {
@@ -494,22 +407,8 @@
           "micro": "ada_long_paused_blink"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-LUCAS",
-          "pose": "folder_present",
-          "emotion": "professional",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-03-01-L001",
-            "RM-BEAT-03-01-L005"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-03-01-L001",
-        "RM-BEAT-03-01-L005"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "door_tap",
         "ref": "RM-DOOR-HALL-ARCHIVE",
@@ -525,8 +424,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:door_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     },
     {
@@ -592,28 +490,12 @@
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
           "pose": "explain",
-          "emotion": "professional",
+          "emotion": "neutral",
           "micro": "lucas_glasses_adjust"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-LUCAS",
-          "pose": "explain",
-          "emotion": "professional",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-03-02-L007",
-            "RM-BEAT-03-02-L009",
-            "RM-BEAT-03-02-L012"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-03-02-L007",
-        "RM-BEAT-03-02-L009",
-        "RM-BEAT-03-02-L012"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "object_tap",
         "ref": "PROP-FAMILY-ALBUM",
@@ -629,8 +511,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:object_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     },
     {
@@ -678,58 +559,20 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "investigate",
+          "pose": "relaxed",
           "emotion": "worried",
           "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
-          "pose": "explain",
+          "pose": "formal",
           "emotion": "serious",
           "micro": "lucas_glasses_adjust"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-EVELYN",
-          "pose": "investigate",
-          "emotion": "worried",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-03-03-L001",
-            "RM-BEAT-03-03-L003",
-            "RM-BEAT-03-03-L005",
-            "RM-BEAT-03-03-L007",
-            "RM-BEAT-03-03-L009"
-          ]
-        },
-        {
-          "characterId": "RM-CHAR-LUCAS",
-          "pose": "explain",
-          "emotion": "serious",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-03-03-L002",
-            "RM-BEAT-03-03-L004",
-            "RM-BEAT-03-03-L006",
-            "RM-BEAT-03-03-L008",
-            "RM-BEAT-03-03-L010"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-03-03-L001",
-        "RM-BEAT-03-03-L002",
-        "RM-BEAT-03-03-L003",
-        "RM-BEAT-03-03-L004",
-        "RM-BEAT-03-03-L005",
-        "RM-BEAT-03-03-L006",
-        "RM-BEAT-03-03-L007",
-        "RM-BEAT-03-03-L008",
-        "RM-BEAT-03-03-L009",
-        "RM-BEAT-03-03-L010"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "npc_tap",
         "ref": "RM-CHAR-LUCAS",
@@ -745,8 +588,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:npc_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     },
     {
@@ -793,7 +635,7 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "investigate",
+          "pose": "relaxed",
           "emotion": "worried",
           "micro": "evelyn_note_glance"
         },
@@ -805,28 +647,8 @@
           "micro": "ada_long_paused_blink"
         }
       ],
-      "missingPortraitVariants": [
-        {
-          "characterId": "RM-CHAR-EVELYN",
-          "pose": "investigate",
-          "emotion": "worried",
-          "requiredByStaging": true,
-          "affectedCueLineIds": [
-            "RM-BEAT-03-04-L001",
-            "RM-BEAT-03-04-L003",
-            "RM-BEAT-03-04-L005",
-            "RM-BEAT-03-04-L007",
-            "RM-BEAT-03-04-L009"
-          ]
-        }
-      ],
-      "missingCuePortraitLineIds": [
-        "RM-BEAT-03-04-L001",
-        "RM-BEAT-03-04-L003",
-        "RM-BEAT-03-04-L005",
-        "RM-BEAT-03-04-L007",
-        "RM-BEAT-03-04-L009"
-      ],
+      "missingPortraitVariants": [],
+      "missingCuePortraitLineIds": [],
       "gate": {
         "kind": "object_tap",
         "ref": "PROP-LIBRARY-DESK",
@@ -842,8 +664,7 @@
         "scene_status_review_only",
         "route_not_approved_for_runtime",
         "unsupported_gate_kind:object_tap",
-        "story_beat_not_in_foundation",
-        "missing_accepted_portrait_variants"
+        "story_beat_not_in_foundation"
       ]
     }
   ]
