@@ -54,6 +54,10 @@ var _zoom := 1.0
 
 
 func _ready() -> void:
+	# Consume the normal-menu scene-routing flag before any future Prototype
+	# Lab entry; it is navigation metadata, never story or save state.
+	if get_tree().has_meta("raven_normal_gameplay_from_menu"):
+		get_tree().remove_meta("raven_normal_gameplay_from_menu")
 	audio_runtime = get_node("/root/RavenAudio")
 	prefs = audio_runtime.preferences
 	audio_runtime.set_scene("vn")
