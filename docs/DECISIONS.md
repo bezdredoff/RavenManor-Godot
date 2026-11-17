@@ -1,6 +1,6 @@
 # Approved product decisions / overrides
 
-Updated 2026-10-26. These decisions override conflicting clauses in preserved historical Stage 1/2 files. Do not silently modify old source documents.
+Updated 2026-11-17 (new decisions appended below). These decisions override conflicting clauses in preserved historical Stage 1/2 files. Do not silently modify old source documents.
 
 | ID | Current decision |
 |---|---|
@@ -42,3 +42,13 @@ Updated 2026-10-26. These decisions override conflicting clauses in preserved hi
 | RM-DEC-028 | Standalone VN Studio prop catalogue is deferred; map props remain necessary. Historical Stage 1/2 contradictory gates are superseded by RM-DEC-004..013. |
 
 See [canonical progression](production/GAME_PROGRESSION_CONTRACT_RU.md) and [consistency audit](production/GAME_CONSISTENCY_AUDIT_RU.md).
+
+
+## Owner-approved gameplay-art and doorway direction — 2026-11-17
+
+| ID | Decision |
+|---|---|
+| RM-DEC-029 | The product owner manually reviewed and **approved the corrected Evelyn chibi appearance and walk animation** from merged PR #274 for gameplay use. PR #275 supplies the reusable player-map walker. Preserve the approved atlas/identity; no further sprite redesign or use of Onoe as the player avatar. Technical actor integration and real-phone/foreground tests remain separate; owner visual approval is **not** a claim of game-loop/device acceptance. |
+| RM-DEC-030 | The product owner **approves the proposed HC/CB architectural target** presented with PR #278: the Hall↔Corridor passage beneath the central staircase landing (provisional threshold source pixel **[824,400]**, near **[824,424]**, far **[824,384]**) and Corridor↔Bedroom partition opening (threshold **[528,376]**, near **[552,376]**, far **[512,376]**), each proposed **48 px** wide. This is owner approval of the *design direction/positions*, not evidence that a painted flat floor includes real structural headroom or a passable, layered door. The integrated production source must still remain fail-closed until visible passage/backfill, headroom/elevation solution, jambs, foreground occlusion, footpoint collision, bidirectional/locked route tests, safe-anchor persistence and owner inspection of the rendered result are complete. Preserve the approved PNG unless the replacement/overlay is itself reviewed. Do not relabel existing 09B/09C/09D DRAFT_ONLY fixtures as production-ready. Bedroom access remains independent of bathroom repair (RM-DEC-006). |
+
+**Acceptance boundary:** PRs #275–#279 were explicitly authorized for merge on 2026-11-17. Merger of isolated QA code, review overlays or owner approval of doorway direction does not itself enable production navigation or certify a G2 playable loop. Integrator must supply actual production geometry and the ordinary New Game → map → story/Match-3 → save/Continue journey before promoting G2.
