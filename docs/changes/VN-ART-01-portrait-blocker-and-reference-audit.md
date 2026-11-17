@@ -1,3 +1,13 @@
+Task IDs: VN-ART-01.
+
+Changes: Documentation-only approved-reference audit; zero portrait variants produced.
+
+Verification: Fix five required governance evidence headings after run 44107117381 failed. Exact updated-head CI required.
+
+Owner QA: All seven new portraits and all 43 affected cue appearances remain blocked; owner art approval pending.
+
+Status impact: No completed-art claim. VN-ART-01 stays ready/pending; this draft delivers documentation only.
+
 # VN-ART-01 — Chapter II–III portrait blocker audit
 
 **Task IDs:** VN-ART-01 · **Domain:** character-art · **Priority:** P1.
