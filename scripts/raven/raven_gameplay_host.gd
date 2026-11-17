@@ -251,8 +251,8 @@ func commit_ready_transition() -> Dictionary:
 func checkpoint_safe_anchor() -> Dictionary:
 	if navigation == null or navigation.actor.has_active_segment() or not navigation.controller.ready_transition().is_empty():
 		return _error("unsafe-checkpoint-state")
-	var room := navigation.controller.room_id()
-	var anchor := navigation.controller.confirmed_anchor()
+	var room: String = navigation.controller.room_id()
+	var anchor: String = navigation.controller.confirmed_anchor()
 	var graph = navigation.controller.room_graph(room)
 	if graph == null or not graph.has_anchor(anchor) or str(graph.anchor(anchor).get("kind", "")) != "safe":
 		return {"ok": true, "status": "non-safe-anchor-skipped"}
@@ -278,8 +278,8 @@ func _commit_story_arrival(map_hotspot: String) -> Dictionary:
 	_pending_map_hotspot = ""
 	if expected != map_hotspot or story_id.is_empty() or navigation.actor.has_active_segment():
 		return _error("unexpected-story-arrival")
-	var room := navigation.controller.room_id()
-	var anchor := navigation.controller.confirmed_anchor()
+	var room: String = navigation.controller.room_id()
+	var anchor: String = navigation.controller.confirmed_anchor()
 	var graph = navigation.controller.room_graph(room)
 	if graph == null or graph.interaction_anchor(map_hotspot) != anchor or \
 			navigation.actor.position.distance_to(graph.position(anchor)) > FOOT_TOLERANCE:
