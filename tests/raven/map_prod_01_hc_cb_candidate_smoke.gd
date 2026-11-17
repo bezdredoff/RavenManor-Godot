@@ -1,5 +1,5 @@
 extends SceneTree
-## Independent MAP-PROD-01 review-candidate checks. Production mode stays OFF.
+## Independent MAP-PROD-01 review candidate and accepted production-source checks.
 const Routes = preload("res://addons/room_builder_routes/route_document.gd")
 const Geometry = preload("res://scripts/raven/map_prod_01_geometry.gd")
 const Navigation = preload("res://scripts/raven/manor_navigation_source.gd")
@@ -23,7 +23,8 @@ func _run() -> void:
 		assert(Geometry.candidate_world_to_image(Geometry.image_to_candidate_world(sample)).distance_to(sample) < 0.001)
 	# A candidate cannot accidentally activate the authoritative production source.
 	var prod: Dictionary = Navigation.resolve({"schemaVersion":1,"kind":"raven-navigation-source-request","mode":"production"})
-	assert(prod.get("movementEnabled", false) == false)
+	assert(prod.get("ok", false) and prod.get("movementEnabled", false), "Accepted G2 world plan must resolve from the default production source")
+	assert(prod.source.provenance.productionOwnerDecision == "RM-DEC-031")
 	var review: Variant = ReviewScene.instantiate()
 	root.add_child(review)
 	await process_frame

@@ -1,9 +1,11 @@
 {
   "schemaVersion": 1,
-  "ownerApproved": false,
-  "ownerDecisionId": "",
-  "renderEvidence": "",
-  "worldPlanSha256": "",
-  "doorLayerSha256": "",
-  "note": "RM-DEC-030 approved positions only. Final rendered art, physical headroom, occlusion and geometry acceptance have not been granted. No production activation."
+  "ownerApproved": true,
+  "ownerDecisionId": "RM-DEC-031",
+  "renderEvidence": "https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44162426407/artifacts/14364680617",
+  "worldPlanSha256": "f9c7ee86fa5e819cc3cfb1e1415537ee38c952b80d2c3b611e2346d9525d171a",
+  "doorLayerSha256": "c4ed79c0855ff91b04ea92a98a59e5442bf21a71966a70783b59ee761b0e8a32",
+  "physicalDeviceVerified": false,
+  "finalG2Acceptance": false,
+  "note": "Owner approved V4 HC/CB render for draft production activation on 2026-11-17. Phone/browser evidence and real normal-flow G2 acceptance remain pending; do NOT merge before exact-head CI and owner review."
 }

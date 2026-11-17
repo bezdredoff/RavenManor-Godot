@@ -50,7 +50,7 @@ func _test_request_contract() -> void:
 
 
 func _test_canonical_production_fails_closed() -> void:
-	var canonical := Source.resolve(_production_request(Snapshot.fresh()))
+	var canonical := Source.resolve(_production_request(Snapshot.fresh(), Source.WORLD_PLAN.data))
 	assert(not canonical.ok and canonical.status == "unavailable_geometry")
 	assert(canonical.reason == "production-geometry-unapproved")
 	assert(canonical.blockers.has("unapproved-world-plan"))
@@ -156,7 +156,7 @@ func _test_invalid_qa_route() -> void:
 
 
 func _test_harness_rejects_unavailable_source() -> void:
-	var canonical := Source.resolve(_production_request(Snapshot.fresh()))
+	var canonical := Source.resolve(_production_request(Snapshot.fresh(), Source.WORLD_PLAN.data))
 	var harness = Harness.new()
 	root.add_child(harness)
 	await process_frame
