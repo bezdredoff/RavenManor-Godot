@@ -1,12 +1,12 @@
 Task IDs: GFX-07-01 (postmerge status-only follow-up).
 
-Changes: Reconcile the chibi-animation own shard to the verified merged status for PR #275; no runtime/art modifications.
+Changes: Reconcile the chibi-animation own shard to reflect merged PR #275 while keeping the broader GFX-07-01 P0 in progress; no runtime/art modifications.
 
 Verification: PR #275 exact-head CI 43982967767 SUCCESS, #280 exact-head CI 44072750669 SUCCESS. This follow-up's own exact-head CI remains required.
 
 Owner QA: Corrected #274 Evelyn design/animation visually APPROVED by owner. Real phone, foreground, production geometry and New Game integration NOT_RUN/NOT_APPROVED.
 
-Status impact: GFX-07-01 status PR_review -> merged, while implementationState partial, qaState manual_pending and approvalState pending remain unchanged.
+Status impact: GFX-07-01 status PR_review -> in_progress (PR #275 merged, wider P0 task still open), while priority P0, implementationState partial, qaState manual_pending and approvalState pending remain unchanged.
 
 # GFX-07-01 — merged-host status reconciliation
 
@@ -16,8 +16,8 @@ Status impact: GFX-07-01 status PR_review -> merged, while implementationState p
 
 ## Changes
 
-- Reconcile `data/raven/production/progress/chibi-animation.json`: GFX-07-01 `PR_review` → `merged` **after** confirming PR #275 is merged, and append specific tested head / CI evidence.
-- Preserve `implementationState=partial`, `qaState=manual_pending` and `approvalState=pending`. Preserve all independent GFX-07-05/09/10 and GFX-11-T06 entries; do not imply full chapter/game production acceptance.
+- Reconcile `data/raven/production/progress/chibi-animation.json`: GFX-07-01 `PR_review` → `in_progress` **after** confirming PR #275 is merged, and append specific tested head / CI evidence. The broader GFX-07-01 task remains active P0 until player-facing and device gates complete; `merged` would incorrectly close that P0 task.
+- Preserve `priority=P0`, `implementationState=partial`, `qaState=manual_pending` and `approvalState=pending`. Preserve all independent GFX-07-05/09/10 and GFX-11-T06 entries; do not imply full chapter/game production acceptance.
 - No runtime, art, navigation, menu, save, reducer, geometry, test, release pipeline or generated dashboard changes.
 
 ## Verification and evidence
