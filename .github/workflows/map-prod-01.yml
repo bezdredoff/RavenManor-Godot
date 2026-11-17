@@ -35,4 +35,4 @@ jobs:
       - name: Historical 09D architectural regression
         run: godot --headless --path . --script res://tests/raven/map_qa_09d_hc_cb_architectural_smoke.gd
       - name: MAP-PROD-01 bidirectional and visual-node regression
-        run: godot --headless --path . --script res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd
+        run: timeout 90s godot --headless --path . --script res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd
