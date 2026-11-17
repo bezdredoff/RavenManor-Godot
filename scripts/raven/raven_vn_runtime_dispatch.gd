@@ -14,18 +14,56 @@ const Portraits = preload("res://data/raven/production/vn_character_catalog.json
 
 const APPROVED_SCENE_STATUS := "runtime_approved"
 const APPROVED_ART_STATUS := "accepted"
+const ARRIVAL_FOOT_TOLERANCE := 0.25
+
+## Legacy vertical_slice invokes next_scene() after the RM-VS-01 director.
+## Physically triggered scenes MUST NOT auto-start without verified arrival.
 
 
 static func next_scene(state: Dictionary, locale: String = "ru") -> Dictionary:
 	return find_approved(state, Copy.normalize_locale(locale), Dialogue.data, Routes.data,
-		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data)
+		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data, "", true)
+
+
+## Production-only map entry. No caller-provided success Boolean or client
+## receipt: inspect the actual configured Raven gameplay host, its authored
+## graph, confirmed room/anchor and physical mover position. Agent B owns
+## invoking this at its validated arrival boundary and saving the result.
+static func next_scene_at_confirmed_hotspot(host: Node, hotspot_id: String,
+		locale: String = "ru") -> Dictionary:
+	if host == null or not is_instance_valid(host) or hotspot_id.is_empty():
+		return {}
+	var script: Script = host.get_script()
+	if script == null or script.resource_path != "res://scripts/raven/raven_gameplay_host.gd":
+		return {}
+	var source: Variant = host.get("source")
+	var state: Variant = host.get("state")
+	var navigation: Variant = host.get("navigation")
+	if not source is Dictionary or source.get("draftOnly", true) != false or not state is Dictionary:
+		return {}
+	if navigation == null or not is_instance_valid(navigation) or navigation.actor == null:
+		return {}
+	if not is_instance_valid(navigation.actor) or navigation.actor.has_active_segment():
+		return {}
+	if not navigation.controller.ready_transition().is_empty():
+		return {}
+	var room_id: String = str(navigation.controller.room_id())
+	var anchor_id: String = str(navigation.controller.confirmed_anchor())
+	var graph: Variant = navigation.controller.room_graph(room_id)
+	if graph == null or anchor_id.is_empty() or graph.interaction_anchor(hotspot_id) != anchor_id:
+		return {}
+	if navigation.actor.position.distance_to(graph.position(anchor_id)) > ARRIVAL_FOOT_TOLERANCE:
+		return {}
+	return find_approved(state, Copy.normalize_locale(locale), Dialogue.data, Routes.data,
+		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data, hotspot_id)
 
 
 ## The extra parameters make this testable with synthetic *copies* of catalogs.
 ## They never allow a runtime user:// or staged-editor file path.
 static func find_approved(state: Dictionary, locale: String, dialogue: Dictionary,
 		routes: Dictionary, staging: Dictionary, cues: Dictionary, foundation: Dictionary,
-		backgrounds: Dictionary, portraits: Dictionary) -> Dictionary:
+		backgrounds: Dictionary, portraits: Dictionary,
+		arrived_target: String = "", auto_only: bool = false) -> Dictionary:
 	if locale not in ["ru", "be", "en"]:
 		return {}
 	if not state.get("storyBeatsSeen", []) is Array or not state.get("firstClearLevels", []) is Array:
@@ -61,6 +99,10 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 			continue
 		if gate.get("approvedRuntime") != true or gate.get("proposedRuntime") != false:
 			continue
+		if auto_only and str(gate.get("kind", "")) != "auto_new_game":
+			continue
+		if not arrived_target.is_empty() and route.get("interactionTarget") != arrived_target:
+			continue
 		if not foundation.get("storyBeats", []).has(beat_id) or state["storyBeatsSeen"].has(beat_id):
 			continue
 		if not _gate_satisfied(gate, state, foundation, known_scenes):
@@ -78,6 +120,8 @@ static func find_approved(state: Dictionary, locale: String, dialogue: Dictionar
 			backgrounds.get("entries", []), portraits.get("entries", []))
 		if config.is_empty():
 			continue
+		config["interactionTarget"] = str(route.get("interactionTarget", ""))
+		config["ordinal"] = ordinal
 		selected = config
 		best_ordinal = ordinal
 	return selected
@@ -153,7 +197,8 @@ static func build_config(beat_id: String, locale: String, scene: Dictionary, ent
 	var ordered_line_ids: Array = []
 	for line in beat_lines:
 		var line_id: String = str(line.get("id", ""))
-		if line_id.is_empty() or line_ids.has(line_id):
+		# Stable line ordering is also the Continue/save boundary contract.
+		if line_id != ("%s-L%03d" % [beat_id, ordered_line_ids.size() + 1]) or line_ids.has(line_id):
 			return {}
 		line_ids[line_id] = true
 		var speaker: String = str(line.get("speakerId", ""))
