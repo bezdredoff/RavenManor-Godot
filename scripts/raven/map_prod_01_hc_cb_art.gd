@@ -1,16 +1,17 @@
 extends Node2D
-## MAP-PROD-01. Native Godot 2D painted patch; independent of immutable source PNG.
-## Real CanvasItem artwork (not a wireframe/SVG); separate foreground pass.
+## MAP-PROD-01 in-engine composite over the SHA-pinned original painting.
+## Geometry is rendered, not an SVG plan. Foreground replicates the immutable
+## painting wherever possible, so Evelyn is occluded without opaque QA slabs.
 @export var foreground := false
 
+const ORIGINAL = preload("res://a_detailed_top_down_isometric_game_map_illustratio.png")
 const DARK := Color("#211b20")
-const SHADOW := Color("#0b1418")
-const LIMESTONE := Color("#a99982")
-const LIMESTONE_LIGHT := Color("#d2bea0")
-const WOOD := Color("#483329")
-const WOOD_LIGHT := Color("#694734")
+const SHADOW := Color("#121017")
+const LIMESTONE := Color("#b3a18b")
+const LIMESTONE_LIGHT := Color("#d8c4a3")
+const WOOD := Color("#412c24")
 const BRASS := Color("#b99555")
-const BRASS_LIGHT := Color("#ddbc7d")
+const BRASS_LIGHT := Color("#dec184")
 
 func _draw() -> void:
 	if foreground:
@@ -26,85 +27,67 @@ func _box(x: float, y: float, w: float, h: float, color: Color) -> void:
 func _line(a: Vector2, b: Vector2, color: Color, width: float = 1.0) -> void:
 	draw_line(a, b, color, width, true)
 
+func _source_patch(destination: Rect2, source: Rect2) -> void:
+	# Texture reuse is strictly local within the same immutable approved map,
+	# using its real painted parquet rather than flat solid-color fill.
+	draw_texture_rect_region(ORIGINAL, destination, source)
+
 func _hc_passage() -> void:
-	# Existing stair riser is deliberately overpainted with a continuous lower
-	# floor. The passage remains only 48 image pixels wide (x800..848).
-	_box(800, 376, 48, 160, LIMESTONE)
-	_box(801, 396, 46, 139, WOOD)
-	for y in range(405, 536, 15):
-		_line(Vector2(802,y), Vector2(846,y), Color("#70513a",0.60), 1.5)
-		_line(Vector2(803,y+2), Vector2(845,y+2), Color("#211c1a",0.32))
-	_box(804, 385, 40, 40, SHADOW)
+	# The approved corridor and stair balustrades stay visible. Only the
+	# previously unsupported central ground-level stairwell is resurfaced.
+	# This is a slender physically continuous 48px underpass, not a 2D bridge.
+	_source_patch(Rect2(800, 414, 48, 122), Rect2(1040, 650, 48, 122))
+	# Soft shadow along two retaining sidewalls frames floor continuity.
+	_box(800, 414, 4, 122, Color("#1e181c", 0.70))
+	_box(844, 414, 4, 122, Color("#1e181c", 0.70))
+	_box(804, 414, 40, 4, Color("#12121b", 0.70))
+	_line(Vector2(804,426), Vector2(844,426), Color("#c0aa86", 0.55), 1.2)
+	_line(Vector2(804,531), Vector2(844,531), Color("#c0aa86", 0.24), 1.0)
+	# Under-landing portal reads as a recessed, dark architectural aperture.
+	# Narrow wooden piers preserve the 48px nominal feet window x800..848.
+	_box(794, 387, 6, 36, WOOD)
+	_box(848, 387, 6, 36, WOOD)
+	_box(797, 389, 2, 31, BRASS)
+	_box(849, 389, 2, 31, BRASS)
+	_box(800, 385, 48, 6, Color("#1a1318", 0.89))
+	_line(Vector2(800,386), Vector2(848,386), LIMESTONE, 2.0)
+	_line(Vector2(800,416), Vector2(848,416), BRASS_LIGHT, 2.0)
+	# Cast shadow under landing, rather than drawing a second projection.
 	draw_colored_polygon(PackedVector2Array([
-		Vector2(804,389),Vector2(810,378),Vector2(838,378),
-		Vector2(844,389),Vector2(844,415),Vector2(804,415)
-	]), Color("#162024"))
-	_box(807, 408, 34, 17, Color("#4a3227"))
-	_box(802, 420, 44, 7, Color("#7e6549"))
-	_box(802, 431, 44, 3, Color("#b29a7b", 0.65))
-	# Wood + brass structural jambs keep the central 48px clearance.
-	_box(793, 386, 7, 45, DARK)
-	_box(848, 386, 7, 45, DARK)
-	_box(797, 392, 3, 39, WOOD_LIGHT)
-	_box(848, 392, 3, 39, WOOD_LIGHT)
-	_line(Vector2(796,390), Vector2(796,418), BRASS, 1.5)
-	_line(Vector2(852,390), Vector2(852,418), BRASS, 1.5)
-	_box(800, 414, 48, 3, BRASS)
-	_box(802, 418, 44, 2, BRASS_LIGHT)
-	# Falling landing shadow conveys headroom without perspective reprojection.
-	draw_colored_polygon(PackedVector2Array([
-		Vector2(800,388),Vector2(848,388),Vector2(848,421),
-		Vector2(838,439),Vector2(810,439),Vector2(800,421)
-	]), Color("#0c1016",0.27))
+		Vector2(800,392),Vector2(848,392),Vector2(848,427),
+		Vector2(841,440),Vector2(807,440),Vector2(800,427)
+	]), Color("#101319",0.20))
 
 func _cb_passage() -> void:
-	# Actual 88x48 floor backfill repaints the partition across x520..536.
-	_box(480, 352, 88, 48, WOOD)
-	_box(482, 354, 84, 44, Color("#644831"))
-	for y in range(357, 400, 8):
-		_line(Vector2(482,y), Vector2(566,y), Color("#8c6245",0.58))
-	_box(520, 352, 16, 48, Color("#947858"))
-	_box(522, 354, 12, 44, Color("#67513c"))
-	_box(520, 367, 16, 2, BRASS)
-	_box(520, 392, 16, 2, BRASS_LIGHT)
-	# Side jambs face west/east; y352..400 remains unobstructed at y376.
-	_box(517, 351, 3, 49, DARK)
-	_box(536, 351, 3, 49, DARK)
-	_line(Vector2(519,355),Vector2(519,396),BRASS,1.5)
-	_line(Vector2(537,355),Vector2(537,396),BRASS,1.5)
-	_box(516, 348, 24, 4, WOOD_LIGHT)
-	_box(516, 400, 24, 5, WOOD_LIGHT)
-	_box(516, 350, 24, 2, BRASS)
-	_box(516, 402, 24, 1, BRASS)
+	# Bedroom wall is only 16px across (x520..536); do not obscure the
+	# existing burgundy rug and parquet with an 88px greybox rectangle.
+	_source_patch(Rect2(520, 352, 16, 48), Rect2(505, 354, 16, 48))
+	_box(520, 352, 16, 48, Color("#493223", 0.18))
+	# Correctly cut narrow jambs with a visible limestone sill; clear Y352..400.
+	_box(516, 352, 4, 48, WOOD)
+	_box(536, 352, 4, 48, WOOD)
+	_box(519, 354, 1.5, 43, BRASS)
+	_box(536, 354, 1.5, 43, BRASS)
+	_box(520, 352, 16, 2, LIMESTONE_LIGHT)
+	_box(520, 398, 16, 2, LIMESTONE_LIGHT)
+	_line(Vector2(521,378), Vector2(535,378), BRASS_LIGHT, 1.0)
 
 func _foreground_hc() -> void:
-	# Opaque landing flanks and balustrade pass IN FRONT of Evelyn (z=12).
-	# A clear 48px opening is maintained at x800..848.
-	draw_colored_polygon(PackedVector2Array([
-		Vector2(748,382),Vector2(800,382),Vector2(800,419),
-		Vector2(753,419)
-	]), WOOD)
-	draw_colored_polygon(PackedVector2Array([
-		Vector2(848,382),Vector2(907,382),Vector2(904,419),
-		Vector2(848,419)
-	]), WOOD)
-	for x in [756, 772, 788, 858, 874, 890]:
-		_box(x, 384, 4, 33, DARK)
-		_box(x+1, 385, 1.5, 31, BRASS)
-	_line(Vector2(748,381),Vector2(800,381),LIMESTONE_LIGHT,4)
-	_line(Vector2(848,381),Vector2(908,381),LIMESTONE_LIGHT,4)
-	_line(Vector2(748,413),Vector2(800,413),BRASS,2)
-	_line(Vector2(848,413),Vector2(906,413),BRASS,2)
-	# A narrow lintel hides head/shoulder at the depth break.
-	_box(800, 379, 48, 8, WOOD)
-	_box(801, 379, 46, 2, LIMESTONE_LIGHT)
-	_box(807, 387, 34, 3, Color("#100f14", 0.82))
+	# Source-identical stair railings are clipped back in FRONT of Evelyn.
+	# They do not alter the painting but correctly obscure the walker.
+	_source_patch(Rect2(748, 381, 52, 41), Rect2(748, 381, 52, 41))
+	_source_patch(Rect2(848, 381, 60, 41), Rect2(848, 381, 60, 41))
+	# Recessed arch rather than flat crossbar across the opening.
+	_box(800, 380, 48, 6, Color("#392820", 0.98))
+	_line(Vector2(800,381), Vector2(848,381), LIMESTONE_LIGHT, 2.0)
+	_line(Vector2(800,385), Vector2(848,385), BRASS, 1.0)
+	_box(800, 386, 4, 11, Color("#211b20",0.93))
+	_box(844, 386, 4, 11, Color("#211b20",0.93))
 
 func _foreground_cb() -> void:
-	# Partition wall caps, clipped above/below the 48px clear door aperture.
-	_box(515, 342, 26, 10, DARK)
-	_box(516, 344, 24, 5, WOOD_LIGHT)
-	_box(517, 347, 22, 2, BRASS_LIGHT)
-	_box(515, 400, 26, 9, DARK)
-	_box(516, 400, 24, 4, WOOD_LIGHT)
-	_box(517, 400, 22, 2, BRASS)
+	# Keep image-derived partition lip in front of head/shoulder as Evelyn
+	# walks through: clone only wall trim, not the neighboring room floor.
+	_source_patch(Rect2(516, 342, 24, 10), Rect2(516, 342, 24, 10))
+	_source_patch(Rect2(516, 400, 24, 9), Rect2(516, 400, 24, 9))
+	_line(Vector2(516,351), Vector2(540,351), LIMESTONE_LIGHT, 2.0)
+	_line(Vector2(516,402), Vector2(540,402), BRASS, 1.5)
