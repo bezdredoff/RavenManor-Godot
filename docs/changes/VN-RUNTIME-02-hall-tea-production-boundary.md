@@ -1,5 +1,11 @@
 # VN-RUNTIME-02 — Hall Tea production-dispatch boundary and Chapter II–III handoff
 
+Task IDs: VN-RUNTIME-02 (vn-runtime, P1).
+Changes: Physically triggered production VN scenes no longer auto-play; exact-target, production-host/footpoint opt-in selector; Hall Tea tri-locale synthetic fixture; eight-scene handoff.
+Verification: Local Godot NOT_RUN; exact-head GitHub CI PENDING; existing registered Chapter II–III smoke extended, no art/production promotion.
+Owner QA: NOT_RUN; Ada offer_tray/dry_amused, Hall/table physical arrival, phone tri-locale presentation and save/Continue still require approval.
+Status impact: vn-runtime only, new VN-RUNTIME-02 PR_review/partial/manual_pending; real Chapter II–III canonical scenes remain disabled, CODE-08-01 untouched.
+
 **Task IDs:** VN-RUNTIME-02 (vn-runtime, P1). **Baseline:** `main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24` after merged #271, #277, #280 (2026-11-17). **Owner QA:** NOT_RUN. **Production promotion:** NO.
 
 ## Changes and exact ownership
