@@ -1,5 +1,11 @@
 # GAME-QA-01 — Chapter II–III independent production-gate regression (GAME-QA-03)
 
+Task IDs: GAME-QA-01 (registered); GAME-QA-03 is a QA follow-up delivery label, not an additional work-package ID.
+Changes: Independent Chapter II–III source-driven portrait and 96-line tri-locale smoke, isolated synthetic Hall Tea fail-closed tests, device acceptance matrix and qa-infrastructure ledger update.
+Verification: Main@32a8d98d CI run 44173380349 PASS; newly added standalone Godot 4.7.2 smoke NOT_RUN locally (binary unavailable, not registered in shared CI runners); PR #294 initial CI data-contracts governance FAILURE due to missing required labels in this note, corrected in this commit; rerun required.
+Owner QA: NOT_RUN for normal gameplay Hall Tea, physical phone, actual browser offline/refresh and owner art/scene/geometry approval.
+Status impact: Existing GAME-QA-01 only, PR_review/partial/P1; no accepted/mobile/production-ready state; no foreign shard edit.
+
 **Registered task ID:** GAME-QA-01, qa-infrastructure (P1). **Follow-up delivery:** GAME-QA-03, not a separately registered backlog task.  
 **Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` (merged #291). **Branch:** `agent/qa-infrastructure/GAME-QA-01-chapters-ii-iii-regression`.  
 **Baseline CI:** [main 44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) — six mandatory jobs + Pages deploy SUCCESS; this is NOT this branch's exact-head/new-test execution.  
