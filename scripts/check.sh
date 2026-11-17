@@ -77,6 +77,7 @@ run_check 'MAP-QA-08B visual candidate' 'MAP-QA-08B visual candidate geometry an
 run_check 'MAP-GAME-01A navigation source adapter' 'MAP-GAME-01A navigation source adapter smoke passed' --script res://tests/raven/map_game_01a_navigation_source_smoke.gd --quit-after 300
 run_check 'MAP-QA-09 door evidence' 'MAP-QA-09 physical door evidence and fail-closed room approaches passed' --script res://tests/raven/map_qa_09_door_review_smoke.gd --quit-after 240
 run_check 'MAP-QA-09B opening blueprint' 'MAP-QA-09B editable opening blueprint and zero-jump threshold crossings passed' --script res://tests/raven/map_qa_09b_opening_blueprint_smoke.gd --quit-after 300
+run_check 'CODE-05-02/09D HC-CB architectural smoke' 'CODE-05-02/09D architectural review, paired technical travel, gates and fail-closed routes passed' --script res://tests/raven/map_qa_09d_hc_cb_architectural_smoke.gd --quit-after 300
 run_check 'VN persisted read-only Skip' 'Raven VN persisted read-only Skip smoke passed' --script res://tests/raven/vn_read_skip_smoke.gd --quit-after 600
 run_check 'VN tri-locale save/reload parity' 'Raven tri-locale VN save/reload parity smoke passed' --script res://tests/raven/vn_locale_save_parity_smoke.gd --quit-after 240
 run_check 'UPDS VN shell layout and input' 'Raven UPDS VN shell layout and input smoke passed' --script res://tests/raven/vn_shell_layout_smoke.gd --quit-after 600
@@ -87,6 +88,7 @@ run_check 'Procedural audio runtime' 'Raven procedural audio runtime, preference
 run_check 'Session lifecycle E2E smoke' 'Raven Manor session lifecycle E2E smoke passed' --script res://tests/raven/session_lifecycle_e2e_smoke.gd --quit-after 240
 run_check 'GAME-LOOP-01 runtime reward/restoration characterization' 'Raven Manor game loop characterization smoke passed' --script res://tests/raven/game_loop_characterization_smoke.gd --quit-after 240
 run_check 'GAME-LOOP-01A hotspot → gameplay QA' 'Raven GAME-LOOP-01A hotspot-to-gameplay bridge smoke passed' --script res://tests/raven/game_loop_01a_hotspot_bridge_smoke.gd --quit-after 240
+run_check 'GAME-LOOP-01 G2 isolated host, persistence and Continue' 'GAME-LOOP-01 G2 isolated host/Continue/door/story/recovery smoke passed' --script res://tests/raven/game_loop_g2_host_smoke.gd --quit-after 360
 run_check 'Match-3 transaction/session boundary' 'Raven Match-3 session persistence and booster transaction smoke passed' --script res://tests/raven/match3_session_smoke.gd --quit-after 180
 run_check 'Match-3 independent booster UI' 'Raven Match-3 booster UI labels, gates and callbacks smoke passed' --script res://tests/raven/match3_booster_ui_smoke.gd --quit-after 120
 run_check 'Match-3 checkpoint smoke' 'Raven Manor Match-3 replay checkpoint smoke passed' --script res://tests/raven/match3_checkpoint_smoke.gd --quit-after 120
