@@ -1,5 +1,8 @@
 # VN-ART-01 — Approved-reference contact sheet (NOT production candidates)
 
+> **Owner-approved staging reuse supersedes portrait generation (2026-11-17).** This is retained as historical evidence of the **seven originally missing exact variants and their 43 cue appearances**, not an active request to generate them. GFX-05-08 / VN-ART-REUSE-01 now re-stages those cues with seven *existing* accepted catalog entries (including default `investigate_small`, not non-default `investigate_wide`). See [the substitution decision and expressive compromises](../changes/GFX-05-08-chapters-ii-iii-portrait-reuse.md). The 0/7-new-images and BLOCKED labels below describe the **original exact-variant art proposal only**; the updated readiness manifest should report zero missing accepted portraits. Scene/runtime approval and device review remain separate.
+
+
 **Baseline:** `main@ddcc8a646ffbfa60dcfea43849a592bfdddd9f24` · **Status:** 0/7 new portrait candidates produced; **0/43 cue appearances unblocked**. This sheet is a review aid using **existing, accepted images only**. It is **not** a side-by-side evaluation of new candidates, because no new candidates are available. The missing column is intentionally marked **BLOCKED** rather than displaying a copied neutral frame as a fake finished variant.
 
 Existing accepted catalog: `data/raven/production/vn_character_catalog.json` (62 images, approval 2026-11-02). Readiness authority: `data/raven/production/vn_chapters_ii_iii_readiness.json` (eight scenes, 96 lines in each of RU/BE/EN).

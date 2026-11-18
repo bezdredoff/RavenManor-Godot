@@ -436,7 +436,7 @@
           "characterId": "RM-CHAR-ADA",
           "slot": "right",
           "pose": "offer_tray",
-          "emotion": "dry_amused",
+          "emotion": "neutral",
           "micro": "ada_precise_straighten"
         }
       ],
@@ -454,7 +454,7 @@
           "characterId": "RM-CHAR-ROWAN",
           "slot": "left",
           "pose": "point_route",
-          "emotion": "wry",
+          "emotion": "neutral",
           "micro": "rowan_weight_shift"
         },
         {
@@ -486,7 +486,7 @@
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
           "pose": "investigate",
-          "emotion": "curious",
+          "emotion": "neutral",
           "micro": "evelyn_note_glance"
         },
         {
@@ -536,7 +536,7 @@
           "characterId": "RM-CHAR-LUCAS",
           "slot": "left",
           "pose": "folder_present",
-          "emotion": "professional",
+          "emotion": "neutral",
           "micro": "lucas_page_align"
         },
         {
@@ -582,7 +582,7 @@
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
           "pose": "explain",
-          "emotion": "professional",
+          "emotion": "neutral",
           "micro": "lucas_glasses_adjust"
         }
       ],
@@ -599,14 +599,14 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "investigate",
+          "pose": "relaxed",
           "emotion": "worried",
           "micro": "evelyn_note_glance"
         },
         {
           "characterId": "RM-CHAR-LUCAS",
           "slot": "right",
-          "pose": "explain",
+          "pose": "formal",
           "emotion": "serious",
           "micro": "lucas_glasses_adjust"
         }
@@ -624,7 +624,7 @@
         {
           "characterId": "RM-CHAR-EVELYN",
           "slot": "left",
-          "pose": "investigate",
+          "pose": "relaxed",
           "emotion": "worried",
           "micro": "evelyn_note_glance"
         },
