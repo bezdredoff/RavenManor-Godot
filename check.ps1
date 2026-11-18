@@ -157,6 +157,7 @@ Invoke-GodotCheck 'Procedural audio runtime' @('--headless', '--path', $projectP
 Invoke-GodotCheck 'VN persisted read-only Skip' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_read_skip_smoke.gd', '--quit-after', '600') 'Raven VN persisted read-only Skip smoke passed'
 Invoke-GodotCheck 'VN tri-locale save/reload parity' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_locale_save_parity_smoke.gd', '--quit-after', '240') 'Raven tri-locale VN save/reload parity smoke passed'
 Invoke-GodotCheck 'Canonical-only VN runtime dispatch' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_production_runtime_dispatch_smoke.gd', '--quit-after', '240') 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed'
+Invoke-GodotCheck 'GAME-QA-03 Chapter II-III production gate' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd', '--quit-after', '240') 'GAME-QA-03 Chapter II-III source contract and SYNTHETIC Hall Tea smoke PASS; production Chapter II-III acceptance NOT claimed'
 
 Invoke-GodotCheck 'Match-3 viewport pointer and modal' @('--headless', '--path', $projectPath, '--script', 'res://tests/raven/match3_viewport_input_smoke.gd', '--quit-after', '240') 'Raven Match-3 viewport pointer and modal smoke passed'
 
