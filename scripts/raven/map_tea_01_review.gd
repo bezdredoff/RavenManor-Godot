@@ -37,6 +37,7 @@ func _ready() -> void:
 	add_child(background)
 	var back = DoorArt.new()
 	back.z_index = 2
+	back.position = OFFSET
 	add_child(back)
 	actor = Evelyn.instantiate()
 	actor.z_index = 8
@@ -44,6 +45,7 @@ func _ready() -> void:
 	var foreground = DoorArt.new()
 	foreground.foreground = true
 	foreground.z_index = 12
+	foreground.position = OFFSET
 	add_child(foreground)
 	camera = Camera2D.new()
 	camera.position = Vector2(970, 782)
