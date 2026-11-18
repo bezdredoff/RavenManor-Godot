@@ -25,6 +25,7 @@ const LABELS := {
 const HOTSPOT_NAMES := {
 	"RM-HS-005": {"ru": "Дверь спальни", "be": "Дзверы спальні", "en": "Bedroom access"},
 	"RM-HS-002": {"ru": "Обустройство", "be": "Аднаўленне", "en": "Restore bedroom"},
+	"RM-HS-TEA-TABLE": {"ru": "Чайный столик", "be": "Чайны столік", "en": "Tea table"},
 }
 const ROOM_NAMES := {
 	"RM-ROOM-HALL": 10,
@@ -269,7 +270,11 @@ func _rebuild_targets() -> void:
 	for anchor in room_data.get("graph", {}).get("anchors", []):
 		var hotspot_id := str(anchor.get("hotspotId", ""))
 		if hotspot_id == "RM-HS-TEA-TABLE":
-			_world_button(anchor.get("position", []), _copy(6), Callable(self, "_request_runtime").bind(hotspot_id), str(host.current_activity().get("kind", "")) == "done")
+			var tea_available: bool = host.runtime_hotspot_available(hotspot_id)
+			var tea_caption: String = str(HOTSPOT_NAMES[hotspot_id].get(str(prefs.locale), _copy(6)))
+			_world_button(anchor.get("position", []),
+				tea_caption if tea_available else "🔒 " + tea_caption,
+				Callable(self, "_request_runtime").bind(hotspot_id), tea_available)
 			continue
 		if not Bridge.HOTSPOT_STEPS.has(hotspot_id):
 			continue
@@ -303,6 +308,9 @@ func _world_button(coords: Variant, caption: String, action: Callable, enabled: 
 	button.custom_minimum_size = Vector2(136, 50)
 	button.position = Vector2(float(coords[0]) - 68.0, float(coords[1]) - 76.0)
 	button.modulate = Color.WHITE if enabled else Color(0.75, 0.72, 0.74, 0.8)
+	# Visual dimming alone still leaves a focusable/clickable button. A locked
+	# authored target must be disabled for touch, keyboard and accessibility.
+	button.disabled = not enabled
 	button.pressed.connect(action)
 	targets.add_child(button)
 

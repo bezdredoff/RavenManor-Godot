@@ -40,6 +40,7 @@ var _presentation_step := ""
 var _pending_safe_entry := ""
 var _pending_runtime := ""
 var _runtime_scene: Dictionary = {}
+var _runtime_scene_from_cursor := false
 var _presentation: Control
 var _paused := false
 var _held := false
@@ -106,13 +107,11 @@ func configure(request: Dictionary) -> Dictionary:
 	# Continue only resumes a canonical approved runtime VN at its persisted
 	# physically safe hotspot, never because the legacy chapter merely ended.
 	_runtime_scene = {}
+	_runtime_scene_from_cursor = false
 	_pending_runtime = ""
-	if not source.draftOnly and not state.get("vnCursor", {}).is_empty():
-		var graph = navigation.controller.room_graph(navigation.controller.room_id())
-		var anchor: Dictionary = graph.anchor(navigation.controller.confirmed_anchor())
-		var resumed: Dictionary = Dispatch.next_scene_at_confirmed_hotspot(self, str(anchor.get("hotspotId", "")), str(request.get("locale", "ru")))
-		if str(resumed.get("beatId", "")) == str(state.vnCursor.get("beatId", "")):
-			_runtime_scene = resumed
+	if not source.draftOnly and Director.next_step(state).get("kind", "") == "done":
+		_runtime_scene = Dispatch.resume_scene_from_saved_cursor(state, str(request.get("locale", "ru")))
+		_runtime_scene_from_cursor = not _runtime_scene.is_empty()
 	last_error = ""
 	return {"ok": true, "status": "ready", "approval": source.approval,
 		"draftOnly": source.draftOnly, "roomId": navigation.controller.room_id(),
@@ -207,6 +206,14 @@ func advance(delta: float = 0.05) -> Dictionary:
 	var loaded := _load_state()
 	if not loaded.get("ok", false):
 		return loaded
+	if not _pending_runtime.is_empty():
+		var runtime_gate := _runtime_hotspot_gate_error(_pending_runtime)
+		if not runtime_gate.is_empty():
+			var stopped: Dictionary = cancel()
+			if bool(stopped.get("finishCurrentSegment", false)):
+				return {"ok": true, "status": "cancel-finishing-current-leg",
+					"reason": runtime_gate}
+			return _error("runtime-no-longer-available:" + runtime_gate)
 	if not _pending_story.is_empty() and not Bridge.story_available(state, _pending_story):
 		var stop_story: Dictionary = cancel()
 		if bool(stop_story.get("finishCurrentSegment", false)):
@@ -224,18 +231,34 @@ func advance(delta: float = 0.05) -> Dictionary:
 		_pending_story = ""
 		_pending_map_hotspot = ""
 		_pending_transition = ""
+		# A failed dispatch must not strand a Hall Tea request. Recovery always
+		# starts from the controller's next verified, stable position.
+		_pending_runtime = ""
 		return result
 	var status := str(result.get("status", ""))
 	if status == "arrived" and not _pending_runtime.is_empty():
 		var target := _pending_runtime
 		_pending_runtime = ""
-		# This call is strictly AFTER controller + physical mover arrival.
-		_runtime_scene = Dispatch.next_scene_at_confirmed_hotspot(self, target, str(_request.get("locale", "ru")))
-		if _runtime_scene.is_empty():
+		if result.has("hotspotId") and str(result.hotspotId) != target:
+			return _error("unexpected-runtime-arrival")
+		# Only the controller-acknowledged anchor and physical actor can select.
+		var selected: Dictionary = Dispatch.next_scene_at_confirmed_hotspot(self, target, str(_request.get("locale", "ru")))
+		if selected.is_empty():
 			return {"ok": true, "status": "runtime-scene-unavailable"}
 		var checkpoint := checkpoint_safe_anchor()
-		if not checkpoint.ok:
+		if not checkpoint.get("ok", false):
 			return checkpoint
+		# A cursor is the existing campaign-store continuation boundary. Its
+		# first write must succeed before ANY production VN is presented.
+		if not state.get("vnCursor", {}).is_empty():
+			return _error("runtime-cursor-already-present")
+		var staged: Dictionary = state.duplicate(true)
+		staged.vnCursor = {"beatId": str(selected.beatId), "lineIndex": 0}
+		if not store.save_campaign(staged):
+			return _save_failure("runtime-cursor-write-failed")
+		state = staged
+		_runtime_scene = selected
+		_runtime_scene_from_cursor = false
 		return {"ok": true, "status": "action-committed", "presentation": "vn_production"}
 	if status == "arrived" and not _pending_safe_entry.is_empty():
 		_pending_safe_entry = ""
@@ -384,9 +407,16 @@ func mount_presentation(parent: Node, locale: String = "ru") -> Control:
 	if not _presentation_step.is_empty() and str(activity.get("id", "")) != _presentation_step:
 		return null
 	if not _runtime_scene.is_empty():
-		_runtime_scene = Dispatch.next_scene_at_confirmed_hotspot(self, str(_runtime_scene.get("interactionTarget", "")), locale)
-		if _runtime_scene.is_empty():
+		var confirmed: Dictionary = {}
+		if _runtime_scene_from_cursor:
+			confirmed = Dispatch.resume_scene_from_saved_cursor(state, locale)
+		else:
+			confirmed = Dispatch.next_scene_at_confirmed_hotspot(
+				self, Dispatch.HALL_TEA_MAP_HOTSPOT, locale)
+		if confirmed.is_empty() or confirmed.get("beatId") != _runtime_scene.get("beatId"):
+			_runtime_scene = {}
 			return null
+		_runtime_scene = confirmed
 	_presentation = Slice.instantiate()
 	_presentation.embedded_in_manor = true
 	_presentation.normal_game_flow = not bool(source.get("draftOnly", true))
@@ -406,6 +436,8 @@ func close_presentation() -> Dictionary:
 	# If Match-3 or VN was dismissed early the activity remains pending, and
 	# opening the same existing UI again resumes its saved cursor/board.
 	_presentation_step = ""
+	if not _runtime_scene.is_empty() and str(state.get("vnCursor", {}).get("beatId", "")) == str(_runtime_scene.get("beatId", "")):
+		_runtime_scene_from_cursor = true
 	return {"ok": true, "status": "presentation-closed", "activity": current_activity()}
 
 
@@ -483,20 +515,55 @@ func _error(reason: String) -> Dictionary:
 	return {"ok": false, "error": reason}
 
 
+## UI availability is a read-only hint, not a physical-arrival approval.
+func runtime_hotspot_available(hotspot_id: String) -> bool:
+	if not _can_accept_input() or not _pending_story.is_empty() or not _pending_transition.is_empty() or \
+			not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
+		return false
+	if navigation.actor.has_active_segment() or not navigation.controller.ready_transition().is_empty():
+		return false
+	return _runtime_hotspot_gate_error(hotspot_id).is_empty()
+
+
+func _runtime_hotspot_gate_error(hotspot_id: String) -> String:
+	if bool(source.get("draftOnly", true)):
+		return "production-host-required"
+	if Dispatch.canonical_interaction_target(hotspot_id).is_empty():
+		return "unknown-runtime-hotspot"
+	if Director.next_step(state).get("kind", "") != "done" or not state.get("storyBeatsSeen", []).has("RM-BEAT-01-05"):
+		return "runtime-story-gate-closed"
+	if state.get("storyBeatsSeen", []).has(Dispatch.HALL_TEA_BEAT):
+		return "runtime-already-completed"
+	if not _runtime_scene.is_empty() or not state.get("vnCursor", {}).is_empty():
+		return "runtime-already-started"
+	if navigation == null or navigation.controller.room_id() != Dispatch.HALL_TEA_ROOM:
+		return "runtime-wrong-room"
+	var graph = navigation.controller.room_graph(navigation.controller.room_id())
+	if graph == null or graph.interaction_anchor(hotspot_id).is_empty():
+		return "runtime-hotspot-not-in-current-room"
+	# An approved route, accepted art, all 12 lines and Chapter I gate must be
+	# available before movement is even offered. No synthetic runtime catalogs.
+	if Dispatch.approved_for_map_hotspot(state, hotspot_id, str(_request.get("locale", "ru"))).is_empty():
+		return "runtime-scene-unapproved"
+	return ""
+
+
 func request_runtime_hotspot(hotspot_id: String) -> Dictionary:
-	if not _can_accept_input() or source.get("draftOnly", true):
+	if not _can_accept_input() or bool(source.get("draftOnly", true)):
 		return _error("production-host-required")
-	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty():
+	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
+		return _error("action-already-pending")
+	# A cancelled leg may still be physically finishing; it cannot be used to
+	# queue a second action or manufacture a new tea-table arrival.
+	if navigation.actor.has_active_segment() or not navigation.controller.ready_transition().is_empty():
 		return _error("action-already-pending")
 	var loaded := _load_state()
-	if not loaded.ok:
+	if not loaded.get("ok", false):
 		return loaded
-	if Director.next_step(state).kind != "done":
-		return _error("runtime-story-gate-closed")
-	# Only a canonical authored target; no caller-supplied scene or catalogs.
-	if hotspot_id != "RM-HS-TEA-TABLE":
-		return _error("unknown-runtime-hotspot")
+	var gate_error := _runtime_hotspot_gate_error(hotspot_id)
+	if not gate_error.is_empty():
+		return _error(gate_error)
 	var requested: Dictionary = navigation.request_hotspot(hotspot_id)
-	if requested.get("ok", false):
+	if bool(requested.get("ok", false)):
 		_pending_runtime = hotspot_id
 	return requested

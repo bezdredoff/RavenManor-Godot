@@ -11,10 +11,18 @@ const Cues = preload("res://data/raven/production/line_performance_cues.json")
 const Foundation = preload("res://data/raven/foundation_catalog.json")
 const Backgrounds = preload("res://data/raven/production/vn_background_catalog.json")
 const Portraits = preload("res://data/raven/production/vn_character_catalog.json")
+const Director = preload("res://scripts/raven/raven_slice_director.gd")
 
 const APPROVED_SCENE_STATUS := "runtime_approved"
 const APPROVED_ART_STATUS := "accepted"
 const ARRIVAL_FOOT_TOLERANCE := 0.25
+
+# This is the ONLY production map-to-narrative binding in the first Chapter II
+# activation. The navigation graph continues to own the real RM-HS-* arrival.
+const HALL_TEA_BEAT := "RM-BEAT-02-01"
+const HALL_TEA_MAP_HOTSPOT := "RM-HS-TEA-TABLE"
+const HALL_TEA_NARRATIVE_TARGET := "hall_chair_table"
+const HALL_TEA_ROOM := "RM-ROOM-HALL"
 
 ## Legacy vertical_slice invokes next_scene() after the RM-VS-01 director.
 ## Physically triggered scenes MUST NOT auto-start without verified arrival.
@@ -23,6 +31,54 @@ const ARRIVAL_FOOT_TOLERANCE := 0.25
 static func next_scene(state: Dictionary, locale: String = "ru") -> Dictionary:
 	return find_approved(state, Copy.normalize_locale(locale), Dialogue.data, Routes.data,
 		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data, "", true)
+
+
+## Content lookup is read-only: a scene returned here is NOT an arrival receipt.
+## Only the verified host path below can start a new interaction.
+static func canonical_interaction_target(map_hotspot_id: String) -> String:
+	if map_hotspot_id == HALL_TEA_MAP_HOTSPOT:
+		return HALL_TEA_NARRATIVE_TARGET
+	return ""
+
+
+static func approved_for_map_hotspot(state: Dictionary, map_hotspot_id: String,
+		locale: String = "ru") -> Dictionary:
+	var target := canonical_interaction_target(map_hotspot_id)
+	if target.is_empty():
+		return {}
+	var config: Dictionary = find_approved(state, Copy.normalize_locale(locale),
+		Dialogue.data, Routes.data, Staging.data, Cues.data, Foundation.data,
+		Backgrounds.data, Portraits.data, target)
+	# Do not accidentally route a future different table scene through this bridge.
+	return config if str(config.get("beatId", "")) == HALL_TEA_BEAT else {}
+
+
+## Continue is NOT a new interaction: only a persisted, normalized VN cursor
+## written after this host's confirmed arrival may resume on a safe Hall spawn.
+## Canonical approvals and Chapter I's scene_complete gate remain mandatory.
+static func resume_scene_from_saved_cursor(state: Dictionary,
+		locale: String = "ru") -> Dictionary:
+	# The dispatcher is also used by source-driven tests; a malformed snapshot
+	# must be rejected without assuming the slice director's keys exist.
+	for field in ["storyBeatsSeen", "storyFlags", "firstClearLevels", "completedRestorations", "recordedClues"]:
+		if not state.get(field) is Array:
+			return {}
+	# A copied/old cursor with RM-BEAT-01-05 alone is not proof that Chapter I
+	# finished; the single existing slice director checks all milestones.
+	if Director.next_step(state).get("kind", "") != "done":
+		return {}
+	if str(state.get("lastRoomId", "")) != HALL_TEA_ROOM:
+		return {}
+	var cursor: Variant = state.get("vnCursor", {})
+	if not cursor is Dictionary or str(cursor.get("beatId", "")) != HALL_TEA_BEAT:
+		return {}
+	var index: Variant = cursor.get("lineIndex", -1)
+	if _strict_integral_ordinal(index) < 0:
+		return {}
+	var config := approved_for_map_hotspot(state, HALL_TEA_MAP_HOTSPOT, locale)
+	if config.is_empty() or int(index) >= config.get("lines", []).size():
+		return {}
+	return config
 
 
 ## Production-only map entry. No caller-provided success Boolean or client
@@ -48,14 +104,15 @@ static func next_scene_at_confirmed_hotspot(host: Node, hotspot_id: String,
 	if not navigation.controller.ready_transition().is_empty():
 		return {}
 	var room_id: String = str(navigation.controller.room_id())
+	if room_id != HALL_TEA_ROOM or canonical_interaction_target(hotspot_id).is_empty():
+		return {}
 	var anchor_id: String = str(navigation.controller.confirmed_anchor())
 	var graph: Variant = navigation.controller.room_graph(room_id)
 	if graph == null or anchor_id.is_empty() or graph.interaction_anchor(hotspot_id) != anchor_id:
 		return {}
 	if navigation.actor.position.distance_to(graph.position(anchor_id)) > ARRIVAL_FOOT_TOLERANCE:
 		return {}
-	return find_approved(state, Copy.normalize_locale(locale), Dialogue.data, Routes.data,
-		Staging.data, Cues.data, Foundation.data, Backgrounds.data, Portraits.data, hotspot_id)
+	return approved_for_map_hotspot(state, hotspot_id, locale)
 
 
 ## The extra parameters make this testable with synthetic *copies* of catalogs.
