@@ -25,7 +25,7 @@ static func inspect() -> Dictionary:
 	var edge: Dictionary = spec.get("edge", {})
 	if str(anchor.get("id", "")) != "RM-NAV-HALL-TEA" or str(anchor.get("roomId", "")) != "RM-ROOM-HALL" or str(anchor.get("kind", "")) != "interaction" or str(anchor.get("hotspotId", "")) != "RM-HS-TEA-TABLE" or anchor.get("checkpointAllowed", true):
 		return _error("wrong-interaction-anchor")
-	if anchor.get("position", []) != [1000, 784] or str(edge.get("from", "")) != "RM-NAV-09B-03-STEP-023" or str(edge.get("to", "")) != "RM-NAV-HALL-TEA" or edge.get("bidirectional", false) != true or edge.has("doorId"):
+	if anchor.get("position", []) != [984, 784] or str(edge.get("from", "")) != "RM-NAV-HS-001" or str(edge.get("to", "")) != "RM-NAV-HALL-TEA" or edge.get("bidirectional", false) != true or edge.has("doorId"):
 		return _error("unexpected-path-delta")
 	var base_ids: Dictionary = {}
 	for item in raw["anchors"]:
@@ -37,7 +37,7 @@ static func inspect() -> Dictionary:
 	if not base_ids.has(str(edge["from"])) or str(base_ids[str(edge["from"])].get("roomId", "")) != "RM-ROOM-HALL":
 		return _error("invalid-connected-hall-waypoint")
 	var origin: Array = base_ids[str(edge["from"])].get("position", [])
-	if origin != [1032, 784]:
+	if origin != [952, 792]:
 		return _error("changed-base-hall-route")
 	var footprint: Dictionary = {}
 	for zone in raw.get("physicalConstraints", {}).get("noGoPolygons", []):
@@ -47,7 +47,7 @@ static func inspect() -> Dictionary:
 	if footprint.get("pointsPx", []) != [[788, 548], [880, 548], [880, 623], [788, 623]]:
 		return _error("table-footprint-changed")
 	var review: Dictionary = spec.get("physicalReview", {})
-	if review.get("arrivalFootpointImage") != [872, 656] or review.get("approachImage") != [904, 656] or review.get("minimumTableEdgeGapImagePx") != 33:
+	if review.get("arrivalFootpointImage") != [856, 656] or review.get("approachImage") != [824, 664] or review.get("minimumTableEdgeGapImagePx") != 33:
 		return _error("footpoint-reference-changed")
 	# Duplicate in memory, never rewrite the signed bytes or receipt.
 	var trial: Dictionary = raw.duplicate(true)
