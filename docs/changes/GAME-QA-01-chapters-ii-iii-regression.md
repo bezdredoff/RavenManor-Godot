@@ -2,14 +2,14 @@
 
 Task IDs: GAME-QA-01 (registered); GAME-QA-03 is a QA follow-up delivery label, not an additional work-package ID.
 Changes: Independent Chapter II–III source-driven portrait and 96-line tri-locale smoke, isolated synthetic Hall Tea fail-closed tests, device acceptance matrix and qa-infrastructure ledger update.
-Verification: Main@32a8d98d CI run 44173380349 PASS; newly added standalone Godot 4.7.2 smoke NOT_RUN locally (binary unavailable, not registered in shared CI runners); PR #294 initial CI data-contracts governance FAILURE due to missing required labels in this note, corrected in this commit; rerun required.
+Verification: Base main@32a8d98d CI run 44173380349 PASS. New standalone Godot 4.7.2 smoke EXECUTED/PASS through Linux runner registered in stacked PR #297, exact head 97ed88901dc91f7e08ccfac1ff64ad86a1004a5c, six required checks SUCCESS in Actions run 44388667642 (godot-runtime job 135100212899). Local Godot and Windows PowerShell NOT_RUN; #292 portrait merge combination NOT_RUN. The initial #294 governance-label failure was repaired earlier; it did not execute this new test.
 Owner QA: NOT_RUN for normal gameplay Hall Tea, physical phone, actual browser offline/refresh and owner art/scene/geometry approval.
 Status impact: Existing GAME-QA-01 only, PR_review/partial/P1; no accepted/mobile/production-ready state; no foreign shard edit.
 
 **Registered task ID:** GAME-QA-01, qa-infrastructure (P1). **Follow-up delivery:** GAME-QA-03, not a separately registered backlog task.  
 **Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` (merged #291). **Branch:** `agent/qa-infrastructure/GAME-QA-01-chapters-ii-iii-regression`.  
 **Baseline CI:** [main 44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) — six mandatory jobs + Pages deploy SUCCESS; this is NOT this branch's exact-head/new-test execution.  
-**New script execution:** NOT_RUN locally (Godot 4.7.2 binary unavailable). No runner registration in this PR by design. **Phone / browser / owner QA:** NOT_RUN. **Production Chapter II–III:** BLOCKED.
+**New script execution:** PASS in stacked PR #297's Linux Godot 4.7.2 runner, [run 44388667642](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44388667642) (exact head `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`; six required jobs green; named runtime smoke step PASS). NOT_RUN locally; no runner registration in **this #294 diff** by design (shared-runner changes are in #297). **Phone / browser / owner QA:** NOT_RUN. **Production Chapter II–III:** BLOCKED.
 
 ## Scope and changes
 
@@ -37,9 +37,9 @@ Use existing Raven UPDS-derived `raven_vn_player.gd`, `raven_vn_read_history.gd`
 | --- | --- |
 | #291 merged + main baseline SHA | VERIFIED, `32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` |
 | Main six CI jobs and Pages | PASS, [run 44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) at baseline SHA |
-| New standalone Godot 4.7.2 script | **NOT_RUN**; cannot claim green on source review or on the existing CI runners without registration |
-| Full exact-head PR CI | **PENDING** on opening PR / running checks; annotate separate SHA once completed |
-| Synthetic future Hall Tea | Source fixture authored; **NOT_RUN** until standalone invocation, not a production PASS |
+| New standalone Godot 4.7.2 script | **EXECUTED PASS** on stacked #297 exact head `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`, [run 44388667642](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44388667642), `godot-runtime` log `GAME-QA-03 Chapter II-III production gate passed.`; *not* from #294's original standalone CI |
+| Full exact-head PR CI | **PASS on stacked #297 integration head** `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c` (all six required jobs). #294's own CI does not execute the standalone until #297 is integrated; rerun exact final combined merge after #292/other changes |
+| Synthetic future Hall Tea | **SYNTHETIC PASS** under #297's standalone Godot run; still not a production/physical arrival PASS |
 | Real Hall Tea menu→physical arrival→VN→reducer→save/reload | BLOCKED pending Agent A portrait reuse + Agent B gameplay integration, actual target arrival and approvals |
 | Seven Chapter II–III future gates/rooms | BLOCKED pending authoritative interaction and spatial approvals |
 | RU/BE/EN physical device, 320×568 / 390×844 / 430×932 | **NOT_RUN** |
@@ -48,8 +48,8 @@ Use existing Raven UPDS-derived `raven_vn_player.gd`, `raven_vn_read_history.gd`
 
 **Standalone command after checkout:**  
 `godot --headless --path . --script res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd --quit-after 240`  
-Target engine: **Godot 4.7.2**. The new script is a `SceneTree` test and is **not** currently registered in `scripts/check.sh` / `check.ps1`; exact registration point and full Windows/Linux/release instructions are in the QA matrix. Preserve existing six-job gating; no misleading physical-phone or synthetic-production PASS.
+Target engine: **Godot 4.7.2**. The new script is a `SceneTree` test and is registered in **stacked PR #297** (not in this #294 diff) in `scripts/check.sh` and `check.ps1`; Linux Godot executed it successfully. Windows execution and full physical Chapter II–III gameplay remain blocked/NOT_RUN. Preserve existing six-job gating; no misleading physical-phone or synthetic-production PASS.
 
-**Owner QA / next actions:** Review this independent test/acceptance card, wait for Agent A art metadata and Agent B/contract/map merge; integration owner adds the script to both runners and adds a **real** normal-game Hall Tea positive E2E after canonical activation. Require actual Godot CLI output, exact-head green CI and manual phone/browser evidence before marking GAME-QA-01 accepted or Chapter II–III production ready.
+**Owner QA / next actions:** Review this independent test/acceptance card. Integration owner has registered the smoke through stacked #297; after Agent A portrait reuse and Agent B/contract/map merge, rerun the *combined* smoke and add a **real** normal-game Hall Tea positive E2E after canonical activation. Require actual Godot CLI output, exact-head green CI and manual phone/browser evidence before marking GAME-QA-01 accepted or Chapter II–III production ready.
 
 **Rollback:** revert this PR's independent new test, QA matrix, unique change note and qa-infrastructure shard update. No save/schema/runtime/canonical content migration is involved.
