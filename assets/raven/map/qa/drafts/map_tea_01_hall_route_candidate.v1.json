@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "kind": "raven-hall-tea-qa-route-delta",
+  "taskId": "CODE-05-02",
+  "deliveryLabel": "MAP-TEA-01",
+  "approval": "DRAFT_ONLY",
+  "productionReady": false,
+  "activationEnabled": false,
+  "runtimeAuthority": false,
+  "ownerApproved": false,
+  "coordinateSpace": "world-plan",
+  "sourceWorldPlanPath": "res://data/raven/manor_production_candidate.v1.json",
+  "sourceWorldPlanSha256": "f9c7ee86fa5e819cc3cfb1e1415537ee38c952b80d2c3b611e2346d9525d171a",
+  "sourceArtPath": "res://a_detailed_top_down_isometric_game_map_illustratio.png",
+  "sourceArtSha256": "5e0edf97bd719fb1df95c7e9bea2f134d90adad0bc04d1771acc82a95a4d549a",
+  "baseAnchorCount": 119,
+  "baseEdgeCount": 120,
+  "sourcePixelToWorldTranslation": [128, 128],
+  "paintedElevationDegrees": 65,
+  "applySecondProjection": false,
+  "physicalReview": {
+    "roomId": "RM-ROOM-HALL",
+    "tableNoGoId": "QA-08B-HALL-TABLE",
+    "tableFootprintImageRect": [788, 548, 880, 623],
+    "tableTapCentreImage": [834, 584],
+    "approachImage": [904, 656],
+    "arrivalFootpointImage": [872, 656],
+    "footRadiusWorld": 12,
+    "minimumTableEdgeGapImagePx": 33,
+    "annotation": "Candidate south-side standing footpoint by the central round table; confirm this is Hall Tea furniture and visually inspect armchair occlusion before acceptance"
+  },
+  "anchor": {
+    "id": "RM-NAV-HALL-TEA",
+    "roomId": "RM-ROOM-HALL",
+    "position": [1000, 784],
+    "kind": "interaction",
+    "hotspotId": "RM-HS-TEA-TABLE",
+    "checkpointAllowed": false
+  },
+  "edge": {
+    "from": "RM-NAV-09B-03-STEP-023",
+    "to": "RM-NAV-HALL-TEA",
+    "bidirectional": true
+  },
+  "authorityNote": "Isolated reversible QA delta against pinned G2 world plan. The source plan and signed acceptance receipt are never rewritten. The in-memory assembled candidate is forced DRAFT_ONLY and rejected by the production source. Owner visual approval plus a separate integration-owner production authority and hash-bound receipt change are prerequisites."
+}
