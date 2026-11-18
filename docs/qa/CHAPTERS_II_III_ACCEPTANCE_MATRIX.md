@@ -1,6 +1,6 @@
 # Chapter II–III production acceptance matrix — GAME-QA-03
 
-**Registered ledger:** GAME-QA-01 (qa-infrastructure, P1). **Delivery label:** GAME-QA-03; do not insert an unregistered `GAME-QA-03` task into the status shard.  
+**Registered ledger:** GAME-QA-01 (qa-infrastructure, P0 as of GAME-QA-03B). **Delivery label:** GAME-QA-03; do not insert an unregistered `GAME-QA-03` task into the status shard.  
 **Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` after #291. **Baseline main CI:** [44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) SUCCESS (six required jobs plus Pages deploy).  
 **New QA test:** `tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd` — standalone. Registered exactly once in both shared runners through governance-scoped stacked **[PR #297](https://github.com/bezdredoff/RavenManor-Godot/pull/297)** (not in #294's own diff). **Verified Godot 4.7.2 Linux execution:** PASS for the baseline-with-scenes-disabled configuration in [run 44388667642](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44388667642), head `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`, where all six required jobs succeeded and the runtime log printed `GAME-QA-03 Chapter II-III production gate passed.` **After #292 portrait merge:** NOT_RUN, requires a fresh combined exact-head CI. **Physical phone / Windows / owner acceptance:** NOT_RUN / PENDING. Green #294 checks alone cannot prove this standalone execution.
 
