@@ -305,6 +305,10 @@ func _run() -> void:
 		await process_frame
 
 		# A saved cursor is not an approval or a forged physical arrival.
+		assert(Dispatch.resume_scene_from_saved_cursor({
+			"lastRoomId": Dispatch.HALL_TEA_ROOM,
+			"vnCursor": {"beatId": Dispatch.HALL_TEA_BEAT, "lineIndex": 2}
+		}, locale).is_empty(), "Malformed snapshot may not resume VN")
 		# Snapshot normalization is shared with all real store writes.
 		for invalid_index in [-1, 3.5, "4", true, 10000]:
 			var bad_cursor: Dictionary = finished_saved.duplicate(true)
