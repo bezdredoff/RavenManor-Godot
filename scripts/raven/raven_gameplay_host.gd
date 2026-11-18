@@ -231,6 +231,9 @@ func advance(delta: float = 0.05) -> Dictionary:
 		_pending_story = ""
 		_pending_map_hotspot = ""
 		_pending_transition = ""
+		# A failed dispatch must not strand a Hall Tea request. Recovery always
+		# starts from the controller's next verified, stable position.
+		_pending_runtime = ""
 		return result
 	var status := str(result.get("status", ""))
 	if status == "arrived" and not _pending_runtime.is_empty():
@@ -514,7 +517,12 @@ func _error(reason: String) -> Dictionary:
 
 ## UI availability is a read-only hint, not a physical-arrival approval.
 func runtime_hotspot_available(hotspot_id: String) -> bool:
-	return _can_accept_input() and _runtime_hotspot_gate_error(hotspot_id).is_empty()
+	if not _can_accept_input() or not _pending_story.is_empty() or not _pending_transition.is_empty() or \
+			not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
+		return false
+	if navigation.actor.has_active_segment() or not navigation.controller.ready_transition().is_empty():
+		return false
+	return _runtime_hotspot_gate_error(hotspot_id).is_empty()
 
 
 func _runtime_hotspot_gate_error(hotspot_id: String) -> String:
@@ -544,6 +552,10 @@ func request_runtime_hotspot(hotspot_id: String) -> Dictionary:
 	if not _can_accept_input() or bool(source.get("draftOnly", true)):
 		return _error("production-host-required")
 	if not _pending_story.is_empty() or not _pending_transition.is_empty() or not _pending_safe_entry.is_empty() or not _pending_runtime.is_empty() or not _presentation_step.is_empty():
+		return _error("action-already-pending")
+	# A cancelled leg may still be physically finishing; it cannot be used to
+	# queue a second action or manufacture a new tea-table arrival.
+	if navigation.actor.has_active_segment() or not navigation.controller.ready_transition().is_empty():
 		return _error("action-already-pending")
 	var loaded := _load_state()
 	if not loaded.get("ok", false):
