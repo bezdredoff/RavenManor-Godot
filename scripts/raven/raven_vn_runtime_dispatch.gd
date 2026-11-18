@@ -58,6 +58,11 @@ static func approved_for_map_hotspot(state: Dictionary, map_hotspot_id: String,
 ## Canonical approvals and Chapter I's scene_complete gate remain mandatory.
 static func resume_scene_from_saved_cursor(state: Dictionary,
 		locale: String = "ru") -> Dictionary:
+	# The dispatcher is also used by source-driven tests; a malformed snapshot
+	# must be rejected without assuming the slice director's keys exist.
+	for field in ["storyBeatsSeen", "storyFlags", "firstClearLevels", "completedRestorations", "recordedClues"]:
+		if not state.get(field) is Array:
+			return {}
 	# A copied/old cursor with RM-BEAT-01-05 alone is not proof that Chapter I
 	# finished; the single existing slice director checks all milestones.
 	if Director.next_step(state).get("kind", "") != "done":
