@@ -1,3 +1,9 @@
+Task IDs: CODE-05-02 (registered); MAP-TEA-01 is a scoped delivery label, not a new registry ID.
+Changes: QA-only Hall Tea anchor/edge delta, read-only signed world-plan assembler, standalone Godot review, native RouteSession smoke, visual capture and isolated workflow; no production data or story activation.
+Verification: Original source and PR diff inspected with GitHub; local Godot NOT_RUN; exact-head GitHub Actions and screenshot artifact PENDING until verified.
+Owner QA: Manual image placement, furniture identity, safe footpoint and real phone/browser interactions NOT_RUN / NOT_APPROVED.
+Status impact: CODE-05-02 remains P0 partial/PR_review; only manor-map shard appended, no completed/production-ready state.
+
 # CODE-05-02 / MAP-TEA-01 — Hall Tea physical navigation candidate
 
 **Registered task:** CODE-05-02 · **domain:** manor-map · **priority:** P0  
