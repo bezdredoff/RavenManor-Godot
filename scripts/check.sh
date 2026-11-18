@@ -53,8 +53,10 @@ run_check 'Raven foundation smoke' 'Raven Manor foundation smoke passed' --scrip
 run_check 'CODE-07-02 restoration restore/snapshot' 'Raven Manor restoration restore/snapshot characterization smoke passed' --script res://tests/raven/restoration_restore_smoke.gd --quit-after 120
 run_check 'VNS5-06D2A save & rollback rehearsal' 'Raven VN VNS5-06D2A save and rollback projection smoke passed' --script res://tests/raven/vn_release_save_rehearsal_smoke.gd --quit-after 240
 run_check 'VNS5-06D2C canonical-only runtime VN dispatch' 'Raven VN VNS5-06D2C approved-only runtime dispatch/save/locale/art smoke passed' --script res://tests/raven/vn_production_runtime_dispatch_smoke.gd --quit-after 240
-printf 'Executing mandatory Godot 4.7.2 smoke: %s --headless --path %s --script res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd --quit-after 240\n' "$GODOT_BIN" "$ROOT"
+# Trace this one registration so Actions logs prove the actual Godot invocation.
+set -x
 run_check 'GAME-QA-03 Chapter II-III production gate' 'GAME-QA-03 Chapter II-III source contract and SYNTHETIC Hall Tea smoke PASS; production Chapter II-III acceptance NOT claimed' --script res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd --quit-after 240
+set +x
 run_check 'Raven navigation graph smoke' 'Raven Manor authored navigation graph smoke passed' --script res://tests/raven/manor_navigation_graph_smoke.gd --quit-after 120
 run_check 'MAP-QA-02 Onoe movement adapter' 'Raven MAP-QA-02 Onoe animated segment movement smoke passed' --script res://tests/raven/onoe_segment_movement_smoke.gd --quit-after 120
 run_check 'GFX-07-01 Evelyn atlas reproducibility' 'PASS: retained source reproduces baked atlas pixels and hashes' --script res://assets/raven/chibi/evelyn/g1_candidate/repair_v1/bake_atlas.gd --quit-after 300 -- --check
