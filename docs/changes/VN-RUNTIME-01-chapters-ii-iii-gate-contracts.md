@@ -1,3 +1,9 @@
+Task IDs: VN-RUNTIME-01 (registered P1); VN-GATES-01 (scoped follow-up label, not a new registered task).
+Changes: Documentation of seven authoritative Chapter II–III interaction gate contracts, UPDS reuse audit and own vn-runtime progress evidence only.
+Verification: Exact-main read-only seven-scene source/route/registry assertions PASS; Godot NOT_RUN; current PR head CI previously FAILED governance format, this commit corrects that format and requires a new exact-head run.
+Owner QA: NOT_RUN; no owner device, route, story or visual approval claimed.
+Status impact: Preserve VN-RUNTIME-01 historical status merged, implementationState partial and manual_pending; this contract PR stays Draft/unmerged.
+
 # VN-RUNTIME-01 / VN-GATES-01 — Chapter II–III authoritative gate contract
 
 **Task IDs:** `VN-RUNTIME-01` (registered vn-runtime P1); `VN-GATES-01` is a delivery label, **not** a new registered task.  
