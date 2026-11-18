@@ -4,9 +4,9 @@ Task IDs: GAME-QA-01 (registered); GAME-QA-03 is a QA follow-up delivery label, 
 Changes: Independent Chapter II–III source-driven portrait and 96-line tri-locale smoke, isolated synthetic Hall Tea fail-closed tests, device acceptance matrix and qa-infrastructure ledger update.
 Verification: Base main@32a8d98d CI run 44173380349 PASS. New standalone Godot 4.7.2 smoke EXECUTED/PASS through Linux runner registered in stacked PR #297, exact head 97ed88901dc91f7e08ccfac1ff64ad86a1004a5c, six required checks SUCCESS in Actions run 44388667642 (godot-runtime job 135100212899). Local Godot and Windows PowerShell NOT_RUN; #292 portrait merge combination NOT_RUN. The initial #294 governance-label failure was repaired earlier; it did not execute this new test.
 Owner QA: NOT_RUN for normal gameplay Hall Tea, physical phone, actual browser offline/refresh and owner art/scene/geometry approval.
-Status impact: Existing GAME-QA-01 only, PR_review/partial/P1; no accepted/mobile/production-ready state; no foreign shard edit.
+Status impact: Existing GAME-QA-01 only, PR_review/partial/P0 (GAME-QA-03B escalation); no accepted/mobile/production-ready state; no foreign shard edit.
 
-**Registered task ID:** GAME-QA-01, qa-infrastructure (P1). **Follow-up delivery:** GAME-QA-03, not a separately registered backlog task.  
+**Registered task ID:** GAME-QA-01, qa-infrastructure (P0 escalation for GAME-QA-03B). **Follow-up delivery:** GAME-QA-03, not a separately registered backlog task.  
 **Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` (merged #291). **Branch:** `agent/qa-infrastructure/GAME-QA-01-chapters-ii-iii-regression`.  
 **Baseline CI:** [main 44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) — six mandatory jobs + Pages deploy SUCCESS; this is NOT this branch's exact-head/new-test execution.  
 **New script execution:** PASS in stacked PR #297's Linux Godot 4.7.2 runner, [run 44388667642](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44388667642) (exact head `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`; six required jobs green; named runtime smoke step PASS). NOT_RUN locally; no runner registration in **this #294 diff** by design (shared-runner changes are in #297). **Phone / browser / owner QA:** NOT_RUN. **Production Chapter II–III:** BLOCKED.
