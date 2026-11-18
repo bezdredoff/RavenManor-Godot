@@ -19,13 +19,13 @@ static func inspect() -> Dictionary:
 		return _error("original-art-hash-mismatch")
 	if raw.get("anchors", []).size() != int(spec.get("baseAnchorCount", -1)) or raw.get("edges", []).size() != int(spec.get("baseEdgeCount", -1)):
 		return _error("base-world-plan-count-mismatch")
-	if spec.get("coordinateSpace") != "world-plan" or spec.get("sourcePixelToWorldTranslation") != [128, 128] or spec.get("applySecondProjection") != false:
+	if spec.get("coordinateSpace") != "world-plan" or not _numbers_match(spec.get("sourcePixelToWorldTranslation"), [128, 128]) or spec.get("applySecondProjection") != false:
 		return _error("coordinate-contract-mismatch")
 	var anchor: Dictionary = spec.get("anchor", {})
 	var edge: Dictionary = spec.get("edge", {})
 	if str(anchor.get("id", "")) != "RM-NAV-HALL-TEA" or str(anchor.get("roomId", "")) != "RM-ROOM-HALL" or str(anchor.get("kind", "")) != "interaction" or str(anchor.get("hotspotId", "")) != "RM-HS-TEA-TABLE" or anchor.get("checkpointAllowed", true):
 		return _error("wrong-interaction-anchor")
-	if anchor.get("position", []) != [984, 784] or str(edge.get("from", "")) != "RM-NAV-HS-001" or str(edge.get("to", "")) != "RM-NAV-HALL-TEA" or edge.get("bidirectional", false) != true or edge.has("doorId"):
+	if not _numbers_match(anchor.get("position"), [984, 784]) or str(edge.get("from", "")) != "RM-NAV-HS-001" or str(edge.get("to", "")) != "RM-NAV-HALL-TEA" or edge.get("bidirectional", false) != true or edge.has("doorId"):
 		return _error("unexpected-path-delta")
 	var base_ids: Dictionary = {}
 	for item in raw["anchors"]:
@@ -37,17 +37,17 @@ static func inspect() -> Dictionary:
 	if not base_ids.has(str(edge["from"])) or str(base_ids[str(edge["from"])].get("roomId", "")) != "RM-ROOM-HALL":
 		return _error("invalid-connected-hall-waypoint")
 	var origin: Array = base_ids[str(edge["from"])].get("position", [])
-	if origin != [952, 792]:
+	if not _numbers_match(origin, [952, 792]):
 		return _error("changed-base-hall-route")
 	var footprint: Dictionary = {}
 	for zone in raw.get("physicalConstraints", {}).get("noGoPolygons", []):
 		if str(zone.get("id", "")) == "QA-08B-HALL-TABLE":
 			footprint = zone
 			break
-	if footprint.get("pointsPx", []) != [[788, 548], [880, 548], [880, 623], [788, 623]]:
+	if not _points_match(footprint.get("pointsPx"), [[788, 548], [880, 548], [880, 623], [788, 623]]):
 		return _error("table-footprint-changed")
 	var review: Dictionary = spec.get("physicalReview", {})
-	if review.get("arrivalFootpointImage") != [856, 656] or review.get("approachImage") != [824, 664] or review.get("minimumTableEdgeGapImagePx") != 33:
+	if not _numbers_match(review.get("arrivalFootpointImage"), [856, 656]) or not _numbers_match(review.get("approachImage"), [824, 664]) or absf(float(review.get("minimumTableEdgeGapImagePx", -1)) - 33.0) > 0.001:
 		return _error("footpoint-reference-changed")
 	# Duplicate in memory, never rewrite the signed bytes or receipt.
 	var trial: Dictionary = raw.duplicate(true)
@@ -69,3 +69,22 @@ static func inspect() -> Dictionary:
 
 static func _error(reason: String) -> Dictionary:
 	return {"ok": false, "error": reason}
+
+## Godot JSON imports may decode source numeric arrays as floats, not ints.
+static func _numbers_match(value: Variant, expected: Array) -> bool:
+	if not value is Array or value.size() != expected.size():
+		return false
+	for i in range(expected.size()):
+		if not (value[i] is float or value[i] is int):
+			return false
+		if not is_finite(float(value[i])) or absf(float(value[i]) - float(expected[i])) > 0.001:
+			return false
+	return true
+
+static func _points_match(value: Variant, expected: Array) -> bool:
+	if not value is Array or value.size() != expected.size():
+		return false
+	for i in range(expected.size()):
+		if not _numbers_match(value[i], expected[i]):
+			return false
+	return true
