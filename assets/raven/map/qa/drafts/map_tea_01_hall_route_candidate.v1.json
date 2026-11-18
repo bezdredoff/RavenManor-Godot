@@ -23,22 +23,22 @@
     "tableNoGoId": "QA-08B-HALL-TABLE",
     "tableFootprintImageRect": [788, 548, 880, 623],
     "tableTapCentreImage": [834, 584],
-    "approachImage": [904, 656],
-    "arrivalFootpointImage": [872, 656],
+    "approachImage": [824, 664],
+    "arrivalFootpointImage": [856, 656],
     "footRadiusWorld": 12,
     "minimumTableEdgeGapImagePx": 33,
-    "annotation": "Candidate south-side standing footpoint by the central round table; confirm this is Hall Tea furniture and visually inspect armchair occlusion before acceptance"
+    "annotation": "Candidate southeast-side standing footpoint by the central round table; confirm this is Hall Tea furniture and visually inspect armchair occlusion before acceptance"
   },
   "anchor": {
     "id": "RM-NAV-HALL-TEA",
     "roomId": "RM-ROOM-HALL",
-    "position": [1000, 784],
+    "position": [984, 784],
     "kind": "interaction",
     "hotspotId": "RM-HS-TEA-TABLE",
     "checkpointAllowed": false
   },
   "edge": {
-    "from": "RM-NAV-09B-03-STEP-023",
+    "from": "RM-NAV-HS-001",
     "to": "RM-NAV-HALL-TEA",
     "bidirectional": true
   },
