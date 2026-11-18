@@ -11,6 +11,7 @@ const Cues = preload("res://data/raven/production/line_performance_cues.json")
 const Foundation = preload("res://data/raven/foundation_catalog.json")
 const Backgrounds = preload("res://data/raven/production/vn_background_catalog.json")
 const Portraits = preload("res://data/raven/production/vn_character_catalog.json")
+const Director = preload("res://scripts/raven/raven_slice_director.gd")
 
 const APPROVED_SCENE_STATUS := "runtime_approved"
 const APPROVED_ART_STATUS := "accepted"
@@ -57,6 +58,10 @@ static func approved_for_map_hotspot(state: Dictionary, map_hotspot_id: String,
 ## Canonical approvals and Chapter I's scene_complete gate remain mandatory.
 static func resume_scene_from_saved_cursor(state: Dictionary,
 		locale: String = "ru") -> Dictionary:
+	# A copied/old cursor with RM-BEAT-01-05 alone is not proof that Chapter I
+	# finished; the single existing slice director checks all milestones.
+	if Director.next_step(state).get("kind", "") != "done":
+		return {}
 	if str(state.get("lastRoomId", "")) != HALL_TEA_ROOM:
 		return {}
 	var cursor: Variant = state.get("vnCursor", {})
