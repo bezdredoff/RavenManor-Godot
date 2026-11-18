@@ -308,6 +308,9 @@ func _world_button(coords: Variant, caption: String, action: Callable, enabled: 
 	button.custom_minimum_size = Vector2(136, 50)
 	button.position = Vector2(float(coords[0]) - 68.0, float(coords[1]) - 76.0)
 	button.modulate = Color.WHITE if enabled else Color(0.75, 0.72, 0.74, 0.8)
+	# Visual dimming alone still leaves a focusable/clickable button. A locked
+	# authored target must be disabled for touch, keyboard and accessibility.
+	button.disabled = not enabled
 	button.pressed.connect(action)
 	targets.add_child(button)
 
