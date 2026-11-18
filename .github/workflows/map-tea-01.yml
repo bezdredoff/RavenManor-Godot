@@ -1,0 +1,61 @@
+name: MAP-TEA-01 Hall Tea physical route review
+
+on:
+  pull_request:
+    paths:
+      - "assets/raven/map/qa/drafts/map_tea_01_*"
+      - "scripts/raven/map_tea_01_*"
+      - "scenes/raven/tests/map_tea_01_*"
+      - "tests/raven/map_tea_01_*"
+      - ".github/workflows/map-tea-01.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  map-tea-01:
+    name: map-tea-01-Godot-4.7.2
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout exact PR merge
+        uses: actions/checkout@v6
+      - name: Install Godot 4.7.2
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl -fsSL -o godot.zip "https://github.com/godotengine/godot/releases/download/4.7.2-stable/Godot_v4.7.2-stable_linux.x86_64.zip"
+          unzip -q godot.zip -d godot-bin
+          chmod +x godot-bin/Godot_v4.7.2-stable_linux.x86_64
+          sudo mv godot-bin/Godot_v4.7.2-stable_linux.x86_64 /usr/local/bin/godot
+      - name: Import approved Hall PNG and Evelyn assets
+        run: godot --headless --editor --path . --import
+      - name: Preserve existing 09B authored routes
+        run: timeout 90s godot --headless --path . --script res://tests/raven/map_qa_09b_opening_blueprint_smoke.gd
+      - name: Preserve original HC CB architectural geometry
+        run: timeout 90s godot --headless --path . --script res://tests/raven/map_prod_01_hc_cb_candidate_smoke.gd
+      - name: Preserve normal G2 production loop
+        run: timeout 120s godot --headless --path . --script res://tests/raven/game_loop_g2_production_integration_smoke.gd
+      - name: Hall Tea collision and authored-route smoke
+        run: timeout 120s godot --headless --path . --script res://tests/raven/map_tea_01_navigation_smoke.gd
+      - name: Godot actual Hall Tea visual evidence
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq xvfb
+          fi
+          timeout 150s xvfb-run -a -s "-screen 0 1280x1024x24" godot --path . --script res://tests/raven/map_tea_01_visual_capture.gd
+          test -s build/map-tea-01/01-before-approved-hall-960x720.png
+          test -s build/map-tea-01/02-after-route-nogo-960x720.png
+          test -s build/map-tea-01/03-after-evelyn-clean-960x720.png
+          test -s build/map-tea-01/04-mobile-390x844-route-nogo.png
+          test -s build/map-tea-01/05-mobile-390x844-clean.png
+      - name: Upload before after NO-GO mobile review captures
+        uses: actions/upload-artifact@v4
+        with:
+          name: map-tea-01-Hall-Tea-Godot-Review-TEST-ONLY
+          path: build/map-tea-01/*.png
+          retention-days: 14
+          if-no-files-found: error
