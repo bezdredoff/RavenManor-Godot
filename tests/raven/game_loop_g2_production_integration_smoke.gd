@@ -10,6 +10,7 @@ const Snapshot = preload("res://scripts/raven/raven_snapshot.gd")
 const Reducer = preload("res://scripts/raven/raven_reducer.gd")
 const MatchSession = preload("res://scripts/raven/raven_match3_session.gd")
 const Dispatch = preload("res://scripts/raven/raven_vn_runtime_dispatch.gd")
+const VN = preload("res://scripts/raven/raven_vn_player.gd")
 const Director = preload("res://scripts/raven/raven_slice_director.gd")
 const Contract = preload("res://data/save_contract.json")
 
@@ -38,6 +39,63 @@ func _seed_finished_chapter_negative_fixture(storage: RefCounted) -> void:
 	snapshot.recordedClues = ["RM-CLUE-01-CHILDHOOD-OBJECT"]
 	snapshot.unlockedDoors = ["RM-DOOR-HALL-CORRIDOR", "RM-DOOR-CORRIDOR-BEDROOM"]
 	assert(Store.new(storage).save_campaign(snapshot))
+
+
+## SYNTHETIC STORE/REDUCER TRANSACTION FIXTURE, NOT A CANONICAL APPROVED VN
+## or a physical-arrival test. It exercises the existing save/Continue pieces
+## using 12 test-only lines; the production dispatcher remains fail-closed.
+func _assert_synthetic_hall_tea_transaction(locale: String) -> void:
+	var storage := Memory.new()
+	_seed_finished_chapter_negative_fixture(storage)
+	var campaign := Store.new(storage)
+	var original: Dictionary = campaign.load_campaign()
+	var staged: Dictionary = original.duplicate(true)
+	staged.vnCursor = {"beatId": Dispatch.HALL_TEA_BEAT, "lineIndex": 0}
+	storage.fail_write = true
+	assert(not campaign.save_campaign(staged), "Failed first cursor write must not succeed")
+	assert(campaign.load_campaign().vnCursor.is_empty(), "Failed first cursor write must not persist")
+	storage.fail_write = false
+	assert(campaign.save_campaign(staged))
+
+	var fixture: Dictionary = {"beatId": Dispatch.HALL_TEA_BEAT,
+		"source": "canonical_production_only", "lines": []}
+	for line_index in range(12):
+		fixture.lines.append({"speaker": "SYNTHETIC-" + locale,
+			"text": "Synthetic line %d (%s)" % [line_index + 1, locale]})
+	var player := VN.new()
+	player.open(fixture)
+	assert(player.current_line().contains(locale))
+	assert(Dispatch.completion_event(fixture, false, "synthetic-early").is_empty())
+	for index in range(12):
+		var final_advance: bool = player.advance()
+		assert(final_advance == (index == 11), "Exactly 12 synthetic advances required")
+		if not final_advance:
+			var in_progress: Dictionary = campaign.load_campaign()
+			in_progress.vnCursor.lineIndex = index + 1
+			assert(campaign.save_campaign(in_progress))
+			assert(not campaign.load_campaign().storyBeatsSeen.has(Dispatch.HALL_TEA_BEAT))
+	var last_line: Dictionary = campaign.load_campaign()
+	assert(last_line.vnCursor.lineIndex == 11)
+	var event: Dictionary = Dispatch.completion_event(
+		fixture, true, "synthetic-g2-tea-" + locale)
+	assert(event.get("type") == "story_beat_seen" and event.get("storyBeatId") == Dispatch.HALL_TEA_BEAT)
+	var proposal: Dictionary = Reducer.apply(last_line, event)
+	assert(proposal.get("ok", false) and not proposal.get("duplicate", true))
+	var completed: Dictionary = proposal.state
+	completed.vnCursor = {}
+	storage.fail_write = true
+	assert(not campaign.save_campaign(completed), "Final beat and cursor must commit together")
+	var after_failure: Dictionary = campaign.load_campaign()
+	assert(after_failure.vnCursor.lineIndex == 11 and not after_failure.storyBeatsSeen.has(Dispatch.HALL_TEA_BEAT))
+	storage.fail_write = false
+	assert(campaign.save_campaign(completed), "Retry writes the same reducer result")
+	var done: Dictionary = campaign.load_campaign()
+	assert(done.vnCursor.is_empty() and done.storyBeatsSeen.count(Dispatch.HALL_TEA_BEAT) == 1)
+	assert(done.revision == last_line.revision + 1)
+	var duplicate: Dictionary = Reducer.apply(done, event)
+	assert(duplicate.get("ok", false) and duplicate.get("duplicate", false))
+	assert(duplicate.state.revision == done.revision)
+	assert(campaign.load_campaign() == done, "No extra reward, replay or next scene in the store")
 
 
 func _map(storage: RefCounted):
@@ -85,6 +143,10 @@ func _run() -> void:
 	# #291 approved the HC/CB graph, NOT a Hall Tea table anchor. A real
 	# production request must continue to fail closed pending mapped geometry.
 	assert(not Fixture.plan().anchors.any(func(a): return a.get("hotspotId", "") == "RM-HS-TEA-TABLE"))
+	# These deliberately synthetic VN/store positives never call the production
+	# Hall Tea selector or inject an arrival/approved geometry into the host.
+	for locale in ["ru", "be", "en"]:
+		_assert_synthetic_hall_tea_transaction(locale)
 	var broken := Fixture.plan()
 	broken.anchors[0].position = [300, 400]
 	assert(not Source.validate_calibrated_plan(broken).is_empty())
@@ -197,6 +259,15 @@ func _run() -> void:
 		assert(Dispatch.next_scene_at_confirmed_hotspot(map.host, "RM-HS-TEA-TABLE", locale).is_empty())
 		assert(Dispatch.next_scene_at_confirmed_hotspot(map.host, "hall_chair_table", locale).is_empty())
 		assert(not map.host.runtime_hotspot_available("RM-HS-TEA-TABLE"))
+		# A synthetic HUD probe checks actual disabled/keyboard state only. It
+		# is not a new room anchor and can never trigger the real Hall Tea route.
+		var tea_label: String = str(Map.HOTSPOT_NAMES["RM-HS-TEA-TABLE"].get(locale, ""))
+		assert(not tea_label.is_empty(), "RU/BE/EN tea-table HUD copy required")
+		map._world_button([450, 420], "🔒 " + tea_label,
+			Callable(map, "_request_runtime").bind("RM-HS-TEA-TABLE"), false)
+		var locked_probe: Button = map.targets.get_child(map.targets.get_child_count() - 1) as Button
+		assert(locked_probe != null and locked_probe.disabled, "Locked HUD must be disabled, not only dimmed")
+		locked_probe.queue_free()
 		assert(map.host.state.get("vnCursor", {}).is_empty(), "No premature Hall Tea cursor")
 		assert(map.host.reload_session().ok)
 		assert(map.host.room_state().anchorId == checkpoint.lastSafeAnchorId)
@@ -219,6 +290,13 @@ func _run() -> void:
 		assert(tea_host.request_runtime_hotspot("hall_chair_table").get("error") == "unknown-runtime-hotspot")
 		assert(Dispatch.approved_for_map_hotspot(tea_host.state, "RM-HS-TEA-TABLE", locale).is_empty())
 		assert(not tea_host.runtime_hotspot_available("RM-HS-TEA-TABLE"))
+		# A real, already-authorized door request keeps a second tap from
+		# becoming a simultaneous tea-route intent (still no tea anchor).
+		var door_request: Dictionary = tea_host.request_transition(str(tea_host.source.contract.transitions[0].id))
+		assert(door_request.get("ok", false))
+		assert(tea_host.request_runtime_hotspot("RM-HS-TEA-TABLE").get("error") == "action-already-pending")
+		assert(not tea_host.runtime_hotspot_available("RM-HS-TEA-TABLE"))
+		assert(tea_host.cancel().get("ok", false))
 		tea_host.set_paused(true)
 		assert(not tea_host.request_runtime_hotspot("RM-HS-TEA-TABLE").get("ok", false))
 		tea_host.set_paused(false)
@@ -227,6 +305,13 @@ func _run() -> void:
 		await process_frame
 
 		# A saved cursor is not an approval or a forged physical arrival.
+		# Snapshot normalization is shared with all real store writes.
+		for invalid_index in [-1, 3.5, "4", true, 10000]:
+			var bad_cursor: Dictionary = finished_saved.duplicate(true)
+			bad_cursor.vnCursor = {"beatId": Dispatch.HALL_TEA_BEAT, "lineIndex": invalid_index}
+			assert(Store.new(tea_storage).save_campaign(bad_cursor))
+			assert(Store.new(tea_storage).load_campaign().vnCursor.is_empty(),
+				"Invalid VN cursor must not survive normalization")
 		finished_saved.vnCursor = {"beatId": "RM-BEAT-02-01", "lineIndex": 4}
 		assert(Store.new(tea_storage).save_campaign(finished_saved))
 		var cursor_host = Host.new(tea_storage)
