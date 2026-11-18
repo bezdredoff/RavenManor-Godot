@@ -2,7 +2,7 @@
 
 **Registered ledger:** GAME-QA-01 (qa-infrastructure, P1). **Delivery label:** GAME-QA-03; do not insert an unregistered `GAME-QA-03` task into the status shard.  
 **Baseline:** `main@32a8d98d2fd3e75bf7613b8391f5ea7a769abd5a` after #291. **Baseline main CI:** [44173380349](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44173380349) SUCCESS (six required jobs plus Pages deploy).  
-**New QA test:** `tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd` — standalone, *not yet in shared CI runners*. **PR-head Godot execution:** NOT_RUN until proven by an exact-head run; **physical phone:** NOT_RUN; **owner acceptance:** PENDING. Do not substitute the baseline main CI for this new test.
+**New QA test:** `tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd` — standalone. Registered exactly once in both shared runners through governance-scoped stacked **[PR #297](https://github.com/bezdredoff/RavenManor-Godot/pull/297)** (not in #294's own diff). **Verified Godot 4.7.2 Linux execution:** PASS for the baseline-with-scenes-disabled configuration in [run 44388667642](https://github.com/bezdredoff/RavenManor-Godot/actions/runs/44388667642), head `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`, where all six required jobs succeeded and the runtime log printed `GAME-QA-03 Chapter II-III production gate passed.` **After #292 portrait merge:** NOT_RUN, requires a fresh combined exact-head CI. **Physical phone / Windows / owner acceptance:** NOT_RUN / PENDING. Green #294 checks alone cannot prove this standalone execution.
 
 ## Evidence definitions
 
@@ -70,13 +70,13 @@ For each locale and target viewport: advance every Hall Tea line with long-text 
 
 **Result card:** `case ID | PASS/FAIL/BLOCKED/NOT_RUN | exact SHA | Godot/build | OS/device/browser/DPR/viewport | locale/motion | steps | expected/actual | evidence link | owner+date`. For failed writes/corrupted saves use a *copy*, never a personal real save.
 
-## Integration handoff — intentionally not registered in shared runners
+## Integration status — registered in stacked PR #297
 
 After Agent A portrait-reuse and Agent B Hall Tea/runtime and Agent C gate-contract/map branches converge, the integration owner must:
 
 1. Rebase this QA branch, inspect the live eight-scene deficit report, and reconcile any **stale fixed missing-art count assertions** in the existing `vn_chapters_ii_iii_readiness_fixture.gd` (Agent A/VN owner; do **not** disable it). Current manifest and fixture were authored for seven missing variants; they may require the integration owner's source-of-truth update if canonical staging/cues change.
 2. Run standalone: `godot --headless --path . --script res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd --quit-after 240`. This test is a separate `SceneTree`; **do not** attempt to invoke it as a `RefCounted.run()` fixture. On Windows: `Godot_v4.7.2-stable_win64_console.exe --headless --path . --script res://tests/raven/vn_chapters_ii_iii_production_gate_smoke.gd --quit-after 240`. Keep normal-game, actual UI and process-restart positives in a separate merged integration E2E with isolated storage.
-3. Register this exact script in both existing Linux `scripts/check.sh` and Windows `check.ps1` **in one integration-owner PR**, matching the adjacent `vn_production_runtime_dispatch_smoke.gd` invocation, then run the full existing suite. Do not modify shared workflow or runner in this parallel QA PR.
+3. **DONE in stacked integration [PR #297](https://github.com/bezdredoff/RavenManor-Godot/pull/297):** register the standalone test once in Linux `scripts/check.sh` and once in Windows `check.ps1`, alongside `vn_production_runtime_dispatch_smoke.gd`. Linux GitHub Actions run 44388667642 PASS at `97ed88901dc91f7e08ccfac1ff64ad86a1004a5c`; Windows invocation is statically present but Windows execution remains NOT_RUN. Do not merge the integration PR independently of #294, and rerun on the final combined head after #292 or other integration changes.
 4. Revalidate each promoted scene's **actual** `runtime_approved` status, accepted art, Foundation registration, validated room/hotspot/interaction token, physical arrival and final event at the real host boundary. For a future approved NPC/object/door/specialist contract, extend the **authoritative** integration tests rather than making this pure selector permissive.
 5. Run `bash scripts/check_data.sh`, `bash scripts/check.sh`, `python3 scripts/raven/tools/progress_shards.py`, `python3 scripts/raven/tools/build_production_dashboard.py --check`. Obtain all six blocking checks on the **exact final PR SHA**, plus actual Godot 4.7.2 script output. Then collect real-device and owner acceptance evidence.
 6. Maintain separate **CI PASS / SYNTHETIC PASS / REAL-PRODUCTION PASS / PHYSICAL PHONE PASS / OWNER APPROVED** fields. Do not mark all eight playable because Hall Tea passes. Keep Draft until reviewed by owner; merge only after approval.
